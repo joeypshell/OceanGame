@@ -41,10 +41,10 @@ Different placement is starting to produce different decisions, not just differe
 
 Create or use follow-up issues for:
 
-- Add a subtle deep-reward visual lure that is visible before the player commits to the predator route.
-- Add predator warning/telegraph feedback so avoidable damage feels fair.
-- Add a lightweight run telemetry/debug readout or playtest checklist for seed, pattern, cargo, scans, oxygen at extraction, and failure cause.
-- Tune oxygen margins after a hands-on five-seed pass, especially for deep-reward routes with one scan or one predator contact.
+- #28 Add a subtle deep-reward visual lure that is visible before the player commits to the predator route.
+- #29 Add predator warning/telegraph feedback so avoidable damage feels fair.
+- #30 Add a lightweight run telemetry/debug readout or playtest checklist for seed, pattern, cargo, scans, oxygen at extraction, and failure cause.
+- #31 Tune oxygen margins after a hands-on five-seed pass, especially for deep-reward routes with one scan or one predator contact.
 
 ## Milestone Judgment
 
