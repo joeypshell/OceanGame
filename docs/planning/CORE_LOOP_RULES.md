@@ -92,7 +92,7 @@ Tactical scan effects can provide:
 
 Tactical effects should help the current dive without becoming a full field guide.
 
-Current free repeat-scan behavior is provisional. A later design issue should evaluate whether repeated tactical scans need a cooldown, smaller oxygen cost, or limited scanner energy. Do not change repeat-scan costs unless an active issue authorizes it.
+Current recommendation: keep repeat tactical scans free for the prototype. First-time scans cost oxygen; re-scanning already discovered targets costs no oxygen and may refresh practical effects. See `docs/planning/REPEAT_SCAN_COST_RECOMMENDATION.md` for the reviewed cooldown, smaller oxygen cost, and scanner-energy alternatives. Do not change repeat-scan costs unless an active implementation issue authorizes it.
 
 Scanner targeting must be legible:
 

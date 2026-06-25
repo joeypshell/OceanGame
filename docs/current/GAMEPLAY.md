@@ -52,6 +52,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Pressure Seal I` opens the first pressure-locked research wreck route by disabling the pressure-boundary denial and changing the shimmer feedback to show the route is open.
 - Scan with F. The HUD shows the current scan target name, and the selected target is highlighted. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
 - First-time scans cost 2 oxygen and record session-persistent discoveries. Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
+- Current planning recommendation keeps repeat tactical scans free for this prototype; see `docs/planning/REPEAT_SCAN_COST_RECOMMENDATION.md`.
 - Resource pickups are scannable before collection. Resource scans record the resource depth band, upgrade use, and whether more of that material is needed for `Oxygen Tank I`; they also temporarily highlight matching visible resource deposits in the current expedition.
 - `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton`.
 - A scannable `Thermal Vent` reveals a current-route hint and hidden `Glow Plankton` cluster.

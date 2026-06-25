@@ -38,7 +38,6 @@ No active technical support issues are currently queued.
 
 Later design and demo-readiness issues:
 
-- #43 Evaluate repeat tactical scan costs.
 - #44 Hide development telemetry behind debug flag before public demo.
 - #45 Plan `Burst Thruster` active tool milestone.
 
@@ -156,6 +155,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: add progression save schema versioning and legacy/current/unknown-version migration behavior.
 - Completed: add deterministic headless logic tests for core expedition and progression rules.
 - Completed: extract narrow upgrade purchase, scanner targeting, and seeded spawn-selection helpers out of `main.gd`.
+- Completed: evaluate repeat tactical scan costs and keep repeat scans free for the current prototype.
 
 ## Deferred Work
 
