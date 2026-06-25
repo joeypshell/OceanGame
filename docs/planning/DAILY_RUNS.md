@@ -32,7 +32,7 @@ The authored vertical slice is still the proving ground. Avoid full procedural b
 ## Authored Spawn-Point Rules
 
 - Use authored `SpawnPoint` nodes or equivalent data, not free-form random coordinates.
-- Spawn points should define at least id, category, target id, depth band, and position.
+- Spawn points should define at least id, category, target id, depth band, cluster pattern, and position.
 - Resource depth identity must stay consistent:
   - `Kelp Fiber`: shallow
   - `Shell Fragments`: midwater
@@ -40,6 +40,11 @@ The authored vertical slice is still the proving ground. Avoid full procedural b
 - Candidate placement should preserve the visible reward/risk relationship.
 - Return-route readability matters more than surprise.
 - Predator-controlled rewards must remain avoidable through observation or route choice.
+
+## Current Cluster Patterns
+
+- `Cautious shallows`: keeps the starter resource path more legible for shallow/midwater banking.
+- `Deep reward route`: keeps depth identities intact while pulling the deeper `Glow Plankton` toward the predator-controlled route.
 
 ## Playtest Methodology
 

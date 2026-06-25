@@ -21,12 +21,14 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Dives begin from a `Run Ready` panel. Press E or Enter to begin oxygen drain and active dive play.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, and best depth.
 - Each run has a session run number and deterministic seed shown on the start/result panel.
+- Each run selects and displays a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`.
 - Pressing R after a result prepares the next run, advancing the run number and seed while preserving banked resources, upgrades, discoveries, and best depth.
 - Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
 - Extraction only succeeds after the player has left the base and returned.
 - The player has three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep.
 - Starter resource candidate points use typed `SpawnPoint` nodes with category, target id, depth band, and position data so later hazards, creatures, discoveries, and resource clusters can use the same placement model.
+- `Cautious shallows` clusters keep the first three starter resources closer to safer shallow/midwater banking routes, while `Deep reward route` clusters pull the deeper `Glow Plankton` toward the predator-controlled route.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, the surface upgrade bay panel shows `Oxygen Tank I`, its cost, owned/available/unavailable state, and purchase feedback.
 - `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
@@ -89,6 +91,7 @@ Manual smoke:
 - Confirm the run starts at the `Run Ready` panel and does not begin active oxygen pressure until E or Enter is pressed.
 - Confirm each restarted run advances the run number and seed while persistent progression remains.
 - Confirm restarted runs vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.
+- Confirm restarted runs alternate between `Cautious shallows` and `Deep reward route` cluster patterns, and that the deep reward pattern tempts a route near the predator patrol.
 - Move or edit a `StarterResourceCandidates` spawn point in the scene and confirm seeded resource placement follows that typed definition.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.

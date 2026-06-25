@@ -15,6 +15,10 @@ const STARTER_RESOURCE_PICKUP_NAMES := [
 	"ShellFragments",
 	"GlowPlankton",
 ]
+const RESOURCE_CLUSTER_PATTERNS := [
+	"cautious",
+	"deep_reward",
+]
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
@@ -58,6 +62,7 @@ var player_in_base := true
 var glow_plankton_highlight_timer := 0.0
 var last_result_summary := ""
 var upgrade_menu_feedback := ""
+var current_resource_cluster_pattern := "cautious"
 
 func _ready() -> void:
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
@@ -277,6 +282,7 @@ func _reset_resource_pickups() -> void:
 func _place_starter_resources_for_run() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = progression_state.current_run_seed
+	current_resource_cluster_pattern = _resource_cluster_pattern_for_seed(progression_state.current_run_seed)
 
 	for pickup_name in STARTER_RESOURCE_PICKUP_NAMES:
 		var pickup := get_node_or_null("ResourcePickups/%s" % pickup_name) as ResourcePickup
@@ -285,22 +291,26 @@ func _place_starter_resources_for_run() -> void:
 		if pickup.definition == null:
 			continue
 
-		var candidates := _spawn_positions_for_target("resource", pickup.definition.id)
+		var candidates := _spawn_positions_for_target("resource", pickup.definition.id, current_resource_cluster_pattern)
 		if candidates.is_empty():
 			continue
 
 		pickup.global_position = candidates[rng.randi_range(0, candidates.size() - 1)]
 
-func _spawn_positions_for_target(category: String, target_id: String) -> Array[Vector2]:
+func _resource_cluster_pattern_for_seed(seed: int) -> String:
+	return RESOURCE_CLUSTER_PATTERNS[seed % RESOURCE_CLUSTER_PATTERNS.size()]
+
+func _spawn_positions_for_target(category: String, target_id: String, cluster_pattern: String) -> Array[Vector2]:
 	var positions: Array[Vector2] = []
-	_collect_spawn_positions(starter_resource_candidates, category, target_id, positions)
+	_collect_spawn_positions(starter_resource_candidates, category, target_id, cluster_pattern, positions)
 	return positions
 
-func _collect_spawn_positions(root: Node, category: String, target_id: String, positions: Array[Vector2]) -> void:
+func _collect_spawn_positions(root: Node, category: String, target_id: String, cluster_pattern: String, positions: Array[Vector2]) -> void:
 	for child in root.get_children():
 		if child.get_script() == SpawnPointScript and child.matches(category, target_id):
-			positions.append(child.global_position)
-		_collect_spawn_positions(child, category, target_id, positions)
+			if child.cluster_pattern == "any" or child.cluster_pattern == cluster_pattern:
+				positions.append(child.global_position)
+		_collect_spawn_positions(child, category, target_id, cluster_pattern, positions)
 
 func _sync_discovery_reveals() -> void:
 	if progression_state.has_discovery("thermal_vent"):
@@ -354,18 +364,27 @@ func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
 		run_title_label.text = "Day %d - Run Ready" % progression_state.current_run_number
-		run_summary_label.text = "Seed: %d\nStart with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\nPress E or Enter to begin." % [
+		run_summary_label.text = "Seed: %d\nPattern: %s\nStart with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\nPress E or Enter to begin." % [
 			progression_state.current_run_seed,
+			_format_cluster_pattern(current_resource_cluster_pattern),
 			ceili(dive_session.max_oxygen)
 		]
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		run_panel.visible = true
 		run_title_label.text = "Day %d Result: Extraction" % progression_state.current_run_number
-		run_summary_label.text = "Seed: %d\n%s" % [progression_state.current_run_seed, last_result_summary]
+		run_summary_label.text = "Seed: %d\nPattern: %s\n%s" % [
+			progression_state.current_run_seed,
+			_format_cluster_pattern(current_resource_cluster_pattern),
+			last_result_summary
+		]
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		run_panel.visible = true
 		run_title_label.text = "Day %d Result: Failure" % progression_state.current_run_number
-		run_summary_label.text = "Seed: %d\n%s" % [progression_state.current_run_seed, last_result_summary]
+		run_summary_label.text = "Seed: %d\nPattern: %s\n%s" % [
+			progression_state.current_run_seed,
+			_format_cluster_pattern(current_resource_cluster_pattern),
+			last_result_summary
+		]
 	else:
 		run_panel.visible = false
 
@@ -437,6 +456,15 @@ func _format_upgrade_cost(cost: Dictionary) -> String:
 		parts.append("%s x%d" % [_display_name_for_resource(resource_id), int(cost[resource_id])])
 
 	return ", ".join(parts)
+
+func _format_cluster_pattern(pattern: String) -> String:
+	match pattern:
+		"cautious":
+			return "Cautious shallows"
+		"deep_reward":
+			return "Deep reward route"
+		_:
+			return pattern
 
 func _format_discoveries() -> String:
 	var discoveries := progression_state.scan_discoveries

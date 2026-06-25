@@ -5,6 +5,7 @@ extends Marker2D
 @export_enum("resource", "hazard", "creature", "discovery", "resource_cluster") var category := "resource"
 @export var target_id: String
 @export_enum("shallow", "midwater", "deep") var depth_band := "shallow"
+@export_enum("any", "cautious", "deep_reward") var cluster_pattern := "any"
 
 func _ready() -> void:
 	add_to_group("spawn_points")
