@@ -28,6 +28,7 @@ Detailed design rules live in:
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_THERMAL_VENT_DECOY_2026_06_25.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
@@ -38,31 +39,37 @@ Optional local Godot editor MCP policy lives in `docs/current/GODOT_MCP.md`.
 
 ## Active Milestone
 
-Predator Warning And Route Tuning.
+Thermal Vent And Predator Countermeasure.
 
-Goal: use the completed Shell Reef batch to tune route decisions and add the first non-lethal predator-preparation payoff from `Gulper Eel` observation.
+Goal: add one more authored route pocket around the existing `Thermal Vent`, then add the first narrow non-lethal `Gulper Eel` countermeasure without broadening into procedural biomes, weapons, or a tool-wheel system.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, an authored `Shell Reef` route pocket, a selected `Thermal Vent Pocket` candidate for `Biome Pocket II`, a first economy review recommending no immediate cost changes, and a `Decoy Pulse I` candidate for the first true non-lethal predator countermeasure. The next milestone should focus on demo-readiness visual language before implementing broader biome or predator systems.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, an authored and reviewed `Shell Reef` route pocket, a selected `Thermal Vent Pocket` candidate for `Biome Pocket II`, a first economy review recommending no immediate cost changes, first-pass visual/readability assets, and a `Decoy Pulse I` candidate for the first true non-lethal predator countermeasure. The next milestone should turn those planning candidates into small, testable gameplay slices.
 
 ## Immediate Issue Order
 
 Tooling track:
 
-No active tooling issues are currently queued. #91 documented optional local Godot AI MCP setup policy without vendoring the plugin.
+- #101 `Update MCP context and roadmap after vent and decoy planning batch`
 
 Gameplay and validation track:
 
-No active gameplay validation issues are currently queued in this milestone.
+- #92 `Add Thermal Vent pocket route variation`
+- #93 `Add Thermal Vent pocket scan/result clarity pass`
+- #94 `Add typed Thermal Vent pocket placement candidates`
+- #95 `Run Thermal Vent pocket five-seed route review`
+- #96 `Tune Thermal Vent pocket readability after route review`
 
 Technical support track:
 
-No active technical support issues are currently queued in this milestone.
+- #100 `Add Decoy Pulse I tests and docs coverage`
 
 Later design and demo-readiness issues:
 
-No active design or demo-readiness issues are currently queued.
+- #97 `Add Decoy Pulse I upgrade definition and purchase gate`
+- #98 `Implement Decoy Pulse I predator distraction behavior`
+- #99 `Add Decoy Pulse I feedback, cooldown, and HUD status`
 
-Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, full procedural biomes, large art sets, or new resource systems during this milestone.
+Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, predator harvesting, full procedural biomes, large art sets, oxygen refills, or new resource systems during this milestone.
 
 ## Rolling Backlog Policy
 
@@ -74,16 +81,16 @@ Do not create filler issues just to hit the number. Prefer a slightly smaller qu
 
 The milestone succeeds only when:
 
-- #75 implements `Predator Warning I` without changing predator contact rules or adding combat.
-- #76 adds focused metadata/prerequisite/effect coverage for the warning upgrade.
-- #77 records concrete Shell Reef route observations across five seeds.
-- #78/#79 make only narrow route-readability or lure-position tuning changes justified by review evidence.
-- #80 plans one next biome pocket before implementation.
-- #81 decides whether the current resource costs need a first tuning pass.
-- #82 keeps route-choice result callouts concise and avoids checklist UI.
-- #83 keeps MCP planning context current.
-- #84 keeps the next predator countermeasure non-lethal and preparation-first.
-- #86-#90 establish prototype readability assets before final art production, with no new mechanics or broad polish pass.
+- #92 implements the `Thermal Vent` pocket as authored route language without changing its existing discovery role.
+- #93 keeps vent scan/result language concise and avoids tutorial walls or route overlays.
+- #94 keeps placement growth typed and inspectable rather than hidden or broadly procedural.
+- #95 records concrete vent-route observations across five deterministic seeds before tuning.
+- #96 makes only narrow route-readability or placement changes justified by review evidence.
+- #97 adds `Decoy Pulse I` as a gated upgrade using existing upgrade-bay patterns and resources.
+- #98 makes Decoy Pulse a temporary non-lethal predator-distraction window, not damage, stun, harvest, capture, or route removal.
+- #99 gives Decoy Pulse clear feedback without confusing it with `Burst Thruster`, scan hints, or passive predator warning.
+- #100 covers Decoy Pulse behavior with focused tests and current docs.
+- #101 keeps MCP planning context and roadmap status current after the batch changes.
 
 Technical implementation alone is not sufficient.
 
@@ -91,7 +98,9 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-No active progression candidates are currently queued. Replenish the backlog before continuing issue-driven work.
+1. `Thermal Vent Pocket` implementation and review (#92-#96).
+2. `Decoy Pulse I` upgrade/countermeasure implementation (#97-#100).
+3. MCP/roadmap synchronization after the batch changes (#101).
 
 Recently completed:
 

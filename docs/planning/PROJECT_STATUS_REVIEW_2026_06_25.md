@@ -21,7 +21,7 @@ OceanGame now has a coherent first playable prototype loop:
 - deterministic logic tests,
 - MCP context tooling,
 - blind-validation kit.
-- first `Shell Reef` biome pocket, compact surface views, route-objective fallback, clarified pressure-lock readability, and replenished post-Shell-Reef issue queues.
+- first `Shell Reef` biome pocket, compact surface views, route-objective fallback, clarified pressure-lock readability, first visual-language/readability assets, optional Godot AI MCP policy, and replenished Thermal Vent/Decoy Pulse issue queue.
 
 The project is no longer blocked by missing planning or validation requirements for the current slice. The full two-helper blind validation requirement and solo evidence replacement are skipped; the current prototype is considered good enough to move forward.
 
@@ -31,16 +31,14 @@ The first informal validation signal has been addressed: first-time scan feedbac
 
 The active milestone should move to:
 
-**Predator Warning And Route Tuning**
+**Thermal Vent And Predator Countermeasure**
 
 Meaning:
 
-- Treat scanner/cargo progression as completed milestone work.
-- Treat #59/#60 as completed monster-observation foundation work.
-- Treat #65-#74 as completed Shell Reef/readability/replenishment work.
-- Use #75-#84 as the replenished active issue queue.
-- Add `Predator Warning I` before broader predator countermeasures.
-- Review and tune the authored `Shell Reef` pocket before expanding into broader biome systems.
+- Treat scanner/cargo progression, monster-observation foundation, Shell Reef, Predator Warning, first visual-readability assets, and optional Godot AI MCP policy as completed milestone work.
+- Use #92-#101 as the replenished active issue queue.
+- Add the planned `Thermal Vent Pocket` before broader biome systems.
+- Add `Decoy Pulse I` as the first narrow predator countermeasure after `Predator Warning I`.
 - Keep predator progression non-lethal and observation-first.
 - Keep a rolling backlog of about 10 open actionable issues so Codex can continue without repeated replanning stops.
 - If testers are available later, use facilitator summaries as bonus evidence and create issues from concrete observations, but do not block roadmap progress on them.
@@ -102,30 +100,25 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #76 `Add Predator Warning I upgrade tests and metadata coverage`.
-2. Resolve #77 `Run Shell Reef five-seed route review`.
-3. Resolve #78 `Tune Shell Reef return readability after route review`.
-4. Resolve #79 `Tune deep-reward lure relative to Shell Reef route`.
-5. Resolve #80 `Plan Biome Pocket II candidate`.
-6. Resolve #81 `Plan first resource economy tuning pass`.
-7. Resolve #82 `Add route-choice result callout`.
-8. Resolve #83 `Update MCP context server with latest planning docs`.
-9. Resolve #84 `Plan Predator Countermeasure I after warning upgrade`.
-10. Resolve #86 `Create first visual language guide`.
-11. Resolve #87 `Extract reusable pressure gate, current hint, and signal hint prototypes`.
-12. Resolve #88 `Standardize current and route-hint visuals`.
-13. Resolve #89 `Standardize scan target marker readability`.
-14. Resolve #90 `Run first depth-band and landmark readability asset pass`.
+1. Resolve #92 `Add Thermal Vent pocket route variation`.
+2. Resolve #93 `Add Thermal Vent pocket scan/result clarity pass`.
+3. Resolve #94 `Add typed Thermal Vent pocket placement candidates`.
+4. Resolve #95 `Run Thermal Vent pocket five-seed route review`.
+5. Resolve #96 `Tune Thermal Vent pocket readability after route review`.
+6. Resolve #97 `Add Decoy Pulse I upgrade definition and purchase gate`.
+7. Resolve #98 `Implement Decoy Pulse I predator distraction behavior`.
+8. Resolve #99 `Add Decoy Pulse I feedback, cooldown, and HUD status`.
+9. Resolve #100 `Add Decoy Pulse I tests and docs coverage`.
+10. Resolve #101 `Update MCP context and roadmap after vent and decoy planning batch`.
 
 ### Progression Candidates
 
-1. Shell Reef route review and narrow tuning.
-2. Biome Pocket II planning.
-3. First resource economy tuning.
-4. Route-choice result feedback.
-5. MCP planning-context refresh.
-6. Predator Countermeasure I planning after warning upgrade.
-7. Visual language guide and reusable readability assets before final art production.
+1. Thermal Vent pocket implementation and five-seed review.
+2. Thermal Vent pocket readability tuning.
+3. Decoy Pulse I upgrade gate.
+4. Decoy Pulse I non-lethal predator distraction behavior.
+5. Decoy Pulse I HUD/status feedback and test/docs coverage.
+6. MCP planning-context refresh after the new batch creates docs or implemented behavior.
 
 ### Deferred
 
@@ -155,6 +148,7 @@ Meaning:
 - `docs/planning/VISUAL_LANGUAGE_READABILITY_ASSETS.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_THERMAL_VENT_DECOY_2026_06_25.md`
 - `docs/planning/CORE_LOOP_RULES.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 
