@@ -92,41 +92,76 @@ scripts/
 
 ## Near-Term Epics
 
-- [ ] Epic: Prototype Runtime And Movement
+- [x] Epic: Prototype Runtime And Movement
   Establish the game engine, project structure, first playable scene, swimming controls, and a safe base/extraction point.
-- [ ] Epic: First Dive Loop
+- [x] Epic: First Dive Loop
   Create the first playable dive loop: oxygen pressure, resource pickup, scanning, return-to-base extraction, and one upgrade.
-- [ ] Epic: Creature And Hunt Foundation
+- [x] Epic: Creature And Hunt Foundation
   Add simple creature behaviors, a scanner field guide, and one dangerous predator encounter that teaches the monster-hunting direction.
 - [ ] Epic: Ocean Readability And Feel
   Improve the prototype dive space so depth, risk, resources, and safe return are visually understandable without tutorial text.
+- [ ] Epic: Daily Roguelite Dive Runs
+  Turn the authored slice into replayable daily dives with controlled randomization, a clearer run start/result flow, and data-driven placement rules.
 
 ## Immediate Issue Order
 
-1. Formalize dive state and progression state
-   Acceptance: `DiveSession` manages current oxygen, cargo, has-left-base, current depth, and dive result; `ProgressionState` manages banked resources, purchased upgrades, scan discoveries, and best depth reached for the current game session.
-   Verification: restart a dive and confirm session progression survives while current-dive state resets.
-2. Add resource collection, cargo limits, extraction, and banking
-   Acceptance: three cargo slots exist; `Kelp Fiber` appears shallow, `Shell Fragments` appears in midwater, and `Glow Plankton` appears deep; carried resources remain unbanked until extraction; extraction banks carried resources; oxygen failure discards carried resources but keeps banked resources; the player cannot successfully extract without first leaving the base.
-   Verification: leave base, collect resources, extract to bank them, restart, then fail a dive and confirm only carried resources were lost.
-3. Add depth readability and return-risk communication
-   Acceptance: surface, shallow, midwater, and deep bands are visually distinct; HUD displays approximate depth; base direction is always inferable; a deep reward is visible or hinted from midwater; resource placement communicates increasing value with depth.
-   Verification: perform the first-loop validation and risk validation gates below.
-4. Add and purchase Oxygen Tank I
-   Acceptance: the player can spend `2 Kelp Fiber`, `1 Shell Fragment`, and `1 Glow Plankton` to increase max oxygen from 30 to 40 for future dives.
-   Verification: after purchase, the player can reach a location that previously felt unsafe or complete one additional action before returning without needing a numerical explanation.
-5. Add scanner and one passive creature
-   Acceptance: scanning costs oxygen, records a discovery, and reveals useful information; the first passive creature, `Lantern Fry`, hints at nearby `Glow Plankton` after scanning.
-   Verification: scan `Lantern Fry`, observe nearby `Glow Plankton` pulses or markers, and confirm the scan discovery survives dive restart in session state.
-6. Add one environmental discovery
-   Acceptance: one environmental scan reveals a route, hidden resource cluster, oxygen refill location, or future depth-gate clue.
-   Verification: scan the discovery and confirm it changes navigation or resource decisions in the current vertical slice.
-7. Add predator encounter
-   Acceptance: a predator patrols between two points, detects the player within a radius, briefly chases, returns to patrol, and on contact causes oxygen loss, knockback, and short movement disruption.
-   Verification: the predator controls access to a valuable deep resource cluster and changes the route/oxygen decision without causing instant failure.
-8. Polish and rebalance the full vertical slice
-   Acceptance: the required vertical slice below supports repeated informed risk decisions rather than identical dives.
-   Verification: run the playtest gates below and adjust placement, oxygen costs, cargo pressure, and upgrade cost until the gates pass.
+1. Add run start and result screens
+   Acceptance: the player starts each dive from a clear run-start state, sees day/run number, and receives a result summary after extraction or failure.
+   Verification: start a dive, extract, fail a dive, and confirm each path has an understandable result summary before restart.
+2. Add daily run seed and run reset state
+   Acceptance: each new dive has a run/day identifier and deterministic seed value that can drive placement variation later.
+   Verification: restarting a run advances or refreshes the run identifier, while purchased upgrades and banked resources persist.
+3. Randomize starter resource placement within depth bands
+   Acceptance: starter resources spawn from authored candidate points inside shallow, midwater, and deep bands rather than fixed locations.
+   Verification: multiple run starts vary resource locations while preserving depth readability and extraction rules.
+4. Add data-driven spawn point definitions
+   Acceptance: resource, hazard, creature, and discovery candidate locations are represented as simple typed spawn point nodes or data instead of ad hoc scene placement.
+   Verification: changing a spawn point definition changes what can appear there without editing core run logic.
+5. Add lightweight upgrade menu
+   Acceptance: the base exposes a compact upgrade menu that shows available upgrades, costs, owned status, and purchase feedback.
+   Verification: buy `Oxygen Tank I` through the menu and confirm future dives still start with 40 oxygen.
+6. Add second resource cluster pattern
+   Acceptance: at least one alternative cluster pattern changes the route/cargo decision without adding new resource types.
+   Verification: across several runs, one layout creates a cautious shallow/midwater route and another tempts a deeper reward path.
+7. Add session save/load for progression
+   Acceptance: banked resources, purchased upgrades, discoveries, and best depth can survive closing and reopening the project.
+   Verification: save, quit/relaunch, load, and confirm session progression remains while current-dive cargo does not persist.
+8. Create next milestone playtest report
+   Acceptance: record observations from at least three generated runs and identify whether daily variation improves the return-or-continue decision.
+   Verification: update `docs/current/GAMEPLAY.md` or a planning note with run observations, issues found, and follow-up tasks.
+
+## Next Milestone: Daily Roguelite Dive Runs
+
+Goal: prove the current authored slice can become a replayable daily run structure without losing readability.
+
+This milestone should introduce controlled randomization in layers:
+
+- Run start and result flow first, so each dive feels like a discrete attempt.
+- A run/day seed second, so variation has a stable place to live.
+- Starter resource placement third, using authored depth-band candidate points.
+- Spawn point data fourth, so future hazards, creatures, discoveries, and resource clusters can share the same placement model.
+- Upgrade menu and session save/load after the run loop is clearer.
+
+Promoted from previous out-of-scope:
+
+- Controlled randomization of resource placement.
+- Lightweight procedural layout rules through authored candidate points.
+- Better run results flow.
+- Compact upgrade interface.
+- Disk-backed save/load for progression, but only after run state is separated from progression state.
+
+Still intentionally deferred:
+
+- Large open-world ocean generation.
+- Full procedural biomes.
+- Full crafting economy.
+- Combat or hunting.
+- Base upgrading.
+- Multiple upgrade tiers.
+- Polished art/audio.
+- Full field guide.
+
+Design rule: randomization should preserve readable depth-band rules. A run can surprise the player with where rewards and risks appear, but it should not make the surface, deeper direction, base return route, or approximate risk level confusing.
 
 ## First Vertical Slice Target
 
