@@ -60,6 +60,7 @@ const RESOURCE_CLUSTER_PATTERNS := [
 @onready var prompt_label: Label = $HUD/ExtractionPrompt
 @onready var scan_target_label: Label = $HUD/ScanTarget
 @onready var oxygen_warning_label: Label = $HUD/OxygenWarning
+@onready var recent_expedition_log_label: Label = $HUD/RecentExpeditionLog
 @onready var run_panel: Panel = $HUD/RunPanel
 @onready var run_title_label: Label = $HUD/RunPanel/RunTitle
 @onready var run_summary_label: Label = $HUD/RunPanel/RunSummary
@@ -105,6 +106,7 @@ var run_collected_resources: Array[String] = []
 var run_completed_scans: Array[String] = []
 var run_predator_contacts := 0
 var run_failure_cause := "none"
+var recent_expedition_log: Array[Dictionary] = []
 
 func _ready() -> void:
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
@@ -176,6 +178,7 @@ func _try_extract() -> void:
 		_format_resource_counts(extracted_cargo),
 		_format_ready_upgrade_callout(),
 	]
+	_record_recent_expedition("Extracted", extracted_count)
 	_save_progression()
 	status_label.text = "Dive complete: extracted safely with %d oxygen." % ceili(dive_session.oxygen)
 	_update_hud()
@@ -188,6 +191,7 @@ func _fail_dive() -> void:
 		roundi(progression_state.best_depth_reached),
 	]
 	upgrade_menu_feedback = ""
+	_record_recent_expedition("Failed", 0)
 	_save_progression()
 	status_label.text = "Dive failed: oxygen depleted. Cargo lost."
 	_update_hud()
@@ -687,6 +691,7 @@ func _update_hud() -> void:
 	bank_label.text = "Banked:%s" % _format_banked_resources()
 	upgrade_label.text = _format_upgrade_status()
 	discoveries_label.text = _format_discoveries()
+	recent_expedition_log_label.text = _format_recent_expedition_log()
 
 	if dive_session.result == DiveSessionScript.Result.READY:
 		prompt_label.text = "Press E or Enter to begin the dive"
@@ -982,6 +987,64 @@ func _format_scan_ids(scan_ids: Array[String]) -> String:
 		parts.append(scan_id)
 
 	return ", ".join(parts)
+
+func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> void:
+	recent_expedition_log.append({
+		"run_number": progression_state.current_run_number,
+		"result": result_name,
+		"banked_cargo_count": banked_cargo_count,
+		"scans": run_completed_scans.duplicate(),
+		"predator_contacts": run_predator_contacts,
+		"best_depth": roundi(progression_state.best_depth_reached),
+		"seed": progression_state.current_run_seed,
+		"pattern": _format_cluster_pattern(current_resource_cluster_pattern),
+	})
+
+	while recent_expedition_log.size() > 3:
+		recent_expedition_log.pop_front()
+
+func _format_recent_expedition_log() -> String:
+	if recent_expedition_log.is_empty():
+		return "Recent Expeditions\nNone yet."
+
+	var lines: Array[String] = ["Recent Expeditions"]
+	for entry in recent_expedition_log:
+		var line := "#%d %s: banked %d, scans %s, contacts %d, best %dm" % [
+			int(entry.get("run_number", 0)),
+			String(entry.get("result", "Unknown")),
+			int(entry.get("banked_cargo_count", 0)),
+			_format_scan_names_short(_string_array_from(entry.get("scans", []))),
+			int(entry.get("predator_contacts", 0)),
+			int(entry.get("best_depth", 0)),
+		]
+		if show_debug_telemetry:
+			line += " | seed %d, %s" % [
+				int(entry.get("seed", 0)),
+				String(entry.get("pattern", "unknown")),
+			]
+		lines.append(line)
+
+	return "\n".join(lines)
+
+func _format_scan_names_short(scan_ids: Array[String]) -> String:
+	if scan_ids.is_empty():
+		return "none"
+
+	var parts: Array[String] = []
+	for scan_id in scan_ids:
+		parts.append(_format_discovery_name(scan_id))
+
+	return "/".join(parts)
+
+func _string_array_from(value: Variant) -> Array[String]:
+	var result: Array[String] = []
+	if not value is Array:
+		return result
+
+	for item in value:
+		result.append(String(item))
+
+	return result
 
 func _format_discoveries() -> String:
 	var discoveries := progression_state.scan_discoveries

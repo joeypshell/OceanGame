@@ -27,6 +27,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Dives begin from an `Expedition Ready` panel. Press E or Enter to begin oxygen drain and active dive play. The panel includes one concise goal line that points to the next useful upgrade purchase, missing banked resources, or scan prerequisite such as `Thermal Vent` or `Wreck Signal Cache`.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, durable upgrade progress, discoveries recorded or kept, and best depth.
 - Extraction and oxygen failure result panels default to compact player-facing summaries. Development telemetry is hidden by default, but F3 or the exported `show_debug_telemetry` flag exposes result, seed, cluster pattern, predator route, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
+- The HUD keeps a compact session-only `Recent Expeditions` log for the last three completed dives. Each entry shows result, banked cargo count, scans, predator contacts, and best depth; seed and cluster pattern appear only while debug telemetry is enabled.
 - Each expedition has a session number and deterministic seed. The raw seed is visible only when development telemetry is enabled.
 - Each expedition selects a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`. The raw pattern label is visible only when development telemetry is enabled.
 - Pressing R after a result prepares the next seeded expedition, advancing the session number and seed while preserving banked resources, upgrades, discoveries, and best depth.
@@ -139,6 +140,7 @@ Manual smoke:
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm extraction and oxygen failure both show result summaries before restarting.
 - Confirm extraction and oxygen failure summaries hide raw telemetry by default, then press F3 and confirm seed, pattern, predator route, cargo, scans, predator contacts, oxygen result, and failure cause appear for playtesting.
+- Complete or fail four expeditions and confirm the `Recent Expeditions` log shows only the latest three results, with seed and cluster pattern hidden until debug telemetry is enabled.
 - Approach multiple nearby scan targets and confirm the HUD names one selected target with a visible highlight, then confirm the selected target remains deterministic until distance changes.
 - Approach a new resource, already discovered resource, creature, environmental scan target, and wreck signal; confirm the scan target HUD metadata stays compact and accurate.
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.

@@ -803,6 +803,13 @@ offset_right = 620.0
 offset_bottom = 564.0
 text = "LOW OXYGEN - PLAN RETURN"
 
+[node name="RecentExpeditionLog" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 584.0
+offset_right = 620.0
+offset_bottom = 704.0
+text = "Recent Expeditions\nNone yet."
+
 [node name="RunPanel" type="Panel" parent="HUD"]
 offset_left = 730.0
 offset_top = 32.0

@@ -42,6 +42,7 @@ func _initialize() -> void:
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
+	_run("recent expedition log", _test_recent_expedition_log)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 
 	if _failures.is_empty():
@@ -340,6 +341,34 @@ func _test_upgrade_bay_readability_states() -> void:
 	state = main._format_upgrade_state(PressureSealUpgrade)
 	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label scan-locked upgrades")
 	_expect(state.contains("Needs scan: Thermal Vent"), "upgrade bay should name missing discoveries")
+	main.free()
+
+func _test_recent_expedition_log() -> void:
+	var main := MainScript.new()
+	main.current_resource_cluster_pattern = "cautious"
+
+	for run_number in range(1, 5):
+		main.progression_state.current_run_number = run_number
+		main.progression_state.current_run_seed = 1000 + run_number
+		main.progression_state.best_depth_reached = 10.0 * run_number
+		main.run_completed_scans.clear()
+		if run_number % 2 == 0:
+			main.run_completed_scans.append("thermal_vent")
+		main.run_predator_contacts = run_number - 1
+		main._record_recent_expedition("Extracted", run_number)
+
+	_expect(main.recent_expedition_log.size() == 3, "recent expedition log should keep only the latest three entries")
+	var log_text := main._format_recent_expedition_log()
+	_expect(not log_text.contains("#1"), "recent expedition log should drop the oldest entry")
+	_expect(log_text.contains("#2 Extracted"), "recent expedition log should include the oldest retained entry")
+	_expect(log_text.contains("scans Thermal Vent"), "recent expedition log should show readable scan names")
+	_expect(log_text.contains("contacts 3"), "recent expedition log should show predator contacts")
+	_expect(not log_text.contains("seed"), "recent expedition log should hide seed by default")
+
+	main.show_debug_telemetry = true
+	log_text = main._format_recent_expedition_log()
+	_expect(log_text.contains("seed 1004"), "recent expedition log should show seed only with debug telemetry")
+	_expect(log_text.contains("Cautious shallows"), "recent expedition log should show pattern only with debug telemetry")
 	main.free()
 
 func _test_burst_thruster_movement_helper() -> void:

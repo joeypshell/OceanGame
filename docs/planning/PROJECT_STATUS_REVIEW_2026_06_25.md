@@ -92,17 +92,15 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #63 recent expedition log.
-2. Resolve #59/#60 monster observation planning and first observation scan when ready.
-3. Resolve #61 first small biome pocket plan.
-4. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+1. Resolve #59/#60 monster observation planning and first observation scan when ready.
+2. Resolve #61 first small biome pocket plan.
+3. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ### Progression Candidates
 
-1. #63 recent expedition log.
-2. #59/#60 monster observation.
-3. #61 first small biome pocket plan.
-4. New milestone planning after the stocked queue is drained or materially changes.
+1. #59/#60 monster observation.
+2. #61 first small biome pocket plan.
+3. New milestone planning after the stocked queue is drained or materially changes.
 
 ### Deferred
 
