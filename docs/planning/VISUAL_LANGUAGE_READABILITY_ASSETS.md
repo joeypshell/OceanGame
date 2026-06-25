@@ -59,47 +59,111 @@ The player should be able to understand these meanings from repeated visual lang
 
 ## First Visual Vocabulary
 
+Use these rules for prototype readability assets. They are not final art direction; they are a shared gameplay language for placeholder and reusable assets.
+
+## First-Pass Color Rules
+
+| Meaning | Primary Color Direction | Current Scene Examples | Use For | Avoid |
+| --- | --- | --- | --- | --- |
+| Safe return | cyan/seafoam green | `BaseReturnColumn`, `SurfaceSafetyGlow`, `ReefReturnCurrent` | base path, return currents, extraction orientation | reward sparkle or predator warnings |
+| Resource/reward | yellow-green with resource accent | `DeepGlowHint`, `DeepRewardLure`, pickup visuals | optional cargo, deep payoff, nearby material value | locked gates or danger language |
+| Scan/knowledge | pale yellow or soft cyan highlight | `ShellReefShelf/Visual`, selected scan highlight behavior | scannable target focus, practical discoveries | permanent route arrows or broad tutorial text |
+| Current/route hint | low-opacity green/cyan ribbons | `VentRouteHint`, `ReefCurrentGap`, deep lure trail | suggested path, optional clue route | guaranteed safe routes or hard UI arrows |
+| Locked gate | bright cyan/blue shimmer with firm bars | `PressureShimmer`, `PressureGateTop/Bottom/Bars` | blocked progression route | optional hints or decorative background |
+| Predator danger | red/orange with harsh accents | `PredatorWarning`, `GulperEel/PatrolHint` | avoid, time, observe, prepare | resource/reward glow |
+| Biome landmark | pocket-specific accent in depth band | `ShellReefPocket`, `ThermalVent`, `MidwaterShelf` | place identity and route choice | hiding pickups, labels, or return lanes |
+
+Keep color categories distinct. Do not solve readability by making every important thing bright cyan, bright green, or bright red.
+
+## Shape Rules
+
+- Safe return: vertical columns, upward lanes, beacon diamonds, and stable repeated ribs. Shapes should be calm and continuous.
+- Resource/reward: compact clusters, blooms, shards, or small pings near a pickup or lure. Shapes should invite a detour but stay smaller than danger and locked-gate shapes.
+- Scan/knowledge: brackets, rings, or highlighted silhouettes around a target. Shapes should hug the target rather than point across the whole screen.
+- Current/route hint: soft ribbons, tapered bands, or small arrowlets embedded in the world. They should suggest direction without looking like an objective arrow.
+- Locked gate: doorway silhouettes, bars, caps, shimmer planes, or sealed seams. Shapes should clearly block a route but preserve visual gaps around nearby safe paths.
+- Predator danger: ribs, teeth, eye-like accents, pulses, and angular lanes. Shapes should feel sharp and interruptive.
+- Biome landmark: larger silhouettes with readable negative space. The landmark should be recognizable at a glance while leaving route gaps open.
+
+## Opacity And Layering Rules
+
+- Background depth bands should be fully readable but quiet: `0.10` to `0.30` opacity for overlays and haze.
+- Route hints should usually sit around `0.10` to `0.18` opacity unless they are revealed by a scan.
+- Locked gates can use stronger opacity, roughly `0.40` to `0.65`, because they must communicate "not yet".
+- Predator danger can pulse or use stronger accents, but the base warning field should not hide the player or pickups.
+- Scan highlights should be readable for selection but should not obscure the target shape itself.
+- Never stack two translucent meanings in the same place if they imply different actions, such as reward lure and predator warning.
+
+## Text-Use Rules
+
+- Prefer world shapes first and HUD/status text second.
+- Use visible world labels only for locked gates, future payoff signals, or prototype-only clarification that prevents confusion.
+- Keep labels short and action-oriented: `LOCKED ROUTE: Pressure Seal I required` works because it names the blocker and next upgrade.
+- Do not put explanatory paragraphs into the playfield.
+- Do not label decorative landmarks unless the label changes a player decision.
+- HUD text may name the current scan target, result summary, or upgrade state; world assets should carry repeated meanings through color and shape.
+
 ### Safe / Return
 
 - Shape language: vertical columns, beacons, simple repeated light ribs.
 - Color direction: cool cyan/green, low opacity, stable.
 - Meaning: this is how to orient and return.
+- Current examples: `BaseReturnColumn`, `SurfaceSafetyGlow`, `ReefReturnCurrent`, `ReefReturnBeacon`.
 
 ### Resource / Reward
 
 - Shape language: small clustered deposits, glows, compact pings.
 - Color direction: yellow-green for valuable signals, resource-specific accents for pickups.
 - Meaning: this may be worth oxygen or cargo space.
+- Current examples: `DeepGlowHint`, `DeepRewardLure`, `GlowPlankton/Visual`.
 
 ### Scan / Knowledge
 
 - Shape language: small brackets, reticles, or highlighted silhouettes around a target.
 - Color direction: readable but not louder than danger or locks.
 - Meaning: scan this to learn or unlock a route.
+- Current examples: `ShellReefShelf`, `ThermalVent`, `PressureLockedWreck/OuterScan`, `WreckSignalCache`.
 
 ### Current / Route Hint
 
 - Shape language: soft directional bands or arrowlets, not hard UI arrows.
 - Color direction: low-opacity green/cyan.
 - Meaning: this suggests a path, but does not guarantee safety.
+- Current examples: `VentRouteHint`, `ReefCurrentGap`, `ReefReturnCurrent`, `DeepRewardLure/CurrentTrail`.
 
 ### Locked / Progression Gate
 
 - Shape language: clear doorway/gate/barrier silhouette with caps or bars.
 - Color direction: cyan/blue shimmer with firm edges.
 - Meaning: blocked now; upgrade or discovery needed before entry.
+- Current examples: `PressureShimmer`, `PressureGateTop`, `PressureGateBottom`, `PressureGateBarA/B/C`, `PressureLabel`.
 
 ### Danger / Predator
 
 - Shape language: warning ribs, pulses, harsh angles.
 - Color direction: red/orange danger accents.
 - Meaning: avoid, observe, or prepare before crossing.
+- Current examples: `PredatorWarning/WarningRibs`, `PredatorWarning/WarningCurrent`, `PredatorWarning/WarningMarker`, `GulperEel/PatrolHint`.
 
 ### Biome Pocket / Landmark
 
 - Shape language: larger readable silhouettes with open route gaps.
 - Color direction: pocket-specific accent that still fits depth band.
 - Meaning: this is a place with a route choice, not just decoration.
+- Current examples: `ShellReefPocket`, `MidwaterShelf`, `ThermalVent`, `MidwaterWreckSilhouette`.
+
+## Prototype Asset Versus Final Art
+
+Prototype readability assets define what a player should understand:
+
+- where to return,
+- what can be scanned,
+- what is blocked,
+- what is dangerous,
+- what is a tempting reward,
+- what is a route landmark.
+
+Final production art can replace the polygons, colors, animation, and materials later, but it should preserve the meaning established here. If final art makes a locked gate beautiful but less readable, the readability rule wins until the interaction is redesigned.
 
 ## Recommended Small Batch
 

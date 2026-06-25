@@ -59,11 +59,10 @@ No active technical support issues are currently queued in this milestone.
 
 Later design and demo-readiness issues:
 
-1. #86 Create first visual language guide.
-2. #87 Extract reusable pressure gate, current hint, and signal hint prototypes.
-3. #88 Standardize current and route-hint visuals.
-4. #89 Standardize scan target marker readability.
-5. #90 Run first depth-band and landmark readability asset pass.
+1. #87 Extract reusable pressure gate, current hint, and signal hint prototypes.
+2. #88 Standardize current and route-hint visuals.
+3. #89 Standardize scan target marker readability.
+4. #90 Run first depth-band and landmark readability asset pass.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, full procedural biomes, large art sets, or new resource systems during this milestone.
 
@@ -94,10 +93,11 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #86-#90 establish prototype readability assets before final art production.
+1. #87-#90 establish prototype readability assets before final art production.
 
 Recently completed:
 
+- #86 expanded the first visual language guide with actionable color, shape, opacity, text-use, and current-scene example rules.
 - #84 planned `Predator Countermeasure I` and selected `Add Decoy Pulse I predator countermeasure` as the future non-lethal implementation candidate.
 - #83 refreshed the MCP context server with current Expedition Goal II, Shell Reef, biome pocket, resource economy, visual language, and backlog planning sources.
 - #82 added one compact route-choice result callout while keeping debug seed/pattern/route telemetry behind F3.
