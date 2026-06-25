@@ -3,13 +3,10 @@ extends Node2D
 const DiveSessionScript := preload("res://scripts/dive_session.gd")
 const ProgressionStateScript := preload("res://scripts/progression_state.gd")
 const SpawnPointScript := preload("res://scripts/spawn_point.gd")
+const UpgradeDefinitionScript := preload("res://scripts/upgrade_definition.gd")
+const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 
 const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
-const OXYGEN_TANK_COST := {
-	"kelp_fiber": 2,
-	"shell_fragments": 1,
-	"glow_plankton": 1,
-}
 const PROGRESSION_SAVE_PATH := "user://progression_save.json"
 const LOW_OXYGEN_RATIO := 0.25
 const CRITICAL_OXYGEN_RATIO := 0.10
@@ -72,6 +69,10 @@ var last_result_summary := ""
 var upgrade_menu_feedback := ""
 var current_resource_cluster_pattern := "cautious"
 var current_scan_target: Node = null
+var selected_upgrade_index := 0
+var upgrade_definitions: Array[UpgradeDefinition] = [
+	OXYGEN_TANK_UPGRADE,
+]
 var run_collected_resources: Array[String] = []
 var run_completed_scans: Array[String] = []
 var run_predator_contacts := 0
@@ -107,9 +108,13 @@ func _unhandled_input(_event: InputEvent) -> void:
 		if dive_session.result == DiveSessionScript.Result.READY:
 			_start_dive()
 		elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
-			_try_purchase_oxygen_tank()
+			_try_purchase_selected_upgrade()
 		else:
 			_try_extract()
+	elif Input.is_action_just_pressed("move_up") and dive_session.result == DiveSessionScript.Result.EXTRACTED:
+		_select_upgrade(-1)
+	elif Input.is_action_just_pressed("move_down") and dive_session.result == DiveSessionScript.Result.EXTRACTED:
+		_select_upgrade(1)
 	elif Input.is_action_just_pressed("restart_dive"):
 		_restart_dive()
 	elif Input.is_action_just_pressed("scan"):
@@ -186,25 +191,54 @@ func _update_depth() -> void:
 	dive_session.current_depth = maxf(0.0, (player.global_position.y - surface_y) / pixels_per_meter)
 	progression_state.record_depth(dive_session.current_depth)
 
-func _try_purchase_oxygen_tank() -> void:
-	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
-		upgrade_menu_feedback = "Oxygen Tank I is already installed."
-		status_label.text = "Oxygen Tank I is already installed."
+func _select_upgrade(direction: int) -> void:
+	if upgrade_definitions.is_empty():
+		return
+
+	selected_upgrade_index = posmod(selected_upgrade_index + direction, upgrade_definitions.size())
+	upgrade_menu_feedback = ""
+	_update_hud()
+
+func _try_purchase_selected_upgrade() -> void:
+	var upgrade := _selected_upgrade_definition()
+	if upgrade == null:
+		return
+
+	if progression_state.has_upgrade(upgrade.id):
+		upgrade_menu_feedback = "%s is already installed." % upgrade.display_name
+		status_label.text = upgrade_menu_feedback
 		_update_hud()
 		return
 
-	if progression_state.purchase_upgrade(OXYGEN_TANK_UPGRADE_ID, OXYGEN_TANK_COST):
-		upgrade_menu_feedback = "Purchased Oxygen Tank I. Future dives start with 40 oxygen."
-		_save_progression()
-		status_label.text = "Purchased Oxygen Tank I. Future dives start with 40 oxygen."
-	else:
-		upgrade_menu_feedback = "Need %s. Banked:%s" % [
-			_format_upgrade_cost(OXYGEN_TANK_COST),
-			_format_banked_resources()
+	if _upgrade_missing_discovery(upgrade) != "":
+		upgrade_menu_feedback = "Missing discovery: %s. %s" % [
+			_format_discovery_name(upgrade.required_discovery),
+			upgrade.locked_reason
 		]
-		status_label.text = "Oxygen Tank I needs 2 Kelp, 1 Shell, and 1 Glow."
+		status_label.text = "%s is locked by missing scan data." % upgrade.display_name
+		_update_hud()
+		return
+
+	if progression_state.purchase_upgrade(upgrade.id, upgrade.resource_cost):
+		_apply_upgrade_effect(upgrade.effect_id)
+		upgrade_menu_feedback = "Purchased %s. %s" % [upgrade.display_name, upgrade.owned_text]
+		_save_progression()
+		status_label.text = "Purchased %s." % upgrade.display_name
+	else:
+		upgrade_menu_feedback = "Missing resources:%s\nBanked:%s" % [
+			_format_missing_resources(upgrade.resource_cost),
+			_format_banked_resources(),
+		]
+		status_label.text = "%s needs more banked resources." % upgrade.display_name
 
 	_update_hud()
+
+func _apply_upgrade_effect(effect_id: String) -> void:
+	match effect_id:
+		"max_oxygen_40":
+			pass
+		_:
+			push_warning("Unknown upgrade effect: %s" % effect_id)
 
 func _try_scan() -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -322,7 +356,7 @@ func _format_resource_upgrade_need(resource_id: String) -> String:
 	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
 		return "Oxygen Tank I is installed; future upgrades may still use it."
 
-	var needed: int = maxi(0, int(OXYGEN_TANK_COST.get(resource_id, 0)) - progression_state.resource_count(resource_id))
+	var needed: int = maxi(0, int(_oxygen_tank_cost().get(resource_id, 0)) - progression_state.resource_count(resource_id))
 	if needed > 0:
 		return "Need %d more for Oxygen Tank I." % needed
 
@@ -481,10 +515,10 @@ func _update_hud() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		prompt_label.text = "Press E or Enter to begin the dive"
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
-		if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
+		if _all_upgrades_owned():
 			prompt_label.text = "Extraction complete - press R to restart"
 		else:
-			prompt_label.text = "Extraction complete - upgrade menu open: press E to purchase or R to restart"
+			prompt_label.text = "Extraction complete - upgrade bay open: Up/Down select, E purchase, R restart"
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		prompt_label.text = "Expedition failed - press R to restart"
 	elif player_in_base:
@@ -528,16 +562,22 @@ func _update_upgrade_menu() -> void:
 	if not upgrade_panel.visible:
 		return
 
-	upgrade_menu_title_label.text = "Surface Upgrade Bay"
-	upgrade_menu_item_label.text = "Oxygen Tank I"
-	upgrade_menu_cost_label.text = "Cost: %s" % _format_upgrade_cost(OXYGEN_TANK_COST)
+	var upgrade := _selected_upgrade_definition()
+	if upgrade == null:
+		upgrade_menu_title_label.text = "Surface Upgrade Bay"
+		upgrade_menu_item_label.text = "No upgrades configured"
+		upgrade_menu_cost_label.text = ""
+		upgrade_menu_state_label.text = ""
+		upgrade_menu_feedback_label.text = upgrade_menu_feedback
+		return
 
-	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
-		upgrade_menu_state_label.text = "Owned: installed\nEffect: future dives start with 40 oxygen."
-	elif progression_state.can_afford(OXYGEN_TANK_COST):
-		upgrade_menu_state_label.text = "Available: press E or Enter to purchase.\nEffect: future dives start with 40 oxygen."
-	else:
-		upgrade_menu_state_label.text = "Unavailable: collect and bank more resources.\nEffect: future dives start with 40 oxygen."
+	upgrade_menu_title_label.text = "Surface Upgrade Bay (%d/%d)" % [
+		selected_upgrade_index + 1,
+		upgrade_definitions.size()
+	]
+	upgrade_menu_item_label.text = "%s\n%s" % [upgrade.display_name, upgrade.description]
+	upgrade_menu_cost_label.text = "Cost: %s" % _format_upgrade_cost(upgrade.resource_cost)
+	upgrade_menu_state_label.text = _format_upgrade_state(upgrade)
 
 	upgrade_menu_feedback_label.text = upgrade_menu_feedback
 
@@ -583,14 +623,85 @@ func _format_upgrade_status() -> String:
 	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
 		return "Upgrade: Oxygen Tank I installed"
 
-	return "Upgrade: Oxygen Tank I costs Kelp x2, Shell x1, Glow x1"
+	return "Upgrade: Oxygen Tank I costs %s" % _format_upgrade_cost(_oxygen_tank_cost())
 
 func _format_upgrade_cost(cost: Dictionary) -> String:
+	if cost.is_empty():
+		return "none"
+
 	var parts: Array[String] = []
 	for resource_id in cost.keys():
 		parts.append("%s x%d" % [_display_name_for_resource(resource_id), int(cost[resource_id])])
 
 	return ", ".join(parts)
+
+func _format_missing_resources(cost: Dictionary) -> String:
+	var parts: Array[String] = []
+	for resource_id in cost.keys():
+		var missing: int = int(cost[resource_id]) - progression_state.resource_count(resource_id)
+		if missing > 0:
+			parts.append(" %s x%d" % [_display_name_for_resource(resource_id), missing])
+
+	return " none" if parts.is_empty() else "\n" + "\n".join(parts)
+
+func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
+	if progression_state.has_upgrade(upgrade.id):
+		return upgrade.owned_text
+
+	var missing_discovery := _upgrade_missing_discovery(upgrade)
+	if missing_discovery != "":
+		return "Locked: %s\nMissing discovery: %s\nMissing resources:%s" % [
+			upgrade.locked_reason,
+			_format_discovery_name(missing_discovery),
+			_format_missing_resources(upgrade.resource_cost)
+		]
+
+	if progression_state.can_afford(upgrade.resource_cost):
+		return "%s\nEffect: %s" % [upgrade.available_text, upgrade.owned_text]
+
+	return "Unavailable: collect and bank more resources.\nMissing resources:%s\nEffect: %s" % [
+		_format_missing_resources(upgrade.resource_cost),
+		upgrade.owned_text
+	]
+
+func _upgrade_missing_discovery(upgrade: UpgradeDefinition) -> String:
+	if upgrade.required_discovery.is_empty():
+		return ""
+
+	return "" if progression_state.has_discovery(upgrade.required_discovery) else upgrade.required_discovery
+
+func _format_discovery_name(discovery_id: String) -> String:
+	if discovery_id.is_empty():
+		return "none"
+
+	var discovery: Dictionary = progression_state.scan_discoveries.get(discovery_id, {})
+	if not discovery.is_empty():
+		return String(discovery.get("display_name", discovery_id))
+
+	match discovery_id:
+		"thermal_vent":
+			return "Thermal Vent"
+		"lantern_fry":
+			return "Lantern Fry"
+		_:
+			return discovery_id
+
+func _selected_upgrade_definition() -> UpgradeDefinition:
+	if upgrade_definitions.is_empty():
+		return null
+
+	selected_upgrade_index = clampi(selected_upgrade_index, 0, upgrade_definitions.size() - 1)
+	return upgrade_definitions[selected_upgrade_index]
+
+func _all_upgrades_owned() -> bool:
+	for upgrade in upgrade_definitions:
+		if not progression_state.has_upgrade(upgrade.id):
+			return false
+
+	return true
+
+func _oxygen_tank_cost() -> Dictionary:
+	return OXYGEN_TANK_UPGRADE.resource_cost
 
 func _format_cluster_pattern(pattern: String) -> String:
 	match pattern:

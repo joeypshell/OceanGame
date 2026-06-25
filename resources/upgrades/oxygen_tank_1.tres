@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3 uid="uid://oxygen_tank_1_upgrade"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="1_upgrade_definition"]
+
+[resource]
+script = ExtResource("1_upgrade_definition")
+id = "oxygen_tank_1"
+display_name = "Oxygen Tank I"
+description = "Adds enough reserve oxygen for one extra scan, pickup, or safer return."
+resource_cost = {
+"glow_plankton": 1,
+"kelp_fiber": 2,
+"shell_fragments": 1
+}
+required_discovery = ""
+effect_id = "max_oxygen_40"
+locked_reason = ""
+available_text = "Available: press E or Enter to purchase."
+owned_text = "Owned: installed. Future dives start with 40 oxygen."

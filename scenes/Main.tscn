@@ -575,7 +575,7 @@ visible = false
 offset_left = 730.0
 offset_top = 376.0
 offset_right = 1248.0
-offset_bottom = 602.0
+offset_bottom = 640.0
 
 [node name="UpgradeMenuTitle" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
@@ -588,26 +588,26 @@ text = "Surface Upgrade Bay"
 offset_left = 16.0
 offset_top = 52.0
 offset_right = 492.0
-offset_bottom = 82.0
+offset_bottom = 104.0
 text = "Oxygen Tank I"
 
 [node name="UpgradeMenuCost" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
-offset_top = 86.0
+offset_top = 108.0
 offset_right = 492.0
-offset_bottom = 116.0
+offset_bottom = 138.0
 text = "Cost: Kelp Fiber x2, Shell Fragments x1, Glow Plankton x1"
 
 [node name="UpgradeMenuState" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
-offset_top = 120.0
+offset_top = 142.0
 offset_right = 492.0
-offset_bottom = 164.0
+offset_bottom = 212.0
 text = "Unavailable: collect and bank more resources."
 
 [node name="UpgradeMenuFeedback" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
-offset_top = 168.0
+offset_top = 216.0
 offset_right = 492.0
-offset_bottom = 212.0
+offset_bottom = 252.0
 text = "Deposit cargo to unlock upgrades."

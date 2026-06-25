@@ -36,7 +36,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Cautious shallows` clusters keep the first three starter resources closer to safer shallow/midwater banking routes, while `Deep reward route` clusters pull the deeper `Glow Plankton` toward the predator-controlled route.
 - `Deep reward route` runs show a faint glow/current lure that hints at valuable deep `Glow Plankton` before the player fully commits to the predator route.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
-- After extraction, the surface upgrade bay panel shows `Oxygen Tank I`, its cost, owned/available/unavailable state, and purchase feedback.
+- After extraction, the surface upgrade bay panel shows data-backed upgrade entries with cost, missing resources, missing discovery if any, owned/available/locked/unavailable state, and purchase feedback.
+- The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has one configured upgrade, `Oxygen Tank I`; later upgrades use the same definition and purchase path.
 - `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
 - Scan with F. The HUD shows the current scan target name, and the selected target is highlighted. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
@@ -78,7 +79,9 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scripts/scannable.gd`: simple scannable targets, including passive moving creatures.
   - `scripts/spawn_point.gd`: typed candidate placement points for seeded run variation.
   - `scripts/predator.gd`: simple patrol, detection, chase, and contact behavior.
+  - `scripts/upgrade_definition.gd`: small data model for upgrade definitions and generic purchase handling.
   - `resources/*.tres`: starter resource definitions.
+  - `resources/upgrades/*.tres`: upgrade definitions.
 - GitHub Actions:
   - `.github/workflows/godot-smoke.yml`: runs a Godot headless launch smoke check and `git diff --check`.
 - Do not commit `.godot/`, `.import/`, `*.import`, local editor cache, build output, secrets, or export artifacts.
@@ -111,7 +114,8 @@ Manual smoke:
 - Confirm oxygen decreases during the active dive.
 - Confirm low oxygen shows warning feedback below 25 percent and stronger base-direction/oxygen emphasis below 10 percent without changing oxygen costs.
 - Collect resources, confirm cargo fills up to three slots, extract, and confirm resources move into the banked list.
-- After extraction, confirm the surface upgrade bay shows `Oxygen Tank I`, cost, owned status, and feedback.
+- After extraction, confirm the surface upgrade bay shows a selected upgrade entry, cost, missing requirements, owned/available/unavailable state, and feedback.
+- Press Up/Down in the upgrade bay and confirm selection input is accepted without breaking the current `Oxygen Tank I` entry.
 - Attempt to buy `Oxygen Tank I` without enough resources and confirm the upgrade panel gives clear feedback.
 - Bank the required resources, buy `Oxygen Tank I` from the upgrade panel after extraction, restart, and confirm max oxygen is 40.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
