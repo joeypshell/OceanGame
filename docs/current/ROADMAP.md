@@ -30,9 +30,8 @@ No active tooling issues are currently queued.
 Gameplay and validation track:
 
 1. #37 Conduct first blind player validation.
-2. #35 Add seeded hazard and creature route variation.
-3. #36 Add pressure-locked research wreck opportunity.
-4. #34 Add `Pressure Seal I` as first scan-gated upgrade.
+2. #36 Add pressure-locked research wreck opportunity.
+3. #34 Add `Pressure Seal I` as first scan-gated upgrade.
 5. Conduct a follow-up multi-seed and blind-player validation pass.
 
 Technical support track:
@@ -155,6 +154,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: add first MCP context server for project tooling.
 - Completed: add practical resource scan outcomes and deterministic scanner targeting feedback.
 - Completed: generalize upgrade definitions, selection, state display, and purchase handling.
+- Completed: add seeded `Gulper Eel` route variation through authored creature route spawn points.
 
 ## Deferred Work
 

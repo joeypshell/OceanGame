@@ -38,6 +38,13 @@ func _physics_process(delta: float) -> void:
 	if global_position.distance_to(_target) < 6.0:
 		_target = patrol_start if _target == patrol_end else patrol_end
 
+func configure_patrol(new_patrol_start: Vector2, new_patrol_end: Vector2) -> void:
+	patrol_start = new_patrol_start
+	patrol_end = new_patrol_end
+	global_position = patrol_start
+	_target = patrol_end
+	_chase_time = 0.0
+
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		contacted.emit(self)

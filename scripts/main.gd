@@ -54,10 +54,13 @@ const RESOURCE_CLUSTER_PATTERNS := [
 @onready var upgrade_menu_state_label: Label = $HUD/UpgradePanel/UpgradeMenuState
 @onready var upgrade_menu_feedback_label: Label = $HUD/UpgradePanel/UpgradeMenuFeedback
 @onready var starter_resource_candidates: Node2D = $StarterResourceCandidates
+@onready var creature_route_candidates: Node2D = $CreatureRouteCandidates
 @onready var deep_reward_lure: Node2D = $DeepRewardLure
 @onready var glow_plankton_visual: Polygon2D = $ResourcePickups/GlowPlankton/Visual
 @onready var hidden_glow_plankton: Node = $ResourcePickups/HiddenGlowPlankton
 @onready var vent_route_hint: Node2D = $VentRouteHint
+@onready var predator_warning: Node2D = $Predators/PredatorWarning
+@onready var gulper_eel: Node = $Predators/GulperEel
 
 var dive_session := DiveSessionScript.new()
 var progression_state := ProgressionStateScript.new()
@@ -68,6 +71,7 @@ var resource_scan_highlight_timer := 0.0
 var last_result_summary := ""
 var upgrade_menu_feedback := ""
 var current_resource_cluster_pattern := "cautious"
+var current_predator_route_id := "none"
 var current_scan_target: Node = null
 var selected_upgrade_index := 0
 var upgrade_definitions: Array[UpgradeDefinition] = [
@@ -464,6 +468,27 @@ func _place_starter_resources_for_run() -> void:
 
 		pickup.global_position = candidates[rng.randi_range(0, candidates.size() - 1)]
 
+	_place_predator_route_for_run(rng)
+
+func _place_predator_route_for_run(rng: RandomNumberGenerator) -> void:
+	var routes := _spawn_routes_for_target("creature", "gulper_eel", current_resource_cluster_pattern)
+	if routes.is_empty():
+		current_predator_route_id = "fixed"
+		return
+
+	var route_ids := routes.keys()
+	route_ids.sort()
+	current_predator_route_id = String(route_ids[rng.randi_range(0, route_ids.size() - 1)])
+	var route: Dictionary = routes[current_predator_route_id]
+	if not route.has("start") or not route.has("end"):
+		push_warning("Predator route %s is missing start or end point." % current_predator_route_id)
+		return
+
+	if gulper_eel.has_method("configure_patrol"):
+		gulper_eel.configure_patrol(route["start"], route["end"])
+
+	predator_warning.global_position = route.get("warning", (route["start"] + route["end"]) * 0.5)
+
 func _resource_cluster_pattern_for_seed(seed: int) -> String:
 	return RESOURCE_CLUSTER_PATTERNS[seed % RESOURCE_CLUSTER_PATTERNS.size()]
 
@@ -472,12 +497,32 @@ func _spawn_positions_for_target(category: String, target_id: String, cluster_pa
 	_collect_spawn_positions(starter_resource_candidates, category, target_id, cluster_pattern, positions)
 	return positions
 
+func _spawn_routes_for_target(category: String, target_id: String, cluster_pattern: String) -> Dictionary:
+	var points: Array[SpawnPoint] = []
+	_collect_spawn_points(creature_route_candidates, category, target_id, cluster_pattern, points)
+	var routes := {}
+	for point in points:
+		if point.route_id.is_empty():
+			continue
+		if not routes.has(point.route_id):
+			routes[point.route_id] = {}
+		routes[point.route_id][point.spawn_id] = point.global_position
+
+	return routes
+
 func _collect_spawn_positions(root: Node, category: String, target_id: String, cluster_pattern: String, positions: Array[Vector2]) -> void:
 	for child in root.get_children():
 		if child.get_script() == SpawnPointScript and child.matches(category, target_id):
 			if child.cluster_pattern == "any" or child.cluster_pattern == cluster_pattern:
 				positions.append(child.global_position)
 		_collect_spawn_positions(child, category, target_id, cluster_pattern, positions)
+
+func _collect_spawn_points(root: Node, category: String, target_id: String, cluster_pattern: String, points: Array[SpawnPoint]) -> void:
+	for child in root.get_children():
+		if child.get_script() == SpawnPointScript and child.matches(category, target_id):
+			if child.cluster_pattern == "any" or child.cluster_pattern == cluster_pattern:
+				points.append(child)
+		_collect_spawn_points(child, category, target_id, cluster_pattern, points)
 
 func _sync_discovery_reveals() -> void:
 	if progression_state.has_discovery("thermal_vent"):
@@ -719,10 +764,11 @@ func _reset_run_telemetry() -> void:
 	run_failure_cause = "none"
 
 func _format_run_telemetry(result_name: String) -> String:
-	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
+	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nPredator route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
 		result_name,
 		progression_state.current_run_seed,
 		_format_cluster_pattern(current_resource_cluster_pattern),
+		current_predator_route_id,
 		_format_resource_counts(run_collected_resources),
 		_format_scan_ids(run_completed_scans),
 		run_predator_contacts,

@@ -22,7 +22,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
 - Dives begin from an `Expedition Ready` panel. Press E or Enter to begin oxygen drain and active dive play.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, and best depth.
-- Extraction and oxygen failure result panels include lightweight playtest data: result, seed, cluster pattern, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
+- Extraction and oxygen failure result panels include lightweight playtest data: result, seed, cluster pattern, predator route, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
 - Each expedition has a session number and deterministic seed shown on the start/result panel.
 - Each expedition selects and displays a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`.
 - Pressing R after a result prepares the next seeded expedition, advancing the session number and seed while preserving banked resources, upgrades, discoveries, and best depth.
@@ -35,6 +35,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Starter resource candidate points use typed `SpawnPoint` nodes with category, target id, depth band, and position data so later hazards, creatures, discoveries, and resource clusters can use the same placement model.
 - `Cautious shallows` clusters keep the first three starter resources closer to safer shallow/midwater banking routes, while `Deep reward route` clusters pull the deeper `Glow Plankton` toward the predator-controlled route.
 - `Deep reward route` runs show a faint glow/current lure that hints at valuable deep `Glow Plankton` before the player fully commits to the predator route.
+- The `Gulper Eel` predator route is selected from authored creature route spawn points by expedition seed and cluster pattern. Cautious patterns choose a deep left or right gate, while deep-reward patterns choose an upper or lower predator gate near the deeper reward route.
+- The predator warning current/marker moves with the selected route, and result telemetry records the selected predator route id for playtest comparison.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, the surface upgrade bay panel shows data-backed upgrade entries with cost, missing resources, missing discovery if any, owned/available/locked/unavailable state, and purchase feedback.
 - The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has one configured upgrade, `Oxygen Tank I`; later upgrades use the same definition and purchase path.
@@ -77,7 +79,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scripts/resource_definition.gd`: typed resource data definition for upcoming pickup/resource work.
   - `scripts/resource_pickup.gd`: pickup nodes that emit collection events and reset between dives.
   - `scripts/scannable.gd`: simple scannable targets, including passive moving creatures.
-  - `scripts/spawn_point.gd`: typed candidate placement points for seeded run variation.
+  - `scripts/spawn_point.gd`: typed candidate placement points for seeded resource and creature route variation.
   - `scripts/predator.gd`: simple patrol, detection, chase, and contact behavior.
   - `scripts/upgrade_definition.gd`: small data model for upgrade definitions and generic purchase handling.
   - `resources/*.tres`: starter resource definitions.
@@ -103,12 +105,13 @@ Manual smoke:
 - Relaunch the project after banking resources, buying an upgrade, or recording a discovery, and confirm long-term progression reloads while active cargo and current-dive state do not.
 - Confirm restarted expeditions vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.
 - Confirm restarted expeditions alternate between `Cautious shallows` and `Deep reward route` cluster patterns, and that the deep reward pattern tempts a route near the predator patrol.
+- Confirm restarted expeditions vary the `Gulper Eel` route and move the warning current/marker with it without blocking the safe return path.
 - Confirm the deep-reward lure appears only on `Deep reward route` expeditions and preserves surface return readability.
 - Move or edit a `StarterResourceCandidates` spawn point in the scene and confirm seeded resource placement follows that typed definition.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm extraction and oxygen failure both show result summaries before restarting.
-- Confirm extraction and oxygen failure summaries include seed, pattern, cargo, scans, predator contacts, oxygen result, and failure cause for playtesting.
+- Confirm extraction and oxygen failure summaries include seed, pattern, predator route, cargo, scans, predator contacts, oxygen result, and failure cause for playtesting.
 - Approach multiple nearby scan targets and confirm the HUD names one selected target with a visible highlight, then confirm the selected target remains deterministic until distance changes.
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.

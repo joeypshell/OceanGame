@@ -297,6 +297,136 @@ target_id = "glow_plankton"
 depth_band = "deep"
 cluster_pattern = "deep_reward"
 
+[node name="CreatureRouteCandidates" type="Node2D" parent="."]
+
+[node name="CautiousRightGate" type="Node2D" parent="CreatureRouteCandidates"]
+
+[node name="Start" type="Marker2D" parent="CreatureRouteCandidates/CautiousRightGate"]
+position = Vector2(720, 1580)
+script = ExtResource("9_spawn_point")
+spawn_id = "start"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "cautious"
+route_id = "cautious_right_gate"
+
+[node name="End" type="Marker2D" parent="CreatureRouteCandidates/CautiousRightGate"]
+position = Vector2(1040, 1580)
+script = ExtResource("9_spawn_point")
+spawn_id = "end"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "cautious"
+route_id = "cautious_right_gate"
+
+[node name="Warning" type="Marker2D" parent="CreatureRouteCandidates/CautiousRightGate"]
+position = Vector2(880, 1580)
+script = ExtResource("9_spawn_point")
+spawn_id = "warning"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "cautious"
+route_id = "cautious_right_gate"
+
+[node name="CautiousLeftGate" type="Node2D" parent="CreatureRouteCandidates"]
+
+[node name="Start" type="Marker2D" parent="CreatureRouteCandidates/CautiousLeftGate"]
+position = Vector2(500, 1640)
+script = ExtResource("9_spawn_point")
+spawn_id = "start"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "cautious"
+route_id = "cautious_left_gate"
+
+[node name="End" type="Marker2D" parent="CreatureRouteCandidates/CautiousLeftGate"]
+position = Vector2(760, 1640)
+script = ExtResource("9_spawn_point")
+spawn_id = "end"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "cautious"
+route_id = "cautious_left_gate"
+
+[node name="Warning" type="Marker2D" parent="CreatureRouteCandidates/CautiousLeftGate"]
+position = Vector2(630, 1640)
+script = ExtResource("9_spawn_point")
+spawn_id = "warning"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "cautious"
+route_id = "cautious_left_gate"
+
+[node name="DeepRewardUpperGate" type="Node2D" parent="CreatureRouteCandidates"]
+
+[node name="Start" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardUpperGate"]
+position = Vector2(620, 1775)
+script = ExtResource("9_spawn_point")
+spawn_id = "start"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+route_id = "deep_reward_upper_gate"
+
+[node name="End" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardUpperGate"]
+position = Vector2(1020, 1775)
+script = ExtResource("9_spawn_point")
+spawn_id = "end"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+route_id = "deep_reward_upper_gate"
+
+[node name="Warning" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardUpperGate"]
+position = Vector2(820, 1775)
+script = ExtResource("9_spawn_point")
+spawn_id = "warning"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+route_id = "deep_reward_upper_gate"
+
+[node name="DeepRewardLowerGate" type="Node2D" parent="CreatureRouteCandidates"]
+
+[node name="Start" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardLowerGate"]
+position = Vector2(820, 1900)
+script = ExtResource("9_spawn_point")
+spawn_id = "start"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+route_id = "deep_reward_lower_gate"
+
+[node name="End" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardLowerGate"]
+position = Vector2(1130, 1900)
+script = ExtResource("9_spawn_point")
+spawn_id = "end"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+route_id = "deep_reward_lower_gate"
+
+[node name="Warning" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardLowerGate"]
+position = Vector2(975, 1900)
+script = ExtResource("9_spawn_point")
+spawn_id = "warning"
+category = "creature"
+target_id = "gulper_eel"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+route_id = "deep_reward_lower_gate"
+
 [node name="ResourcePickups" type="Node2D" parent="."]
 
 [node name="KelpFiber" type="Area2D" parent="ResourcePickups"]
