@@ -48,6 +48,7 @@ Scene orchestration
 - current depth,
 - cargo capacity for this run,
 - whether the player has left base,
+- whether the one-use `Decoy Pulse I` countermeasure has been spent this expedition,
 - active result state.
 
 This state is reset between expeditions and should not be saved as durable progress.

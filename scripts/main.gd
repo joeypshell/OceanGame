@@ -49,6 +49,8 @@ const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
 @export var burst_thruster_oxygen_cost := 4.0
 @export var burst_thruster_cooldown_seconds := 4.0
 @export var burst_thruster_force := 760.0
+@export var decoy_pulse_duration_seconds := 2.5
+@export var decoy_pulse_pull_distance := 260.0
 @export var predator_warning_1_multiplier := 1.8
 @export var scan_range := 120.0
 @export var start_position := Vector2(640.0, 190.0)
@@ -100,6 +102,7 @@ var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
 var burst_thruster_cooldown_remaining := 0.0
+var decoy_pulse_used_this_run := false
 var last_result_summary := ""
 var upgrade_menu_feedback := ""
 var current_resource_cluster_pattern := "cautious"
@@ -247,6 +250,7 @@ func _prepare_next_run() -> void:
 	dive_session.cargo_limit = _current_cargo_limit()
 	_reset_run_telemetry()
 	burst_thruster_cooldown_remaining = 0.0
+	decoy_pulse_used_this_run = false
 	_place_starter_resources_for_run()
 
 func _on_base_zone_body_entered(body: Node2D) -> void:
@@ -440,6 +444,21 @@ func _activate_scan_effect(target: Node) -> void:
 		_reveal_thermal_vent_route()
 	elif _scan_target_id(target) == "pressure_wreck_signal":
 		_reveal_pressure_wreck_signal()
+	elif _scan_target_id(target) == "gulper_eel":
+		_try_trigger_decoy_pulse()
+
+func _try_trigger_decoy_pulse() -> bool:
+	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
+		return false
+	if decoy_pulse_used_this_run:
+		return false
+	if gulper_eel == null or not gulper_eel.has_method("trigger_decoy_from"):
+		return false
+
+	gulper_eel.trigger_decoy_from(player.global_position, decoy_pulse_duration_seconds, decoy_pulse_pull_distance)
+	decoy_pulse_used_this_run = true
+	status_label.text = "Decoy Pulse: Gulper Eel distracted briefly."
+	return true
 
 func _format_repeat_scan_effect_text(target: Node) -> String:
 	if target is ResourcePickup:

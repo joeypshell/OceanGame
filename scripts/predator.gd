@@ -9,6 +9,7 @@ signal contacted(predator: Node)
 @export var detect_radius := 180.0
 @export var warning_radius_multiplier := 1.45
 @export var chase_duration := 2.0
+@export var decoy_speed_multiplier := 0.9
 @export var discovery_id: String
 @export var display_name: String
 @export var description: String
@@ -18,6 +19,8 @@ signal contacted(predator: Node)
 
 var _target := Vector2.ZERO
 var _chase_time := 0.0
+var _decoy_target := Vector2.ZERO
+var _decoy_time := 0.0
 var is_scan_selected := false
 
 func _ready() -> void:
@@ -33,6 +36,12 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	_update_warning_feedback(player)
+	if _decoy_time > 0.0:
+		_decoy_time = maxf(0.0, _decoy_time - delta)
+		_chase_time = 0.0
+		global_position = global_position.move_toward(_decoy_target, chase_speed * decoy_speed_multiplier * delta)
+		return
+
 	if player != null and global_position.distance_to(player.global_position) <= detect_radius:
 		_chase_time = chase_duration
 
@@ -51,9 +60,30 @@ func configure_patrol(new_patrol_start: Vector2, new_patrol_end: Vector2) -> voi
 	global_position = patrol_start
 	_target = patrol_end
 	_chase_time = 0.0
+	_decoy_time = 0.0
 
 func set_warning_radius_multiplier(multiplier: float) -> void:
 	warning_radius_multiplier = maxf(1.0, multiplier)
+
+func trigger_decoy_from(player_position: Vector2, duration: float, distance: float) -> void:
+	var away_from_player := global_position - player_position
+	if away_from_player == Vector2.ZERO:
+		away_from_player = (patrol_end - patrol_start).normalized()
+	if away_from_player == Vector2.ZERO:
+		away_from_player = Vector2.RIGHT
+
+	_decoy_target = global_position + away_from_player.normalized() * distance
+	_decoy_time = maxf(0.0, duration)
+	_chase_time = 0.0
+
+func is_decoy_active() -> bool:
+	return _decoy_time > 0.0
+
+func decoy_time_remaining() -> float:
+	return _decoy_time
+
+func decoy_target() -> Vector2:
+	return _decoy_target
 
 func warning_radius() -> float:
 	return detect_radius * warning_radius_multiplier

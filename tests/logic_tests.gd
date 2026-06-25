@@ -55,6 +55,7 @@ func _initialize() -> void:
 	_run("pressure lock guidance text", _test_pressure_lock_guidance_text)
 	_run("surface summary tabs", _test_surface_summary_tabs)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
+	_run("predator decoy pulse helper", _test_predator_decoy_pulse_helper)
 
 	if _failures.is_empty():
 		print("Logic tests passed: %d checks." % _passes)
@@ -620,6 +621,19 @@ func _test_burst_thruster_movement_helper() -> void:
 	player.burst(Vector2.ZERO, 500.0)
 	_expect(player.velocity == Vector2.RIGHT * 500.0, "burst without input should use the last facing direction")
 	player.free()
+
+func _test_predator_decoy_pulse_helper() -> void:
+	var predator := PredatorScript.new()
+	predator.global_position = Vector2(100.0, 0.0)
+	predator.patrol_start = Vector2.ZERO
+	predator.patrol_end = Vector2(200.0, 0.0)
+
+	predator.trigger_decoy_from(Vector2.ZERO, 2.5, 260.0)
+	_expect(predator.is_decoy_active(), "decoy pulse should mark predator as distracted")
+	_expect(is_equal_approx(predator.decoy_time_remaining(), 2.5), "decoy pulse should preserve configured duration")
+	_expect(predator.decoy_target().x > predator.global_position.x, "decoy target should pull predator away from player")
+	_expect(predator.decoy_target().distance_to(predator.global_position) > 200.0, "decoy target should create a meaningful route-timing window")
+	predator.free()
 
 func _make_spawn_point(spawn_id: String, category: String, target_id: String, depth_band: String, cluster_pattern: String, position: Vector2) -> SpawnPoint:
 	var point := SpawnPointScript.new()
