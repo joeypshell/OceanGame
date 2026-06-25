@@ -186,9 +186,10 @@ func _try_extract() -> void:
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\n%s\n%s\n%s\nBest depth: %dm." % [
 		extracted_count,
 		_format_resource_counts(extracted_cargo),
+		_format_route_choice_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
 		roundi(progression_state.best_depth_reached)
@@ -207,7 +208,8 @@ func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s\nBest depth: %dm." % [
+	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s\n%s\nBest depth: %dm." % [
+		_format_route_choice_callout(),
 		_format_scan_progress_callout("Scans kept"),
 		roundi(progression_state.best_depth_reached),
 	]
@@ -1055,6 +1057,22 @@ func _format_run_summary(player_summary: String, result_name: String) -> String:
 		return player_summary
 
 	return "%s\n%s" % [player_summary, _format_run_telemetry(result_name)]
+
+func _format_route_choice_callout() -> String:
+	if run_predator_contacts > 0:
+		return "Route choice: predator route contested the dive."
+	if run_completed_scans.has("wreck_signal_cache"):
+		return "Route choice: pressure-wreck progress secured."
+	if run_completed_scans.has("pressure_wreck_signal"):
+		return "Route choice: pressure route marked for a future return."
+	if run_collected_resources.has("glow_plankton") and current_resource_cluster_pattern == "deep_reward":
+		return "Route choice: pushed past the reef toward deep glow."
+	if run_completed_scans.has("shell_reef_shelf") or run_collected_resources.has("shell_fragments"):
+		return "Route choice: used Shell Reef as a midwater bank route."
+	if run_collected_resources.is_empty():
+		return "Route choice: returned without banking cargo."
+
+	return "Route choice: banked a cautious resource run."
 
 func _format_scan_ids(scan_ids: Array[String]) -> String:
 	if scan_ids.is_empty():

@@ -46,6 +46,7 @@ func _initialize() -> void:
 	_run("predator warning effect isolation", _test_predator_warning_effect_isolation)
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
+	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("recent expedition log", _test_recent_expedition_log)
 	_run("shell reef scan clue text", _test_shell_reef_scan_clue_text)
@@ -405,6 +406,32 @@ func _test_result_progress_callouts() -> void:
 
 	main.run_completed_scans.clear()
 	_expect(main._format_scan_progress_callout("Discoveries recorded") == "Discoveries recorded: none this dive.", "result progress should stay explicit when no scans were recorded")
+	main.free()
+
+func _test_route_choice_result_callout() -> void:
+	var main := MainScript.new()
+
+	main.run_collected_resources = ["shell_fragments"]
+	_expect(main._format_route_choice_callout().contains("Shell Reef"), "shell cargo should produce a reef banking callout")
+
+	main.current_resource_cluster_pattern = "deep_reward"
+	main.run_collected_resources = ["glow_plankton"]
+	_expect(main._format_route_choice_callout().contains("deep glow"), "deep reward glow cargo should produce a deep push callout")
+
+	main.run_completed_scans = ["wreck_signal_cache"]
+	_expect(main._format_route_choice_callout().contains("pressure-wreck progress"), "wreck cache scan should produce a pressure progress callout")
+
+	main.run_predator_contacts = 1
+	_expect(main._format_route_choice_callout().contains("predator route"), "predator contact should take priority in the route callout")
+
+	var summary := main._format_run_summary("%s\nCompact result line." % main._format_route_choice_callout(), "extracted")
+	_expect(summary.contains("Route choice:"), "player-facing result summary should include the route callout")
+	_expect(not summary.contains("Playtest data:"), "result summary should not include debug telemetry unless F3 is enabled")
+	_expect(not summary.contains("Predator route:"), "predator route telemetry should stay hidden unless F3 is enabled")
+
+	main.show_debug_telemetry = true
+	summary = main._format_run_summary(main._format_route_choice_callout(), "extracted")
+	_expect(summary.contains("Playtest data:"), "debug telemetry should appear only when enabled")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:

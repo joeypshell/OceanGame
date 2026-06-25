@@ -50,7 +50,7 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #82 Add route-choice result callout.
+No active gameplay validation issues are currently queued in this milestone.
 
 Technical support track:
 
@@ -94,12 +94,12 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #82 add compact route-choice result feedback.
-2. #83 refresh MCP planning context.
-3. #84 plan the next non-lethal predator countermeasure.
+1. #83 refresh MCP planning context.
+2. #84 plan the next non-lethal predator countermeasure.
 
 Recently completed:
 
+- #82 added one compact route-choice result callout while keeping debug seed/pattern/route telemetry behind F3.
 - #81 reviewed first resource economy pressure and recommended no immediate cost/spawn changes.
 - #80 planned `Biome Pocket II` and selected `Add Thermal Vent pocket route variation` as the narrow future implementation candidate.
 - #79 moved the deep-reward lure onset slightly below the `Shell Reef` decision band so bank-vs-push-deeper reads more clearly.
