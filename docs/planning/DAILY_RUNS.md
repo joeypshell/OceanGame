@@ -1,33 +1,35 @@
-# Daily Runs
+# Seeded Expeditions
 
-This note captures design guidance for the daily roguelite dive-run milestone. `docs/current/ROADMAP.md` tracks the active issue order, and `docs/current/GAMEPLAY.md` tracks implemented behavior.
+This note captures design guidance for the current seeded roguelite expedition loop. `docs/current/ROADMAP.md` tracks the active issue order, and `docs/current/GAMEPLAY.md` tracks implemented behavior.
+
+The current system is not a calendar-based daily challenge. It uses deterministic session seeds to create repeatable expeditions. A shared daily challenge can be a later mode if the seed is derived from a calendar date and presented consistently for that day.
 
 ## Intent
 
-The intended game loop is closer to "Subnautica as daily roguelite dive runs" than to one fixed ocean map. Each dive should feel like a run for that day: the player launches from the surface base with persistent upgrades and knowledge, explores a randomized or reshuffled ocean layout, extracts whatever they can safely bring back, then uses the results to prepare for future dives.
+The intended game loop is closer to "Subnautica as short roguelite expeditions" than to one fixed ocean map. Each dive is a seeded expedition: the player launches from the surface base with persistent upgrades and knowledge, explores a randomized or reshuffled ocean layout, extracts whatever they can safely bring back, then uses the results to prepare for future expeditions.
 
-## Run Shape
+## Expedition Shape
 
 - Start from the surface boat/lab with persistent upgrades, banked resources, scan knowledge, and unlocked equipment.
-- Generate or reshuffle the dive layout for the current day/run.
+- Generate or reshuffle the dive layout for the current expedition seed.
 - Randomize or vary resource nodes, creature positions, hazards, wrecks, caves, and special discoveries within readable depth-band rules.
 - Dive downward, make oxygen/cargo/risk decisions, and extract before failure.
 - Bank extracted cargo; lose carried cargo on failure; keep scans, banked resources, upgrades, and long-term knowledge.
-- Use between-run progression to reach deeper bands, survive more dangerous routes, and identify better opportunities on future dives.
+- Use between-expedition progression to reach deeper bands, survive more dangerous routes, and identify better opportunities on future dives.
 
 ## Variation Layers
 
 Introduce randomization in controlled layers:
 
-1. Run start/result flow.
-2. Run/day seed.
+1. Expedition start/result flow.
+2. Expedition seed.
 3. Starter resource placement using authored depth-band candidate points.
 4. Typed spawn point data shared by later resources, hazards, creatures, discoveries, and clusters.
 5. Resource cluster patterns.
 6. Hazard and creature route variation.
 7. Special discoveries and wreck/cave opportunities.
 
-The authored vertical slice is still the proving ground. Avoid full procedural biomes until the run decisions are fun and readable.
+The authored vertical slice is still the proving ground. Avoid full procedural biomes until expedition decisions are fun and readable.
 
 ## Authored Spawn-Point Rules
 
@@ -46,9 +48,9 @@ The authored vertical slice is still the proving ground. Avoid full procedural b
 - `Cautious shallows`: keeps the starter resource path more legible for shallow/midwater banking.
 - `Deep reward route`: keeps depth identities intact while pulling the deeper `Glow Plankton` toward the predator-controlled route.
 
-## Playtest Methodology
+## Validation Methodology
 
-The daily-run milestone should be tested across at least five seeds.
+Seeded-expedition changes should be tested across at least five seeds and with unfamiliar players when readability or motivation is being judged.
 
 Current report:
 
@@ -78,11 +80,11 @@ The playtest should answer:
 
 - Did different seeds change the chosen route?
 - Did they change the turnaround point?
-- Did one run encourage cautious extraction and another encourage a deep attempt?
+- Did one expedition encourage cautious extraction and another encourage a deep attempt?
 - Was the deep reward visible early enough to inform a choice?
 - Did any placement create unavoidable predator damage?
 - Did any seed violate shallow/mid/deep resource expectations?
-- Did the runs feel strategically different, or merely visually rearranged?
+- Did the expeditions feel strategically different, or merely visually rearranged?
 
 Different placement is not enough. It must produce different decisions.
 
@@ -90,10 +92,14 @@ Different placement is not enough. It must produce different decisions.
 
 The milestone succeeds when:
 
-- at least one run encourages a cautious shallow or midwater extraction
-- at least one run tempts a deeper high-value route
-- at least one run creates a close oxygen return or failure
+- at least one expedition encourages a cautious shallow or midwater extraction
+- at least one expedition tempts a deeper high-value route
+- at least one expedition creates a close oxygen return or failure
 - rewards and risks remain readable before the player commits
 - predator encounters remain avoidable through observation or route choice
 - resource depth-band identities remain consistent
 - no seed obscures the surface direction or safe return route
+
+## Blind-Player Gate
+
+Do not mark feel, readability, or strategic-variety milestones complete solely from code inspection or theoretical route review. At least two players who have not read the roadmap or implementation notes should be observed before concluding that a readability milestone is proven.

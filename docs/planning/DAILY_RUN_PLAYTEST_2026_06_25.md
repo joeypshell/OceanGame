@@ -1,6 +1,8 @@
 # Daily Run Playtest Report - 2026-06-25
 
-This report reviews the first seeded daily-run milestone after adding resource cluster patterns. It is a first-pass route/playtest review using the implemented seed display, authored spawn points, and Godot launch verification. A follow-up hands-on timing pass should still validate exact oxygen margins with real piloting.
+Terminology note: this historical report used `daily run` before the project clarified the current mode as `Seeded Expedition`. The seed behavior described here is deterministic session seeding, not a calendar-based daily challenge.
+
+This report reviews the first seeded-expedition milestone after adding resource cluster patterns. It is a first-pass route/playtest review using the implemented seed display, authored spawn points, and Godot launch verification. A follow-up hands-on timing pass should still validate exact oxygen margins with real piloting.
 
 ## Summary
 
@@ -48,4 +50,4 @@ Create or use follow-up issues for:
 
 ## Milestone Judgment
 
-The daily-run system is directionally working: controlled variation now changes the intended route and turnaround decision. It is not fully validated yet because real-time oxygen margins and predator readability still need hands-on playtest confirmation.
+The seeded-expedition system is directionally working: controlled variation now changes the intended route and turnaround decision. It is not fully validated yet because real-time oxygen margins and predator readability still need hands-on playtest confirmation.

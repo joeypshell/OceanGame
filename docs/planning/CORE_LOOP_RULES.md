@@ -16,7 +16,7 @@ Current-dive state should remain temporary:
 - current cargo
 - has left base
 - current depth
-- active run result
+- active expedition result
 - temporary effects
 
 Current-dive cargo is lost on oxygen failure and should not be restored by disk-backed progression saves.
@@ -66,6 +66,40 @@ The scanner must be useful from its first implementation. Scan results should re
 
 Do not add scans that are only flavor before the core loop is proven.
 
+Separate scanner outcomes into two layers:
+
+### Permanent Discovery Knowledge
+
+Persistent discoveries can record:
+
+- creature behavior
+- resource depth identity
+- resource upgrade relevance
+- environmental information
+- upgrade clues or progression prerequisites
+
+Permanent knowledge should help the player make future expedition decisions.
+
+### Current-Expedition Tactical Scan Effect
+
+Tactical scan effects can provide:
+
+- temporary highlights
+- route reveals
+- current creature location
+- current resource-cluster information
+- nearby target direction
+
+Tactical effects should help the current dive without becoming a full field guide.
+
+Current free repeat-scan behavior is provisional. A later design issue should evaluate whether repeated tactical scans need a cooldown, smaller oxygen cost, or limited scanner energy. Do not change repeat-scan costs unless an active issue authorizes it.
+
+Scanner targeting must be legible:
+
+- show the current target name before scanning
+- visually highlight the selected target
+- use deterministic targeting when multiple scannables are nearby
+
 ## Progression Unlock Rule
 
 - `Oxygen Tank I` remains resource-gated only. It proves the basic collect, extract, spend, and upgrade loop.
@@ -79,6 +113,28 @@ Initial candidates:
 - `Gulper Eel` discovery may unlock a predator-warning, decoy, or repellent module.
 - A bioluminescent-life discovery may unlock a lighting or scanner upgrade.
 - Wreck technology discovery may unlock a submersible module.
+
+## Pressure Seal I Arc
+
+Do not implement `Pressure Seal I` as only a larger movement boundary. The first pressure progression should create a visible promise, a clear blocker, and a return payoff:
+
+1. The player sees a desirable but inaccessible pressure-locked opportunity.
+2. The game clearly communicates why it cannot yet be entered.
+3. Scanning the `Thermal Vent` supplies the relevant pressure-stability knowledge.
+4. The player gathers and banks the required resources.
+5. The player buys `Pressure Seal I`.
+6. The player returns and accesses the previously visible opportunity.
+
+First-slice definition:
+
+- Boundary location: lower midwater/deep transition, near the existing deeper reward route but offset so it does not block the normal surface return.
+- Visual and UI communication: visible pressure shimmer, blocked-entry prompt, and upgrade-bay locked reason.
+- Behavior without upgrade: the player is pushed back or denied entry safely, with no surprise oxygen punishment.
+- Exact cost: `Kelp Fiber x1`, `Shell Fragments x2`, `Glow Plankton x2`, plus `Thermal Vent` discovery.
+- Target effort: about two successful expeditions after the player understands banking and has seen why the wreck matters.
+- New opportunity: one authored pressure-locked research wreck or pressure pocket, not an empty deeper region.
+- Accessible area: a small wreck alcove behind the pressure shimmer.
+- Reward inside: `Wreck Signal Cache`, a practical discovery that can point toward a future scanner improvement or deeper research objective.
 
 ## Surface Base Feedback Rule
 

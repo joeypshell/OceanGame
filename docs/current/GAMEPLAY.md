@@ -20,12 +20,12 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Low oxygen changes presentation only: below 25 percent, the HUD shows a low-oxygen warning; below 10 percent, the oxygen and base-direction HUD pulse with critical return feedback.
 - Low-oxygen feedback does not add ascent drain, decompression, depth-based oxygen penalties, or hidden oxygen costs.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
-- Dives begin from a `Run Ready` panel. Press E or Enter to begin oxygen drain and active dive play.
+- Dives begin from an `Expedition Ready` panel. Press E or Enter to begin oxygen drain and active dive play.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, and best depth.
 - Extraction and oxygen failure result panels include lightweight playtest data: result, seed, cluster pattern, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
-- Each run has a session run number and deterministic seed shown on the start/result panel.
-- Each run selects and displays a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`.
-- Pressing R after a result prepares the next run, advancing the run number and seed while preserving banked resources, upgrades, discoveries, and best depth.
+- Each expedition has a session number and deterministic seed shown on the start/result panel.
+- Each expedition selects and displays a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`.
+- Pressing R after a result prepares the next seeded expedition, advancing the session number and seed while preserving banked resources, upgrades, discoveries, and best depth.
 - Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
 - Long-term progression automatically loads from one local prototype save slot at launch and saves after extraction, oxygen failure, scanning, and upgrade purchase.
 - The prototype save includes banked resources, purchased upgrades, scan discoveries, and best depth reached. It does not restore active oxygen, current cargo, active run state, or temporary effects.
@@ -94,12 +94,12 @@ git diff --check
 Manual smoke:
 
 - Launch the project and confirm the first scene runs.
-- Confirm the run starts at the `Run Ready` panel and does not begin active oxygen pressure until E or Enter is pressed.
-- Confirm each restarted run advances the run number and seed while persistent progression remains.
+- Confirm the expedition starts at the `Expedition Ready` panel and does not begin active oxygen pressure until E or Enter is pressed.
+- Confirm each restarted expedition advances the session number and seed while persistent progression remains.
 - Relaunch the project after banking resources, buying an upgrade, or recording a discovery, and confirm long-term progression reloads while active cargo and current-dive state do not.
-- Confirm restarted runs vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.
-- Confirm restarted runs alternate between `Cautious shallows` and `Deep reward route` cluster patterns, and that the deep reward pattern tempts a route near the predator patrol.
-- Confirm the deep-reward lure appears only on `Deep reward route` runs and preserves surface return readability.
+- Confirm restarted expeditions vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.
+- Confirm restarted expeditions alternate between `Cautious shallows` and `Deep reward route` cluster patterns, and that the deep reward pattern tempts a route near the predator patrol.
+- Confirm the deep-reward lure appears only on `Deep reward route` expeditions and preserves surface return readability.
 - Move or edit a `StarterResourceCandidates` spawn point in the scene and confirm seeded resource placement follows that typed definition.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.

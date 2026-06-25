@@ -379,7 +379,7 @@ func _update_hud() -> void:
 		else:
 			prompt_label.text = "Extraction complete - upgrade menu open: press E to purchase or R to restart"
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
-		prompt_label.text = "Run failed - press R to restart"
+		prompt_label.text = "Expedition failed - press R to restart"
 	elif player_in_base:
 		if dive_session.has_left_base:
 			prompt_label.text = "Safe base: press E or Enter to extract"
@@ -391,7 +391,7 @@ func _update_hud() -> void:
 func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
-		run_title_label.text = "Day %d - Run Ready" % progression_state.current_run_number
+		run_title_label.text = "Expedition %d Ready" % progression_state.current_run_number
 		run_summary_label.text = "Seed: %d\nPattern: %s\nStart with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\nPress E or Enter to begin." % [
 			progression_state.current_run_seed,
 			_format_cluster_pattern(current_resource_cluster_pattern),
@@ -399,7 +399,7 @@ func _update_run_panel() -> void:
 		]
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		run_panel.visible = true
-		run_title_label.text = "Day %d Result: Extraction" % progression_state.current_run_number
+		run_title_label.text = "Expedition %d Result: Extraction" % progression_state.current_run_number
 		run_summary_label.text = "Seed: %d\nPattern: %s\n%s" % [
 			progression_state.current_run_seed,
 			_format_cluster_pattern(current_resource_cluster_pattern),
@@ -407,7 +407,7 @@ func _update_run_panel() -> void:
 		]
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		run_panel.visible = true
-		run_title_label.text = "Day %d Result: Failure" % progression_state.current_run_number
+		run_title_label.text = "Expedition %d Result: Failure" % progression_state.current_run_number
 		run_summary_label.text = "Seed: %d\nPattern: %s\n%s" % [
 			progression_state.current_run_seed,
 			_format_cluster_pattern(current_resource_cluster_pattern),
