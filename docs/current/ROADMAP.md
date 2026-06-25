@@ -21,6 +21,7 @@ Detailed design rules live in:
 - `docs/planning/BIOME_POCKET_I.md`
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
 - `docs/planning/SURFACE_UI_LAYOUT_PASS.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
@@ -30,11 +31,11 @@ Implemented tooling lives in `docs/current/TOOLING.md`.
 
 ## Active Milestone
 
-Biome Pocket And Expedition Variety.
+Predator Warning And Route Tuning.
 
-Goal: add the first small authored biome pocket and the supporting readability/planning work that lets future expedition variety change route decisions instead of becoming decorative object volume.
+Goal: use the completed Shell Reef batch to tune route decisions and add the first non-lethal predator-preparation payoff from `Gulper Eel` observation.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, surface result memory, and a `Shell Reef` biome-pocket plan. The next milestone should turn that plan into a readable midwater pocket, then tighten the route objective and surface UI systems that will carry more expedition variety.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, surface result memory, compact surface views, and an authored `Shell Reef` route pocket. The next milestone should implement `Predator Warning I`, review/tune the Shell Reef route layer, and plan the next small content/economy steps before adding broader biome systems.
 
 ## Immediate Issue Order
 
@@ -44,15 +45,22 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
+1. #75 Add `Predator Warning I` upgrade.
+2. #76 Add `Predator Warning I` upgrade tests and metadata coverage.
+3. #77 Run `Shell Reef` five-seed route review.
+4. #78 Tune `Shell Reef` return readability after route review.
+5. #79 Tune deep-reward lure relative to `Shell Reef` route.
+6. #80 Plan `Biome Pocket II` candidate.
+7. #81 Plan first resource economy tuning pass.
+8. #82 Add route-choice result callout.
 
 Technical support track:
 
-No active technical support issues are currently queued.
+1. #83 Update MCP context server with latest planning docs.
 
 Later design and demo-readiness issues:
 
-No active later design issues are currently queued.
+1. #84 Plan `Predator Countermeasure I` after warning upgrade.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, full procedural biomes, large art sets, or new resource systems during this milestone.
 
@@ -66,14 +74,15 @@ Do not create filler issues just to hit the number. Prefer a slightly smaller qu
 
 The milestone succeeds only when:
 
-- #65 adds a readable Shell Reef pocket that creates a midwater bank-or-push-deeper decision.
-- #66 teaches the reef route purpose through a practical scan clue without a full field guide.
-- #67 keeps biome-pocket placement authored, typed, and inspectable.
-- #68 gives the pocket a small route-review method before larger biome expansion.
-- #69 keeps predator progression on the observation/preparation path.
-- #70/#71 keep the growing surface result, log, and upgrade information readable.
-- #72/#73 keep route objectives concise and do not turn the start panel into a quest log.
-- #74 replenishes the next queue without vague filler work.
+- #75 implements `Predator Warning I` without changing predator contact rules or adding combat.
+- #76 adds focused metadata/prerequisite/effect coverage for the warning upgrade.
+- #77 records concrete Shell Reef route observations across five seeds.
+- #78/#79 make only narrow route-readability or lure-position tuning changes justified by review evidence.
+- #80 plans one next biome pocket before implementation.
+- #81 decides whether the current resource costs need a first tuning pass.
+- #82 keeps route-choice result callouts concise and avoids checklist UI.
+- #83 keeps MCP planning context current.
+- #84 keeps the next predator countermeasure non-lethal and preparation-first.
 
 Technical implementation alone is not sufficient.
 
@@ -81,11 +90,18 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. Future candidate: `Add Predator Warning I upgrade`.
-2. #74 replenish the next issue queue.
+1. #75 implement `Predator Warning I`.
+2. #76 add warning-upgrade metadata/test coverage.
+3. #77 run the `Shell Reef` five-seed route review.
+4. #78/#79 make review-driven route tuning.
+5. #80/#81 plan the next content/economy steps.
+6. #82 add compact route-choice result feedback.
+7. #83 refresh MCP planning context.
+8. #84 plan the next non-lethal predator countermeasure.
 
 Recently completed:
 
+- #74 replenished the queue as `Predator Warning And Route Tuning` with issues #75-#84.
 - #73 added the first `Expedition Goal II` route objective by pointing the completed-upgrade fallback at the `Shell Reef` bank-or-push-deeper choice.
 - #72 planned `Expedition Goal II` and selected `Add route objective goal for Shell Reef` as the narrow next implementation.
 - #71 added compact surface summary tabs so post-extraction `Result`, `Upgrades`, and `Log` views stay readable as the surface HUD grows.
