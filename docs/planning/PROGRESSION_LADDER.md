@@ -37,6 +37,7 @@ This is not a tech tree. It is a compact ladder for the first prototype progress
 - Purpose: access contested routes through preparation.
 - Possible behavior change: distract, repel, tag, or trap one predator type long enough to choose a route.
 - Constraint: non-lethal counterplay first; hunting or harvesting only after the ecological fantasy is clarified and validated.
+- Planning note: first add `Monster Observation I` as a scan/profile step before a true countermeasure. See `docs/planning/MONSTER_OBSERVATION_I.md`.
 
 ## Future Candidate: Burst Thruster
 
