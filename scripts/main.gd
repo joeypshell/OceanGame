@@ -503,9 +503,9 @@ func _format_first_scan_guidance(target: Node) -> String:
 			return " Use the reef as a midwater bank route, or push deeper only if oxygen allows."
 		"pressure_wreck_signal":
 			if progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID):
-				return " Pressure Seal I opens this route; return safely if oxygen is low."
+				return " Pressure Seal I is installed: enter if oxygen allows, then scan the cache."
 
-			return " Bank resources, then research Pressure Seal I to open this route."
+			return " Route locked for now: buy Pressure Seal I at the surface, then return."
 		"wreck_signal_cache":
 			return " Return to base with this discovery; future scanner upgrades can use the clue."
 		"gulper_eel":
@@ -613,7 +613,7 @@ func _on_pressure_boundary_body_entered(body: Node2D) -> void:
 
 	player.global_position.x = minf(player.global_position.x, pressure_boundary.global_position.x - 86.0)
 	player.velocity = Vector2(-120.0, -60.0)
-	status_label.text = "Pressure lock: scan the wreck and research Pressure Seal I before entering."
+	status_label.text = "Pressure route locked: buy Pressure Seal I at the surface, then return."
 	_update_hud()
 
 func _reset_resource_pickups() -> void:
@@ -702,7 +702,7 @@ func _sync_pressure_lock_state() -> void:
 		pressure_label.text = "Pressure Seal I active - wreck route open"
 	else:
 		pressure_shimmer.modulate = Color.WHITE
-		pressure_label.text = "Pressure shimmer - seal required"
+		pressure_label.text = "LOCKED ROUTE: Pressure Seal I required"
 
 func _update_hud() -> void:
 	_update_scan_target_feedback()

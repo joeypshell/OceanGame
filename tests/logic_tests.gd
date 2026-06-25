@@ -46,6 +46,7 @@ func _initialize() -> void:
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("recent expedition log", _test_recent_expedition_log)
 	_run("shell reef scan clue text", _test_shell_reef_scan_clue_text)
+	_run("pressure lock guidance text", _test_pressure_lock_guidance_text)
 	_run("surface summary tabs", _test_surface_summary_tabs)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 
@@ -418,6 +419,25 @@ func _test_shell_reef_scan_clue_text() -> void:
 	_expect(main._format_repeat_scan_effect_text(target).contains("Shell Reef route clue refreshed"), "shell reef repeat scan should give compact feedback")
 	_expect(main._format_first_scan_guidance(target).contains("midwater bank route"), "shell reef first scan should explain the route decision")
 	_expect(main._format_scan_target_type(target) == "environment", "shell reef scan target should be environmental metadata")
+	target.free()
+	main.free()
+
+func _test_pressure_lock_guidance_text() -> void:
+	var main := MainScript.new()
+	var target := DummyScanTarget.new()
+	target.discovery_id = "pressure_wreck_signal"
+	target.display_name = "Pressure-Locked Research Wreck"
+	target.description = "Pressure lock."
+
+	var locked_guidance := main._format_first_scan_guidance(target)
+	_expect(locked_guidance.contains("Route locked"), "pressure lock guidance should first say the route is blocked")
+	_expect(locked_guidance.contains("buy Pressure Seal I at the surface"), "pressure lock guidance should name the surface upgrade step")
+	_expect(locked_guidance.contains("then return"), "pressure lock guidance should explain the return loop")
+
+	main.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
+	var open_guidance := main._format_first_scan_guidance(target)
+	_expect(open_guidance.contains("enter if oxygen allows"), "open pressure route guidance should invite entry only if oxygen allows")
+	_expect(open_guidance.contains("scan the cache"), "open pressure route guidance should name the cache payoff")
 	target.free()
 	main.free()
 

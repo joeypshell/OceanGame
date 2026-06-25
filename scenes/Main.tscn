@@ -127,12 +127,32 @@ polygon = PackedVector2Array(838, 1220, 850, 1204, 864, 1222, 850, 1238, 952, 14
 [node name="PressureLockedWreck" type="Node2D" parent="."]
 
 [node name="PromiseGlow" type="Polygon2D" parent="PressureLockedWreck"]
-color = Color(0.64, 1, 1, 0.16)
-polygon = PackedVector2Array(1038, 1450, 1240, 1392, 1310, 1570, 1210, 1746, 1016, 1686, 940, 1548)
+color = Color(0.64, 1, 1, 0.1)
+polygon = PackedVector2Array(1090, 1474, 1238, 1420, 1310, 1570, 1210, 1746, 1060, 1686, 996, 1550)
 
 [node name="PressureShimmer" type="Polygon2D" parent="PressureLockedWreck"]
-color = Color(0.42, 0.84, 1, 0.28)
-polygon = PackedVector2Array(1048, 1370, 1090, 1398, 1082, 1905, 1036, 1880)
+color = Color(0.3, 0.82, 1, 0.42)
+polygon = PackedVector2Array(1028, 1360, 1096, 1360, 1096, 1906, 1028, 1906)
+
+[node name="PressureGateTop" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.72, 0.96, 1, 0.58)
+polygon = PackedVector2Array(986, 1360, 1138, 1360, 1116, 1408, 1008, 1408)
+
+[node name="PressureGateBottom" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.72, 0.96, 1, 0.58)
+polygon = PackedVector2Array(1008, 1858, 1116, 1858, 1138, 1906, 986, 1906)
+
+[node name="PressureGateBarA" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.72, 0.96, 1, 0.36)
+polygon = PackedVector2Array(1014, 1484, 1108, 1484, 1108, 1514, 1014, 1514)
+
+[node name="PressureGateBarB" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.72, 0.96, 1, 0.36)
+polygon = PackedVector2Array(1014, 1588, 1108, 1588, 1108, 1618, 1014, 1618)
+
+[node name="PressureGateBarC" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.72, 0.96, 1, 0.36)
+polygon = PackedVector2Array(1014, 1692, 1108, 1692, 1108, 1722, 1014, 1722)
 
 [node name="WreckHull" type="Polygon2D" parent="PressureLockedWreck"]
 color = Color(0.08, 0.13, 0.16, 0.88)
@@ -151,11 +171,11 @@ color = Color(0.86, 1, 0.32, 0.18)
 polygon = PackedVector2Array(1082, 1496, 1140, 1436, 1200, 1496, 1140, 1558)
 
 [node name="PressureLabel" type="Label" parent="PressureLockedWreck"]
-offset_left = 894.0
-offset_top = 1328.0
+offset_left = 840.0
+offset_top = 1310.0
 offset_right = 1262.0
-offset_bottom = 1368.0
-text = "Pressure shimmer - seal required"
+offset_bottom = 1350.0
+text = "LOCKED ROUTE: Pressure Seal I required"
 
 [node name="OuterScan" type="Area2D" parent="PressureLockedWreck"]
 position = Vector2(1010, 1548)
@@ -163,7 +183,7 @@ script = ExtResource("7_scannable")
 discovery_id = "pressure_wreck_signal"
 display_name = "Pressure-Locked Research Wreck"
 description = "An old research hull is trapped beyond a pressure shimmer. A weak signal leaks through the boundary."
-gameplay_fact = "Pressure Seal I should open this route. A Wreck Signal Cache waits inside."
+gameplay_fact = "Buy Pressure Seal I at the surface, then return for the cache."
 
 [node name="ScanVisual" type="Polygon2D" parent="PressureLockedWreck/OuterScan"]
 color = Color(0.86, 1, 0.36, 0.42)
@@ -197,16 +217,16 @@ shape = SubResource("CircleShape2D_pickup")
 visible = false
 
 [node name="SignalArrow" type="Polygon2D" parent="WreckSignalHint"]
-position = Vector2(1035, 1490)
-color = Color(0.88, 1, 0.32, 0.5)
-polygon = PackedVector2Array(-112, -16, 44, -16, 44, -42, 112, 0, 44, 42, 44, 16, -112, 16)
+position = Vector2(1138, 1444)
+color = Color(0.88, 1, 0.32, 0.32)
+polygon = PackedVector2Array(-64, -12, 22, -12, 22, -30, 72, 0, 22, 30, 22, 12, -64, 12)
 
 [node name="SignalLabel" type="Label" parent="WreckSignalHint"]
-offset_left = 778.0
-offset_top = 1428.0
-offset_right = 1234.0
-offset_bottom = 1486.0
-text = "Weak cache signal beyond pressure lock"
+offset_left = 852.0
+offset_top = 1686.0
+offset_right = 1260.0
+offset_bottom = 1738.0
+text = "Future cache signal - unlock with Pressure Seal I"
 
 [node name="VentRouteHint" type="Node2D" parent="."]
 visible = false
@@ -218,10 +238,10 @@ polygon = PackedVector2Array(-130, -18, 70, -18, 70, -44, 140, 0, 70, 44, 70, 18
 
 [node name="RouteLabel" type="Label" parent="VentRouteHint"]
 offset_left = 420.0
-offset_top = 1230.0
+offset_top = 1208.0
 offset_right = 940.0
-offset_bottom = 1284.0
-text = "Thermal vent scan: faint current points toward hidden plankton"
+offset_bottom = 1254.0
+text = "Thermal current: hidden plankton route"
 
 [node name="DepthMarkers" type="Node2D" parent="."]
 

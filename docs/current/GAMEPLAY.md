@@ -49,8 +49,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The `Shell Reef Shelf` is scannable as an environmental clue. First-time scan records that the reef is a safer midwater banking route before deeper pressure and predator risk; repeat scan remains free and refreshes the compact route clue.
 - The `Gulper Eel` predator route is selected from authored creature route spawn points by expedition seed and cluster pattern. Cautious patterns choose a deep left or right gate, while deep-reward patterns choose an upper or lower predator gate near the deeper reward route.
 - The predator warning current/marker moves with the selected route, and result telemetry records the selected predator route id for playtest comparison.
-- A visible `Pressure-Locked Research Wreck` sits behind a pressure shimmer near the lower midwater/deep transition. The shimmer safely denies entry until `Pressure Seal I` is owned, without adding hidden oxygen damage.
-- The wreck has an outside scan target, `Pressure-Locked Research Wreck`, that can be scanned before entry. Scanning it records a practical clue that `Pressure Seal I` should open the route and that a `Wreck Signal Cache` waits inside; it also reveals a signal hint pointing through the pressure lock.
+- A visible `Pressure-Locked Research Wreck` sits behind a clearer locked-route pressure gate near the lower midwater/deep transition. The gate safely denies entry until `Pressure Seal I` is owned, without adding hidden oxygen damage.
+- The wreck has an outside scan target, `Pressure-Locked Research Wreck`, that can be scanned before entry. Scanning it records a practical clue to buy `Pressure Seal I` at the surface and then return; it also reveals a subdued future-cache signal so the cache reads as a later payoff, not an immediate open path.
 - After `Pressure Seal I` is owned, the wreck alcove can be reached and the inside `Wreck Signal Cache` can be scanned as a practical progression reward pointing toward a future scanner improvement.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, the surface upgrade bay view shows data-backed upgrade entries with cost, one-line missing resources, missing discovery if any, and explicit `State:` labels for owned, available, scan-locked, and missing-resource upgrades. Extraction feedback also calls out newly ready upgrades when banked cargo completes a cost.
@@ -168,8 +168,8 @@ Manual smoke:
 - After buying `Cargo Rack I`, fail with carried cargo and confirm all carried cargo is still lost.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
-- Approach the pressure shimmer near the research wreck without `Pressure Seal I` and confirm entry is denied safely with clear feedback.
-- Scan the outside `Pressure-Locked Research Wreck` target and confirm the signal hint appears without disrupting extraction or failure flow.
+- Approach the pressure gate near the research wreck without `Pressure Seal I` and confirm entry is denied safely with clear feedback that says to buy the upgrade at the surface and return.
+- Scan the outside `Pressure-Locked Research Wreck` target and confirm the future-cache signal appears without looking like an immediately open path or disrupting extraction/failure flow.
 - Scan a resource pickup with F, confirm oxygen decreases, discovery text records depth band/upgrade use/material need, and matching visible deposits highlight for several seconds.
 - Start a fresh expedition, scan the first nearby resource, and confirm the status text says to collect it and return to base to bank cargo.
 - After buying `Signal Lens I`, re-scan a discovered resource and confirm status text points toward another matching visible uncollected deposit or says the signal is quiet.
