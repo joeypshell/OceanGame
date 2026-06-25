@@ -402,6 +402,8 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 		return " Nearby Glow Plankton pulsed again."
 	elif _scan_target_id(target) == "thermal_vent":
 		return " Current-route hint refreshed."
+	elif _scan_target_id(target) == "shell_reef_shelf":
+		return " Shell Reef route clue refreshed."
 	elif _scan_target_id(target) == "gulper_eel":
 		return " Predator route warning refreshed."
 
@@ -473,6 +475,8 @@ func _format_first_scan_guidance(target: Node) -> String:
 			return " Follow the plankton pulse if oxygen allows, then return to base."
 		"thermal_vent":
 			return " Follow the current clue if oxygen allows, then return to base."
+		"shell_reef_shelf":
+			return " Use the reef as a midwater bank route, or push deeper only if oxygen allows."
 		"pressure_wreck_signal":
 			if progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID):
 				return " Pressure Seal I opens this route; return safely if oxygen is low."
@@ -921,6 +925,8 @@ func _format_discovery_name(discovery_id: String) -> String:
 	match discovery_id:
 		"thermal_vent":
 			return "Thermal Vent"
+		"shell_reef_shelf":
+			return "Shell Reef Shelf"
 		"pressure_wreck_signal":
 			return "Pressure-Locked Research Wreck"
 		"wreck_signal_cache":
@@ -1094,6 +1100,8 @@ func _format_scan_target_type(target: Node) -> String:
 		"gulper_eel":
 			return "creature"
 		"thermal_vent":
+			return "environment"
+		"shell_reef_shelf":
 			return "environment"
 		"pressure_wreck_signal", "wreck_signal_cache":
 			return "wreck signal"

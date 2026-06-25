@@ -97,15 +97,14 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #66 `Add Shell Reef Shelf scan clue`.
-2. Resolve #67 `Add Shell Reef authored spawn points`.
-3. Resolve #68 `Plan Shell Reef five-seed route review`.
-4. Resolve #69 `Plan Predator Warning I upgrade`.
-5. Resolve #70 `Plan Surface Results and Upgrade Bay layout pass`.
-6. Resolve #71 `Add compact surface summary tabs`.
-7. Resolve #72 `Plan Expedition Goal II route objective layer`.
-8. Resolve #73 `Add route objective goal for Shell Reef`.
-9. Resolve #74 `Plan next 10-issue backlog after Shell Reef batch`.
+1. Resolve #67 `Add Shell Reef authored spawn points`.
+2. Resolve #68 `Plan Shell Reef five-seed route review`.
+3. Resolve #69 `Plan Predator Warning I upgrade`.
+4. Resolve #70 `Plan Surface Results and Upgrade Bay layout pass`.
+5. Resolve #71 `Add compact surface summary tabs`.
+6. Resolve #72 `Plan Expedition Goal II route objective layer`.
+7. Resolve #73 `Add route objective goal for Shell Reef`.
+8. Resolve #74 `Plan next 10-issue backlog after Shell Reef batch`.
 
 ### Progression Candidates
 

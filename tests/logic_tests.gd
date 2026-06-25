@@ -45,6 +45,7 @@ func _initialize() -> void:
 	_run("result progress callouts", _test_result_progress_callouts)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("recent expedition log", _test_recent_expedition_log)
+	_run("shell reef scan clue text", _test_shell_reef_scan_clue_text)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 
 	if _failures.is_empty():
@@ -388,6 +389,20 @@ func _test_recent_expedition_log() -> void:
 	log_text = main._format_recent_expedition_log()
 	_expect(log_text.contains("seed 1004"), "recent expedition log should show seed only with debug telemetry")
 	_expect(log_text.contains("Cautious shallows"), "recent expedition log should show pattern only with debug telemetry")
+	main.free()
+
+func _test_shell_reef_scan_clue_text() -> void:
+	var main := MainScript.new()
+	var target := DummyScanTarget.new()
+	target.discovery_id = "shell_reef_shelf"
+	target.display_name = "Shell Reef Shelf"
+	target.description = "Reef shelf."
+
+	_expect(main._format_discovery_name("shell_reef_shelf") == "Shell Reef Shelf", "shell reef discovery should have a readable name")
+	_expect(main._format_repeat_scan_effect_text(target).contains("Shell Reef route clue refreshed"), "shell reef repeat scan should give compact feedback")
+	_expect(main._format_first_scan_guidance(target).contains("midwater bank route"), "shell reef first scan should explain the route decision")
+	_expect(main._format_scan_target_type(target) == "environment", "shell reef scan target should be environmental metadata")
+	target.free()
 	main.free()
 
 func _test_burst_thruster_movement_helper() -> void:

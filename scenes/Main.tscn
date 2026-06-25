@@ -731,6 +731,21 @@ polygon = PackedVector2Array(-18, -54, -8, -76, 6, -52, 24, -88, 38, -56, 10, -3
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Discoveries/ThermalVent"]
 shape = SubResource("CircleShape2D_pickup")
 
+[node name="ShellReefShelf" type="Area2D" parent="Discoveries"]
+position = Vector2(520, 1118)
+script = ExtResource("7_scannable")
+discovery_id = "shell_reef_shelf"
+display_name = "Shell Reef Shelf"
+description = "A pale midwater reef shelf with shell fragments scattered along open return lanes."
+gameplay_fact = "A safer midwater banking route before deeper pressure and predator risk."
+
+[node name="Visual" type="Polygon2D" parent="Discoveries/ShellReefShelf"]
+color = Color(0.94, 0.82, 0.54, 0.52)
+polygon = PackedVector2Array(-46, -20, 28, -30, 58, 4, 26, 28, -38, 24, -64, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Discoveries/ShellReefShelf"]
+shape = SubResource("CircleShape2D_pickup")
+
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(0.9, 0.9)
 enabled = true
