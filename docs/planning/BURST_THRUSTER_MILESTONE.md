@@ -2,9 +2,11 @@
 
 Date: 2026-06-25
 
+Status: implemented by #50 as a prototype built-in active tool.
+
 ## Purpose
 
-`Burst Thruster` is a single non-lethal active tool candidate for a future milestone. It gives the player a short emergency movement burst so predator mistakes, risky crossings, and late turnarounds create an explicit oxygen tradeoff instead of only passive avoidance.
+`Burst Thruster` is the first implemented non-lethal active tool. It gives the player a short emergency movement burst so predator mistakes, risky crossings, and late turnarounds create an explicit oxygen tradeoff instead of only passive avoidance.
 
 It should answer one question:
 
@@ -12,11 +14,11 @@ Should I spend return margin now to recover from danger, or save oxygen for extr
 
 ## Recommended Rule
 
-- Input: Spacebar, mapped through a future `burst_thruster` input action.
+- Input: Spacebar, mapped through the `burst_thruster` input action.
 - Behavior: a short burst in the current movement direction, or the sub's facing direction if no movement input is held.
 - Cost: `4` oxygen per burst.
 - Limitation: a short cooldown, initially around `4` seconds, plus a minimum oxygen guard so the tool cannot be activated when it would immediately cause failure.
-- Unlock: do not include by default in the starting kit until a small implementation issue decides whether it is an upgrade, a scan-gated module, or a temporary prototype ability.
+- Unlock: currently included by default as a prototype ability. A future issue may decide whether it becomes an upgrade, scan-gated module, or tuned tool.
 
 Use oxygen as the first cost. Do not add scanner energy, stamina, battery charge, ammo, or a second temporary resource for the first version.
 
@@ -61,9 +63,9 @@ The desired decision is:
 
 The best outcome is not always using the burst. Sometimes the correct play should be turning back earlier.
 
-## First Implementation Shape
+## Implemented First Slice
 
-When this becomes implementation work, keep the first slice small:
+The first slice is intentionally small:
 
 - one input action,
 - one exported oxygen cost,
@@ -72,13 +74,11 @@ When this becomes implementation work, keep the first slice small:
 - no new upgrade tree unless the issue explicitly includes it,
 - no extra tool slots or tool wheel.
 
-Suggested implementation issue title:
-
-`Add prototype Burst Thruster with oxygen cost and cooldown`
+Implementation issue: #50 `Add prototype Burst Thruster with oxygen cost and cooldown`.
 
 ## Validation Criteria
 
-Do not implement broadly until the current predator route is validated enough to compare before/after behavior.
+Validation gates were skipped by project direction. Treat these criteria as future tuning checks rather than blockers.
 
 A first Burst Thruster slice succeeds only if:
 

@@ -14,6 +14,7 @@ OceanGame now has a coherent first playable prototype loop:
 - `Pressure Seal I`,
 - pressure-locked wreck payoff,
 - one route-control predator,
+- prototype `Burst Thruster`,
 - debug-gated telemetry,
 - deterministic logic tests,
 - MCP context tooling,
@@ -21,22 +22,22 @@ OceanGame now has a coherent first playable prototype loop:
 
 The project is no longer blocked by missing planning or validation requirements for the current slice. The full two-helper blind validation requirement and solo evidence replacement are skipped; the current prototype is considered good enough to move forward.
 
-First informal validation signal: testers were able to scan the first item, but did not understand what to do after that. The former #37 checklist and #53 solo evidence pass are no longer required gates, but this evidence is enough to keep objective-clarity follow-up work at the front of the queue.
+The first informal validation signal has been addressed: first-time scan feedback now gives post-scan next steps. The prototype also now includes `Burst Thruster` as a non-lethal oxygen-spending movement tool.
 
 ## Roadmap Decision
 
-The active milestone should move from implementation prep to:
+The active milestone should move to:
 
-**First-Scan Clarity And Progression Expansion**
+**Scanner And Cargo Progression**
 
 Meaning:
 
-- Do not mark the current progression/readability slice complete from code inspection alone.
-- Resolve #51 so the known post-scan confusion is addressed.
-- Proceed into planned progression and tool work after #51.
+- Treat #51 and #50 as completed milestone work.
+- Implement #54 `Signal Lens I` so `Wreck Signal Cache` becomes a practical scanner reward.
+- Implement #55 `Cargo Rack I` as the first simple cargo-capacity upgrade.
 - If testers are available later, use facilitator summaries as bonus evidence and create issues from concrete observations, but do not block roadmap progress on them.
 - Turn observed confusion, boredom, unreadable route cues, scanner misses, banking misunderstandings, or predator unfairness into concrete follow-up issues.
-- #50 is no longer blocked by validation evidence.
+- Avoid broadening this milestone into a field guide, minimap, cargo grid, protected cargo, new active-tool suite, or weapons.
 
 ## What Is Done
 
@@ -72,7 +73,8 @@ Meaning:
 - Pressure-locked wreck.
 - `Pressure Seal I`.
 - `Wreck Signal Cache`.
-- Plans for `Signal Lens I`, `Cargo Rack I`, and `Burst Thruster`.
+- Prototype `Burst Thruster`.
+- Plans and active issues for `Signal Lens I` and `Cargo Rack I`.
 
 ### Workflow
 
@@ -85,15 +87,15 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #51 so a successful first scan clearly points to the next action.
-2. Decide whether to implement `Signal Lens I`, `Cargo Rack I`, or #50 next.
-3. Create focused issues for the selected progression addition.
+1. Resolve #54 `Signal Lens I` resource direction pulse.
+2. Resolve #55 `Cargo Rack I` fourth cargo slot upgrade.
+3. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ### Progression Candidates
 
-1. Create and implement `Signal Lens I` if scanner usefulness needs the next progression reward.
-2. Create and implement `Cargo Rack I` if cargo tension is understood and an extra slot would improve route choices.
-3. Implement #50 if Burst Thruster is the right next non-lethal tool.
+1. #54 `Signal Lens I` resource direction pulse.
+2. #55 `Cargo Rack I` fourth cargo slot upgrade.
+3. New milestone planning after #54/#55 are complete.
 
 ### Deferred
 

@@ -23,11 +23,11 @@ Implemented tooling lives in `docs/current/TOOLING.md`.
 
 ## Active Milestone
 
-First-Scan Clarity And Prototype Burst.
+Scanner And Cargo Progression.
 
-Goal: fix the first observed comprehension break and add the first prototype active traversal/survival tool. The project is no longer gated on blind validation or solo evidence passes; the current prototype is considered good enough to move forward.
+Goal: turn the pressure-wreck reward and early extraction economy into the next two concrete progression upgrades. The first-scan clarity fix and prototype `Burst Thruster` are complete, validation gates are skipped, and the project can now move into `Signal Lens I` and `Cargo Rack I`.
 
-Current validation signal: informal testers could scan the first item, but did not understand what to do afterward. Treat this as partial evidence, captured in `docs/planning/BLIND_VALIDATION_NOTES_2026_06_25.md`, and prioritize post-scan objective clarity before larger progression additions.
+Current progression signal: the prototype now has resource scanning, a pressure-locked wreck route, `Wreck Signal Cache`, `Burst Thruster`, and an upgrade bay. The next milestone should make the scanner reward useful across future expeditions, then add one readable cargo-capacity upgrade.
 
 ## Immediate Issue Order
 
@@ -37,7 +37,8 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-No active gameplay issues are currently queued.
+1. #54 Add `Signal Lens I` resource direction pulse.
+2. #55 Add `Cargo Rack I` fourth cargo slot upgrade.
 
 Technical support track:
 
@@ -47,15 +48,15 @@ Later design and demo-readiness issues:
 
 No active later design issues are currently queued.
 
-Do not let future-tool work block the first-scan clarity fix, but do not require more validation before proceeding.
+Keep both issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, extra active tools, weapons, or new resource systems during this milestone.
 
 ## Active Milestone Success Gate
 
 The milestone succeeds only when:
 
-- #51 resolves the known first-session confusion after a successful scan.
-- #50 adds the prototype `Burst Thruster` with oxygen cost, cooldown, and non-lethal movement behavior.
-- The team can proceed to planned additions such as `Signal Lens I` or `Cargo Rack I`.
+- #54 turns `Wreck Signal Cache` into a practical scanner upgrade without adding a minimap or field guide.
+- #55 adds one extra cargo slot through the existing upgrade bay without changing extraction or oxygen-failure rules.
+- The active issue queue is drained again or any remaining issue is clearly blocked.
 - Concrete follow-up issues are created only for newly observed confusion, boredom, unreadable cues, unfair risk, or unintended strategies.
 
 Technical implementation alone is not sufficient.
@@ -64,10 +65,17 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. `Signal Lens I` resource direction pulse if scanner usefulness or future expedition planning needs strengthening.
-2. `Cargo Rack I` fourth cargo slot if players understand cargo risk and the next need is deeper route extraction choice.
+1. #54 `Signal Lens I` resource direction pulse.
+2. #55 `Cargo Rack I` fourth cargo slot.
+3. After #54 and #55, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ## Latest Completed Milestone
+
+First-Scan Clarity And Prototype Burst.
+
+Goal completed: first-time scan feedback now tells players what to do after scanning, and `Burst Thruster` is implemented as a non-lethal Spacebar tool that spends oxygen, has cooldown feedback, and preserves pressure-lock and predator rules.
+
+Previous completed milestone:
 
 Validation Prep And Readability.
 
@@ -121,10 +129,10 @@ Different placement is not enough. It must produce different decisions.
 
 - The repository has an agentic workflow and planning structure.
 - The repository includes an MCP context server for project-source documentation, including current status, validation, scanner, cargo, and future-tool plans.
-- The first informal blind-validation signal is that players can scan the first item but do not understand the next action afterward; this creates immediate objective-clarity work before larger mechanics.
+- The first informal blind-validation signal was converted into implemented post-scan guidance; validation gates are no longer roadmap blockers.
 - The game uses Godot 4.7 with GDScript, targeting local desktop first with optional web demo support.
 - A side-view vertical dive scene and placeholder controllable submersible exist as the runtime foundation.
-- The first scene includes a visible surface boat/shallow lab base, oxygen pressure, extraction, oxygen failure, run start/result panels, depth/base HUD, resource pickup, scanning, two upgrades, one pressure-locked wreck opportunity, one route-control predator, and seeded starter resource/predator placement.
+- The first scene includes a visible surface boat/shallow lab base, oxygen pressure, extraction, oxygen failure, run start/result panels, depth/base HUD, resource pickup, scanning, two upgrades, one pressure-locked wreck opportunity, one route-control predator, seeded starter resource/predator placement, and prototype `Burst Thruster`.
 - Current-dive state is split into `DiveSession`; session-persistent progression state is split into `ProgressionState`.
 - Starter resource placement uses typed authored `SpawnPoint` nodes selected by the current expedition seed while preserving shallow, midwater, and deep resource bands.
 - A first seeded-expedition playtest report exists under `docs/planning/`, with follow-up risks around real-time oxygen margins, predator readability, and blind-player validation.
@@ -203,8 +211,8 @@ Different placement is not enough. It must produce different decisions.
 
 ## Future Tool Milestone
 
-After the current progression and validation work, consider one active non-lethal submersible tool:
+The first active non-lethal submersible tool is implemented:
 
 - `Burst Thruster`: a short traversal or escape burst that spends oxygen, helps recover from predator mistakes, and creates a decision between immediate safety and return margin.
 
-The plan lives in `docs/planning/BURST_THRUSTER_MILESTONE.md`. Do not implement it, add multiple tools, or add weapons before this single-tool milestone is validated.
+The plan lives in `docs/planning/BURST_THRUSTER_MILESTONE.md` as historical/current-reference context. Do not add multiple tools or weapons until the scanner/cargo progression milestone has a clearer next direction.

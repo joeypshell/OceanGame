@@ -2,6 +2,8 @@
 
 Date: 2026-06-25
 
+Status: promoted to active implementation issue #55, `Add Cargo Rack I fourth cargo slot upgrade`.
+
 ## Context
 
 The current prototype uses three carried cargo slots. Extraction banks carried resources; oxygen failure loses carried resources. This is readable and should remain the foundation.
@@ -80,7 +82,7 @@ Recommended unlock:
 - Upgrade id: `cargo_rack_1`.
 - Effect id: `cargo_limit_4`.
 - Cost: `Kelp Fiber x2`, `Shell Fragments x2`, `Glow Plankton x1`.
-- Required discovery: none for the first version, unless #37 shows players need cargo progression to be more narratively gated.
+- Required discovery: none for the first version, unless future play observations show players need cargo progression to be more narratively gated.
 
 Reason:
 
@@ -124,6 +126,6 @@ A first implementation succeeds if:
 - the fourth slot creates one more route decision rather than making every run feel safe,
 - recipes and upgrade pacing remain readable.
 
-## Suggested Implementation Issue
+## Implementation Issue
 
-`Add Cargo Rack I fourth cargo slot upgrade`
+#55 `Add Cargo Rack I fourth cargo slot upgrade`

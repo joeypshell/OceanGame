@@ -2,6 +2,8 @@
 
 Date: 2026-06-25
 
+Status: promoted to active implementation issue #54, `Add Signal Lens I resource direction pulse`.
+
 ## Context
 
 `Wreck Signal Cache` is the first reward behind `Pressure Seal I`. It should point toward a scanner improvement that changes future expedition decisions without turning the prototype into a full field-guide UI.
@@ -61,11 +63,11 @@ Pros:
 
 - Strongly supports the monster-hunting and ecological-observation direction.
 - Creates a clear non-lethal safety upgrade.
-- Could pair well with future Burst Thruster or predator countermeasure work.
+- Could pair well with implemented `Burst Thruster` tuning or future predator countermeasure work.
 
 Cons:
 
-- Predator readability is still awaiting blind validation under #37.
+- Predator readability is no longer blocked on blind validation; any predator scanner work should come from future observed route problems or milestone direction.
 - Adding this now could hide whether the current warning route is understandable.
 - More likely to overlap future predator-countermeasure design.
 
@@ -146,6 +148,6 @@ A first implementation succeeds if:
 - the upgrade makes `Wreck Signal Cache` feel like a practical reward,
 - the player still faces oxygen/cargo/return tradeoffs.
 
-## Suggested Implementation Issue
+## Implementation Issue
 
-`Add Signal Lens I resource direction pulse`
+#54 `Add Signal Lens I resource direction pulse`
