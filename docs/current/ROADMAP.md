@@ -30,8 +30,7 @@ No active tooling issues are currently queued.
 Gameplay and validation track:
 
 1. #37 Conduct first blind player validation.
-2. #34 Add `Pressure Seal I` as first scan-gated upgrade.
-5. Conduct a follow-up multi-seed and blind-player validation pass.
+2. Conduct a follow-up multi-seed and blind-player validation pass.
 
 Technical support track:
 
@@ -155,6 +154,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: generalize upgrade definitions, selection, state display, and purchase handling.
 - Completed: add seeded `Gulper Eel` route variation through authored creature route spawn points.
 - Completed: add visible pressure-locked research wreck, outside scan clue, safe boundary denial, and signal hint.
+- Completed: add `Pressure Seal I` as the first scan-gated upgrade and open the pressure-locked wreck route to the `Wreck Signal Cache`.
 
 ## Deferred Work
 

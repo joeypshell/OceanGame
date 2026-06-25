@@ -124,6 +124,21 @@ position = Vector2(1068, 1640)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PressureLockedWreck/PressureBoundary"]
 shape = SubResource("RectangleShape2D_pressure_boundary")
 
+[node name="WreckSignalCache" type="Area2D" parent="PressureLockedWreck"]
+position = Vector2(1196, 1608)
+script = ExtResource("7_scannable")
+discovery_id = "wreck_signal_cache"
+display_name = "Wreck Signal Cache"
+description = "A sealed research cache still pinging from inside the wreck alcove."
+gameplay_fact = "Points toward a future scanner improvement and deeper research objective."
+
+[node name="CacheVisual" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache"]
+color = Color(0.95, 1, 0.34, 0.72)
+polygon = PackedVector2Array(-30, -18, 30, -18, 38, 18, -38, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PressureLockedWreck/WreckSignalCache"]
+shape = SubResource("CircleShape2D_pickup")
+
 [node name="WreckSignalHint" type="Node2D" parent="."]
 visible = false
 

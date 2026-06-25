@@ -5,6 +5,7 @@ const ProgressionStateScript := preload("res://scripts/progression_state.gd")
 const SpawnPointScript := preload("res://scripts/spawn_point.gd")
 const UpgradeDefinitionScript := preload("res://scripts/upgrade_definition.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
+const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 
 const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
 const PRESSURE_SEAL_UPGRADE_ID := "pressure_seal_1"
@@ -61,6 +62,8 @@ const RESOURCE_CLUSTER_PATTERNS := [
 @onready var hidden_glow_plankton: Node = $ResourcePickups/HiddenGlowPlankton
 @onready var vent_route_hint: Node2D = $VentRouteHint
 @onready var pressure_boundary: Area2D = $PressureLockedWreck/PressureBoundary
+@onready var pressure_shimmer: Polygon2D = $PressureLockedWreck/PressureShimmer
+@onready var pressure_label: Label = $PressureLockedWreck/PressureLabel
 @onready var wreck_signal_hint: Node2D = $WreckSignalHint
 @onready var predator_warning: Node2D = $Predators/PredatorWarning
 @onready var gulper_eel: Node = $Predators/GulperEel
@@ -79,6 +82,7 @@ var current_scan_target: Node = null
 var selected_upgrade_index := 0
 var upgrade_definitions: Array[UpgradeDefinition] = [
 	OXYGEN_TANK_UPGRADE,
+	PRESSURE_SEAL_UPGRADE,
 ]
 var run_collected_resources: Array[String] = []
 var run_completed_scans: Array[String] = []
@@ -95,6 +99,7 @@ func _ready() -> void:
 		predator.contacted.connect(_on_predator_contacted)
 	_load_progression()
 	_prepare_next_run()
+	_sync_discovery_reveals()
 	_update_hud()
 
 func _process(delta: float) -> void:
@@ -245,6 +250,8 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 	match effect_id:
 		"max_oxygen_40":
 			pass
+		"open_pressure_wreck":
+			_sync_pressure_lock_state()
 		_:
 			push_warning("Unknown upgrade effect: %s" % effect_id)
 
@@ -552,6 +559,8 @@ func _sync_discovery_reveals() -> void:
 	else:
 		wreck_signal_hint.visible = false
 
+	_sync_pressure_lock_state()
+
 func _reveal_thermal_vent_route() -> void:
 	hidden_glow_plankton.visible = true
 	hidden_glow_plankton.monitoring = true
@@ -559,6 +568,17 @@ func _reveal_thermal_vent_route() -> void:
 
 func _reveal_pressure_wreck_signal() -> void:
 	wreck_signal_hint.visible = true
+
+func _sync_pressure_lock_state() -> void:
+	var has_pressure_seal := progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID)
+	pressure_boundary.monitoring = not has_pressure_seal
+	pressure_boundary.monitorable = not has_pressure_seal
+	if has_pressure_seal:
+		pressure_shimmer.modulate = Color(0.62, 1.0, 0.72, 0.5)
+		pressure_label.text = "Pressure Seal I active - wreck route open"
+	else:
+		pressure_shimmer.modulate = Color.WHITE
+		pressure_label.text = "Pressure shimmer - seal required"
 
 func _update_hud() -> void:
 	_update_scan_target_feedback()
@@ -688,10 +708,12 @@ func _display_name_for_resource(resource_id: String) -> String:
 			return resource_id
 
 func _format_upgrade_status() -> String:
-	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
-		return "Upgrade: Oxygen Tank I installed"
+	var owned_count := 0
+	for upgrade in upgrade_definitions:
+		if progression_state.has_upgrade(upgrade.id):
+			owned_count += 1
 
-	return "Upgrade: Oxygen Tank I costs %s" % _format_upgrade_cost(_oxygen_tank_cost())
+	return "Upgrades: %d / %d installed" % [owned_count, upgrade_definitions.size()]
 
 func _format_upgrade_cost(cost: Dictionary) -> String:
 	if cost.is_empty():

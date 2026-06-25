@@ -37,13 +37,16 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Deep reward route` runs show a faint glow/current lure that hints at valuable deep `Glow Plankton` before the player fully commits to the predator route.
 - The `Gulper Eel` predator route is selected from authored creature route spawn points by expedition seed and cluster pattern. Cautious patterns choose a deep left or right gate, while deep-reward patterns choose an upper or lower predator gate near the deeper reward route.
 - The predator warning current/marker moves with the selected route, and result telemetry records the selected predator route id for playtest comparison.
-- A visible `Pressure-Locked Research Wreck` sits behind a pressure shimmer near the lower midwater/deep transition. The shimmer safely denies entry until a future `Pressure Seal I` upgrade exists, without adding hidden oxygen damage.
+- A visible `Pressure-Locked Research Wreck` sits behind a pressure shimmer near the lower midwater/deep transition. The shimmer safely denies entry until `Pressure Seal I` is owned, without adding hidden oxygen damage.
 - The wreck has an outside scan target, `Pressure-Locked Research Wreck`, that can be scanned before entry. Scanning it records a practical clue that `Pressure Seal I` should open the route and that a `Wreck Signal Cache` waits inside; it also reveals a signal hint pointing through the pressure lock.
+- After `Pressure Seal I` is owned, the wreck alcove can be reached and the inside `Wreck Signal Cache` can be scanned as a practical progression reward pointing toward a future scanner improvement.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, the surface upgrade bay panel shows data-backed upgrade entries with cost, missing resources, missing discovery if any, owned/available/locked/unavailable state, and purchase feedback.
-- The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has one configured upgrade, `Oxygen Tank I`; later upgrades use the same definition and purchase path.
+- The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has two configured upgrades: `Oxygen Tank I` and `Pressure Seal I`.
 - `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
+- `Pressure Seal I` requires the `Thermal Vent` discovery plus banked `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x2`.
+- `Pressure Seal I` opens the first pressure-locked research wreck route by disabling the pressure-boundary denial and changing the shimmer feedback to show the route is open.
 - Scan with F. The HUD shows the current scan target name, and the selected target is highlighted. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
 - First-time scans cost 2 oxygen and record session-persistent discoveries. Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
 - Resource pickups are scannable before collection. Resource scans record the resource depth band, upgrade use, and whether more of that material is needed for `Oxygen Tank I`; they also temporarily highlight matching visible resource deposits in the current expedition.
@@ -120,9 +123,11 @@ Manual smoke:
 - Confirm low oxygen shows warning feedback below 25 percent and stronger base-direction/oxygen emphasis below 10 percent without changing oxygen costs.
 - Collect resources, confirm cargo fills up to three slots, extract, and confirm resources move into the banked list.
 - After extraction, confirm the surface upgrade bay shows a selected upgrade entry, cost, missing requirements, owned/available/unavailable state, and feedback.
-- Press Up/Down in the upgrade bay and confirm selection input is accepted without breaking the current `Oxygen Tank I` entry.
+- Press Up/Down in the upgrade bay and confirm selection moves between `Oxygen Tank I` and `Pressure Seal I`.
 - Attempt to buy `Oxygen Tank I` without enough resources and confirm the upgrade panel gives clear feedback.
 - Bank the required resources, buy `Oxygen Tank I` from the upgrade panel after extraction, restart, and confirm max oxygen is 40.
+- Confirm `Pressure Seal I` is locked before scanning `Thermal Vent`, available after the discovery plus required resources, and owned after purchase.
+- After buying `Pressure Seal I`, return to the pressure-locked wreck and confirm the shimmer route is open and the inside `Wreck Signal Cache` can be scanned.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
 - Approach the pressure shimmer near the research wreck without `Pressure Seal I` and confirm entry is denied safely with clear feedback.

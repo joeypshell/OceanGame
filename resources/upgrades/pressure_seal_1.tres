@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3 uid="uid://pressure_seal_1_upgrade"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="1_upgrade_definition"]
+
+[resource]
+script = ExtResource("1_upgrade_definition")
+id = "pressure_seal_1"
+display_name = "Pressure Seal I"
+description = "Stabilizes the hull enough to cross the first pressure shimmer."
+resource_cost = {
+"glow_plankton": 2,
+"kelp_fiber": 1,
+"shell_fragments": 2
+}
+required_discovery = "thermal_vent"
+effect_id = "open_pressure_wreck"
+locked_reason = "Thermal vent scan data is needed to tune the seal against deep pressure currents."
+available_text = "Available: press E or Enter to purchase."
+owned_text = "Owned: first pressure-locked wreck route is open."
