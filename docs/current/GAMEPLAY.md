@@ -9,16 +9,20 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The project launches into a side-view vertical ocean slice with a placeholder controllable submersible.
 - The selected direction is a 2D underwater roguelite where each dive is an expedition into alien ocean biomes.
 - Intended first loop: dive from a safe base, gather resources, scan lifeforms, avoid or hunt predators, return before oxygen runs out, and craft upgrades that allow deeper future dives.
-- Current controls: move with WASD or arrow keys.
+- Current controls: move with WASD or arrow keys, and press Spacebar for `Burst Thruster` during active dives.
 - Extraction controls: return to the safe base and press E or Enter to end the dive successfully.
 - Test reset: press R after extraction or oxygen failure to restart the prototype dive.
-- Input is routed through Godot actions: `move_left`, `move_right`, `move_up`, `move_down`, `interact`, `restart_dive`, and reserved `scan`. F3 toggles development telemetry visibility.
+- Input is routed through Godot actions: `move_left`, `move_right`, `move_up`, `move_down`, `interact`, `restart_dive`, `scan`, and `burst_thruster`. F3 toggles development telemetry visibility.
 - Current movement uses acceleration, drag, and a bounded vertical dive area so the placeholder submersible cannot leave the prototype space.
 - The first scene starts the player at a visible surface boat/shallow lab base near the top of the water column.
 - The camera follows the player through a vertical descent with limits that keep the side-view dive space readable.
 - Oxygen drains at `0.95` oxygen per second during an active dive. Extracting before oxygen reaches zero succeeds; reaching zero shows a placeholder failure result with cargo loss text.
 - Low oxygen changes presentation only: below 25 percent, the HUD shows a low-oxygen warning; below 10 percent, the oxygen and base-direction HUD pulse with critical return feedback.
 - Low-oxygen feedback does not add ascent drain, decompression, depth-based oxygen penalties, or hidden oxygen costs.
+- `Burst Thruster` is a prototype non-lethal active tool mapped to Spacebar. It applies a short burst in the current movement direction, or the last facing/movement direction if no movement input is held.
+- `Burst Thruster` costs 4 oxygen, has a 4-second cooldown, and cannot activate when the cost would immediately deplete oxygen.
+- The HUD prompt shows whether `Burst Thruster` is ready and its oxygen cost or current cooldown. Status text reports successful activation, cooldown denial, and low-oxygen denial.
+- `Burst Thruster` does not damage, stun, harvest, or bypass predators, resources, pressure locks, or progression gates.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
 - Dives begin from an `Expedition Ready` panel. Press E or Enter to begin oxygen drain and active dive play.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, and best depth.
@@ -124,6 +128,10 @@ Manual smoke:
 - Confirm the deep-reward lure appears only on `Deep reward route` expeditions and preserves surface return readability.
 - Move or edit a `StarterResourceCandidates` spawn point in the scene and confirm seeded resource placement follows that typed definition.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
+- During an active dive, press Spacebar and confirm `Burst Thruster` moves the sub in the held movement direction, spends 4 oxygen, starts a 4-second cooldown, and updates HUD/status feedback.
+- Try Spacebar again during cooldown and confirm no oxygen is spent and the status shows remaining cooldown.
+- Try Spacebar with 4 or less oxygen and confirm it does not activate or immediately fail the dive.
+- Use Spacebar near the predator route and near the pressure-locked wreck; confirm it can reposition the player but does not damage predators or bypass the pressure lock.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm extraction and oxygen failure both show result summaries before restarting.
 - Confirm extraction and oxygen failure summaries hide raw telemetry by default, then press F3 and confirm seed, pattern, predator route, cargo, scans, predator contacts, oxygen result, and failure cause appear for playtesting.

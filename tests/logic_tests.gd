@@ -6,6 +6,7 @@ const SpawnPointScript := preload("res://scripts/spawn_point.gd")
 const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
+const PlayerScript := preload("res://scripts/player.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PressureSealUpgrade := preload("res://resources/upgrades/pressure_seal_1.tres")
 
@@ -33,6 +34,7 @@ func _initialize() -> void:
 	_run("spawn selection", _test_spawn_selection)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
+	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 
 	if _failures.is_empty():
 		print("Logic tests passed: %d checks." % _passes)
@@ -204,6 +206,15 @@ func _test_discovery_prerequisites() -> void:
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "thermal_vent", "Pressure Seal I prerequisite should start missing")
 	progression.add_discovery("thermal_vent", "Thermal Vent", "Hot current.", "Unlocks pressure tuning.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "", "Pressure Seal I prerequisite should be satisfied by Thermal Vent discovery")
+
+func _test_burst_thruster_movement_helper() -> void:
+	var player := PlayerScript.new()
+	player.burst(Vector2.DOWN, 700.0)
+	_expect(player.velocity == Vector2.DOWN * 700.0, "burst should set velocity in the requested direction")
+
+	player.burst(Vector2.ZERO, 500.0)
+	_expect(player.velocity == Vector2.RIGHT * 500.0, "burst without input should use the last facing direction")
+	player.free()
 
 func _make_spawn_point(spawn_id: String, category: String, target_id: String, depth_band: String, cluster_pattern: String, position: Vector2) -> SpawnPoint:
 	var point := SpawnPointScript.new()

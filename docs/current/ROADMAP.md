@@ -23,9 +23,9 @@ Implemented tooling lives in `docs/current/TOOLING.md`.
 
 ## Active Milestone
 
-First-Scan Clarity And Progression Expansion.
+First-Scan Clarity And Prototype Burst.
 
-Goal: fix the first observed comprehension break, then continue into planned progression and tool work. The project is no longer gated on blind validation or solo evidence passes; the current prototype is considered good enough to move forward.
+Goal: fix the first observed comprehension break and add the first prototype active traversal/survival tool. The project is no longer gated on blind validation or solo evidence passes; the current prototype is considered good enough to move forward.
 
 Current validation signal: informal testers could scan the first item, but did not understand what to do afterward. Treat this as partial evidence, captured in `docs/planning/BLIND_VALIDATION_NOTES_2026_06_25.md`, and prioritize post-scan objective clarity before larger progression additions.
 
@@ -37,8 +37,7 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #50 Add prototype `Burst Thruster` with oxygen cost and cooldown.
-2. Continue with planned progression additions and create follow-up issues only when new concrete problems appear.
+No active gameplay issues are currently queued.
 
 Technical support track:
 
@@ -55,7 +54,8 @@ Do not let future-tool work block the first-scan clarity fix, but do not require
 The milestone succeeds only when:
 
 - #51 resolves the known first-session confusion after a successful scan.
-- The team can proceed to planned additions such as `Signal Lens I`, `Cargo Rack I`, or #50 `Burst Thruster`.
+- #50 adds the prototype `Burst Thruster` with oxygen cost, cooldown, and non-lethal movement behavior.
+- The team can proceed to planned additions such as `Signal Lens I` or `Cargo Rack I`.
 - Concrete follow-up issues are created only for newly observed confusion, boredom, unreadable cues, unfair risk, or unintended strategies.
 
 Technical implementation alone is not sufficient.
@@ -64,9 +64,8 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #50 `Burst Thruster` as the first active non-lethal traversal/survival tool.
-2. `Signal Lens I` resource direction pulse if scanner usefulness or future expedition planning needs strengthening.
-3. `Cargo Rack I` fourth cargo slot if players understand cargo risk and the next need is deeper route extraction choice.
+1. `Signal Lens I` resource direction pulse if scanner usefulness or future expedition planning needs strengthening.
+2. `Cargo Rack I` fourth cargo slot if players understand cargo risk and the next need is deeper route extraction choice.
 
 ## Latest Completed Milestone
 
@@ -182,6 +181,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #52 support lightweight facilitator summaries for validation evidence.
 - Closed as skipped: #53 solo evidence pass.
 - Completed: #51 clarify the post-scan next step in the first expedition.
+- Completed: #50 add prototype `Burst Thruster` with oxygen cost and cooldown.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
 - Completed: #48 plan `Signal Lens I` as Scanner Improvement I from the `Wreck Signal Cache`.
 - Completed: #49 plan `Cargo Rack I` as the first cargo improvement.

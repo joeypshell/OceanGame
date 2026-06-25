@@ -31,6 +31,9 @@ const RESOURCE_CLUSTER_PATTERNS := [
 @export var collect_oxygen_cost := 1.0
 @export var scan_oxygen_cost := 2.0
 @export var predator_contact_oxygen_cost := 5.0
+@export var burst_thruster_oxygen_cost := 4.0
+@export var burst_thruster_cooldown_seconds := 4.0
+@export var burst_thruster_force := 760.0
 @export var scan_range := 120.0
 @export var start_position := Vector2(640.0, 190.0)
 @export var surface_y := 120.0
@@ -78,6 +81,7 @@ var player_in_base := true
 var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
+var burst_thruster_cooldown_remaining := 0.0
 var last_result_summary := ""
 var upgrade_menu_feedback := ""
 var current_resource_cluster_pattern := "cautious"
@@ -110,6 +114,7 @@ func _process(delta: float) -> void:
 	_update_depth()
 	_update_glow_plankton_highlight(delta)
 	_update_resource_scan_highlight(delta)
+	_update_burst_thruster_cooldown(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
 		_update_scan_target_feedback()
 		return
@@ -136,6 +141,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 		_select_upgrade(1)
 	elif Input.is_action_just_pressed("restart_dive"):
 		_restart_dive()
+	elif Input.is_action_just_pressed("burst_thruster"):
+		_try_burst_thruster()
 	elif Input.is_action_just_pressed("scan"):
 		_try_scan()
 
@@ -191,6 +198,7 @@ func _prepare_next_run() -> void:
 	progression_state.advance_run()
 	dive_session.reset(_current_max_oxygen())
 	_reset_run_telemetry()
+	burst_thruster_cooldown_remaining = 0.0
 	_place_starter_resources_for_run()
 
 func _on_base_zone_body_entered(body: Node2D) -> void:
@@ -253,6 +261,27 @@ func _try_purchase_selected_upgrade() -> void:
 		]
 		status_label.text = "%s needs more banked resources." % upgrade.display_name
 
+	_update_hud()
+
+func _try_burst_thruster() -> void:
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	if burst_thruster_cooldown_remaining > 0.0:
+		status_label.text = "Burst Thruster cooling down: %ds." % ceili(burst_thruster_cooldown_remaining)
+		_update_hud()
+		return
+
+	if dive_session.oxygen <= burst_thruster_oxygen_cost:
+		status_label.text = "Burst Thruster needs more than %d oxygen." % ceili(burst_thruster_oxygen_cost)
+		_update_hud()
+		return
+
+	var burst_direction: Vector2 = player.get_burst_direction()
+	player.burst(burst_direction, burst_thruster_force)
+	dive_session.drain_oxygen(burst_thruster_oxygen_cost)
+	burst_thruster_cooldown_remaining = burst_thruster_cooldown_seconds
+	status_label.text = "Burst Thruster: -%d oxygen. Cooldown started." % ceili(burst_thruster_oxygen_cost)
 	_update_hud()
 
 func _apply_upgrade_effect(effect_id: String) -> void:
@@ -424,6 +453,12 @@ func _update_resource_scan_highlight(delta: float) -> void:
 				and pickup.visible
 			)
 			pickup.set_tactical_highlight(highlighted)
+
+func _update_burst_thruster_cooldown(delta: float) -> void:
+	if burst_thruster_cooldown_remaining <= 0.0:
+		return
+
+	burst_thruster_cooldown_remaining = maxf(0.0, burst_thruster_cooldown_remaining - delta)
 
 func _on_resource_pickup_collected(pickup: Node) -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -598,6 +633,9 @@ func _update_hud() -> void:
 	else:
 		prompt_label.text = "Explore, then return to the safe base"
 
+	if dive_session.result == DiveSessionScript.Result.DIVING:
+		prompt_label.text += " | %s" % _format_burst_thruster_prompt()
+
 func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
@@ -683,6 +721,12 @@ func _format_upgrade_status() -> String:
 			owned_count += 1
 
 	return "Upgrades: %d / %d installed" % [owned_count, upgrade_definitions.size()]
+
+func _format_burst_thruster_prompt() -> String:
+	if burst_thruster_cooldown_remaining > 0.0:
+		return "Burst cooldown: %ds" % ceili(burst_thruster_cooldown_remaining)
+
+	return "Space burst: %d oxygen" % ceili(burst_thruster_oxygen_cost)
 
 func _format_upgrade_cost(cost: Dictionary) -> String:
 	if cost.is_empty():
