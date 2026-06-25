@@ -15,11 +15,17 @@ Resources:
 - `oceangame://agents`
 - `oceangame://roadmap`
 - `oceangame://gameplay`
+- `oceangame://tooling`
+- `oceangame://project-status`
 - `oceangame://core-loop`
 - `oceangame://seeded-expeditions`
 - `oceangame://game-vision`
 - `oceangame://progression-ladder`
 - `oceangame://predator-direction`
+- `oceangame://blind-validation-kit`
+- `oceangame://scanner-improvement-i`
+- `oceangame://cargo-improvement-i`
+- `oceangame://burst-thruster`
 
 Run the local self-test from the repository root:
 

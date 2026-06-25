@@ -1,5 +1,7 @@
 # Next Backlog Evaluation - 2026-06-25
 
+Status update: this note is historical context. Its recommended issue order has been executed through #49. The current project-wide status and next decision gate are now captured in `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`, and the active issue order lives in `docs/current/ROADMAP.md`.
+
 ## Current Read
 
 The implementation backlog is mostly caught up with the current progression-and-variety milestone. The remaining proof gap is not code: issue #37 still requires unfamiliar players to validate whether the current loop is understandable, whether the deep route is tempting, and whether predator risk feels fair.
@@ -55,11 +57,13 @@ The Burst Thruster plan is ready enough to become a future implementation issue,
 
 ## Recommended New Issue Order
 
-1. Prepare blind validation kit for #37.
-2. Add atmosphere and route-readability pass.
-3. Plan Scanner Improvement I from Wreck Signal Cache.
-4. Plan Cargo Improvement I.
-5. Add prototype Burst Thruster with oxygen cost and cooldown, blocked by #37.
+Outcome:
+
+1. #46 prepared the blind validation kit for #37.
+2. #47 added the atmosphere and route-readability pass.
+3. #48 planned Scanner Improvement I as `Signal Lens I`.
+4. #49 planned Cargo Improvement I as `Cargo Rack I`.
+5. #50 remains open and blocked by #37 or equivalent predator-readability evidence.
 
 ## Do Not Promote Yet
 

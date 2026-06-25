@@ -14,6 +14,8 @@ Detailed design rules live in:
 - `docs/planning/BLIND_VALIDATION_KIT.md`
 - `docs/planning/SCANNER_IMPROVEMENT_I.md`
 - `docs/planning/CARGO_IMPROVEMENT_I.md`
+- `docs/planning/BURST_THRUSTER_MILESTONE.md`
+- `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
@@ -21,9 +23,9 @@ Implemented tooling lives in `docs/current/TOOLING.md`.
 
 ## Active Milestone
 
-Validation Prep And Readability.
+Blind Validation Gate.
 
-Goal: prepare the current prototype for blind validation, improve readability without adding broad new systems, and plan the next progression candidates from the existing `Wreck Signal Cache`, cargo, and Burst Thruster notes. Keep implementation work focused on making the current dive understandable before adding more systemic complexity.
+Goal: run the current prototype with unfamiliar players before adding more mechanics. The validation kit, route-readability pass, scanner plan, cargo plan, and Burst Thruster plan are complete; the remaining milestone work is evidence gathering, follow-up issue creation, and deciding which planned progression candidate should move next.
 
 ## Immediate Issue Order
 
@@ -50,18 +52,30 @@ Do not let future-tool work block the first blind validation pass. #37 remains t
 
 The milestone succeeds only when:
 
-- A resource scan changes a current or future expedition decision rather than only displaying information.
-- `Pressure Seal I` opens one meaningful opportunity that was previously visible but inaccessible.
-- Seeded hazard or creature variation changes the preferred route across tested seeds.
-- No generated risk route blocks the only safe return path.
-- The special discovery provides an immediate practical outcome.
-- An unfamiliar player can explain why they pursued or abandoned a deep route.
-- The new systems remain understandable without a large tutorial.
-- New content does not obscure surface direction or safe return.
+- #37 includes notes from at least two unfamiliar players who only received controls before playing.
+- Each player completes at least two expeditions, or their reason for stopping earlier is recorded.
+- Notes capture objective understanding, route choice, turnaround reason, scanning behavior, carried-versus-banked understanding, deep lure visibility, predator warning readability, second-seed route changes, and third-expedition motivation.
+- Concrete follow-up issues are created for observed confusion, boredom, unreadable cues, unfair risk, or unintended strategies.
+- The team can decide whether to implement `Signal Lens I`, `Cargo Rack I`, #50 `Burst Thruster`, or a corrective readability/onboarding issue next.
 
 Technical implementation alone is not sufficient.
 
+## Post-Validation Candidate Order
+
+After #37 produces evidence, choose from these candidates rather than starting all of them:
+
+1. Corrective readability or objective-clarity issues from #37.
+2. `Signal Lens I` resource direction pulse if scanner usefulness or future expedition planning needs strengthening.
+3. `Cargo Rack I` fourth cargo slot if players understand cargo risk and the next need is deeper route extraction choice.
+4. #50 `Burst Thruster` only if predator pressure is readable enough to support an emergency traversal tool without masking current-route problems.
+
 ## Latest Completed Milestone
+
+Validation Prep And Readability.
+
+Goal completed: the current prototype is ready to be tested with unfamiliar players. The project now has a blind validation kit, a route-readability/atmosphere pass, a scanner improvement plan, a cargo improvement plan, a Burst Thruster plan, and a project status review.
+
+Previous completed milestone:
 
 Seeded Expedition Feel And Readability.
 
@@ -69,7 +83,7 @@ Goal completed: the seeded-expedition structure is clearer, fairer, and more pla
 
 This milestone comes directly from `docs/planning/DAILY_RUN_PLAYTEST_2026_06_25.md`.
 
-Previous completed milestone:
+Earlier completed milestone:
 
 Seeded Roguelite Expeditions.
 
@@ -108,7 +122,7 @@ Different placement is not enough. It must produce different decisions.
 ## Current State
 
 - The repository has an agentic workflow and planning structure.
-- The repository includes a first MCP context server for project-source documentation.
+- The repository includes an MCP context server for project-source documentation, including current status, validation, scanner, cargo, and future-tool plans.
 - The game uses Godot 4.7 with GDScript, targeting local desktop first with optional web demo support.
 - A side-view vertical dive scene and placeholder controllable submersible exist as the runtime foundation.
 - The first scene includes a visible surface boat/shallow lab base, oxygen pressure, extraction, oxygen failure, run start/result panels, depth/base HUD, resource pickup, scanning, two upgrades, one pressure-locked wreck opportunity, one route-control predator, and seeded starter resource/predator placement.
@@ -119,6 +133,7 @@ Different placement is not enough. It must produce different decisions.
 - Low-oxygen and critical-oxygen HUD feedback increases return urgency without changing oxygen mechanics.
 - A first oxygen-margin tuning pass reduced passive drain slightly to support deep-reward routes with one scan or one predator contact.
 - The next backlog evaluation lives in `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`.
+- The current project status review lives in `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`.
 
 ## Epics
 
@@ -128,7 +143,7 @@ Different placement is not enough. It must produce different decisions.
   Create the first playable dive loop: oxygen pressure, resource pickup, scanning, return-to-base extraction, and one upgrade.
 - [x] Epic: Creature And Hunt Foundation
   Add simple creature behaviors, a scanner field guide, and one dangerous predator encounter that teaches the monster-hunting direction.
-- [ ] Epic: Atmosphere And Presentation Pass
+- [x] Epic: Atmosphere And Presentation Pass
   Improve the prototype dive space so depth, risk, resources, safe return, and mood are visually understandable without tutorial text. This replaces the older overlapping ocean-readability label.
 - [ ] Epic: Progression And Run Variety Expansion
   Promote the next planning-ready systems into the prototype: practical resource scanning, one scan-gated upgrade, seeded risk variation, and one special discovery opportunity.
@@ -166,6 +181,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
 - Completed: #48 plan `Signal Lens I` as Scanner Improvement I from the `Wreck Signal Cache`.
 - Completed: #49 plan `Cargo Rack I` as the first cargo improvement.
+- Completed: refresh project-wide status review, roadmap gate, README summary, and MCP planning context.
 
 ## Deferred Work
 
