@@ -17,6 +17,7 @@ Detailed design rules live in:
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/BIOME_POCKET_I.md`
+- `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
@@ -40,13 +41,12 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #68 Plan `Shell Reef` five-seed route review.
-2. #69 Plan `Predator Warning I` upgrade.
-3. #70 Plan surface results and upgrade bay layout pass.
-4. #71 Add compact surface summary tabs.
-5. #72 Plan `Expedition Goal II` route objective layer.
-6. #73 Add route objective goal for `Shell Reef`.
-7. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
+1. #69 Plan `Predator Warning I` upgrade.
+2. #70 Plan surface results and upgrade bay layout pass.
+3. #71 Add compact surface summary tabs.
+4. #72 Plan `Expedition Goal II` route objective layer.
+5. #73 Add route objective goal for `Shell Reef`.
+6. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
 
 Technical support track:
 
@@ -83,13 +83,12 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #68 plan `Shell Reef` route review.
-2. #69 plan `Predator Warning I`.
-3. #70 plan surface result and upgrade bay layout.
-4. #71 add compact surface summary tabs.
-5. #72 plan `Expedition Goal II`.
-6. #73 add route objective goal for `Shell Reef`.
-7. #74 replenish the next issue queue.
+1. #69 plan `Predator Warning I`.
+2. #70 plan surface result and upgrade bay layout.
+3. #71 add compact surface summary tabs.
+4. #72 plan `Expedition Goal II`.
+5. #73 add route objective goal for `Shell Reef`.
+6. #74 replenish the next issue queue.
 
 ## Latest Completed Milestone
 
@@ -229,6 +228,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #65 add `Shell Reef` pocket route variation.
 - Completed: #66 add `Shell Reef Shelf` scan clue.
 - Completed: #67 add `Shell Reef` authored spawn points.
+- Completed: #68 plan `Shell Reef` five-seed route review.
 - Completed: #62 polish surface upgrade bay readability.
 - Completed: #63 add recent expedition log.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.

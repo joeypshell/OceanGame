@@ -97,13 +97,12 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #68 `Plan Shell Reef five-seed route review`.
-2. Resolve #69 `Plan Predator Warning I upgrade`.
-3. Resolve #70 `Plan Surface Results and Upgrade Bay layout pass`.
-4. Resolve #71 `Add compact surface summary tabs`.
-5. Resolve #72 `Plan Expedition Goal II route objective layer`.
-6. Resolve #73 `Add route objective goal for Shell Reef`.
-7. Resolve #74 `Plan next 10-issue backlog after Shell Reef batch`.
+1. Resolve #69 `Plan Predator Warning I upgrade`.
+2. Resolve #70 `Plan Surface Results and Upgrade Bay layout pass`.
+3. Resolve #71 `Add compact surface summary tabs`.
+4. Resolve #72 `Plan Expedition Goal II route objective layer`.
+5. Resolve #73 `Add route objective goal for Shell Reef`.
+6. Resolve #74 `Plan next 10-issue backlog after Shell Reef batch`.
 
 ### Progression Candidates
 
@@ -135,6 +134,7 @@ Meaning:
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/BIOME_POCKET_I.md`
+- `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
 - `docs/planning/CORE_LOOP_RULES.md`
 - `docs/planning/PROGRESSION_LADDER.md`
