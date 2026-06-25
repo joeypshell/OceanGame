@@ -6,8 +6,9 @@ Current direction: build a 2D underwater roguelite about repeated dives into ali
 
 ## Current State
 
-- The repository is being initialized with an agentic workflow and planning structure.
-- No game runtime, engine project, playable prototype, or source layout exists yet.
+- The repository has an agentic workflow and planning structure.
+- The game uses Godot 4.7 with GDScript, targeting local desktop first with optional web demo support.
+- A minimal first scene and placeholder controllable submersible exist as the runtime foundation.
 - The initial design direction is selected, but most mechanics are still planning-level intent.
 
 ## Near-Term Epics
@@ -51,6 +52,6 @@ Current direction: build a 2D underwater roguelite about repeated dives into ali
 
 ## Later Tooling / Testing Work
 
-- Add CI once the engine/runtime and test commands are selected.
+- Add CI for Godot project validation once the prototype has stable launch behavior.
 - Add automated smoke tests for project launch if supported by the engine.
 - Add content validation for data-driven creatures, resources, upgrades, and biomes.

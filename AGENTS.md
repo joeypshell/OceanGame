@@ -8,15 +8,15 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 
 ## Repository Shape
 
-- Source: not selected yet; record the engine and source layout here after the first playable prototype is scaffolded.
-- Tests: not selected yet; record automated checks here once the runtime exists.
-- Runtime/config: engine and project files after scaffold.
+- Source: Godot 4.7 project using GDScript; scenes live in `scenes/`, scripts live in `scripts/`.
+- Tests: no automated Godot tests yet; use documented manual smoke checks for gameplay issues.
+- Runtime/config: `project.godot`, `icon.svg`, Godot scenes, and GDScript files.
 - GitHub Actions: `.github/workflows/` when CI is added.
 - Current-state docs: `docs/current/`
 - Planning docs: `docs/planning/`
 - Archived plans/notes: `docs/archive/`
 - Agent workflow docs: `docs/GITHUB_ISSUE_WORKFLOW.md`, `docs/AGENT_HANDOFF_TEMPLATE.md`
-- Generated files not to commit: engine imports, cache folders, build output, local editor state, secrets, and platform export artifacts.
+- Generated files not to commit: `.godot/`, `.import/`, `*.import`, `builds/`, `exports/`, local editor state, secrets, and platform export artifacts.
 
 ## Source-of-Truth Rules
 
@@ -59,6 +59,7 @@ For broad features, write a compact plan under `docs/planning/` before implement
 Primary verification:
 
 ```powershell
+& "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --path . --headless --quit-after 1
 git diff --check
 ```
 
