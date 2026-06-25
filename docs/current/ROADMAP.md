@@ -14,6 +14,7 @@ Detailed design rules live in:
 - `docs/planning/BLIND_VALIDATION_KIT.md`
 - `docs/planning/SCANNER_IMPROVEMENT_I.md`
 - `docs/planning/CARGO_IMPROVEMENT_I.md`
+- `docs/planning/EXPEDITION_GOAL_II.md`
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/PREDATOR_WARNING_I.md`
@@ -43,9 +44,8 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #72 Plan `Expedition Goal II` route objective layer.
-2. #73 Add route objective goal for `Shell Reef`.
-3. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
+1. #73 Add route objective goal for `Shell Reef`.
+2. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
 
 Technical support track:
 
@@ -83,12 +83,12 @@ Technical implementation alone is not sufficient.
 Choose from these candidates rather than starting all of them:
 
 1. Future candidate: `Add Predator Warning I upgrade`.
-2. #72 plan `Expedition Goal II`.
-3. #73 add route objective goal for `Shell Reef`.
-4. #74 replenish the next issue queue.
+2. Selected `Expedition Goal II` candidate: #73 add route objective goal for `Shell Reef`.
+3. #74 replenish the next issue queue.
 
 Recently completed:
 
+- #72 planned `Expedition Goal II` and selected `Add route objective goal for Shell Reef` as the narrow next implementation.
 - #71 added compact surface summary tabs so post-extraction `Result`, `Upgrades`, and `Log` views stay readable as the surface HUD grows.
 
 ## Latest Completed Milestone
