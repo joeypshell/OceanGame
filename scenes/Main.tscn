@@ -51,9 +51,25 @@ offset_right = 1280.0
 offset_bottom = 124.0
 color = Color(0.74, 0.96, 1, 1)
 
+[node name="BaseReturnColumn" type="Polygon2D" parent="."]
+color = Color(0.38, 1, 0.9, 0.09)
+polygon = PackedVector2Array(594, 124, 690, 124, 704, 2320, 578, 2320)
+
+[node name="SurfaceSafetyGlow" type="Polygon2D" parent="."]
+color = Color(0.72, 1, 0.9, 0.16)
+polygon = PackedVector2Array(454, 120, 826, 120, 764, 300, 516, 300)
+
 [node name="ShallowLightRays" type="Polygon2D" parent="."]
 color = Color(0.64, 0.91, 0.93, 0.18)
 polygon = PackedVector2Array(138, 122, 316, 122, 188, 760, 72, 760)
+
+[node name="ShallowKelpSilhouette" type="Polygon2D" parent="."]
+color = Color(0.08, 0.34, 0.24, 0.34)
+polygon = PackedVector2Array(54, 660, 76, 560, 96, 666, 134, 520, 148, 670, 190, 590, 204, 680, 0, 680, 0, 720, 224, 720)
+
+[node name="MidwaterShelf" type="Polygon2D" parent="."]
+color = Color(0.035, 0.1, 0.15, 0.62)
+polygon = PackedVector2Array(0, 1328, 244, 1304, 468, 1350, 720, 1308, 1280, 1366, 1280, 1460, 0, 1460)
 
 [node name="MidwaterWreckSilhouette" type="Polygon2D" parent="."]
 color = Color(0.02, 0.08, 0.12, 0.55)
@@ -62,6 +78,10 @@ polygon = PackedVector2Array(850, 1060, 1160, 1120, 1118, 1210, 782, 1168)
 [node name="DeepGlowHint" type="Polygon2D" parent="."]
 color = Color(0.52, 1, 0.22, 0.24)
 polygon = PackedVector2Array(806, 1420, 974, 1420, 1038, 1760, 744, 1760)
+
+[node name="DeepPressureHaze" type="Polygon2D" parent="."]
+color = Color(0.28, 0.42, 0.8, 0.12)
+polygon = PackedVector2Array(0, 1460, 1280, 1460, 1280, 2320, 0, 2320)
 
 [node name="DeepRewardLure" type="Node2D" parent="."]
 visible = false
@@ -80,6 +100,10 @@ polygon = PackedVector2Array(838, 1220, 850, 1204, 864, 1222, 850, 1238, 952, 14
 
 [node name="PressureLockedWreck" type="Node2D" parent="."]
 
+[node name="PromiseGlow" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.64, 1, 1, 0.16)
+polygon = PackedVector2Array(1038, 1450, 1240, 1392, 1310, 1570, 1210, 1746, 1016, 1686, 940, 1548)
+
 [node name="PressureShimmer" type="Polygon2D" parent="PressureLockedWreck"]
 color = Color(0.42, 0.84, 1, 0.28)
 polygon = PackedVector2Array(1048, 1370, 1090, 1398, 1082, 1905, 1036, 1880)
@@ -95,6 +119,10 @@ polygon = PackedVector2Array(1160, 1548, 1198, 1538, 1210, 1574, 1168, 1584)
 [node name="SignalLight" type="Polygon2D" parent="PressureLockedWreck"]
 color = Color(0.86, 1, 0.32, 0.76)
 polygon = PackedVector2Array(1118, 1494, 1138, 1474, 1162, 1496, 1140, 1518)
+
+[node name="SignalHalo" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.86, 1, 0.32, 0.18)
+polygon = PackedVector2Array(1082, 1496, 1140, 1436, 1200, 1496, 1140, 1558)
 
 [node name="PressureLabel" type="Label" parent="PressureLockedWreck"]
 offset_left = 894.0
@@ -195,6 +223,14 @@ text = "150m"
 [node name="SurfaceBaseArt" type="Node2D" parent="."]
 position = Vector2(640, 92)
 
+[node name="BeaconMast" type="Polygon2D" parent="SurfaceBaseArt"]
+color = Color(0.16, 0.24, 0.28, 1)
+polygon = PackedVector2Array(48, -102, 62, -102, 58, -48, 52, -48)
+
+[node name="BeaconLight" type="Polygon2D" parent="SurfaceBaseArt"]
+color = Color(0.98, 1, 0.58, 0.9)
+polygon = PackedVector2Array(40, -122, 70, -122, 82, -102, 28, -102)
+
 [node name="BoatHull" type="Polygon2D" parent="SurfaceBaseArt"]
 color = Color(0.78, 0.5, 0.23, 1)
 polygon = PackedVector2Array(-150, 0, 150, 0, 96, 46, -108, 46)
@@ -206,6 +242,10 @@ polygon = PackedVector2Array(-42, -48, 56, -48, 84, 0, -64, 0)
 [node name="LabMoonpool" type="Polygon2D" parent="SurfaceBaseArt"]
 color = Color(0.14, 0.42, 0.52, 1)
 polygon = PackedVector2Array(-72, 46, 72, 46, 44, 96, -44, 96)
+
+[node name="MoonpoolLight" type="Polygon2D" parent="SurfaceBaseArt"]
+color = Color(0.52, 1, 0.88, 0.3)
+polygon = PackedVector2Array(-46, 92, 46, 92, 88, 208, -88, 208)
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 position = Vector2(640, 190)
@@ -598,6 +638,10 @@ shape = SubResource("CircleShape2D_pickup")
 
 [node name="PredatorWarning" type="Node2D" parent="Predators"]
 position = Vector2(850, 1688)
+
+[node name="WarningRibs" type="Polygon2D" parent="Predators/PredatorWarning"]
+color = Color(1, 0.35, 0.18, 0.28)
+polygon = PackedVector2Array(-250, -68, -220, -34, -250, 0, -220, 34, -250, 68, -170, 36, -190, 0, -170, -36, 170, -36, 190, 0, 170, 36, 250, 68, 220, 34, 250, 0, 220, -34, 250, -68)
 
 [node name="WarningCurrent" type="Polygon2D" parent="Predators/PredatorWarning"]
 color = Color(1, 0.2, 0.12, 0.22)

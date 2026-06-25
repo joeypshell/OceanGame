@@ -58,7 +58,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - A scannable `Thermal Vent` reveals a current-route hint and hidden `Glow Plankton` cluster.
 - A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. The route has a warning current/marker, and the patrol hint becomes more urgent as the player approaches. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
-- The scene uses surface light rays, a midwater wreck silhouette, and a deeper glow hint to communicate depth bands and deeper reward potential.
+- The scene uses surface light rays, a safe-base return column, a beaconed surface boat/lab, shallow kelp silhouettes, a midwater shelf, deep pressure haze, a deeper glow hint, pressure-wreck glow, and predator warning ribs/current to communicate depth bands, safe return, blocked opportunity, and route danger without adding new mechanics.
 
 ## Runtime / Setup
 

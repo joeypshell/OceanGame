@@ -32,8 +32,7 @@ No active tooling issues are currently queued.
 Gameplay and validation track:
 
 1. #37 Conduct first blind player validation.
-2. #47 Add a narrow atmosphere and route-readability pass.
-3. Conduct a follow-up multi-seed and blind-player validation pass.
+2. Conduct a follow-up multi-seed and blind-player validation pass.
 
 Technical support track:
 
@@ -164,6 +163,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: hide raw seed, pattern, and result telemetry by default behind a simple development telemetry flag.
 - Completed: plan the future non-lethal `Burst Thruster` active tool milestone.
 - Completed: #46 prepare the blind validation kit for #37.
+- Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
 
 ## Deferred Work
 
