@@ -9,6 +9,7 @@ const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const PlayerScript := preload("res://scripts/player.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const MainScript := preload("res://scripts/main.gd")
+const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PressureSealUpgrade := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SignalLensUpgrade := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -38,6 +39,7 @@ func _initialize() -> void:
 	_run("spawn-point matching", _test_spawn_point_matching)
 	_run("spawn selection", _test_spawn_selection)
 	_run("scanner target resolver", _test_scanner_target_resolver)
+	_run("predator scan target", _test_predator_scan_target)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
@@ -219,6 +221,23 @@ func _test_scanner_target_resolver() -> void:
 	farther_a.free()
 	farther_b.free()
 	nearest.free()
+
+func _test_predator_scan_target() -> void:
+	var predator := PredatorScript.new()
+	predator.discovery_id = "gulper_eel"
+	predator.display_name = "Gulper Eel"
+	predator.description = "Predator profile."
+	predator.global_position = Vector2(12.0, 0.0)
+
+	_expect(ScanTargetResolverScript.is_valid_target(predator), "visible predator with discovery id should be a scan target")
+	_expect(ScanTargetResolverScript.target_id(predator) == "gulper_eel", "predator scan target should expose discovery id")
+	_expect(ScanTargetResolverScript.display_name(predator) == "Gulper Eel", "predator scan target should expose display name")
+	var selected := ScanTargetResolverScript.nearest(Vector2.ZERO, 20.0, [predator])
+	_expect(selected == predator, "scanner resolver should select the predator when it is in range")
+
+	predator.visible = false
+	_expect(not ScanTargetResolverScript.is_valid_target(predator), "hidden predator should not be a valid scan target")
+	predator.free()
 
 func _test_discovery_prerequisites() -> void:
 	var progression := ProgressionStateScript.new()

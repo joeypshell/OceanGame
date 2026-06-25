@@ -67,6 +67,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton` and suggests following the pulse if oxygen allows.
 - A scannable `Thermal Vent` reveals a current-route hint and hidden `Glow Plankton` cluster, then suggests following the clue if oxygen allows.
 - A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. The route has a warning current/marker, and the patrol hint becomes more urgent as the player approaches. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
+- The `Gulper Eel` is scannable as a non-combat observation target. First-time scan records a durable behavior clue about warning currents, patrol hints, oxygen risk, and route timing; repeat scans remain free and refresh the predator-route warning text without damaging, slowing, stunning, repelling, harvesting, or controlling the predator.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
 - The scene uses surface light rays, a safe-base return column, a beaconed surface boat/lab, shallow kelp silhouettes, a midwater shelf, deep pressure haze, a deeper glow hint, pressure-wreck glow, and predator warning ribs/current to communicate depth bands, safe return, blocked opportunity, and route danger without adding new mechanics.
 
@@ -166,6 +167,7 @@ Manual smoke:
 - After buying `Signal Lens I`, re-scan a discovered resource and confirm status text points toward another matching visible uncollected deposit or says the signal is quiet.
 - Re-scan an already discovered resource and confirm no oxygen is spent while the matching-deposit highlight refreshes.
 - Approach the deep `Gulper Eel`, confirm the warning current/marker and patrol hint communicate danger before contact, then confirm contact causes oxygen loss plus knockback without instant failure.
+- Scan the `Gulper Eel`, confirm the discovery text is recorded, repeat scan stays free, and patrol/chase/contact behavior still works unchanged.
 - Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.
 - Confirm the HUD depth increases while diving and that the base indicator points back toward the surface base.
 - Confirm the scene communicates shallow, midwater, and deep areas through color, landmarks, and resource placement.

@@ -23,7 +23,7 @@ static func is_valid_target(target: Node) -> bool:
 	if target is ResourcePickup:
 		return not target.is_collected and target.visible and target.definition != null
 
-	return target.has_method("set_scan_selected") and not String(target.get("discovery_id")).is_empty()
+	return target.has_method("set_scan_selected") and target.visible and not String(target.get("discovery_id")).is_empty()
 
 static func target_id(target: Node) -> String:
 	if target is ResourcePickup:

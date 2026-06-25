@@ -8,14 +8,20 @@ signal contacted(predator: Node)
 @export var chase_speed := 155.0
 @export var detect_radius := 180.0
 @export var chase_duration := 2.0
+@export var discovery_id: String
+@export var display_name: String
+@export var description: String
+@export var gameplay_fact: String
 
 @onready var patrol_hint: Polygon2D = $PatrolHint
 
 var _target := Vector2.ZERO
 var _chase_time := 0.0
+var is_scan_selected := false
 
 func _ready() -> void:
 	add_to_group("predators")
+	add_to_group("scan_targets")
 	body_entered.connect(_on_body_entered)
 	if patrol_start == Vector2.ZERO:
 		patrol_start = global_position
@@ -44,6 +50,10 @@ func configure_patrol(new_patrol_start: Vector2, new_patrol_end: Vector2) -> voi
 	global_position = patrol_start
 	_target = patrol_end
 	_chase_time = 0.0
+
+func set_scan_selected(selected: bool) -> void:
+	is_scan_selected = selected
+	modulate = Color(1.32, 1.18, 0.58, 1.0) if is_scan_selected else Color.WHITE
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):

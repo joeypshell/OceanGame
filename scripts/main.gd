@@ -402,6 +402,8 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 		return " Nearby Glow Plankton pulsed again."
 	elif _scan_target_id(target) == "thermal_vent":
 		return " Current-route hint refreshed."
+	elif _scan_target_id(target) == "gulper_eel":
+		return " Predator route warning refreshed."
 
 	return ""
 
@@ -478,6 +480,8 @@ func _format_first_scan_guidance(target: Node) -> String:
 			return " Bank resources, then research Pressure Seal I to open this route."
 		"wreck_signal_cache":
 			return " Return to base with this discovery; future scanner upgrades can use the clue."
+		"gulper_eel":
+			return " Use the warning current and patrol hint to time the route, or return with cargo."
 		_:
 			return " Use the clue if it helps, then return to base before oxygen runs out."
 
@@ -921,6 +925,8 @@ func _format_discovery_name(discovery_id: String) -> String:
 			return "Pressure-Locked Research Wreck"
 		"wreck_signal_cache":
 			return "Wreck Signal Cache"
+		"gulper_eel":
+			return "Gulper Eel"
 		"lantern_fry":
 			return "Lantern Fry"
 		_:
@@ -1084,6 +1090,8 @@ func _format_scan_target_type(target: Node) -> String:
 
 	match _scan_target_id(target):
 		"lantern_fry":
+			return "creature"
+		"gulper_eel":
 			return "creature"
 		"thermal_vent":
 			return "environment"

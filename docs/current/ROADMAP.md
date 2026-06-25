@@ -38,8 +38,7 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #60 Add `Gulper Eel` observation scan.
-2. #61 Plan first small biome pocket.
+1. #61 Plan first small biome pocket.
 
 Technical support track:
 
@@ -72,9 +71,8 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #60 add `Gulper Eel` observation scan from the `Monster Observation I` plan.
-2. #61 first small biome pocket planning.
-3. After this batch, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+1. #61 first small biome pocket planning.
+2. After this batch, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ## Latest Completed Milestone
 
@@ -203,6 +201,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #57 add expedition prep goal summary.
 - Completed: #58 improve expedition result progress callouts.
 - Completed: #59 plan `Monster Observation I` progression slice.
+- Completed: #60 add `Gulper Eel` observation scan.
 - Completed: #62 polish surface upgrade bay readability.
 - Completed: #63 add recent expedition log.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.

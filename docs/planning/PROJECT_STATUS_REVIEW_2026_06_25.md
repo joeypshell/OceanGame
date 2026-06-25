@@ -92,15 +92,13 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #60 first `Gulper Eel` observation scan from the `Monster Observation I` plan.
-2. Resolve #61 first small biome pocket plan.
-3. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+1. Resolve #61 first small biome pocket plan.
+2. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ### Progression Candidates
 
-1. #60 `Gulper Eel` observation scan.
-2. #61 first small biome pocket plan.
-3. New milestone planning after the stocked queue is drained or materially changes.
+1. #61 first small biome pocket plan.
+2. New milestone planning after the stocked queue is drained or materially changes.
 
 ### Deferred
 

@@ -664,6 +664,10 @@ patrol_speed = 92.0
 chase_speed = 165.0
 detect_radius = 190.0
 chase_duration = 2.0
+discovery_id = "gulper_eel"
+display_name = "Gulper Eel"
+description = "A territorial deep-route predator that lunges at nearby movement."
+gameplay_fact = "Watch warning currents and patrol hints, then choose whether the contested route is worth the oxygen risk."
 
 [node name="PatrolHint" type="Polygon2D" parent="Predators/GulperEel"]
 color = Color(0.9, 0.1, 0.18, 0.18)
