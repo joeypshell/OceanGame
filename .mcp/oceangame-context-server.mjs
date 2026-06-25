@@ -9,6 +9,7 @@ const repoRoot = path.resolve(path.join(path.dirname(fileURLToPath(import.meta.u
 
 const resources = [
   ["oceangame://agents", "AGENTS.md", "Agent operating guide"],
+  ["oceangame://architecture", "docs/current/ARCHITECTURE.md", "Current architecture"],
   ["oceangame://roadmap", "docs/current/ROADMAP.md", "Current roadmap"],
   ["oceangame://gameplay", "docs/current/GAMEPLAY.md", "Implemented gameplay"],
   ["oceangame://tooling", "docs/current/TOOLING.md", "Current tooling"],

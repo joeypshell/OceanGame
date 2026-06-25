@@ -13,6 +13,7 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 - Runtime/config: `project.godot`, `icon.svg`, Godot scenes, and GDScript files.
 - GitHub Actions: `.github/workflows/godot-smoke.yml`
 - Current-state docs: `docs/current/`
+- Current architecture: `docs/current/ARCHITECTURE.md`
 - Planning docs: `docs/planning/`
 - Archived plans/notes: `docs/archive/`
 - Agent workflow docs: `docs/GITHUB_ISSUE_WORKFLOW.md`, `docs/AGENT_HANDOFF_TEMPLATE.md`
@@ -27,6 +28,7 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 - `docs/archive/` keeps old plans and decisions for reference.
 - GitHub Issues are the active task contract once work is ticketed.
 - If gameplay, runtime, deployment, testing, architecture, or workflow changes, update the matching current doc before closing the issue.
+- Preserve state ownership: `DiveSession` owns temporary expedition state, `ProgressionState` owns durable progress, authored scene data owns inspectable route/content placement, and visual/readability assets communicate meaning without owning gameplay truth.
 
 ## Development Workflow
 

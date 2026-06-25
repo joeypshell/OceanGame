@@ -13,6 +13,7 @@ Server:
 Resources:
 
 - `oceangame://agents`
+- `oceangame://architecture`
 - `oceangame://roadmap`
 - `oceangame://gameplay`
 - `oceangame://tooling`

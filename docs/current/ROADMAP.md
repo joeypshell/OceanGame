@@ -27,6 +27,7 @@ Detailed design rules live in:
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
+Implemented architecture lives in `docs/current/ARCHITECTURE.md`.
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
 Implemented tooling lives in `docs/current/TOOLING.md`.
 
@@ -175,10 +176,12 @@ Different placement is not enough. It must produce different decisions.
 - Low-oxygen feedback may increase presentation urgency, but should not add decompression, ascent drain, or hidden oxygen penalties.
 - Monster hunting should grow from observation first: scan, learn behavior, avoid danger, then later trap, wound, repel, or hunt specific predators.
 - Every new mechanic should strengthen one question: should the player continue downward or return safely now?
+- State ownership should stay explicit: `DiveSession` owns temporary expedition state, `ProgressionState` owns durable progress, authored scene data owns inspectable route/content placement, and visual/readability assets communicate meaning without owning gameplay truth.
 
 ## Current State
 
 - The repository has an agentic workflow and planning structure.
+- The current architecture and ownership model are documented in `docs/current/ARCHITECTURE.md`.
 - The repository includes an MCP context server for project-source documentation, including current status, validation, scanner, cargo, and future-tool plans.
 - The first informal blind-validation signal was converted into implemented post-scan guidance; validation gates are no longer roadmap blockers.
 - The game uses Godot 4.7 with GDScript, targeting local desktop first with optional web demo support.
@@ -186,6 +189,7 @@ Different placement is not enough. It must produce different decisions.
 - The first scene includes a visible surface boat/shallow lab base, oxygen pressure, extraction, oxygen failure, run start/result panels, depth/base HUD, resource pickup, scanning, two upgrades, one pressure-locked wreck opportunity, one route-control predator, seeded starter resource/predator placement, and prototype `Burst Thruster`.
 - Current-dive state is split into `DiveSession`; session-persistent progression state is split into `ProgressionState`.
 - Starter resource placement uses typed authored `SpawnPoint` nodes selected by the current expedition seed while preserving shallow, midwater, and deep resource bands.
+- Prototype readability assets should be reusable and meaning-first, then replaceable by final art once visual language stabilizes.
 - A first seeded-expedition playtest report exists under `docs/planning/`, with follow-up risks around real-time oxygen margins, predator readability, and blind-player validation.
 - Long-term progression has a single local prototype save slot; active dive state remains temporary.
 - Low-oxygen and critical-oxygen HUD feedback increases return urgency without changing oxygen mechanics.
