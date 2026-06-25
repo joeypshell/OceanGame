@@ -9,6 +9,11 @@ const OXYGEN_TANK_COST := {
 	"shell_fragments": 1,
 	"glow_plankton": 1,
 }
+const STARTER_RESOURCE_PICKUP_NAMES := [
+	"KelpFiber",
+	"ShellFragments",
+	"GlowPlankton",
+]
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
@@ -35,6 +40,7 @@ const OXYGEN_TANK_COST := {
 @onready var run_panel: Panel = $HUD/RunPanel
 @onready var run_title_label: Label = $HUD/RunPanel/RunTitle
 @onready var run_summary_label: Label = $HUD/RunPanel/RunSummary
+@onready var starter_resource_candidates: Node2D = $StarterResourceCandidates
 @onready var glow_plankton_visual: Polygon2D = $ResourcePickups/GlowPlankton/Visual
 @onready var hidden_glow_plankton: Node = $ResourcePickups/HiddenGlowPlankton
 @onready var vent_route_hint: Node2D = $VentRouteHint
@@ -120,6 +126,7 @@ func _restart_dive() -> void:
 func _prepare_next_run() -> void:
 	progression_state.advance_run()
 	dive_session.reset(_current_max_oxygen())
+	_place_starter_resources_for_run()
 
 func _on_base_zone_body_entered(body: Node2D) -> void:
 	if body == player:
@@ -240,6 +247,33 @@ func _reset_resource_pickups() -> void:
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
 		pickup.reset_pickup()
 	_sync_discovery_reveals()
+
+func _place_starter_resources_for_run() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = progression_state.current_run_seed
+
+	for pickup_name in STARTER_RESOURCE_PICKUP_NAMES:
+		var pickup := get_node_or_null("ResourcePickups/%s" % pickup_name) as Node2D
+		if pickup == null:
+			continue
+
+		var candidates := _candidate_positions_for_resource(pickup_name)
+		if candidates.is_empty():
+			continue
+
+		pickup.global_position = candidates[rng.randi_range(0, candidates.size() - 1)]
+
+func _candidate_positions_for_resource(resource_name: String) -> Array[Vector2]:
+	var resource_candidates := starter_resource_candidates.get_node_or_null(resource_name)
+	if resource_candidates == null:
+		return []
+
+	var positions: Array[Vector2] = []
+	for candidate in resource_candidates.get_children():
+		if candidate is Node2D:
+			positions.append(candidate.global_position)
+
+	return positions
 
 func _sync_discovery_reveals() -> void:
 	if progression_state.has_discovery("thermal_vent"):

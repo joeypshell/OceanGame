@@ -25,7 +25,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
 - Extraction only succeeds after the player has left the base and returned.
 - The player has three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
-- Starter resources are placed by depth: `Kelp Fiber` in the shallows, `Shell Fragments` in midwater, and `Glow Plankton` in deeper water.
+- Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, `Oxygen Tank I` can be bought with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
@@ -85,6 +85,7 @@ Manual smoke:
 - Launch the project and confirm the first scene runs.
 - Confirm the run starts at the `Run Ready` panel and does not begin active oxygen pressure until E or Enter is pressed.
 - Confirm each restarted run advances the run number and seed while persistent progression remains.
+- Confirm restarted runs vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm extraction and oxygen failure both show result summaries before restarting.

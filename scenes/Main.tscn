@@ -129,10 +129,45 @@ polygon = PackedVector2Array(-48, -30, 44, -38, 62, 0, 44, 38, -48, 30, -64, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BaseZone"]
 shape = SubResource("CircleShape2D_base_zone")
 
+[node name="StarterResourceCandidates" type="Node2D" parent="."]
+
+[node name="KelpFiber" type="Node2D" parent="StarterResourceCandidates"]
+
+[node name="A" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
+position = Vector2(760, 390)
+
+[node name="B" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
+position = Vector2(900, 470)
+
+[node name="C" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
+position = Vector2(560, 570)
+
+[node name="ShellFragments" type="Node2D" parent="StarterResourceCandidates"]
+
+[node name="A" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
+position = Vector2(450, 900)
+
+[node name="B" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
+position = Vector2(700, 1020)
+
+[node name="C" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
+position = Vector2(1010, 1130)
+
+[node name="GlowPlankton" type="Node2D" parent="StarterResourceCandidates"]
+
+[node name="A" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
+position = Vector2(760, 1490)
+
+[node name="B" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
+position = Vector2(930, 1600)
+
+[node name="C" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
+position = Vector2(650, 1700)
+
 [node name="ResourcePickups" type="Node2D" parent="."]
 
 [node name="KelpFiber" type="Area2D" parent="ResourcePickups"]
-position = Vector2(830, 420)
+position = Vector2(760, 390)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("4_kelp_fiber")
 
@@ -144,7 +179,7 @@ polygon = PackedVector2Array(-12, -28, 5, -8, 18, -34, 11, 4, 28, 26, 2, 13, -20
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="ShellFragments" type="Area2D" parent="ResourcePickups"]
-position = Vector2(470, 960)
+position = Vector2(450, 900)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("5_shell_fragments")
 
@@ -156,7 +191,7 @@ polygon = PackedVector2Array(-30, 12, -12, -18, 17, -25, 31, 2, 8, 24)
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="GlowPlankton" type="Area2D" parent="ResourcePickups"]
-position = Vector2(890, 1580)
+position = Vector2(760, 1490)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
