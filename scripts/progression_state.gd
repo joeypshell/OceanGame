@@ -33,8 +33,12 @@ func purchase_upgrade(upgrade_id: String, cost: Dictionary) -> bool:
 	purchased_upgrades[upgrade_id] = true
 	return true
 
-func add_discovery(discovery_id: String) -> void:
-	scan_discoveries[discovery_id] = true
+func add_discovery(discovery_id: String, display_name: String, description: String, gameplay_fact: String) -> void:
+	scan_discoveries[discovery_id] = {
+		"display_name": display_name,
+		"description": description,
+		"gameplay_fact": gameplay_fact,
+	}
 
 func resource_count(resource_id: String) -> int:
 	return int(banked_resources.get(resource_id, 0))

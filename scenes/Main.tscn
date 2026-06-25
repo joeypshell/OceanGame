@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=10 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -6,6 +6,7 @@
 [ext_resource type="Resource" path="res://resources/kelp_fiber.tres" id="4_kelp_fiber"]
 [ext_resource type="Resource" path="res://resources/shell_fragments.tres" id="5_shell_fragments"]
 [ext_resource type="Resource" path="res://resources/glow_plankton.tres" id="6_glow_plankton"]
+[ext_resource type="Script" path="res://scripts/scannable.gd" id="7_scannable"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -150,6 +151,30 @@ polygon = PackedVector2Array(0, -32, 12, -10, 34, -6, 17, 10, 21, 32, 0, 19, -21
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/GlowPlankton"]
 shape = SubResource("CircleShape2D_pickup")
 
+[node name="Creatures" type="Node2D" parent="."]
+
+[node name="LanternFry" type="Area2D" parent="Creatures"]
+position = Vector2(760, 1510)
+script = ExtResource("7_scannable")
+discovery_id = "lantern_fry"
+display_name = "Lantern Fry"
+description = "A passive fish that drifts around dim bioluminescent blooms."
+gameplay_fact = "Travels near Glow Plankton."
+move_start = Vector2(720, 1510)
+move_end = Vector2(940, 1510)
+move_speed = 48.0
+
+[node name="Visual" type="Polygon2D" parent="Creatures/LanternFry"]
+color = Color(0.96, 0.95, 0.38, 1)
+polygon = PackedVector2Array(-34, 0, -10, -18, 24, -12, 42, 0, 24, 12, -10, 18)
+
+[node name="Glow" type="Polygon2D" parent="Creatures/LanternFry"]
+color = Color(0.7, 1, 0.35, 0.24)
+polygon = PackedVector2Array(-46, 0, -18, -30, 30, -22, 58, 0, 30, 22, -18, 30)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Creatures/LanternFry"]
+shape = SubResource("CircleShape2D_pickup")
+
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(0.9, 0.9)
 enabled = true
@@ -216,16 +241,23 @@ offset_right = 620.0
 offset_bottom = 386.0
 text = "Upgrade: Oxygen Tank I costs Kelp x2, Shell x1, Glow x1"
 
-[node name="Status" type="Label" parent="HUD"]
+[node name="Discoveries" type="Label" parent="HUD"]
 offset_left = 24.0
 offset_top = 386.0
 offset_right = 620.0
 offset_bottom = 418.0
+text = "Discoveries: 0 / 3"
+
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 418.0
+offset_right = 620.0
+offset_bottom = 450.0
 text = "Dive status: active"
 
 [node name="ExtractionPrompt" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 418.0
+offset_top = 450.0
 offset_right = 620.0
-offset_bottom = 466.0
+offset_bottom = 498.0
 text = "Safe base: press E or Enter to extract"

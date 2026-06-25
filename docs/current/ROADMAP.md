@@ -83,6 +83,7 @@ scripts/
 - Extraction requires leaving the base before returning.
 - The prototype has three cargo slots, three data-backed resource pickups by depth band, extraction banking, and carried-resource loss on oxygen failure.
 - `Oxygen Tank I` can be purchased with banked starter resources and raises future dive max oxygen from 30 to 40.
+- The scanner can scan `Lantern Fry`; scanning costs oxygen, records a discovery, and temporarily highlights nearby `Glow Plankton`.
 - The HUD shows approximate depth, best depth, and base direction/distance; the scene uses landmarks and a deep glow hint to make return risk and deeper rewards easier to read.
 - The initial design direction is selected, but most mechanics are still planning-level intent.
 

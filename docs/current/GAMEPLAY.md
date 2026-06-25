@@ -25,6 +25,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, `Oxygen Tank I` can be bought with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
+- Scan with F. Scanning costs 2 oxygen and records session-persistent discoveries.
+- `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton`.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
 - The scene uses surface light rays, a midwater wreck silhouette, and a deeper glow hint to communicate depth bands and deeper reward potential.
 
@@ -55,6 +57,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scripts/player.gd`: basic placeholder player movement.
   - `scripts/resource_definition.gd`: typed resource data definition for upcoming pickup/resource work.
   - `scripts/resource_pickup.gd`: pickup nodes that emit collection events and reset between dives.
+  - `scripts/scannable.gd`: simple scannable targets, including passive moving creatures.
   - `resources/*.tres`: starter resource definitions.
 - GitHub Actions:
   - `.github/workflows/godot-smoke.yml`: runs a Godot headless launch smoke check and `git diff --check`.
@@ -78,6 +81,7 @@ Manual smoke:
 - Confirm oxygen decreases during the active dive.
 - Collect resources, confirm cargo fills up to three slots, extract, and confirm resources move into the banked list.
 - Bank the required resources, buy `Oxygen Tank I` after extraction, restart, and confirm max oxygen is 40.
+- Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.
 - Confirm the HUD depth increases while diving and that the base indicator points back toward the surface base.
 - Confirm the scene communicates shallow, midwater, and deep areas through color, landmarks, and resource placement.

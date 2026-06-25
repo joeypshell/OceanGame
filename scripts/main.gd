@@ -14,6 +14,8 @@ const OXYGEN_TANK_COST := {
 @export var oxygen_tank_1_max_oxygen := 40.0
 @export var oxygen_drain_per_second := 1.0
 @export var collect_oxygen_cost := 1.0
+@export var scan_oxygen_cost := 2.0
+@export var scan_range := 120.0
 @export var start_position := Vector2(640.0, 190.0)
 @export var surface_y := 120.0
 @export var pixels_per_meter := 10.0
@@ -26,12 +28,15 @@ const OXYGEN_TANK_COST := {
 @onready var cargo_label: Label = $HUD/Cargo
 @onready var bank_label: Label = $HUD/BankedResources
 @onready var upgrade_label: Label = $HUD/Upgrade
+@onready var discoveries_label: Label = $HUD/Discoveries
 @onready var status_label: Label = $HUD/Status
 @onready var prompt_label: Label = $HUD/ExtractionPrompt
+@onready var glow_plankton_visual: Polygon2D = $ResourcePickups/GlowPlankton/Visual
 
 var dive_session := DiveSessionScript.new()
 var progression_state := ProgressionStateScript.new()
 var player_in_base := true
+var glow_plankton_highlight_timer := 0.0
 
 func _ready() -> void:
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
@@ -43,6 +48,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_update_depth()
+	_update_glow_plankton_highlight(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
 		return
 
@@ -60,6 +66,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 			_try_extract()
 	elif Input.is_action_just_pressed("restart_dive"):
 		_restart_dive()
+	elif Input.is_action_just_pressed("scan"):
+		_try_scan()
 
 func _try_extract() -> void:
 	if not dive_session.can_extract(player_in_base):
@@ -107,6 +115,54 @@ func _try_purchase_oxygen_tank() -> void:
 
 	_update_hud()
 
+func _try_scan() -> void:
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	var target := _nearest_scannable()
+	if target == null:
+		status_label.text = "No scan target nearby."
+		_update_hud()
+		return
+
+	dive_session.drain_oxygen(scan_oxygen_cost)
+	progression_state.add_discovery(
+		target.discovery_id,
+		target.display_name,
+		target.description,
+		target.gameplay_fact
+	)
+	if target.discovery_id == "lantern_fry":
+		glow_plankton_highlight_timer = 8.0
+
+	if dive_session.result == DiveSessionScript.Result.FAILED:
+		_fail_dive()
+	else:
+		status_label.text = "Scanned %s." % target.display_name
+		_update_hud()
+
+func _nearest_scannable() -> Node:
+	var nearest: Node = null
+	var nearest_distance := scan_range
+	for target in get_tree().get_nodes_in_group("scannables"):
+		var distance := player.global_position.distance_to(target.global_position)
+		if distance <= nearest_distance:
+			nearest = target
+			nearest_distance = distance
+
+	return nearest
+
+func _update_glow_plankton_highlight(delta: float) -> void:
+	if glow_plankton_highlight_timer <= 0.0:
+		glow_plankton_visual.scale = Vector2.ONE
+		glow_plankton_visual.modulate = Color.WHITE
+		return
+
+	glow_plankton_highlight_timer = maxf(0.0, glow_plankton_highlight_timer - delta)
+	var pulse := 1.0 + 0.24 * absf(sin(Time.get_ticks_msec() / 120.0))
+	glow_plankton_visual.scale = Vector2(pulse, pulse)
+	glow_plankton_visual.modulate = Color(1.2, 1.2, 0.7, 1.0)
+
 func _on_resource_pickup_collected(pickup: Node) -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
 		return
@@ -142,6 +198,7 @@ func _update_hud() -> void:
 	]
 	bank_label.text = "Banked:%s" % _format_banked_resources()
 	upgrade_label.text = _format_upgrade_status()
+	discoveries_label.text = _format_discoveries()
 
 	if dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
@@ -201,6 +258,17 @@ func _format_upgrade_status() -> String:
 		return "Upgrade: Oxygen Tank I installed"
 
 	return "Upgrade: Oxygen Tank I costs Kelp x2, Shell x1, Glow x1"
+
+func _format_discoveries() -> String:
+	var discoveries := progression_state.scan_discoveries
+	var text := "Discoveries: %d / 3" % discoveries.size()
+	if discoveries.is_empty():
+		return text + "\n???"
+
+	for discovery in discoveries.values():
+		text += "\n%s - %s" % [discovery["display_name"], discovery["gameplay_fact"]]
+
+	return text
 
 func _current_max_oxygen() -> float:
 	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
