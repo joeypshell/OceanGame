@@ -20,6 +20,7 @@ Detailed design rules live in:
 - `docs/planning/PREDATOR_WARNING_I.md`
 - `docs/planning/BIOME_POCKET_I.md`
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
+- `docs/planning/SHELL_REEF_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/SURFACE_UI_LAYOUT_PASS.md`
 - `docs/planning/VISUAL_LANGUAGE_READABILITY_ASSETS.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -37,7 +38,7 @@ Predator Warning And Route Tuning.
 
 Goal: use the completed Shell Reef batch to tune route decisions and add the first non-lethal predator-preparation payoff from `Gulper Eel` observation.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, surface result memory, compact surface views, and an authored `Shell Reef` route pocket. The next milestone should implement `Predator Warning I`, review/tune the Shell Reef route layer, and plan the next small content/economy steps before adding broader biome systems.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, and an authored `Shell Reef` route pocket. The next milestone should tune the Shell Reef route layer from the five-seed review, then plan the next small content/economy steps before adding broader biome systems.
 
 ## Immediate Issue Order
 
@@ -47,13 +48,11 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #76 Add `Predator Warning I` upgrade tests and metadata coverage.
-2. #77 Run `Shell Reef` five-seed route review.
-3. #78 Tune `Shell Reef` return readability after route review.
-4. #79 Tune deep-reward lure relative to `Shell Reef` route.
-5. #80 Plan `Biome Pocket II` candidate.
-6. #81 Plan first resource economy tuning pass.
-7. #82 Add route-choice result callout.
+1. #78 Tune `Shell Reef` return readability after route review.
+2. #79 Tune deep-reward lure relative to `Shell Reef` route.
+3. #80 Plan `Biome Pocket II` candidate.
+4. #81 Plan first resource economy tuning pass.
+5. #82 Add route-choice result callout.
 
 Technical support track:
 
@@ -97,17 +96,16 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #75 implement `Predator Warning I`.
-2. #76 add warning-upgrade metadata/test coverage.
-3. #77 run the `Shell Reef` five-seed route review.
-4. #78/#79 make review-driven route tuning.
-5. #80/#81 plan the next content/economy steps.
-6. #82 add compact route-choice result feedback.
-7. #83 refresh MCP planning context.
-8. #84 plan the next non-lethal predator countermeasure.
+1. #78/#79 make review-driven route tuning.
+2. #80/#81 plan the next content/economy steps.
+3. #82 add compact route-choice result feedback.
+4. #83 refresh MCP planning context.
+5. #84 plan the next non-lethal predator countermeasure.
 
 Recently completed:
 
+- #77 recorded concrete `Shell Reef` route observations across five deterministic seeds in `docs/planning/SHELL_REEF_ROUTE_REVIEW_2026_06_25.md`.
+- #76 added focused metadata, prerequisite, warning-helper, and effect-isolation coverage for `Predator Warning I`.
 - #75 added `Predator Warning I` as the first non-lethal predator-preparation upgrade from `Gulper Eel` observation.
 - #85 clarified the pressure-lock route by making the locked gate, future cache signal, and surface-upgrade return step more readable.
 - #74 replenished the queue as `Predator Warning And Route Tuning` with issues #75-#84.
