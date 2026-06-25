@@ -22,7 +22,7 @@ offset_bottom = 720.0
 color = Color(0.012, 0.12, 0.19, 1)
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
-position = Vector2(640, 360)
+position = Vector2(160, 360)
 
 [node name="BaseZone" type="Area2D" parent="."]
 position = Vector2(160, 360)
@@ -58,16 +58,23 @@ offset_right = 620.0
 offset_bottom = 86.0
 text = "Movement has acceleration, drag, and test-area bounds"
 
-[node name="Status" type="Label" parent="HUD"]
+[node name="Oxygen" type="Label" parent="HUD"]
 offset_left = 24.0
 offset_top = 86.0
 offset_right = 620.0
 offset_bottom = 118.0
-text = "Dive status: active"
+text = "Oxygen: 30 / 30"
 
-[node name="ExtractionPrompt" type="Label" parent="HUD"]
+[node name="Status" type="Label" parent="HUD"]
 offset_left = 24.0
 offset_top = 118.0
 offset_right = 620.0
 offset_bottom = 150.0
+text = "Dive status: active"
+
+[node name="ExtractionPrompt" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 150.0
+offset_right = 620.0
+offset_bottom = 182.0
 text = "Safe base: press E or Enter to extract"
