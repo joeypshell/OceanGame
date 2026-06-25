@@ -49,6 +49,7 @@ func _initialize() -> void:
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("recent expedition log", _test_recent_expedition_log)
+	_run("thermal vent scan clue text", _test_thermal_vent_scan_clue_text)
 	_run("shell reef scan clue text", _test_shell_reef_scan_clue_text)
 	_run("pressure lock guidance text", _test_pressure_lock_guidance_text)
 	_run("surface summary tabs", _test_surface_summary_tabs)
@@ -424,6 +425,14 @@ func _test_route_choice_result_callout() -> void:
 	main.run_predator_contacts = 1
 	_expect(main._format_route_choice_callout().contains("predator route"), "predator contact should take priority in the route callout")
 
+	main.run_predator_contacts = 0
+	main.run_completed_scans = ["thermal_vent"]
+	main.run_collected_resources = []
+	_expect(main._format_route_choice_callout().contains("Pressure Seal I"), "thermal vent scan should produce a pressure seal route callout")
+
+	main.run_collected_resources = ["glow_plankton"]
+	_expect(main._format_route_choice_callout().contains("Thermal Vent clue"), "vent scan plus glow cargo should produce a vent route callout")
+
 	var summary := main._format_run_summary("%s\nCompact result line." % main._format_route_choice_callout(), "extracted")
 	_expect(summary.contains("Route choice:"), "player-facing result summary should include the route callout")
 	_expect(not summary.contains("Playtest data:"), "result summary should not include debug telemetry unless F3 is enabled")
@@ -492,6 +501,21 @@ func _test_recent_expedition_log() -> void:
 	log_text = main._format_recent_expedition_log()
 	_expect(log_text.contains("seed 1004"), "recent expedition log should show seed only with debug telemetry")
 	_expect(log_text.contains("Cautious shallows"), "recent expedition log should show pattern only with debug telemetry")
+	main.free()
+
+func _test_thermal_vent_scan_clue_text() -> void:
+	var main := MainScript.new()
+	var target := DummyScanTarget.new()
+	target.discovery_id = "thermal_vent"
+	target.display_name = "Thermal Vent"
+	target.description = "Warm current."
+
+	var first_guidance := main._format_first_scan_guidance(target)
+	_expect(first_guidance.contains("warm current"), "thermal vent first scan should name the warm-current clue")
+	_expect(first_guidance.contains("glow only if oxygen allows"), "thermal vent first scan should keep glow route optional")
+	_expect(first_guidance.contains("Pressure Seal clue"), "thermal vent first scan should explain pressure-seal knowledge")
+	_expect(main._format_repeat_scan_effect_text(target).contains("glow route remains optional"), "thermal vent repeat scan should stay concise and optional")
+	target.free()
 	main.free()
 
 func _test_shell_reef_scan_clue_text() -> void:

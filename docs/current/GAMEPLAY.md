@@ -71,7 +71,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - First-time scan status text includes a concise next action. Resource scans point the player to collect the resource and return to base to bank cargo, while non-resource scans point toward the revealed clue or a safe return.
 - Resource pickups are scannable before collection. Resource scans record the resource depth band, upgrade use, and whether more of that material is needed for `Oxygen Tank I`; they also temporarily highlight matching visible resource deposits in the current expedition.
 - `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton` and suggests following the pulse if oxygen allows.
-- A scannable `Thermal Vent` sits inside a small authored warm-current pocket with vent wash, cracked shelf, bubble strings, and a subtle current ribbon. Scanning it still reveals the current-route hint and hidden `Glow Plankton` cluster, then suggests following the clue if oxygen allows.
+- A scannable `Thermal Vent` sits inside a small authored warm-current pocket with vent wash, cracked shelf, bubble strings, and a subtle current ribbon. Scanning it still reveals the current-route hint and hidden `Glow Plankton` cluster, but the status text frames the route as optional if oxygen allows and reminds the player that the discovery is useful pressure-seal knowledge to bank at the surface.
 - A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. The route has a warning current/marker, and the patrol hint becomes more urgent as the player approaches. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
 - The `Gulper Eel` is scannable as a non-combat observation target. First-time scan records a durable behavior clue about warning currents, patrol hints, oxygen risk, and route timing; repeat scans remain free and refresh the predator-route warning text without damaging, slowing, stunning, repelling, harvesting, or controlling the predator.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
@@ -151,7 +151,7 @@ Manual smoke:
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm extraction and oxygen failure both show result summaries before restarting.
 - Confirm extraction and oxygen failure summaries hide raw telemetry by default, then press F3 and confirm seed, pattern, predator route, cargo, scans, predator contacts, oxygen result, and failure cause appear for playtesting.
-- Confirm extraction and oxygen failure summaries include one compact `Route choice:` line, such as reef banking, deep glow push, predator-route pressure, or pressure-wreck progress, without turning the panel into a checklist.
+- Confirm extraction and oxygen failure summaries include one compact `Route choice:` line, such as reef banking, Thermal Vent clue progress, deep glow push, predator-route pressure, or pressure-wreck progress, without turning the panel into a checklist.
 - Complete or fail four expeditions and confirm the `Recent Expeditions` log shows only the latest three results, with seed and cluster pattern hidden until debug telemetry is enabled.
 - Approach multiple nearby scan targets and confirm the HUD names one selected target with a visible highlight, then confirm the selected target remains deterministic until distance changes.
 - Approach a new resource, already discovered resource, creature, environmental scan target, and wreck signal; confirm the scan target HUD metadata stays compact and accurate, non-resource scan markers remain readable, and resource pickups still read as cargo first.
@@ -172,7 +172,7 @@ Manual smoke:
 - Confirm `Predator Warning I` is locked before scanning `Gulper Eel`, available after the discovery plus required resources, and owned after purchase.
 - After buying `Predator Warning I`, approach the `Gulper Eel` route and confirm warning feedback begins farther away while contact remains possible if the warning is ignored.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
-- Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the low-opacity current hint plus hidden `Glow Plankton` appear without reading like a guaranteed safe path.
+- Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the low-opacity current hint plus hidden `Glow Plankton` appear without reading like a guaranteed safe path. Re-scan it and confirm the repeat text refreshes the warm-current clue while keeping the glow route optional.
 - Approach the pressure gate near the research wreck without `Pressure Seal I` and confirm entry is denied safely with clear feedback that says to buy the upgrade at the surface and return.
 - Scan the outside `Pressure-Locked Research Wreck` target and confirm the future-cache signal appears without looking like an immediately open path or disrupting extraction/failure flow.
 - Scan a resource pickup with F, confirm oxygen decreases, discovery text records depth band/upgrade use/material need, and matching visible deposits highlight for several seconds.

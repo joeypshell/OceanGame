@@ -433,7 +433,7 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 	elif _scan_target_id(target) == "lantern_fry":
 		return " Nearby Glow Plankton pulsed again."
 	elif _scan_target_id(target) == "thermal_vent":
-		return " Current-route hint refreshed."
+		return " Warm-current clue refreshed; glow route remains optional."
 	elif _scan_target_id(target) == "shell_reef_shelf":
 		return " Shell Reef route clue refreshed."
 	elif _scan_target_id(target) == "gulper_eel":
@@ -506,7 +506,7 @@ func _format_first_scan_guidance(target: Node) -> String:
 		"lantern_fry":
 			return " Follow the plankton pulse if oxygen allows, then return to base."
 		"thermal_vent":
-			return " Follow the current clue if oxygen allows, then return to base."
+			return " Follow warm current toward glow only if oxygen allows; otherwise return with the Pressure Seal clue."
 		"shell_reef_shelf":
 			return " Use the reef as a midwater bank route, or push deeper only if oxygen allows."
 		"pressure_wreck_signal":
@@ -1065,6 +1065,10 @@ func _format_route_choice_callout() -> String:
 		return "Route choice: pressure-wreck progress secured."
 	if run_completed_scans.has("pressure_wreck_signal"):
 		return "Route choice: pressure route marked for a future return."
+	if run_completed_scans.has("thermal_vent") and run_collected_resources.has("glow_plankton"):
+		return "Route choice: followed Thermal Vent clue toward deep glow."
+	if run_completed_scans.has("thermal_vent"):
+		return "Route choice: banked Thermal Vent clue for Pressure Seal I."
 	if run_collected_resources.has("glow_plankton") and current_resource_cluster_pattern == "deep_reward":
 		return "Route choice: pushed past the reef toward deep glow."
 	if run_completed_scans.has("shell_reef_shelf") or run_collected_resources.has("shell_fragments"):
