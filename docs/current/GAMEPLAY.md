@@ -28,6 +28,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Scan with F. Scanning costs 2 oxygen and records session-persistent discoveries.
 - `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton`.
 - A scannable `Thermal Vent` reveals a current-route hint and hidden `Glow Plankton` cluster.
+- A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
 - The scene uses surface light rays, a midwater wreck silhouette, and a deeper glow hint to communicate depth bands and deeper reward potential.
 
@@ -59,6 +60,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scripts/resource_definition.gd`: typed resource data definition for upcoming pickup/resource work.
   - `scripts/resource_pickup.gd`: pickup nodes that emit collection events and reset between dives.
   - `scripts/scannable.gd`: simple scannable targets, including passive moving creatures.
+  - `scripts/predator.gd`: simple patrol, detection, chase, and contact behavior.
   - `resources/*.tres`: starter resource definitions.
 - GitHub Actions:
   - `.github/workflows/godot-smoke.yml`: runs a Godot headless launch smoke check and `git diff --check`.
@@ -84,6 +86,7 @@ Manual smoke:
 - Bank the required resources, buy `Oxygen Tank I` after extraction, restart, and confirm max oxygen is 40.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
+- Approach the deep `Gulper Eel`, confirm it briefly chases, and confirm contact causes oxygen loss plus knockback without instant failure.
 - Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.
 - Confirm the HUD depth increases while diving and that the base indicator points back toward the surface base.
 - Confirm the scene communicates shallow, midwater, and deep areas through color, landmarks, and resource placement.

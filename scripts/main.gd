@@ -15,6 +15,7 @@ const OXYGEN_TANK_COST := {
 @export var oxygen_drain_per_second := 1.0
 @export var collect_oxygen_cost := 1.0
 @export var scan_oxygen_cost := 2.0
+@export var predator_contact_oxygen_cost := 5.0
 @export var scan_range := 120.0
 @export var start_position := Vector2(640.0, 190.0)
 @export var surface_y := 120.0
@@ -45,6 +46,8 @@ func _ready() -> void:
 	base_zone.body_exited.connect(_on_base_zone_body_exited)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
 		pickup.collected.connect(_on_resource_pickup_collected)
+	for predator in get_tree().get_nodes_in_group("predators"):
+		predator.contacted.connect(_on_predator_contacted)
 	dive_session.reset(max_oxygen)
 	_update_hud()
 
@@ -182,6 +185,22 @@ func _on_resource_pickup_collected(pickup: Node) -> void:
 		_fail_dive()
 	else:
 		status_label.text = "Collected %s." % pickup.definition.display_name
+		_update_hud()
+
+func _on_predator_contacted(predator: Node) -> void:
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	var knockback_direction: Vector2 = player.global_position - predator.global_position
+	if knockback_direction == Vector2.ZERO:
+		knockback_direction = Vector2.UP
+
+	player.apply_knockback(knockback_direction, 520.0, 0.55)
+	dive_session.drain_oxygen(predator_contact_oxygen_cost)
+	if dive_session.result == DiveSessionScript.Result.FAILED:
+		_fail_dive()
+	else:
+		status_label.text = "Predator strike: oxygen lost, controls disrupted."
 		_update_hud()
 
 func _reset_resource_pickups() -> void:

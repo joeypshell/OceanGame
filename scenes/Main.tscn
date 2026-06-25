@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=11 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -7,6 +7,7 @@
 [ext_resource type="Resource" path="res://resources/shell_fragments.tres" id="5_shell_fragments"]
 [ext_resource type="Resource" path="res://resources/glow_plankton.tres" id="6_glow_plankton"]
 [ext_resource type="Script" path="res://scripts/scannable.gd" id="7_scannable"]
+[ext_resource type="Script" path="res://scripts/predator.gd" id="8_predator"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -180,6 +181,18 @@ polygon = PackedVector2Array(0, -32, 12, -10, 34, -6, 17, 10, 21, 32, 0, 19, -21
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/HiddenGlowPlankton"]
 shape = SubResource("CircleShape2D_pickup")
 
+[node name="DeepGlowPlankton" type="Area2D" parent="ResourcePickups"]
+position = Vector2(1010, 1880)
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("6_glow_plankton")
+
+[node name="Visual" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton"]
+color = Color(0.72, 1, 0.3, 1)
+polygon = PackedVector2Array(0, -32, 12, -10, 34, -6, 17, 10, 21, 32, 0, 19, -21, 32, -17, 10, -34, -6, -12, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/DeepGlowPlankton"]
+shape = SubResource("CircleShape2D_pickup")
+
 [node name="Creatures" type="Node2D" parent="."]
 
 [node name="LanternFry" type="Area2D" parent="Creatures"]
@@ -202,6 +215,33 @@ color = Color(0.7, 1, 0.35, 0.24)
 polygon = PackedVector2Array(-46, 0, -18, -30, 30, -22, 58, 0, 30, 22, -18, 30)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Creatures/LanternFry"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="Predators" type="Node2D" parent="."]
+
+[node name="GulperEel" type="Area2D" parent="Predators"]
+position = Vector2(680, 1780)
+script = ExtResource("8_predator")
+patrol_start = Vector2(620, 1780)
+patrol_end = Vector2(1010, 1780)
+patrol_speed = 92.0
+chase_speed = 165.0
+detect_radius = 190.0
+chase_duration = 2.0
+
+[node name="PatrolHint" type="Polygon2D" parent="Predators/GulperEel"]
+color = Color(0.9, 0.1, 0.18, 0.18)
+polygon = PackedVector2Array(-92, -82, 92, -82, 124, 0, 92, 82, -92, 82, -124, 0)
+
+[node name="Body" type="Polygon2D" parent="Predators/GulperEel"]
+color = Color(0.68, 0.12, 0.2, 1)
+polygon = PackedVector2Array(-70, 0, -34, -28, 34, -20, 82, 0, 34, 20, -34, 28)
+
+[node name="Eye" type="Polygon2D" parent="Predators/GulperEel"]
+color = Color(1, 0.86, 0.22, 1)
+polygon = PackedVector2Array(36, -8, 50, -3, 50, 5, 36, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Predators/GulperEel"]
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="Discoveries" type="Node2D" parent="."]
