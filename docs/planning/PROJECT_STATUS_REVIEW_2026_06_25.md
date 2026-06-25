@@ -84,7 +84,7 @@ Meaning:
 - Prototype `Burst Thruster`.
 - `Gulper Eel` observation scan.
 - `Shell Reef` biome-pocket plan.
-- Active issues #65-#74 for the next biome/readability/progression batch.
+- Active issues #72-#74 for the next route-objective and backlog-planning batch.
 
 ### Workflow
 
@@ -97,19 +97,17 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #71 `Add compact surface summary tabs`.
-2. Resolve #72 `Plan Expedition Goal II route objective layer`.
-3. Resolve #73 `Add route objective goal for Shell Reef`.
-4. Resolve #74 `Plan next 10-issue backlog after Shell Reef batch`.
+1. Resolve #72 `Plan Expedition Goal II route objective layer`.
+2. Resolve #73 `Add route objective goal for Shell Reef`.
+3. Resolve #74 `Plan next 10-issue backlog after Shell Reef batch`.
 
 ### Progression Candidates
 
 1. `Shell Reef` pocket implementation and route clue.
 2. Authored biome-pocket spawn support.
 3. Predator warning upgrade planning.
-4. Surface result/upgrade/log layout readability.
-5. Route-objective prep goals.
-6. New milestone planning after the stocked queue is drained or materially changes.
+4. Route-objective prep goals.
+5. New milestone planning after the stocked queue is drained or materially changes.
 
 ### Deferred
 

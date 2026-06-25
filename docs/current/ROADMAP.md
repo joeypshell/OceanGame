@@ -43,10 +43,9 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #71 Add compact surface summary tabs.
-2. #72 Plan `Expedition Goal II` route objective layer.
-3. #73 Add route objective goal for `Shell Reef`.
-4. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
+1. #72 Plan `Expedition Goal II` route objective layer.
+2. #73 Add route objective goal for `Shell Reef`.
+3. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
 
 Technical support track:
 
@@ -84,10 +83,13 @@ Technical implementation alone is not sufficient.
 Choose from these candidates rather than starting all of them:
 
 1. Future candidate: `Add Predator Warning I upgrade`.
-2. #71 add compact surface summary tabs.
-3. #72 plan `Expedition Goal II`.
-4. #73 add route objective goal for `Shell Reef`.
-5. #74 replenish the next issue queue.
+2. #72 plan `Expedition Goal II`.
+3. #73 add route objective goal for `Shell Reef`.
+4. #74 replenish the next issue queue.
+
+Recently completed:
+
+- #71 added compact surface summary tabs so post-extraction `Result`, `Upgrades`, and `Log` views stay readable as the surface HUD grows.
 
 ## Latest Completed Milestone
 

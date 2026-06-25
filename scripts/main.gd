@@ -29,6 +29,10 @@ const RESOURCE_CLUSTER_PATTERNS := [
 	"cautious",
 	"deep_reward",
 ]
+const SURFACE_TAB_RESULT := 0
+const SURFACE_TAB_UPGRADES := 1
+const SURFACE_TAB_LOG := 2
+const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
@@ -62,6 +66,7 @@ const RESOURCE_CLUSTER_PATTERNS := [
 @onready var oxygen_warning_label: Label = $HUD/OxygenWarning
 @onready var recent_expedition_log_label: Label = $HUD/RecentExpeditionLog
 @onready var run_panel: Panel = $HUD/RunPanel
+@onready var surface_tabs_label: Label = $HUD/RunPanel/SurfaceTabs
 @onready var run_title_label: Label = $HUD/RunPanel/RunTitle
 @onready var run_summary_label: Label = $HUD/RunPanel/RunSummary
 @onready var upgrade_panel: Panel = $HUD/UpgradePanel
@@ -96,6 +101,7 @@ var current_resource_cluster_pattern := "cautious"
 var current_predator_route_id := "none"
 var current_scan_target: Node = null
 var selected_upgrade_index := 0
+var surface_tab_index := SURFACE_TAB_RESULT
 var upgrade_definitions: Array[UpgradeDefinition] = [
 	OXYGEN_TANK_UPGRADE,
 	PRESSURE_SEAL_UPGRADE,
@@ -143,12 +149,21 @@ func _unhandled_input(_event: InputEvent) -> void:
 		if dive_session.result == DiveSessionScript.Result.READY:
 			_start_dive()
 		elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
-			_try_purchase_selected_upgrade()
+			if surface_tab_index == SURFACE_TAB_UPGRADES:
+				_try_purchase_selected_upgrade()
+			else:
+				surface_tab_index = SURFACE_TAB_UPGRADES
+				status_label.text = "Surface view: upgrades."
+				_update_hud()
 		else:
 			_try_extract()
-	elif Input.is_action_just_pressed("move_up") and dive_session.result == DiveSessionScript.Result.EXTRACTED:
+	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
+		_cycle_surface_tab(-1)
+	elif Input.is_action_just_pressed("move_right") and _surface_tabs_enabled():
+		_cycle_surface_tab(1)
+	elif Input.is_action_just_pressed("move_up") and dive_session.result == DiveSessionScript.Result.EXTRACTED and surface_tab_index == SURFACE_TAB_UPGRADES:
 		_select_upgrade(-1)
-	elif Input.is_action_just_pressed("move_down") and dive_session.result == DiveSessionScript.Result.EXTRACTED:
+	elif Input.is_action_just_pressed("move_down") and dive_session.result == DiveSessionScript.Result.EXTRACTED and surface_tab_index == SURFACE_TAB_UPGRADES:
 		_select_upgrade(1)
 	elif Input.is_action_just_pressed("restart_dive"):
 		_restart_dive()
@@ -166,6 +181,7 @@ func _try_extract() -> void:
 	dive_session.extract()
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
+	surface_tab_index = SURFACE_TAB_RESULT
 	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\n%s\n%s\nBest depth: %dm." % [
 		extracted_count,
 		_format_resource_counts(extracted_cargo),
@@ -186,6 +202,7 @@ func _try_extract() -> void:
 func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
+	surface_tab_index = SURFACE_TAB_RESULT
 	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s\nBest depth: %dm." % [
 		_format_scan_progress_callout("Scans kept"),
 		roundi(progression_state.best_depth_reached),
@@ -198,6 +215,7 @@ func _fail_dive() -> void:
 
 func _start_dive() -> void:
 	dive_session.start()
+	surface_tab_index = SURFACE_TAB_RESULT
 	upgrade_menu_feedback = ""
 	status_label.text = "Dive status: active"
 	_update_hud()
@@ -209,6 +227,7 @@ func _restart_dive() -> void:
 	player_in_base = true
 	last_result_summary = ""
 	upgrade_menu_feedback = ""
+	surface_tab_index = SURFACE_TAB_RESULT
 	_reset_resource_pickups()
 	status_label.text = "Dive ready"
 	_update_hud()
@@ -242,6 +261,11 @@ func _select_upgrade(direction: int) -> void:
 
 	selected_upgrade_index = posmod(selected_upgrade_index + direction, upgrade_definitions.size())
 	upgrade_menu_feedback = ""
+	_update_hud()
+
+func _cycle_surface_tab(direction: int) -> void:
+	surface_tab_index = posmod(surface_tab_index + direction, SURFACE_TAB_NAMES.size())
+	status_label.text = "Surface view: %s." % SURFACE_TAB_NAMES[surface_tab_index].to_lower()
 	_update_hud()
 
 func _toggle_debug_telemetry() -> void:
@@ -700,14 +724,17 @@ func _update_hud() -> void:
 	upgrade_label.text = _format_upgrade_status()
 	discoveries_label.text = _format_discoveries()
 	recent_expedition_log_label.text = _format_recent_expedition_log()
+	recent_expedition_log_label.visible = dive_session.result == DiveSessionScript.Result.DIVING
 
 	if dive_session.result == DiveSessionScript.Result.READY:
 		prompt_label.text = "Press E or Enter to begin the dive"
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		if _all_upgrades_owned():
-			prompt_label.text = "Extraction complete - press R to restart"
+			prompt_label.text = "Extraction complete - press R to restart | Left/Right surface view"
+		elif surface_tab_index == SURFACE_TAB_UPGRADES:
+			prompt_label.text = "Upgrade bay: Up/Down select, E purchase, R restart | Left/Right surface view"
 		else:
-			prompt_label.text = "Extraction complete - upgrade bay open: Up/Down select, E purchase, R restart"
+			prompt_label.text = "Extraction complete - press E for upgrades, R restart | Left/Right surface view"
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		prompt_label.text = "Expedition failed - press R to restart"
 	elif player_in_base:
@@ -722,6 +749,8 @@ func _update_hud() -> void:
 		prompt_label.text += " | %s" % _format_burst_thruster_prompt()
 
 func _update_run_panel() -> void:
+	surface_tabs_label.visible = _surface_tabs_enabled()
+	surface_tabs_label.text = _format_surface_tabs() if surface_tabs_label.visible else ""
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
 		run_title_label.text = "Expedition %d Ready" % progression_state.current_run_number
@@ -731,17 +760,28 @@ func _update_run_panel() -> void:
 		], "ready")
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		run_panel.visible = true
-		run_title_label.text = "Expedition %d Result: Extraction" % progression_state.current_run_number
-		run_summary_label.text = _format_run_summary(last_result_summary, "extracted")
+		if surface_tab_index == SURFACE_TAB_UPGRADES:
+			run_title_label.text = "Surface Upgrade Bay"
+			run_summary_label.text = _format_run_summary("Banked:%s\nSelect an upgrade below, then press E or Enter to purchase.\nPress R to start the next expedition." % _format_banked_resources(), "extracted")
+		elif surface_tab_index == SURFACE_TAB_LOG:
+			run_title_label.text = "Recent Expeditions"
+			run_summary_label.text = _format_recent_expedition_log()
+		else:
+			run_title_label.text = "Expedition %d Result: Extraction" % progression_state.current_run_number
+			run_summary_label.text = _format_run_summary(last_result_summary, "extracted")
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		run_panel.visible = true
-		run_title_label.text = "Expedition %d Result: Failure" % progression_state.current_run_number
-		run_summary_label.text = _format_run_summary(last_result_summary, "failed")
+		if surface_tab_index == SURFACE_TAB_LOG:
+			run_title_label.text = "Recent Expeditions"
+			run_summary_label.text = _format_recent_expedition_log()
+		else:
+			run_title_label.text = "Expedition %d Result: Failure" % progression_state.current_run_number
+			run_summary_label.text = _format_run_summary(last_result_summary, "failed")
 	else:
 		run_panel.visible = false
 
 func _update_upgrade_menu() -> void:
-	upgrade_panel.visible = dive_session.result == DiveSessionScript.Result.EXTRACTED
+	upgrade_panel.visible = dive_session.result == DiveSessionScript.Result.EXTRACTED and surface_tab_index == SURFACE_TAB_UPGRADES
 	if not upgrade_panel.visible:
 		return
 
@@ -815,6 +855,20 @@ func _format_burst_thruster_prompt() -> String:
 		return "Burst cooldown: %ds" % ceili(burst_thruster_cooldown_remaining)
 
 	return "Space burst: %d oxygen" % ceili(burst_thruster_oxygen_cost)
+
+func _surface_tabs_enabled() -> bool:
+	return dive_session.result == DiveSessionScript.Result.EXTRACTED
+
+func _format_surface_tabs() -> String:
+	var parts: Array[String] = []
+	for index in range(SURFACE_TAB_NAMES.size()):
+		var tab_name: String = SURFACE_TAB_NAMES[index]
+		if index == surface_tab_index:
+			parts.append("[%s]" % tab_name)
+		else:
+			parts.append(tab_name)
+
+	return "  ".join(parts)
 
 func _format_upgrade_cost(cost: Dictionary) -> String:
 	if cost.is_empty():

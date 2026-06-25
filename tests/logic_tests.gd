@@ -46,6 +46,7 @@ func _initialize() -> void:
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("recent expedition log", _test_recent_expedition_log)
 	_run("shell reef scan clue text", _test_shell_reef_scan_clue_text)
+	_run("surface summary tabs", _test_surface_summary_tabs)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 
 	if _failures.is_empty():
@@ -409,6 +410,19 @@ func _test_shell_reef_scan_clue_text() -> void:
 	_expect(main._format_first_scan_guidance(target).contains("midwater bank route"), "shell reef first scan should explain the route decision")
 	_expect(main._format_scan_target_type(target) == "environment", "shell reef scan target should be environmental metadata")
 	target.free()
+	main.free()
+
+func _test_surface_summary_tabs() -> void:
+	var main := MainScript.new()
+
+	_expect(not main._surface_tabs_enabled(), "surface tabs should be hidden before extraction")
+	main.dive_session.extract()
+	_expect(main._surface_tabs_enabled(), "surface tabs should be available after extraction")
+	_expect(main._format_surface_tabs() == "[Result]  Upgrades  Log", "surface tabs should mark the result view by default")
+	main.surface_tab_index = main.SURFACE_TAB_UPGRADES
+	_expect(main._format_surface_tabs() == "Result  [Upgrades]  Log", "surface tabs should mark the upgrade view")
+	main.surface_tab_index = main.SURFACE_TAB_LOG
+	_expect(main._format_surface_tabs() == "Result  Upgrades  [Log]", "surface tabs should mark the log view")
 	main.free()
 
 func _test_burst_thruster_movement_helper() -> void:

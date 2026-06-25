@@ -28,6 +28,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, durable upgrade progress, discoveries recorded or kept, and best depth.
 - Extraction and oxygen failure result panels default to compact player-facing summaries. Development telemetry is hidden by default, but F3 or the exported `show_debug_telemetry` flag exposes result, seed, cluster pattern, predator route, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
 - The HUD keeps a compact session-only `Recent Expeditions` log for the last three completed dives. Each entry shows result, banked cargo count, scans, predator contacts, and best depth; seed and cluster pattern appear only while debug telemetry is enabled.
+- After a successful extraction, the surface HUD uses compact `Result`, `Upgrades`, and `Log` views so the run result, upgrade bay, and recent-expedition log do not all compete for attention. Press Left/Right to cycle these surface views.
+- The `Result` view keeps the extraction summary in focus, the `Upgrades` view focuses the data-backed upgrade bay with Up/Down selection and E or Enter purchase, and the `Log` view shows the recent expedition history in the run panel.
 - Each expedition has a session number and deterministic seed. The raw seed is visible only when development telemetry is enabled.
 - Each expedition selects a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`. The raw pattern label is visible only when development telemetry is enabled.
 - Pressing R after a result prepares the next seeded expedition, advancing the session number and seed while preserving banked resources, upgrades, discoveries, and best depth.
@@ -51,7 +53,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The wreck has an outside scan target, `Pressure-Locked Research Wreck`, that can be scanned before entry. Scanning it records a practical clue that `Pressure Seal I` should open the route and that a `Wreck Signal Cache` waits inside; it also reveals a signal hint pointing through the pressure lock.
 - After `Pressure Seal I` is owned, the wreck alcove can be reached and the inside `Wreck Signal Cache` can be scanned as a practical progression reward pointing toward a future scanner improvement.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
-- After extraction, the surface upgrade bay panel shows data-backed upgrade entries with cost, one-line missing resources, missing discovery if any, and explicit `State:` labels for owned, available, scan-locked, and missing-resource upgrades. Extraction feedback also calls out newly ready upgrades when banked cargo completes a cost.
+- After extraction, the surface upgrade bay view shows data-backed upgrade entries with cost, one-line missing resources, missing discovery if any, and explicit `State:` labels for owned, available, scan-locked, and missing-resource upgrades. Extraction feedback also calls out newly ready upgrades when banked cargo completes a cost.
 - The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has four configured upgrades: `Oxygen Tank I`, `Pressure Seal I`, `Signal Lens I`, and `Cargo Rack I`.
 - `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
@@ -136,6 +138,7 @@ Manual smoke:
 - Confirm the deep-reward lure appears only on `Deep reward route` expeditions and preserves surface return readability.
 - Confirm the `Shell Reef` pocket is readable as a midwater landmark, leaves open route gaps, can host the existing single `Shell Fragments` pickup, and does not block the surface return path.
 - Scan the `Shell Reef Shelf`, confirm discovery/result/log text records a safer midwater bank route clue, then repeat scan and confirm no oxygen is spent.
+- After extraction, use Left/Right to cycle the compact surface views and confirm `Result`, `Upgrades`, and `Log` keep their text readable; confirm Up/Down and E or Enter still select and purchase upgrades only while the `Upgrades` view is active.
 - Move or edit a `StarterResourceCandidates` spawn point in the scene and confirm seeded resource placement follows that typed definition.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - During an active dive, press Spacebar and confirm `Burst Thruster` moves the sub in the held movement direction, spends 4 oxygen, starts a 4-second cooldown, and updates HUD/status feedback.
