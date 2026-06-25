@@ -23,9 +23,9 @@ Implemented tooling lives in `docs/current/TOOLING.md`.
 
 ## Active Milestone
 
-Blind Validation Gate.
+First-Scan Clarity And Solo Evidence Gate.
 
-Goal: run the current prototype with unfamiliar players before adding more mechanics. The validation kit, route-readability pass, scanner plan, cargo plan, and Burst Thruster plan are complete; the remaining milestone work is evidence gathering, follow-up issue creation, and deciding which planned progression candidate should move next.
+Goal: fix the first observed comprehension break, then run a lightweight solo evidence pass before adding larger mechanics. The project owner cannot reliably recruit helpers for full blind validation, so unfamiliar-player tests are useful bonus evidence rather than a required gate.
 
 Current validation signal: informal testers could scan the first item, but did not understand what to do afterward. Treat this as partial evidence, captured in `docs/planning/BLIND_VALIDATION_NOTES_2026_06_25.md`, and prioritize post-scan objective clarity before larger progression additions.
 
@@ -37,10 +37,9 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #37 Conduct first blind player validation.
-2. #52 Support lightweight facilitator summaries for blind validation.
-3. #51 Clarify the post-scan next step in the first expedition.
-4. Conduct a follow-up multi-seed and blind-player validation pass.
+1. #51 Clarify the post-scan next step in the first expedition.
+2. #53 Run solo evidence pass after first-scan clarity fix.
+3. Create follow-up issues from #53 before moving to larger progression additions.
 
 Technical support track:
 
@@ -48,17 +47,17 @@ No active technical support issues are currently queued.
 
 Later design and demo-readiness issues:
 
-1. #50 Add prototype `Burst Thruster` with oxygen cost and cooldown only after #37 or equivalent predator-readability evidence.
+1. #50 Add prototype `Burst Thruster` with oxygen cost and cooldown only after #53 or equivalent predator-readability evidence.
 
-Do not let future-tool work block the first blind validation pass. #37 remains the proof gate for feel, readability, and predator-pressure conclusions.
+Do not let future-tool work block the first-scan clarity fix. #53 replaces #37 as the practical evidence gate for feel, readability, and predator-pressure conclusions.
 
 ## Active Milestone Success Gate
 
 The milestone succeeds only when:
 
-- #37 includes notes from at least two unfamiliar players who only received controls before playing.
-- Each player completes at least two expeditions, or their reason for stopping earlier is recorded.
-- Notes capture objective understanding, route choice, turnaround reason, scanning behavior, carried-versus-banked understanding, deep lure visibility, predator warning readability, second-seed route changes, and third-expedition motivation.
+- #51 resolves the known first-session confusion after a successful scan.
+- #53 includes notes from at least three fresh solo expedition seeds.
+- Notes capture objective understanding, route choice, turnaround reason, scanning behavior, carried-versus-banked understanding, deep lure visibility, predator warning readability, seed-to-seed route changes, and third-expedition motivation.
 - Concrete follow-up issues are created for observed confusion, boredom, unreadable cues, unfair risk, or unintended strategies.
 - The team can decide whether to implement `Signal Lens I`, `Cargo Rack I`, #50 `Burst Thruster`, or a corrective readability/onboarding issue next.
 
@@ -66,7 +65,7 @@ Technical implementation alone is not sufficient.
 
 ## Post-Validation Candidate Order
 
-After #37 produces evidence, choose from these candidates rather than starting all of them:
+After #53 produces evidence, choose from these candidates rather than starting all of them:
 
 1. #51 `Clarify the post-scan next step in the first expedition`, because first-session testers scanned successfully but did not understand the next action.
 2. `Signal Lens I` resource direction pulse if scanner usefulness or future expedition planning needs strengthening.
@@ -183,6 +182,8 @@ Different placement is not enough. It must produce different decisions.
 - Completed: hide raw seed, pattern, and result telemetry by default behind a simple development telemetry flag.
 - Completed: plan the future non-lethal `Burst Thruster` active tool milestone.
 - Completed: #46 prepare the blind validation kit for #37.
+- Closed as impractical: #37 full two-helper blind validation requirement.
+- Completed: #52 support lightweight facilitator summaries for validation evidence.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
 - Completed: #48 plan `Signal Lens I` as Scanner Improvement I from the `Wreck Signal Cache`.
 - Completed: #49 plan `Cargo Rack I` as the first cargo improvement.

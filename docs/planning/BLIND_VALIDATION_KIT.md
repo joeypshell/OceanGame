@@ -1,6 +1,6 @@
 # Blind Validation Kit
 
-Use this kit to run issue #37 with unfamiliar players. It is a facilitation aid only; it does not replace the actual validation requirement.
+Use this kit when unfamiliar players are available. The project no longer requires full blind validation to advance; outside-player notes are bonus evidence that can supplement the solo evidence pass in #53.
 
 ## Goal
 
@@ -8,12 +8,14 @@ Observe whether a player who has not read the roadmap or implementation notes un
 
 Do not explain intended strategy, route design, upgrade goals, resource depth rules, predator behavior, or what the player "should" notice.
 
-## Required Testers
+## Optional Testers
 
 - At least two players.
 - They should not have read the project roadmap, planning docs, issue threads, or implementation notes.
 - Each player should play at least two expeditions.
 - Record whether each player voluntarily starts a third expedition.
+
+If helpers are not available, do not block roadmap progress on this section. Use #53 to run a solo evidence pass instead.
 
 ## Facilitator Setup
 
@@ -53,7 +55,7 @@ The facilitator owns these notes. Testers should not be asked to fill out forms 
 
 ## Lightweight Facilitator Fallback
 
-Use this when players will play but will not fill out forms, or when a short informal session produces useful evidence before a full #37 pass is possible.
+Use this when players will play but will not fill out forms, or when a short informal session produces useful evidence before or after the solo evidence pass.
 
 - Date:
 - Player alias or group:
@@ -64,7 +66,7 @@ Use this when players will play but will not fill out forms, or when a short inf
 - What made them turn around, stop, ask for help, or lose interest?
 - What concrete follow-up issue should be created?
 
-This fallback is valid partial evidence. It can justify follow-up issues, but it does not by itself complete #37 unless the project explicitly accepts multiple facilitator summaries as replacement evidence.
+This fallback is valid partial evidence. It can justify follow-up issues, and it can supplement #53, but it is not required for roadmap progress.
 
 ### Player
 
@@ -159,12 +161,12 @@ Create follow-up issues only for concrete observations. Use this shape:
 
 Prefer several small issues over one broad "improve onboarding" issue.
 
-## Validation Completion Checklist
+## Optional Outside-Player Completion Checklist
 
 - [ ] Two unfamiliar players tested.
 - [ ] Controls only explained before play.
 - [ ] At least two expeditions recorded per player.
 - [ ] Route choice, objective understanding, scanning, banking, predator warning, deep lure, and third-expedition motivation recorded.
 - [ ] If testers will not fill forms, facilitator summaries are recorded instead.
-- [ ] Raw notes linked in #37.
-- [ ] Concrete follow-up issues created and linked in #37.
+- [ ] Raw notes linked from a planning note or the relevant issue.
+- [ ] Concrete follow-up issues created from observations.

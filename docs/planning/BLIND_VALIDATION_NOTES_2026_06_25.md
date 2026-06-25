@@ -6,7 +6,7 @@ Informal tester observation reported by the project owner.
 
 ## Evidence Quality
 
-This is partial validation evidence, not a complete #37 pass.
+This is partial validation evidence, not a complete full blind-validation pass.
 
 The testers did not fill out the full validation form, and the session does not yet satisfy the full two-player checklist. It is still useful because it came from unfamiliar-player behavior rather than internal code or roadmap review.
 
@@ -25,12 +25,15 @@ This points to objective clarity and post-scan guidance before adding new mechan
 ## Follow-Up Issues
 
 - #51 Clarify the post-scan next step in the first expedition.
-- #52 Support lightweight facilitator summaries for blind validation.
+- #52 Support lightweight facilitator summaries for blind validation. Completed.
+- #53 Run solo evidence pass after first-scan clarity fix.
 
 ## Roadmap Impact
 
 #51 should move ahead of larger progression additions because it addresses a concrete first-session comprehension break.
 
-#52 should improve the validation workflow so future observations can be captured by the facilitator even when testers will not fill out structured forms.
+#52 improved the validation workflow so future observations can be captured by the facilitator even when testers will not fill out structured forms.
 
-#37 should remain open until the project either completes the full blind-validation checklist or explicitly decides that multiple facilitator summaries are sufficient replacement evidence.
+#37 should be closed as not planned because the full two-helper requirement is impractical for the project owner.
+
+#53 replaces #37 as the practical evidence gate. Outside-player observations remain useful, but they should no longer block roadmap progress.
