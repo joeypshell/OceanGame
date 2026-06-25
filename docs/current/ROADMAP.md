@@ -82,6 +82,7 @@ scripts/
 - Current-dive state is split into `DiveSession`; session-persistent progression state is split into `ProgressionState`.
 - Extraction requires leaving the base before returning.
 - The prototype has three cargo slots, three data-backed resource pickups by depth band, extraction banking, and carried-resource loss on oxygen failure.
+- The HUD shows approximate depth, best depth, and base direction/distance; the scene uses landmarks and a deep glow hint to make return risk and deeper rewards easier to read.
 - The initial design direction is selected, but most mechanics are still planning-level intent.
 
 ## Near-Term Epics

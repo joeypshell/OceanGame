@@ -13,6 +13,8 @@ const ProgressionStateScript := preload("res://scripts/progression_state.gd")
 @onready var player: CharacterBody2D = $Player
 @onready var base_zone: Area2D = $BaseZone
 @onready var oxygen_label: Label = $HUD/Oxygen
+@onready var depth_label: Label = $HUD/Depth
+@onready var base_direction_label: Label = $HUD/BaseDirection
 @onready var cargo_label: Label = $HUD/Cargo
 @onready var bank_label: Label = $HUD/BankedResources
 @onready var status_label: Label = $HUD/Status
@@ -108,6 +110,11 @@ func _reset_resource_pickups() -> void:
 
 func _update_hud() -> void:
 	oxygen_label.text = "Oxygen: %d / %d" % [ceili(dive_session.oxygen), ceili(dive_session.max_oxygen)]
+	depth_label.text = "Depth: %dm | Best: %dm" % [
+		roundi(dive_session.current_depth),
+		roundi(progression_state.best_depth_reached)
+	]
+	base_direction_label.text = _format_base_direction()
 	cargo_label.text = "Cargo: %d / %d%s" % [
 		dive_session.current_cargo.size(),
 		dive_session.cargo_limit,
@@ -164,3 +171,13 @@ func _display_name_for_resource(resource_id: String) -> String:
 			return "Glow Plankton"
 		_:
 			return resource_id
+
+func _format_base_direction() -> String:
+	var vertical_delta := player.global_position.y - start_position.y
+	if absf(vertical_delta) < 48.0:
+		return "Base: here"
+
+	if vertical_delta > 0.0:
+		return "Base: up %.0fm" % (vertical_delta / pixels_per_meter)
+
+	return "Base: below %.0fm" % (absf(vertical_delta) / pixels_per_meter)
