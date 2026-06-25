@@ -101,6 +101,14 @@ polygon = PackedVector2Array(760, 1182, 778, 1118, 802, 1184, 834, 1148, 822, 12
 color = Color(0.72, 0.96, 1, 0.12)
 polygon = PackedVector2Array(846, 1018, 1008, 1054, 1138, 1232, 1074, 1302, 936, 1170, 790, 1098)
 
+[node name="ReefReturnCurrent" type="Polygon2D" parent="ShellReefPocket"]
+color = Color(0.52, 1, 0.86, 0.15)
+polygon = PackedVector2Array(430, 1018, 626, 902, 702, 938, 552, 1044, 660, 1054, 596, 1114, 474, 1080)
+
+[node name="ReefReturnBeacon" type="Polygon2D" parent="ShellReefPocket"]
+color = Color(0.74, 1, 0.9, 0.24)
+polygon = PackedVector2Array(610, 922, 646, 874, 682, 922, 646, 950)
+
 [node name="DeepGlowHint" type="Polygon2D" parent="."]
 color = Color(0.52, 1, 0.22, 0.24)
 polygon = PackedVector2Array(806, 1420, 974, 1420, 1038, 1760, 744, 1760)

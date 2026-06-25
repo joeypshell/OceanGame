@@ -75,7 +75,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. The route has a warning current/marker, and the patrol hint becomes more urgent as the player approaches. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
 - The `Gulper Eel` is scannable as a non-combat observation target. First-time scan records a durable behavior clue about warning currents, patrol hints, oxygen risk, and route timing; repeat scans remain free and refresh the predator-route warning text without damaging, slowing, stunning, repelling, harvesting, or controlling the predator.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
-- The scene uses surface light rays, a safe-base return column, a beaconed surface boat/lab, shallow kelp silhouettes, a midwater shelf, deep pressure haze, a deeper glow hint, pressure-wreck glow, and predator warning ribs/current to communicate depth bands, safe return, blocked opportunity, and route danger without adding new mechanics.
+- The scene uses surface light rays, a safe-base return column, a beaconed surface boat/lab, shallow kelp silhouettes, a midwater shelf, Shell Reef return-current shapes, deep pressure haze, a deeper glow hint, pressure-wreck glow, and predator warning ribs/current to communicate depth bands, safe return, blocked opportunity, and route danger without adding new mechanics.
 
 ## Runtime / Setup
 
@@ -139,7 +139,7 @@ Manual smoke:
 - Confirm restarted expeditions alternate between `Cautious shallows` and `Deep reward route` cluster patterns, and that the deep reward pattern tempts a route near the predator patrol.
 - Confirm restarted expeditions vary the `Gulper Eel` route and move the warning current/marker with it without blocking the safe return path.
 - Confirm the deep-reward lure appears only on `Deep reward route` expeditions and preserves surface return readability.
-- Confirm the `Shell Reef` pocket is readable as a midwater landmark, leaves open route gaps, can host the existing single `Shell Fragments` pickup, and does not block the surface return path.
+- Confirm the `Shell Reef` pocket is readable as a midwater landmark, leaves open route gaps, can host the existing single `Shell Fragments` pickup, and uses the return-current shapes to point back toward the surface/base path without blocking it.
 - Scan the `Shell Reef Shelf`, confirm discovery/result/log text records a safer midwater bank route clue, then repeat scan and confirm no oxygen is spent.
 - After extraction, use Left/Right to cycle the compact surface views and confirm `Result`, `Upgrades`, and `Log` keep their text readable; confirm Up/Down and E or Enter still select and purchase upgrades only while the `Upgrades` view is active.
 - Move or edit a `StarterResourceCandidates` spawn point in the scene and confirm seeded resource placement follows that typed definition.
