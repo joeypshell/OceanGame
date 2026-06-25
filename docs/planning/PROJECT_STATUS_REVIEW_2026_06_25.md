@@ -21,6 +21,7 @@ OceanGame now has a coherent first playable prototype loop:
 - deterministic logic tests,
 - MCP context tooling,
 - blind-validation kit.
+- first `Shell Reef` biome-pocket plan and replenished 10-issue queue.
 
 The project is no longer blocked by missing planning or validation requirements for the current slice. The full two-helper blind validation requirement and solo evidence replacement are skipped; the current prototype is considered good enough to move forward.
 
@@ -30,13 +31,15 @@ The first informal validation signal has been addressed: first-time scan feedbac
 
 The active milestone should move to:
 
-**Scanner And Cargo Progression**
+**Biome Pocket And Expedition Variety**
 
 Meaning:
 
-- Treat #51 and #50 as completed milestone work.
-- Treat #54 `Signal Lens I` as completed milestone work: `Wreck Signal Cache` now becomes a practical scanner reward.
-- Treat #55 `Cargo Rack I` as completed milestone work: the first simple cargo-capacity upgrade is implemented.
+- Treat scanner/cargo progression as completed milestone work.
+- Treat #59/#60 as completed monster-observation foundation work.
+- Use #65-#74 as the replenished active issue queue.
+- Build one small authored `Shell Reef` pocket before expanding into broader biome systems.
+- Keep predator progression non-lethal and observation-first.
 - Keep a rolling backlog of about 10 open actionable issues so Codex can continue without repeated replanning stops.
 - If testers are available later, use facilitator summaries as bonus evidence and create issues from concrete observations, but do not block roadmap progress on them.
 - Turn observed confusion, boredom, unreadable route cues, scanner misses, banking misunderstandings, or predator unfairness into concrete follow-up issues.
@@ -79,7 +82,9 @@ Meaning:
 - `Signal Lens I`.
 - `Cargo Rack I`.
 - Prototype `Burst Thruster`.
-- Active issues for the next readability/progression batch.
+- `Gulper Eel` observation scan.
+- `Shell Reef` biome-pocket plan.
+- Active issues #65-#74 for the next biome/readability/progression batch.
 
 ### Workflow
 
@@ -92,13 +97,25 @@ Meaning:
 
 ### Immediate
 
-1. Create or implement the future `Add Shell Reef pocket route variation` issue when the queue is replenished.
-2. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+1. Resolve #65 `Add Shell Reef pocket route variation`.
+2. Resolve #66 `Add Shell Reef Shelf scan clue`.
+3. Resolve #67 `Add Shell Reef authored spawn points`.
+4. Resolve #68 `Plan Shell Reef five-seed route review`.
+5. Resolve #69 `Plan Predator Warning I upgrade`.
+6. Resolve #70 `Plan Surface Results and Upgrade Bay layout pass`.
+7. Resolve #71 `Add compact surface summary tabs`.
+8. Resolve #72 `Plan Expedition Goal II route objective layer`.
+9. Resolve #73 `Add route objective goal for Shell Reef`.
+10. Resolve #74 `Plan next 10-issue backlog after Shell Reef batch`.
 
 ### Progression Candidates
 
-1. `Add Shell Reef pocket route variation`.
-2. New milestone planning after the stocked queue is drained or materially changes.
+1. `Shell Reef` pocket implementation and route clue.
+2. Authored biome-pocket spawn support.
+3. Predator warning upgrade planning.
+4. Surface result/upgrade/log layout readability.
+5. Route-objective prep goals.
+6. New milestone planning after the stocked queue is drained or materially changes.
 
 ### Deferred
 
@@ -119,6 +136,9 @@ Meaning:
 - `docs/planning/SCANNER_IMPROVEMENT_I.md`
 - `docs/planning/CARGO_IMPROVEMENT_I.md`
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
+- `docs/planning/MONSTER_OBSERVATION_I.md`
+- `docs/planning/BIOME_POCKET_I.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
 - `docs/planning/CORE_LOOP_RULES.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 

@@ -17,6 +17,7 @@ Detailed design rules live in:
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/BIOME_POCKET_I.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
@@ -25,11 +26,11 @@ Implemented tooling lives in `docs/current/TOOLING.md`.
 
 ## Active Milestone
 
-Scanner And Cargo Progression.
+Biome Pocket And Expedition Variety.
 
-Goal: turn the pressure-wreck reward and early extraction economy into the next two concrete progression upgrades. The first-scan clarity fix and prototype `Burst Thruster` are complete, validation gates are skipped, and the project can now move into `Signal Lens I` and `Cargo Rack I`.
+Goal: add the first small authored biome pocket and the supporting readability/planning work that lets future expedition variety change route decisions instead of becoming decorative object volume.
 
-Current progression signal: the prototype now has resource scanning, a pressure-locked wreck route, `Wreck Signal Cache`, `Burst Thruster`, and an upgrade bay. The next milestone should make the scanner reward useful across future expeditions, then add one readable cargo-capacity upgrade.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, surface result memory, and a `Shell Reef` biome-pocket plan. The next milestone should turn that plan into a readable midwater pocket, then tighten the route objective and surface UI systems that will carry more expedition variety.
 
 ## Immediate Issue Order
 
@@ -39,7 +40,16 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-No active gameplay issues are currently queued.
+1. #65 Add `Shell Reef` pocket route variation.
+2. #66 Add `Shell Reef Shelf` scan clue.
+3. #67 Add `Shell Reef` authored spawn points.
+4. #68 Plan `Shell Reef` five-seed route review.
+5. #69 Plan `Predator Warning I` upgrade.
+6. #70 Plan surface results and upgrade bay layout pass.
+7. #71 Add compact surface summary tabs.
+8. #72 Plan `Expedition Goal II` route objective layer.
+9. #73 Add route objective goal for `Shell Reef`.
+10. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
 
 Technical support track:
 
@@ -49,7 +59,7 @@ Later design and demo-readiness issues:
 
 No active later design issues are currently queued.
 
-Keep both issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, extra active tools, weapons, or new resource systems during this milestone.
+Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, full procedural biomes, large art sets, or new resource systems during this milestone.
 
 ## Rolling Backlog Policy
 
@@ -61,10 +71,14 @@ Do not create filler issues just to hit the number. Prefer a slightly smaller qu
 
 The milestone succeeds only when:
 
-- #54 turns `Wreck Signal Cache` into a practical scanner upgrade without adding a minimap or field guide.
-- #55 adds one extra cargo slot through the existing upgrade bay without changing extraction or oxygen-failure rules.
-- The active issue queue remains stocked near the rolling target or any shortfall is explained by missing planning direction.
-- Concrete follow-up issues are created only for newly observed confusion, boredom, unreadable cues, unfair risk, or unintended strategies.
+- #65 adds a readable Shell Reef pocket that creates a midwater bank-or-push-deeper decision.
+- #66 teaches the reef route purpose through a practical scan clue without a full field guide.
+- #67 keeps biome-pocket placement authored, typed, and inspectable.
+- #68 gives the pocket a small route-review method before larger biome expansion.
+- #69 keeps predator progression on the observation/preparation path.
+- #70/#71 keep the growing surface result, log, and upgrade information readable.
+- #72/#73 keep route objectives concise and do not turn the start panel into a quest log.
+- #74 replenishes the next queue without vague filler work.
 
 Technical implementation alone is not sufficient.
 
@@ -72,10 +86,24 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. `Add Shell Reef pocket route variation` from the `Biome Pocket I` plan.
-2. After this batch, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+1. #65 add `Shell Reef` pocket route variation.
+2. #66 add `Shell Reef Shelf` scan clue.
+3. #67 add `Shell Reef` authored spawn points.
+4. #68 plan `Shell Reef` route review.
+5. #69 plan `Predator Warning I`.
+6. #70 plan surface result and upgrade bay layout.
+7. #71 add compact surface summary tabs.
+8. #72 plan `Expedition Goal II`.
+9. #73 add route objective goal for `Shell Reef`.
+10. #74 replenish the next issue queue.
 
 ## Latest Completed Milestone
+
+Scanner And Cargo Progression.
+
+Goal completed: `Signal Lens I` and `Cargo Rack I` are implemented, scan target metadata is clearer, expedition prep/result surfaces now call out useful progress, the upgrade bay is more readable, recent expedition history exists, and `Gulper Eel` observation is in place as the first non-combat monster-hunting step.
+
+Previous completed milestone:
 
 First-Scan Clarity And Prototype Burst.
 
