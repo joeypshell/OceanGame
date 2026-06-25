@@ -58,6 +58,10 @@ Checklist template:
 
 - `docs/planning/RUN_PLAYTEST_CHECKLIST.md`
 
+Current tuning pass:
+
+- `docs/planning/OXYGEN_MARGIN_TUNING_2026_06_25.md`
+
 For each seed, record:
 
 - route chosen

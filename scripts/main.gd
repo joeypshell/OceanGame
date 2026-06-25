@@ -25,7 +25,7 @@ const RESOURCE_CLUSTER_PATTERNS := [
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
-@export var oxygen_drain_per_second := 1.0
+@export var oxygen_drain_per_second := 0.95
 @export var collect_oxygen_cost := 1.0
 @export var scan_oxygen_cost := 2.0
 @export var predator_contact_oxygen_cost := 5.0

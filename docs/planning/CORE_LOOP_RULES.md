@@ -36,7 +36,7 @@ Persistent progression does not mean restoring an in-progress dive.
 
 Keep the oxygen model readable:
 
-- Passive drain: 1 oxygen per second.
+- Passive drain: 0.95 oxygen per second.
 - Collect resource: 1 oxygen.
 - Complete scan: 2 oxygen.
 - Predator contact: 5 oxygen.

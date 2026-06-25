@@ -16,7 +16,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Current movement uses acceleration, drag, and a bounded vertical dive area so the placeholder submersible cannot leave the prototype space.
 - The first scene starts the player at a visible surface boat/shallow lab base near the top of the water column.
 - The camera follows the player through a vertical descent with limits that keep the side-view dive space readable.
-- Oxygen drains during an active dive. Extracting before oxygen reaches zero succeeds; reaching zero shows a placeholder failure result with cargo loss text.
+- Oxygen drains at `0.95` oxygen per second during an active dive. Extracting before oxygen reaches zero succeeds; reaching zero shows a placeholder failure result with cargo loss text.
 - Low oxygen changes presentation only: below 25 percent, the HUD shows a low-oxygen warning; below 10 percent, the oxygen and base-direction HUD pulse with critical return feedback.
 - Low-oxygen feedback does not add ascent drain, decompression, depth-based oxygen penalties, or hidden oxygen costs.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.

@@ -81,6 +81,7 @@ Different placement is not enough. It must produce different decisions.
 - A first daily-run playtest report exists under `docs/planning/`, with follow-up risks around real-time oxygen margins and predator readability.
 - Long-term progression has a single local prototype save slot; active dive state remains temporary.
 - Low-oxygen and critical-oxygen HUD feedback increases return urgency without changing oxygen mechanics.
+- A first oxygen-margin tuning pass reduced passive drain slightly to support deep-reward routes with one scan or one predator contact.
 
 ## Epics
 
