@@ -130,6 +130,15 @@ func _try_scan() -> void:
 		_update_hud()
 		return
 
+	if progression_state.has_discovery(target.discovery_id):
+		if target.discovery_id == "lantern_fry":
+			glow_plankton_highlight_timer = 8.0
+		elif target.discovery_id == "thermal_vent":
+			_reveal_thermal_vent_route()
+		status_label.text = "%s already scanned." % target.display_name
+		_update_hud()
+		return
+
 	dive_session.drain_oxygen(scan_oxygen_cost)
 	progression_state.add_discovery(
 		target.discovery_id,
@@ -175,7 +184,7 @@ func _on_resource_pickup_collected(pickup: Node) -> void:
 		return
 
 	if not dive_session.add_cargo(pickup.definition.id):
-		status_label.text = "Cargo full: return to bank resources."
+		status_label.text = "Cargo full: return to bank before risking more."
 		_update_hud()
 		return
 

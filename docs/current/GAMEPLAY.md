@@ -29,6 +29,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton`.
 - A scannable `Thermal Vent` reveals a current-route hint and hidden `Glow Plankton` cluster.
 - A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
+- Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
 - The scene uses surface light rays, a midwater wreck silhouette, and a deeper glow hint to communicate depth bands and deeper reward potential.
 
@@ -92,3 +93,9 @@ Manual smoke:
 - Confirm the scene communicates shallow, midwater, and deep areas through color, landmarks, and resource placement.
 - Let oxygen reach zero and confirm the HUD shows a failure result.
 - After first dive loop: start a dive, collect or scan something, return to base, and confirm the result is recorded.
+
+## Vertical Slice Playtest Notes
+
+- First-loop validation: the surface base is visible at start, the HUD labels depth and base direction, and the first shallow resource is visible before the player commits to a deeper route.
+- Risk validation: a cautious dive can bank shallow/midwater cargo, a deeper dive can pursue `Glow Plankton`, and the `Gulper Eel` route can turn a deep reward attempt into a close oxygen return or failure.
+- Upgrade validation: because cargo has three slots and `Oxygen Tank I` costs four total resources, the first upgrade requires at least two successful banking dives; after purchase, the 40-oxygen run gives room for an extra scan, pickup, or predator recovery before returning.

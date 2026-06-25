@@ -70,8 +70,8 @@ polygon = PackedVector2Array(-130, -18, 70, -18, 70, -44, 140, 0, 70, 44, 70, 18
 [node name="RouteLabel" type="Label" parent="VentRouteHint"]
 offset_left = 420.0
 offset_top = 1230.0
-offset_right = 860.0
-offset_bottom = 1262.0
+offset_right = 940.0
+offset_bottom = 1284.0
 text = "Thermal vent scan: faint current points toward hidden plankton"
 
 [node name="DepthMarkers" type="Node2D" parent="."]
@@ -182,7 +182,7 @@ polygon = PackedVector2Array(0, -32, 12, -10, 34, -6, 17, 10, 21, 32, 0, 19, -21
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="DeepGlowPlankton" type="Area2D" parent="ResourcePickups"]
-position = Vector2(1010, 1880)
+position = Vector2(1040, 1900)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
@@ -222,8 +222,8 @@ shape = SubResource("CircleShape2D_pickup")
 [node name="GulperEel" type="Area2D" parent="Predators"]
 position = Vector2(680, 1780)
 script = ExtResource("8_predator")
-patrol_start = Vector2(620, 1780)
-patrol_end = Vector2(1010, 1780)
+patrol_start = Vector2(640, 1780)
+patrol_end = Vector2(1015, 1780)
 patrol_speed = 92.0
 chase_speed = 165.0
 detect_radius = 190.0

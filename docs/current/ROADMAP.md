@@ -86,6 +86,7 @@ scripts/
 - The scanner can scan `Lantern Fry`; scanning costs oxygen, records a discovery, and temporarily highlights nearby `Glow Plankton`.
 - The scanner can scan `Thermal Vent`; scanning costs oxygen, records a discovery, and reveals a route hint plus hidden `Glow Plankton`.
 - `Gulper Eel` patrols a deep route to a valuable `Glow Plankton`; contact causes oxygen loss, knockback, and brief movement disruption without instant failure.
+- Re-scanning known discoveries does not cost oxygen and can refresh the discovery's practical effect.
 - The HUD shows approximate depth, best depth, and base direction/distance; the scene uses landmarks and a deep glow hint to make return risk and deeper rewards easier to read.
 - The initial design direction is selected, but most mechanics are still planning-level intent.
 
@@ -153,6 +154,7 @@ Target behavior:
   Cost: `2 Kelp Fiber`, `1 Shell Fragment`, `1 Glow Plankton`.
   Effect: increases max oxygen from 30 to 40.
   Reason: oxygen is already the core pressure system, so this validates persistent progression without adding a full crafting economy.
+  Pacing note: because cargo has three slots and this costs four total resources, the upgrade requires at least two successful banking dives in the current slice.
 
 Future upgrade candidates:
 
@@ -262,6 +264,7 @@ Not required yet:
 - Completed: add safe base and extraction interaction.
 - Completed: add oxygen timer and run failure.
 - Completed: reframe prototype around side-view dive descent.
+- Completed: formalize dive/progression state, add resource banking, improve depth readability, add `Oxygen Tank I`, add scanner discoveries, and add the first route-control predator.
 
 ## Out Of Scope For Now
 
