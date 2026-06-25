@@ -16,6 +16,7 @@ Detailed design rules live in:
 - `docs/planning/CARGO_IMPROVEMENT_I.md`
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
+- `docs/planning/BIOME_POCKET_I.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
@@ -38,7 +39,7 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #61 Plan first small biome pocket.
+No active gameplay issues are currently queued.
 
 Technical support track:
 
@@ -71,7 +72,7 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #61 first small biome pocket planning.
+1. `Add Shell Reef pocket route variation` from the `Biome Pocket I` plan.
 2. After this batch, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ## Latest Completed Milestone
@@ -202,6 +203,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #58 improve expedition result progress callouts.
 - Completed: #59 plan `Monster Observation I` progression slice.
 - Completed: #60 add `Gulper Eel` observation scan.
+- Completed: #61 plan first small biome pocket.
 - Completed: #62 polish surface upgrade bay readability.
 - Completed: #63 add recent expedition log.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.

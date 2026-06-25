@@ -92,12 +92,12 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #61 first small biome pocket plan.
+1. Create or implement the future `Add Shell Reef pocket route variation` issue when the queue is replenished.
 2. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ### Progression Candidates
 
-1. #61 first small biome pocket plan.
+1. `Add Shell Reef pocket route variation`.
 2. New milestone planning after the stocked queue is drained or materially changes.
 
 ### Deferred
