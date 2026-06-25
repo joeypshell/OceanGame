@@ -11,6 +11,7 @@ Detailed design rules live in:
 - `docs/planning/GAME_VISION.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
+- `docs/planning/BLIND_VALIDATION_KIT.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
@@ -31,9 +32,8 @@ No active tooling issues are currently queued.
 Gameplay and validation track:
 
 1. #37 Conduct first blind player validation.
-2. #46 Prepare blind validation kit for #37.
-3. #47 Add a narrow atmosphere and route-readability pass.
-4. Conduct a follow-up multi-seed and blind-player validation pass.
+2. #47 Add a narrow atmosphere and route-readability pass.
+3. Conduct a follow-up multi-seed and blind-player validation pass.
 
 Technical support track:
 
@@ -163,6 +163,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: evaluate repeat tactical scan costs and keep repeat scans free for the current prototype.
 - Completed: hide raw seed, pattern, and result telemetry by default behind a simple development telemetry flag.
 - Completed: plan the future non-lethal `Burst Thruster` active tool milestone.
+- Completed: #46 prepare the blind validation kit for #37.
 
 ## Deferred Work
 

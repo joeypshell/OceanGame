@@ -1,6 +1,8 @@
 # Expedition Playtest Checklist
 
-Use this template for hands-on seeded-expedition tuning passes. The result panel now reports seed, cluster pattern, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
+Use this template for hands-on seeded-expedition tuning passes. The result panel reports seed, cluster pattern, cargo collected, scans, predator contacts, oxygen at result, and failure cause when development telemetry is enabled with F3.
+
+For blind unfamiliar-player validation, use `docs/planning/BLIND_VALIDATION_KIT.md` first. That kit keeps the pre-test explanation limited to controls and adds observation prompts for #37.
 
 ## Expedition Template
 
