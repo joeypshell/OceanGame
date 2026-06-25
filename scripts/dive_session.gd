@@ -37,6 +37,9 @@ func fail() -> void:
 	current_cargo.clear()
 	result = Result.FAILED
 
+func clear_cargo() -> void:
+	current_cargo.clear()
+
 func add_cargo(resource_id: String) -> bool:
 	if current_cargo.size() >= cargo_limit:
 		return false

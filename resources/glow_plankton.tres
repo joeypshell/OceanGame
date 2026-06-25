@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ResourceDefinition" load_steps=2 format=3 uid="uid://glow_plankton_resource"]
+
+[ext_resource type="Script" path="res://scripts/resource_definition.gd" id="1_resource_definition"]
+
+[resource]
+script = ExtResource("1_resource_definition")
+id = "glow_plankton"
+display_name = "Glow Plankton"
+depth_band = "deep"
+value = 3
+scan_description = "Bioluminescent plankton found deeper down. Valuable, but usually far from safety."
+upgrade_use = "Oxygen Tank I"

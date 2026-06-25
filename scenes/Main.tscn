@@ -1,10 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=9 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
+[ext_resource type="Script" path="res://scripts/resource_pickup.gd" id="3_resource_pickup"]
+[ext_resource type="Resource" path="res://resources/kelp_fiber.tres" id="4_kelp_fiber"]
+[ext_resource type="Resource" path="res://resources/shell_fragments.tres" id="5_shell_fragments"]
+[ext_resource type="Resource" path="res://resources/glow_plankton.tres" id="6_glow_plankton"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
+radius = 22.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main_script")
@@ -93,6 +100,44 @@ polygon = PackedVector2Array(-48, -30, 44, -38, 62, 0, 44, 38, -48, 30, -64, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BaseZone"]
 shape = SubResource("CircleShape2D_base_zone")
 
+[node name="ResourcePickups" type="Node2D" parent="."]
+
+[node name="KelpFiber" type="Area2D" parent="ResourcePickups"]
+position = Vector2(830, 420)
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("4_kelp_fiber")
+
+[node name="Visual" type="Polygon2D" parent="ResourcePickups/KelpFiber"]
+color = Color(0.25, 0.9, 0.42, 1)
+polygon = PackedVector2Array(-12, -28, 5, -8, 18, -34, 11, 4, 28, 26, 2, 13, -20, 31, -8, 3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/KelpFiber"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="ShellFragments" type="Area2D" parent="ResourcePickups"]
+position = Vector2(470, 960)
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("5_shell_fragments")
+
+[node name="Visual" type="Polygon2D" parent="ResourcePickups/ShellFragments"]
+color = Color(0.92, 0.78, 0.52, 1)
+polygon = PackedVector2Array(-30, 12, -12, -18, 17, -25, 31, 2, 8, 24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/ShellFragments"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="GlowPlankton" type="Area2D" parent="ResourcePickups"]
+position = Vector2(890, 1580)
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("6_glow_plankton")
+
+[node name="Visual" type="Polygon2D" parent="ResourcePickups/GlowPlankton"]
+color = Color(0.72, 1, 0.3, 1)
+polygon = PackedVector2Array(0, -32, 12, -10, 34, -6, 17, 10, 21, 32, 0, 19, -21, 32, -17, 10, -34, -6, -12, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/GlowPlankton"]
+shape = SubResource("CircleShape2D_pickup")
+
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(0.9, 0.9)
 enabled = true
@@ -124,16 +169,30 @@ offset_right = 620.0
 offset_bottom = 118.0
 text = "Oxygen: 30 / 30"
 
-[node name="Status" type="Label" parent="HUD"]
+[node name="Cargo" type="Label" parent="HUD"]
 offset_left = 24.0
 offset_top = 118.0
 offset_right = 620.0
-offset_bottom = 150.0
+offset_bottom = 204.0
+text = "Cargo: 0 / 3"
+
+[node name="BankedResources" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 204.0
+offset_right = 620.0
+offset_bottom = 290.0
+text = "Banked: none"
+
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 290.0
+offset_right = 620.0
+offset_bottom = 322.0
 text = "Dive status: active"
 
 [node name="ExtractionPrompt" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 150.0
+offset_top = 322.0
 offset_right = 620.0
-offset_bottom = 182.0
+offset_bottom = 354.0
 text = "Safe base: press E or Enter to extract"

@@ -18,3 +18,6 @@ func has_upgrade(upgrade_id: String) -> bool:
 
 func add_discovery(discovery_id: String) -> void:
 	scan_discoveries[discovery_id] = true
+
+func resource_count(resource_id: String) -> int:
+	return int(banked_resources.get(resource_id, 0))

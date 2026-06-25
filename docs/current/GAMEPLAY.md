@@ -20,6 +20,9 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
 - Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
 - Extraction only succeeds after the player has left the base and returned.
+- The player has three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
+- Starter resources are placed by depth: `Kelp Fiber` in the shallows, `Shell Fragments` in midwater, and `Glow Plankton` in deeper water.
+- Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 
 ## Runtime / Setup
 
@@ -47,6 +50,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scripts/progression_state.gd`: session-persistent resources, upgrades, discoveries, and best depth.
   - `scripts/player.gd`: basic placeholder player movement.
   - `scripts/resource_definition.gd`: typed resource data definition for upcoming pickup/resource work.
+  - `scripts/resource_pickup.gd`: pickup nodes that emit collection events and reset between dives.
+  - `resources/*.tres`: starter resource definitions.
 - GitHub Actions:
   - `.github/workflows/godot-smoke.yml`: runs a Godot headless launch smoke check and `git diff --check`.
 - Do not commit `.godot/`, `.import/`, `*.import`, local editor cache, build output, secrets, or export artifacts.
@@ -67,5 +72,7 @@ Manual smoke:
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.
+- Collect resources, confirm cargo fills up to three slots, extract, and confirm resources move into the banked list.
+- Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.
 - Let oxygen reach zero and confirm the HUD shows a failure result.
 - After first dive loop: start a dive, collect or scan something, return to base, and confirm the result is recorded.

@@ -81,6 +81,7 @@ scripts/
 - The first scene includes an oxygen timer, successful extraction before depletion, and placeholder failure when oxygen reaches zero.
 - Current-dive state is split into `DiveSession`; session-persistent progression state is split into `ProgressionState`.
 - Extraction requires leaving the base before returning.
+- The prototype has three cargo slots, three data-backed resource pickups by depth band, extraction banking, and carried-resource loss on oxygen failure.
 - The initial design direction is selected, but most mechanics are still planning-level intent.
 
 ## Near-Term Epics

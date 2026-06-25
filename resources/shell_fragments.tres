@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ResourceDefinition" load_steps=2 format=3 uid="uid://shell_fragments_resource"]
+
+[ext_resource type="Script" path="res://scripts/resource_definition.gd" id="1_resource_definition"]
+
+[resource]
+script = ExtResource("1_resource_definition")
+id = "shell_fragments"
+display_name = "Shell Fragments"
+depth_band = "midwater"
+value = 2
+scan_description = "Dense shell pieces found below the shallows. Useful for pressure-safe fittings."
+upgrade_use = "Oxygen Tank I"
