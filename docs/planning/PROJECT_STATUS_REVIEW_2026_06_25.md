@@ -83,11 +83,12 @@ Meaning:
 - `Wreck Signal Cache`.
 - `Signal Lens I`.
 - `Cargo Rack I`.
+- `Predator Warning I`.
 - Prototype `Burst Thruster`.
 - `Gulper Eel` observation scan.
 - `Shell Reef` biome pocket, scan clue, authored spawn candidates, route-review checklist, and route-objective fallback.
 - Compact surface result/upgrade/log views.
-- Active issues #75-#84 for the predator-warning and route-tuning batch.
+- Active issues #76-#84 for the predator-warning and route-tuning batch.
 - Active issues #86-#90 for the first visual language and readability-assets batch.
 
 ### Workflow
@@ -101,32 +102,30 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #75 `Add Predator Warning I upgrade`.
-2. Resolve #76 `Add Predator Warning I upgrade tests and metadata coverage`.
-3. Resolve #77 `Run Shell Reef five-seed route review`.
-4. Resolve #78 `Tune Shell Reef return readability after route review`.
-5. Resolve #79 `Tune deep-reward lure relative to Shell Reef route`.
-6. Resolve #80 `Plan Biome Pocket II candidate`.
-7. Resolve #81 `Plan first resource economy tuning pass`.
-8. Resolve #82 `Add route-choice result callout`.
-9. Resolve #83 `Update MCP context server with latest planning docs`.
-10. Resolve #84 `Plan Predator Countermeasure I after warning upgrade`.
-11. Resolve #86 `Create first visual language guide`.
-12. Resolve #87 `Extract reusable pressure gate, current hint, and signal hint prototypes`.
-13. Resolve #88 `Standardize current and route-hint visuals`.
-14. Resolve #89 `Standardize scan target marker readability`.
-15. Resolve #90 `Run first depth-band and landmark readability asset pass`.
+1. Resolve #76 `Add Predator Warning I upgrade tests and metadata coverage`.
+2. Resolve #77 `Run Shell Reef five-seed route review`.
+3. Resolve #78 `Tune Shell Reef return readability after route review`.
+4. Resolve #79 `Tune deep-reward lure relative to Shell Reef route`.
+5. Resolve #80 `Plan Biome Pocket II candidate`.
+6. Resolve #81 `Plan first resource economy tuning pass`.
+7. Resolve #82 `Add route-choice result callout`.
+8. Resolve #83 `Update MCP context server with latest planning docs`.
+9. Resolve #84 `Plan Predator Countermeasure I after warning upgrade`.
+10. Resolve #86 `Create first visual language guide`.
+11. Resolve #87 `Extract reusable pressure gate, current hint, and signal hint prototypes`.
+12. Resolve #88 `Standardize current and route-hint visuals`.
+13. Resolve #89 `Standardize scan target marker readability`.
+14. Resolve #90 `Run first depth-band and landmark readability asset pass`.
 
 ### Progression Candidates
 
-1. `Predator Warning I` implementation.
-2. Shell Reef route review and narrow tuning.
-3. Biome Pocket II planning.
-4. First resource economy tuning.
-5. Route-choice result feedback.
-6. MCP planning-context refresh.
-7. Predator Countermeasure I planning after warning upgrade.
-8. Visual language guide and reusable readability assets before final art production.
+1. Shell Reef route review and narrow tuning.
+2. Biome Pocket II planning.
+3. First resource economy tuning.
+4. Route-choice result feedback.
+5. MCP planning-context refresh.
+6. Predator Countermeasure I planning after warning upgrade.
+7. Visual language guide and reusable readability assets before final art production.
 
 ### Deferred
 

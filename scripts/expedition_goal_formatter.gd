@@ -62,5 +62,7 @@ static func _discovery_name(discovery_id: String) -> String:
 			return "Wreck Signal Cache"
 		"lantern_fry":
 			return "Lantern Fry"
+		"gulper_eel":
+			return "Gulper Eel"
 		_:
 			return discovery_id

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3 uid="uid://predator_warning_1_upgrade"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="1_upgrade_definition"]
+
+[resource]
+script = ExtResource("1_upgrade_definition")
+id = "predator_warning_1"
+display_name = "Predator Warning I"
+description = "Tunes warning currents to appear earlier near observed predator routes."
+resource_cost = {
+"glow_plankton": 1,
+"kelp_fiber": 1,
+"shell_fragments": 2
+}
+required_discovery = "gulper_eel"
+effect_id = "predator_warning_range_1"
+locked_reason = "Gulper Eel observation data is needed before warning currents can be tuned."
+available_text = "Available: press E or Enter to purchase."
+owned_text = "Owned: predator warning feedback begins farther from the Gulper Eel."

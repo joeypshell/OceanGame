@@ -14,6 +14,7 @@ const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres"
 const PressureSealUpgrade := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SignalLensUpgrade := preload("res://resources/upgrades/signal_lens_1.tres")
 const CargoRackUpgrade := preload("res://resources/upgrades/cargo_rack_1.tres")
+const PredatorWarningUpgrade := preload("res://resources/upgrades/predator_warning_1.tres")
 
 class DummyScanTarget:
 	extends Node2D
@@ -41,6 +42,7 @@ func _initialize() -> void:
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("predator scan target", _test_predator_scan_target)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
+	_run("predator warning upgrade metadata", _test_predator_warning_upgrade_metadata)
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
@@ -256,14 +258,33 @@ func _test_discovery_prerequisites() -> void:
 	_expect(SignalLensUpgrade.required_discovery == "wreck_signal_cache", "Signal Lens I should require Wreck Signal Cache")
 	_expect(CargoRackUpgrade.required_discovery.is_empty(), "Cargo Rack I should not require a discovery")
 	_expect(CargoRackUpgrade.effect_id == "cargo_limit_4", "Cargo Rack I should use cargo limit effect")
+	_expect(PredatorWarningUpgrade.required_discovery == "gulper_eel", "Predator Warning I should require Gulper Eel")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, OxygenTankUpgrade) == "", "upgrade with no prerequisite should not be locked")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "thermal_vent", "Pressure Seal I prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, SignalLensUpgrade) == "wreck_signal_cache", "Signal Lens I prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, CargoRackUpgrade) == "", "Cargo Rack I prerequisite should be satisfied by default")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, PredatorWarningUpgrade) == "gulper_eel", "Predator Warning I prerequisite should start missing")
 	progression.add_discovery("thermal_vent", "Thermal Vent", "Hot current.", "Unlocks pressure tuning.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "", "Pressure Seal I prerequisite should be satisfied by Thermal Vent discovery")
 	progression.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks Signal Lens I.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, SignalLensUpgrade) == "", "Signal Lens I prerequisite should be satisfied by Wreck Signal Cache discovery")
+	progression.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, PredatorWarningUpgrade) == "", "Predator Warning I prerequisite should be satisfied by Gulper Eel discovery")
+
+func _test_predator_warning_upgrade_metadata() -> void:
+	_expect(PredatorWarningUpgrade.id == "predator_warning_1", "Predator Warning I should have a stable upgrade id")
+	_expect(PredatorWarningUpgrade.effect_id == "predator_warning_range_1", "Predator Warning I should use the warning range effect")
+	_expect(int(PredatorWarningUpgrade.resource_cost.get("kelp_fiber", 0)) == 1, "Predator Warning I should cost one kelp fiber")
+	_expect(int(PredatorWarningUpgrade.resource_cost.get("shell_fragments", 0)) == 2, "Predator Warning I should cost two shell fragments")
+	_expect(int(PredatorWarningUpgrade.resource_cost.get("glow_plankton", 0)) == 1, "Predator Warning I should cost one glow plankton")
+
+	var predator := PredatorScript.new()
+	predator.detect_radius = 100.0
+	_expect(is_equal_approx(predator.warning_radius(), 145.0), "default predator warning radius should stay at the original lead distance")
+	predator.set_warning_radius_multiplier(1.8)
+	_expect(is_equal_approx(predator.warning_radius(), 180.0), "Predator Warning I should widen only the warning radius")
+	_expect(is_equal_approx(predator.detect_radius, 100.0), "Predator Warning I should not change chase detection radius")
+	predator.free()
 
 func _test_expedition_prep_goals() -> void:
 	var upgrades: Array[UpgradeDefinition] = [
@@ -271,6 +292,7 @@ func _test_expedition_prep_goals() -> void:
 		PressureSealUpgrade,
 		SignalLensUpgrade,
 		CargoRackUpgrade,
+		PredatorWarningUpgrade,
 	]
 	var progression := ProgressionStateScript.new()
 
@@ -321,6 +343,19 @@ func _test_expedition_prep_goals() -> void:
 	}
 	progression.purchase_upgrade(CargoRackUpgrade.id, CargoRackUpgrade.resource_cost)
 	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
+	_expect(goal.contains("scan Gulper Eel"), "cargo rack ownership should advance goal to Predator Warning I scan prerequisite")
+
+	progression.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
+	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
+	_expect(goal.contains("Predator Warning I"), "gulper observation should advance goal to Predator Warning I resources")
+
+	progression.banked_resources = {
+		"glow_plankton": 1,
+		"kelp_fiber": 1,
+		"shell_fragments": 2,
+	}
+	progression.purchase_upgrade(PredatorWarningUpgrade.id, PredatorWarningUpgrade.resource_cost)
+	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
 	_expect(goal == "Goal: use Shell Reef to bank Shell Fragments, or push deeper if oxygen allows.", "completed upgrade goals should fall back to the Shell Reef route objective")
 
 func _test_result_progress_callouts() -> void:
@@ -330,6 +365,7 @@ func _test_result_progress_callouts() -> void:
 		PressureSealUpgrade,
 		SignalLensUpgrade,
 		CargoRackUpgrade,
+		PredatorWarningUpgrade,
 	]
 
 	main.progression_state.banked_resources = {
@@ -356,6 +392,7 @@ func _test_upgrade_bay_readability_states() -> void:
 		PressureSealUpgrade,
 		SignalLensUpgrade,
 		CargoRackUpgrade,
+		PredatorWarningUpgrade,
 	]
 
 	var state := main._format_upgrade_state(OxygenTankUpgrade)

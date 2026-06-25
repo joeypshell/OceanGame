@@ -12,11 +12,13 @@ const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tre
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
 const CARGO_RACK_UPGRADE := preload("res://resources/upgrades/cargo_rack_1.tres")
+const PREDATOR_WARNING_UPGRADE := preload("res://resources/upgrades/predator_warning_1.tres")
 
 const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
 const PRESSURE_SEAL_UPGRADE_ID := "pressure_seal_1"
 const SIGNAL_LENS_UPGRADE_ID := "signal_lens_1"
 const CARGO_RACK_UPGRADE_ID := "cargo_rack_1"
+const PREDATOR_WARNING_UPGRADE_ID := "predator_warning_1"
 const PROGRESSION_SAVE_PATH := "user://progression_save.json"
 const LOW_OXYGEN_RATIO := 0.25
 const CRITICAL_OXYGEN_RATIO := 0.10
@@ -45,6 +47,7 @@ const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
 @export var burst_thruster_oxygen_cost := 4.0
 @export var burst_thruster_cooldown_seconds := 4.0
 @export var burst_thruster_force := 760.0
+@export var predator_warning_1_multiplier := 1.8
 @export var scan_range := 120.0
 @export var start_position := Vector2(640.0, 190.0)
 @export var surface_y := 120.0
@@ -107,6 +110,7 @@ var upgrade_definitions: Array[UpgradeDefinition] = [
 	PRESSURE_SEAL_UPGRADE,
 	SIGNAL_LENS_UPGRADE,
 	CARGO_RACK_UPGRADE,
+	PREDATOR_WARNING_UPGRADE,
 ]
 var run_collected_resources: Array[String] = []
 var run_completed_scans: Array[String] = []
@@ -338,6 +342,8 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 			pass
 		"cargo_limit_4":
 			dive_session.cargo_limit = _current_cargo_limit()
+		"predator_warning_range_1":
+			_sync_predator_warning_upgrade_state()
 		_:
 			push_warning("Unknown upgrade effect: %s" % effect_id)
 
@@ -684,6 +690,7 @@ func _sync_discovery_reveals() -> void:
 		wreck_signal_hint.visible = false
 
 	_sync_pressure_lock_state()
+	_sync_predator_warning_upgrade_state()
 
 func _reveal_thermal_vent_route() -> void:
 	hidden_glow_plankton.visible = true
@@ -703,6 +710,11 @@ func _sync_pressure_lock_state() -> void:
 	else:
 		pressure_shimmer.modulate = Color.WHITE
 		pressure_label.text = "LOCKED ROUTE: Pressure Seal I required"
+
+func _sync_predator_warning_upgrade_state() -> void:
+	var multiplier := predator_warning_1_multiplier if progression_state.has_upgrade(PREDATOR_WARNING_UPGRADE_ID) else 1.45
+	if gulper_eel != null and gulper_eel.has_method("set_warning_radius_multiplier"):
+		gulper_eel.set_warning_radius_multiplier(multiplier)
 
 func _update_hud() -> void:
 	_update_scan_target_feedback()

@@ -7,6 +7,7 @@ signal contacted(predator: Node)
 @export var patrol_speed := 90.0
 @export var chase_speed := 155.0
 @export var detect_radius := 180.0
+@export var warning_radius_multiplier := 1.45
 @export var chase_duration := 2.0
 @export var discovery_id: String
 @export var display_name: String
@@ -51,6 +52,12 @@ func configure_patrol(new_patrol_start: Vector2, new_patrol_end: Vector2) -> voi
 	_target = patrol_end
 	_chase_time = 0.0
 
+func set_warning_radius_multiplier(multiplier: float) -> void:
+	warning_radius_multiplier = maxf(1.0, multiplier)
+
+func warning_radius() -> float:
+	return detect_radius * warning_radius_multiplier
+
 func set_scan_selected(selected: bool) -> void:
 	is_scan_selected = selected
 	modulate = Color(1.32, 1.18, 0.58, 1.0) if is_scan_selected else Color.WHITE
@@ -67,13 +74,12 @@ func _update_warning_feedback(player: Node2D) -> void:
 		patrol_hint.modulate = Color.WHITE
 		return
 
-	var warning_radius := detect_radius * 1.45
 	var distance := global_position.distance_to(player.global_position)
 	if distance <= detect_radius:
 		var pulse := 0.75 + 0.25 * absf(sin(Time.get_ticks_msec() / 80.0))
 		patrol_hint.modulate = Color(1.0, 0.15, 0.12, pulse)
-	elif distance <= warning_radius:
-		var warning_strength := 1.0 - ((distance - detect_radius) / (warning_radius - detect_radius))
+	elif distance <= warning_radius():
+		var warning_strength := 1.0 - ((distance - detect_radius) / (warning_radius() - detect_radius))
 		patrol_hint.modulate = Color(1.0, 0.55, 0.18, 0.45 + 0.25 * warning_strength)
 	else:
 		patrol_hint.modulate = Color.WHITE

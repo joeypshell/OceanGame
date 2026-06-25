@@ -47,14 +47,13 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #75 Add `Predator Warning I` upgrade.
-2. #76 Add `Predator Warning I` upgrade tests and metadata coverage.
-3. #77 Run `Shell Reef` five-seed route review.
-4. #78 Tune `Shell Reef` return readability after route review.
-5. #79 Tune deep-reward lure relative to `Shell Reef` route.
-6. #80 Plan `Biome Pocket II` candidate.
-7. #81 Plan first resource economy tuning pass.
-8. #82 Add route-choice result callout.
+1. #76 Add `Predator Warning I` upgrade tests and metadata coverage.
+2. #77 Run `Shell Reef` five-seed route review.
+3. #78 Tune `Shell Reef` return readability after route review.
+4. #79 Tune deep-reward lure relative to `Shell Reef` route.
+5. #80 Plan `Biome Pocket II` candidate.
+6. #81 Plan first resource economy tuning pass.
+7. #82 Add route-choice result callout.
 
 Technical support track:
 
@@ -109,6 +108,7 @@ Choose from these candidates rather than starting all of them:
 
 Recently completed:
 
+- #75 added `Predator Warning I` as the first non-lethal predator-preparation upgrade from `Gulper Eel` observation.
 - #85 clarified the pressure-lock route by making the locked gate, future cache signal, and surface-upgrade return step more readable.
 - #74 replenished the queue as `Predator Warning And Route Tuning` with issues #75-#84.
 - #73 added the first `Expedition Goal II` route objective by pointing the completed-upgrade fallback at the `Shell Reef` bank-or-push-deeper choice.
