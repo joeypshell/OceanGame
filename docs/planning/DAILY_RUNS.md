@@ -54,6 +54,10 @@ Current report:
 
 - `docs/planning/DAILY_RUN_PLAYTEST_2026_06_25.md`
 
+Checklist template:
+
+- `docs/planning/RUN_PLAYTEST_CHECKLIST.md`
+
 For each seed, record:
 
 - route chosen

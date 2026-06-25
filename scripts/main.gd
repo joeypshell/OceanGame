@@ -68,6 +68,10 @@ var glow_plankton_highlight_timer := 0.0
 var last_result_summary := ""
 var upgrade_menu_feedback := ""
 var current_resource_cluster_pattern := "cautious"
+var run_collected_resources: Array[String] = []
+var run_completed_scans: Array[String] = []
+var run_predator_contacts := 0
+var run_failure_cause := "none"
 
 func _ready() -> void:
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
@@ -119,6 +123,7 @@ func _try_extract() -> void:
 		_format_resource_counts(extracted_cargo),
 		roundi(progression_state.best_depth_reached)
 	]
+	last_result_summary += _format_run_telemetry("extracted")
 	upgrade_menu_feedback = "Deposited %d resource(s) into the bank.%s" % [
 		extracted_count,
 		_format_resource_counts(extracted_cargo)
@@ -128,7 +133,10 @@ func _try_extract() -> void:
 	_update_hud()
 
 func _fail_dive() -> void:
+	if run_failure_cause == "none":
+		run_failure_cause = "oxygen depleted"
 	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nBanked resources, upgrades, and scans kept.\nBest depth: %dm." % roundi(progression_state.best_depth_reached)
+	last_result_summary += _format_run_telemetry("failed")
 	upgrade_menu_feedback = ""
 	_save_progression()
 	status_label.text = "Dive failed: oxygen depleted. Cargo lost."
@@ -154,6 +162,7 @@ func _restart_dive() -> void:
 func _prepare_next_run() -> void:
 	progression_state.advance_run()
 	dive_session.reset(_current_max_oxygen())
+	_reset_run_telemetry()
 	_place_starter_resources_for_run()
 
 func _on_base_zone_body_entered(body: Node2D) -> void:
@@ -217,6 +226,7 @@ func _try_scan() -> void:
 		target.description,
 		target.gameplay_fact
 	)
+	run_completed_scans.append(target.discovery_id)
 	if target.discovery_id == "lantern_fry":
 		glow_plankton_highlight_timer = 8.0
 	elif target.discovery_id == "thermal_vent":
@@ -261,7 +271,10 @@ func _on_resource_pickup_collected(pickup: Node) -> void:
 		return
 
 	pickup.collect()
+	run_collected_resources.append(pickup.definition.id)
 	dive_session.drain_oxygen(collect_oxygen_cost)
+	if dive_session.result == DiveSessionScript.Result.FAILED:
+		run_failure_cause = "oxygen depleted after collecting %s" % pickup.definition.display_name
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		_fail_dive()
 	else:
@@ -277,7 +290,10 @@ func _on_predator_contacted(predator: Node) -> void:
 		knockback_direction = Vector2.UP
 
 	player.apply_knockback(knockback_direction, 520.0, 0.55)
+	run_predator_contacts += 1
 	dive_session.drain_oxygen(predator_contact_oxygen_cost)
+	if dive_session.result == DiveSessionScript.Result.FAILED:
+		run_failure_cause = "oxygen depleted after predator contact"
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		_fail_dive()
 	else:
@@ -477,6 +493,35 @@ func _format_cluster_pattern(pattern: String) -> String:
 			return "Deep reward route"
 		_:
 			return pattern
+
+func _reset_run_telemetry() -> void:
+	run_collected_resources.clear()
+	run_completed_scans.clear()
+	run_predator_contacts = 0
+	run_failure_cause = "none"
+
+func _format_run_telemetry(result_name: String) -> String:
+	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
+		result_name,
+		progression_state.current_run_seed,
+		_format_cluster_pattern(current_resource_cluster_pattern),
+		_format_resource_counts(run_collected_resources),
+		_format_scan_ids(run_completed_scans),
+		run_predator_contacts,
+		ceili(dive_session.oxygen),
+		ceili(dive_session.max_oxygen),
+		run_failure_cause
+	]
+
+func _format_scan_ids(scan_ids: Array[String]) -> String:
+	if scan_ids.is_empty():
+		return "none"
+
+	var parts: Array[String] = []
+	for scan_id in scan_ids:
+		parts.append(scan_id)
+
+	return ", ".join(parts)
 
 func _format_discoveries() -> String:
 	var discoveries := progression_state.scan_discoveries

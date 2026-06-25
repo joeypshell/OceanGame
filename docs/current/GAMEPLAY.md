@@ -22,6 +22,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
 - Dives begin from a `Run Ready` panel. Press E or Enter to begin oxygen drain and active dive play.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, and best depth.
+- Extraction and oxygen failure result panels include lightweight playtest data: result, seed, cluster pattern, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
 - Each run has a session run number and deterministic seed shown on the start/result panel.
 - Each run selects and displays a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`.
 - Pressing R after a result prepares the next run, advancing the run number and seed while preserving banked resources, upgrades, discoveries, and best depth.
@@ -103,6 +104,7 @@ Manual smoke:
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm extraction and oxygen failure both show result summaries before restarting.
+- Confirm extraction and oxygen failure summaries include seed, pattern, cargo, scans, predator contacts, oxygen result, and failure cause for playtesting.
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.
 - Confirm low oxygen shows warning feedback below 25 percent and stronger base-direction/oxygen emphasis below 10 percent without changing oxygen costs.
