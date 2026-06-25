@@ -26,6 +26,7 @@ Detailed design rules live in:
 - `docs/planning/SURFACE_UI_LAYOUT_PASS.md`
 - `docs/planning/VISUAL_LANGUAGE_READABILITY_ASSETS.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
+- `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_THERMAL_VENT_DECOY_2026_06_25.md`
@@ -44,6 +45,8 @@ Thermal Vent And Predator Countermeasure.
 Goal: add one more authored route pocket around the existing `Thermal Vent`, then add the first narrow non-lethal `Gulper Eel` countermeasure without broadening into procedural biomes, weapons, or a tool-wheel system.
 
 Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, an authored and reviewed `Shell Reef` route pocket, a selected `Thermal Vent Pocket` candidate for `Biome Pocket II`, a first economy review recommending no immediate cost changes, first-pass visual/readability assets, and a `Decoy Pulse I` candidate for the first true non-lethal predator countermeasure. The next milestone should turn those planning candidates into small, testable gameplay slices.
+
+Latest route review: `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md` recommends a narrow #96 readability tuning pass for scan-revealed `VentRouteHint` language or opacity, without changing placement, resource counts, costs, or mechanics.
 
 ## Immediate Issue Order
 
