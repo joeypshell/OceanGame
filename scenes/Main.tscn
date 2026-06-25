@@ -257,6 +257,33 @@ polygon = PackedVector2Array(-30, -18, 30, -18, 38, 18, -38, 18)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PressureLockedWreck/WreckSignalCache"]
 shape = SubResource("CircleShape2D_pickup")
 
+[node name="ThermalVentPocket" type="Node2D" parent="."]
+position = Vector2(430, 1260)
+
+[node name="WarmWash" type="Polygon2D" parent="ThermalVentPocket"]
+color = Color(0.92, 0.44, 0.16, 0.13)
+polygon = PackedVector2Array(-210, -132, 110, -184, 262, -42, 206, 132, -144, 176, -284, 22)
+
+[node name="CrackedShelf" type="Polygon2D" parent="ThermalVentPocket"]
+color = Color(0.46, 0.34, 0.26, 0.58)
+polygon = PackedVector2Array(-168, 74, -74, 30, 32, 54, 132, 24, 194, 76, 74, 108, -52, 116)
+
+[node name="HeatPlume" type="Polygon2D" parent="ThermalVentPocket"]
+color = Color(1, 0.68, 0.24, 0.2)
+polygon = PackedVector2Array(-46, 46, -16, -132, 24, -84, 54, -174, 96, -44, 58, 42)
+
+[node name="BubbleStringA" type="Polygon2D" parent="ThermalVentPocket"]
+color = Color(0.96, 1, 0.82, 0.28)
+polygon = PackedVector2Array(-62, -4, -48, -28, -34, -8, -16, -58, 2, -32, 16, -90, 34, -62)
+
+[node name="BubbleStringB" type="Polygon2D" parent="ThermalVentPocket"]
+color = Color(0.96, 1, 0.82, 0.22)
+polygon = PackedVector2Array(34, 20, 50, -18, 68, 8, 92, -44, 112, -14, 132, -72, 148, -42)
+
+[node name="WarmCurrentRibbon" type="Polygon2D" parent="ThermalVentPocket"]
+color = Color(0.72, 1, 0.62, 0.12)
+polygon = PackedVector2Array(-28, -42, 108, -88, 222, -54, 154, -8, 238, 30, 92, 56, -18, 16)
+
 [node name="WreckSignalHint" type="Node2D" parent="."]
 visible = false
 
