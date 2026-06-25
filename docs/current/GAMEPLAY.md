@@ -37,6 +37,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Deep reward route` runs show a faint glow/current lure that hints at valuable deep `Glow Plankton` before the player fully commits to the predator route.
 - The `Gulper Eel` predator route is selected from authored creature route spawn points by expedition seed and cluster pattern. Cautious patterns choose a deep left or right gate, while deep-reward patterns choose an upper or lower predator gate near the deeper reward route.
 - The predator warning current/marker moves with the selected route, and result telemetry records the selected predator route id for playtest comparison.
+- A visible `Pressure-Locked Research Wreck` sits behind a pressure shimmer near the lower midwater/deep transition. The shimmer safely denies entry until a future `Pressure Seal I` upgrade exists, without adding hidden oxygen damage.
+- The wreck has an outside scan target, `Pressure-Locked Research Wreck`, that can be scanned before entry. Scanning it records a practical clue that `Pressure Seal I` should open the route and that a `Wreck Signal Cache` waits inside; it also reveals a signal hint pointing through the pressure lock.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, the surface upgrade bay panel shows data-backed upgrade entries with cost, missing resources, missing discovery if any, owned/available/locked/unavailable state, and purchase feedback.
 - The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has one configured upgrade, `Oxygen Tank I`; later upgrades use the same definition and purchase path.
@@ -123,6 +125,8 @@ Manual smoke:
 - Bank the required resources, buy `Oxygen Tank I` from the upgrade panel after extraction, restart, and confirm max oxygen is 40.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
+- Approach the pressure shimmer near the research wreck without `Pressure Seal I` and confirm entry is denied safely with clear feedback.
+- Scan the outside `Pressure-Locked Research Wreck` target and confirm the signal hint appears without disrupting extraction or failure flow.
 - Scan a resource pickup with F, confirm oxygen decreases, discovery text records depth band/upgrade use/material need, and matching visible deposits highlight for several seconds.
 - Re-scan an already discovered resource and confirm no oxygen is spent while the matching-deposit highlight refreshes.
 - Approach the deep `Gulper Eel`, confirm the warning current/marker and patrol hint communicate danger before contact, then confirm contact causes oxygen loss plus knockback without instant failure.

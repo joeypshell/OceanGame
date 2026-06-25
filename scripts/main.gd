@@ -7,6 +7,7 @@ const UpgradeDefinitionScript := preload("res://scripts/upgrade_definition.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 
 const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
+const PRESSURE_SEAL_UPGRADE_ID := "pressure_seal_1"
 const PROGRESSION_SAVE_PATH := "user://progression_save.json"
 const LOW_OXYGEN_RATIO := 0.25
 const CRITICAL_OXYGEN_RATIO := 0.10
@@ -59,6 +60,8 @@ const RESOURCE_CLUSTER_PATTERNS := [
 @onready var glow_plankton_visual: Polygon2D = $ResourcePickups/GlowPlankton/Visual
 @onready var hidden_glow_plankton: Node = $ResourcePickups/HiddenGlowPlankton
 @onready var vent_route_hint: Node2D = $VentRouteHint
+@onready var pressure_boundary: Area2D = $PressureLockedWreck/PressureBoundary
+@onready var wreck_signal_hint: Node2D = $WreckSignalHint
 @onready var predator_warning: Node2D = $Predators/PredatorWarning
 @onready var gulper_eel: Node = $Predators/GulperEel
 
@@ -85,6 +88,7 @@ var run_failure_cause := "none"
 func _ready() -> void:
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
 	base_zone.body_exited.connect(_on_base_zone_body_exited)
+	pressure_boundary.body_entered.connect(_on_pressure_boundary_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
 		pickup.collected.connect(_on_resource_pickup_collected)
 	for predator in get_tree().get_nodes_in_group("predators"):
@@ -345,6 +349,8 @@ func _activate_scan_effect(target: Node) -> void:
 		glow_plankton_highlight_timer = 8.0
 	elif _scan_target_id(target) == "thermal_vent":
 		_reveal_thermal_vent_route()
+	elif _scan_target_id(target) == "pressure_wreck_signal":
+		_reveal_pressure_wreck_signal()
 
 func _format_repeat_scan_effect_text(target: Node) -> String:
 	if target is ResourcePickup:
@@ -444,6 +450,15 @@ func _on_predator_contacted(predator: Node) -> void:
 		status_label.text = "Predator strike: oxygen lost, controls disrupted."
 		_update_hud()
 
+func _on_pressure_boundary_body_entered(body: Node2D) -> void:
+	if body != player or progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID):
+		return
+
+	player.global_position.x = minf(player.global_position.x, pressure_boundary.global_position.x - 86.0)
+	player.velocity = Vector2(-120.0, -60.0)
+	status_label.text = "Pressure lock: scan the wreck and research Pressure Seal I before entering."
+	_update_hud()
+
 func _reset_resource_pickups() -> void:
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
 		pickup.reset_pickup()
@@ -532,10 +547,18 @@ func _sync_discovery_reveals() -> void:
 		hidden_glow_plankton.monitoring = false
 		vent_route_hint.visible = false
 
+	if progression_state.has_discovery("pressure_wreck_signal"):
+		_reveal_pressure_wreck_signal()
+	else:
+		wreck_signal_hint.visible = false
+
 func _reveal_thermal_vent_route() -> void:
 	hidden_glow_plankton.visible = true
 	hidden_glow_plankton.monitoring = true
 	vent_route_hint.visible = true
+
+func _reveal_pressure_wreck_signal() -> void:
+	wreck_signal_hint.visible = true
 
 func _update_hud() -> void:
 	_update_scan_target_feedback()

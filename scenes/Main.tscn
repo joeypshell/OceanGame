@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=13 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -15,6 +15,9 @@ radius = 96.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
 radius = 22.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pressure_boundary"]
+size = Vector2(58, 520)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main_script")
@@ -74,6 +77,67 @@ polygon = PackedVector2Array(1018, 1668, 1060, 1712, 1116, 1718, 1070, 1760, 108
 [node name="LureParticles" type="Polygon2D" parent="DeepRewardLure"]
 color = Color(0.84, 1, 0.45, 0.42)
 polygon = PackedVector2Array(838, 1220, 850, 1204, 864, 1222, 850, 1238, 952, 1438, 966, 1420, 982, 1442, 964, 1458, 1056, 1628, 1070, 1612, 1084, 1632, 1068, 1648)
+
+[node name="PressureLockedWreck" type="Node2D" parent="."]
+
+[node name="PressureShimmer" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.42, 0.84, 1, 0.28)
+polygon = PackedVector2Array(1048, 1370, 1090, 1398, 1082, 1905, 1036, 1880)
+
+[node name="WreckHull" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.08, 0.13, 0.16, 0.88)
+polygon = PackedVector2Array(1110, 1518, 1236, 1478, 1274, 1556, 1214, 1664, 1096, 1638)
+
+[node name="WreckWindow" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.35, 0.85, 1, 0.52)
+polygon = PackedVector2Array(1160, 1548, 1198, 1538, 1210, 1574, 1168, 1584)
+
+[node name="SignalLight" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.86, 1, 0.32, 0.76)
+polygon = PackedVector2Array(1118, 1494, 1138, 1474, 1162, 1496, 1140, 1518)
+
+[node name="PressureLabel" type="Label" parent="PressureLockedWreck"]
+offset_left = 894.0
+offset_top = 1328.0
+offset_right = 1262.0
+offset_bottom = 1368.0
+text = "Pressure shimmer - seal required"
+
+[node name="OuterScan" type="Area2D" parent="PressureLockedWreck"]
+position = Vector2(1010, 1548)
+script = ExtResource("7_scannable")
+discovery_id = "pressure_wreck_signal"
+display_name = "Pressure-Locked Research Wreck"
+description = "An old research hull is trapped beyond a pressure shimmer. A weak signal leaks through the boundary."
+gameplay_fact = "Pressure Seal I should open this route. A Wreck Signal Cache waits inside."
+
+[node name="ScanVisual" type="Polygon2D" parent="PressureLockedWreck/OuterScan"]
+color = Color(0.86, 1, 0.36, 0.42)
+polygon = PackedVector2Array(-34, -30, 34, -30, 52, 0, 34, 30, -34, 30, -52, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PressureLockedWreck/OuterScan"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="PressureBoundary" type="Area2D" parent="PressureLockedWreck"]
+position = Vector2(1068, 1640)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PressureLockedWreck/PressureBoundary"]
+shape = SubResource("RectangleShape2D_pressure_boundary")
+
+[node name="WreckSignalHint" type="Node2D" parent="."]
+visible = false
+
+[node name="SignalArrow" type="Polygon2D" parent="WreckSignalHint"]
+position = Vector2(1035, 1490)
+color = Color(0.88, 1, 0.32, 0.5)
+polygon = PackedVector2Array(-112, -16, 44, -16, 44, -42, 112, 0, 44, 42, 44, 16, -112, 16)
+
+[node name="SignalLabel" type="Label" parent="WreckSignalHint"]
+offset_left = 778.0
+offset_top = 1428.0
+offset_right = 1234.0
+offset_bottom = 1486.0
+text = "Weak cache signal beyond pressure lock"
 
 [node name="VentRouteHint" type="Node2D" parent="."]
 visible = false
