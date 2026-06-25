@@ -11,15 +11,16 @@ Detailed design rules live in:
 - `docs/planning/GAME_VISION.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
+- `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
 Implemented tooling lives in `docs/current/TOOLING.md`.
 
 ## Active Milestone
 
-Progression And Run Variety Expansion.
+Validation Prep And Readability.
 
-Goal: validate the current prototype with unfamiliar players, then move the most mature planning items into playable prototype work: practical resource scan outcomes, seeded risk variation, a visible pressure-locked opportunity, generic upgrade definitions, and the first scan-gated upgrade. Keep each addition small, readable, and tied to the core expedition question of continuing downward or returning safely.
+Goal: prepare the current prototype for blind validation, improve readability without adding broad new systems, and plan the next progression candidates from the existing `Wreck Signal Cache`, cargo, and Burst Thruster notes. Keep implementation work focused on making the current dive understandable before adding more systemic complexity.
 
 ## Immediate Issue Order
 
@@ -30,7 +31,9 @@ No active tooling issues are currently queued.
 Gameplay and validation track:
 
 1. #37 Conduct first blind player validation.
-2. Conduct a follow-up multi-seed and blind-player validation pass.
+2. #46 Prepare blind validation kit for #37.
+3. #47 Add a narrow atmosphere and route-readability pass.
+4. Conduct a follow-up multi-seed and blind-player validation pass.
 
 Technical support track:
 
@@ -38,9 +41,11 @@ No active technical support issues are currently queued.
 
 Later design and demo-readiness issues:
 
-No active design or demo-readiness issues are currently queued.
+1. #48 Plan Scanner Improvement I from the `Wreck Signal Cache`.
+2. #49 Plan Cargo Improvement I.
+3. #50 Add prototype `Burst Thruster` with oxygen cost and cooldown only after #37 or equivalent predator-readability evidence.
 
-Issues #38, #40, and #42 may be implemented when they reduce risk for the active milestone, but they should not block the first blind validation pass.
+Do not let future-tool work block the first blind validation pass. #37 remains the proof gate for feel, readability, and predator-pressure conclusions.
 
 ## Active Milestone Success Gate
 
@@ -107,13 +112,14 @@ Different placement is not enough. It must produce different decisions.
 - The repository includes a first MCP context server for project-source documentation.
 - The game uses Godot 4.7 with GDScript, targeting local desktop first with optional web demo support.
 - A side-view vertical dive scene and placeholder controllable submersible exist as the runtime foundation.
-- The first scene includes a visible surface boat/shallow lab base, oxygen pressure, extraction, oxygen failure, run start/result panels, depth/base HUD, resource pickup, scanning, one upgrade, one route-control predator, and seeded starter resource placement.
+- The first scene includes a visible surface boat/shallow lab base, oxygen pressure, extraction, oxygen failure, run start/result panels, depth/base HUD, resource pickup, scanning, two upgrades, one pressure-locked wreck opportunity, one route-control predator, and seeded starter resource/predator placement.
 - Current-dive state is split into `DiveSession`; session-persistent progression state is split into `ProgressionState`.
 - Starter resource placement uses typed authored `SpawnPoint` nodes selected by the current expedition seed while preserving shallow, midwater, and deep resource bands.
 - A first seeded-expedition playtest report exists under `docs/planning/`, with follow-up risks around real-time oxygen margins, predator readability, and blind-player validation.
 - Long-term progression has a single local prototype save slot; active dive state remains temporary.
 - Low-oxygen and critical-oxygen HUD feedback increases return urgency without changing oxygen mechanics.
 - A first oxygen-margin tuning pass reduced passive drain slightly to support deep-reward routes with one scan or one predator contact.
+- The next backlog evaluation lives in `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`.
 
 ## Epics
 
