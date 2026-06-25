@@ -13,11 +13,19 @@ Implemented behavior lives in `docs/current/GAMEPLAY.md`.
 
 ## Active Milestone
 
-No active implementation issues are currently queued. Use the latest tuning/readability notes to create the next focused issue batch.
+Progression And Run Variety Expansion.
+
+Goal: move the most mature planning items into playable prototype work: practical resource scan outcomes, the first scan-gated upgrade, seeded risk variation, and a first special discovery opportunity. Keep each addition small, readable, and tied to the core dive-run question of continuing downward or returning safely.
 
 ## Immediate Issue Order
 
-No active implementation issues are currently queued.
+1. #32 Add first MCP integration for project tooling.
+2. #33 Add practical resource scan outcomes.
+3. #34 Add `Pressure Seal I` as first scan-gated upgrade.
+4. #35 Add seeded hazard and creature route variation.
+5. #36 Add first special discovery or wreck opportunity.
+
+Issue #32 is a workflow/tooling track and can run independently of the gameplay sequence. Issues #33-#36 are the next gameplay planning items moved into current work.
 
 ## Latest Completed Milestone
 
@@ -86,6 +94,8 @@ Different placement is not enough. It must produce different decisions.
   Add simple creature behaviors, a scanner field guide, and one dangerous predator encounter that teaches the monster-hunting direction.
 - [ ] Epic: Ocean Readability And Feel
   Improve the prototype dive space so depth, risk, resources, and safe return are visually understandable without tutorial text.
+- [ ] Epic: Progression And Run Variety Expansion
+  Promote the next planning-ready systems into the prototype: practical resource scanning, one scan-gated upgrade, seeded risk variation, and one special discovery opportunity.
 - [x] #27 Epic: Daily Run Feel And Readability
   Make seeded daily runs more readable, fair, and measurable before adding larger content systems.
 - [x] Epic: Daily Roguelite Dive Runs
@@ -111,9 +121,9 @@ Different placement is not enough. It must produce different decisions.
 - Full procedural biomes.
 - Full crafting economy, recipe trees, resource rarity tiers, stack sizes, grid inventory, or inventory rearranging.
 - Physical cargo processing, base management, crafting minigames, elaborate environmental upgrades, or restaurant/colony systems.
-- Multiple upgrade tiers.
-- Combat or hunting systems.
-- Full field guide UI.
+- Multiple upgrade tiers beyond the first scan-gated `Pressure Seal I` slice.
+- Combat or hunting systems beyond observation, warning, avoidance, and future setup.
+- Full field guide UI beyond practical scan results.
 - Disk save slots beyond one prototype progression save.
 - Multiplayer.
 - Polished art, animation, sound design, or final UI styling before the daily-run loop proves itself.
