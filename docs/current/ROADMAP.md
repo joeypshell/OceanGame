@@ -38,7 +38,6 @@ No active technical support issues are currently queued.
 
 Later design and demo-readiness issues:
 
-- #44 Hide development telemetry behind debug flag before public demo.
 - #45 Plan `Burst Thruster` active tool milestone.
 
 Issues #38, #40, and #42 may be implemented when they reduce risk for the active milestone, but they should not block the first blind validation pass.
@@ -156,6 +155,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: add deterministic headless logic tests for core expedition and progression rules.
 - Completed: extract narrow upgrade purchase, scanner targeting, and seeded spawn-selection helpers out of `main.gd`.
 - Completed: evaluate repeat tactical scan costs and keep repeat scans free for the current prototype.
+- Completed: hide raw seed, pattern, and result telemetry by default behind a simple development telemetry flag.
 
 ## Deferred Work
 
@@ -167,7 +167,6 @@ Different placement is not enough. It must produce different decisions.
 - Combat or hunting systems beyond observation, warning, avoidance, and future setup.
 - Full field guide UI beyond practical scan results.
 - Daily challenge mode with calendar-derived shared seeds.
-- Public-demo UI cleanup such as hiding seed, cluster pattern, and telemetry behind a debug flag.
 - Disk save slots beyond one prototype progression save.
 - Multiplayer.
 - Polished art, animation, sound design, or final UI styling before the expedition loop proves itself.

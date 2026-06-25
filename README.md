@@ -12,6 +12,7 @@ The current build is a Godot 4.7 side-view vertical dive slice. It includes a su
 - Interact / start / extract: E or Enter
 - Scan: F
 - Restart after result: R
+- Toggle development telemetry: F3
 
 ## Run Locally
 

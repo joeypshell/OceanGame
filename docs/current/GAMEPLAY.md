@@ -12,7 +12,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Current controls: move with WASD or arrow keys.
 - Extraction controls: return to the safe base and press E or Enter to end the dive successfully.
 - Test reset: press R after extraction or oxygen failure to restart the prototype dive.
-- Input is routed through Godot actions: `move_left`, `move_right`, `move_up`, `move_down`, `interact`, `restart_dive`, and reserved `scan`.
+- Input is routed through Godot actions: `move_left`, `move_right`, `move_up`, `move_down`, `interact`, `restart_dive`, and reserved `scan`. F3 toggles development telemetry visibility.
 - Current movement uses acceleration, drag, and a bounded vertical dive area so the placeholder submersible cannot leave the prototype space.
 - The first scene starts the player at a visible surface boat/shallow lab base near the top of the water column.
 - The camera follows the player through a vertical descent with limits that keep the side-view dive space readable.
@@ -22,9 +22,9 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
 - Dives begin from an `Expedition Ready` panel. Press E or Enter to begin oxygen drain and active dive play.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, and best depth.
-- Extraction and oxygen failure result panels include lightweight playtest data: result, seed, cluster pattern, predator route, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
-- Each expedition has a session number and deterministic seed shown on the start/result panel.
-- Each expedition selects and displays a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`.
+- Extraction and oxygen failure result panels default to player-facing summaries. Development telemetry is hidden by default, but F3 or the exported `show_debug_telemetry` flag exposes result, seed, cluster pattern, predator route, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
+- Each expedition has a session number and deterministic seed. The raw seed is visible only when development telemetry is enabled.
+- Each expedition selects a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`. The raw pattern label is visible only when development telemetry is enabled.
 - Pressing R after a result prepares the next seeded expedition, advancing the session number and seed while preserving banked resources, upgrades, discoveries, and best depth.
 - Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
 - Long-term progression automatically loads from one local prototype save slot at launch and saves after extraction, oxygen failure, scanning, and upgrade purchase.
@@ -125,7 +125,7 @@ Manual smoke:
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm extraction and oxygen failure both show result summaries before restarting.
-- Confirm extraction and oxygen failure summaries include seed, pattern, predator route, cargo, scans, predator contacts, oxygen result, and failure cause for playtesting.
+- Confirm extraction and oxygen failure summaries hide raw telemetry by default, then press F3 and confirm seed, pattern, predator route, cargo, scans, predator contacts, oxygen result, and failure cause appear for playtesting.
 - Approach multiple nearby scan targets and confirm the HUD names one selected target with a visible highlight, then confirm the selected target remains deterministic until distance changes.
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.

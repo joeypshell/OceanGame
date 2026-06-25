@@ -35,6 +35,7 @@ const RESOURCE_CLUSTER_PATTERNS := [
 @export var start_position := Vector2(640.0, 190.0)
 @export var surface_y := 120.0
 @export var pixels_per_meter := 10.0
+@export var show_debug_telemetry := false
 
 @onready var player: CharacterBody2D = $Player
 @onready var base_zone: Area2D = $BaseZone
@@ -120,7 +121,9 @@ func _process(delta: float) -> void:
 		_update_hud()
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("interact"):
+	if _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F3:
+		_toggle_debug_telemetry()
+	elif Input.is_action_just_pressed("interact"):
 		if dive_session.result == DiveSessionScript.Result.READY:
 			_start_dive()
 		elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
@@ -150,7 +153,6 @@ func _try_extract() -> void:
 		_format_resource_counts(extracted_cargo),
 		roundi(progression_state.best_depth_reached)
 	]
-	last_result_summary += _format_run_telemetry("extracted")
 	upgrade_menu_feedback = "Deposited %d resource(s) into the bank.%s" % [
 		extracted_count,
 		_format_resource_counts(extracted_cargo)
@@ -163,7 +165,6 @@ func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nBanked resources, upgrades, and scans kept.\nBest depth: %dm." % roundi(progression_state.best_depth_reached)
-	last_result_summary += _format_run_telemetry("failed")
 	upgrade_menu_feedback = ""
 	_save_progression()
 	status_label.text = "Dive failed: oxygen depleted. Cargo lost."
@@ -213,6 +214,11 @@ func _select_upgrade(direction: int) -> void:
 
 	selected_upgrade_index = posmod(selected_upgrade_index + direction, upgrade_definitions.size())
 	upgrade_menu_feedback = ""
+	_update_hud()
+
+func _toggle_debug_telemetry() -> void:
+	show_debug_telemetry = not show_debug_telemetry
+	status_label.text = "Debug telemetry: %s." % ("shown" if show_debug_telemetry else "hidden")
 	_update_hud()
 
 func _try_purchase_selected_upgrade() -> void:
@@ -572,27 +578,15 @@ func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
 		run_title_label.text = "Expedition %d Ready" % progression_state.current_run_number
-		run_summary_label.text = "Seed: %d\nPattern: %s\nStart with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\nPress E or Enter to begin." % [
-			progression_state.current_run_seed,
-			_format_cluster_pattern(current_resource_cluster_pattern),
-			ceili(dive_session.max_oxygen)
-		]
+		run_summary_label.text = _format_run_summary("Start with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\nPress E or Enter to begin." % ceili(dive_session.max_oxygen), "ready")
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		run_panel.visible = true
 		run_title_label.text = "Expedition %d Result: Extraction" % progression_state.current_run_number
-		run_summary_label.text = "Seed: %d\nPattern: %s\n%s" % [
-			progression_state.current_run_seed,
-			_format_cluster_pattern(current_resource_cluster_pattern),
-			last_result_summary
-		]
+		run_summary_label.text = _format_run_summary(last_result_summary, "extracted")
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		run_panel.visible = true
 		run_title_label.text = "Expedition %d Result: Failure" % progression_state.current_run_number
-		run_summary_label.text = "Seed: %d\nPattern: %s\n%s" % [
-			progression_state.current_run_seed,
-			_format_cluster_pattern(current_resource_cluster_pattern),
-			last_result_summary
-		]
+		run_summary_label.text = _format_run_summary(last_result_summary, "failed")
 	else:
 		run_panel.visible = false
 
@@ -769,6 +763,12 @@ func _format_run_telemetry(result_name: String) -> String:
 		ceili(dive_session.max_oxygen),
 		run_failure_cause
 	]
+
+func _format_run_summary(player_summary: String, result_name: String) -> String:
+	if not show_debug_telemetry:
+		return player_summary
+
+	return "%s\n%s" % [player_summary, _format_run_telemetry(result_name)]
 
 func _format_scan_ids(scan_ids: Array[String]) -> String:
 	if scan_ids.is_empty():
