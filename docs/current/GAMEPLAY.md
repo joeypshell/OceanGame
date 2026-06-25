@@ -10,7 +10,9 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The selected direction is a 2D underwater roguelite where each dive is an expedition into alien ocean biomes.
 - Intended first loop: dive from a safe base, gather resources, scan lifeforms, avoid or hunt predators, return before oxygen runs out, and craft upgrades that allow deeper future dives.
 - Current controls: move with WASD or arrow keys.
+- Extraction controls: return to the safe base and press E or Enter to end the dive successfully.
 - Current movement uses acceleration, drag, and a bounded test area so the placeholder submersible cannot leave the prototype space.
+- The first scene has a visible safe base/extraction area on the left side of the test space.
 
 ## Runtime / Setup
 
@@ -33,6 +35,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `project.godot`: Godot project configuration.
   - `scenes/Main.tscn`: first scene.
   - `scenes/Player.tscn`: placeholder submersible scene.
+  - `scripts/main.gd`: prototype dive state, safe base detection, and extraction result.
   - `scripts/player.gd`: basic placeholder player movement.
 - Do not commit `.godot/`, `.import/`, `*.import`, local editor cache, build output, secrets, or export artifacts.
 
@@ -49,4 +52,5 @@ Manual smoke:
 
 - Launch the project and confirm the first scene runs.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, and stays inside the test bounds.
+- Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - After first dive loop: start a dive, collect or scan something, return to base, and confirm the result is recorded.
