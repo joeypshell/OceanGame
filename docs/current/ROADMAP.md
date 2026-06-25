@@ -38,7 +38,7 @@ No active technical support issues are currently queued.
 
 Later design and demo-readiness issues:
 
-- #45 Plan `Burst Thruster` active tool milestone.
+No active design or demo-readiness issues are currently queued.
 
 Issues #38, #40, and #42 may be implemented when they reduce risk for the active milestone, but they should not block the first blind validation pass.
 
@@ -156,6 +156,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: extract narrow upgrade purchase, scanner targeting, and seeded spawn-selection helpers out of `main.gd`.
 - Completed: evaluate repeat tactical scan costs and keep repeat scans free for the current prototype.
 - Completed: hide raw seed, pattern, and result telemetry by default behind a simple development telemetry flag.
+- Completed: plan the future non-lethal `Burst Thruster` active tool milestone.
 
 ## Deferred Work
 
@@ -175,6 +176,6 @@ Different placement is not enough. It must produce different decisions.
 
 After the current progression and validation work, consider one active non-lethal submersible tool:
 
-- `Burst Thruster`: a short traversal or escape burst that consumes oxygen or another readable temporary cost, helps recover from predator mistakes, and creates a decision between immediate safety and return margin.
+- `Burst Thruster`: a short traversal or escape burst that spends oxygen, helps recover from predator mistakes, and creates a decision between immediate safety and return margin.
 
-Do not add multiple tools or weapons before this single-tool milestone is validated.
+The plan lives in `docs/planning/BURST_THRUSTER_MILESTONE.md`. Do not implement it, add multiple tools, or add weapons before this single-tool milestone is validated.

@@ -33,3 +33,11 @@ This is not a tech tree. It is a compact ladder for the first prototype progress
 - Purpose: access contested routes through preparation.
 - Possible behavior change: distract, repel, tag, or trap one predator type long enough to choose a route.
 - Constraint: non-lethal counterplay first; hunting or harvesting only after the ecological fantasy is clarified and validated.
+
+## Future Candidate: Burst Thruster
+
+- Purpose: spend oxygen for a short emergency traversal or escape burst.
+- Recommended first cost: oxygen, not a new energy resource.
+- Possible gate: a later implementation issue should decide whether it starts unlocked for testing or becomes a scan/material-gated module.
+- Constraint: non-lethal and recovery-focused. It should not damage predators or bypass pressure/progression gates.
+- Planning note: `docs/planning/BURST_THRUSTER_MILESTONE.md`.
