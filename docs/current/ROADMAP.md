@@ -4,6 +4,21 @@ This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remai
 
 Current direction: build a 2D underwater roguelite about repeated dives into alien ocean biomes, where scanning, surviving, gathering, and monster hunting unlock deeper expeditions.
 
+## Long-Term Loop Clarification
+
+The intended game loop is closer to "Subnautica as daily roguelite dive runs" than to one fixed ocean map. Each dive should eventually feel like a run for that day: the player launches from the surface base with their persistent upgrades and knowledge, explores a randomized or reshuffled ocean layout, extracts whatever they can safely bring back, then uses the results to prepare for future dives.
+
+Long-term run shape:
+
+- Start from the surface boat/lab with persistent upgrades, banked resources, scan knowledge, and unlocked equipment.
+- Generate or reshuffle the dive layout for the current day/run.
+- Randomize or vary resource nodes, creature positions, hazards, wrecks, caves, and special discoveries within readable depth-band rules.
+- Dive downward, make oxygen/cargo/risk decisions, and extract before failure.
+- Bank extracted cargo; lose carried cargo on failure; keep scans, banked resources, upgrades, and long-term knowledge.
+- Use between-run progression to reach deeper bands, survive more dangerous routes, and identify better opportunities on future dives.
+
+The authored vertical slice is only the first proving ground. It should prove the core decision loop before procedural or randomized daily-run generation is added. Introduce randomization later in controlled layers: resource placement first, then hazards, then creature routes, then special discoveries.
+
 ## Design Pillars
 
 - Dive runs start from a surface boat or shallow lab, then push downward through a side-view ocean column.
