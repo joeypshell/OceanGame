@@ -549,6 +549,22 @@ target_id = "glow_plankton"
 depth_band = "deep"
 cluster_pattern = "deep_reward"
 
+[node name="VentA" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
+position = Vector2(560, 1460)
+script = ExtResource("9_spawn_point")
+spawn_id = "glow_vent_pocket_a"
+target_id = "glow_plankton"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+
+[node name="VentB" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
+position = Vector2(690, 1530)
+script = ExtResource("9_spawn_point")
+spawn_id = "glow_vent_pocket_b"
+target_id = "glow_plankton"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+
 [node name="CreatureRouteCandidates" type="Node2D" parent="."]
 
 [node name="CautiousRightGate" type="Node2D" parent="CreatureRouteCandidates"]

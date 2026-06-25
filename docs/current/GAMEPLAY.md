@@ -41,7 +41,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The prototype save does not restore active oxygen, current cargo, active run state, temporary effects, current expedition number, or current expedition seed.
 - Extraction only succeeds after the player has left the base and returned.
 - The player starts with three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
-- Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep.
+- Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep. The `Thermal Vent` pocket contributes vent-adjacent `Glow Plankton` candidates for existing seeded selection rather than adding extra active resource pickups.
 - Starter resource candidate points use typed `SpawnPoint` nodes with category, target id, depth band, and position data so later hazards, creatures, discoveries, and resource clusters can use the same placement model.
 - `Cautious shallows` clusters keep the first three starter resources closer to safer shallow/midwater banking routes, while `Deep reward route` clusters pull the deeper `Glow Plankton` toward the predator-controlled route.
 - `Deep reward route` runs show a faint glow/current lure below the `Shell Reef` decision band, hinting at valuable deep `Glow Plankton` after the player can read the safer midwater bank route.

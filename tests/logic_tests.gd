@@ -215,6 +215,13 @@ func _test_spawn_selection() -> void:
 	_expect(shell_positions.size() == 1, "shell reef spawn selection should include one authored shell candidate without adding extra pickups")
 	_expect(shell_positions.has(Vector2(70.0, 80.0)), "shell reef spawn selection should include any-pattern reef candidate")
 	_expect(shell_reef.depth_band == "midwater", "shell reef spawn point should preserve midwater depth identity")
+
+	var vent_glow := _make_spawn_point("vent", "resource", "glow_plankton", "deep", "deep_reward", Vector2(90.0, 100.0))
+	root.add_child(vent_glow)
+	var vent_positions := SpawnSelectionScript.positions_for_target(root, SpawnPointScript, "resource", "glow_plankton", "deep_reward")
+	_expect(vent_positions.size() == 1, "thermal vent pocket candidates should be selectable authored points without adding extra pickups")
+	_expect(vent_positions.has(Vector2(90.0, 100.0)), "thermal vent pocket should expose inspectable glow placement")
+	_expect(vent_glow.depth_band == "deep", "thermal vent glow candidates should preserve deep resource identity")
 	root.free()
 
 func _test_scanner_target_resolver() -> void:
