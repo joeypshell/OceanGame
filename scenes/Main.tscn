@@ -304,15 +304,15 @@ visible = false
 
 [node name="RouteArrow" type="Polygon2D" parent="VentRouteHint"]
 position = Vector2(588, 1290)
-color = Color(0.52, 1, 0.86, 0.16)
-polygon = PackedVector2Array(-150, -32, 34, -78, 146, -34, 88, 22, 142, 54, -22, 70, -122, 20)
+color = Color(0.62, 1, 0.72, 0.12)
+polygon = PackedVector2Array(-132, -22, 18, -58, 126, -28, 74, 14, 122, 38, -26, 52, -112, 14)
 
 [node name="RouteLabel" type="Label" parent="VentRouteHint"]
 offset_left = 420.0
 offset_top = 1208.0
 offset_right = 940.0
 offset_bottom = 1254.0
-text = "Warm current clue"
+text = "Optional warm current"
 
 [node name="DepthMarkers" type="Node2D" parent="."]
 
