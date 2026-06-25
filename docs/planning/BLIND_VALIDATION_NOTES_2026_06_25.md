@@ -26,7 +26,7 @@ This points to objective clarity and post-scan guidance before adding new mechan
 
 - #51 Clarify the post-scan next step in the first expedition.
 - #52 Support lightweight facilitator summaries for blind validation. Completed.
-- #53 Run solo evidence pass after first-scan clarity fix.
+- #53 Run solo evidence pass after first-scan clarity fix. Skipped.
 
 ## Roadmap Impact
 
@@ -34,6 +34,6 @@ This points to objective clarity and post-scan guidance before adding new mechan
 
 #52 improved the validation workflow so future observations can be captured by the facilitator even when testers will not fill out structured forms.
 
-#37 should be closed as not planned because the full two-helper requirement is impractical for the project owner.
+#37 was closed as not planned because the full two-helper requirement is impractical for the project owner.
 
-#53 replaces #37 as the practical evidence gate. Outside-player observations remain useful, but they should no longer block roadmap progress.
+#53 was skipped because the project owner wants to move on without further validation gates. Outside-player observations remain useful, but they should no longer block roadmap progress.

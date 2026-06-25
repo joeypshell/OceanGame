@@ -1,6 +1,6 @@
 # Blind Validation Kit
 
-Use this kit when unfamiliar players are available. The project no longer requires full blind validation to advance; outside-player notes are bonus evidence that can supplement the solo evidence pass in #53.
+Use this kit when unfamiliar players are available. The project no longer requires full blind validation or a solo evidence pass to advance; outside-player notes are optional bonus evidence.
 
 ## Goal
 
@@ -15,7 +15,7 @@ Do not explain intended strategy, route design, upgrade goals, resource depth ru
 - Each player should play at least two expeditions.
 - Record whether each player voluntarily starts a third expedition.
 
-If helpers are not available, do not block roadmap progress on this section. Use #53 to run a solo evidence pass instead.
+If helpers are not available, do not block roadmap progress on this section.
 
 ## Facilitator Setup
 
@@ -55,7 +55,7 @@ The facilitator owns these notes. Testers should not be asked to fill out forms 
 
 ## Lightweight Facilitator Fallback
 
-Use this when players will play but will not fill out forms, or when a short informal session produces useful evidence before or after the solo evidence pass.
+Use this when players will play but will not fill out forms, or when a short informal session produces useful evidence.
 
 - Date:
 - Player alias or group:
@@ -66,7 +66,7 @@ Use this when players will play but will not fill out forms, or when a short inf
 - What made them turn around, stop, ask for help, or lose interest?
 - What concrete follow-up issue should be created?
 
-This fallback is valid partial evidence. It can justify follow-up issues, and it can supplement #53, but it is not required for roadmap progress.
+This fallback is valid partial evidence. It can justify follow-up issues, but it is not required for roadmap progress.
 
 ### Player
 

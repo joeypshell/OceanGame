@@ -19,24 +19,24 @@ OceanGame now has a coherent first playable prototype loop:
 - MCP context tooling,
 - blind-validation kit.
 
-The project is no longer blocked by missing planning for the current slice. The full two-helper blind validation requirement is not practical for the project owner, so it should not remain a roadmap blocker.
+The project is no longer blocked by missing planning or validation requirements for the current slice. The full two-helper blind validation requirement and solo evidence replacement are skipped; the current prototype is considered good enough to move forward.
 
-First informal validation signal: testers were able to scan the first item, but did not understand what to do after that. The former #37 checklist is no longer the required gate, but this evidence is enough to create objective-clarity follow-up work before adding larger mechanics.
+First informal validation signal: testers were able to scan the first item, but did not understand what to do after that. The former #37 checklist and #53 solo evidence pass are no longer required gates, but this evidence is enough to keep objective-clarity follow-up work at the front of the queue.
 
 ## Roadmap Decision
 
 The active milestone should move from implementation prep to:
 
-**First-Scan Clarity And Solo Evidence Gate**
+**First-Scan Clarity And Progression Expansion**
 
 Meaning:
 
 - Do not mark the current progression/readability slice complete from code inspection alone.
 - Resolve #51 so the known post-scan confusion is addressed.
-- Run #53 as a solo evidence pass across fresh expedition seeds.
-- If testers are available later, use facilitator summaries as bonus evidence and create issues from concrete observations.
+- Proceed into planned progression and tool work after #51.
+- If testers are available later, use facilitator summaries as bonus evidence and create issues from concrete observations, but do not block roadmap progress on them.
 - Turn observed confusion, boredom, unreadable route cues, scanner misses, banking misunderstandings, or predator unfairness into concrete follow-up issues.
-- Keep #50 blocked until #53 or equivalent predator-readability evidence exists.
+- #50 is no longer blocked by validation evidence.
 
 ## What Is Done
 
@@ -86,17 +86,14 @@ Meaning:
 ### Immediate
 
 1. Resolve #51 so a successful first scan clearly points to the next action.
-2. Complete #53 with at least three fresh solo expedition seeds.
-3. Link notes and concrete follow-up issues back to #53.
-4. Decide whether the current route readability, scanning, banking, and predator warning are good enough to proceed.
+2. Decide whether to implement `Signal Lens I`, `Cargo Rack I`, or #50 next.
+3. Create focused issues for the selected progression addition.
 
-### Post-Validation Candidates
-
-Only after #53 or equivalent evidence:
+### Progression Candidates
 
 1. Create and implement `Signal Lens I` if scanner usefulness needs the next progression reward.
 2. Create and implement `Cargo Rack I` if cargo tension is understood and an extra slot would improve route choices.
-3. Unblock #50 only if predator-readability evidence says Burst Thruster is the right next non-lethal tool.
+3. Implement #50 if Burst Thruster is the right next non-lethal tool.
 
 ### Deferred
 
