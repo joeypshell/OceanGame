@@ -39,6 +39,14 @@ Gameplay and validation track:
 
 1. #54 Add `Signal Lens I` resource direction pulse.
 2. #55 Add `Cargo Rack I` fourth cargo slot upgrade.
+3. #56 Add compact scanner target preview metadata.
+4. #57 Add expedition prep goal summary.
+5. #58 Improve expedition result progress callouts.
+6. #59 Plan `Monster Observation I` progression slice.
+7. #60 Add `Gulper Eel` observation scan.
+8. #61 Plan first small biome pocket.
+9. #62 Polish surface upgrade bay readability.
+10. #63 Add recent expedition log.
 
 Technical support track:
 
@@ -50,13 +58,19 @@ No active later design issues are currently queued.
 
 Keep both issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, extra active tools, weapons, or new resource systems during this milestone.
 
+## Rolling Backlog Policy
+
+Maintain about 10 open actionable GitHub issues. When the queue drops below that target, expand planning docs first if needed, then create scoped issues with acceptance criteria, relevant docs/code areas, dependencies, and verification steps.
+
+Do not create filler issues just to hit the number. Prefer a slightly smaller queue over vague epics, duplicate work, or issues for intentionally deferred systems.
+
 ## Active Milestone Success Gate
 
 The milestone succeeds only when:
 
 - #54 turns `Wreck Signal Cache` into a practical scanner upgrade without adding a minimap or field guide.
 - #55 adds one extra cargo slot through the existing upgrade bay without changing extraction or oxygen-failure rules.
-- The active issue queue is drained again or any remaining issue is clearly blocked.
+- The active issue queue remains stocked near the rolling target or any shortfall is explained by missing planning direction.
 - Concrete follow-up issues are created only for newly observed confusion, boredom, unreadable cues, unfair risk, or unintended strategies.
 
 Technical implementation alone is not sufficient.
@@ -67,7 +81,14 @@ Choose from these candidates rather than starting all of them:
 
 1. #54 `Signal Lens I` resource direction pulse.
 2. #55 `Cargo Rack I` fourth cargo slot.
-3. After #54 and #55, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+3. #56 scanner target preview metadata.
+4. #57 expedition prep goal summary.
+5. #58 result progress callouts.
+6. #62 upgrade bay readability polish.
+7. #63 recent expedition log.
+8. #59/#60 monster observation planning and first implementation.
+9. #61 first small biome pocket planning.
+10. After this batch, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ## Latest Completed Milestone
 

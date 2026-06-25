@@ -41,6 +41,8 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 
 Use GitHub Issues for meaningful feature, bug, workflow, tooling, and demo work.
 
+Maintain a rolling backlog of about 10 open actionable issues. When the queue drops well below that target, expand the roadmap or planning docs first, then create scoped issues from that plan. Do not pad the queue with vague epics, duplicate work, or intentionally deferred ideas.
+
 Issues should include:
 
 - summary or user story

@@ -35,6 +35,7 @@ Meaning:
 - Treat #51 and #50 as completed milestone work.
 - Implement #54 `Signal Lens I` so `Wreck Signal Cache` becomes a practical scanner reward.
 - Implement #55 `Cargo Rack I` as the first simple cargo-capacity upgrade.
+- Keep a rolling backlog of about 10 open actionable issues so Codex can continue without repeated replanning stops.
 - If testers are available later, use facilitator summaries as bonus evidence and create issues from concrete observations, but do not block roadmap progress on them.
 - Turn observed confusion, boredom, unreadable route cues, scanner misses, banking misunderstandings, or predator unfairness into concrete follow-up issues.
 - Avoid broadening this milestone into a field guide, minimap, cargo grid, protected cargo, new active-tool suite, or weapons.
@@ -89,13 +90,27 @@ Meaning:
 
 1. Resolve #54 `Signal Lens I` resource direction pulse.
 2. Resolve #55 `Cargo Rack I` fourth cargo slot upgrade.
-3. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+3. Resolve #56 scanner target preview metadata.
+4. Resolve #57 expedition prep goal summary.
+5. Resolve #58 expedition result progress callouts.
+6. Resolve #62 surface upgrade bay readability.
+7. Resolve #63 recent expedition log.
+8. Resolve #59/#60 monster observation planning and first observation scan when ready.
+9. Resolve #61 first small biome pocket plan.
+10. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ### Progression Candidates
 
 1. #54 `Signal Lens I` resource direction pulse.
 2. #55 `Cargo Rack I` fourth cargo slot upgrade.
-3. New milestone planning after #54/#55 are complete.
+3. #56 scanner target preview metadata.
+4. #57 expedition prep goal summary.
+5. #58 result progress callouts.
+6. #62 upgrade bay readability polish.
+7. #63 recent expedition log.
+8. #59/#60 monster observation.
+9. #61 first small biome pocket plan.
+10. New milestone planning after the stocked queue is drained or materially changes.
 
 ### Deferred
 
