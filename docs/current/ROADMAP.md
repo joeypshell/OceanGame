@@ -16,6 +16,7 @@ Detailed design rules live in:
 - `docs/planning/CARGO_IMPROVEMENT_I.md`
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
+- `docs/planning/PREDATOR_WARNING_I.md`
 - `docs/planning/BIOME_POCKET_I.md`
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
@@ -41,12 +42,11 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #69 Plan `Predator Warning I` upgrade.
-2. #70 Plan surface results and upgrade bay layout pass.
-3. #71 Add compact surface summary tabs.
-4. #72 Plan `Expedition Goal II` route objective layer.
-5. #73 Add route objective goal for `Shell Reef`.
-6. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
+1. #70 Plan surface results and upgrade bay layout pass.
+2. #71 Add compact surface summary tabs.
+3. #72 Plan `Expedition Goal II` route objective layer.
+4. #73 Add route objective goal for `Shell Reef`.
+5. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
 
 Technical support track:
 
@@ -83,7 +83,7 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #69 plan `Predator Warning I`.
+1. Future candidate: `Add Predator Warning I upgrade`.
 2. #70 plan surface result and upgrade bay layout.
 3. #71 add compact surface summary tabs.
 4. #72 plan `Expedition Goal II`.
@@ -229,6 +229,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #66 add `Shell Reef Shelf` scan clue.
 - Completed: #67 add `Shell Reef` authored spawn points.
 - Completed: #68 plan `Shell Reef` five-seed route review.
+- Completed: #69 plan `Predator Warning I` upgrade.
 - Completed: #62 polish surface upgrade bay readability.
 - Completed: #63 add recent expedition log.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
