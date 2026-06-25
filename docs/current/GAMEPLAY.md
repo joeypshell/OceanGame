@@ -28,7 +28,10 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Pressing R after a result prepares the next seeded expedition, advancing the session number and seed while preserving banked resources, upgrades, discoveries, and best depth.
 - Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
 - Long-term progression automatically loads from one local prototype save slot at launch and saves after extraction, oxygen failure, scanning, and upgrade purchase.
-- The prototype save includes banked resources, purchased upgrades, scan discoveries, and best depth reached. It does not restore active oxygen, current cargo, active run state, or temporary effects.
+- The prototype save uses schema version `1`. It includes `save_version`, banked resources keyed by resource id, purchased upgrades keyed by upgrade id, scan discoveries keyed by discovery id, and best depth reached.
+- Scan discovery entries still keep a small display snapshot for the current practical scan-result UI, but progression identity should continue to come from discovery ids and upgrade ids rather than copied display text.
+- Missing `save_version` saves are treated as legacy version `0` and migrate by loading the known progression fields. Current version `1` loads the same known fields directly. Unknown newer versions warn and load known fields only so prototype progress is not discarded.
+- The prototype save does not restore active oxygen, current cargo, active run state, temporary effects, current expedition number, or current expedition seed.
 - Extraction only succeeds after the player has left the base and returned.
 - The player has three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep.
@@ -79,7 +82,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scenes/Player.tscn`: placeholder submersible scene.
   - `scripts/main.gd`: prototype dive state, safe base detection, and extraction result.
   - `scripts/dive_session.gd`: current-dive oxygen, cargo, depth, extraction, and failure state.
-  - `scripts/progression_state.gd`: session-persistent resources, upgrades, discoveries, and best depth.
+  - `scripts/progression_state.gd`: session-persistent resources, upgrades, discoveries, best depth, and save schema migration.
   - `scripts/player.gd`: basic placeholder player movement.
   - `scripts/resource_definition.gd`: typed resource data definition for upcoming pickup/resource work.
   - `scripts/resource_pickup.gd`: pickup nodes that emit collection events and reset between dives.

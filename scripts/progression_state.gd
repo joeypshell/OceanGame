@@ -1,10 +1,14 @@
 class_name ProgressionState
 extends RefCounted
 
+const LEGACY_SAVE_VERSION := 0
+const CURRENT_SAVE_VERSION := 1
+
 var banked_resources: Dictionary = {}
 var purchased_upgrades: Dictionary = {}
 var scan_discoveries: Dictionary = {}
 var best_depth_reached := 0.0
+var loaded_save_version := CURRENT_SAVE_VERSION
 var current_run_number := 0
 var current_run_seed := 0
 
@@ -54,6 +58,7 @@ func resource_count(resource_id: String) -> int:
 
 func to_save_data() -> Dictionary:
 	return {
+		"save_version": CURRENT_SAVE_VERSION,
 		"banked_resources": banked_resources,
 		"purchased_upgrades": purchased_upgrades,
 		"scan_discoveries": scan_discoveries,
@@ -61,7 +66,31 @@ func to_save_data() -> Dictionary:
 	}
 
 func load_save_data(data: Dictionary) -> void:
-	banked_resources = data.get("banked_resources", {})
-	purchased_upgrades = data.get("purchased_upgrades", {})
-	scan_discoveries = data.get("scan_discoveries", {})
+	var save_version := int(data.get("save_version", LEGACY_SAVE_VERSION))
+	loaded_save_version = save_version
+
+	if save_version == LEGACY_SAVE_VERSION:
+		_load_legacy_save_data(data)
+	elif save_version == CURRENT_SAVE_VERSION:
+		_load_current_save_data(data)
+	else:
+		push_warning("Progression save version %d is unknown to this build. Loading known fields only; current version is %d." % [save_version, CURRENT_SAVE_VERSION])
+		_load_known_save_fields(data)
+
+func _load_legacy_save_data(data: Dictionary) -> void:
+	_load_known_save_fields(data)
+
+func _load_current_save_data(data: Dictionary) -> void:
+	_load_known_save_fields(data)
+
+func _load_known_save_fields(data: Dictionary) -> void:
+	banked_resources = _dictionary_from(data.get("banked_resources", {}))
+	purchased_upgrades = _dictionary_from(data.get("purchased_upgrades", {}))
+	scan_discoveries = _dictionary_from(data.get("scan_discoveries", {}))
 	best_depth_reached = float(data.get("best_depth_reached", 0.0))
+
+func _dictionary_from(value: Variant) -> Dictionary:
+	if value is Dictionary:
+		return value
+
+	return {}
