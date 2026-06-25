@@ -18,6 +18,7 @@ Detailed design rules live in:
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/PREDATOR_WARNING_I.md`
+- `docs/planning/PREDATOR_COUNTERMEASURE_I.md`
 - `docs/planning/BIOME_POCKET_I.md`
 - `docs/planning/BIOME_POCKET_II.md`
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
@@ -40,7 +41,7 @@ Predator Warning And Route Tuning.
 
 Goal: use the completed Shell Reef batch to tune route decisions and add the first non-lethal predator-preparation payoff from `Gulper Eel` observation.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, an authored `Shell Reef` route pocket, a selected `Thermal Vent Pocket` candidate for `Biome Pocket II`, and a first economy review recommending no immediate cost changes. The next milestone should finish route result feedback and support docs before adding broader biome systems.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, an authored `Shell Reef` route pocket, a selected `Thermal Vent Pocket` candidate for `Biome Pocket II`, a first economy review recommending no immediate cost changes, and a `Decoy Pulse I` candidate for the first true non-lethal predator countermeasure. The next milestone should focus on demo-readiness visual language before implementing broader biome or predator systems.
 
 ## Immediate Issue Order
 
@@ -58,12 +59,11 @@ No active technical support issues are currently queued in this milestone.
 
 Later design and demo-readiness issues:
 
-1. #84 Plan `Predator Countermeasure I` after warning upgrade.
-2. #86 Create first visual language guide.
-3. #87 Extract reusable pressure gate, current hint, and signal hint prototypes.
-4. #88 Standardize current and route-hint visuals.
-5. #89 Standardize scan target marker readability.
-6. #90 Run first depth-band and landmark readability asset pass.
+1. #86 Create first visual language guide.
+2. #87 Extract reusable pressure gate, current hint, and signal hint prototypes.
+3. #88 Standardize current and route-hint visuals.
+4. #89 Standardize scan target marker readability.
+5. #90 Run first depth-band and landmark readability asset pass.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, full procedural biomes, large art sets, or new resource systems during this milestone.
 
@@ -94,10 +94,11 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #84 plan the next non-lethal predator countermeasure.
+1. #86-#90 establish prototype readability assets before final art production.
 
 Recently completed:
 
+- #84 planned `Predator Countermeasure I` and selected `Add Decoy Pulse I predator countermeasure` as the future non-lethal implementation candidate.
 - #83 refreshed the MCP context server with current Expedition Goal II, Shell Reef, biome pocket, resource economy, visual language, and backlog planning sources.
 - #82 added one compact route-choice result callout while keeping debug seed/pattern/route telemetry behind F3.
 - #81 reviewed first resource economy pressure and recommended no immediate cost/spawn changes.
