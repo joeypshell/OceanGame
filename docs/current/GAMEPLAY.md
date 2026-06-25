@@ -53,9 +53,10 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Scan with F. The HUD shows the current scan target name, and the selected target is highlighted. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
 - First-time scans cost 2 oxygen and record session-persistent discoveries. Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
 - Current planning recommendation keeps repeat tactical scans free for this prototype; see `docs/planning/REPEAT_SCAN_COST_RECOMMENDATION.md`.
+- First-time scan status text includes a concise next action. Resource scans point the player to collect the resource and return to base to bank cargo, while non-resource scans point toward the revealed clue or a safe return.
 - Resource pickups are scannable before collection. Resource scans record the resource depth band, upgrade use, and whether more of that material is needed for `Oxygen Tank I`; they also temporarily highlight matching visible resource deposits in the current expedition.
-- `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton`.
-- A scannable `Thermal Vent` reveals a current-route hint and hidden `Glow Plankton` cluster.
+- `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton` and suggests following the pulse if oxygen allows.
+- A scannable `Thermal Vent` reveals a current-route hint and hidden `Glow Plankton` cluster, then suggests following the clue if oxygen allows.
 - A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. The route has a warning current/marker, and the patrol hint becomes more urgent as the player approaches. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
 - The scene uses surface light rays, a safe-base return column, a beaconed surface boat/lab, shallow kelp silhouettes, a midwater shelf, deep pressure haze, a deeper glow hint, pressure-wreck glow, and predator warning ribs/current to communicate depth bands, safe return, blocked opportunity, and route danger without adding new mechanics.
@@ -142,6 +143,7 @@ Manual smoke:
 - Approach the pressure shimmer near the research wreck without `Pressure Seal I` and confirm entry is denied safely with clear feedback.
 - Scan the outside `Pressure-Locked Research Wreck` target and confirm the signal hint appears without disrupting extraction or failure flow.
 - Scan a resource pickup with F, confirm oxygen decreases, discovery text records depth band/upgrade use/material need, and matching visible deposits highlight for several seconds.
+- Start a fresh expedition, scan the first nearby resource, and confirm the status text says to collect it and return to base to bank cargo.
 - Re-scan an already discovered resource and confirm no oxygen is spent while the matching-deposit highlight refreshes.
 - Approach the deep `Gulper Eel`, confirm the warning current/marker and patrol hint communicate danger before contact, then confirm contact causes oxygen loss plus knockback without instant failure.
 - Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.

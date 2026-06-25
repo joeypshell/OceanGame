@@ -301,7 +301,7 @@ func _try_scan() -> void:
 		_save_progression()
 		status_label.text = "Scanned %s.%s" % [
 			display_name,
-			_format_repeat_scan_effect_text(target)
+			_format_repeat_scan_effect_text(target) + _format_first_scan_guidance(target)
 		]
 		_update_hud()
 
@@ -351,6 +351,30 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 		return " Current-route hint refreshed."
 
 	return ""
+
+func _format_first_scan_guidance(target: Node) -> String:
+	if target is ResourcePickup:
+		if dive_session.current_cargo.size() >= dive_session.cargo_limit:
+			return " Cargo full: return to base to bank before collecting more."
+		elif dive_session.current_cargo.size() == dive_session.cargo_limit - 1:
+			return " Collect it if it is worth the last slot, then return to base to bank cargo."
+
+		return " Collect it, then return to base to bank cargo."
+
+	match _scan_target_id(target):
+		"lantern_fry":
+			return " Follow the plankton pulse if oxygen allows, then return to base."
+		"thermal_vent":
+			return " Follow the current clue if oxygen allows, then return to base."
+		"pressure_wreck_signal":
+			if progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID):
+				return " Pressure Seal I opens this route; return safely if oxygen is low."
+
+			return " Bank resources, then research Pressure Seal I to open this route."
+		"wreck_signal_cache":
+			return " Return to base with this discovery; future scanner upgrades can use the clue."
+		_:
+			return " Use the clue if it helps, then return to base before oxygen runs out."
 
 func _format_resource_upgrade_need(resource_id: String) -> String:
 	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):

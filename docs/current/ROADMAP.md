@@ -37,7 +37,7 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #51 Clarify the post-scan next step in the first expedition.
+1. #50 Add prototype `Burst Thruster` with oxygen cost and cooldown.
 2. Continue with planned progression additions and create follow-up issues only when new concrete problems appear.
 
 Technical support track:
@@ -46,7 +46,7 @@ No active technical support issues are currently queued.
 
 Later design and demo-readiness issues:
 
-1. #50 Add prototype `Burst Thruster` with oxygen cost and cooldown.
+No active later design issues are currently queued.
 
 Do not let future-tool work block the first-scan clarity fix, but do not require more validation before proceeding.
 
@@ -64,10 +64,9 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #51 `Clarify the post-scan next step in the first expedition`, because first-session testers scanned successfully but did not understand the next action.
+1. #50 `Burst Thruster` as the first active non-lethal traversal/survival tool.
 2. `Signal Lens I` resource direction pulse if scanner usefulness or future expedition planning needs strengthening.
 3. `Cargo Rack I` fourth cargo slot if players understand cargo risk and the next need is deeper route extraction choice.
-4. #50 `Burst Thruster` as the first active non-lethal traversal/survival tool.
 
 ## Latest Completed Milestone
 
@@ -182,6 +181,7 @@ Different placement is not enough. It must produce different decisions.
 - Closed as impractical: #37 full two-helper blind validation requirement.
 - Completed: #52 support lightweight facilitator summaries for validation evidence.
 - Closed as skipped: #53 solo evidence pass.
+- Completed: #51 clarify the post-scan next step in the first expedition.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
 - Completed: #48 plan `Signal Lens I` as Scanner Improvement I from the `Wreck Signal Cache`.
 - Completed: #49 plan `Cargo Rack I` as the first cargo improvement.
