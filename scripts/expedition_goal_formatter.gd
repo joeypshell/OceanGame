@@ -16,6 +16,13 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 				upgrade.display_name,
 			]
 
+		var missing_upgrade := UpgradePurchaseScript.missing_upgrade(progression_state, upgrade)
+		if missing_upgrade != "":
+			return "Goal: buy %s before %s." % [
+				_upgrade_name(missing_upgrade, upgrade_definitions),
+				upgrade.display_name,
+			]
+
 		var missing_resources := _format_missing_resources(progression_state, upgrade.resource_cost)
 		if missing_resources == "none":
 			return "Goal: buy %s in the upgrade bay after this dive." % upgrade.display_name
@@ -66,3 +73,16 @@ static func _discovery_name(discovery_id: String) -> String:
 			return "Gulper Eel"
 		_:
 			return discovery_id
+
+static func _upgrade_name(upgrade_id: String, upgrade_definitions: Array[UpgradeDefinition]) -> String:
+	for upgrade in upgrade_definitions:
+		if upgrade.id == upgrade_id:
+			return upgrade.display_name
+
+	match upgrade_id:
+		"predator_warning_1":
+			return "Predator Warning I"
+		"decoy_pulse_1":
+			return "Decoy Pulse I"
+		_:
+			return upgrade_id

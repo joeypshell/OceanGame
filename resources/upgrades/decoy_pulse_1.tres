@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3 uid="uid://decoy_pulse_1_upgrade"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="1_upgrade_definition"]
+
+[resource]
+script = ExtResource("1_upgrade_definition")
+id = "decoy_pulse_1"
+display_name = "Decoy Pulse I"
+description = "Prepares a short non-lethal distraction pulse for timing the observed Gulper Eel route."
+resource_cost = {
+"glow_plankton": 2,
+"kelp_fiber": 1,
+"shell_fragments": 1
+}
+required_discovery = "gulper_eel"
+required_upgrade = "predator_warning_1"
+effect_id = "decoy_pulse_1"
+locked_reason = "Study the Gulper Eel and install Predator Warning I before preparing an active decoy pulse."
+available_text = "Available: press E or Enter to purchase."
+owned_text = "Owned: Decoy Pulse I is prepared for a future active countermeasure implementation."

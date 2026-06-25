@@ -15,6 +15,7 @@ const PressureSealUpgrade := preload("res://resources/upgrades/pressure_seal_1.t
 const SignalLensUpgrade := preload("res://resources/upgrades/signal_lens_1.tres")
 const CargoRackUpgrade := preload("res://resources/upgrades/cargo_rack_1.tres")
 const PredatorWarningUpgrade := preload("res://resources/upgrades/predator_warning_1.tres")
+const DecoyPulseUpgrade := preload("res://resources/upgrades/decoy_pulse_1.tres")
 
 class DummyScanTarget:
 	extends Node2D
@@ -269,17 +270,27 @@ func _test_discovery_prerequisites() -> void:
 	_expect(CargoRackUpgrade.required_discovery.is_empty(), "Cargo Rack I should not require a discovery")
 	_expect(CargoRackUpgrade.effect_id == "cargo_limit_4", "Cargo Rack I should use cargo limit effect")
 	_expect(PredatorWarningUpgrade.required_discovery == "gulper_eel", "Predator Warning I should require Gulper Eel")
+	_expect(DecoyPulseUpgrade.required_discovery == "gulper_eel", "Decoy Pulse I should require Gulper Eel")
+	_expect(DecoyPulseUpgrade.required_upgrade == PredatorWarningUpgrade.id, "Decoy Pulse I should require Predator Warning I")
+	_expect(int(DecoyPulseUpgrade.resource_cost.get("glow_plankton", 0)) == 2, "Decoy Pulse I should cost two glow plankton")
+	_expect(int(DecoyPulseUpgrade.resource_cost.get("kelp_fiber", 0)) == 1, "Decoy Pulse I should cost one kelp fiber")
+	_expect(int(DecoyPulseUpgrade.resource_cost.get("shell_fragments", 0)) == 1, "Decoy Pulse I should cost one shell fragment")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, OxygenTankUpgrade) == "", "upgrade with no prerequisite should not be locked")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "thermal_vent", "Pressure Seal I prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, SignalLensUpgrade) == "wreck_signal_cache", "Signal Lens I prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, CargoRackUpgrade) == "", "Cargo Rack I prerequisite should be satisfied by default")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PredatorWarningUpgrade) == "gulper_eel", "Predator Warning I prerequisite should start missing")
+	_expect(UpgradePurchaseScript.missing_upgrade(progression, DecoyPulseUpgrade) == PredatorWarningUpgrade.id, "Decoy Pulse I upgrade prerequisite should start missing")
 	progression.add_discovery("thermal_vent", "Thermal Vent", "Hot current.", "Unlocks pressure tuning.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "", "Pressure Seal I prerequisite should be satisfied by Thermal Vent discovery")
 	progression.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks Signal Lens I.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, SignalLensUpgrade) == "", "Signal Lens I prerequisite should be satisfied by Wreck Signal Cache discovery")
 	progression.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PredatorWarningUpgrade) == "", "Predator Warning I prerequisite should be satisfied by Gulper Eel discovery")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, DecoyPulseUpgrade) == "", "Decoy Pulse I discovery prerequisite should be satisfied by Gulper Eel discovery")
+	_expect(not UpgradePurchaseScript.purchase(progression, DecoyPulseUpgrade), "Decoy Pulse I should not purchase before Predator Warning I")
+	progression.purchased_upgrades[PredatorWarningUpgrade.id] = true
+	_expect(UpgradePurchaseScript.missing_upgrade(progression, DecoyPulseUpgrade) == "", "Decoy Pulse I upgrade prerequisite should be satisfied by Predator Warning I")
 
 func _test_predator_warning_upgrade_metadata() -> void:
 	_expect(PredatorWarningUpgrade.id == "predator_warning_1", "Predator Warning I should have a stable upgrade id")
@@ -324,6 +335,7 @@ func _test_expedition_prep_goals() -> void:
 		SignalLensUpgrade,
 		CargoRackUpgrade,
 		PredatorWarningUpgrade,
+		DecoyPulseUpgrade,
 	]
 	var progression := ProgressionStateScript.new()
 
@@ -387,6 +399,16 @@ func _test_expedition_prep_goals() -> void:
 	}
 	progression.purchase_upgrade(PredatorWarningUpgrade.id, PredatorWarningUpgrade.resource_cost)
 	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
+	_expect(goal.contains("Decoy Pulse I"), "predator warning ownership should advance goal to Decoy Pulse I")
+	_expect(goal.contains("Glow Plankton x2"), "decoy prep goal should show missing planned glow cost")
+
+	progression.banked_resources = {
+		"glow_plankton": 2,
+		"kelp_fiber": 1,
+		"shell_fragments": 1,
+	}
+	progression.purchase_upgrade(DecoyPulseUpgrade.id, DecoyPulseUpgrade.resource_cost)
+	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
 	_expect(goal == "Goal: use Shell Reef to bank Shell Fragments, or push deeper if oxygen allows.", "completed upgrade goals should fall back to the Shell Reef route objective")
 
 func _test_result_progress_callouts() -> void:
@@ -397,6 +419,7 @@ func _test_result_progress_callouts() -> void:
 		SignalLensUpgrade,
 		CargoRackUpgrade,
 		PredatorWarningUpgrade,
+		DecoyPulseUpgrade,
 	]
 
 	main.progression_state.banked_resources = {
@@ -480,6 +503,24 @@ func _test_upgrade_bay_readability_states() -> void:
 	state = main._format_upgrade_state(PressureSealUpgrade)
 	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label scan-locked upgrades")
 	_expect(state.contains("Needs scan: Thermal Vent"), "upgrade bay should name missing discoveries")
+
+	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
+	state = main._format_upgrade_state(DecoyPulseUpgrade)
+	_expect(state.begins_with("State: Locked by upgrade"), "upgrade bay should label upgrade-locked upgrades")
+	_expect(state.contains("Needs upgrade: Predator Warning I"), "upgrade bay should name missing upgrade prerequisites")
+
+	main.progression_state.purchased_upgrades[PredatorWarningUpgrade.id] = true
+	main.progression_state.banked_resources = {
+		"glow_plankton": 2,
+		"kelp_fiber": 1,
+		"shell_fragments": 1,
+	}
+	state = main._format_upgrade_state(DecoyPulseUpgrade)
+	_expect(state.begins_with("State: Available now"), "Decoy Pulse I should become available after discovery, prerequisite upgrade, and resources")
+
+	main.progression_state.purchase_upgrade(DecoyPulseUpgrade.id, DecoyPulseUpgrade.resource_cost)
+	state = main._format_upgrade_state(DecoyPulseUpgrade)
+	_expect(state.begins_with("State: Owned"), "upgrade bay should label Decoy Pulse I owned after purchase")
 	main.free()
 
 func _test_recent_expedition_log() -> void:

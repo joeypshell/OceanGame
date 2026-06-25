@@ -13,12 +13,14 @@ const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
 const CARGO_RACK_UPGRADE := preload("res://resources/upgrades/cargo_rack_1.tres")
 const PREDATOR_WARNING_UPGRADE := preload("res://resources/upgrades/predator_warning_1.tres")
+const DECOY_PULSE_UPGRADE := preload("res://resources/upgrades/decoy_pulse_1.tres")
 
 const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
 const PRESSURE_SEAL_UPGRADE_ID := "pressure_seal_1"
 const SIGNAL_LENS_UPGRADE_ID := "signal_lens_1"
 const CARGO_RACK_UPGRADE_ID := "cargo_rack_1"
 const PREDATOR_WARNING_UPGRADE_ID := "predator_warning_1"
+const DECOY_PULSE_UPGRADE_ID := "decoy_pulse_1"
 const PROGRESSION_SAVE_PATH := "user://progression_save.json"
 const LOW_OXYGEN_RATIO := 0.25
 const CRITICAL_OXYGEN_RATIO := 0.10
@@ -111,6 +113,7 @@ var upgrade_definitions: Array[UpgradeDefinition] = [
 	SIGNAL_LENS_UPGRADE,
 	CARGO_RACK_UPGRADE,
 	PREDATOR_WARNING_UPGRADE,
+	DECOY_PULSE_UPGRADE,
 ]
 var run_collected_resources: Array[String] = []
 var run_completed_scans: Array[String] = []
@@ -299,6 +302,15 @@ func _try_purchase_selected_upgrade() -> void:
 		_update_hud()
 		return
 
+	if _upgrade_missing_upgrade(upgrade) != "":
+		upgrade_menu_feedback = "Missing upgrade: %s. %s" % [
+			_format_upgrade_display_name(upgrade.required_upgrade),
+			upgrade.locked_reason
+		]
+		status_label.text = "%s is locked by an upgrade prerequisite." % upgrade.display_name
+		_update_hud()
+		return
+
 	if UpgradePurchaseScript.purchase(progression_state, upgrade):
 		_apply_upgrade_effect(upgrade.effect_id)
 		upgrade_menu_feedback = "Purchased %s. %s" % [upgrade.display_name, upgrade.owned_text]
@@ -346,6 +358,8 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 			dive_session.cargo_limit = _current_cargo_limit()
 		"predator_warning_range_1":
 			_sync_predator_warning_upgrade_state()
+		"decoy_pulse_1":
+			pass
 		_:
 			push_warning("Unknown upgrade effect: %s" % effect_id)
 
@@ -914,6 +928,13 @@ func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 			_format_missing_resources_inline(upgrade.resource_cost)
 		]
 
+	var missing_upgrade := _upgrade_missing_upgrade(upgrade)
+	if missing_upgrade != "":
+		return "State: Locked by upgrade\nNeeds upgrade: %s\nMissing resources: %s" % [
+			_format_upgrade_display_name(missing_upgrade),
+			_format_missing_resources_inline(upgrade.resource_cost)
+		]
+
 	if progression_state.can_afford(upgrade.resource_cost):
 		return "State: Available now\nAction: press E or Enter to buy\nEffect: %s" % upgrade.owned_text
 
@@ -928,6 +949,8 @@ func _format_ready_upgrade_callout() -> String:
 		if progression_state.has_upgrade(upgrade.id):
 			continue
 		if _upgrade_missing_discovery(upgrade) != "":
+			continue
+		if _upgrade_missing_upgrade(upgrade) != "":
 			continue
 		if progression_state.can_afford(upgrade.resource_cost):
 			ready.append(upgrade.display_name)
@@ -946,6 +969,13 @@ func _format_upgrade_progress_callout() -> String:
 		if missing_discovery != "":
 			return "Upgrade progress: scan %s to unlock %s." % [
 				_format_discovery_name(missing_discovery),
+				upgrade.display_name,
+			]
+
+		var missing_upgrade := _upgrade_missing_upgrade(upgrade)
+		if missing_upgrade != "":
+			return "Upgrade progress: buy %s before %s." % [
+				_format_upgrade_display_name(missing_upgrade),
 				upgrade.display_name,
 			]
 
@@ -981,6 +1011,22 @@ func _format_scan_progress_callout(prefix: String) -> String:
 
 func _upgrade_missing_discovery(upgrade: UpgradeDefinition) -> String:
 	return UpgradePurchaseScript.missing_discovery(progression_state, upgrade)
+
+func _upgrade_missing_upgrade(upgrade: UpgradeDefinition) -> String:
+	return UpgradePurchaseScript.missing_upgrade(progression_state, upgrade)
+
+func _format_upgrade_display_name(upgrade_id: String) -> String:
+	for upgrade in upgrade_definitions:
+		if upgrade.id == upgrade_id:
+			return upgrade.display_name
+
+	match upgrade_id:
+		PREDATOR_WARNING_UPGRADE_ID:
+			return "Predator Warning I"
+		DECOY_PULSE_UPGRADE_ID:
+			return "Decoy Pulse I"
+		_:
+			return upgrade_id
 
 func _format_discovery_name(discovery_id: String) -> String:
 	if discovery_id.is_empty():

@@ -54,7 +54,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - After `Pressure Seal I` is owned, the wreck alcove can be reached and the inside `Wreck Signal Cache` can be scanned as a practical progression reward pointing toward a future scanner improvement.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, the surface upgrade bay view shows data-backed upgrade entries with cost, one-line missing resources, missing discovery if any, and explicit `State:` labels for owned, available, scan-locked, and missing-resource upgrades. Extraction feedback also calls out newly ready upgrades when banked cargo completes a cost.
-- The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has five configured upgrades: `Oxygen Tank I`, `Pressure Seal I`, `Signal Lens I`, `Cargo Rack I`, and `Predator Warning I`.
+- The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has six configured upgrades: `Oxygen Tank I`, `Pressure Seal I`, `Signal Lens I`, `Cargo Rack I`, `Predator Warning I`, and `Decoy Pulse I`.
 - `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
 - `Pressure Seal I` requires the `Thermal Vent` discovery plus banked `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x2`.
@@ -65,6 +65,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Cargo Rack I` raises future dive cargo capacity from 3 to 4 without changing extraction banking or the rule that oxygen failure loses all carried cargo.
 - `Predator Warning I` requires the `Gulper Eel` discovery plus banked `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x1`.
 - `Predator Warning I` makes existing predator warning feedback begin farther from the `Gulper Eel` without changing patrol, chase/contact radius, oxygen loss, knockback, or seeded route selection.
+- `Decoy Pulse I` requires the `Gulper Eel` discovery, ownership of `Predator Warning I`, and banked `Kelp Fiber x1`, `Shell Fragments x1`, and `Glow Plankton x2`. It is currently a data-backed purchase gate for the upcoming active countermeasure and does not yet change predator behavior, route selection, pressure locks, extraction, or cargo failure rules.
 - Scan with F. The HUD shows the current scan target name plus compact metadata such as `new resource`, `known creature`, `new environment`, or `known wreck signal`; the selected target is highlighted. Non-resource scan targets use a subtle pale diamond marker, while resource pickups keep their material silhouettes and selected-target tint. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
 - First-time scans cost 2 oxygen and record session-persistent discoveries. Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
 - Current planning recommendation keeps repeat tactical scans free for this prototype; see `docs/planning/REPEAT_SCAN_COST_RECOMMENDATION.md`.
@@ -171,6 +172,7 @@ Manual smoke:
 - After buying `Cargo Rack I`, fail with carried cargo and confirm all carried cargo is still lost.
 - Confirm `Predator Warning I` is locked before scanning `Gulper Eel`, available after the discovery plus required resources, and owned after purchase.
 - After buying `Predator Warning I`, approach the `Gulper Eel` route and confirm warning feedback begins farther away while contact remains possible if the warning is ignored.
+- Confirm `Decoy Pulse I` is locked before scanning `Gulper Eel`, remains locked until `Predator Warning I` is owned, becomes available with its required resources afterward, and does not yet change predator behavior.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the low-opacity current hint plus hidden `Glow Plankton` appear without reading like a guaranteed safe path. Re-scan it and confirm the repeat text refreshes the warm-current clue while keeping the glow route optional.
 - Approach the pressure gate near the research wreck without `Pressure Seal I` and confirm entry is denied safely with clear feedback that says to buy the upgrade at the surface and return.
