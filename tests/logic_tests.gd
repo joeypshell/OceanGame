@@ -3,8 +3,21 @@ extends SceneTree
 const DiveSessionScript := preload("res://scripts/dive_session.gd")
 const ProgressionStateScript := preload("res://scripts/progression_state.gd")
 const SpawnPointScript := preload("res://scripts/spawn_point.gd")
+const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
+const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
+const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PressureSealUpgrade := preload("res://resources/upgrades/pressure_seal_1.tres")
+
+class DummyScanTarget:
+	extends Node2D
+
+	var discovery_id := ""
+	var display_name := ""
+	var description := ""
+
+	func set_scan_selected(_selected: bool) -> void:
+		pass
 
 var _failures: Array[String] = []
 var _passes := 0
@@ -17,6 +30,8 @@ func _initialize() -> void:
 	_run("save/load behavior", _test_save_load_behavior)
 	_run("deterministic seed generation", _test_deterministic_seed_generation)
 	_run("spawn-point matching", _test_spawn_point_matching)
+	_run("spawn selection", _test_spawn_selection)
+	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
 
 	if _failures.is_empty():
@@ -144,14 +159,69 @@ func _test_spawn_point_matching() -> void:
 	_expect(point.cluster_pattern == "cautious", "spawn point should preserve authored cluster pattern")
 	point.free()
 
+func _test_spawn_selection() -> void:
+	var root := Node2D.new()
+	var shallow := _make_spawn_point("a", "resource", "kelp_fiber", "shallow", "any", Vector2(10.0, 20.0))
+	var cautious := _make_spawn_point("b", "resource", "kelp_fiber", "shallow", "cautious", Vector2(30.0, 40.0))
+	var deep_reward := _make_spawn_point("c", "resource", "kelp_fiber", "shallow", "deep_reward", Vector2(50.0, 60.0))
+	root.add_child(shallow)
+	root.add_child(cautious)
+	root.add_child(deep_reward)
+
+	var positions := SpawnSelectionScript.positions_for_target(root, SpawnPointScript, "resource", "kelp_fiber", "cautious")
+	_expect(positions.size() == 2, "spawn selection should include any and matching cluster points")
+	_expect(positions.has(Vector2(10.0, 20.0)), "spawn selection should include any-cluster point")
+	_expect(positions.has(Vector2(30.0, 40.0)), "spawn selection should include matching cautious point")
+	_expect(not positions.has(Vector2(50.0, 60.0)), "spawn selection should exclude nonmatching cluster point")
+	_expect(SpawnSelectionScript.cluster_pattern_for_seed(1, ["cautious", "deep_reward"]) == "deep_reward", "spawn selection should map seeds to cluster patterns deterministically")
+	root.free()
+
+func _test_scanner_target_resolver() -> void:
+	var farther_a := _make_scan_target("alpha", "Alpha", Vector2(10.0, 0.0))
+	var farther_b := _make_scan_target("beta", "Beta", Vector2(10.0, 0.0))
+	var nearest := _make_scan_target("gamma", "Gamma", Vector2(3.0, 0.0))
+	var targets: Array[Node] = [farther_b, nearest, farther_a]
+
+	var selected := ScanTargetResolverScript.nearest(Vector2.ZERO, 20.0, targets)
+	_expect(selected == nearest, "scanner resolver should choose the nearest target")
+	_expect(ScanTargetResolverScript.target_id(selected) == "gamma", "scanner resolver should expose target discovery id")
+	_expect(ScanTargetResolverScript.display_name(selected) == "Gamma", "scanner resolver should expose target display name")
+
+	targets = [farther_b, farther_a]
+	selected = ScanTargetResolverScript.nearest(Vector2.ZERO, 20.0, targets)
+	_expect(selected == farther_a, "scanner resolver should break equal-distance ties by id")
+	_expect(ScanTargetResolverScript.nearest(Vector2.ZERO, 2.0, targets) == null, "scanner resolver should ignore targets outside range")
+	farther_a.free()
+	farther_b.free()
+	nearest.free()
+
 func _test_discovery_prerequisites() -> void:
 	var progression := ProgressionStateScript.new()
 
 	_expect(OxygenTankUpgrade.required_discovery.is_empty(), "Oxygen Tank I should not require a discovery")
 	_expect(PressureSealUpgrade.required_discovery == "thermal_vent", "Pressure Seal I should require Thermal Vent")
-	_expect(not progression.has_discovery(PressureSealUpgrade.required_discovery), "Pressure Seal I prerequisite should start undiscovered")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, OxygenTankUpgrade) == "", "upgrade with no prerequisite should not be locked")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "thermal_vent", "Pressure Seal I prerequisite should start missing")
 	progression.add_discovery("thermal_vent", "Thermal Vent", "Hot current.", "Unlocks pressure tuning.")
-	_expect(progression.has_discovery(PressureSealUpgrade.required_discovery), "Pressure Seal I prerequisite should be satisfied by Thermal Vent discovery")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "", "Pressure Seal I prerequisite should be satisfied by Thermal Vent discovery")
+
+func _make_spawn_point(spawn_id: String, category: String, target_id: String, depth_band: String, cluster_pattern: String, position: Vector2) -> SpawnPoint:
+	var point := SpawnPointScript.new()
+	point.spawn_id = spawn_id
+	point.category = category
+	point.target_id = target_id
+	point.depth_band = depth_band
+	point.cluster_pattern = cluster_pattern
+	point.global_position = position
+	return point
+
+func _make_scan_target(discovery_id: String, display_name: String, position: Vector2) -> DummyScanTarget:
+	var target := DummyScanTarget.new()
+	target.discovery_id = discovery_id
+	target.display_name = display_name
+	target.description = "%s description" % display_name
+	target.global_position = position
+	return target
 
 func _expect(condition: bool, message: String) -> void:
 	if condition:

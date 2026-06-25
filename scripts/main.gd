@@ -4,6 +4,9 @@ const DiveSessionScript := preload("res://scripts/dive_session.gd")
 const ProgressionStateScript := preload("res://scripts/progression_state.gd")
 const SpawnPointScript := preload("res://scripts/spawn_point.gd")
 const UpgradeDefinitionScript := preload("res://scripts/upgrade_definition.gd")
+const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
+const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
+const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 
@@ -232,7 +235,7 @@ func _try_purchase_selected_upgrade() -> void:
 		_update_hud()
 		return
 
-	if progression_state.purchase_upgrade(upgrade.id, upgrade.resource_cost):
+	if UpgradePurchaseScript.purchase(progression_state, upgrade):
 		_apply_upgrade_effect(upgrade.effect_id)
 		upgrade_menu_feedback = "Purchased %s. %s" % [upgrade.display_name, upgrade.owned_text]
 		_save_progression()
@@ -299,44 +302,18 @@ func _try_scan() -> void:
 func _nearest_scan_target() -> Node:
 	var candidates: Array[Node] = []
 	for target in get_tree().get_nodes_in_group("scan_targets"):
-		if not _is_valid_scan_target(target):
-			continue
-		if player.global_position.distance_to(target.global_position) <= scan_range:
-			candidates.append(target)
+		candidates.append(target)
 
-	candidates.sort_custom(func(a: Node, b: Node) -> bool:
-		var distance_a := player.global_position.distance_to(a.global_position)
-		var distance_b := player.global_position.distance_to(b.global_position)
-		if not is_equal_approx(distance_a, distance_b):
-			return distance_a < distance_b
-		return _scan_target_id(a) < _scan_target_id(b)
-	)
-
-	return null if candidates.is_empty() else candidates[0]
-
-func _is_valid_scan_target(target: Node) -> bool:
-	if target is ResourcePickup:
-		return not target.is_collected and target.visible and target.definition != null
-
-	return target.has_method("set_scan_selected") and not String(target.get("discovery_id")).is_empty()
+	return ScanTargetResolverScript.nearest(player.global_position, scan_range, candidates)
 
 func _scan_target_id(target: Node) -> String:
-	if target is ResourcePickup:
-		return "resource_%s" % target.definition.id
-
-	return String(target.get("discovery_id"))
+	return ScanTargetResolverScript.target_id(target)
 
 func _scan_target_display_name(target: Node) -> String:
-	if target is ResourcePickup:
-		return target.definition.display_name
-
-	return String(target.get("display_name"))
+	return ScanTargetResolverScript.display_name(target)
 
 func _scan_target_description(target: Node) -> String:
-	if target is ResourcePickup:
-		return target.definition.scan_description
-
-	return String(target.get("description"))
+	return ScanTargetResolverScript.description(target)
 
 func _scan_target_gameplay_fact(target: Node) -> String:
 	if target is ResourcePickup:
@@ -512,39 +489,13 @@ func _place_predator_route_for_run(rng: RandomNumberGenerator) -> void:
 	predator_warning.global_position = route.get("warning", (route["start"] + route["end"]) * 0.5)
 
 func _resource_cluster_pattern_for_seed(seed: int) -> String:
-	return RESOURCE_CLUSTER_PATTERNS[seed % RESOURCE_CLUSTER_PATTERNS.size()]
+	return SpawnSelectionScript.cluster_pattern_for_seed(seed, RESOURCE_CLUSTER_PATTERNS)
 
 func _spawn_positions_for_target(category: String, target_id: String, cluster_pattern: String) -> Array[Vector2]:
-	var positions: Array[Vector2] = []
-	_collect_spawn_positions(starter_resource_candidates, category, target_id, cluster_pattern, positions)
-	return positions
+	return SpawnSelectionScript.positions_for_target(starter_resource_candidates, SpawnPointScript, category, target_id, cluster_pattern)
 
 func _spawn_routes_for_target(category: String, target_id: String, cluster_pattern: String) -> Dictionary:
-	var points: Array[SpawnPoint] = []
-	_collect_spawn_points(creature_route_candidates, category, target_id, cluster_pattern, points)
-	var routes := {}
-	for point in points:
-		if point.route_id.is_empty():
-			continue
-		if not routes.has(point.route_id):
-			routes[point.route_id] = {}
-		routes[point.route_id][point.spawn_id] = point.global_position
-
-	return routes
-
-func _collect_spawn_positions(root: Node, category: String, target_id: String, cluster_pattern: String, positions: Array[Vector2]) -> void:
-	for child in root.get_children():
-		if child.get_script() == SpawnPointScript and child.matches(category, target_id):
-			if child.cluster_pattern == "any" or child.cluster_pattern == cluster_pattern:
-				positions.append(child.global_position)
-		_collect_spawn_positions(child, category, target_id, cluster_pattern, positions)
-
-func _collect_spawn_points(root: Node, category: String, target_id: String, cluster_pattern: String, points: Array[SpawnPoint]) -> void:
-	for child in root.get_children():
-		if child.get_script() == SpawnPointScript and child.matches(category, target_id):
-			if child.cluster_pattern == "any" or child.cluster_pattern == cluster_pattern:
-				points.append(child)
-		_collect_spawn_points(child, category, target_id, cluster_pattern, points)
+	return SpawnSelectionScript.routes_for_target(creature_route_candidates, SpawnPointScript, category, target_id, cluster_pattern)
 
 func _sync_discovery_reveals() -> void:
 	if progression_state.has_discovery("thermal_vent"):
@@ -755,10 +706,7 @@ func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 	]
 
 func _upgrade_missing_discovery(upgrade: UpgradeDefinition) -> String:
-	if upgrade.required_discovery.is_empty():
-		return ""
-
-	return "" if progression_state.has_discovery(upgrade.required_discovery) else upgrade.required_discovery
+	return UpgradePurchaseScript.missing_discovery(progression_state, upgrade)
 
 func _format_discovery_name(discovery_id: String) -> String:
 	if discovery_id.is_empty():

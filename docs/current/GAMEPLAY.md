@@ -80,7 +80,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `project.godot`: Godot project configuration.
   - `scenes/Main.tscn`: first scene.
   - `scenes/Player.tscn`: placeholder submersible scene.
-  - `scripts/main.gd`: prototype dive state, safe base detection, and extraction result.
+  - `scripts/main.gd`: scene orchestration, HUD updates, expedition flow, and scene-specific scan/upgrade effects.
   - `scripts/dive_session.gd`: current-dive oxygen, cargo, depth, extraction, and failure state.
   - `scripts/progression_state.gd`: session-persistent resources, upgrades, discoveries, best depth, and save schema migration.
   - `scripts/player.gd`: basic placeholder player movement.
@@ -88,8 +88,11 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scripts/resource_pickup.gd`: pickup nodes that emit collection events and reset between dives.
   - `scripts/scannable.gd`: simple scannable targets, including passive moving creatures.
   - `scripts/spawn_point.gd`: typed candidate placement points for seeded resource and creature route variation.
+  - `scripts/spawn_selection.gd`: deterministic helper for seed-to-pattern selection, spawn positions, and authored route dictionaries.
+  - `scripts/scan_target_resolver.gd`: deterministic helper for scan target validity, identity, display fields, and nearest-target tie-breaking.
   - `scripts/predator.gd`: simple patrol, detection, chase, and contact behavior.
   - `scripts/upgrade_definition.gd`: small data model for upgrade definitions and generic purchase handling.
+  - `scripts/upgrade_purchase.gd`: generic upgrade prerequisite and purchase gate helper.
   - `tests/logic_tests.gd`: headless deterministic checks for cargo, extraction, oxygen failure, upgrades, save/load, seeds, spawn matching, and discovery prerequisites.
   - `resources/*.tres`: starter resource definitions.
   - `resources/upgrades/*.tres`: upgrade definitions.
