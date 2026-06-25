@@ -40,5 +40,8 @@ func add_discovery(discovery_id: String, display_name: String, description: Stri
 		"gameplay_fact": gameplay_fact,
 	}
 
+func has_discovery(discovery_id: String) -> bool:
+	return scan_discoveries.has(discovery_id)
+
 func resource_count(resource_id: String) -> int:
 	return int(banked_resources.get(resource_id, 0))

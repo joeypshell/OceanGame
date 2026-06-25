@@ -32,6 +32,8 @@ const OXYGEN_TANK_COST := {
 @onready var status_label: Label = $HUD/Status
 @onready var prompt_label: Label = $HUD/ExtractionPrompt
 @onready var glow_plankton_visual: Polygon2D = $ResourcePickups/GlowPlankton/Visual
+@onready var hidden_glow_plankton: Node = $ResourcePickups/HiddenGlowPlankton
+@onready var vent_route_hint: Node2D = $VentRouteHint
 
 var dive_session := DiveSessionScript.new()
 var progression_state := ProgressionStateScript.new()
@@ -134,6 +136,8 @@ func _try_scan() -> void:
 	)
 	if target.discovery_id == "lantern_fry":
 		glow_plankton_highlight_timer = 8.0
+	elif target.discovery_id == "thermal_vent":
+		_reveal_thermal_vent_route()
 
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		_fail_dive()
@@ -183,6 +187,20 @@ func _on_resource_pickup_collected(pickup: Node) -> void:
 func _reset_resource_pickups() -> void:
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
 		pickup.reset_pickup()
+	_sync_discovery_reveals()
+
+func _sync_discovery_reveals() -> void:
+	if progression_state.has_discovery("thermal_vent"):
+		_reveal_thermal_vent_route()
+	else:
+		hidden_glow_plankton.visible = false
+		hidden_glow_plankton.monitoring = false
+		vent_route_hint.visible = false
+
+func _reveal_thermal_vent_route() -> void:
+	hidden_glow_plankton.visible = true
+	hidden_glow_plankton.monitoring = true
+	vent_route_hint.visible = true
 
 func _update_hud() -> void:
 	oxygen_label.text = "Oxygen: %d / %d" % [ceili(dive_session.oxygen), ceili(dive_session.max_oxygen)]

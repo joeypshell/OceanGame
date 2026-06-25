@@ -58,6 +58,21 @@ polygon = PackedVector2Array(850, 1060, 1160, 1120, 1118, 1210, 782, 1168)
 color = Color(0.52, 1, 0.22, 0.24)
 polygon = PackedVector2Array(806, 1420, 974, 1420, 1038, 1760, 744, 1760)
 
+[node name="VentRouteHint" type="Node2D" parent="."]
+visible = false
+
+[node name="RouteArrow" type="Polygon2D" parent="VentRouteHint"]
+position = Vector2(588, 1290)
+color = Color(0.95, 1, 0.44, 0.48)
+polygon = PackedVector2Array(-130, -18, 70, -18, 70, -44, 140, 0, 70, 44, 70, 18, -130, 18)
+
+[node name="RouteLabel" type="Label" parent="VentRouteHint"]
+offset_left = 420.0
+offset_top = 1230.0
+offset_right = 860.0
+offset_bottom = 1262.0
+text = "Thermal vent scan: faint current points toward hidden plankton"
+
 [node name="DepthMarkers" type="Node2D" parent="."]
 
 [node name="Marker500" type="Label" parent="DepthMarkers"]
@@ -151,6 +166,20 @@ polygon = PackedVector2Array(0, -32, 12, -10, 34, -6, 17, 10, 21, 32, 0, 19, -21
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/GlowPlankton"]
 shape = SubResource("CircleShape2D_pickup")
 
+[node name="HiddenGlowPlankton" type="Area2D" parent="ResourcePickups"]
+visible = false
+position = Vector2(560, 1360)
+monitoring = false
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("6_glow_plankton")
+
+[node name="Visual" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton"]
+color = Color(0.72, 1, 0.3, 1)
+polygon = PackedVector2Array(0, -32, 12, -10, 34, -6, 17, 10, 21, 32, 0, 19, -21, 32, -17, 10, -34, -6, -12, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/HiddenGlowPlankton"]
+shape = SubResource("CircleShape2D_pickup")
+
 [node name="Creatures" type="Node2D" parent="."]
 
 [node name="LanternFry" type="Area2D" parent="Creatures"]
@@ -173,6 +202,27 @@ color = Color(0.7, 1, 0.35, 0.24)
 polygon = PackedVector2Array(-46, 0, -18, -30, 30, -22, 58, 0, 30, 22, -18, 30)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Creatures/LanternFry"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="Discoveries" type="Node2D" parent="."]
+
+[node name="ThermalVent" type="Area2D" parent="Discoveries"]
+position = Vector2(430, 1260)
+script = ExtResource("7_scannable")
+discovery_id = "thermal_vent"
+display_name = "Thermal Vent"
+description = "A warm current escaping from a cracked shelf in the midwater."
+gameplay_fact = "Reveals a current path toward hidden Glow Plankton."
+
+[node name="Visual" type="Polygon2D" parent="Discoveries/ThermalVent"]
+color = Color(0.92, 0.5, 0.2, 0.82)
+polygon = PackedVector2Array(-42, 30, -20, -28, 0, -8, 20, -32, 44, 30)
+
+[node name="Bubbles" type="Polygon2D" parent="Discoveries/ThermalVent"]
+color = Color(0.9, 1, 0.86, 0.34)
+polygon = PackedVector2Array(-18, -54, -8, -76, 6, -52, 24, -88, 38, -56, 10, -36)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Discoveries/ThermalVent"]
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]

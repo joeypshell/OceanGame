@@ -27,6 +27,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
 - Scan with F. Scanning costs 2 oxygen and records session-persistent discoveries.
 - `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton`.
+- A scannable `Thermal Vent` reveals a current-route hint and hidden `Glow Plankton` cluster.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
 - The scene uses surface light rays, a midwater wreck silhouette, and a deeper glow hint to communicate depth bands and deeper reward potential.
 
@@ -82,6 +83,7 @@ Manual smoke:
 - Collect resources, confirm cargo fills up to three slots, extract, and confirm resources move into the banked list.
 - Bank the required resources, buy `Oxygen Tank I` after extraction, restart, and confirm max oxygen is 40.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
+- Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
 - Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.
 - Confirm the HUD depth increases while diving and that the base indicator points back toward the surface base.
 - Confirm the scene communicates shallow, midwater, and deep areas through color, landmarks, and resource placement.
