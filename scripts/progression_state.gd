@@ -51,3 +51,17 @@ func has_discovery(discovery_id: String) -> bool:
 
 func resource_count(resource_id: String) -> int:
 	return int(banked_resources.get(resource_id, 0))
+
+func to_save_data() -> Dictionary:
+	return {
+		"banked_resources": banked_resources,
+		"purchased_upgrades": purchased_upgrades,
+		"scan_discoveries": scan_discoveries,
+		"best_depth_reached": best_depth_reached,
+	}
+
+func load_save_data(data: Dictionary) -> void:
+	banked_resources = data.get("banked_resources", {})
+	purchased_upgrades = data.get("purchased_upgrades", {})
+	scan_discoveries = data.get("scan_discoveries", {})
+	best_depth_reached = float(data.get("best_depth_reached", 0.0))

@@ -24,6 +24,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Each run selects and displays a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`.
 - Pressing R after a result prepares the next run, advancing the run number and seed while preserving banked resources, upgrades, discoveries, and best depth.
 - Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
+- Long-term progression automatically loads from one local prototype save slot at launch and saves after extraction, oxygen failure, scanning, and upgrade purchase.
+- The prototype save includes banked resources, purchased upgrades, scan discoveries, and best depth reached. It does not restore active oxygen, current cargo, active run state, or temporary effects.
 - Extraction only succeeds after the player has left the base and returned.
 - The player has three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep.
@@ -90,6 +92,7 @@ Manual smoke:
 - Launch the project and confirm the first scene runs.
 - Confirm the run starts at the `Run Ready` panel and does not begin active oxygen pressure until E or Enter is pressed.
 - Confirm each restarted run advances the run number and seed while persistent progression remains.
+- Relaunch the project after banking resources, buying an upgrade, or recording a discovery, and confirm long-term progression reloads while active cargo and current-dive state do not.
 - Confirm restarted runs vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.
 - Confirm restarted runs alternate between `Cautious shallows` and `Deep reward route` cluster patterns, and that the deep reward pattern tempts a route near the predator patrol.
 - Move or edit a `StarterResourceCandidates` spawn point in the scene and confirm seeded resource placement follows that typed definition.

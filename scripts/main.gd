@@ -10,6 +10,7 @@ const OXYGEN_TANK_COST := {
 	"shell_fragments": 1,
 	"glow_plankton": 1,
 }
+const PROGRESSION_SAVE_PATH := "user://progression_save.json"
 const STARTER_RESOURCE_PICKUP_NAMES := [
 	"KelpFiber",
 	"ShellFragments",
@@ -71,6 +72,7 @@ func _ready() -> void:
 		pickup.collected.connect(_on_resource_pickup_collected)
 	for predator in get_tree().get_nodes_in_group("predators"):
 		predator.contacted.connect(_on_predator_contacted)
+	_load_progression()
 	_prepare_next_run()
 	_update_hud()
 
@@ -117,12 +119,14 @@ func _try_extract() -> void:
 		extracted_count,
 		_format_resource_counts(extracted_cargo)
 	]
+	_save_progression()
 	status_label.text = "Dive complete: extracted safely with %d oxygen." % ceili(dive_session.oxygen)
 	_update_hud()
 
 func _fail_dive() -> void:
 	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nBanked resources, upgrades, and scans kept.\nBest depth: %dm." % roundi(progression_state.best_depth_reached)
 	upgrade_menu_feedback = ""
+	_save_progression()
 	status_label.text = "Dive failed: oxygen depleted. Cargo lost."
 	_update_hud()
 
@@ -172,6 +176,7 @@ func _try_purchase_oxygen_tank() -> void:
 
 	if progression_state.purchase_upgrade(OXYGEN_TANK_UPGRADE_ID, OXYGEN_TANK_COST):
 		upgrade_menu_feedback = "Purchased Oxygen Tank I. Future dives start with 40 oxygen."
+		_save_progression()
 		status_label.text = "Purchased Oxygen Tank I. Future dives start with 40 oxygen."
 	else:
 		upgrade_menu_feedback = "Need %s. Banked:%s" % [
@@ -216,6 +221,7 @@ func _try_scan() -> void:
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		_fail_dive()
 	else:
+		_save_progression()
 		status_label.text = "Scanned %s." % target.display_name
 		_update_hud()
 
@@ -492,3 +498,24 @@ func _format_base_direction() -> String:
 		return "Base: up %.0fm" % (vertical_delta / pixels_per_meter)
 
 	return "Base: below %.0fm" % (absf(vertical_delta) / pixels_per_meter)
+
+func _load_progression() -> void:
+	if not FileAccess.file_exists(PROGRESSION_SAVE_PATH):
+		return
+
+	var file := FileAccess.open(PROGRESSION_SAVE_PATH, FileAccess.READ)
+	if file == null:
+		push_warning("Could not open progression save.")
+		return
+
+	var parsed = JSON.parse_string(file.get_as_text())
+	if parsed is Dictionary:
+		progression_state.load_save_data(parsed)
+
+func _save_progression() -> void:
+	var file := FileAccess.open(PROGRESSION_SAVE_PATH, FileAccess.WRITE)
+	if file == null:
+		push_warning("Could not write progression save.")
+		return
+
+	file.store_string(JSON.stringify(progression_state.to_save_data(), "\t"))
