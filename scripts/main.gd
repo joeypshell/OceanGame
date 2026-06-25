@@ -32,12 +32,11 @@ func _process(delta: float) -> void:
 	else:
 		_update_hud()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_E or event.keycode == KEY_ENTER:
-			_try_extract()
-		elif event.keycode == KEY_R:
-			_restart_dive()
+func _unhandled_input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("interact"):
+		_try_extract()
+	elif Input.is_action_just_pressed("restart_dive"):
+		_restart_dive()
 
 func _try_extract() -> void:
 	if dive_state != DiveState.DIVING or not player_in_base:

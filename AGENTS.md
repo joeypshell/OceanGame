@@ -9,9 +9,9 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 ## Repository Shape
 
 - Source: Godot 4.7 project using GDScript; scenes live in `scenes/`, scripts live in `scripts/`.
-- Tests: no automated Godot tests yet; use documented manual smoke checks for gameplay issues.
+- Tests: GitHub Actions runs a Godot headless launch smoke check and `git diff --check`; use documented manual smoke checks for gameplay issues.
 - Runtime/config: `project.godot`, `icon.svg`, Godot scenes, and GDScript files.
-- GitHub Actions: `.github/workflows/` when CI is added.
+- GitHub Actions: `.github/workflows/godot-smoke.yml`
 - Current-state docs: `docs/current/`
 - Planning docs: `docs/planning/`
 - Archived plans/notes: `docs/archive/`
@@ -60,6 +60,13 @@ Primary verification:
 
 ```powershell
 & "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --path . --headless --quit-after 1
+git diff --check
+```
+
+CI verification:
+
+```bash
+godot --headless --path . --quit-after 1
 git diff --check
 ```
 

@@ -12,6 +12,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Current controls: move with WASD or arrow keys.
 - Extraction controls: return to the safe base and press E or Enter to end the dive successfully.
 - Test reset: press R after extraction or oxygen failure to restart the prototype dive.
+- Input is routed through Godot actions: `move_left`, `move_right`, `move_up`, `move_down`, `interact`, `restart_dive`, and reserved `scan`.
 - Current movement uses acceleration, drag, and a bounded vertical dive area so the placeholder submersible cannot leave the prototype space.
 - The first scene starts the player at a visible surface boat/shallow lab base near the top of the water column.
 - The camera follows the player through a vertical descent with limits that keep the side-view dive space readable.
@@ -40,6 +41,9 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scenes/Player.tscn`: placeholder submersible scene.
   - `scripts/main.gd`: prototype dive state, safe base detection, and extraction result.
   - `scripts/player.gd`: basic placeholder player movement.
+  - `scripts/resource_definition.gd`: typed resource data definition for upcoming pickup/resource work.
+- GitHub Actions:
+  - `.github/workflows/godot-smoke.yml`: runs a Godot headless launch smoke check and `git diff --check`.
 - Do not commit `.godot/`, `.import/`, `*.import`, local editor cache, build output, secrets, or export artifacts.
 
 ## Verification
