@@ -26,6 +26,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Extraction only succeeds after the player has left the base and returned.
 - The player has three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep.
+- Starter resource candidate points use typed `SpawnPoint` nodes with category, target id, depth band, and position data so later hazards, creatures, discoveries, and resource clusters can use the same placement model.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, `Oxygen Tank I` can be bought with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
@@ -65,6 +66,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scripts/resource_definition.gd`: typed resource data definition for upcoming pickup/resource work.
   - `scripts/resource_pickup.gd`: pickup nodes that emit collection events and reset between dives.
   - `scripts/scannable.gd`: simple scannable targets, including passive moving creatures.
+  - `scripts/spawn_point.gd`: typed candidate placement points for seeded run variation.
   - `scripts/predator.gd`: simple patrol, detection, chase, and contact behavior.
   - `resources/*.tres`: starter resource definitions.
 - GitHub Actions:
@@ -86,6 +88,7 @@ Manual smoke:
 - Confirm the run starts at the `Run Ready` panel and does not begin active oxygen pressure until E or Enter is pressed.
 - Confirm each restarted run advances the run number and seed while persistent progression remains.
 - Confirm restarted runs vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.
+- Move or edit a `StarterResourceCandidates` spawn point in the scene and confirm seeded resource placement follows that typed definition.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm extraction and oxygen failure both show result summaries before restarting.

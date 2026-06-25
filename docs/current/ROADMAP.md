@@ -81,7 +81,7 @@ scripts/
 - The first scene includes an oxygen timer, successful extraction before depletion, and placeholder failure when oxygen reaches zero.
 - Dives start from a `Run Ready` panel and end with extraction/failure result summaries.
 - Run state now tracks a session run number and deterministic seed for future placement variation.
-- Starter resource placement now uses the current run seed to choose among authored candidate points while preserving shallow, midwater, and deep resource bands.
+- Starter resource placement now uses the current run seed to choose among typed authored `SpawnPoint` nodes while preserving shallow, midwater, and deep resource bands.
 - Current-dive state is split into `DiveSession`; session-persistent progression state is split into `ProgressionState`.
 - Extraction requires leaving the base before returning.
 - The prototype has three cargo slots, three data-backed resource pickups by depth band, extraction banking, and carried-resource loss on oxygen failure.
@@ -108,19 +108,16 @@ scripts/
 
 ## Immediate Issue Order
 
-1. Add data-driven spawn point definitions
-   Acceptance: resource, hazard, creature, and discovery candidate locations are represented as simple typed spawn point nodes or data instead of ad hoc scene placement.
-   Verification: changing a spawn point definition changes what can appear there without editing core run logic.
-2. Add lightweight upgrade menu
+1. Add lightweight upgrade menu
    Acceptance: the base exposes a compact upgrade menu that shows available upgrades, costs, owned status, and purchase feedback.
    Verification: buy `Oxygen Tank I` through the menu and confirm future dives still start with 40 oxygen.
-3. Add second resource cluster pattern
+2. Add second resource cluster pattern
    Acceptance: at least one alternative cluster pattern changes the route/cargo decision without adding new resource types.
    Verification: across several runs, one layout creates a cautious shallow/midwater route and another tempts a deeper reward path.
-4. Add session save/load for progression
+3. Add session save/load for progression
    Acceptance: banked resources, purchased upgrades, discoveries, and best depth can survive closing and reopening the project.
    Verification: save, quit/relaunch, load, and confirm session progression remains while current-dive cargo does not persist.
-5. Create next milestone playtest report
+4. Create next milestone playtest report
    Acceptance: record observations from at least three generated runs and identify whether daily variation improves the return-or-continue decision.
    Verification: update `docs/current/GAMEPLAY.md` or a planning note with run observations, issues found, and follow-up tasks.
 
@@ -294,7 +291,7 @@ Not required yet:
 - Completed: add oxygen timer and run failure.
 - Completed: reframe prototype around side-view dive descent.
 - Completed: formalize dive/progression state, add resource banking, improve depth readability, add `Oxygen Tank I`, add scanner discoveries, and add the first route-control predator.
-- Completed: add run start/result screens, deterministic run seeds, and seeded starter resource variation inside authored depth-band candidate points.
+- Completed: add run start/result screens, deterministic run seeds, and seeded starter resource variation inside typed authored depth-band candidate points.
 
 ## Out Of Scope For Now
 

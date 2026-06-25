@@ -2,6 +2,7 @@ extends Node2D
 
 const DiveSessionScript := preload("res://scripts/dive_session.gd")
 const ProgressionStateScript := preload("res://scripts/progression_state.gd")
+const SpawnPointScript := preload("res://scripts/spawn_point.gd")
 
 const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
 const OXYGEN_TANK_COST := {
@@ -253,27 +254,28 @@ func _place_starter_resources_for_run() -> void:
 	rng.seed = progression_state.current_run_seed
 
 	for pickup_name in STARTER_RESOURCE_PICKUP_NAMES:
-		var pickup := get_node_or_null("ResourcePickups/%s" % pickup_name) as Node2D
+		var pickup := get_node_or_null("ResourcePickups/%s" % pickup_name) as ResourcePickup
 		if pickup == null:
 			continue
+		if pickup.definition == null:
+			continue
 
-		var candidates := _candidate_positions_for_resource(pickup_name)
+		var candidates := _spawn_positions_for_target("resource", pickup.definition.id)
 		if candidates.is_empty():
 			continue
 
 		pickup.global_position = candidates[rng.randi_range(0, candidates.size() - 1)]
 
-func _candidate_positions_for_resource(resource_name: String) -> Array[Vector2]:
-	var resource_candidates := starter_resource_candidates.get_node_or_null(resource_name)
-	if resource_candidates == null:
-		return []
-
+func _spawn_positions_for_target(category: String, target_id: String) -> Array[Vector2]:
 	var positions: Array[Vector2] = []
-	for candidate in resource_candidates.get_children():
-		if candidate is Node2D:
-			positions.append(candidate.global_position)
-
+	_collect_spawn_positions(starter_resource_candidates, category, target_id, positions)
 	return positions
+
+func _collect_spawn_positions(root: Node, category: String, target_id: String, positions: Array[Vector2]) -> void:
+	for child in root.get_children():
+		if child.get_script() == SpawnPointScript and child.matches(category, target_id):
+			positions.append(child.global_position)
+		_collect_spawn_positions(child, category, target_id, positions)
 
 func _sync_discovery_reveals() -> void:
 	if progression_state.has_discovery("thermal_vent"):

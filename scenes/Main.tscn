@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=12 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" path="res://resources/glow_plankton.tres" id="6_glow_plankton"]
 [ext_resource type="Script" path="res://scripts/scannable.gd" id="7_scannable"]
 [ext_resource type="Script" path="res://scripts/predator.gd" id="8_predator"]
+[ext_resource type="Script" path="res://scripts/spawn_point.gd" id="9_spawn_point"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -135,34 +136,70 @@ shape = SubResource("CircleShape2D_base_zone")
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
 position = Vector2(760, 390)
+script = ExtResource("9_spawn_point")
+spawn_id = "kelp_shallow_a"
+target_id = "kelp_fiber"
+depth_band = "shallow"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
 position = Vector2(900, 470)
+script = ExtResource("9_spawn_point")
+spawn_id = "kelp_shallow_b"
+target_id = "kelp_fiber"
+depth_band = "shallow"
 
 [node name="C" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
 position = Vector2(560, 570)
+script = ExtResource("9_spawn_point")
+spawn_id = "kelp_shallow_c"
+target_id = "kelp_fiber"
+depth_band = "shallow"
 
 [node name="ShellFragments" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
 position = Vector2(450, 900)
+script = ExtResource("9_spawn_point")
+spawn_id = "shell_midwater_a"
+target_id = "shell_fragments"
+depth_band = "midwater"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
 position = Vector2(700, 1020)
+script = ExtResource("9_spawn_point")
+spawn_id = "shell_midwater_b"
+target_id = "shell_fragments"
+depth_band = "midwater"
 
 [node name="C" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
 position = Vector2(1010, 1130)
+script = ExtResource("9_spawn_point")
+spawn_id = "shell_midwater_c"
+target_id = "shell_fragments"
+depth_band = "midwater"
 
 [node name="GlowPlankton" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
 position = Vector2(760, 1490)
+script = ExtResource("9_spawn_point")
+spawn_id = "glow_deep_a"
+target_id = "glow_plankton"
+depth_band = "deep"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
 position = Vector2(930, 1600)
+script = ExtResource("9_spawn_point")
+spawn_id = "glow_deep_b"
+target_id = "glow_plankton"
+depth_band = "deep"
 
 [node name="C" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
 position = Vector2(650, 1700)
+script = ExtResource("9_spawn_point")
+spawn_id = "glow_deep_c"
+target_id = "glow_plankton"
+depth_band = "deep"
 
 [node name="ResourcePickups" type="Node2D" parent="."]
 
