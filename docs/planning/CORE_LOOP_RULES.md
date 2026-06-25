@@ -55,6 +55,7 @@ Future feedback rule:
 - Extraction banks carried resources into persistent progression.
 - Oxygen failure loses carried resources.
 - Banked resources, upgrades, discoveries, and best depth remain after failure.
+- Planned first cargo improvement: `Cargo Rack I` may raise carried cargo capacity to four while preserving the same extraction and failure rules. See `docs/planning/CARGO_IMPROVEMENT_I.md`.
 
 ## Scanner Outcome Rules
 

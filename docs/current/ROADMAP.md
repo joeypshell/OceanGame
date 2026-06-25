@@ -13,6 +13,7 @@ Detailed design rules live in:
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
 - `docs/planning/BLIND_VALIDATION_KIT.md`
 - `docs/planning/SCANNER_IMPROVEMENT_I.md`
+- `docs/planning/CARGO_IMPROVEMENT_I.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
@@ -41,8 +42,7 @@ No active technical support issues are currently queued.
 
 Later design and demo-readiness issues:
 
-1. #49 Plan Cargo Improvement I.
-2. #50 Add prototype `Burst Thruster` with oxygen cost and cooldown only after #37 or equivalent predator-readability evidence.
+1. #50 Add prototype `Burst Thruster` with oxygen cost and cooldown only after #37 or equivalent predator-readability evidence.
 
 Do not let future-tool work block the first blind validation pass. #37 remains the proof gate for feel, readability, and predator-pressure conclusions.
 
@@ -165,6 +165,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #46 prepare the blind validation kit for #37.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
 - Completed: #48 plan `Signal Lens I` as Scanner Improvement I from the `Wreck Signal Cache`.
+- Completed: #49 plan `Cargo Rack I` as the first cargo improvement.
 
 ## Deferred Work
 

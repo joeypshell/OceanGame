@@ -27,8 +27,10 @@ This is not a tech tree. It is a compact ladder for the first prototype progress
 ## 4. Cargo Improvement
 
 - Purpose: create different extraction choices.
-- Possible behavior change: carry one more item, protect one carried item on failure, or separate fragile research samples from raw materials.
+- Recommended first upgrade: `Cargo Rack I`.
+- Recommended behavior change: increase carried cargo capacity from `3` to `4` while preserving the existing failure rule that carried cargo is lost on oxygen failure.
 - Constraint: avoid grid inventory, stack management, or broad crafting economy.
+- Planning note: `docs/planning/CARGO_IMPROVEMENT_I.md`.
 
 ## 5. Predator Countermeasure
 
