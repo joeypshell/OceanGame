@@ -209,16 +209,23 @@ offset_right = 620.0
 offset_bottom = 354.0
 text = "Banked: none"
 
-[node name="Status" type="Label" parent="HUD"]
+[node name="Upgrade" type="Label" parent="HUD"]
 offset_left = 24.0
 offset_top = 354.0
 offset_right = 620.0
 offset_bottom = 386.0
-text = "Dive status: active"
+text = "Upgrade: Oxygen Tank I costs Kelp x2, Shell x1, Glow x1"
 
-[node name="ExtractionPrompt" type="Label" parent="HUD"]
+[node name="Status" type="Label" parent="HUD"]
 offset_left = 24.0
 offset_top = 386.0
 offset_right = 620.0
 offset_bottom = 418.0
+text = "Dive status: active"
+
+[node name="ExtractionPrompt" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 418.0
+offset_right = 620.0
+offset_bottom = 466.0
 text = "Safe base: press E or Enter to extract"

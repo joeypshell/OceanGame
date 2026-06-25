@@ -23,6 +23,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The player has three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
 - Starter resources are placed by depth: `Kelp Fiber` in the shallows, `Shell Fragments` in midwater, and `Glow Plankton` in deeper water.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
+- After extraction, `Oxygen Tank I` can be bought with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
+- `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
 - The scene uses surface light rays, a midwater wreck silhouette, and a deeper glow hint to communicate depth bands and deeper reward potential.
 
@@ -75,6 +77,7 @@ Manual smoke:
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.
 - Collect resources, confirm cargo fills up to three slots, extract, and confirm resources move into the banked list.
+- Bank the required resources, buy `Oxygen Tank I` after extraction, restart, and confirm max oxygen is 40.
 - Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.
 - Confirm the HUD depth increases while diving and that the base indicator points back toward the surface base.
 - Confirm the scene communicates shallow, midwater, and deep areas through color, landmarks, and resource placement.

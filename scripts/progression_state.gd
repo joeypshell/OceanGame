@@ -16,6 +16,23 @@ func record_depth(depth: float) -> void:
 func has_upgrade(upgrade_id: String) -> bool:
 	return bool(purchased_upgrades.get(upgrade_id, false))
 
+func can_afford(cost: Dictionary) -> bool:
+	for resource_id in cost.keys():
+		if resource_count(resource_id) < int(cost[resource_id]):
+			return false
+
+	return true
+
+func purchase_upgrade(upgrade_id: String, cost: Dictionary) -> bool:
+	if has_upgrade(upgrade_id) or not can_afford(cost):
+		return false
+
+	for resource_id in cost.keys():
+		banked_resources[resource_id] = resource_count(resource_id) - int(cost[resource_id])
+
+	purchased_upgrades[upgrade_id] = true
+	return true
+
 func add_discovery(discovery_id: String) -> void:
 	scan_discoveries[discovery_id] = true
 

@@ -3,7 +3,15 @@ extends Node2D
 const DiveSessionScript := preload("res://scripts/dive_session.gd")
 const ProgressionStateScript := preload("res://scripts/progression_state.gd")
 
+const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
+const OXYGEN_TANK_COST := {
+	"kelp_fiber": 2,
+	"shell_fragments": 1,
+	"glow_plankton": 1,
+}
+
 @export var max_oxygen := 30.0
+@export var oxygen_tank_1_max_oxygen := 40.0
 @export var oxygen_drain_per_second := 1.0
 @export var collect_oxygen_cost := 1.0
 @export var start_position := Vector2(640.0, 190.0)
@@ -17,6 +25,7 @@ const ProgressionStateScript := preload("res://scripts/progression_state.gd")
 @onready var base_direction_label: Label = $HUD/BaseDirection
 @onready var cargo_label: Label = $HUD/Cargo
 @onready var bank_label: Label = $HUD/BankedResources
+@onready var upgrade_label: Label = $HUD/Upgrade
 @onready var status_label: Label = $HUD/Status
 @onready var prompt_label: Label = $HUD/ExtractionPrompt
 
@@ -45,7 +54,10 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("interact"):
-		_try_extract()
+		if dive_session.result == DiveSessionScript.Result.EXTRACTED:
+			_try_purchase_oxygen_tank()
+		else:
+			_try_extract()
 	elif Input.is_action_just_pressed("restart_dive"):
 		_restart_dive()
 
@@ -64,7 +76,7 @@ func _fail_dive() -> void:
 	_update_hud()
 
 func _restart_dive() -> void:
-	dive_session.reset(max_oxygen)
+	dive_session.reset(_current_max_oxygen())
 	player.global_position = start_position
 	player.velocity = Vector2.ZERO
 	player_in_base = true
@@ -86,6 +98,14 @@ func _on_base_zone_body_exited(body: Node2D) -> void:
 func _update_depth() -> void:
 	dive_session.current_depth = maxf(0.0, (player.global_position.y - surface_y) / pixels_per_meter)
 	progression_state.record_depth(dive_session.current_depth)
+
+func _try_purchase_oxygen_tank() -> void:
+	if progression_state.purchase_upgrade(OXYGEN_TANK_UPGRADE_ID, OXYGEN_TANK_COST):
+		status_label.text = "Purchased Oxygen Tank I. Future dives start with 40 oxygen."
+	else:
+		status_label.text = "Oxygen Tank I needs 2 Kelp, 1 Shell, and 1 Glow."
+
+	_update_hud()
 
 func _on_resource_pickup_collected(pickup: Node) -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -121,9 +141,13 @@ func _update_hud() -> void:
 		_format_resource_counts(dive_session.current_cargo)
 	]
 	bank_label.text = "Banked:%s" % _format_banked_resources()
+	upgrade_label.text = _format_upgrade_status()
 
 	if dive_session.result == DiveSessionScript.Result.EXTRACTED:
-		prompt_label.text = "Extraction complete - press R to restart"
+		if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
+			prompt_label.text = "Extraction complete - press R to restart"
+		else:
+			prompt_label.text = "Extraction complete - press E to buy Oxygen Tank I or R to restart"
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		prompt_label.text = "Run failed - press R to restart"
 	elif player_in_base:
@@ -171,6 +195,18 @@ func _display_name_for_resource(resource_id: String) -> String:
 			return "Glow Plankton"
 		_:
 			return resource_id
+
+func _format_upgrade_status() -> String:
+	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
+		return "Upgrade: Oxygen Tank I installed"
+
+	return "Upgrade: Oxygen Tank I costs Kelp x2, Shell x1, Glow x1"
+
+func _current_max_oxygen() -> float:
+	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
+		return oxygen_tank_1_max_oxygen
+
+	return max_oxygen
 
 func _format_base_direction() -> String:
 	var vertical_delta := player.global_position.y - start_position.y
