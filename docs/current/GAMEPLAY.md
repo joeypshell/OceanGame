@@ -28,7 +28,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep.
 - Starter resource candidate points use typed `SpawnPoint` nodes with category, target id, depth band, and position data so later hazards, creatures, discoveries, and resource clusters can use the same placement model.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
-- After extraction, `Oxygen Tank I` can be bought with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
+- After extraction, the surface upgrade bay panel shows `Oxygen Tank I`, its cost, owned/available/unavailable state, and purchase feedback.
+- `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
 - Scan with F. Scanning costs 2 oxygen and records session-persistent discoveries.
 - `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton`.
@@ -95,7 +96,9 @@ Manual smoke:
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.
 - Collect resources, confirm cargo fills up to three slots, extract, and confirm resources move into the banked list.
-- Bank the required resources, buy `Oxygen Tank I` after extraction, restart, and confirm max oxygen is 40.
+- After extraction, confirm the surface upgrade bay shows `Oxygen Tank I`, cost, owned status, and feedback.
+- Attempt to buy `Oxygen Tank I` without enough resources and confirm the upgrade panel gives clear feedback.
+- Bank the required resources, buy `Oxygen Tank I` from the upgrade panel after extraction, restart, and confirm max oxygen is 40.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
 - Approach the deep `Gulper Eel`, confirm it briefly chases, and confirm contact causes oxygen loss plus knockback without instant failure.

@@ -41,6 +41,12 @@ const STARTER_RESOURCE_PICKUP_NAMES := [
 @onready var run_panel: Panel = $HUD/RunPanel
 @onready var run_title_label: Label = $HUD/RunPanel/RunTitle
 @onready var run_summary_label: Label = $HUD/RunPanel/RunSummary
+@onready var upgrade_panel: Panel = $HUD/UpgradePanel
+@onready var upgrade_menu_title_label: Label = $HUD/UpgradePanel/UpgradeMenuTitle
+@onready var upgrade_menu_item_label: Label = $HUD/UpgradePanel/UpgradeMenuItem
+@onready var upgrade_menu_cost_label: Label = $HUD/UpgradePanel/UpgradeMenuCost
+@onready var upgrade_menu_state_label: Label = $HUD/UpgradePanel/UpgradeMenuState
+@onready var upgrade_menu_feedback_label: Label = $HUD/UpgradePanel/UpgradeMenuFeedback
 @onready var starter_resource_candidates: Node2D = $StarterResourceCandidates
 @onready var glow_plankton_visual: Polygon2D = $ResourcePickups/GlowPlankton/Visual
 @onready var hidden_glow_plankton: Node = $ResourcePickups/HiddenGlowPlankton
@@ -51,6 +57,7 @@ var progression_state := ProgressionStateScript.new()
 var player_in_base := true
 var glow_plankton_highlight_timer := 0.0
 var last_result_summary := ""
+var upgrade_menu_feedback := ""
 
 func _ready() -> void:
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
@@ -101,16 +108,22 @@ func _try_extract() -> void:
 		_format_resource_counts(extracted_cargo),
 		roundi(progression_state.best_depth_reached)
 	]
+	upgrade_menu_feedback = "Deposited %d resource(s) into the bank.%s" % [
+		extracted_count,
+		_format_resource_counts(extracted_cargo)
+	]
 	status_label.text = "Dive complete: extracted safely with %d oxygen." % ceili(dive_session.oxygen)
 	_update_hud()
 
 func _fail_dive() -> void:
 	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nBanked resources, upgrades, and scans kept.\nBest depth: %dm." % roundi(progression_state.best_depth_reached)
+	upgrade_menu_feedback = ""
 	status_label.text = "Dive failed: oxygen depleted. Cargo lost."
 	_update_hud()
 
 func _start_dive() -> void:
 	dive_session.start()
+	upgrade_menu_feedback = ""
 	status_label.text = "Dive status: active"
 	_update_hud()
 
@@ -120,6 +133,7 @@ func _restart_dive() -> void:
 	player.velocity = Vector2.ZERO
 	player_in_base = true
 	last_result_summary = ""
+	upgrade_menu_feedback = ""
 	_reset_resource_pickups()
 	status_label.text = "Dive ready"
 	_update_hud()
@@ -145,9 +159,20 @@ func _update_depth() -> void:
 	progression_state.record_depth(dive_session.current_depth)
 
 func _try_purchase_oxygen_tank() -> void:
+	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
+		upgrade_menu_feedback = "Oxygen Tank I is already installed."
+		status_label.text = "Oxygen Tank I is already installed."
+		_update_hud()
+		return
+
 	if progression_state.purchase_upgrade(OXYGEN_TANK_UPGRADE_ID, OXYGEN_TANK_COST):
+		upgrade_menu_feedback = "Purchased Oxygen Tank I. Future dives start with 40 oxygen."
 		status_label.text = "Purchased Oxygen Tank I. Future dives start with 40 oxygen."
 	else:
+		upgrade_menu_feedback = "Need %s. Banked:%s" % [
+			_format_upgrade_cost(OXYGEN_TANK_COST),
+			_format_banked_resources()
+		]
 		status_label.text = "Oxygen Tank I needs 2 Kelp, 1 Shell, and 1 Glow."
 
 	_update_hud()
@@ -292,6 +317,7 @@ func _reveal_thermal_vent_route() -> void:
 
 func _update_hud() -> void:
 	_update_run_panel()
+	_update_upgrade_menu()
 	oxygen_label.text = "Oxygen: %d / %d" % [ceili(dive_session.oxygen), ceili(dive_session.max_oxygen)]
 	depth_label.text = "Depth: %dm | Best: %dm" % [
 		roundi(dive_session.current_depth),
@@ -313,7 +339,7 @@ func _update_hud() -> void:
 		if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
 			prompt_label.text = "Extraction complete - press R to restart"
 		else:
-			prompt_label.text = "Extraction complete - press E to buy Oxygen Tank I or R to restart"
+			prompt_label.text = "Extraction complete - upgrade menu open: press E to purchase or R to restart"
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		prompt_label.text = "Run failed - press R to restart"
 	elif player_in_base:
@@ -342,6 +368,24 @@ func _update_run_panel() -> void:
 		run_summary_label.text = "Seed: %d\n%s" % [progression_state.current_run_seed, last_result_summary]
 	else:
 		run_panel.visible = false
+
+func _update_upgrade_menu() -> void:
+	upgrade_panel.visible = dive_session.result == DiveSessionScript.Result.EXTRACTED
+	if not upgrade_panel.visible:
+		return
+
+	upgrade_menu_title_label.text = "Surface Upgrade Bay"
+	upgrade_menu_item_label.text = "Oxygen Tank I"
+	upgrade_menu_cost_label.text = "Cost: %s" % _format_upgrade_cost(OXYGEN_TANK_COST)
+
+	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
+		upgrade_menu_state_label.text = "Owned: installed\nEffect: future dives start with 40 oxygen."
+	elif progression_state.can_afford(OXYGEN_TANK_COST):
+		upgrade_menu_state_label.text = "Available: press E or Enter to purchase.\nEffect: future dives start with 40 oxygen."
+	else:
+		upgrade_menu_state_label.text = "Unavailable: collect and bank more resources.\nEffect: future dives start with 40 oxygen."
+
+	upgrade_menu_feedback_label.text = upgrade_menu_feedback
 
 func _format_resource_counts(resource_ids: Array[String]) -> String:
 	if resource_ids.is_empty():
@@ -386,6 +430,13 @@ func _format_upgrade_status() -> String:
 		return "Upgrade: Oxygen Tank I installed"
 
 	return "Upgrade: Oxygen Tank I costs Kelp x2, Shell x1, Glow x1"
+
+func _format_upgrade_cost(cost: Dictionary) -> String:
+	var parts: Array[String] = []
+	for resource_id in cost.keys():
+		parts.append("%s x%d" % [_display_name_for_resource(resource_id), int(cost[resource_id])])
+
+	return ", ".join(parts)
 
 func _format_discoveries() -> String:
 	var discoveries := progression_state.scan_discoveries
