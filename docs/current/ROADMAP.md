@@ -80,6 +80,7 @@ scripts/
 - The first scene includes a visible surface boat/shallow lab base where the player can trigger a successful extraction result.
 - The first scene includes an oxygen timer, successful extraction before depletion, and placeholder failure when oxygen reaches zero.
 - Dives start from a `Run Ready` panel and end with extraction/failure result summaries.
+- Run state now tracks a session run number and deterministic seed for future placement variation.
 - Current-dive state is split into `DiveSession`; session-persistent progression state is split into `ProgressionState`.
 - Extraction requires leaving the base before returning.
 - The prototype has three cargo slots, three data-backed resource pickups by depth band, extraction banking, and carried-resource loss on oxygen failure.

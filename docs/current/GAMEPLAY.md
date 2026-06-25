@@ -20,6 +20,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
 - Dives begin from a `Run Ready` panel. Press E or Enter to begin oxygen drain and active dive play.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, and best depth.
+- Each run has a session run number and deterministic seed shown on the start/result panel.
+- Pressing R after a result prepares the next run, advancing the run number and seed while preserving banked resources, upgrades, discoveries, and best depth.
 - Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
 - Extraction only succeeds after the player has left the base and returned.
 - The player has three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
@@ -82,6 +84,7 @@ Manual smoke:
 
 - Launch the project and confirm the first scene runs.
 - Confirm the run starts at the `Run Ready` panel and does not begin active oxygen pressure until E or Enter is pressed.
+- Confirm each restarted run advances the run number and seed while persistent progression remains.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm extraction and oxygen failure both show result summaries before restarting.

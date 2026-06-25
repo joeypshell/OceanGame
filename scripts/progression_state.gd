@@ -5,6 +5,12 @@ var banked_resources: Dictionary = {}
 var purchased_upgrades: Dictionary = {}
 var scan_discoveries: Dictionary = {}
 var best_depth_reached := 0.0
+var current_run_number := 0
+var current_run_seed := 0
+
+func advance_run() -> void:
+	current_run_number += 1
+	current_run_seed = 1000 + current_run_number * 7919
 
 func bank_cargo(cargo: Array[String]) -> void:
 	for resource_id in cargo:

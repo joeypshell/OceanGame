@@ -52,7 +52,7 @@ func _ready() -> void:
 		pickup.collected.connect(_on_resource_pickup_collected)
 	for predator in get_tree().get_nodes_in_group("predators"):
 		predator.contacted.connect(_on_predator_contacted)
-	dive_session.reset(max_oxygen)
+	_prepare_next_run()
 	_update_hud()
 
 func _process(delta: float) -> void:
@@ -108,7 +108,7 @@ func _start_dive() -> void:
 	_update_hud()
 
 func _restart_dive() -> void:
-	dive_session.reset(_current_max_oxygen())
+	_prepare_next_run()
 	player.global_position = start_position
 	player.velocity = Vector2.ZERO
 	player_in_base = true
@@ -116,6 +116,10 @@ func _restart_dive() -> void:
 	_reset_resource_pickups()
 	status_label.text = "Dive ready"
 	_update_hud()
+
+func _prepare_next_run() -> void:
+	progression_state.advance_run()
+	dive_session.reset(_current_max_oxygen())
 
 func _on_base_zone_body_entered(body: Node2D) -> void:
 	if body == player:
@@ -287,16 +291,19 @@ func _update_hud() -> void:
 func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
-		run_title_label.text = "Run Ready"
-		run_summary_label.text = "Start from the moonpool with %d oxygen.\nCollect, scan, or push deeper, then return to bank cargo.\nPress E or Enter to begin." % ceili(dive_session.max_oxygen)
+		run_title_label.text = "Day %d - Run Ready" % progression_state.current_run_number
+		run_summary_label.text = "Seed: %d\nStart with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\nPress E or Enter to begin." % [
+			progression_state.current_run_seed,
+			ceili(dive_session.max_oxygen)
+		]
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		run_panel.visible = true
-		run_title_label.text = "Run Result: Extraction"
-		run_summary_label.text = last_result_summary
+		run_title_label.text = "Day %d Result: Extraction" % progression_state.current_run_number
+		run_summary_label.text = "Seed: %d\n%s" % [progression_state.current_run_seed, last_result_summary]
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		run_panel.visible = true
-		run_title_label.text = "Run Result: Failure"
-		run_summary_label.text = last_result_summary
+		run_title_label.text = "Day %d Result: Failure" % progression_state.current_run_number
+		run_summary_label.text = "Seed: %d\n%s" % [progression_state.current_run_seed, last_result_summary]
 	else:
 		run_panel.visible = false
 
