@@ -8,6 +8,7 @@ const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const PlayerScript := preload("res://scripts/player.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
+const MainScript := preload("res://scripts/main.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PressureSealUpgrade := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SignalLensUpgrade := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -39,6 +40,7 @@ func _initialize() -> void:
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
 	_run("expedition prep goals", _test_expedition_prep_goals)
+	_run("result progress callouts", _test_result_progress_callouts)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 
 	if _failures.is_empty():
@@ -281,6 +283,32 @@ func _test_expedition_prep_goals() -> void:
 	progression.purchase_upgrade(SignalLensUpgrade.id, SignalLensUpgrade.resource_cost)
 	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
 	_expect(goal.contains("Cargo Rack I"), "signal lens ownership should advance goal to Cargo Rack I")
+
+func _test_result_progress_callouts() -> void:
+	var main := MainScript.new()
+	main.upgrade_definitions = [
+		OxygenTankUpgrade,
+		PressureSealUpgrade,
+		SignalLensUpgrade,
+		CargoRackUpgrade,
+	]
+
+	main.progression_state.banked_resources = {
+		"glow_plankton": 1,
+		"kelp_fiber": 2,
+		"shell_fragments": 1,
+	}
+	_expect(main._format_upgrade_progress_callout() == "Upgrade progress: Oxygen Tank I ready to buy.", "result progress should call out ready upgrades")
+
+	main.progression_state.purchase_upgrade(OxygenTankUpgrade.id, OxygenTankUpgrade.resource_cost)
+	_expect(main._format_upgrade_progress_callout().contains("scan Thermal Vent"), "result progress should call out missing scan prerequisites")
+
+	main.run_completed_scans = ["thermal_vent", "wreck_signal_cache"]
+	_expect(main._format_scan_progress_callout("Scans kept") == "Scans kept: Thermal Vent, Wreck Signal Cache.", "result progress should name scans kept this dive")
+
+	main.run_completed_scans.clear()
+	_expect(main._format_scan_progress_callout("Discoveries recorded") == "Discoveries recorded: none this dive.", "result progress should stay explicit when no scans were recorded")
+	main.free()
 
 func _test_burst_thruster_movement_helper() -> void:
 	var player := PlayerScript.new()

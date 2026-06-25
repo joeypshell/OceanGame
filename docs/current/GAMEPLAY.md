@@ -25,8 +25,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Burst Thruster` does not damage, stun, harvest, or bypass predators, resources, pressure locks, or progression gates.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
 - Dives begin from an `Expedition Ready` panel. Press E or Enter to begin oxygen drain and active dive play. The panel includes one concise goal line that points to the next useful upgrade purchase, missing banked resources, or scan prerequisite such as `Thermal Vent` or `Wreck Signal Cache`.
-- Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, and best depth.
-- Extraction and oxygen failure result panels default to player-facing summaries. Development telemetry is hidden by default, but F3 or the exported `show_debug_telemetry` flag exposes result, seed, cluster pattern, predator route, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
+- Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, durable upgrade progress, discoveries recorded or kept, and best depth.
+- Extraction and oxygen failure result panels default to compact player-facing summaries. Development telemetry is hidden by default, but F3 or the exported `show_debug_telemetry` flag exposes result, seed, cluster pattern, predator route, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
 - Each expedition has a session number and deterministic seed. The raw seed is visible only when development telemetry is enabled.
 - Each expedition selects a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`. The raw pattern label is visible only when development telemetry is enabled.
 - Pressing R after a result prepares the next seeded expedition, advancing the session number and seed while preserving banked resources, upgrades, discoveries, and best depth.

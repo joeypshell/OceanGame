@@ -164,9 +164,11 @@ func _try_extract() -> void:
 	dive_session.extract()
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
-	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\nBest depth: %dm." % [
+	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\n%s\n%s\nBest depth: %dm." % [
 		extracted_count,
 		_format_resource_counts(extracted_cargo),
+		_format_upgrade_progress_callout(),
+		_format_scan_progress_callout("Discoveries recorded"),
 		roundi(progression_state.best_depth_reached)
 	]
 	upgrade_menu_feedback = "Deposited %d resource(s) into the bank.%s" % [
@@ -180,7 +182,10 @@ func _try_extract() -> void:
 func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
-	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nBanked resources, upgrades, and scans kept.\nBest depth: %dm." % roundi(progression_state.best_depth_reached)
+	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s\nBest depth: %dm." % [
+		_format_scan_progress_callout("Scans kept"),
+		roundi(progression_state.best_depth_reached),
+	]
 	upgrade_menu_feedback = ""
 	_save_progression()
 	status_label.text = "Dive failed: oxygen depleted. Cargo lost."
@@ -836,6 +841,48 @@ func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 		upgrade.owned_text
 	]
 
+func _format_upgrade_progress_callout() -> String:
+	for upgrade in upgrade_definitions:
+		if progression_state.has_upgrade(upgrade.id):
+			continue
+
+		var missing_discovery := _upgrade_missing_discovery(upgrade)
+		if missing_discovery != "":
+			return "Upgrade progress: scan %s to unlock %s." % [
+				_format_discovery_name(missing_discovery),
+				upgrade.display_name,
+			]
+
+		var missing_resources := _format_missing_resources_inline(upgrade.resource_cost)
+		if missing_resources == "none":
+			return "Upgrade progress: %s ready to buy." % upgrade.display_name
+
+		return "Upgrade progress: %s still needs %s." % [
+			upgrade.display_name,
+			missing_resources,
+		]
+
+	return "Upgrade progress: all current upgrades installed."
+
+func _format_missing_resources_inline(cost: Dictionary) -> String:
+	var parts: Array[String] = []
+	for resource_id in cost.keys():
+		var missing: int = int(cost[resource_id]) - progression_state.resource_count(resource_id)
+		if missing > 0:
+			parts.append("%s x%d" % [_display_name_for_resource(resource_id), missing])
+
+	return "none" if parts.is_empty() else ", ".join(parts)
+
+func _format_scan_progress_callout(prefix: String) -> String:
+	if run_completed_scans.is_empty():
+		return "%s: none this dive." % prefix
+
+	var parts: Array[String] = []
+	for discovery_id in run_completed_scans:
+		parts.append(_format_discovery_name(discovery_id))
+
+	return "%s: %s." % [prefix, ", ".join(parts)]
+
 func _upgrade_missing_discovery(upgrade: UpgradeDefinition) -> String:
 	return UpgradePurchaseScript.missing_discovery(progression_state, upgrade)
 
@@ -850,6 +897,10 @@ func _format_discovery_name(discovery_id: String) -> String:
 	match discovery_id:
 		"thermal_vent":
 			return "Thermal Vent"
+		"pressure_wreck_signal":
+			return "Pressure-Locked Research Wreck"
+		"wreck_signal_cache":
+			return "Wreck Signal Cache"
 		"lantern_fry":
 			return "Lantern Fry"
 		_:

@@ -92,21 +92,19 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #58 expedition result progress callouts.
-2. Resolve #62 surface upgrade bay readability.
-3. Resolve #63 recent expedition log.
-4. Resolve #59/#60 monster observation planning and first observation scan when ready.
-5. Resolve #61 first small biome pocket plan.
-6. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+1. Resolve #62 surface upgrade bay readability.
+2. Resolve #63 recent expedition log.
+3. Resolve #59/#60 monster observation planning and first observation scan when ready.
+4. Resolve #61 first small biome pocket plan.
+5. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ### Progression Candidates
 
-1. #58 result progress callouts.
-2. #62 upgrade bay readability polish.
-3. #63 recent expedition log.
-4. #59/#60 monster observation.
-5. #61 first small biome pocket plan.
-6. New milestone planning after the stocked queue is drained or materially changes.
+1. #62 upgrade bay readability polish.
+2. #63 recent expedition log.
+3. #59/#60 monster observation.
+4. #61 first small biome pocket plan.
+5. New milestone planning after the stocked queue is drained or materially changes.
 
 ### Deferred
 
