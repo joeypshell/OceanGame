@@ -202,6 +202,12 @@ func _test_spawn_selection() -> void:
 	_expect(positions.has(Vector2(30.0, 40.0)), "spawn selection should include matching cautious point")
 	_expect(not positions.has(Vector2(50.0, 60.0)), "spawn selection should exclude nonmatching cluster point")
 	_expect(SpawnSelectionScript.cluster_pattern_for_seed(1, ["cautious", "deep_reward"]) == "deep_reward", "spawn selection should map seeds to cluster patterns deterministically")
+	var shell_reef := _make_spawn_point("reef", "resource", "shell_fragments", "midwater", "any", Vector2(70.0, 80.0))
+	root.add_child(shell_reef)
+	var shell_positions := SpawnSelectionScript.positions_for_target(root, SpawnPointScript, "resource", "shell_fragments", "deep_reward")
+	_expect(shell_positions.size() == 1, "shell reef spawn selection should include one authored shell candidate without adding extra pickups")
+	_expect(shell_positions.has(Vector2(70.0, 80.0)), "shell reef spawn selection should include any-pattern reef candidate")
+	_expect(shell_reef.depth_band == "midwater", "shell reef spawn point should preserve midwater depth identity")
 	root.free()
 
 func _test_scanner_target_resolver() -> void:

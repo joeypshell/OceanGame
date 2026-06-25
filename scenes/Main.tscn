@@ -392,6 +392,22 @@ target_id = "shell_fragments"
 depth_band = "midwater"
 cluster_pattern = "deep_reward"
 
+[node name="ReefA" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
+position = Vector2(350, 1090)
+script = ExtResource("9_spawn_point")
+spawn_id = "shell_reef_shelf_a"
+target_id = "shell_fragments"
+depth_band = "midwater"
+cluster_pattern = "any"
+
+[node name="ReefB" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
+position = Vector2(610, 1160)
+script = ExtResource("9_spawn_point")
+spawn_id = "shell_reef_shelf_b"
+target_id = "shell_fragments"
+depth_band = "midwater"
+cluster_pattern = "any"
+
 [node name="GlowPlankton" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]

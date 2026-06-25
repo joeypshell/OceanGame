@@ -40,14 +40,13 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #67 Add `Shell Reef` authored spawn points.
-2. #68 Plan `Shell Reef` five-seed route review.
-3. #69 Plan `Predator Warning I` upgrade.
-4. #70 Plan surface results and upgrade bay layout pass.
-5. #71 Add compact surface summary tabs.
-6. #72 Plan `Expedition Goal II` route objective layer.
-7. #73 Add route objective goal for `Shell Reef`.
-8. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
+1. #68 Plan `Shell Reef` five-seed route review.
+2. #69 Plan `Predator Warning I` upgrade.
+3. #70 Plan surface results and upgrade bay layout pass.
+4. #71 Add compact surface summary tabs.
+5. #72 Plan `Expedition Goal II` route objective layer.
+6. #73 Add route objective goal for `Shell Reef`.
+7. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
 
 Technical support track:
 
@@ -84,14 +83,13 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #67 add `Shell Reef` authored spawn points.
-2. #68 plan `Shell Reef` route review.
-3. #69 plan `Predator Warning I`.
-4. #70 plan surface result and upgrade bay layout.
-5. #71 add compact surface summary tabs.
-6. #72 plan `Expedition Goal II`.
-7. #73 add route objective goal for `Shell Reef`.
-8. #74 replenish the next issue queue.
+1. #68 plan `Shell Reef` route review.
+2. #69 plan `Predator Warning I`.
+3. #70 plan surface result and upgrade bay layout.
+4. #71 add compact surface summary tabs.
+5. #72 plan `Expedition Goal II`.
+6. #73 add route objective goal for `Shell Reef`.
+7. #74 replenish the next issue queue.
 
 ## Latest Completed Milestone
 
@@ -230,6 +228,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #61 plan first small biome pocket.
 - Completed: #65 add `Shell Reef` pocket route variation.
 - Completed: #66 add `Shell Reef Shelf` scan clue.
+- Completed: #67 add `Shell Reef` authored spawn points.
 - Completed: #62 polish surface upgrade bay readability.
 - Completed: #63 add recent expedition log.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
