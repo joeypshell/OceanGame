@@ -11,31 +11,17 @@ Detailed design rules live in:
 
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
 
-## Active Milestone
+## Latest Completed Milestone
 
 Daily Roguelite Dive Runs.
 
-Goal: prove the current authored slice can become replayable daily dive runs where seeded variation creates meaningfully different route, cargo, scan, and turnaround decisions without losing readability.
+Goal completed: the current authored slice can run as discrete daily dives with seeded resource variation, cluster patterns, result flow, a prototype upgrade bay, progression save/load, and a first milestone playtest report.
 
-The main strategic focus is validation: finish evaluating daily-run variation before adding more progression infrastructure or more content.
+The playtest report found the system is directionally working, with follow-up risks around real-time oxygen margins, deep-reward visibility, and predator readability.
 
 ## Immediate Issue Order
 
-1. Add lightweight upgrade menu
-   Acceptance: the surface base exposes a compact upgrade menu showing available upgrades, resource costs, owned status, and purchase feedback. Extraction results visibly count carried resources into the persistent bank before the menu is shown.
-   Verification: bank the required resources, purchase `Oxygen Tank I`, begin a new dive, and confirm max oxygen is 40.
-2. Add second resource cluster pattern
-   Acceptance: at least one seeded pattern offers a cautious shallow/midwater route, while another visibly tempts the player toward a deeper reward near the predator-controlled route. All placements must preserve authored depth-band and return-route readability rules.
-   Verification: test at least five seeds and confirm that the patterns create different route, cargo, or turnaround decisions rather than merely changing object positions.
-3. Create daily-run milestone playtest report
-   Acceptance: document observations from at least five generated runs and determine whether seeded variation improves the continue-or-return decision. Record route choices, turnaround points, close returns, failures, unreadable placements, and unavoidable hazards.
-   Verification: update a planning or playtest document with findings and create focused follow-up issues for problems discovered.
-4. Add disk-backed progression save/load
-   Acceptance: banked resources, purchased upgrades, discoveries, and best depth survive closing and reopening the project. Active-dive oxygen, current cargo, active run state, and temporary effects are never restored.
-   Verification: save progression, close and relaunch the project, load the save, and confirm only long-term progression is restored.
-5. Add critical-oxygen and safe-return feedback
-   Acceptance: low oxygen increases presentation urgency without changing the established oxygen-cost model. Below 25% oxygen, the HUD becomes more urgent. Below 10%, the game adds stronger warning feedback and emphasizes the direction and distance to the surface base.
-   Verification: complete a low-oxygen return and confirm the feedback increases tension while the return remains mechanically predictable.
+No active implementation issues are currently queued. Use the daily-run playtest report to create the next focused issue batch.
 
 ## Daily-Run Success Gate
 
@@ -87,7 +73,7 @@ Different placement is not enough. It must produce different decisions.
   Add simple creature behaviors, a scanner field guide, and one dangerous predator encounter that teaches the monster-hunting direction.
 - [ ] Epic: Ocean Readability And Feel
   Improve the prototype dive space so depth, risk, resources, and safe return are visually understandable without tutorial text.
-- [ ] Epic: Daily Roguelite Dive Runs
+- [x] Epic: Daily Roguelite Dive Runs
   Turn the authored slice into replayable daily dives with controlled randomization, clear run start/result flow, and data-driven placement rules.
 
 ## Completed Issues
