@@ -1,0 +1,45 @@
+class_name DiveSession
+extends RefCounted
+
+enum Result { DIVING, EXTRACTED, FAILED }
+
+var max_oxygen := 30.0
+var oxygen := 30.0
+var current_cargo: Array[String] = []
+var cargo_limit := 3
+var has_left_base := false
+var current_depth := 0.0
+var result := Result.DIVING
+
+func reset(new_max_oxygen: float) -> void:
+	max_oxygen = new_max_oxygen
+	oxygen = max_oxygen
+	current_cargo.clear()
+	has_left_base = false
+	current_depth = 0.0
+	result = Result.DIVING
+
+func drain_oxygen(amount: float) -> void:
+	if result != Result.DIVING:
+		return
+
+	oxygen = maxf(0.0, oxygen - amount)
+	if oxygen <= 0.0:
+		fail()
+
+func can_extract(player_in_base: bool) -> bool:
+	return result == Result.DIVING and player_in_base and has_left_base
+
+func extract() -> void:
+	result = Result.EXTRACTED
+
+func fail() -> void:
+	current_cargo.clear()
+	result = Result.FAILED
+
+func add_cargo(resource_id: String) -> bool:
+	if current_cargo.size() >= cargo_limit:
+		return false
+
+	current_cargo.append(resource_id)
+	return true

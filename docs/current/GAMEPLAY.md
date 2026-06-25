@@ -17,6 +17,9 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The first scene starts the player at a visible surface boat/shallow lab base near the top of the water column.
 - The camera follows the player through a vertical descent with limits that keep the side-view dive space readable.
 - Oxygen drains during an active dive. Extracting before oxygen reaches zero succeeds; reaching zero shows a placeholder failure result with cargo loss text.
+- Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
+- Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
+- Extraction only succeeds after the player has left the base and returned.
 
 ## Runtime / Setup
 
@@ -40,6 +43,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scenes/Main.tscn`: first scene.
   - `scenes/Player.tscn`: placeholder submersible scene.
   - `scripts/main.gd`: prototype dive state, safe base detection, and extraction result.
+  - `scripts/dive_session.gd`: current-dive oxygen, cargo, depth, extraction, and failure state.
+  - `scripts/progression_state.gd`: session-persistent resources, upgrades, discoveries, and best depth.
   - `scripts/player.gd`: basic placeholder player movement.
   - `scripts/resource_definition.gd`: typed resource data definition for upcoming pickup/resource work.
 - GitHub Actions:
@@ -60,6 +65,7 @@ Manual smoke:
 - Launch the project and confirm the first scene runs.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
+- Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.
 - Let oxygen reach zero and confirm the HUD shows a failure result.
 - After first dive loop: start a dive, collect or scan something, return to base, and confirm the result is recorded.

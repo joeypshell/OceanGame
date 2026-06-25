@@ -79,6 +79,8 @@ scripts/
 - Placeholder underwater movement includes acceleration, drag, facing, and bounded vertical dive-area limits.
 - The first scene includes a visible surface boat/shallow lab base where the player can trigger a successful extraction result.
 - The first scene includes an oxygen timer, successful extraction before depletion, and placeholder failure when oxygen reaches zero.
+- Current-dive state is split into `DiveSession`; session-persistent progression state is split into `ProgressionState`.
+- Extraction requires leaving the base before returning.
 - The initial design direction is selected, but most mechanics are still planning-level intent.
 
 ## Near-Term Epics
