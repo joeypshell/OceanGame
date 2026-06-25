@@ -34,7 +34,6 @@ Gameplay and validation track:
 
 Technical support track:
 
-- #40 Add deterministic logic tests.
 - #42 Extract milestone logic boundaries from `main.gd`.
 
 Later design and demo-readiness issues:
@@ -155,6 +154,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: add visible pressure-locked research wreck, outside scan clue, safe boundary denial, and signal hint.
 - Completed: add `Pressure Seal I` as the first scan-gated upgrade and open the pressure-locked wreck route to the `Wreck Signal Cache`.
 - Completed: add progression save schema versioning and legacy/current/unknown-version migration behavior.
+- Completed: add deterministic headless logic tests for core expedition and progression rules.
 
 ## Deferred Work
 

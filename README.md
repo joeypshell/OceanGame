@@ -25,6 +25,7 @@ Headless smoke check:
 
 ```powershell
 & "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --path . --headless --quit-after 1
+& "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --path . --headless --script res://tests/logic_tests.gd
 git diff --check
 ```
 

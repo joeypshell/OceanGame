@@ -90,10 +90,11 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scripts/spawn_point.gd`: typed candidate placement points for seeded resource and creature route variation.
   - `scripts/predator.gd`: simple patrol, detection, chase, and contact behavior.
   - `scripts/upgrade_definition.gd`: small data model for upgrade definitions and generic purchase handling.
+  - `tests/logic_tests.gd`: headless deterministic checks for cargo, extraction, oxygen failure, upgrades, save/load, seeds, spawn matching, and discovery prerequisites.
   - `resources/*.tres`: starter resource definitions.
   - `resources/upgrades/*.tres`: upgrade definitions.
 - GitHub Actions:
-  - `.github/workflows/godot-smoke.yml`: runs a Godot headless launch smoke check and `git diff --check`.
+  - `.github/workflows/godot-smoke.yml`: runs a Godot headless launch smoke check, deterministic logic tests, and `git diff --check`.
 - Do not commit `.godot/`, `.import/`, `*.import`, local editor cache, build output, secrets, or export artifacts.
 
 ## Verification
@@ -102,6 +103,7 @@ Preferred checks:
 
 ```powershell
 & "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --path . --headless --quit-after 1
+& "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --path . --headless --script res://tests/logic_tests.gd
 git diff --check
 ```
 

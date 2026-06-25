@@ -20,5 +20,8 @@ jobs:
       - name: Launch project headless
         run: godot --headless --path . --quit-after 1
 
+      - name: Run deterministic logic tests
+        run: godot --headless --path . --script res://tests/logic_tests.gd
+
       - name: Check whitespace
         run: git diff --check

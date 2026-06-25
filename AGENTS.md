@@ -9,7 +9,7 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 ## Repository Shape
 
 - Source: Godot 4.7 project using GDScript; scenes live in `scenes/`, scripts live in `scripts/`.
-- Tests: GitHub Actions runs a Godot headless launch smoke check and `git diff --check`; use documented manual smoke checks for gameplay issues.
+- Tests: GitHub Actions runs a Godot headless launch smoke check, deterministic logic tests, and `git diff --check`; use documented manual smoke checks for gameplay issues.
 - Runtime/config: `project.godot`, `icon.svg`, Godot scenes, and GDScript files.
 - GitHub Actions: `.github/workflows/godot-smoke.yml`
 - Current-state docs: `docs/current/`
@@ -62,6 +62,7 @@ Primary verification:
 
 ```powershell
 & "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --path . --headless --quit-after 1
+& "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --path . --headless --script res://tests/logic_tests.gd
 node .mcp/oceangame-context-server.mjs --self-test
 git diff --check
 ```
@@ -70,6 +71,7 @@ CI verification:
 
 ```bash
 godot --headless --path . --quit-after 1
+godot --headless --path . --script res://tests/logic_tests.gd
 git diff --check
 ```
 
