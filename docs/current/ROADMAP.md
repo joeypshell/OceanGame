@@ -19,6 +19,7 @@ Detailed design rules live in:
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/PREDATOR_WARNING_I.md`
 - `docs/planning/BIOME_POCKET_I.md`
+- `docs/planning/BIOME_POCKET_II.md`
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/SURFACE_UI_LAYOUT_PASS.md`
@@ -38,7 +39,7 @@ Predator Warning And Route Tuning.
 
 Goal: use the completed Shell Reef batch to tune route decisions and add the first non-lethal predator-preparation payoff from `Gulper Eel` observation.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, and an authored `Shell Reef` route pocket. The next milestone should tune the Shell Reef route layer from the five-seed review, then plan the next small content/economy steps before adding broader biome systems.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, an authored `Shell Reef` route pocket, and a selected `Thermal Vent Pocket` candidate for `Biome Pocket II`. The next milestone should finish the first economy/readout planning tasks before adding broader biome systems.
 
 ## Immediate Issue Order
 
@@ -48,9 +49,8 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #80 Plan `Biome Pocket II` candidate.
-2. #81 Plan first resource economy tuning pass.
-3. #82 Add route-choice result callout.
+1. #81 Plan first resource economy tuning pass.
+2. #82 Add route-choice result callout.
 
 Technical support track:
 
@@ -94,13 +94,14 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #80/#81 plan the next content/economy steps.
+1. #81 plan the first resource economy tuning pass.
 2. #82 add compact route-choice result feedback.
 3. #83 refresh MCP planning context.
 4. #84 plan the next non-lethal predator countermeasure.
 
 Recently completed:
 
+- #80 planned `Biome Pocket II` and selected `Add Thermal Vent pocket route variation` as the narrow future implementation candidate.
 - #79 moved the deep-reward lure onset slightly below the `Shell Reef` decision band so bank-vs-push-deeper reads more clearly.
 - #78 added subtle `Shell Reef` return-current shapes so the reef points back toward the surface/base path after deeper route pushes.
 - #77 recorded concrete `Shell Reef` route observations across five deterministic seeds in `docs/planning/SHELL_REEF_ROUTE_REVIEW_2026_06_25.md`.
