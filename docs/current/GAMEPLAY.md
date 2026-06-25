@@ -44,7 +44,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep.
 - Starter resource candidate points use typed `SpawnPoint` nodes with category, target id, depth band, and position data so later hazards, creatures, discoveries, and resource clusters can use the same placement model.
 - `Cautious shallows` clusters keep the first three starter resources closer to safer shallow/midwater banking routes, while `Deep reward route` clusters pull the deeper `Glow Plankton` toward the predator-controlled route.
-- `Deep reward route` runs show a faint glow/current lure that hints at valuable deep `Glow Plankton` before the player fully commits to the predator route.
+- `Deep reward route` runs show a faint glow/current lure below the `Shell Reef` decision band, hinting at valuable deep `Glow Plankton` after the player can read the safer midwater bank route.
 - A compact authored `Shell Reef` pocket sits in the midwater band as a pale shell/coral route landmark. It is lightweight scene geometry with typed `Shell Fragments` spawn candidates, but it does not add extra pickup count, collision, a new resource tier, a new predator, or procedural biome behavior.
 - The `Shell Reef Shelf` is scannable as an environmental clue. First-time scan records that the reef is a safer midwater banking route before deeper pressure and predator risk; repeat scan remains free and refreshes the compact route clue.
 - The `Gulper Eel` predator route is selected from authored creature route spawn points by expedition seed and cluster pattern. Cautious patterns choose a deep left or right gate, while deep-reward patterns choose an upper or lower predator gate near the deeper reward route.
@@ -138,7 +138,7 @@ Manual smoke:
 - Confirm restarted expeditions vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.
 - Confirm restarted expeditions alternate between `Cautious shallows` and `Deep reward route` cluster patterns, and that the deep reward pattern tempts a route near the predator patrol.
 - Confirm restarted expeditions vary the `Gulper Eel` route and move the warning current/marker with it without blocking the safe return path.
-- Confirm the deep-reward lure appears only on `Deep reward route` expeditions and preserves surface return readability.
+- Confirm the deep-reward lure appears only on `Deep reward route` expeditions, begins below the `Shell Reef` decision band, and preserves surface return readability.
 - Confirm the `Shell Reef` pocket is readable as a midwater landmark, leaves open route gaps, can host the existing single `Shell Fragments` pickup, and uses the return-current shapes to point back toward the surface/base path without blocking it.
 - Scan the `Shell Reef Shelf`, confirm discovery/result/log text records a safer midwater bank route clue, then repeat scan and confirm no oxygen is spent.
 - After extraction, use Left/Right to cycle the compact surface views and confirm `Result`, `Upgrades`, and `Log` keep their text readable; confirm Up/Down and E or Enter still select and purchase upgrades only while the `Upgrades` view is active.

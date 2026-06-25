@@ -121,8 +121,8 @@ polygon = PackedVector2Array(0, 1460, 1280, 1460, 1280, 2320, 0, 2320)
 visible = false
 
 [node name="CurrentTrail" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.5, 1, 0.35, 0.16)
-polygon = PackedVector2Array(820, 1180, 936, 1230, 1060, 1690, 1118, 1900, 1010, 1846, 906, 1460)
+color = Color(0.5, 1, 0.35, 0.13)
+polygon = PackedVector2Array(910, 1320, 1006, 1372, 1060, 1690, 1118, 1900, 1010, 1846, 954, 1510)
 
 [node name="DistantBloom" type="Polygon2D" parent="DeepRewardLure"]
 color = Color(0.74, 1, 0.26, 0.34)
@@ -130,7 +130,7 @@ polygon = PackedVector2Array(1018, 1668, 1060, 1712, 1116, 1718, 1070, 1760, 108
 
 [node name="LureParticles" type="Polygon2D" parent="DeepRewardLure"]
 color = Color(0.84, 1, 0.45, 0.42)
-polygon = PackedVector2Array(838, 1220, 850, 1204, 864, 1222, 850, 1238, 952, 1438, 966, 1420, 982, 1442, 964, 1458, 1056, 1628, 1070, 1612, 1084, 1632, 1068, 1648)
+polygon = PackedVector2Array(920, 1334, 932, 1318, 946, 1336, 932, 1352, 952, 1438, 966, 1420, 982, 1442, 964, 1458, 1056, 1628, 1070, 1612, 1084, 1632, 1068, 1648)
 
 [node name="PressureLockedWreck" type="Node2D" parent="."]
 

@@ -48,10 +48,9 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #79 Tune deep-reward lure relative to `Shell Reef` route.
-2. #80 Plan `Biome Pocket II` candidate.
-3. #81 Plan first resource economy tuning pass.
-4. #82 Add route-choice result callout.
+1. #80 Plan `Biome Pocket II` candidate.
+2. #81 Plan first resource economy tuning pass.
+3. #82 Add route-choice result callout.
 
 Technical support track:
 
@@ -95,14 +94,14 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #79 make the remaining review-driven deep-lure tuning.
-2. #80/#81 plan the next content/economy steps.
-3. #82 add compact route-choice result feedback.
-4. #83 refresh MCP planning context.
-5. #84 plan the next non-lethal predator countermeasure.
+1. #80/#81 plan the next content/economy steps.
+2. #82 add compact route-choice result feedback.
+3. #83 refresh MCP planning context.
+4. #84 plan the next non-lethal predator countermeasure.
 
 Recently completed:
 
+- #79 moved the deep-reward lure onset slightly below the `Shell Reef` decision band so bank-vs-push-deeper reads more clearly.
 - #78 added subtle `Shell Reef` return-current shapes so the reef points back toward the surface/base path after deeper route pushes.
 - #77 recorded concrete `Shell Reef` route observations across five deterministic seeds in `docs/planning/SHELL_REEF_ROUTE_REVIEW_2026_06_25.md`.
 - #76 added focused metadata, prerequisite, warning-helper, and effect-isolation coverage for `Predator Warning I`.
