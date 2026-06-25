@@ -45,6 +45,7 @@ const RESOURCE_CLUSTER_PATTERNS := [
 @onready var discoveries_label: Label = $HUD/Discoveries
 @onready var status_label: Label = $HUD/Status
 @onready var prompt_label: Label = $HUD/ExtractionPrompt
+@onready var scan_target_label: Label = $HUD/ScanTarget
 @onready var oxygen_warning_label: Label = $HUD/OxygenWarning
 @onready var run_panel: Panel = $HUD/RunPanel
 @onready var run_title_label: Label = $HUD/RunPanel/RunTitle
@@ -65,9 +66,12 @@ var dive_session := DiveSessionScript.new()
 var progression_state := ProgressionStateScript.new()
 var player_in_base := true
 var glow_plankton_highlight_timer := 0.0
+var resource_scan_highlight_id := ""
+var resource_scan_highlight_timer := 0.0
 var last_result_summary := ""
 var upgrade_menu_feedback := ""
 var current_resource_cluster_pattern := "cautious"
+var current_scan_target: Node = null
 var run_collected_resources: Array[String] = []
 var run_completed_scans: Array[String] = []
 var run_predator_contacts := 0
@@ -87,7 +91,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_update_depth()
 	_update_glow_plankton_highlight(delta)
+	_update_resource_scan_highlight(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
+		_update_scan_target_feedback()
 		return
 
 	dive_session.drain_oxygen(oxygen_drain_per_second * delta)
@@ -204,51 +210,134 @@ func _try_scan() -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
 		return
 
-	var target := _nearest_scannable()
+	var target := _nearest_scan_target()
 	if target == null:
 		status_label.text = "No scan target nearby."
 		_update_hud()
 		return
 
-	if progression_state.has_discovery(target.discovery_id):
-		if target.discovery_id == "lantern_fry":
-			glow_plankton_highlight_timer = 8.0
-		elif target.discovery_id == "thermal_vent":
-			_reveal_thermal_vent_route()
-		status_label.text = "%s already scanned." % target.display_name
+	var discovery_id := _scan_target_id(target)
+	var display_name := _scan_target_display_name(target)
+	if progression_state.has_discovery(discovery_id):
+		_activate_scan_effect(target)
+		status_label.text = "%s already scanned.%s" % [
+			display_name,
+			_format_repeat_scan_effect_text(target)
+		]
 		_update_hud()
 		return
 
 	dive_session.drain_oxygen(scan_oxygen_cost)
 	progression_state.add_discovery(
-		target.discovery_id,
-		target.display_name,
-		target.description,
-		target.gameplay_fact
+		discovery_id,
+		display_name,
+		_scan_target_description(target),
+		_scan_target_gameplay_fact(target)
 	)
-	run_completed_scans.append(target.discovery_id)
-	if target.discovery_id == "lantern_fry":
-		glow_plankton_highlight_timer = 8.0
-	elif target.discovery_id == "thermal_vent":
-		_reveal_thermal_vent_route()
+	run_completed_scans.append(discovery_id)
+	_activate_scan_effect(target)
 
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		_fail_dive()
 	else:
 		_save_progression()
-		status_label.text = "Scanned %s." % target.display_name
+		status_label.text = "Scanned %s.%s" % [
+			display_name,
+			_format_repeat_scan_effect_text(target)
+		]
 		_update_hud()
 
-func _nearest_scannable() -> Node:
-	var nearest: Node = null
-	var nearest_distance := scan_range
-	for target in get_tree().get_nodes_in_group("scannables"):
-		var distance := player.global_position.distance_to(target.global_position)
-		if distance <= nearest_distance:
-			nearest = target
-			nearest_distance = distance
+func _nearest_scan_target() -> Node:
+	var candidates: Array[Node] = []
+	for target in get_tree().get_nodes_in_group("scan_targets"):
+		if not _is_valid_scan_target(target):
+			continue
+		if player.global_position.distance_to(target.global_position) <= scan_range:
+			candidates.append(target)
 
-	return nearest
+	candidates.sort_custom(func(a: Node, b: Node) -> bool:
+		var distance_a := player.global_position.distance_to(a.global_position)
+		var distance_b := player.global_position.distance_to(b.global_position)
+		if not is_equal_approx(distance_a, distance_b):
+			return distance_a < distance_b
+		return _scan_target_id(a) < _scan_target_id(b)
+	)
+
+	return null if candidates.is_empty() else candidates[0]
+
+func _is_valid_scan_target(target: Node) -> bool:
+	if target is ResourcePickup:
+		return not target.is_collected and target.visible and target.definition != null
+
+	return target.has_method("set_scan_selected") and not String(target.get("discovery_id")).is_empty()
+
+func _scan_target_id(target: Node) -> String:
+	if target is ResourcePickup:
+		return "resource_%s" % target.definition.id
+
+	return String(target.get("discovery_id"))
+
+func _scan_target_display_name(target: Node) -> String:
+	if target is ResourcePickup:
+		return target.definition.display_name
+
+	return String(target.get("display_name"))
+
+func _scan_target_description(target: Node) -> String:
+	if target is ResourcePickup:
+		return target.definition.scan_description
+
+	return String(target.get("description"))
+
+func _scan_target_gameplay_fact(target: Node) -> String:
+	if target is ResourcePickup:
+		return "Depth: %s. Upgrade use: %s. %s" % [
+			_format_depth_band(target.definition.depth_band),
+			target.definition.upgrade_use,
+			_format_resource_upgrade_need(target.definition.id)
+		]
+
+	return String(target.get("gameplay_fact"))
+
+func _activate_scan_effect(target: Node) -> void:
+	if target is ResourcePickup:
+		resource_scan_highlight_id = target.definition.id
+		resource_scan_highlight_timer = 8.0
+	elif _scan_target_id(target) == "lantern_fry":
+		glow_plankton_highlight_timer = 8.0
+	elif _scan_target_id(target) == "thermal_vent":
+		_reveal_thermal_vent_route()
+
+func _format_repeat_scan_effect_text(target: Node) -> String:
+	if target is ResourcePickup:
+		return " Matching %s deposits highlighted." % target.definition.display_name
+	elif _scan_target_id(target) == "lantern_fry":
+		return " Nearby Glow Plankton pulsed again."
+	elif _scan_target_id(target) == "thermal_vent":
+		return " Current-route hint refreshed."
+
+	return ""
+
+func _format_resource_upgrade_need(resource_id: String) -> String:
+	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
+		return "Oxygen Tank I is installed; future upgrades may still use it."
+
+	var needed: int = maxi(0, int(OXYGEN_TANK_COST.get(resource_id, 0)) - progression_state.resource_count(resource_id))
+	if needed > 0:
+		return "Need %d more for Oxygen Tank I." % needed
+
+	return "Enough banked for this Oxygen Tank I material."
+
+func _format_depth_band(depth_band: String) -> String:
+	match depth_band:
+		"shallow":
+			return "Shallow"
+		"midwater":
+			return "Midwater"
+		"deep":
+			return "Deep"
+		_:
+			return depth_band
 
 func _update_glow_plankton_highlight(delta: float) -> void:
 	if glow_plankton_highlight_timer <= 0.0:
@@ -260,6 +349,23 @@ func _update_glow_plankton_highlight(delta: float) -> void:
 	var pulse := 1.0 + 0.24 * absf(sin(Time.get_ticks_msec() / 120.0))
 	glow_plankton_visual.scale = Vector2(pulse, pulse)
 	glow_plankton_visual.modulate = Color(1.2, 1.2, 0.7, 1.0)
+
+func _update_resource_scan_highlight(delta: float) -> void:
+	if resource_scan_highlight_timer > 0.0:
+		resource_scan_highlight_timer = maxf(0.0, resource_scan_highlight_timer - delta)
+	elif not resource_scan_highlight_id.is_empty():
+		resource_scan_highlight_id = ""
+
+	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
+		if pickup is ResourcePickup:
+			var highlighted: bool = (
+				resource_scan_highlight_timer > 0.0
+				and pickup.definition != null
+				and pickup.definition.id == resource_scan_highlight_id
+				and not pickup.is_collected
+				and pickup.visible
+			)
+			pickup.set_tactical_highlight(highlighted)
 
 func _on_resource_pickup_collected(pickup: Node) -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -353,6 +459,7 @@ func _reveal_thermal_vent_route() -> void:
 	vent_route_hint.visible = true
 
 func _update_hud() -> void:
+	_update_scan_target_feedback()
 	_update_run_panel()
 	_update_upgrade_menu()
 	oxygen_label.text = "Oxygen: %d / %d" % [ceili(dive_session.oxygen), ceili(dive_session.max_oxygen)]
@@ -525,7 +632,7 @@ func _format_scan_ids(scan_ids: Array[String]) -> String:
 
 func _format_discoveries() -> String:
 	var discoveries := progression_state.scan_discoveries
-	var text := "Discoveries: %d / 3" % discoveries.size()
+	var text := "Discoveries: %d" % discoveries.size()
 	if discoveries.is_empty():
 		return text + "\n???"
 
@@ -533,6 +640,20 @@ func _format_discoveries() -> String:
 		text += "\n%s - %s" % [discovery["display_name"], discovery["gameplay_fact"]]
 
 	return text
+
+func _update_scan_target_feedback() -> void:
+	var next_target := _nearest_scan_target() if dive_session.result == DiveSessionScript.Result.DIVING else null
+	if current_scan_target != next_target:
+		if current_scan_target != null and current_scan_target.has_method("set_scan_selected"):
+			current_scan_target.set_scan_selected(false)
+		current_scan_target = next_target
+		if current_scan_target != null and current_scan_target.has_method("set_scan_selected"):
+			current_scan_target.set_scan_selected(true)
+
+	if current_scan_target == null:
+		scan_target_label.text = "Scan target: none nearby"
+	else:
+		scan_target_label.text = "Scan target: %s" % _scan_target_display_name(current_scan_target)
 
 func _current_max_oxygen() -> float:
 	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):

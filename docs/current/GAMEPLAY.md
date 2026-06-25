@@ -39,11 +39,12 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - After extraction, the surface upgrade bay panel shows `Oxygen Tank I`, its cost, owned/available/unavailable state, and purchase feedback.
 - `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
-- Scan with F. Scanning costs 2 oxygen and records session-persistent discoveries.
+- Scan with F. The HUD shows the current scan target name, and the selected target is highlighted. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
+- First-time scans cost 2 oxygen and record session-persistent discoveries. Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
+- Resource pickups are scannable before collection. Resource scans record the resource depth band, upgrade use, and whether more of that material is needed for `Oxygen Tank I`; they also temporarily highlight matching visible resource deposits in the current expedition.
 - `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton`.
 - A scannable `Thermal Vent` reveals a current-route hint and hidden `Glow Plankton` cluster.
 - A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. The route has a warning current/marker, and the patrol hint becomes more urgent as the player approaches. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
-- Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
 - The scene uses surface light rays, a midwater wreck silhouette, and a deeper glow hint to communicate depth bands and deeper reward potential.
 
@@ -105,6 +106,7 @@ Manual smoke:
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm extraction and oxygen failure both show result summaries before restarting.
 - Confirm extraction and oxygen failure summaries include seed, pattern, cargo, scans, predator contacts, oxygen result, and failure cause for playtesting.
+- Approach multiple nearby scan targets and confirm the HUD names one selected target with a visible highlight, then confirm the selected target remains deterministic until distance changes.
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.
 - Confirm low oxygen shows warning feedback below 25 percent and stronger base-direction/oxygen emphasis below 10 percent without changing oxygen costs.
@@ -114,6 +116,8 @@ Manual smoke:
 - Bank the required resources, buy `Oxygen Tank I` from the upgrade panel after extraction, restart, and confirm max oxygen is 40.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
+- Scan a resource pickup with F, confirm oxygen decreases, discovery text records depth band/upgrade use/material need, and matching visible deposits highlight for several seconds.
+- Re-scan an already discovered resource and confirm no oxygen is spent while the matching-deposit highlight refreshes.
 - Approach the deep `Gulper Eel`, confirm the warning current/marker and patrol hint communicate danger before contact, then confirm contact causes oxygen loss plus knockback without instant failure.
 - Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.
 - Confirm the HUD depth increases while diving and that the base indicator points back toward the surface base.
