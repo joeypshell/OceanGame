@@ -49,11 +49,13 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - After `Pressure Seal I` is owned, the wreck alcove can be reached and the inside `Wreck Signal Cache` can be scanned as a practical progression reward pointing toward a future scanner improvement.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, the surface upgrade bay panel shows data-backed upgrade entries with cost, missing resources, missing discovery if any, owned/available/locked/unavailable state, and purchase feedback.
-- The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has two configured upgrades: `Oxygen Tank I` and `Pressure Seal I`.
+- The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has three configured upgrades: `Oxygen Tank I`, `Pressure Seal I`, and `Signal Lens I`.
 - `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
 - `Pressure Seal I` requires the `Thermal Vent` discovery plus banked `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x2`.
 - `Pressure Seal I` opens the first pressure-locked research wreck route by disabling the pressure-boundary denial and changing the shimmer feedback to show the route is open.
+- `Signal Lens I` requires the `Wreck Signal Cache` discovery plus banked `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x2`.
+- `Signal Lens I` makes repeat resource scans add a short local signal hint toward the nearest matching visible uncollected deposit in the current expedition. If no matching deposit is visible, the HUD says the signal is quiet.
 - Scan with F. The HUD shows the current scan target name, and the selected target is highlighted. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
 - First-time scans cost 2 oxygen and record session-persistent discoveries. Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
 - Current planning recommendation keeps repeat tactical scans free for this prototype; see `docs/planning/REPEAT_SCAN_COST_RECOMMENDATION.md`.
@@ -146,12 +148,14 @@ Manual smoke:
 - Bank the required resources, buy `Oxygen Tank I` from the upgrade panel after extraction, restart, and confirm max oxygen is 40.
 - Confirm `Pressure Seal I` is locked before scanning `Thermal Vent`, available after the discovery plus required resources, and owned after purchase.
 - After buying `Pressure Seal I`, return to the pressure-locked wreck and confirm the shimmer route is open and the inside `Wreck Signal Cache` can be scanned.
+- Confirm `Signal Lens I` is locked before scanning `Wreck Signal Cache`, available after the discovery plus required resources, and owned after purchase.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
 - Approach the pressure shimmer near the research wreck without `Pressure Seal I` and confirm entry is denied safely with clear feedback.
 - Scan the outside `Pressure-Locked Research Wreck` target and confirm the signal hint appears without disrupting extraction or failure flow.
 - Scan a resource pickup with F, confirm oxygen decreases, discovery text records depth band/upgrade use/material need, and matching visible deposits highlight for several seconds.
 - Start a fresh expedition, scan the first nearby resource, and confirm the status text says to collect it and return to base to bank cargo.
+- After buying `Signal Lens I`, re-scan a discovered resource and confirm status text points toward another matching visible uncollected deposit or says the signal is quiet.
 - Re-scan an already discovered resource and confirm no oxygen is spent while the matching-deposit highlight refreshes.
 - Approach the deep `Gulper Eel`, confirm the warning current/marker and patrol hint communicate danger before contact, then confirm contact causes oxygen loss plus knockback without instant failure.
 - Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3 uid="uid://signal_lens_1_upgrade"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="1_upgrade_definition"]
+
+[resource]
+script = ExtResource("1_upgrade_definition")
+id = "signal_lens_1"
+display_name = "Signal Lens I"
+description = "Tunes repeat resource scans into short local signal pulses."
+resource_cost = {
+"glow_plankton": 2,
+"kelp_fiber": 1,
+"shell_fragments": 2
+}
+required_discovery = "wreck_signal_cache"
+effect_id = "resource_signal_pulse"
+locked_reason = "Wreck Signal Cache data is needed to focus resource echoes into usable pulses."
+available_text = "Available: press E or Enter to purchase."
+owned_text = "Owned: repeat resource scans point toward matching visible deposits."

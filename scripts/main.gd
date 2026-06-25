@@ -9,9 +9,11 @@ const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
+const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
 
 const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
 const PRESSURE_SEAL_UPGRADE_ID := "pressure_seal_1"
+const SIGNAL_LENS_UPGRADE_ID := "signal_lens_1"
 const PROGRESSION_SAVE_PATH := "user://progression_save.json"
 const LOW_OXYGEN_RATIO := 0.25
 const CRITICAL_OXYGEN_RATIO := 0.10
@@ -91,6 +93,7 @@ var selected_upgrade_index := 0
 var upgrade_definitions: Array[UpgradeDefinition] = [
 	OXYGEN_TANK_UPGRADE,
 	PRESSURE_SEAL_UPGRADE,
+	SIGNAL_LENS_UPGRADE,
 ]
 var run_collected_resources: Array[String] = []
 var run_completed_scans: Array[String] = []
@@ -290,6 +293,8 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 			pass
 		"open_pressure_wreck":
 			_sync_pressure_lock_state()
+		"resource_signal_pulse":
+			pass
 		_:
 			push_warning("Unknown upgrade effect: %s" % effect_id)
 
@@ -309,7 +314,7 @@ func _try_scan() -> void:
 		_activate_scan_effect(target)
 		status_label.text = "%s already scanned.%s" % [
 			display_name,
-			_format_repeat_scan_effect_text(target)
+			_format_repeat_scan_effect_text(target) + _format_signal_lens_pulse_text(target)
 		]
 		_update_hud()
 		return
@@ -380,6 +385,58 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 		return " Current-route hint refreshed."
 
 	return ""
+
+func _format_signal_lens_pulse_text(target: Node) -> String:
+	if not progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID) or not target is ResourcePickup:
+		return ""
+
+	var match_target: ResourcePickup = _nearest_matching_visible_resource(target)
+	if match_target == null:
+		return " Signal Lens quiet: no matching visible deposits."
+
+	return " Signal Lens pulse leans %s toward another %s." % [
+		_format_direction_to(match_target.global_position),
+		target.definition.display_name
+	]
+
+func _nearest_matching_visible_resource(source: ResourcePickup) -> ResourcePickup:
+	var nearest: ResourcePickup = null
+	var nearest_distance := INF
+	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
+		if pickup == source or not pickup is ResourcePickup:
+			continue
+		if pickup.definition == null or source.definition == null:
+			continue
+		if pickup.definition.id != source.definition.id:
+			continue
+		if pickup.is_collected or not pickup.visible:
+			continue
+
+		var distance := source.global_position.distance_to(pickup.global_position)
+		if distance < nearest_distance:
+			nearest = pickup
+			nearest_distance = distance
+
+	return nearest
+
+func _format_direction_to(target_position: Vector2) -> String:
+	var delta := target_position - player.global_position
+	var horizontal := ""
+	if absf(delta.x) > 48.0:
+		horizontal = "right" if delta.x > 0.0 else "left"
+
+	var vertical := ""
+	if absf(delta.y) > 48.0:
+		vertical = "deeper" if delta.y > 0.0 else "up"
+
+	if not horizontal.is_empty() and not vertical.is_empty():
+		return "%s-%s" % [vertical, horizontal]
+	elif not vertical.is_empty():
+		return vertical
+	elif not horizontal.is_empty():
+		return horizontal
+
+	return "nearby"
 
 func _format_first_scan_guidance(target: Node) -> String:
 	if target is ResourcePickup:
