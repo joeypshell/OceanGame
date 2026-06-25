@@ -13,6 +13,7 @@ Detailed design rules live in:
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
 
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
+Implemented tooling lives in `docs/current/TOOLING.md`.
 
 ## Active Milestone
 
@@ -24,7 +25,7 @@ Goal: validate the current prototype with unfamiliar players, then move the most
 
 Tooling track:
 
-1. #32 Add first MCP integration for project tooling.
+No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
@@ -49,7 +50,7 @@ Later design and demo-readiness issues:
 - #44 Hide development telemetry behind debug flag before public demo.
 - #45 Plan `Burst Thruster` active tool milestone.
 
-Issue #32 is independent from gameplay. Issues #38, #40, and #42 may be implemented when they reduce risk for the active milestone, but they should not block the first blind validation pass.
+Issues #38, #40, and #42 may be implemented when they reduce risk for the active milestone, but they should not block the first blind validation pass.
 
 ## Active Milestone Success Gate
 
@@ -113,6 +114,7 @@ Different placement is not enough. It must produce different decisions.
 ## Current State
 
 - The repository has an agentic workflow and planning structure.
+- The repository includes a first MCP context server for project-source documentation.
 - The game uses Godot 4.7 with GDScript, targeting local desktop first with optional web demo support.
 - A side-view vertical dive scene and placeholder controllable submersible exist as the runtime foundation.
 - The first scene includes a visible surface boat/shallow lab base, oxygen pressure, extraction, oxygen failure, run start/result panels, depth/base HUD, resource pickup, scanning, one upgrade, one route-control predator, and seeded starter resource placement.
@@ -153,6 +155,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: add disk-backed progression save/load for long-term state only.
 - Completed: add critical-oxygen and safe-return presentation feedback.
 - Completed: add deep-reward visual lure, predator warning feedback, run telemetry/checklist, and oxygen-margin tuning pass.
+- Completed: add first MCP context server for project tooling.
 
 ## Deferred Work
 

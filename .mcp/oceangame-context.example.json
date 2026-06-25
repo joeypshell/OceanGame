@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "oceangame-context": {
+      "command": "node",
+      "args": [
+        ".mcp/oceangame-context-server.mjs"
+      ],
+      "cwd": "C:/path/to/OceanGame"
+    }
+  }
+}

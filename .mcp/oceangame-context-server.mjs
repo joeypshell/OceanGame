@@ -1,0 +1,127 @@
+#!/usr/bin/env node
+
+import fs from "node:fs";
+import path from "node:path";
+import readline from "node:readline";
+import { fileURLToPath } from "node:url";
+
+const repoRoot = path.resolve(path.join(path.dirname(fileURLToPath(import.meta.url)), ".."));
+
+const resources = [
+  ["oceangame://agents", "AGENTS.md", "Agent operating guide"],
+  ["oceangame://roadmap", "docs/current/ROADMAP.md", "Current roadmap"],
+  ["oceangame://gameplay", "docs/current/GAMEPLAY.md", "Implemented gameplay"],
+  ["oceangame://core-loop", "docs/planning/CORE_LOOP_RULES.md", "Core loop rules"],
+  ["oceangame://seeded-expeditions", "docs/planning/DAILY_RUNS.md", "Seeded expedition guidance"],
+  ["oceangame://game-vision", "docs/planning/GAME_VISION.md", "Game vision"],
+  ["oceangame://progression-ladder", "docs/planning/PROGRESSION_LADDER.md", "Progression ladder"],
+  ["oceangame://predator-direction", "docs/planning/PREDATOR_INTERACTION_DIRECTION.md", "Predator interaction direction"],
+].map(([uri, filePath, name]) => ({
+  uri,
+  filePath,
+  name,
+  mimeType: "text/markdown",
+}));
+
+function readResource(uri) {
+  const resource = resources.find((entry) => entry.uri === uri);
+  if (!resource) {
+    throw new Error(`Unknown resource: ${uri}`);
+  }
+
+  const absolutePath = path.resolve(repoRoot, resource.filePath);
+  if (!absolutePath.startsWith(repoRoot)) {
+    throw new Error(`Resource escapes repository root: ${resource.filePath}`);
+  }
+
+  return {
+    uri: resource.uri,
+    mimeType: resource.mimeType,
+    text: fs.readFileSync(absolutePath, "utf8"),
+  };
+}
+
+function resultFor(method, params = {}) {
+  switch (method) {
+    case "initialize":
+      return {
+        protocolVersion: "2024-11-05",
+        capabilities: {
+          resources: {},
+          tools: {},
+          prompts: {},
+        },
+        serverInfo: {
+          name: "oceangame-context",
+          version: "0.1.0",
+        },
+      };
+    case "resources/list":
+      return {
+        resources: resources.map(({ uri, name, mimeType }) => ({ uri, name, mimeType })),
+      };
+    case "resources/read":
+      return {
+        contents: [readResource(params.uri)],
+      };
+    case "tools/list":
+      return { tools: [] };
+    case "prompts/list":
+      return { prompts: [] };
+    default:
+      throw new Error(`Unsupported method: ${method}`);
+  }
+}
+
+function respond(message, payload) {
+  if (message.id === undefined || message.id === null) {
+    return;
+  }
+
+  process.stdout.write(`${JSON.stringify({ jsonrpc: "2.0", id: message.id, ...payload })}\n`);
+}
+
+async function serve() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    crlfDelay: Number.POSITIVE_INFINITY,
+  });
+
+  for await (const line of rl) {
+    const payload = line.replace(/^\uFEFF/, "");
+    if (!payload.trim()) {
+      continue;
+    }
+
+    let message;
+    try {
+      message = JSON.parse(payload);
+      if (message.method?.startsWith("notifications/")) {
+        continue;
+      }
+      respond(message, { result: resultFor(message.method, message.params ?? {}) });
+    } catch (error) {
+      respond(message ?? { id: null }, {
+        error: {
+          code: -32603,
+          message: error instanceof Error ? error.message : String(error),
+        },
+      });
+    }
+  }
+}
+
+function selfTest() {
+  const listed = resultFor("resources/list").resources;
+  const roadmap = readResource("oceangame://roadmap");
+  if (listed.length < 1 || !roadmap.text.includes("# Current Roadmap")) {
+    throw new Error("MCP context self-test failed");
+  }
+  process.stdout.write(`OceanGame MCP context server self-test passed (${listed.length} resources).\n`);
+}
+
+if (process.argv.includes("--self-test")) {
+  selfTest();
+} else {
+  serve();
+}

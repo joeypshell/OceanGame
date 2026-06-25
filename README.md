@@ -28,6 +28,12 @@ Headless smoke check:
 git diff --check
 ```
 
+MCP context server self-test:
+
+```powershell
+node .mcp/oceangame-context-server.mjs --self-test
+```
+
 ## Current Milestone
 
 The active milestone is `Progression And Run Variety Expansion`: validate the current prototype with unfamiliar players, then add practical resource scanning, seeded risk variation, a pressure-locked research wreck, generic upgrade definitions, and `Pressure Seal I`.
@@ -36,6 +42,7 @@ The active milestone is `Progression And Run Variety Expansion`: validate the cu
 
 - `docs/current/ROADMAP.md`: active milestone, issue order, success gates, deferred scope.
 - `docs/current/GAMEPLAY.md`: implemented behavior.
+- `docs/current/TOOLING.md`: implemented tooling and MCP support.
 - `docs/planning/GAME_VISION.md`: compact design anchor.
 - `docs/planning/CORE_LOOP_RULES.md`: core loop and system rules.
 - `docs/planning/DAILY_RUNS.md`: seeded expedition guidance.

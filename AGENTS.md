@@ -16,11 +16,13 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 - Planning docs: `docs/planning/`
 - Archived plans/notes: `docs/archive/`
 - Agent workflow docs: `docs/GITHUB_ISSUE_WORKFLOW.md`, `docs/AGENT_HANDOFF_TEMPLATE.md`
+- MCP tooling: `.mcp/oceangame-context-server.mjs`, `.mcp/oceangame-context.example.json`, `docs/current/TOOLING.md`
 - Generated files not to commit: `.godot/`, `.import/`, `*.import`, `builds/`, `exports/`, local editor state, secrets, and platform export artifacts.
 
 ## Source-of-Truth Rules
 
 - `docs/current/` describes implemented behavior.
+- `docs/current/TOOLING.md` describes implemented tooling and MCP support.
 - `docs/planning/` contains proposals and feature plans that are not yet fully implemented.
 - `docs/archive/` keeps old plans and decisions for reference.
 - GitHub Issues are the active task contract once work is ticketed.
@@ -60,6 +62,7 @@ Primary verification:
 
 ```powershell
 & "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --path . --headless --quit-after 1
+node .mcp/oceangame-context-server.mjs --self-test
 git diff --check
 ```
 
@@ -73,6 +76,7 @@ git diff --check
 Documentation-only checks:
 
 ```powershell
+node .mcp/oceangame-context-server.mjs --self-test
 git diff --check
 git status --short
 ```
