@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://signal_hint_prototype"]
+
+[node name="SignalHintPrototype" type="Node2D"]
+
+[node name="SignalHalo" type="Polygon2D" parent="."]
+color = Color(0.64, 1, 1, 0.1)
+polygon = PackedVector2Array(-110, -58, 18, -92, 126, -12, 94, 94, -58, 104, -136, 22)
+
+[node name="SignalArrow" type="Polygon2D" parent="."]
+color = Color(0.64, 1, 1, 0.34)
+polygon = PackedVector2Array(-102, -28, 34, -28, 34, -58, 126, 0, 34, 58, 34, 28, -102, 28)
+
+[node name="SignalCore" type="Polygon2D" parent="."]
+color = Color(0.86, 1, 0.78, 0.46)
+polygon = PackedVector2Array(-18, -18, 18, -18, 30, 0, 18, 18, -18, 18, -30, 0)
+
+[node name="SignalLabel" type="Label" parent="."]
+offset_left = -180.0
+offset_top = 72.0
+offset_right = 180.0
+offset_bottom = 104.0
+text = "Future signal"
+horizontal_alignment = 1

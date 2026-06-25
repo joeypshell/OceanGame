@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://pressure_gate_prototype"]
+
+[node name="PressureGatePrototype" type="Node2D"]
+
+[node name="Shimmer" type="Polygon2D" parent="."]
+color = Color(0.3, 0.82, 1, 0.42)
+polygon = PackedVector2Array(-34, -270, 34, -270, 34, 270, -34, 270)
+
+[node name="GateTopCap" type="Polygon2D" parent="."]
+color = Color(0.72, 0.96, 1, 0.58)
+polygon = PackedVector2Array(-76, -270, 76, -270, 54, -222, -54, -222)
+
+[node name="GateBottomCap" type="Polygon2D" parent="."]
+color = Color(0.72, 0.96, 1, 0.58)
+polygon = PackedVector2Array(-76, 270, 76, 270, 54, 222, -54, 222)
+
+[node name="GateBarA" type="Polygon2D" parent="."]
+color = Color(0.72, 0.96, 1, 0.42)
+polygon = PackedVector2Array(-58, -154, 58, -154, 58, -122, -58, -122)
+
+[node name="GateBarB" type="Polygon2D" parent="."]
+color = Color(0.72, 0.96, 1, 0.42)
+polygon = PackedVector2Array(-58, -16, 58, -16, 58, 16, -58, 16)
+
+[node name="GateBarC" type="Polygon2D" parent="."]
+color = Color(0.72, 0.96, 1, 0.42)
+polygon = PackedVector2Array(-58, 122, 58, 122, 58, 154, -58, 154)
+
+[node name="GateLabel" type="Label" parent="."]
+offset_left = -190.0
+offset_top = -326.0
+offset_right = 190.0
+offset_bottom = -294.0
+text = "LOCKED ROUTE: upgrade required"
+horizontal_alignment = 1
