@@ -41,7 +41,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Scan with F. Scanning costs 2 oxygen and records session-persistent discoveries.
 - `Lantern Fry` is a passive scannable creature near the deeper `Glow Plankton`; scanning it temporarily pulses nearby `Glow Plankton`.
 - A scannable `Thermal Vent` reveals a current-route hint and hidden `Glow Plankton` cluster.
-- A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
+- A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. The route has a warning current/marker, and the patrol hint becomes more urgent as the player approaches. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
 - Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
 - The scene uses surface light rays, a midwater wreck silhouette, and a deeper glow hint to communicate depth bands and deeper reward potential.
@@ -112,7 +112,7 @@ Manual smoke:
 - Bank the required resources, buy `Oxygen Tank I` from the upgrade panel after extraction, restart, and confirm max oxygen is 40.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
-- Approach the deep `Gulper Eel`, confirm it briefly chases, and confirm contact causes oxygen loss plus knockback without instant failure.
+- Approach the deep `Gulper Eel`, confirm the warning current/marker and patrol hint communicate danger before contact, then confirm contact causes oxygen loss plus knockback without instant failure.
 - Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.
 - Confirm the HUD depth increases while diving and that the base indicator points back toward the surface base.
 - Confirm the scene communicates shallow, midwater, and deep areas through color, landmarks, and resource placement.
