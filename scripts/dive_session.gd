@@ -1,7 +1,7 @@
 class_name DiveSession
 extends RefCounted
 
-enum Result { DIVING, EXTRACTED, FAILED }
+enum Result { READY, DIVING, EXTRACTED, FAILED }
 
 var max_oxygen := 30.0
 var oxygen := 30.0
@@ -17,6 +17,9 @@ func reset(new_max_oxygen: float) -> void:
 	current_cargo.clear()
 	has_left_base = false
 	current_depth = 0.0
+	result = Result.READY
+
+func start() -> void:
 	result = Result.DIVING
 
 func drain_oxygen(amount: float) -> void:

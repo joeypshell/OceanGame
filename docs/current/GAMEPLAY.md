@@ -18,6 +18,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The camera follows the player through a vertical descent with limits that keep the side-view dive space readable.
 - Oxygen drains during an active dive. Extracting before oxygen reaches zero succeeds; reaching zero shows a placeholder failure result with cargo loss text.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
+- Dives begin from a `Run Ready` panel. Press E or Enter to begin oxygen drain and active dive play.
+- Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, and best depth.
 - Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
 - Extraction only succeeds after the player has left the base and returned.
 - The player has three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
@@ -79,8 +81,10 @@ git diff --check
 Manual smoke:
 
 - Launch the project and confirm the first scene runs.
+- Confirm the run starts at the `Run Ready` panel and does not begin active oxygen pressure until E or Enter is pressed.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
+- Confirm extraction and oxygen failure both show result summaries before restarting.
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.
 - Collect resources, confirm cargo fills up to three slots, extract, and confirm resources move into the banked list.

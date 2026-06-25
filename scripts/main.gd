@@ -32,6 +32,9 @@ const OXYGEN_TANK_COST := {
 @onready var discoveries_label: Label = $HUD/Discoveries
 @onready var status_label: Label = $HUD/Status
 @onready var prompt_label: Label = $HUD/ExtractionPrompt
+@onready var run_panel: Panel = $HUD/RunPanel
+@onready var run_title_label: Label = $HUD/RunPanel/RunTitle
+@onready var run_summary_label: Label = $HUD/RunPanel/RunSummary
 @onready var glow_plankton_visual: Polygon2D = $ResourcePickups/GlowPlankton/Visual
 @onready var hidden_glow_plankton: Node = $ResourcePickups/HiddenGlowPlankton
 @onready var vent_route_hint: Node2D = $VentRouteHint
@@ -40,6 +43,7 @@ var dive_session := DiveSessionScript.new()
 var progression_state := ProgressionStateScript.new()
 var player_in_base := true
 var glow_plankton_highlight_timer := 0.0
+var last_result_summary := ""
 
 func _ready() -> void:
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
@@ -65,7 +69,9 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("interact"):
-		if dive_session.result == DiveSessionScript.Result.EXTRACTED:
+		if dive_session.result == DiveSessionScript.Result.READY:
+			_start_dive()
+		elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 			_try_purchase_oxygen_tank()
 		else:
 			_try_extract()
@@ -78,14 +84,27 @@ func _try_extract() -> void:
 	if not dive_session.can_extract(player_in_base):
 		return
 
+	var extracted_cargo := dive_session.current_cargo.duplicate()
+	var extracted_count := extracted_cargo.size()
 	dive_session.extract()
-	progression_state.bank_cargo(dive_session.current_cargo)
+	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
+	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\nBest depth: %dm." % [
+		extracted_count,
+		_format_resource_counts(extracted_cargo),
+		roundi(progression_state.best_depth_reached)
+	]
 	status_label.text = "Dive complete: extracted safely with %d oxygen." % ceili(dive_session.oxygen)
 	_update_hud()
 
 func _fail_dive() -> void:
+	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nBanked resources, upgrades, and scans kept.\nBest depth: %dm." % roundi(progression_state.best_depth_reached)
 	status_label.text = "Dive failed: oxygen depleted. Cargo lost."
+	_update_hud()
+
+func _start_dive() -> void:
+	dive_session.start()
+	status_label.text = "Dive status: active"
 	_update_hud()
 
 func _restart_dive() -> void:
@@ -93,8 +112,9 @@ func _restart_dive() -> void:
 	player.global_position = start_position
 	player.velocity = Vector2.ZERO
 	player_in_base = true
+	last_result_summary = ""
 	_reset_resource_pickups()
-	status_label.text = "Dive status: active"
+	status_label.text = "Dive ready"
 	_update_hud()
 
 func _on_base_zone_body_entered(body: Node2D) -> void:
@@ -231,6 +251,7 @@ func _reveal_thermal_vent_route() -> void:
 	vent_route_hint.visible = true
 
 func _update_hud() -> void:
+	_update_run_panel()
 	oxygen_label.text = "Oxygen: %d / %d" % [ceili(dive_session.oxygen), ceili(dive_session.max_oxygen)]
 	depth_label.text = "Depth: %dm | Best: %dm" % [
 		roundi(dive_session.current_depth),
@@ -246,7 +267,9 @@ func _update_hud() -> void:
 	upgrade_label.text = _format_upgrade_status()
 	discoveries_label.text = _format_discoveries()
 
-	if dive_session.result == DiveSessionScript.Result.EXTRACTED:
+	if dive_session.result == DiveSessionScript.Result.READY:
+		prompt_label.text = "Press E or Enter to begin the dive"
+	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
 			prompt_label.text = "Extraction complete - press R to restart"
 		else:
@@ -260,6 +283,22 @@ func _update_hud() -> void:
 			prompt_label.text = "Leave the moonpool, then return to extract"
 	else:
 		prompt_label.text = "Explore, then return to the safe base"
+
+func _update_run_panel() -> void:
+	if dive_session.result == DiveSessionScript.Result.READY:
+		run_panel.visible = true
+		run_title_label.text = "Run Ready"
+		run_summary_label.text = "Start from the moonpool with %d oxygen.\nCollect, scan, or push deeper, then return to bank cargo.\nPress E or Enter to begin." % ceili(dive_session.max_oxygen)
+	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
+		run_panel.visible = true
+		run_title_label.text = "Run Result: Extraction"
+		run_summary_label.text = last_result_summary
+	elif dive_session.result == DiveSessionScript.Result.FAILED:
+		run_panel.visible = true
+		run_title_label.text = "Run Result: Failure"
+		run_summary_label.text = last_result_summary
+	else:
+		run_panel.visible = false
 
 func _format_resource_counts(resource_ids: Array[String]) -> String:
 	if resource_ids.is_empty():
