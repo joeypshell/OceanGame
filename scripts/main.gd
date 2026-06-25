@@ -936,7 +936,28 @@ func _update_scan_target_feedback() -> void:
 	if current_scan_target == null:
 		scan_target_label.text = "Scan target: none nearby"
 	else:
-		scan_target_label.text = "Scan target: %s" % _scan_target_display_name(current_scan_target)
+		scan_target_label.text = "Scan target: %s [%s %s]" % [
+			_scan_target_display_name(current_scan_target),
+			_format_scan_target_discovery_state(current_scan_target),
+			_format_scan_target_type(current_scan_target)
+		]
+
+func _format_scan_target_discovery_state(target: Node) -> String:
+	return "known" if progression_state.has_discovery(_scan_target_id(target)) else "new"
+
+func _format_scan_target_type(target: Node) -> String:
+	if target is ResourcePickup:
+		return "resource"
+
+	match _scan_target_id(target):
+		"lantern_fry":
+			return "creature"
+		"thermal_vent":
+			return "environment"
+		"pressure_wreck_signal", "wreck_signal_cache":
+			return "wreck signal"
+		_:
+			return "clue"
 
 func _current_max_oxygen() -> float:
 	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):

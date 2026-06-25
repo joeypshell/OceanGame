@@ -58,7 +58,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Signal Lens I` makes repeat resource scans add a short local signal hint toward the nearest matching visible uncollected deposit in the current expedition. If no matching deposit is visible, the HUD says the signal is quiet.
 - `Cargo Rack I` costs banked `Kelp Fiber x2`, `Shell Fragments x2`, and `Glow Plankton x1`.
 - `Cargo Rack I` raises future dive cargo capacity from 3 to 4 without changing extraction banking or the rule that oxygen failure loses all carried cargo.
-- Scan with F. The HUD shows the current scan target name, and the selected target is highlighted. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
+- Scan with F. The HUD shows the current scan target name plus compact metadata such as `new resource`, `known creature`, `new environment`, or `known wreck signal`; the selected target is highlighted. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
 - First-time scans cost 2 oxygen and record session-persistent discoveries. Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
 - Current planning recommendation keeps repeat tactical scans free for this prototype; see `docs/planning/REPEAT_SCAN_COST_RECOMMENDATION.md`.
 - First-time scan status text includes a concise next action. Resource scans point the player to collect the resource and return to base to bank cargo, while non-resource scans point toward the revealed clue or a safe return.
@@ -140,6 +140,7 @@ Manual smoke:
 - Confirm extraction and oxygen failure both show result summaries before restarting.
 - Confirm extraction and oxygen failure summaries hide raw telemetry by default, then press F3 and confirm seed, pattern, predator route, cargo, scans, predator contacts, oxygen result, and failure cause appear for playtesting.
 - Approach multiple nearby scan targets and confirm the HUD names one selected target with a visible highlight, then confirm the selected target remains deterministic until distance changes.
+- Approach a new resource, already discovered resource, creature, environmental scan target, and wreck signal; confirm the scan target HUD metadata stays compact and accurate.
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.
 - Confirm low oxygen shows warning feedback below 25 percent and stronger base-direction/oxygen emphasis below 10 percent without changing oxygen costs.

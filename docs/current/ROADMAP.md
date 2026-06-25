@@ -37,14 +37,13 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #56 Add compact scanner target preview metadata.
-2. #57 Add expedition prep goal summary.
-3. #58 Improve expedition result progress callouts.
-4. #59 Plan `Monster Observation I` progression slice.
-5. #60 Add `Gulper Eel` observation scan.
-6. #61 Plan first small biome pocket.
-7. #62 Polish surface upgrade bay readability.
-8. #63 Add recent expedition log.
+1. #57 Add expedition prep goal summary.
+2. #58 Improve expedition result progress callouts.
+3. #59 Plan `Monster Observation I` progression slice.
+4. #60 Add `Gulper Eel` observation scan.
+5. #61 Plan first small biome pocket.
+6. #62 Polish surface upgrade bay readability.
+7. #63 Add recent expedition log.
 
 Technical support track:
 
@@ -77,14 +76,13 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #56 scanner target preview metadata.
-2. #57 expedition prep goal summary.
-3. #58 result progress callouts.
-4. #62 upgrade bay readability polish.
-5. #63 recent expedition log.
-6. #59/#60 monster observation planning and first implementation.
-7. #61 first small biome pocket planning.
-10. After this batch, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+1. #57 expedition prep goal summary.
+2. #58 result progress callouts.
+3. #62 upgrade bay readability polish.
+4. #63 recent expedition log.
+5. #59/#60 monster observation planning and first implementation.
+6. #61 first small biome pocket planning.
+7. After this batch, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ## Latest Completed Milestone
 
@@ -209,6 +207,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #50 add prototype `Burst Thruster` with oxygen cost and cooldown.
 - Completed: #54 add `Signal Lens I` resource direction pulse.
 - Completed: #55 add `Cargo Rack I` fourth cargo slot upgrade.
+- Completed: #56 add compact scanner target preview metadata.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
 - Completed: #48 plan `Signal Lens I` as Scanner Improvement I from the `Wreck Signal Cache`.
 - Completed: #49 plan `Cargo Rack I` as the first cargo improvement.
