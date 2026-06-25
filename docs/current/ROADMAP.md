@@ -73,6 +73,7 @@ Different placement is not enough. It must produce different decisions.
 - The first scene includes a visible surface boat/shallow lab base, oxygen pressure, extraction, oxygen failure, run start/result panels, depth/base HUD, resource pickup, scanning, one upgrade, one route-control predator, and seeded starter resource placement.
 - Current-dive state is split into `DiveSession`; session-persistent progression state is split into `ProgressionState`.
 - Starter resource placement uses typed authored `SpawnPoint` nodes selected by the current run seed while preserving shallow, midwater, and deep resource bands.
+- A first daily-run playtest report exists under `docs/planning/`, with follow-up risks around real-time oxygen margins and predator readability.
 
 ## Epics
 
@@ -96,6 +97,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: reframe prototype around side-view dive descent.
 - Completed: formalize dive/progression state, add resource banking, improve depth readability, add `Oxygen Tank I`, add scanner discoveries, and add the first route-control predator.
 - Completed: add run start/result screens, deterministic run seeds, and seeded starter resource variation inside typed authored depth-band candidate points.
+- Completed: add seeded resource cluster patterns and first daily-run milestone playtest report.
 
 ## Deferred Work
 

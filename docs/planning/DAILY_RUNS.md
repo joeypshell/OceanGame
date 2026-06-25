@@ -50,6 +50,10 @@ The authored vertical slice is still the proving ground. Avoid full procedural b
 
 The daily-run milestone should be tested across at least five seeds.
 
+Current report:
+
+- `docs/planning/DAILY_RUN_PLAYTEST_2026_06_25.md`
+
 For each seed, record:
 
 - route chosen
