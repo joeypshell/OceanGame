@@ -59,7 +59,7 @@ No active technical support issues are currently queued in this milestone.
 
 Later design and demo-readiness issues:
 
-1. #90 Run first depth-band and landmark readability asset pass.
+No active design or demo-readiness issues are currently queued.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, full procedural biomes, large art sets, or new resource systems during this milestone.
 
@@ -90,10 +90,11 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #90 establish the first depth-band and landmark readability asset pass before final art production.
+No active progression candidates are currently queued. Replenish the backlog before continuing issue-driven work.
 
 Recently completed:
 
+- #90 added a first depth-band and landmark readability pass with transition bands, safe-return ribs, and Shell Reef landmark wash.
 - #89 added a consistent pale diamond marker rule for non-resource scan targets while preserving resource pickup readability and scan behavior.
 - #88 standardized current and route-hint visuals around low-opacity cyan/green suggestion language and shorter labels.
 - #87 added reusable prototype scenes for pressure gates, current hints, and signal hints without changing runtime behavior.

@@ -75,7 +75,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. The route has a warning current/marker, and the patrol hint becomes more urgent as the player approaches. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
 - The `Gulper Eel` is scannable as a non-combat observation target. First-time scan records a durable behavior clue about warning currents, patrol hints, oxygen risk, and route timing; repeat scans remain free and refresh the predator-route warning text without damaging, slowing, stunning, repelling, harvesting, or controlling the predator.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
-- The scene uses surface light rays, a safe-base return column, a beaconed surface boat/lab, shallow kelp silhouettes, a midwater shelf, Shell Reef return-current shapes, low-opacity cyan/green route-current hints, deep pressure haze, a deeper glow hint, pressure-wreck glow, and predator warning ribs/current to communicate depth bands, safe return, blocked opportunity, and route danger without adding new mechanics.
+- The scene uses surface light rays, subtle depth transition bands, a safe-base return column with repeated return ribs, a beaconed surface boat/lab, shallow kelp silhouettes, a midwater shelf, Shell Reef landmark wash and return-current shapes, low-opacity cyan/green route-current hints, deep pressure haze, a deeper glow hint, pressure-wreck glow, and predator warning ribs/current to communicate depth bands, safe return, blocked opportunity, and route danger without adding new mechanics.
 
 ## Runtime / Setup
 
@@ -183,7 +183,7 @@ Manual smoke:
 - Scan the `Gulper Eel`, confirm the discovery text is recorded, repeat scan stays free, and patrol/chase/contact behavior still works unchanged.
 - Collect resources, fail by oxygen depletion, restart, and confirm carried resources were lost while banked resources remain.
 - Confirm the HUD depth increases while diving and that the base indicator points back toward the surface base.
-- Confirm the scene communicates shallow, midwater, and deep areas through color, landmarks, and resource placement.
+- Confirm the scene communicates shallow, midwater, and deep areas through color, transition bands, landmarks, and resource placement.
 - Let oxygen reach zero and confirm the HUD shows a failure result.
 - After first dive loop: start a dive, collect or scan something, return to base, and confirm the result is recorded.
 
