@@ -4,6 +4,7 @@ enum DiveState { DIVING, EXTRACTED, FAILED }
 
 @export var max_oxygen := 30.0
 @export var oxygen_drain_per_second := 1.0
+@export var start_position := Vector2(640.0, 190.0)
 
 @onready var player: CharacterBody2D = $Player
 @onready var base_zone: Area2D = $BaseZone
@@ -54,7 +55,7 @@ func _fail_dive() -> void:
 func _restart_dive() -> void:
 	dive_state = DiveState.DIVING
 	oxygen = max_oxygen
-	player.global_position = Vector2(160.0, 360.0)
+	player.global_position = start_position
 	player.velocity = Vector2.ZERO
 	player_in_base = true
 	status_label.text = "Dive status: active"

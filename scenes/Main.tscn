@@ -1,46 +1,105 @@
-[gd_scene load_steps=5 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=4 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
 
-[sub_resource type="Gradient" id="Gradient_1"]
-offsets = PackedFloat32Array(0, 1)
-colors = PackedColorArray(0.00784314, 0.105882, 0.172549, 1, 0.0196078, 0.301961, 0.407843, 1)
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
-radius = 88.0
+radius = 96.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main_script")
 
-[node name="OceanBackdrop" type="ColorRect" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Sky" type="ColorRect" parent="."]
 offset_right = 1280.0
-offset_bottom = 720.0
-color = Color(0.012, 0.12, 0.19, 1)
+offset_bottom = 120.0
+color = Color(0.47, 0.78, 0.88, 1)
+
+[node name="OceanShallows" type="ColorRect" parent="."]
+offset_top = 120.0
+offset_right = 1280.0
+offset_bottom = 760.0
+color = Color(0.018, 0.34, 0.44, 1)
+
+[node name="OceanMidwater" type="ColorRect" parent="."]
+offset_top = 760.0
+offset_right = 1280.0
+offset_bottom = 1460.0
+color = Color(0.012, 0.18, 0.31, 1)
+
+[node name="OceanDeep" type="ColorRect" parent="."]
+offset_top = 1460.0
+offset_right = 1280.0
+offset_bottom = 2320.0
+color = Color(0.006, 0.055, 0.13, 1)
+
+[node name="SurfaceLine" type="ColorRect" parent="."]
+offset_top = 118.0
+offset_right = 1280.0
+offset_bottom = 124.0
+color = Color(0.74, 0.96, 1, 1)
+
+[node name="DepthMarkers" type="Node2D" parent="."]
+
+[node name="Marker500" type="Label" parent="DepthMarkers"]
+offset_left = 24.0
+offset_top = 520.0
+offset_right = 140.0
+offset_bottom = 552.0
+text = "50m"
+
+[node name="Marker1000" type="Label" parent="DepthMarkers"]
+offset_left = 24.0
+offset_top = 1020.0
+offset_right = 140.0
+offset_bottom = 1052.0
+text = "100m"
+
+[node name="Marker1500" type="Label" parent="DepthMarkers"]
+offset_left = 24.0
+offset_top = 1520.0
+offset_right = 140.0
+offset_bottom = 1552.0
+text = "150m"
+
+[node name="SurfaceBaseArt" type="Node2D" parent="."]
+position = Vector2(640, 92)
+
+[node name="BoatHull" type="Polygon2D" parent="SurfaceBaseArt"]
+color = Color(0.78, 0.5, 0.23, 1)
+polygon = PackedVector2Array(-150, 0, 150, 0, 96, 46, -108, 46)
+
+[node name="Cabin" type="Polygon2D" parent="SurfaceBaseArt"]
+color = Color(0.88, 0.93, 0.9, 1)
+polygon = PackedVector2Array(-42, -48, 56, -48, 84, 0, -64, 0)
+
+[node name="LabMoonpool" type="Polygon2D" parent="SurfaceBaseArt"]
+color = Color(0.14, 0.42, 0.52, 1)
+polygon = PackedVector2Array(-72, 46, 72, 46, 44, 96, -44, 96)
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
-position = Vector2(160, 360)
+position = Vector2(640, 190)
 
 [node name="BaseZone" type="Area2D" parent="."]
-position = Vector2(160, 360)
+position = Vector2(640, 190)
 
 [node name="BaseGlow" type="Polygon2D" parent="BaseZone"]
 color = Color(0.2, 0.95, 0.82, 0.28)
-polygon = PackedVector2Array(-72, -44, 54, -64, 86, 0, 54, 64, -72, 44, -94, 0)
+polygon = PackedVector2Array(-96, -54, 82, -72, 116, 0, 82, 72, -96, 54, -124, 0)
 
 [node name="BaseCore" type="Polygon2D" parent="BaseZone"]
 color = Color(0.08, 0.5, 0.58, 1)
-polygon = PackedVector2Array(-38, -26, 32, -34, 50, 0, 32, 34, -38, 26, -52, 0)
+polygon = PackedVector2Array(-48, -30, 44, -38, 62, 0, 44, 38, -48, 30, -64, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BaseZone"]
 shape = SubResource("CircleShape2D_base_zone")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(1.2, 1.2)
+zoom = Vector2(0.9, 0.9)
 enabled = true
+limit_left = 0
+limit_top = 0
+limit_right = 1280
+limit_bottom = 2320
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -56,7 +115,7 @@ offset_left = 24.0
 offset_top = 54.0
 offset_right = 620.0
 offset_bottom = 86.0
-text = "Movement has acceleration, drag, and test-area bounds"
+text = "Dive down from the surface boat, then return to extract"
 
 [node name="Oxygen" type="Label" parent="HUD"]
 offset_left = 24.0

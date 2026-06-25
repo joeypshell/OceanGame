@@ -6,14 +6,15 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 
 ## Product Behavior
 
-- The project launches into a minimal Godot scene with a placeholder controllable submersible.
+- The project launches into a side-view vertical ocean slice with a placeholder controllable submersible.
 - The selected direction is a 2D underwater roguelite where each dive is an expedition into alien ocean biomes.
 - Intended first loop: dive from a safe base, gather resources, scan lifeforms, avoid or hunt predators, return before oxygen runs out, and craft upgrades that allow deeper future dives.
 - Current controls: move with WASD or arrow keys.
 - Extraction controls: return to the safe base and press E or Enter to end the dive successfully.
 - Test reset: press R after extraction or oxygen failure to restart the prototype dive.
-- Current movement uses acceleration, drag, and a bounded test area so the placeholder submersible cannot leave the prototype space.
-- The first scene starts the player at a visible safe base/extraction area on the left side of the test space.
+- Current movement uses acceleration, drag, and a bounded vertical dive area so the placeholder submersible cannot leave the prototype space.
+- The first scene starts the player at a visible surface boat/shallow lab base near the top of the water column.
+- The camera follows the player through a vertical descent with limits that keep the side-view dive space readable.
 - Oxygen drains during an active dive. Extracting before oxygen reaches zero succeeds; reaching zero shows a placeholder failure result with cargo loss text.
 
 ## Runtime / Setup
@@ -53,7 +54,7 @@ git diff --check
 Manual smoke:
 
 - Launch the project and confirm the first scene runs.
-- Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, and stays inside the test bounds.
+- Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
 - Confirm oxygen decreases during the active dive.
 - Let oxygen reach zero and confirm the HUD shows a failure result.

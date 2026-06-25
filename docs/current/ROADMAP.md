@@ -8,9 +8,9 @@ Current direction: build a 2D underwater roguelite about repeated dives into ali
 
 - The repository has an agentic workflow and planning structure.
 - The game uses Godot 4.7 with GDScript, targeting local desktop first with optional web demo support.
-- A minimal first scene and placeholder controllable submersible exist as the runtime foundation.
-- Placeholder underwater movement includes acceleration, drag, facing, and bounded test-area limits.
-- The first scene includes a visible safe base where the player can trigger a successful extraction result.
+- A minimal side-view vertical dive scene and placeholder controllable submersible exist as the runtime foundation.
+- Placeholder underwater movement includes acceleration, drag, facing, and bounded vertical dive-area limits.
+- The first scene includes a visible surface boat/shallow lab base where the player can trigger a successful extraction result.
 - The first scene includes an oxygen timer, successful extraction before depletion, and placeholder failure when oxygen reaches zero.
 - The initial design direction is selected, but most mechanics are still planning-level intent.
 
