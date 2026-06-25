@@ -31,3 +31,10 @@ offset_top = 22.0
 offset_right = 620.0
 offset_bottom = 54.0
 text = "OceanGame prototype - move with WASD or arrow keys"
+
+[node name="BoundsHint" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 54.0
+offset_right = 620.0
+offset_bottom = 86.0
+text = "Movement has acceleration, drag, and test-area bounds"

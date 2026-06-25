@@ -9,6 +9,7 @@ Current direction: build a 2D underwater roguelite about repeated dives into ali
 - The repository has an agentic workflow and planning structure.
 - The game uses Godot 4.7 with GDScript, targeting local desktop first with optional web demo support.
 - A minimal first scene and placeholder controllable submersible exist as the runtime foundation.
+- Placeholder underwater movement includes acceleration, drag, facing, and bounded test-area limits.
 - The initial design direction is selected, but most mechanics are still planning-level intent.
 
 ## Near-Term Epics

@@ -10,6 +10,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The selected direction is a 2D underwater roguelite where each dive is an expedition into alien ocean biomes.
 - Intended first loop: dive from a safe base, gather resources, scan lifeforms, avoid or hunt predators, return before oxygen runs out, and craft upgrades that allow deeper future dives.
 - Current controls: move with WASD or arrow keys.
+- Current movement uses acceleration, drag, and a bounded test area so the placeholder submersible cannot leave the prototype space.
 
 ## Runtime / Setup
 
@@ -47,5 +48,5 @@ git diff --check
 Manual smoke:
 
 - Launch the project and confirm the first scene runs.
-- Move the placeholder submersible with WASD or arrow keys.
+- Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, and stays inside the test bounds.
 - After first dive loop: start a dive, collect or scan something, return to base, and confirm the result is recorded.
