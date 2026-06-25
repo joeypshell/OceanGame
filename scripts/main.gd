@@ -56,6 +56,7 @@ const RESOURCE_CLUSTER_PATTERNS := [
 @onready var upgrade_menu_state_label: Label = $HUD/UpgradePanel/UpgradeMenuState
 @onready var upgrade_menu_feedback_label: Label = $HUD/UpgradePanel/UpgradeMenuFeedback
 @onready var starter_resource_candidates: Node2D = $StarterResourceCandidates
+@onready var deep_reward_lure: Node2D = $DeepRewardLure
 @onready var glow_plankton_visual: Polygon2D = $ResourcePickups/GlowPlankton/Visual
 @onready var hidden_glow_plankton: Node = $ResourcePickups/HiddenGlowPlankton
 @onready var vent_route_hint: Node2D = $VentRouteHint
@@ -292,6 +293,7 @@ func _place_starter_resources_for_run() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = progression_state.current_run_seed
 	current_resource_cluster_pattern = _resource_cluster_pattern_for_seed(progression_state.current_run_seed)
+	deep_reward_lure.visible = current_resource_cluster_pattern == "deep_reward"
 
 	for pickup_name in STARTER_RESOURCE_PICKUP_NAMES:
 		var pickup := get_node_or_null("ResourcePickups/%s" % pickup_name) as ResourcePickup

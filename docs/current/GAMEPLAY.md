@@ -33,6 +33,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep.
 - Starter resource candidate points use typed `SpawnPoint` nodes with category, target id, depth band, and position data so later hazards, creatures, discoveries, and resource clusters can use the same placement model.
 - `Cautious shallows` clusters keep the first three starter resources closer to safer shallow/midwater banking routes, while `Deep reward route` clusters pull the deeper `Glow Plankton` toward the predator-controlled route.
+- `Deep reward route` runs show a faint glow/current lure that hints at valuable deep `Glow Plankton` before the player fully commits to the predator route.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, the surface upgrade bay panel shows `Oxygen Tank I`, its cost, owned/available/unavailable state, and purchase feedback.
 - `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
@@ -97,6 +98,7 @@ Manual smoke:
 - Relaunch the project after banking resources, buying an upgrade, or recording a discovery, and confirm long-term progression reloads while active cargo and current-dive state do not.
 - Confirm restarted runs vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.
 - Confirm restarted runs alternate between `Cautious shallows` and `Deep reward route` cluster patterns, and that the deep reward pattern tempts a route near the predator patrol.
+- Confirm the deep-reward lure appears only on `Deep reward route` runs and preserves surface return readability.
 - Move or edit a `StarterResourceCandidates` spawn point in the scene and confirm seeded resource placement follows that typed definition.
 - Move the placeholder submersible with WASD or arrow keys and confirm it accelerates, slows under drag, turns toward velocity, dives downward from the surface, and stays inside the test bounds.
 - Return to the safe base, press E or Enter, and confirm the HUD shows a successful extraction result.
