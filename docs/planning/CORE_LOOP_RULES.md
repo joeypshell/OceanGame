@@ -94,6 +94,8 @@ Tactical effects should help the current dive without becoming a full field guid
 
 Current recommendation: keep repeat tactical scans free for the prototype. First-time scans cost oxygen; re-scanning already discovered targets costs no oxygen and may refresh practical effects. See `docs/planning/REPEAT_SCAN_COST_RECOMMENDATION.md` for the reviewed cooldown, smaller oxygen cost, and scanner-energy alternatives. Do not change repeat-scan costs unless an active implementation issue authorizes it.
 
+Planned first scanner improvement: `Signal Lens I` should use the `Wreck Signal Cache` discovery to turn repeat resource scans into a short nearest-resource direction pulse. See `docs/planning/SCANNER_IMPROVEMENT_I.md`.
+
 Scanner targeting must be legible:
 
 - show the current target name before scanning

@@ -19,8 +19,10 @@ This is not a tech tree. It is a compact ladder for the first prototype progress
 ## 3. Scanner Improvement
 
 - Purpose: safer or more useful information gathering.
-- Possible behavior change: clearer target selection, longer tactical highlights, nearest-cluster direction, or safer predator observation.
+- Recommended first upgrade: `Signal Lens I`, unlocked from `Wreck Signal Cache`.
+- Recommended behavior change: repeat-scanning a discovered resource target sends a short directional pulse toward the nearest visible uncollected deposit of that same resource in the current expedition.
 - Constraint: avoid a full field guide until practical scan outcomes are proven.
+- Planning note: `docs/planning/SCANNER_IMPROVEMENT_I.md`.
 
 ## 4. Cargo Improvement
 
