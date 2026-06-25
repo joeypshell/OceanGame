@@ -1,6 +1,6 @@
 # Predator Warning I
 
-Status: planning complete. Recommended future implementation issue title: `Add Predator Warning I upgrade`.
+Status: implemented in the current prototype. Follow-up tuning should keep the upgrade focused on readability instead of predator control.
 
 ## Purpose
 
@@ -69,11 +69,9 @@ Risks:
 
 ## Recommendation
 
-Implement `Wider Warning Range` first.
+`Wider Warning Range` is the first implemented payoff.
 
-Concrete future implementation issue title: `Add Predator Warning I upgrade`.
-
-The first implementation should add a small data-backed upgrade unlocked by the `Gulper Eel` discovery. It should increase the warning radius or warning feedback lead time modestly, while leaving the predator patrol, chase radius, contact damage, knockback, and route selection unchanged.
+The current implementation adds a small data-backed upgrade unlocked by the `Gulper Eel` discovery. It increases warning feedback lead distance through the reusable `Predator.warning_radius()` / `set_warning_radius_multiplier()` helper pair, while leaving the predator patrol, chase radius, contact damage, knockback, and route selection unchanged.
 
 ## Unlock Requirements
 
@@ -115,4 +113,5 @@ Do not add:
 - Predator patrol, chase/contact radius, oxygen loss, knockback, and seeded route selection remain unchanged.
 - The upgrade does not affect resources, pressure locks, extraction, or `Burst Thruster`.
 - Logic tests cover the discovery prerequisite and effect metadata.
+- Logic tests cover the warning-radius helper and verify the effect does not grant or mutate unrelated upgrade behavior.
 - Manual smoke confirms predator contact is still possible if the player ignores the warning.

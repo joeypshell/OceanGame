@@ -43,6 +43,7 @@ func _initialize() -> void:
 	_run("predator scan target", _test_predator_scan_target)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
 	_run("predator warning upgrade metadata", _test_predator_warning_upgrade_metadata)
+	_run("predator warning effect isolation", _test_predator_warning_effect_isolation)
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
@@ -285,6 +286,27 @@ func _test_predator_warning_upgrade_metadata() -> void:
 	_expect(is_equal_approx(predator.warning_radius(), 180.0), "Predator Warning I should widen only the warning radius")
 	_expect(is_equal_approx(predator.detect_radius, 100.0), "Predator Warning I should not change chase detection radius")
 	predator.free()
+
+func _test_predator_warning_effect_isolation() -> void:
+	var main := MainScript.new()
+	main.max_oxygen = 30.0
+	main.oxygen_tank_1_max_oxygen = 40.0
+	main.base_cargo_limit = 3
+	main.cargo_rack_1_limit = 4
+	main.dive_session.reset(30.0)
+	main.dive_session.cargo_limit = main.base_cargo_limit
+	main.progression_state.purchased_upgrades = {
+		PredatorWarningUpgrade.id: true,
+	}
+
+	main._apply_upgrade_effect(PredatorWarningUpgrade.effect_id)
+
+	_expect(main._current_max_oxygen() == 30.0, "Predator Warning I should not apply Oxygen Tank I max oxygen")
+	_expect(main._current_cargo_limit() == 3, "Predator Warning I should not apply Cargo Rack I capacity")
+	_expect(main.dive_session.cargo_limit == 3, "Predator Warning I should not mutate current dive cargo capacity")
+	_expect(not main.progression_state.has_upgrade(PressureSealUpgrade.id), "Predator Warning I should not grant Pressure Seal I")
+	_expect(not main.progression_state.has_upgrade(SignalLensUpgrade.id), "Predator Warning I should not grant Signal Lens I")
+	main.free()
 
 func _test_expedition_prep_goals() -> void:
 	var upgrades: Array[UpgradeDefinition] = [
