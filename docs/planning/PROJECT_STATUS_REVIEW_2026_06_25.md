@@ -21,7 +21,7 @@ OceanGame now has a coherent first playable prototype loop:
 - deterministic logic tests,
 - MCP context tooling,
 - blind-validation kit.
-- first `Shell Reef` biome pocket, compact surface views, route-objective fallback, and replenished post-Shell-Reef 10-issue queue.
+- first `Shell Reef` biome pocket, compact surface views, route-objective fallback, clarified pressure-lock readability, and replenished post-Shell-Reef issue queues.
 
 The project is no longer blocked by missing planning or validation requirements for the current slice. The full two-helper blind validation requirement and solo evidence replacement are skipped; the current prototype is considered good enough to move forward.
 
@@ -88,6 +88,7 @@ Meaning:
 - `Shell Reef` biome pocket, scan clue, authored spawn candidates, route-review checklist, and route-objective fallback.
 - Compact surface result/upgrade/log views.
 - Active issues #75-#84 for the predator-warning and route-tuning batch.
+- Active issues #86-#90 for the first visual language and readability-assets batch.
 
 ### Workflow
 
@@ -110,6 +111,11 @@ Meaning:
 8. Resolve #82 `Add route-choice result callout`.
 9. Resolve #83 `Update MCP context server with latest planning docs`.
 10. Resolve #84 `Plan Predator Countermeasure I after warning upgrade`.
+11. Resolve #86 `Create first visual language guide`.
+12. Resolve #87 `Extract reusable pressure gate, current hint, and signal hint prototypes`.
+13. Resolve #88 `Standardize current and route-hint visuals`.
+14. Resolve #89 `Standardize scan target marker readability`.
+15. Resolve #90 `Run first depth-band and landmark readability asset pass`.
 
 ### Progression Candidates
 
@@ -120,6 +126,7 @@ Meaning:
 5. Route-choice result feedback.
 6. MCP planning-context refresh.
 7. Predator Countermeasure I planning after warning upgrade.
+8. Visual language guide and reusable readability assets before final art production.
 
 ### Deferred
 
@@ -146,6 +153,7 @@ Meaning:
 - `docs/planning/EXPEDITION_GOAL_II.md`
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
 - `docs/planning/SURFACE_UI_LAYOUT_PASS.md`
+- `docs/planning/VISUAL_LANGUAGE_READABILITY_ASSETS.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
 - `docs/planning/CORE_LOOP_RULES.md`

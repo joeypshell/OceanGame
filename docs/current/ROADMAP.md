@@ -21,6 +21,7 @@ Detailed design rules live in:
 - `docs/planning/BIOME_POCKET_I.md`
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
 - `docs/planning/SURFACE_UI_LAYOUT_PASS.md`
+- `docs/planning/VISUAL_LANGUAGE_READABILITY_ASSETS.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
@@ -61,6 +62,11 @@ Technical support track:
 Later design and demo-readiness issues:
 
 1. #84 Plan `Predator Countermeasure I` after warning upgrade.
+2. #86 Create first visual language guide.
+3. #87 Extract reusable pressure gate, current hint, and signal hint prototypes.
+4. #88 Standardize current and route-hint visuals.
+5. #89 Standardize scan target marker readability.
+6. #90 Run first depth-band and landmark readability asset pass.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, full procedural biomes, large art sets, or new resource systems during this milestone.
 
@@ -83,6 +89,7 @@ The milestone succeeds only when:
 - #82 keeps route-choice result callouts concise and avoids checklist UI.
 - #83 keeps MCP planning context current.
 - #84 keeps the next predator countermeasure non-lethal and preparation-first.
+- #86-#90 establish prototype readability assets before final art production, with no new mechanics or broad polish pass.
 
 Technical implementation alone is not sufficient.
 
@@ -101,6 +108,7 @@ Choose from these candidates rather than starting all of them:
 
 Recently completed:
 
+- #85 clarified the pressure-lock route by making the locked gate, future cache signal, and surface-upgrade return step more readable.
 - #74 replenished the queue as `Predator Warning And Route Tuning` with issues #75-#84.
 - #73 added the first `Expedition Goal II` route objective by pointing the completed-upgrade fallback at the `Shell Reef` bank-or-push-deeper choice.
 - #72 planned `Expedition Goal II` and selected `Add route objective goal for Shell Reef` as the narrow next implementation.
