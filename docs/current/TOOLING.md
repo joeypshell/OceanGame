@@ -2,6 +2,14 @@
 
 This file describes implemented repository tooling and agent workflow support.
 
+## Godot AI MCP
+
+OceanGame adopts `hi-godot/godot-ai` as optional local Godot editor MCP tooling for scene-aware development. It is not vendored into this repository and is separate from the repo-local read-only OceanGame context MCP server.
+
+Policy and setup notes live in:
+
+- `docs/current/GODOT_MCP.md`
+
 ## MCP Context Server
 
 The first MCP slice is agent workflow support: a small repo-local context server exposes OceanGame source-of-truth docs as MCP resources. It does not control the Godot editor, mutate files, require secrets, or replace the GitHub issue workflow.
@@ -17,6 +25,7 @@ Resources:
 - `oceangame://roadmap`
 - `oceangame://gameplay`
 - `oceangame://tooling`
+- `oceangame://godot-mcp`
 - `oceangame://project-status`
 - `oceangame://core-loop`
 - `oceangame://seeded-expeditions`

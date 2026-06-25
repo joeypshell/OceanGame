@@ -13,6 +13,7 @@ const resources = [
   ["oceangame://roadmap", "docs/current/ROADMAP.md", "Current roadmap"],
   ["oceangame://gameplay", "docs/current/GAMEPLAY.md", "Implemented gameplay"],
   ["oceangame://tooling", "docs/current/TOOLING.md", "Current tooling"],
+  ["oceangame://godot-mcp", "docs/current/GODOT_MCP.md", "Godot MCP tooling policy"],
   ["oceangame://project-status", "docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md", "Project status review"],
   ["oceangame://core-loop", "docs/planning/CORE_LOOP_RULES.md", "Core loop rules"],
   ["oceangame://seeded-expeditions", "docs/planning/DAILY_RUNS.md", "Seeded expedition guidance"],

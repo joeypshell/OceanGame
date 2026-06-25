@@ -34,6 +34,7 @@ Detailed design rules live in:
 Implemented architecture lives in `docs/current/ARCHITECTURE.md`.
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
 Implemented tooling lives in `docs/current/TOOLING.md`.
+Optional local Godot editor MCP policy lives in `docs/current/GODOT_MCP.md`.
 
 ## Active Milestone
 
@@ -47,7 +48,7 @@ Current progression signal: the prototype now has practical scan/cargo upgrades,
 
 Tooling track:
 
-No active tooling issues are currently queued.
+No active tooling issues are currently queued. #91 documented optional local Godot AI MCP setup policy without vendoring the plugin.
 
 Gameplay and validation track:
 
@@ -94,6 +95,7 @@ No active progression candidates are currently queued. Replenish the backlog bef
 
 Recently completed:
 
+- #91 documented optional local Godot AI MCP setup policy and distinguished it from the repo-local read-only OceanGame context MCP server.
 - #90 added a first depth-band and landmark readability pass with transition bands, safe-return ribs, and Shell Reef landmark wash.
 - #89 added a consistent pale diamond marker rule for non-resource scan targets while preserving resource pickup readability and scan behavior.
 - #88 standardized current and route-hint visuals around low-opacity cyan/green suggestion language and shorter labels.
