@@ -13,28 +13,21 @@ Implemented behavior lives in `docs/current/GAMEPLAY.md`.
 
 ## Active Milestone
 
-Daily Run Feel And Readability.
-
-Goal: turn the now-functional daily-run structure into a clearer, fairer, more playtestable loop. The next batch should make deep rewards visible before commitment, make predator danger feel avoidable, capture run outcomes more consistently, and tune oxygen margins from hands-on runs.
-
-This milestone comes directly from `docs/planning/DAILY_RUN_PLAYTEST_2026_06_25.md`.
+No active implementation issues are currently queued. Use the latest tuning/readability notes to create the next focused issue batch.
 
 ## Immediate Issue Order
 
-1. #28 Add deep-reward visual lure
-   Acceptance: deep-reward runs visibly hint at valuable `Glow Plankton` before the player fully commits to the predator route, without obscuring depth-band readability or safe return direction.
-   Verification: inspect cautious and deep-reward seeds and confirm the deep route has a readable reward lure while cautious runs still support safer banking.
-2. #29 Add predator warning and telegraph feedback
-   Acceptance: the `Gulper Eel` route communicates danger before contact through a readable warning, patrol cue, or chase tell, so avoidable damage feels fair.
-   Verification: approach the predator route and confirm the player can identify danger before contact, while predator contact behavior and oxygen cost remain unchanged.
-3. #30 Add run telemetry and playtest checklist
-   Acceptance: the prototype exposes or records enough run information to support repeatable playtests: seed, cluster pattern, cargo, scans, oxygen at extraction/failure, and failure cause.
-   Verification: complete or fail a run and confirm the needed playtest data is visible or recorded in a lightweight way.
-4. #31 Tune oxygen margins from hands-on five-seed pass
-   Acceptance: complete a hands-on five-seed pass and adjust only small tuning values needed for deep-reward routes, scan decisions, and one predator contact to produce fair close-return pressure.
-   Verification: update the playtest report or add a new tuning note with seed outcomes, tuning changes, and remaining risks.
+No active implementation issues are currently queued.
 
 ## Latest Completed Milestone
+
+Daily Run Feel And Readability.
+
+Goal completed: the daily-run structure is clearer, fairer, and more playtestable. Deep reward routes now have a visual lure, predator danger is telegraphed before contact, run result telemetry supports repeatable playtests, and a first oxygen-margin tuning pass is documented.
+
+This milestone comes directly from `docs/planning/DAILY_RUN_PLAYTEST_2026_06_25.md`.
+
+Previous completed milestone:
 
 Daily Roguelite Dive Runs.
 
@@ -93,7 +86,7 @@ Different placement is not enough. It must produce different decisions.
   Add simple creature behaviors, a scanner field guide, and one dangerous predator encounter that teaches the monster-hunting direction.
 - [ ] Epic: Ocean Readability And Feel
   Improve the prototype dive space so depth, risk, resources, and safe return are visually understandable without tutorial text.
-- [ ] #27 Epic: Daily Run Feel And Readability
+- [x] #27 Epic: Daily Run Feel And Readability
   Make seeded daily runs more readable, fair, and measurable before adding larger content systems.
 - [x] Epic: Daily Roguelite Dive Runs
   Turn the authored slice into replayable daily dives with controlled randomization, clear run start/result flow, and data-driven placement rules.
@@ -110,6 +103,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: add seeded resource cluster patterns and first daily-run milestone playtest report.
 - Completed: add disk-backed progression save/load for long-term state only.
 - Completed: add critical-oxygen and safe-return presentation feedback.
+- Completed: add deep-reward visual lure, predator warning feedback, run telemetry/checklist, and oxygen-margin tuning pass.
 
 ## Deferred Work
 
