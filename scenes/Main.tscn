@@ -193,6 +193,10 @@ display_name = "Pressure-Locked Research Wreck"
 description = "An old research hull is trapped beyond a pressure shimmer. A weak signal leaks through the boundary."
 gameplay_fact = "Buy Pressure Seal I at the surface, then return for the cache."
 
+[node name="ScanMarker" type="Polygon2D" parent="PressureLockedWreck/OuterScan"]
+color = Color(0.95, 1, 0.7, 0.24)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
+
 [node name="ScanVisual" type="Polygon2D" parent="PressureLockedWreck/OuterScan"]
 color = Color(0.86, 1, 0.36, 0.42)
 polygon = PackedVector2Array(-34, -30, 34, -30, 52, 0, 34, 30, -34, 30, -52, 0)
@@ -213,6 +217,10 @@ discovery_id = "wreck_signal_cache"
 display_name = "Wreck Signal Cache"
 description = "A sealed research cache still pinging from inside the wreck alcove."
 gameplay_fact = "Points toward a future scanner improvement and deeper research objective."
+
+[node name="ScanMarker" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache"]
+color = Color(0.95, 1, 0.7, 0.24)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="CacheVisual" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache"]
 color = Color(0.95, 1, 0.34, 0.72)
@@ -693,6 +701,10 @@ move_start = Vector2(720, 1510)
 move_end = Vector2(940, 1510)
 move_speed = 48.0
 
+[node name="ScanMarker" type="Polygon2D" parent="Creatures/LanternFry"]
+color = Color(0.95, 1, 0.7, 0.2)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
+
 [node name="Visual" type="Polygon2D" parent="Creatures/LanternFry"]
 color = Color(0.96, 0.95, 0.38, 1)
 polygon = PackedVector2Array(-34, 0, -10, -18, 24, -12, 42, 0, 24, 12, -10, 18)
@@ -739,6 +751,10 @@ display_name = "Gulper Eel"
 description = "A territorial deep-route predator that lunges at nearby movement."
 gameplay_fact = "Watch warning currents and patrol hints, then choose whether the contested route is worth the oxygen risk."
 
+[node name="ScanMarker" type="Polygon2D" parent="Predators/GulperEel"]
+color = Color(0.95, 1, 0.7, 0.18)
+polygon = PackedVector2Array(0, -74, 58, -42, 74, 0, 58, 42, 0, 74, -58, 42, -74, 0, -58, -42)
+
 [node name="PatrolHint" type="Polygon2D" parent="Predators/GulperEel"]
 color = Color(0.9, 0.1, 0.18, 0.18)
 polygon = PackedVector2Array(-92, -82, 92, -82, 124, 0, 92, 82, -92, 82, -124, 0)
@@ -764,6 +780,10 @@ display_name = "Thermal Vent"
 description = "A warm current escaping from a cracked shelf in the midwater."
 gameplay_fact = "Reveals a current path toward hidden Glow Plankton."
 
+[node name="ScanMarker" type="Polygon2D" parent="Discoveries/ThermalVent"]
+color = Color(0.95, 1, 0.7, 0.22)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
+
 [node name="Visual" type="Polygon2D" parent="Discoveries/ThermalVent"]
 color = Color(0.92, 0.5, 0.2, 0.82)
 polygon = PackedVector2Array(-42, 30, -20, -28, 0, -8, 20, -32, 44, 30)
@@ -782,6 +802,10 @@ discovery_id = "shell_reef_shelf"
 display_name = "Shell Reef Shelf"
 description = "A pale midwater reef shelf with shell fragments scattered along open return lanes."
 gameplay_fact = "A safer midwater banking route before deeper pressure and predator risk."
+
+[node name="ScanMarker" type="Polygon2D" parent="Discoveries/ShellReefShelf"]
+color = Color(0.95, 1, 0.7, 0.22)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="Visual" type="Polygon2D" parent="Discoveries/ShellReefShelf"]
 color = Color(0.94, 0.82, 0.54, 0.52)

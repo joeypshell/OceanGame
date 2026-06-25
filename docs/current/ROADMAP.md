@@ -59,8 +59,7 @@ No active technical support issues are currently queued in this milestone.
 
 Later design and demo-readiness issues:
 
-1. #89 Standardize scan target marker readability.
-2. #90 Run first depth-band and landmark readability asset pass.
+1. #90 Run first depth-band and landmark readability asset pass.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, full procedural biomes, large art sets, or new resource systems during this milestone.
 
@@ -91,10 +90,11 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #89-#90 establish prototype readability assets before final art production.
+1. #90 establish the first depth-band and landmark readability asset pass before final art production.
 
 Recently completed:
 
+- #89 added a consistent pale diamond marker rule for non-resource scan targets while preserving resource pickup readability and scan behavior.
 - #88 standardized current and route-hint visuals around low-opacity cyan/green suggestion language and shorter labels.
 - #87 added reusable prototype scenes for pressure gates, current hints, and signal hints without changing runtime behavior.
 - #86 expanded the first visual language guide with actionable color, shape, opacity, text-use, and current-scene example rules.

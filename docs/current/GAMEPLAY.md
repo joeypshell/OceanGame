@@ -65,7 +65,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Cargo Rack I` raises future dive cargo capacity from 3 to 4 without changing extraction banking or the rule that oxygen failure loses all carried cargo.
 - `Predator Warning I` requires the `Gulper Eel` discovery plus banked `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x1`.
 - `Predator Warning I` makes existing predator warning feedback begin farther from the `Gulper Eel` without changing patrol, chase/contact radius, oxygen loss, knockback, or seeded route selection.
-- Scan with F. The HUD shows the current scan target name plus compact metadata such as `new resource`, `known creature`, `new environment`, or `known wreck signal`; the selected target is highlighted. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
+- Scan with F. The HUD shows the current scan target name plus compact metadata such as `new resource`, `known creature`, `new environment`, or `known wreck signal`; the selected target is highlighted. Non-resource scan targets use a subtle pale diamond marker, while resource pickups keep their material silhouettes and selected-target tint. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
 - First-time scans cost 2 oxygen and record session-persistent discoveries. Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
 - Current planning recommendation keeps repeat tactical scans free for this prototype; see `docs/planning/REPEAT_SCAN_COST_RECOMMENDATION.md`.
 - First-time scan status text includes a concise next action. Resource scans point the player to collect the resource and return to base to bank cargo, while non-resource scans point toward the revealed clue or a safe return.
@@ -154,7 +154,7 @@ Manual smoke:
 - Confirm extraction and oxygen failure summaries include one compact `Route choice:` line, such as reef banking, deep glow push, predator-route pressure, or pressure-wreck progress, without turning the panel into a checklist.
 - Complete or fail four expeditions and confirm the `Recent Expeditions` log shows only the latest three results, with seed and cluster pattern hidden until debug telemetry is enabled.
 - Approach multiple nearby scan targets and confirm the HUD names one selected target with a visible highlight, then confirm the selected target remains deterministic until distance changes.
-- Approach a new resource, already discovered resource, creature, environmental scan target, and wreck signal; confirm the scan target HUD metadata stays compact and accurate.
+- Approach a new resource, already discovered resource, creature, environmental scan target, and wreck signal; confirm the scan target HUD metadata stays compact and accurate, non-resource scan markers remain readable, and resource pickups still read as cargo first.
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.
 - Confirm low oxygen shows warning feedback below 25 percent and stronger base-direction/oxygen emphasis below 10 percent without changing oxygen costs.

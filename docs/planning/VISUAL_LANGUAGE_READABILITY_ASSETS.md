@@ -131,6 +131,7 @@ Keep color categories distinct. Do not solve readability by making every importa
 - Color direction: readable but not louder than danger or locks.
 - Meaning: scan this to learn or unlock a route.
 - Current examples: `ShellReefShelf`, `ThermalVent`, `PressureLockedWreck/OuterScan`, `WreckSignalCache`.
+- Prototype rule: non-resource scan targets use a subtle pale diamond `ScanMarker` that hugs the target silhouette. Resource pickups keep their material silhouette and use the existing selected-target tint so they still read first as immediate cargo.
 
 ### Current / Route Hint
 
