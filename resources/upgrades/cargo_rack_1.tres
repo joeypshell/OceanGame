@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3 uid="uid://cargo_rack_1_upgrade"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="1_upgrade_definition"]
+
+[resource]
+script = ExtResource("1_upgrade_definition")
+id = "cargo_rack_1"
+display_name = "Cargo Rack I"
+description = "Adds one carried cargo slot for longer resource routes."
+resource_cost = {
+"glow_plankton": 1,
+"kelp_fiber": 2,
+"shell_fragments": 2
+}
+required_discovery = ""
+effect_id = "cargo_limit_4"
+locked_reason = ""
+available_text = "Available: press E or Enter to purchase."
+owned_text = "Owned: future dives can carry 4 resources."

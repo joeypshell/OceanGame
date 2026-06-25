@@ -10,10 +10,12 @@ const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
+const CARGO_RACK_UPGRADE := preload("res://resources/upgrades/cargo_rack_1.tres")
 
 const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
 const PRESSURE_SEAL_UPGRADE_ID := "pressure_seal_1"
 const SIGNAL_LENS_UPGRADE_ID := "signal_lens_1"
+const CARGO_RACK_UPGRADE_ID := "cargo_rack_1"
 const PROGRESSION_SAVE_PATH := "user://progression_save.json"
 const LOW_OXYGEN_RATIO := 0.25
 const CRITICAL_OXYGEN_RATIO := 0.10
@@ -29,6 +31,8 @@ const RESOURCE_CLUSTER_PATTERNS := [
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
+@export var base_cargo_limit := 3
+@export var cargo_rack_1_limit := 4
 @export var oxygen_drain_per_second := 0.95
 @export var collect_oxygen_cost := 1.0
 @export var scan_oxygen_cost := 2.0
@@ -94,6 +98,7 @@ var upgrade_definitions: Array[UpgradeDefinition] = [
 	OXYGEN_TANK_UPGRADE,
 	PRESSURE_SEAL_UPGRADE,
 	SIGNAL_LENS_UPGRADE,
+	CARGO_RACK_UPGRADE,
 ]
 var run_collected_resources: Array[String] = []
 var run_completed_scans: Array[String] = []
@@ -200,6 +205,7 @@ func _restart_dive() -> void:
 func _prepare_next_run() -> void:
 	progression_state.advance_run()
 	dive_session.reset(_current_max_oxygen())
+	dive_session.cargo_limit = _current_cargo_limit()
 	_reset_run_telemetry()
 	burst_thruster_cooldown_remaining = 0.0
 	_place_starter_resources_for_run()
@@ -295,6 +301,8 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 			_sync_pressure_lock_state()
 		"resource_signal_pulse":
 			pass
+		"cargo_limit_4":
+			dive_session.cargo_limit = _current_cargo_limit()
 		_:
 			push_warning("Unknown upgrade effect: %s" % effect_id)
 
@@ -935,6 +943,12 @@ func _current_max_oxygen() -> float:
 		return oxygen_tank_1_max_oxygen
 
 	return max_oxygen
+
+func _current_cargo_limit() -> int:
+	if progression_state.has_upgrade(CARGO_RACK_UPGRADE_ID):
+		return cargo_rack_1_limit
+
+	return base_cargo_limit
 
 func _format_base_direction() -> String:
 	var vertical_delta := player.global_position.y - start_position.y

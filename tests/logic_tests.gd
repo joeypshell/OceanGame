@@ -10,6 +10,7 @@ const PlayerScript := preload("res://scripts/player.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PressureSealUpgrade := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SignalLensUpgrade := preload("res://resources/upgrades/signal_lens_1.tres")
+const CargoRackUpgrade := preload("res://resources/upgrades/cargo_rack_1.tres")
 
 class DummyScanTarget:
 	extends Node2D
@@ -26,6 +27,7 @@ var _passes := 0
 
 func _initialize() -> void:
 	_run("cargo limit", _test_cargo_limit)
+	_run("upgraded cargo limit", _test_upgraded_cargo_limit)
 	_run("extraction requirements", _test_extraction_requirements)
 	_run("oxygen failure", _test_oxygen_failure)
 	_run("upgrade affordability", _test_upgrade_affordability)
@@ -63,6 +65,20 @@ func _test_cargo_limit() -> void:
 	_expect(session.add_cargo("glow_plankton"), "third cargo slot should accept an item")
 	_expect(not session.add_cargo("extra_resource"), "cargo should reject items beyond the limit")
 	_expect(session.current_cargo.size() == session.cargo_limit, "cargo should stay at the configured limit")
+
+func _test_upgraded_cargo_limit() -> void:
+	var session := DiveSessionScript.new()
+	session.reset(30.0)
+	session.cargo_limit = 4
+	session.start()
+
+	_expect(session.add_cargo("kelp_fiber"), "upgraded first cargo slot should accept an item")
+	_expect(session.add_cargo("shell_fragments"), "upgraded second cargo slot should accept an item")
+	_expect(session.add_cargo("glow_plankton"), "upgraded third cargo slot should accept an item")
+	_expect(session.add_cargo("kelp_fiber"), "upgraded fourth cargo slot should accept an item")
+	_expect(not session.add_cargo("extra_resource"), "upgraded cargo should reject items beyond four slots")
+	session.fail()
+	_expect(session.current_cargo.is_empty(), "oxygen failure should still discard upgraded cargo")
 
 func _test_extraction_requirements() -> void:
 	var session := DiveSessionScript.new()
@@ -204,9 +220,12 @@ func _test_discovery_prerequisites() -> void:
 	_expect(OxygenTankUpgrade.required_discovery.is_empty(), "Oxygen Tank I should not require a discovery")
 	_expect(PressureSealUpgrade.required_discovery == "thermal_vent", "Pressure Seal I should require Thermal Vent")
 	_expect(SignalLensUpgrade.required_discovery == "wreck_signal_cache", "Signal Lens I should require Wreck Signal Cache")
+	_expect(CargoRackUpgrade.required_discovery.is_empty(), "Cargo Rack I should not require a discovery")
+	_expect(CargoRackUpgrade.effect_id == "cargo_limit_4", "Cargo Rack I should use cargo limit effect")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, OxygenTankUpgrade) == "", "upgrade with no prerequisite should not be locked")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "thermal_vent", "Pressure Seal I prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, SignalLensUpgrade) == "wreck_signal_cache", "Signal Lens I prerequisite should start missing")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, CargoRackUpgrade) == "", "Cargo Rack I prerequisite should be satisfied by default")
 	progression.add_discovery("thermal_vent", "Thermal Vent", "Hot current.", "Unlocks pressure tuning.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "", "Pressure Seal I prerequisite should be satisfied by Thermal Vent discovery")
 	progression.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks Signal Lens I.")

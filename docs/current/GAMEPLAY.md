@@ -37,7 +37,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Missing `save_version` saves are treated as legacy version `0` and migrate by loading the known progression fields. Current version `1` loads the same known fields directly. Unknown newer versions warn and load known fields only so prototype progress is not discarded.
 - The prototype save does not restore active oxygen, current cargo, active run state, temporary effects, current expedition number, or current expedition seed.
 - Extraction only succeeds after the player has left the base and returned.
-- The player has three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
+- The player starts with three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep.
 - Starter resource candidate points use typed `SpawnPoint` nodes with category, target id, depth band, and position data so later hazards, creatures, discoveries, and resource clusters can use the same placement model.
 - `Cautious shallows` clusters keep the first three starter resources closer to safer shallow/midwater banking routes, while `Deep reward route` clusters pull the deeper `Glow Plankton` toward the predator-controlled route.
@@ -49,13 +49,15 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - After `Pressure Seal I` is owned, the wreck alcove can be reached and the inside `Wreck Signal Cache` can be scanned as a practical progression reward pointing toward a future scanner improvement.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
 - After extraction, the surface upgrade bay panel shows data-backed upgrade entries with cost, missing resources, missing discovery if any, owned/available/locked/unavailable state, and purchase feedback.
-- The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has three configured upgrades: `Oxygen Tank I`, `Pressure Seal I`, and `Signal Lens I`.
+- The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has four configured upgrades: `Oxygen Tank I`, `Pressure Seal I`, `Signal Lens I`, and `Cargo Rack I`.
 - `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
 - `Pressure Seal I` requires the `Thermal Vent` discovery plus banked `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x2`.
 - `Pressure Seal I` opens the first pressure-locked research wreck route by disabling the pressure-boundary denial and changing the shimmer feedback to show the route is open.
 - `Signal Lens I` requires the `Wreck Signal Cache` discovery plus banked `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x2`.
 - `Signal Lens I` makes repeat resource scans add a short local signal hint toward the nearest matching visible uncollected deposit in the current expedition. If no matching deposit is visible, the HUD says the signal is quiet.
+- `Cargo Rack I` costs banked `Kelp Fiber x2`, `Shell Fragments x2`, and `Glow Plankton x1`.
+- `Cargo Rack I` raises future dive cargo capacity from 3 to 4 without changing extraction banking or the rule that oxygen failure loses all carried cargo.
 - Scan with F. The HUD shows the current scan target name, and the selected target is highlighted. Targeting chooses the nearest valid scan target, with stable id-based tie-breaking when distances match.
 - First-time scans cost 2 oxygen and record session-persistent discoveries. Re-scanning an already discovered target does not spend oxygen, but still refreshes that discovery's practical effect if it has one.
 - Current planning recommendation keeps repeat tactical scans free for this prototype; see `docs/planning/REPEAT_SCAN_COST_RECOMMENDATION.md`.
@@ -149,6 +151,9 @@ Manual smoke:
 - Confirm `Pressure Seal I` is locked before scanning `Thermal Vent`, available after the discovery plus required resources, and owned after purchase.
 - After buying `Pressure Seal I`, return to the pressure-locked wreck and confirm the shimmer route is open and the inside `Wreck Signal Cache` can be scanned.
 - Confirm `Signal Lens I` is locked before scanning `Wreck Signal Cache`, available after the discovery plus required resources, and owned after purchase.
+- Buy `Cargo Rack I`, restart a dive, and confirm the HUD starts at `Cargo: 0 / 4`.
+- After buying `Cargo Rack I`, collect four resources, extract, and confirm all four bank correctly.
+- After buying `Cargo Rack I`, fail with carried cargo and confirm all carried cargo is still lost.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
 - Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
 - Approach the pressure shimmer near the research wreck without `Pressure Seal I` and confirm entry is denied safely with clear feedback.

@@ -13,6 +13,8 @@ OceanGame now has a coherent first playable prototype loop:
 - `Oxygen Tank I`,
 - `Pressure Seal I`,
 - pressure-locked wreck payoff,
+- `Signal Lens I`,
+- `Cargo Rack I`,
 - one route-control predator,
 - prototype `Burst Thruster`,
 - debug-gated telemetry,
@@ -34,7 +36,7 @@ Meaning:
 
 - Treat #51 and #50 as completed milestone work.
 - Treat #54 `Signal Lens I` as completed milestone work: `Wreck Signal Cache` now becomes a practical scanner reward.
-- Implement #55 `Cargo Rack I` as the first simple cargo-capacity upgrade.
+- Treat #55 `Cargo Rack I` as completed milestone work: the first simple cargo-capacity upgrade is implemented.
 - Keep a rolling backlog of about 10 open actionable issues so Codex can continue without repeated replanning stops.
 - If testers are available later, use facilitator summaries as bonus evidence and create issues from concrete observations, but do not block roadmap progress on them.
 - Turn observed confusion, boredom, unreadable route cues, scanner misses, banking misunderstandings, or predator unfairness into concrete follow-up issues.
@@ -75,8 +77,9 @@ Meaning:
 - `Pressure Seal I`.
 - `Wreck Signal Cache`.
 - `Signal Lens I`.
+- `Cargo Rack I`.
 - Prototype `Burst Thruster`.
-- Plans and active issues for `Cargo Rack I` and the next readability/progression batch.
+- Active issues for the next readability/progression batch.
 
 ### Workflow
 
@@ -89,27 +92,25 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #55 `Cargo Rack I` fourth cargo slot upgrade.
-2. Resolve #56 scanner target preview metadata.
-3. Resolve #57 expedition prep goal summary.
-4. Resolve #58 expedition result progress callouts.
-5. Resolve #62 surface upgrade bay readability.
-6. Resolve #63 recent expedition log.
-7. Resolve #59/#60 monster observation planning and first observation scan when ready.
-8. Resolve #61 first small biome pocket plan.
-9. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+1. Resolve #56 scanner target preview metadata.
+2. Resolve #57 expedition prep goal summary.
+3. Resolve #58 expedition result progress callouts.
+4. Resolve #62 surface upgrade bay readability.
+5. Resolve #63 recent expedition log.
+6. Resolve #59/#60 monster observation planning and first observation scan when ready.
+7. Resolve #61 first small biome pocket plan.
+8. Re-evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ### Progression Candidates
 
-1. #55 `Cargo Rack I` fourth cargo slot upgrade.
-2. #56 scanner target preview metadata.
-3. #57 expedition prep goal summary.
-4. #58 result progress callouts.
-5. #62 upgrade bay readability polish.
-6. #63 recent expedition log.
-7. #59/#60 monster observation.
-8. #61 first small biome pocket plan.
-9. New milestone planning after the stocked queue is drained or materially changes.
+1. #56 scanner target preview metadata.
+2. #57 expedition prep goal summary.
+3. #58 result progress callouts.
+4. #62 upgrade bay readability polish.
+5. #63 recent expedition log.
+6. #59/#60 monster observation.
+7. #61 first small biome pocket plan.
+8. New milestone planning after the stocked queue is drained or materially changes.
 
 ### Deferred
 

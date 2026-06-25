@@ -37,15 +37,14 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #55 Add `Cargo Rack I` fourth cargo slot upgrade.
-2. #56 Add compact scanner target preview metadata.
-3. #57 Add expedition prep goal summary.
-4. #58 Improve expedition result progress callouts.
-5. #59 Plan `Monster Observation I` progression slice.
-6. #60 Add `Gulper Eel` observation scan.
-7. #61 Plan first small biome pocket.
-8. #62 Polish surface upgrade bay readability.
-9. #63 Add recent expedition log.
+1. #56 Add compact scanner target preview metadata.
+2. #57 Add expedition prep goal summary.
+3. #58 Improve expedition result progress callouts.
+4. #59 Plan `Monster Observation I` progression slice.
+5. #60 Add `Gulper Eel` observation scan.
+6. #61 Plan first small biome pocket.
+7. #62 Polish surface upgrade bay readability.
+8. #63 Add recent expedition log.
 
 Technical support track:
 
@@ -78,14 +77,13 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #55 `Cargo Rack I` fourth cargo slot.
-2. #56 scanner target preview metadata.
-3. #57 expedition prep goal summary.
-4. #58 result progress callouts.
-5. #62 upgrade bay readability polish.
-6. #63 recent expedition log.
-7. #59/#60 monster observation planning and first implementation.
-8. #61 first small biome pocket planning.
+1. #56 scanner target preview metadata.
+2. #57 expedition prep goal summary.
+3. #58 result progress callouts.
+4. #62 upgrade bay readability polish.
+5. #63 recent expedition log.
+6. #59/#60 monster observation planning and first implementation.
+7. #61 first small biome pocket planning.
 10. After this batch, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ## Latest Completed Milestone
@@ -210,6 +208,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #51 clarify the post-scan next step in the first expedition.
 - Completed: #50 add prototype `Burst Thruster` with oxygen cost and cooldown.
 - Completed: #54 add `Signal Lens I` resource direction pulse.
+- Completed: #55 add `Cargo Rack I` fourth cargo slot upgrade.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
 - Completed: #48 plan `Signal Lens I` as Scanner Improvement I from the `Wreck Signal Cache`.
 - Completed: #49 plan `Cargo Rack I` as the first cargo improvement.
