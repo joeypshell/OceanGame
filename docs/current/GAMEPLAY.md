@@ -17,6 +17,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The first scene starts the player at a visible surface boat/shallow lab base near the top of the water column.
 - The camera follows the player through a vertical descent with limits that keep the side-view dive space readable.
 - Oxygen drains during an active dive. Extracting before oxygen reaches zero succeeds; reaching zero shows a placeholder failure result with cargo loss text.
+- Low oxygen changes presentation only: below 25 percent, the HUD shows a low-oxygen warning; below 10 percent, the oxygen and base-direction HUD pulse with critical return feedback.
+- Low-oxygen feedback does not add ascent drain, decompression, depth-based oxygen penalties, or hidden oxygen costs.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
 - Dives begin from a `Run Ready` panel. Press E or Enter to begin oxygen drain and active dive play.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, and best depth.
@@ -101,6 +103,7 @@ Manual smoke:
 - Confirm extraction and oxygen failure both show result summaries before restarting.
 - Confirm immediate extraction at the starting base does not succeed until the player leaves and returns.
 - Confirm oxygen decreases during the active dive.
+- Confirm low oxygen shows warning feedback below 25 percent and stronger base-direction/oxygen emphasis below 10 percent without changing oxygen costs.
 - Collect resources, confirm cargo fills up to three slots, extract, and confirm resources move into the banked list.
 - After extraction, confirm the surface upgrade bay shows `Oxygen Tank I`, cost, owned status, and feedback.
 - Attempt to buy `Oxygen Tank I` without enough resources and confirm the upgrade panel gives clear feedback.

@@ -505,6 +505,14 @@ offset_right = 620.0
 offset_bottom = 498.0
 text = "Safe base: press E or Enter to extract"
 
+[node name="OxygenWarning" type="Label" parent="HUD"]
+visible = false
+offset_left = 24.0
+offset_top = 500.0
+offset_right = 620.0
+offset_bottom = 532.0
+text = "LOW OXYGEN - PLAN RETURN"
+
 [node name="RunPanel" type="Panel" parent="HUD"]
 offset_left = 730.0
 offset_top = 32.0

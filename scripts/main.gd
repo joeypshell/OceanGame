@@ -11,6 +11,8 @@ const OXYGEN_TANK_COST := {
 	"glow_plankton": 1,
 }
 const PROGRESSION_SAVE_PATH := "user://progression_save.json"
+const LOW_OXYGEN_RATIO := 0.25
+const CRITICAL_OXYGEN_RATIO := 0.10
 const STARTER_RESOURCE_PICKUP_NAMES := [
 	"KelpFiber",
 	"ShellFragments",
@@ -43,6 +45,7 @@ const RESOURCE_CLUSTER_PATTERNS := [
 @onready var discoveries_label: Label = $HUD/Discoveries
 @onready var status_label: Label = $HUD/Status
 @onready var prompt_label: Label = $HUD/ExtractionPrompt
+@onready var oxygen_warning_label: Label = $HUD/OxygenWarning
 @onready var run_panel: Panel = $HUD/RunPanel
 @onready var run_title_label: Label = $HUD/RunPanel/RunTitle
 @onready var run_summary_label: Label = $HUD/RunPanel/RunSummary
@@ -340,6 +343,7 @@ func _update_hud() -> void:
 		roundi(progression_state.best_depth_reached)
 	]
 	base_direction_label.text = _format_base_direction()
+	_update_oxygen_feedback()
 	cargo_label.text = "Cargo: %d / %d%s" % [
 		dive_session.current_cargo.size(),
 		dive_session.cargo_limit,
@@ -498,6 +502,33 @@ func _format_base_direction() -> String:
 		return "Base: up %.0fm" % (vertical_delta / pixels_per_meter)
 
 	return "Base: below %.0fm" % (absf(vertical_delta) / pixels_per_meter)
+
+func _update_oxygen_feedback() -> void:
+	oxygen_warning_label.visible = false
+	oxygen_label.modulate = Color.WHITE
+	base_direction_label.modulate = Color.WHITE
+	oxygen_label.scale = Vector2.ONE
+	base_direction_label.scale = Vector2.ONE
+
+	if dive_session.result != DiveSessionScript.Result.DIVING or dive_session.max_oxygen <= 0.0:
+		return
+
+	var oxygen_ratio := dive_session.oxygen / dive_session.max_oxygen
+	if oxygen_ratio <= CRITICAL_OXYGEN_RATIO:
+		var pulse := 1.0 + 0.08 * absf(sin(Time.get_ticks_msec() / 90.0))
+		oxygen_warning_label.visible = true
+		oxygen_warning_label.text = "CRITICAL OXYGEN - RETURN TO BASE"
+		oxygen_warning_label.modulate = Color(1.0, 0.18, 0.12, 1.0)
+		oxygen_label.modulate = Color(1.0, 0.18, 0.12, 1.0)
+		base_direction_label.modulate = Color(1.0, 0.22, 0.14, 1.0)
+		oxygen_label.scale = Vector2(pulse, pulse)
+		base_direction_label.scale = Vector2(pulse, pulse)
+	elif oxygen_ratio <= LOW_OXYGEN_RATIO:
+		oxygen_warning_label.visible = true
+		oxygen_warning_label.text = "LOW OXYGEN - PLAN RETURN"
+		oxygen_warning_label.modulate = Color(1.0, 0.76, 0.22, 1.0)
+		oxygen_label.modulate = Color(1.0, 0.76, 0.22, 1.0)
+		base_direction_label.modulate = Color(1.0, 0.86, 0.36, 1.0)
 
 func _load_progression() -> void:
 	if not FileAccess.file_exists(PROGRESSION_SAVE_PATH):
