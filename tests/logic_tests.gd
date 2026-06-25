@@ -7,6 +7,7 @@ const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const PlayerScript := preload("res://scripts/player.gd")
+const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PressureSealUpgrade := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SignalLensUpgrade := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -37,6 +38,7 @@ func _initialize() -> void:
 	_run("spawn selection", _test_spawn_selection)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
+	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 
 	if _failures.is_empty():
@@ -230,6 +232,55 @@ func _test_discovery_prerequisites() -> void:
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "", "Pressure Seal I prerequisite should be satisfied by Thermal Vent discovery")
 	progression.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks Signal Lens I.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, SignalLensUpgrade) == "", "Signal Lens I prerequisite should be satisfied by Wreck Signal Cache discovery")
+
+func _test_expedition_prep_goals() -> void:
+	var upgrades: Array[UpgradeDefinition] = [
+		OxygenTankUpgrade,
+		PressureSealUpgrade,
+		SignalLensUpgrade,
+		CargoRackUpgrade,
+	]
+	var progression := ProgressionStateScript.new()
+
+	var goal := ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
+	_expect(goal.contains("Oxygen Tank I"), "fresh prep goal should point at Oxygen Tank I")
+	_expect(goal.contains("Kelp Fiber x2"), "fresh prep goal should list missing oxygen tank kelp")
+
+	progression.banked_resources = {
+		"glow_plankton": 1,
+		"kelp_fiber": 2,
+		"shell_fragments": 1,
+	}
+	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
+	_expect(goal == "Goal: buy Oxygen Tank I in the upgrade bay after this dive.", "affordable prep goal should point to purchase")
+
+	progression.purchase_upgrade(OxygenTankUpgrade.id, OxygenTankUpgrade.resource_cost)
+	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
+	_expect(goal.contains("scan Thermal Vent"), "locked pressure seal goal should point at Thermal Vent")
+	_expect(goal.contains("Pressure Seal I"), "locked pressure seal goal should name the upgrade")
+
+	progression.add_discovery("thermal_vent", "Thermal Vent", "Hot current.", "Unlocks pressure tuning.")
+	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
+	_expect(goal.contains("bank"), "unlocked pressure seal goal should point back to banking")
+
+	progression.banked_resources = {
+		"glow_plankton": 2,
+		"kelp_fiber": 1,
+		"shell_fragments": 2,
+	}
+	progression.purchase_upgrade(PressureSealUpgrade.id, PressureSealUpgrade.resource_cost)
+	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
+	_expect(goal.contains("scan Wreck Signal Cache"), "locked signal lens goal should point at Wreck Signal Cache")
+
+	progression.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks Signal Lens I.")
+	progression.banked_resources = {
+		"glow_plankton": 2,
+		"kelp_fiber": 1,
+		"shell_fragments": 2,
+	}
+	progression.purchase_upgrade(SignalLensUpgrade.id, SignalLensUpgrade.resource_cost)
+	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
+	_expect(goal.contains("Cargo Rack I"), "signal lens ownership should advance goal to Cargo Rack I")
 
 func _test_burst_thruster_movement_helper() -> void:
 	var player := PlayerScript.new()

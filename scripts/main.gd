@@ -7,6 +7,7 @@ const UpgradeDefinitionScript := preload("res://scripts/upgrade_definition.gd")
 const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
+const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -705,7 +706,10 @@ func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
 		run_title_label.text = "Expedition %d Ready" % progression_state.current_run_number
-		run_summary_label.text = _format_run_summary("Start with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\nPress E or Enter to begin." % ceili(dive_session.max_oxygen), "ready")
+		run_summary_label.text = _format_run_summary("Start with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\n%s\nPress E or Enter to begin." % [
+			ceili(dive_session.max_oxygen),
+			ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions),
+		], "ready")
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		run_panel.visible = true
 		run_title_label.text = "Expedition %d Result: Extraction" % progression_state.current_run_number
