@@ -20,9 +20,21 @@ const resources = [
   ["oceangame://progression-ladder", "docs/planning/PROGRESSION_LADDER.md", "Progression ladder"],
   ["oceangame://predator-direction", "docs/planning/PREDATOR_INTERACTION_DIRECTION.md", "Predator interaction direction"],
   ["oceangame://blind-validation-kit", "docs/planning/BLIND_VALIDATION_KIT.md", "Blind validation kit"],
+  ["oceangame://expedition-goal-ii", "docs/planning/EXPEDITION_GOAL_II.md", "Expedition Goal II plan"],
   ["oceangame://scanner-improvement-i", "docs/planning/SCANNER_IMPROVEMENT_I.md", "Scanner Improvement I plan"],
   ["oceangame://cargo-improvement-i", "docs/planning/CARGO_IMPROVEMENT_I.md", "Cargo Improvement I plan"],
   ["oceangame://burst-thruster", "docs/planning/BURST_THRUSTER_MILESTONE.md", "Burst Thruster milestone plan"],
+  ["oceangame://monster-observation-i", "docs/planning/MONSTER_OBSERVATION_I.md", "Monster Observation I plan"],
+  ["oceangame://predator-warning-i", "docs/planning/PREDATOR_WARNING_I.md", "Predator Warning I plan"],
+  ["oceangame://biome-pocket-i", "docs/planning/BIOME_POCKET_I.md", "Biome Pocket I plan"],
+  ["oceangame://biome-pocket-ii", "docs/planning/BIOME_POCKET_II.md", "Biome Pocket II plan"],
+  ["oceangame://shell-reef-route-review", "docs/planning/SHELL_REEF_ROUTE_REVIEW.md", "Shell Reef route review checklist"],
+  ["oceangame://shell-reef-route-review-2026-06-25", "docs/planning/SHELL_REEF_ROUTE_REVIEW_2026_06_25.md", "Shell Reef five-seed review"],
+  ["oceangame://surface-ui-layout-pass", "docs/planning/SURFACE_UI_LAYOUT_PASS.md", "Surface UI layout pass"],
+  ["oceangame://visual-language-readability-assets", "docs/planning/VISUAL_LANGUAGE_READABILITY_ASSETS.md", "Visual language readability assets"],
+  ["oceangame://resource-economy-tuning-i", "docs/planning/RESOURCE_ECONOMY_TUNING_I.md", "Resource Economy Tuning I plan"],
+  ["oceangame://backlog-replenishment-after-shell-reef", "docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md", "Post-Shell-Reef backlog replenishment"],
+  ["oceangame://backlog-replenishment-2026-06-25", "docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md", "Backlog replenishment"],
 ].map(([uri, filePath, name]) => ({
   uri,
   filePath,
@@ -121,7 +133,18 @@ async function serve() {
 function selfTest() {
   const listed = resultFor("resources/list").resources;
   const roadmap = readResource("oceangame://roadmap");
-  if (listed.length < 1 || !roadmap.text.includes("# Current Roadmap")) {
+  const listedUris = new Set(listed.map((resource) => resource.uri));
+  const requiredUris = [
+    "oceangame://roadmap",
+    "oceangame://expedition-goal-ii",
+    "oceangame://backlog-replenishment-after-shell-reef",
+    "oceangame://project-status",
+  ];
+  if (
+    listed.length < 1 ||
+    !roadmap.text.includes("# Current Roadmap") ||
+    requiredUris.some((uri) => !listedUris.has(uri))
+  ) {
     throw new Error("MCP context self-test failed");
   }
   process.stdout.write(`OceanGame MCP context server self-test passed (${listed.length} resources).\n`);

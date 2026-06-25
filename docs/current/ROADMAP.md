@@ -54,7 +54,7 @@ No active gameplay validation issues are currently queued in this milestone.
 
 Technical support track:
 
-1. #83 Update MCP context server with latest planning docs.
+No active technical support issues are currently queued in this milestone.
 
 Later design and demo-readiness issues:
 
@@ -94,11 +94,11 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #83 refresh MCP planning context.
-2. #84 plan the next non-lethal predator countermeasure.
+1. #84 plan the next non-lethal predator countermeasure.
 
 Recently completed:
 
+- #83 refreshed the MCP context server with current Expedition Goal II, Shell Reef, biome pocket, resource economy, visual language, and backlog planning sources.
 - #82 added one compact route-choice result callout while keeping debug seed/pattern/route telemetry behind F3.
 - #81 reviewed first resource economy pressure and recommended no immediate cost/spawn changes.
 - #80 planned `Biome Pocket II` and selected `Add Thermal Vent pocket route variation` as the narrow future implementation candidate.

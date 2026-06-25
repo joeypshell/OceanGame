@@ -24,9 +24,21 @@ Resources:
 - `oceangame://progression-ladder`
 - `oceangame://predator-direction`
 - `oceangame://blind-validation-kit`
+- `oceangame://expedition-goal-ii`
 - `oceangame://scanner-improvement-i`
 - `oceangame://cargo-improvement-i`
 - `oceangame://burst-thruster`
+- `oceangame://monster-observation-i`
+- `oceangame://predator-warning-i`
+- `oceangame://biome-pocket-i`
+- `oceangame://biome-pocket-ii`
+- `oceangame://shell-reef-route-review`
+- `oceangame://shell-reef-route-review-2026-06-25`
+- `oceangame://surface-ui-layout-pass`
+- `oceangame://visual-language-readability-assets`
+- `oceangame://resource-economy-tuning-i`
+- `oceangame://backlog-replenishment-after-shell-reef`
+- `oceangame://backlog-replenishment-2026-06-25`
 
 Run the local self-test from the repository root:
 
