@@ -41,6 +41,7 @@ func _initialize() -> void:
 	_run("discovery prerequisites", _test_discovery_prerequisites)
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
+	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 
 	if _failures.is_empty():
@@ -308,6 +309,37 @@ func _test_result_progress_callouts() -> void:
 
 	main.run_completed_scans.clear()
 	_expect(main._format_scan_progress_callout("Discoveries recorded") == "Discoveries recorded: none this dive.", "result progress should stay explicit when no scans were recorded")
+	main.free()
+
+func _test_upgrade_bay_readability_states() -> void:
+	var main := MainScript.new()
+	main.upgrade_definitions = [
+		OxygenTankUpgrade,
+		PressureSealUpgrade,
+		SignalLensUpgrade,
+		CargoRackUpgrade,
+	]
+
+	var state := main._format_upgrade_state(OxygenTankUpgrade)
+	_expect(state.begins_with("State: Missing resources"), "upgrade bay should label unaffordable upgrades")
+	_expect(state.contains("Needs: Glow Plankton x1"), "upgrade bay should show missing resources inline")
+
+	main.progression_state.banked_resources = {
+		"glow_plankton": 1,
+		"kelp_fiber": 2,
+		"shell_fragments": 1,
+	}
+	state = main._format_upgrade_state(OxygenTankUpgrade)
+	_expect(state.begins_with("State: Available now"), "upgrade bay should label affordable upgrades")
+	_expect(main._format_ready_upgrade_callout().contains("Oxygen Tank I"), "upgrade bay should call out newly ready upgrades")
+
+	main.progression_state.purchase_upgrade(OxygenTankUpgrade.id, OxygenTankUpgrade.resource_cost)
+	state = main._format_upgrade_state(OxygenTankUpgrade)
+	_expect(state.begins_with("State: Owned"), "upgrade bay should label owned upgrades")
+
+	state = main._format_upgrade_state(PressureSealUpgrade)
+	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label scan-locked upgrades")
+	_expect(state.contains("Needs scan: Thermal Vent"), "upgrade bay should name missing discoveries")
 	main.free()
 
 func _test_burst_thruster_movement_helper() -> void:

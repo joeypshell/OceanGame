@@ -171,9 +171,10 @@ func _try_extract() -> void:
 		_format_scan_progress_callout("Discoveries recorded"),
 		roundi(progression_state.best_depth_reached)
 	]
-	upgrade_menu_feedback = "Deposited %d resource(s) into the bank.%s" % [
+	upgrade_menu_feedback = "Deposited %d resource(s) into the bank.%s\n%s" % [
 		extracted_count,
-		_format_resource_counts(extracted_cargo)
+		_format_resource_counts(extracted_cargo),
+		_format_ready_upgrade_callout(),
 	]
 	_save_progression()
 	status_label.text = "Dive complete: extracted safely with %d oxygen." % ceili(dive_session.oxygen)
@@ -270,8 +271,8 @@ func _try_purchase_selected_upgrade() -> void:
 		_save_progression()
 		status_label.text = "Purchased %s." % upgrade.display_name
 	else:
-		upgrade_menu_feedback = "Missing resources:%s\nBanked:%s" % [
-			_format_missing_resources(upgrade.resource_cost),
+		upgrade_menu_feedback = "Still missing: %s\nBanked:%s" % [
+			_format_missing_resources_inline(upgrade.resource_cost),
 			_format_banked_resources(),
 		]
 		status_label.text = "%s needs more banked resources." % upgrade.display_name
@@ -823,23 +824,37 @@ func _format_missing_resources(cost: Dictionary) -> String:
 
 func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 	if progression_state.has_upgrade(upgrade.id):
-		return upgrade.owned_text
+		return "State: Owned\n%s" % upgrade.owned_text
 
 	var missing_discovery := _upgrade_missing_discovery(upgrade)
 	if missing_discovery != "":
-		return "Locked: %s\nMissing discovery: %s\nMissing resources:%s" % [
-			upgrade.locked_reason,
+		return "State: Locked by scan\nNeeds scan: %s\nMissing resources: %s" % [
 			_format_discovery_name(missing_discovery),
-			_format_missing_resources(upgrade.resource_cost)
+			_format_missing_resources_inline(upgrade.resource_cost)
 		]
 
 	if progression_state.can_afford(upgrade.resource_cost):
-		return "%s\nEffect: %s" % [upgrade.available_text, upgrade.owned_text]
+		return "State: Available now\nAction: press E or Enter to buy\nEffect: %s" % upgrade.owned_text
 
-	return "Unavailable: collect and bank more resources.\nMissing resources:%s\nEffect: %s" % [
-		_format_missing_resources(upgrade.resource_cost),
+	return "State: Missing resources\nNeeds: %s\nEffect: %s" % [
+		_format_missing_resources_inline(upgrade.resource_cost),
 		upgrade.owned_text
 	]
+
+func _format_ready_upgrade_callout() -> String:
+	var ready: Array[String] = []
+	for upgrade in upgrade_definitions:
+		if progression_state.has_upgrade(upgrade.id):
+			continue
+		if _upgrade_missing_discovery(upgrade) != "":
+			continue
+		if progression_state.can_afford(upgrade.resource_cost):
+			ready.append(upgrade.display_name)
+
+	if ready.is_empty():
+		return "No upgrade ready yet; check missing requirements below."
+
+	return "Ready upgrade: %s." % ", ".join(ready)
 
 func _format_upgrade_progress_callout() -> String:
 	for upgrade in upgrade_definitions:

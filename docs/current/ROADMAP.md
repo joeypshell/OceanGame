@@ -40,8 +40,7 @@ Gameplay and validation track:
 1. #59 Plan `Monster Observation I` progression slice.
 2. #60 Add `Gulper Eel` observation scan.
 3. #61 Plan first small biome pocket.
-4. #62 Polish surface upgrade bay readability.
-5. #63 Add recent expedition log.
+4. #63 Add recent expedition log.
 
 Technical support track:
 
@@ -74,11 +73,10 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #62 upgrade bay readability polish.
-2. #63 recent expedition log.
-3. #59/#60 monster observation planning and first implementation.
-4. #61 first small biome pocket planning.
-5. After this batch, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
+1. #63 recent expedition log.
+2. #59/#60 monster observation planning and first implementation.
+3. #61 first small biome pocket planning.
+4. After this batch, evaluate whether the next milestone should emphasize predator observation, monster-hunting setup, a new biome pocket, or a richer surface upgrade/result loop.
 
 ## Latest Completed Milestone
 
@@ -206,6 +204,7 @@ Different placement is not enough. It must produce different decisions.
 - Completed: #56 add compact scanner target preview metadata.
 - Completed: #57 add expedition prep goal summary.
 - Completed: #58 improve expedition result progress callouts.
+- Completed: #62 polish surface upgrade bay readability.
 - Completed: #47 add a narrow atmosphere and route-readability pass for blind validation.
 - Completed: #48 plan `Signal Lens I` as Scanner Improvement I from the `Wreck Signal Cache`.
 - Completed: #49 plan `Cargo Rack I` as the first cargo improvement.

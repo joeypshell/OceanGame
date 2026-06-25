@@ -48,7 +48,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The wreck has an outside scan target, `Pressure-Locked Research Wreck`, that can be scanned before entry. Scanning it records a practical clue that `Pressure Seal I` should open the route and that a `Wreck Signal Cache` waits inside; it also reveals a signal hint pointing through the pressure lock.
 - After `Pressure Seal I` is owned, the wreck alcove can be reached and the inside `Wreck Signal Cache` can be scanned as a practical progression reward pointing toward a future scanner improvement.
 - Extraction banks carried resources into session progression. Oxygen failure discards carried resources but keeps banked resources.
-- After extraction, the surface upgrade bay panel shows data-backed upgrade entries with cost, missing resources, missing discovery if any, owned/available/locked/unavailable state, and purchase feedback.
+- After extraction, the surface upgrade bay panel shows data-backed upgrade entries with cost, one-line missing resources, missing discovery if any, and explicit `State:` labels for owned, available, scan-locked, and missing-resource upgrades. Extraction feedback also calls out newly ready upgrades when banked cargo completes a cost.
 - The upgrade bay supports selecting configured upgrades with Up/Down while extracted. The current prototype has four configured upgrades: `Oxygen Tank I`, `Pressure Seal I`, `Signal Lens I`, and `Cargo Rack I`.
 - `Oxygen Tank I` can be bought from the upgrade panel with banked `Kelp Fiber x2`, `Shell Fragments x1`, and `Glow Plankton x1`.
 - `Oxygen Tank I` raises future dive max oxygen from 30 to 40 during the current session.
@@ -145,7 +145,7 @@ Manual smoke:
 - Confirm oxygen decreases during the active dive.
 - Confirm low oxygen shows warning feedback below 25 percent and stronger base-direction/oxygen emphasis below 10 percent without changing oxygen costs.
 - Collect resources, confirm cargo fills up to three slots, extract, and confirm resources move into the banked list.
-- After extraction, confirm the surface upgrade bay shows a selected upgrade entry, cost, missing requirements, owned/available/unavailable state, and feedback.
+- After extraction, confirm the surface upgrade bay shows a selected upgrade entry, cost, one-line missing requirements, owned/available/locked/missing-resource state, and feedback.
 - Press Up/Down in the upgrade bay and confirm selection moves between `Oxygen Tank I` and `Pressure Seal I`.
 - Attempt to buy `Oxygen Tank I` without enough resources and confirm the upgrade panel gives clear feedback.
 - Bank the required resources, buy `Oxygen Tank I` from the upgrade panel after extraction, restart, and confirm max oxygen is 40.
