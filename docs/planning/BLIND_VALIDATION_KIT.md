@@ -49,6 +49,23 @@ Do not mention:
 
 ## Per-Player Notes
 
+The facilitator owns these notes. Testers should not be asked to fill out forms during the run. If structured note taking gets in the way, use the lightweight fallback below and fill it out after watching the session.
+
+## Lightweight Facilitator Fallback
+
+Use this when players will play but will not fill out forms, or when a short informal session produces useful evidence before a full #37 pass is possible.
+
+- Date:
+- Player alias or group:
+- What did they do first?
+- Did they scan the first nearby item? yes/no
+- After the first scan, what did they try to do next?
+- What did they seem to think the objective was?
+- What made them turn around, stop, ask for help, or lose interest?
+- What concrete follow-up issue should be created?
+
+This fallback is valid partial evidence. It can justify follow-up issues, but it does not by itself complete #37 unless the project explicitly accepts multiple facilitator summaries as replacement evidence.
+
 ### Player
 
 - Date:
@@ -148,5 +165,6 @@ Prefer several small issues over one broad "improve onboarding" issue.
 - [ ] Controls only explained before play.
 - [ ] At least two expeditions recorded per player.
 - [ ] Route choice, objective understanding, scanning, banking, predator warning, deep lure, and third-expedition motivation recorded.
+- [ ] If testers will not fill forms, facilitator summaries are recorded instead.
 - [ ] Raw notes linked in #37.
 - [ ] Concrete follow-up issues created and linked in #37.

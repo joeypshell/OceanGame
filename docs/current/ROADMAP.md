@@ -27,6 +27,8 @@ Blind Validation Gate.
 
 Goal: run the current prototype with unfamiliar players before adding more mechanics. The validation kit, route-readability pass, scanner plan, cargo plan, and Burst Thruster plan are complete; the remaining milestone work is evidence gathering, follow-up issue creation, and deciding which planned progression candidate should move next.
 
+Current validation signal: informal testers could scan the first item, but did not understand what to do afterward. Treat this as partial evidence, captured in `docs/planning/BLIND_VALIDATION_NOTES_2026_06_25.md`, and prioritize post-scan objective clarity before larger progression additions.
+
 ## Immediate Issue Order
 
 Tooling track:
@@ -36,7 +38,9 @@ No active tooling issues are currently queued.
 Gameplay and validation track:
 
 1. #37 Conduct first blind player validation.
-2. Conduct a follow-up multi-seed and blind-player validation pass.
+2. #52 Support lightweight facilitator summaries for blind validation.
+3. #51 Clarify the post-scan next step in the first expedition.
+4. Conduct a follow-up multi-seed and blind-player validation pass.
 
 Technical support track:
 
@@ -64,7 +68,7 @@ Technical implementation alone is not sufficient.
 
 After #37 produces evidence, choose from these candidates rather than starting all of them:
 
-1. Corrective readability or objective-clarity issues from #37.
+1. #51 `Clarify the post-scan next step in the first expedition`, because first-session testers scanned successfully but did not understand the next action.
 2. `Signal Lens I` resource direction pulse if scanner usefulness or future expedition planning needs strengthening.
 3. `Cargo Rack I` fourth cargo slot if players understand cargo risk and the next need is deeper route extraction choice.
 4. #50 `Burst Thruster` only if predator pressure is readable enough to support an emergency traversal tool without masking current-route problems.
@@ -123,6 +127,7 @@ Different placement is not enough. It must produce different decisions.
 
 - The repository has an agentic workflow and planning structure.
 - The repository includes an MCP context server for project-source documentation, including current status, validation, scanner, cargo, and future-tool plans.
+- The first informal blind-validation signal is that players can scan the first item but do not understand the next action afterward; this creates immediate objective-clarity work before larger mechanics.
 - The game uses Godot 4.7 with GDScript, targeting local desktop first with optional web demo support.
 - A side-view vertical dive scene and placeholder controllable submersible exist as the runtime foundation.
 - The first scene includes a visible surface boat/shallow lab base, oxygen pressure, extraction, oxygen failure, run start/result panels, depth/base HUD, resource pickup, scanning, two upgrades, one pressure-locked wreck opportunity, one route-control predator, and seeded starter resource/predator placement.

@@ -21,6 +21,8 @@ OceanGame now has a coherent first playable prototype loop:
 
 The project is no longer blocked by missing planning for the current slice. It is blocked by evidence: issue #37 still needs unfamiliar players to validate whether the loop is understandable without internal explanation.
 
+First informal validation signal: testers were able to scan the first item, but did not understand what to do after that. The full #37 checklist is not complete, but this is enough evidence to create objective-clarity follow-up work before adding larger mechanics.
+
 ## Roadmap Decision
 
 The active milestone should move from implementation prep to:
@@ -31,6 +33,7 @@ Meaning:
 
 - Do not mark the current progression/readability slice complete from code inspection alone.
 - Run #37 with at least two unfamiliar players using `docs/planning/BLIND_VALIDATION_KIT.md`.
+- If testers will not fill out forms, use facilitator summaries as partial evidence and create issues from concrete observations.
 - Turn observed confusion, boredom, unreadable route cues, scanner misses, banking misunderstandings, or predator unfairness into concrete follow-up issues.
 - Keep #50 blocked until #37 or equivalent predator-readability evidence exists.
 
@@ -83,7 +86,9 @@ Meaning:
 
 1. Complete #37 with two unfamiliar players.
 2. Link raw notes and concrete follow-up issues back to #37.
-3. Decide whether the current route readability, scanning, banking, and predator warning are good enough to proceed.
+3. Resolve #52 so future validation can be captured without relying on tester-filled forms.
+4. Resolve #51 so a successful first scan clearly points to the next action.
+5. Decide whether the current route readability, scanning, banking, and predator warning are good enough to proceed.
 
 ### Post-Validation Candidates
 
