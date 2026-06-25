@@ -44,8 +44,7 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-1. #73 Add route objective goal for `Shell Reef`.
-2. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
+1. #74 Plan next 10-issue backlog after the `Shell Reef` batch.
 
 Technical support track:
 
@@ -83,11 +82,11 @@ Technical implementation alone is not sufficient.
 Choose from these candidates rather than starting all of them:
 
 1. Future candidate: `Add Predator Warning I upgrade`.
-2. Selected `Expedition Goal II` candidate: #73 add route objective goal for `Shell Reef`.
-3. #74 replenish the next issue queue.
+2. #74 replenish the next issue queue.
 
 Recently completed:
 
+- #73 added the first `Expedition Goal II` route objective by pointing the completed-upgrade fallback at the `Shell Reef` bank-or-push-deeper choice.
 - #72 planned `Expedition Goal II` and selected `Add route objective goal for Shell Reef` as the narrow next implementation.
 - #71 added compact surface summary tabs so post-extraction `Result`, `Upgrades`, and `Log` views stay readable as the surface HUD grows.
 

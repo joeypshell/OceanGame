@@ -25,7 +25,7 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 			upgrade.display_name,
 		]
 
-	return "Goal: choose a route, fill cargo, and return safely."
+	return "Goal: use Shell Reef to bank Shell Fragments, or push deeper if oxygen allows."
 
 static func _format_missing_resources(progression_state: ProgressionState, cost: Dictionary) -> String:
 	var parts: Array[String] = []

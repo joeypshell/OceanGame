@@ -84,7 +84,7 @@ Meaning:
 - Prototype `Burst Thruster`.
 - `Gulper Eel` observation scan.
 - `Shell Reef` biome-pocket plan.
-- Active issues #73-#74 for the next route-objective implementation and backlog-planning batch.
+- Active issue #74 for the next backlog-planning batch.
 
 ### Workflow
 
@@ -97,8 +97,7 @@ Meaning:
 
 ### Immediate
 
-1. Resolve #73 `Add route objective goal for Shell Reef`.
-2. Resolve #74 `Plan next 10-issue backlog after Shell Reef batch`.
+1. Resolve #74 `Plan next 10-issue backlog after Shell Reef batch`.
 
 ### Progression Candidates
 

@@ -24,7 +24,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The HUD prompt shows whether `Burst Thruster` is ready and its oxygen cost or current cooldown. Status text reports successful activation, cooldown denial, and low-oxygen denial.
 - `Burst Thruster` does not damage, stun, harvest, or bypass predators, resources, pressure locks, or progression gates.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
-- Dives begin from an `Expedition Ready` panel. Press E or Enter to begin oxygen drain and active dive play. The panel includes one concise goal line that points to the next useful upgrade purchase, missing banked resources, or scan prerequisite such as `Thermal Vent` or `Wreck Signal Cache`.
+- Dives begin from an `Expedition Ready` panel. Press E or Enter to begin oxygen drain and active dive play. The panel includes one concise goal line that points to the next useful upgrade purchase, missing banked resources, scan prerequisite such as `Thermal Vent` or `Wreck Signal Cache`, or the `Shell Reef` midwater route objective once configured upgrade goals are complete.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, durable upgrade progress, discoveries recorded or kept, and best depth.
 - Extraction and oxygen failure result panels default to compact player-facing summaries. Development telemetry is hidden by default, but F3 or the exported `show_debug_telemetry` flag exposes result, seed, cluster pattern, predator route, cargo collected, scans, predator contacts, oxygen at result, and failure cause.
 - The HUD keeps a compact session-only `Recent Expeditions` log for the last three completed dives. Each entry shows result, banked cargo count, scans, predator contacts, and best depth; seed and cluster pattern appear only while debug telemetry is enabled.
@@ -130,6 +130,7 @@ Manual smoke:
 
 - Launch the project and confirm the first scene runs.
 - Confirm the expedition starts at the `Expedition Ready` panel and does not begin active oxygen pressure until E or Enter is pressed.
+- Confirm the ready-panel goal keeps upgrade resource and scan-prerequisite goals ahead of the `Shell Reef` route objective.
 - Confirm each restarted expedition advances the session number and seed while persistent progression remains.
 - Relaunch the project after banking resources, buying an upgrade, or recording a discovery, and confirm long-term progression reloads while active cargo and current-dive state do not.
 - Confirm restarted expeditions vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.

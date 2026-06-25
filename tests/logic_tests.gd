@@ -313,6 +313,15 @@ func _test_expedition_prep_goals() -> void:
 	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
 	_expect(goal.contains("Cargo Rack I"), "signal lens ownership should advance goal to Cargo Rack I")
 
+	progression.banked_resources = {
+		"glow_plankton": 1,
+		"kelp_fiber": 2,
+		"shell_fragments": 2,
+	}
+	progression.purchase_upgrade(CargoRackUpgrade.id, CargoRackUpgrade.resource_cost)
+	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
+	_expect(goal == "Goal: use Shell Reef to bank Shell Fragments, or push deeper if oxygen allows.", "completed upgrade goals should fall back to the Shell Reef route objective")
+
 func _test_result_progress_callouts() -> void:
 	var main := MainScript.new()
 	main.upgrade_definitions = [
