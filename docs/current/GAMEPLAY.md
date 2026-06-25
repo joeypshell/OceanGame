@@ -75,7 +75,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - A `Gulper Eel` predator patrols a deep route to a valuable `Glow Plankton` pickup. The route has a warning current/marker, and the patrol hint becomes more urgent as the player approaches. Getting too close triggers a brief chase; contact costs 5 oxygen, knocks the player back, and briefly disrupts movement.
 - The `Gulper Eel` is scannable as a non-combat observation target. First-time scan records a durable behavior clue about warning currents, patrol hints, oxygen risk, and route timing; repeat scans remain free and refresh the predator-route warning text without damaging, slowing, stunning, repelling, harvesting, or controlling the predator.
 - The HUD shows current depth, best depth reached, and base direction/distance so the return route remains understandable while diving.
-- The scene uses surface light rays, a safe-base return column, a beaconed surface boat/lab, shallow kelp silhouettes, a midwater shelf, Shell Reef return-current shapes, deep pressure haze, a deeper glow hint, pressure-wreck glow, and predator warning ribs/current to communicate depth bands, safe return, blocked opportunity, and route danger without adding new mechanics.
+- The scene uses surface light rays, a safe-base return column, a beaconed surface boat/lab, shallow kelp silhouettes, a midwater shelf, Shell Reef return-current shapes, low-opacity cyan/green route-current hints, deep pressure haze, a deeper glow hint, pressure-wreck glow, and predator warning ribs/current to communicate depth bands, safe return, blocked opportunity, and route danger without adding new mechanics.
 
 ## Runtime / Setup
 
@@ -172,7 +172,7 @@ Manual smoke:
 - Confirm `Predator Warning I` is locked before scanning `Gulper Eel`, available after the discovery plus required resources, and owned after purchase.
 - After buying `Predator Warning I`, approach the `Gulper Eel` route and confirm warning feedback begins farther away while contact remains possible if the warning is ignored.
 - Scan `Lantern Fry` with F, confirm oxygen decreases, discovery text appears, and `Glow Plankton` pulses.
-- Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the route hint plus hidden `Glow Plankton` appear.
+- Scan `Thermal Vent` with F, confirm oxygen decreases, discovery text appears, and the low-opacity current hint plus hidden `Glow Plankton` appear without reading like a guaranteed safe path.
 - Approach the pressure gate near the research wreck without `Pressure Seal I` and confirm entry is denied safely with clear feedback that says to buy the upgrade at the surface and return.
 - Scan the outside `Pressure-Locked Research Wreck` target and confirm the future-cache signal appears without looking like an immediately open path or disrupting extraction/failure flow.
 - Scan a resource pickup with F, confirm oxygen decreases, discovery text records depth band/upgrade use/material need, and matching visible deposits highlight for several seconds.

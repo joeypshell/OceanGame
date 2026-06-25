@@ -59,9 +59,8 @@ No active technical support issues are currently queued in this milestone.
 
 Later design and demo-readiness issues:
 
-1. #88 Standardize current and route-hint visuals.
-2. #89 Standardize scan target marker readability.
-3. #90 Run first depth-band and landmark readability asset pass.
+1. #89 Standardize scan target marker readability.
+2. #90 Run first depth-band and landmark readability asset pass.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, full procedural biomes, large art sets, or new resource systems during this milestone.
 
@@ -92,10 +91,11 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. #88-#90 establish prototype readability assets before final art production.
+1. #89-#90 establish prototype readability assets before final art production.
 
 Recently completed:
 
+- #88 standardized current and route-hint visuals around low-opacity cyan/green suggestion language and shorter labels.
 - #87 added reusable prototype scenes for pressure gates, current hints, and signal hints without changing runtime behavior.
 - #86 expanded the first visual language guide with actionable color, shape, opacity, text-use, and current-scene example rules.
 - #84 planned `Predator Countermeasure I` and selected `Add Decoy Pulse I predator countermeasure` as the future non-lethal implementation candidate.
