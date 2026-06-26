@@ -1346,10 +1346,28 @@ func _format_expedition_ready_status() -> String:
 
 func _format_condition_briefing() -> String:
 	if current_expedition_condition.is_empty():
-		return "Condition: No unusual activity."
+		return "Today: no unusual activity."
 
-	return "Condition: %s\n%s" % [
-		String(current_expedition_condition.get("display_name", "Unknown")),
+	var condition_id := _current_condition_id()
+	var display_name := String(current_expedition_condition.get("display_name", "Unknown"))
+	match condition_id:
+		"calm_current":
+			return "Today: %s.\nReturn currents are clearer near base." % display_name
+		"thermal_bloom":
+			return "Today: %s.\nVent-warmed routes may point toward extra glow." % display_name
+		"kelp_bloom":
+			return "Today: %s.\nShallow growth is thicker; scan and bank what you can see." % display_name
+		"predator_migration":
+			return "Today: %s.\nExpect the Gulper route to feel active; watch warning cues." % display_name
+		"low_visibility":
+			return "Today: %s.\nTreat deep routes as harder to read and bank early if unsure." % display_name
+		"rare_signal":
+			return "Today: %s.\nA weak research ping is worth checking if oxygen allows." % display_name
+		"wreck_shift":
+			return "Today: %s.\nThe pressure wreck route is the notable landmark today." % display_name
+
+	return "Today: %s.\n%s" % [
+		display_name,
 		String(current_expedition_condition.get("briefing", "")),
 	]
 

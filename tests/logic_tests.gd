@@ -878,9 +878,20 @@ func _test_condition_briefing_copy() -> void:
 	}
 
 	var briefing := main._format_condition_briefing()
-	_expect(briefing.contains("Condition: Thermal Bloom"), "condition briefing should show the player-facing condition name")
-	_expect(briefing.contains("Warm water stirs"), "condition briefing should show one short player-facing line")
+	_expect(briefing.contains("Today: Thermal Bloom."), "condition briefing should frame the day condition as today's ocean change")
+	_expect(briefing.contains("Vent-warmed routes may point toward extra glow."), "thermal briefing should name the implemented vent/glow route cue")
 	_expect(not briefing.contains("thermal_bloom"), "condition briefing should not expose raw condition ids")
+	_expect(not briefing.to_lower().contains("procedural"), "condition briefing should not imply unimplemented generation systems")
+
+	main.current_expedition_condition = {
+		"id": "predator_migration",
+		"display_name": "Predator Migration",
+		"briefing": "Deep patrols are shifting.",
+		"tags": ["predator", "route"],
+	}
+	briefing = main._format_condition_briefing()
+	_expect(briefing.contains("Gulper route"), "predator briefing should point to the existing predator route")
+	_expect(briefing.contains("warning cues"), "predator briefing should point to existing readable cues")
 	main.free()
 
 func _test_compact_dive_hud_helpers() -> void:
