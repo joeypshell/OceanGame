@@ -55,6 +55,8 @@ Primary:
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md`
 - `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md`
+- `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
+- `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md`
 
 Recent closeout evidence:
 
@@ -72,3 +74,5 @@ Recent closeout evidence:
 Next milestone: playable-slice closeout and first-run readability.
 
 This is not broad content expansion. It should finish evidence and guards for the current loop, then choose the next source-art pass by readability impact.
+
+Update after #302: the formal acceptance checklist now distinguishes pass, pass-with-watchlist, deferred, and out-of-scope areas. The current slice is structurally playable, but not yet fully polished while low-oxygen, upgrade affordance, scanner distinction, durable progression/onboarding, and lower-route watchlists remain in the open queue.

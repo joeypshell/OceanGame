@@ -179,6 +179,8 @@ Solo first-run result: `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_
 
 Vertical-slice evidence bundle: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` records compact internal evidence for ready, active dive, pickup/scan, return/failure, upgrade view, blocked route, danger route, and optional clue route. It supports continued closeout while keeping the slice pass-with-watchlist until formal status is updated.
 
+Vertical-slice acceptance status: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` now distinguishes pass, pass-with-watchlist, deferred, and out-of-scope areas after the solo checklist and compact evidence bundle. The slice is structurally playable, but not fully polished while #310, #313, #314, #315, and #317 remain open watchlist reviews.
+
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
 Backlog replenishment after closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines the next ordered twenty-issue queue. The focus is solo first-run evidence, compact acceptance proof, final closeout status, source-art/readability rechecks, and Wreck Echo planning without implementing a new route yet.

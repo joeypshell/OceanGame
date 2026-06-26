@@ -9,6 +9,8 @@ Related docs:
 - `docs/current/ROADMAP.md`
 - `docs/current/GAMEPLAY.md`
 - `docs/current/SCREENSHOT_WORKFLOW.md`
+- `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
+- `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md`
 - `docs/planning/VERTICAL_SLICE_ART_KIT_SCREENSHOT_CHECKLIST_2026_06_26.md`
 - `docs/planning/VERTICAL_SLICE_ART_KIT_READINESS_REVIEW_2026_06_26.md`
 - `docs/planning/COMPACT_HUD_SKIN_PLAN_2026_06_26.md`
@@ -93,7 +95,22 @@ The vertical slice is playable when a tester can complete two short expeditions,
 
 ## Current Acceptance Status
 
-Updated after the #260-#279 evidence cleanup: the current slice is structurally playable and close to polished acceptance, but it remains in closeout/watchlist verification rather than fully accepted.
+Updated after the #300-#301 solo first-run and compact evidence passes: the current slice is accepted as structurally playable, but not yet fully polished. It remains pass-with-watchlist where normal-scale review or future visual changes could still reintroduce confusion.
+
+This is internal development evidence, not blind validation.
+
+| Area | Status | Evidence | Remaining Watchlist |
+| --- | --- | --- | --- |
+| Core loop | Pass | Clean-save two-expedition smoke, solo first-run result, compact evidence bundle | Continue normal play-feel checks as art and HUD change. |
+| Ready screen | Pass with watchlist | Solo first-run result and surface ready/result reviews | Surface art/panel changes still need recheck. |
+| Active dive | Pass with watchlist | Active HUD review, compact HUD placement, evidence bundle | Low/critical oxygen state review remains #313. |
+| Pickup/scan | Pass | Evidence bundle and scanner/resource tests | Signal Lens versus Echo Lens distinction remains #315. |
+| Return/failure | Pass with watchlist | Clean-save smoke, result memory review, solo first-run result | Durable progression/reset onboarding copy remains #317. |
+| Upgrade view | Pass with watchlist | Upgrade bay review, Up/Down affordance tune, evidence bundle | Normal-scale affordance review remains #314. |
+| Blocked route | Pass | Pressure wreck/cache reviews and evidence bundle | Lower-route pileup recheck remains #310. |
+| Danger route | Pass with watchlist | Gulper route danger review, Decoy Pulse smoke, evidence bundle | Recheck after lower-route art/HUD changes. |
+| Optional clue route | Pass with watchlist | Thermal Vent and Shell Reef reviews, evidence bundle | Keep condition visuals presentation-first. |
+| No locator/checklist drift | Pass | Echo Lens pulse recheck, no-locator tests/docs | Recheck route language in #305 and scanner distinction in #315. |
 
 Accepted or cleared:
 
@@ -108,11 +125,26 @@ Accepted or cleared:
 - Decoy Pulse result-memory and HUD smoke note,
 - Echo Lens cache pulse local/no-locator recheck,
 - result and upgrade text-length guard coverage.
+- solo first-run clean-save checklist result,
+- compact acceptance evidence bundle.
 
-Remaining before declaring the gate fully passed:
+Remaining before declaring the gate fully polished:
 
-- final vertical-slice acceptance closeout,
 - lower-route normal-scale screenshot recheck after the cleanup batch,
-- active prompt compactness review and guard coverage,
-- first-run surface and active-dive comprehension reviews,
+- low/critical oxygen review after prompt/title changes,
+- upgrade bay normal-scale affordance review after copy tune,
+- scanner feedback distinction review for `Signal Lens I` and `Echo Lens I`,
+- durable progression reset/onboarding copy review,
 - continued lower-route watchlist after any future visual change.
+
+Deferred:
+
+- future `Wreck Echo Descent` implementation,
+- larger biome set,
+- broad economy, audio, web export, base-management, and production-art polish.
+
+Out of scope for this gate:
+
+- minimap, route graph, exact scanner locator, field-guide UI, quest log, objective checklist,
+- weapons, predator harvesting, predator health, capture, combat rewards,
+- full procedural ocean, daily challenge calendar, inventory grid, or tech tree UI.
