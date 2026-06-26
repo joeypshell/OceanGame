@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=28 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -23,6 +23,7 @@
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/wreck_signal_cache_sprite_v1.svg" id="21_wreck_signal_cache_sprite"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/pressure_wreck_outer_scan_sprite_v1.svg" id="22_pressure_wreck_outer_scan_sprite"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/ui_scan_echo_pulse_v1.svg" id="23_scan_echo_pulse"]
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/landmark_shell_reef_shelf_scan_sprite_v1.svg" id="24_shell_reef_shelf_scan_sprite"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -985,6 +986,7 @@ gameplay_fact = "A safer midwater banking route before deeper pressure and preda
 [node name="SpriteAnchor" type="Node2D" parent="Discoveries/ShellReefShelf"]
 
 [node name="Sprite" type="Sprite2D" parent="Discoveries/ShellReefShelf/SpriteAnchor"]
+texture = ExtResource("24_shell_reef_shelf_scan_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="Discoveries/ShellReefShelf"]
 

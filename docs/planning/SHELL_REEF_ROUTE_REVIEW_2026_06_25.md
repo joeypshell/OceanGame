@@ -30,6 +30,7 @@ Assumed upgrade state: current prototype progression capabilities available for 
 ## Fail Or Risk Signals
 
 - In seed `32676`, the reef can read as decoration if the player misses or ignores the `Shell Reef Shelf` scan marker because the shell pickup is nearby but not on the reef.
+- Post-asset note: `Shell Reef Shelf` now has a first source/export scan-target sprite at `assets/exports/sprites/landmark_shell_reef_shelf_scan_sprite_v1.svg`. This should improve clue-target legibility without changing the route-review meaning, scan copy, collision, or shell candidate placement.
 - In seed `24757`, the deep route asks the player to use the reef as a return landmark while the predator warning lane is also competing for attention. This justifies a narrow return-readability pass rather than new mechanics.
 - In seed `40595`, deep shell/glow placements may dominate the decision so strongly that the reef becomes a pass-through landmark unless the scan clue and return lane remain clear.
 - No reviewed seed showed shell placement making upgrade costs trivial, but two reef-hosted shell seeds in the first five means future economy review should watch whether `Shell Fragments` become too reliable.
