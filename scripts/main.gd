@@ -225,12 +225,13 @@ func _try_extract() -> void:
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\n%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\n%s\n%s\n%s\n%s\nBest depth: %dm." % [
 		extracted_count,
 		_format_resource_counts(extracted_cargo),
 		_format_route_choice_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
+		_format_next_expedition_prompt(),
 		roundi(progression_state.best_depth_reached)
 	]
 	upgrade_menu_feedback = "Deposited %d resource(s) into the bank.%s\n%s" % [
@@ -247,9 +248,10 @@ func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s\n%s\n%s\nBest depth: %dm." % [
 		_format_route_choice_callout(),
 		_format_scan_progress_callout("Scans kept"),
+		_format_next_expedition_prompt(),
 		roundi(progression_state.best_depth_reached),
 	]
 	upgrade_menu_feedback = ""
@@ -274,7 +276,7 @@ func _restart_dive() -> void:
 	upgrade_menu_feedback = ""
 	surface_tab_index = SURFACE_TAB_RESULT
 	_reset_resource_pickups()
-	status_label.text = "Dive ready"
+	status_label.text = _format_expedition_ready_status()
 	_update_hud()
 
 func _reset_local_prototype_save() -> void:
@@ -924,13 +926,13 @@ func _update_hud() -> void:
 		prompt_label.text = "Press E or Enter to begin the dive"
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		if _all_upgrades_owned():
-			prompt_label.text = "Extraction complete - press R to restart | Left/Right surface view"
+			prompt_label.text = "Extraction complete - press R for next expedition | Left/Right surface view"
 		elif surface_tab_index == SURFACE_TAB_UPGRADES:
-			prompt_label.text = "Upgrade bay: Up/Down select, E purchase, R restart | Left/Right surface view"
+			prompt_label.text = "Upgrade bay: Up/Down select, E purchase, R next expedition | Left/Right surface view"
 		else:
-			prompt_label.text = "Extraction complete - press E for upgrades, R restart | Left/Right surface view"
+			prompt_label.text = "Extraction complete - press E for upgrades, R next expedition | Left/Right surface view"
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
-		prompt_label.text = "Expedition failed - press R to restart"
+		prompt_label.text = "Expedition failed - press R for next expedition"
 	elif player_in_base:
 		if dive_session.has_left_base:
 			prompt_label.text = "Safe base: press E or Enter to extract"
@@ -960,7 +962,10 @@ func _update_run_panel() -> void:
 		run_panel.visible = true
 		if surface_tab_index == SURFACE_TAB_UPGRADES:
 			run_title_label.text = "Surface Upgrade Bay"
-			run_summary_label.text = _format_run_summary("Banked:%s\nSelect an upgrade below, then press E or Enter to purchase.\nPress R to start the next expedition." % _format_banked_resources(), "extracted")
+			run_summary_label.text = _format_run_summary("Banked:%s\nSelect an upgrade below, then press E or Enter to purchase.\n%s" % [
+				_format_banked_resources(),
+				_format_next_expedition_prompt(),
+			], "extracted")
 		elif surface_tab_index == SURFACE_TAB_LOG:
 			run_title_label.text = "Recent Expeditions"
 			run_summary_label.text = _format_recent_expedition_log()
@@ -1326,6 +1331,12 @@ func _format_run_summary(player_summary: String, result_name: String) -> String:
 		return player_summary
 
 	return "%s\n%s" % [player_summary, _format_run_telemetry(result_name)]
+
+func _format_next_expedition_prompt() -> String:
+	return "Next: press R to prepare Expedition %d; the ocean will shift again." % (progression_state.current_run_number + 1)
+
+func _format_expedition_ready_status() -> String:
+	return "Expedition %d ready: the ocean changed overnight." % progression_state.current_run_number
 
 func _format_condition_briefing() -> String:
 	if current_expedition_condition.is_empty():

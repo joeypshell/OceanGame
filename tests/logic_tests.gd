@@ -59,6 +59,7 @@ func _initialize() -> void:
 	_run("decoy pulse effect isolation", _test_decoy_pulse_effect_isolation)
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
+	_run("next expedition framing", _test_next_expedition_framing)
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -607,6 +608,21 @@ func _test_result_progress_callouts() -> void:
 
 	main.run_completed_scans.clear()
 	_expect(main._format_scan_progress_callout("Discoveries recorded") == "Discoveries recorded: none this dive.", "result progress should stay explicit when no scans were recorded")
+	main.free()
+
+func _test_next_expedition_framing() -> void:
+	var main := MainScript.new()
+	main.progression_state.current_run_number = 3
+
+	var prompt := main._format_next_expedition_prompt()
+	_expect(prompt.contains("Expedition 4"), "result prompt should point to the next expedition number")
+	_expect(prompt.contains("ocean will shift"), "result prompt should frame restart as a changed ocean")
+	_expect(not prompt.to_lower().contains("restart"), "result prompt should avoid raw restart language")
+
+	main.progression_state.current_run_number = 4
+	var ready_status := main._format_expedition_ready_status()
+	_expect(ready_status.contains("Expedition 4 ready"), "ready status should name the prepared expedition")
+	_expect(ready_status.contains("ocean changed"), "ready status should describe the changed ocean")
 	main.free()
 
 func _test_route_choice_result_callout() -> void:
