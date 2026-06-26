@@ -1,12 +1,115 @@
 # Visual Language And Readability Assets
 
-Status: active planning seed for a small readability-asset batch.
+Status: visual language style guide v1 for the visual clarity foundation batch.
 
 ## Purpose
 
 The prototype has reached the point where placeholder shapes are no longer only rough; in places like the pressure-lock route, they can make the intended action harder to understand. The next visual work should create gameplay-clarity assets before final art production.
 
 This is not a polish milestone. It is a readability milestone.
+
+The current north star is: every morning the alien ocean changes. Dive, scan, and survive long enough to bring back the knowledge that lets you go deeper tomorrow.
+
+This guide should make that fantasy visible. It is not enough for individual shapes to be pretty or bright; the player must be able to recognize stable places, notice today's changed opportunity, understand forbidden routes, read creature danger, and sense mystery below the current safe depth.
+
+## Style Guide V1 Decisions
+
+Visual clarity work should support five repeated meanings:
+
+1. Stable geography: the player recognizes where they are.
+2. Daily change: the player notices what is different this expedition.
+3. Forbidden promise: the player sees something desirable they cannot reach yet.
+4. Learnable danger: creatures and hazards signal rules before punishment.
+5. Deeper mystery: strange signals and landmarks imply a coherent hidden world.
+
+Every asset pass should answer:
+
+- What should the player do or remember because of this visual?
+- Is this stable world identity, current-day variation, durable progression, or temporary tactical feedback?
+- Does this cue compete with safe return, the player, or immediate danger?
+- Can the same meaning be communicated without adding more world text?
+
+## Palette Discipline
+
+Avoid solving readability by making every important thing bright. The palette must stay multi-family and role-based:
+
+- safe return: cyan/seafoam, calm, stable, vertically oriented,
+- resources/rewards: yellow-green plus material accents, compact and tempting,
+- scan/knowledge: pale yellow or soft cyan, target-hugging and analytical,
+- currents/route hints: low-opacity green/cyan, directional but soft,
+- locks/progression gates: firmer blue/cyan with bars, seams, and blocked silhouettes,
+- danger/predators: red/orange, angular, interruptive,
+- landmarks/regions: pocket-specific accents that stay subordinate to player, return, danger, and locks,
+- mystery/deep signals: restrained violet, pale blue, or cold white accents used sparingly for strange unreachable or not-yet-understood discoveries.
+
+Do not create one-note screens dominated by only cyan/blue, green/yellow, or red/orange. A region may have a dominant accent, but interaction meanings must remain separable from that accent.
+
+## Region Memory Rules
+
+Depth bands organize the ocean, but regions make the place memorable.
+
+Each region-like pocket should eventually have:
+
+- one recognizable silhouette family,
+- one accent material or color,
+- one stable landmark shape,
+- one daily-change surface that can vary without erasing identity,
+- one likely mystery or progression promise.
+
+Current region anchors:
+
+- Surface Base / Surface Reef: calm safety, extraction, morning/evening rhythm.
+- Shell Reef / Wreck Shelf edge: pale shell geometry, safer midwater banking, bank-or-push decision.
+- Thermal Vent Field: warm plumes, cracked shelf, optional glow temptation, Thermal Bloom variation.
+- Pressure Lock / Wreck Shelf: firm blue blocked route, wreck silhouette, future scanner promise.
+- Gulper Route / Deep Trench edge: red warning lane, predator timing, contested deep reward.
+
+If a player could not name or recognize the pocket after two dives, the visual language is not strong enough yet.
+
+## Daily-Change Rules
+
+Daily or expedition-condition variation should layer onto stable geography rather than repainting the whole place.
+
+- Use condition effects as accents, not full scene replacements.
+- Tie variation to a readable source, such as vent bloom, current shift, predator migration, rare signal, or visibility change.
+- Keep stable landmarks visible underneath variation.
+- Prefer small changes that affect planning: brighter vent opportunity, stronger safe-return calm, altered reward lure, migration warning, or exposed signal.
+- Do not make daily change look like random noise or a new biome unless a future issue explicitly plans that region.
+
+`Thermal Bloom` is the current example: it may warm Thermal Vent visuals and prefer authored vent-pocket `Glow Plankton`, but it should not hide safe return or imply a guaranteed safe route.
+
+## Forbidden-Route And Mystery Rules
+
+The game needs "I saw something I cannot reach yet" moments.
+
+Forbidden-route visuals should:
+
+- be visible before unlock,
+- be clearly blocked,
+- imply reward or knowledge beyond the blocker,
+- name only the compact missing requirement if world text is necessary,
+- become visibly passable after the upgrade.
+
+Mystery visuals should:
+
+- imply that scans are partial interpretations, not exact checklist coordinates,
+- use restrained signal language rather than bright objective arrows,
+- avoid competing with immediate pickups or danger,
+- point toward future curiosity in HUD/status text rather than through large world labels.
+
+The pressure-locked wreck is the current model: the player should see the wreck/cache promise, understand `Pressure Seal I` is needed, and remember to return.
+
+## Creature Behavior Rules
+
+Creature and predator visuals should make behavior learnable.
+
+- Danger markers should appear before contact, not only after damage.
+- Creature silhouettes should be distinct from resources and decorative background.
+- Warning shapes should imply behavior: patrol, territory, sound sensitivity, charge lane, lure, mimicry, or migration.
+- Scan markers should identify a creature as knowledge-bearing without making it look like cargo.
+- No creature visual should imply weapons, harvesting, or combat unless a future issue changes the genre direction.
+
+The `Gulper Eel` should evolve toward a memorable behavior read: dangerous route controller first, research subject second, never generic enemy sprite.
 
 ## Architecture Pattern To Follow
 
@@ -97,6 +200,7 @@ Use these rules for prototype readability assets. They are not final art directi
 | Locked gate | bright cyan/blue shimmer with firm bars | `PressureShimmer`, `PressureGateTop/Bottom/Bars` | blocked progression route | optional hints or decorative background |
 | Predator danger | red/orange with harsh accents | `PredatorWarning`, `GulperEel/PatrolHint` | avoid, time, observe, prepare | resource/reward glow |
 | Biome landmark | pocket-specific accent in depth band | `ShellReefPocket`, `ThermalVent`, `MidwaterShelf` | place identity and route choice | hiding pickups, labels, or return lanes |
+| Mystery/deep signal | restrained violet, cold white, or pale blue | `WreckSignalHint`, future abyssal cues | strange not-yet-understood findings, future route promises | immediate pickups, hard objective arrows, safe return |
 
 Keep color categories distinct. Do not solve readability by making every important thing bright cyan, bright green, or bright red.
 
