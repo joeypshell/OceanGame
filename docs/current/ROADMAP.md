@@ -56,6 +56,7 @@ Detailed design rules live in:
 - `docs/planning/RESULT_MEMORY_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md`
+- `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -152,6 +153,8 @@ Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICA
 
 Clean-save smoke pass: `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md` records the two-expedition loop as structurally acceptable from a reset state. The slice is still not fully polished accepted until the queued Decoy Pulse, lower-route, surface moonpool/waterline, and upgrade-tab visual reviews land.
 
+Decoy Pulse owned-state review: `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md` keeps `Decoy Pulse I` acceptable as one-use non-lethal route-timing counterplay. The main watchlist is active prompt length when `Burst Thruster` and Decoy text appear together.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable, not yet polished accepted.
@@ -173,7 +176,7 @@ Pass with polish:
 Remaining before calling the vertical-slice gate fully accepted:
 
 - convert smoke-pass watchlists into normal-scale acceptance evidence after the surface and lower-route follow-ups,
-- recheck `Decoy Pulse I` HUD/status with the upgrade owned,
+- recheck `Decoy Pulse I` prompt length in normal-scale HUD evidence,
 - keep lower-route screenshots on the watchlist after any visual change.
 
 ## Immediate Issue Order
