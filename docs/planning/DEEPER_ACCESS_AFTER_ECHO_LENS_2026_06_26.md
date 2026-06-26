@@ -121,6 +121,8 @@ Scene/data shape when implemented:
 - one scannable route clue if needed,
 - no persistent marker, no minimap node, no exact locator, and no broad procedural region generation.
 
+Detailed future data-shape planning lives in `docs/planning/WRECK_ECHO_DESCENT_ROUTE_POCKET_DATA_SHAPE_2026_06_26.md`. It documents ownership, likely future node shape, spawn-point needs, scan clue requirements, and reward shape without wiring the route.
+
 Prototype visual study: `assets/source/sprites/study_pressure_dark_threshold_v1.svg` and `assets/exports/sprites/study_pressure_dark_threshold_v1.svg` explore the threshold mood for this pocket, with provenance in `assets/licenses/study_pressure_dark_threshold_v1.txt`. The asset is not scene-wired and does not add route behavior.
 
 ## Copy Rules
