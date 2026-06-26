@@ -100,6 +100,16 @@ Resources:
 - `oceangame://shallow-midwater-background-art-pass-constraints-2026-06-26`
 - `oceangame://shallow-midwater-background-study-wiring-2026-06-26`
 - `oceangame://shallow-midwater-background-readability-review-2026-06-26`
+- `oceangame://next-source-art-after-background-review-2026-06-26`
+- `oceangame://pressure-wreck-cache-source-art-shell-constraints-v2-2026-06-26`
+- `oceangame://lower-route-recheck-after-background-study-2026-06-26`
+- `oceangame://source-art-provenance-checklist-2026-06-26`
+- `oceangame://compact-hud-final-polish-plan-2026-06-26`
+- `oceangame://active-hud-low-oxygen-review-after-prompt-tune-2026-06-26`
+- `oceangame://upgrade-bay-normal-scale-affordance-review-after-copy-tune-2026-06-26`
+- `oceangame://scanner-feedback-signal-vs-echo-review-2026-06-26`
+- `oceangame://next-monster-research-readability-milestone-2026-06-26`
+- `oceangame://durable-progression-reset-onboarding-review-2026-06-26`
 - `oceangame://upgrade-bay-selection-affordance-review-2026-06-26`
 - `oceangame://wreck-shelf-echo-lens-route-review-2026-06-26`
 - `oceangame://vertical-slice-art-kit-screenshot-checklist-2026-06-26`

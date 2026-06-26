@@ -240,6 +240,8 @@ Next monster research readability milestone: `docs/planning/NEXT_MONSTER_RESEARC
 
 Durable progression reset/onboarding review: `docs/planning/DURABLE_PROGRESSION_RESET_ONBOARDING_REVIEW_2026_06_26.md` confirms F9 reset copy is debug-gated, clean first-run review uses F9 before hiding debug telemetry, relaunch keeps durable progression, and active expedition state does not persist. No save or runtime copy change is needed.
 
+MCP context update after next planning batch: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the high-value source-art, HUD, scanner, monster-research, and progression/reset planning resources from the post-closeout batch. This is tooling/docs only and does not change gameplay behavior.
+
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 
 Condition visual normal-scale review: `docs/planning/CONDITION_VISUAL_NORMAL_SCALE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, Rare Signal, and Wreck Shift as pass-with-watchlist after the recent HUD/surface changes. Wreck Shift remains flavor-only, and none of the condition cues should imply hidden mechanics.
