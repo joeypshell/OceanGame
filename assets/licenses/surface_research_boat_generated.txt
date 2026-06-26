@@ -1,0 +1,15 @@
+Asset paths:
+- assets/sprites/base/research_boat.png
+- assets/sprites/base/research_boat_chromakey.png
+- assets/sprites/base/research_boat_clean.png
+- assets/sprites/base/research_boat_clean_chromakey.png
+- assets/sprites/base/research_boat_surface.png
+Source path: none; generated bitmap sprite variants live directly in assets/sprites/base/
+Creator or tool: OpenAI image generation via Codex, prepared for OceanGame
+License or usage basis: Project-owned prototype generated asset
+Source URL: none
+Date added: 2026-06-26
+Prompt summary, if generated: side-view research boat/lab surface base sprite inspired by the uploaded polished ocean exploration reference, with a readable moonpool/lab silhouette
+Edited after generation: chromakey and clean continuous-hull variants prepared for transparent-background sprite use
+Intended use: prototype surface base / research boat sprite
+Restrictions: Keep provenance with the asset if reused, edited, or replaced. Review before treating as final production art.

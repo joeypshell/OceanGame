@@ -1,0 +1,12 @@
+Asset paths:
+- assets/sprites/player/research_sub.png
+- assets/sprites/player/research_sub_chromakey.png
+Source path: none; generated bitmap sprite variants live directly in assets/sprites/player/
+Creator or tool: OpenAI image generation via Codex, prepared for OceanGame
+License or usage basis: Project-owned prototype generated asset
+Source URL: none
+Date added: 2026-06-26
+Prompt summary, if generated: compact yellow research submarine sprite for the player vehicle, matching the cozy sci-fi ocean exploration direction
+Edited after generation: chromakey/cleanup variant prepared for transparent-background sprite use
+Intended use: prototype player submarine sprite
+Restrictions: Keep provenance with the asset if reused, edited, or replaced. Review before treating as final production art.
