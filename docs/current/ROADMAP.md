@@ -172,6 +172,8 @@ Playable slice smoke log: `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LO
 
 Solo first-run readability: `docs/planning/SOLO_FIRST_RUN_READABILITY_CHECKLIST_2026_06_26.md` replaces unavailable blind-validation helpers with a repeatable internal checklist. It covers first ready screen, first dive, first pickup/scan, first return/failure, and first upgrade view, and must not be described as blind validation.
 
+MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
+
 Next source-art priority: `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_2026_06_26.md` selects the surface base moonpool/waterline integration as the next replacement target, with pressure wreck/cache environment treatment as backup. The priority is readability impact, not final art lock or a large visual batch.
 
 Next source-art after moonpool: `docs/planning/NEXT_SOURCE_ART_AFTER_MOONPOOL_DECISION_2026_06_26.md` selects a constrained shallow/midwater background study as the next source-art target. It should improve first-run depth/mood readability while staying behind gameplay cues and avoiding broad art-overhaul scope.
