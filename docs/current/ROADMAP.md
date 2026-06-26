@@ -189,6 +189,8 @@ Post-prompt copy review: `docs/planning/RESULT_UPGRADE_ACTIVE_COPY_REVIEW_AFTER_
 
 Vertical-slice evidence refresh after screenshot/prompt hardening: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` is refreshed through #393. Current Playwright evidence is state-asserted, includes metadata sidecars, covers low/critical oxygen and no-debug Wreck Echo result readback, and keeps the slice at `pass with watchlist` rather than polished acceptance.
 
+Lower-route recheck after evidence hardening: `docs/planning/LOWER_ROUTE_RECHECK_AFTER_EVIDENCE_HARDENING_2026_06_26.md` keeps the lower route acceptable for the current playable slice but not polished. Oxygen/base safety, predator danger, and pressure/cache opportunity are readable; the remaining risk is bright reward/cache/route cue stacking in the same lower-right visual band.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
