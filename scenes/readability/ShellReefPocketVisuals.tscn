@@ -1,10 +1,14 @@
-[gd_scene format=3 uid="uid://shell_reef_pocket_visuals"]
+[gd_scene load_steps=2 format=3 uid="uid://shell_reef_pocket_visuals"]
+
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/landmark_shell_reef_pocket_sprite_v1.svg" id="1_shell_reef_pocket_sprite"]
 
 [node name="ShellReefPocketVisuals" type="Node2D"]
 
 [node name="SpriteAnchor" type="Node2D" parent="."]
 
 [node name="Sprite" type="Sprite2D" parent="SpriteAnchor"]
+position = Vector2(512, 1100)
+texture = ExtResource("1_shell_reef_pocket_sprite")
 
 [node name="FallbackGeometry" type="Node2D" parent="."]
 

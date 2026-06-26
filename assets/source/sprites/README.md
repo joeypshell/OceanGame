@@ -8,6 +8,7 @@ Good first candidates:
 - `resource_kelp_fiber_sprite_v1`
 - `resource_shell_fragments_sprite_v1`
 - `creature_gulper_silhouette_v1`
+- `landmark_shell_reef_pocket_sprite_v1`
 - `pressure_wreck_outer_scan_sprite_v1`
 - `study_pressure_wreck_cache_signal_v1`
 - `study_pressure_dark_threshold_v1`
