@@ -22,6 +22,8 @@ Build the first expanded dive-region prototype:
 - safe-return readability from the new branch,
 - cheap test tiers so validation does not waste time or tokens.
 
+First region layout: `docs/planning/FIRST_EXPANDED_DIVE_REGION_LAYOUT_2026_06_26.md` selects `East Shelf Spur` as the first implementation target.
+
 ## Workflow Reset
 
 Default verification should be cheap:

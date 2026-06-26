@@ -6,6 +6,8 @@ Current direction: build a 2D alien-ocean expedition game where every morning th
 
 Active priority reset: `docs/planning/PROJECT_HEALTH_PIVOT_EXPANDED_DIVE_REGION_2026_06_26.md` supersedes the previous polish-heavy queue. The current slice is good enough to move forward as a foundation; the next work should make the playable ocean wider and more game-like through a first expanded dive region, side route, cave/wreck pocket, stable landmark, variable daily opportunity, upgrade-locked promise, safe-return readability, and cheaper tiered testing.
 
+First expanded region layout: `docs/planning/FIRST_EXPANDED_DIVE_REGION_LAYOUT_2026_06_26.md` defines `East Shelf Spur` as the first wider side-route prototype. It should add a right-side midwater branch, `East Shelf Arch` landmark, cave/wreck-pocket entrance, one seeded daily opportunity, one upgrade-locked promise, and safe-return cues while preserving the current base column and existing loop.
+
 Detailed design rules live in:
 
 - `docs/planning/CORE_LOOP_RULES.md`
