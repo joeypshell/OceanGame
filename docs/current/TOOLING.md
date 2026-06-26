@@ -180,6 +180,7 @@ Resources:
 - `oceangame://backlog-replenishment-after-vertical-slice-closeout-2026-06-26`
 - `oceangame://backlog-replenishment-wreck-echo-prep-review-2026-06-26`
 - `oceangame://backlog-replenishment-after-platform-input-guardrail-2026-06-26`
+- `oceangame://backlog-replenishment-after-wreck-echo-platform-input-2026-06-26`
 - `oceangame://playwright-screenshot-workflow-gap-review-2026-06-26`
 - `oceangame://backlog-replenishment-after-visual-clarity-2026-06-26`
 - `oceangame://thermal-vent-route-review-2026-06-25`

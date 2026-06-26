@@ -147,6 +147,7 @@ Detailed design rules live in:
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLATFORM_INPUT_GUARDRAIL_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_WRECK_ECHO_PLATFORM_INPUT_2026_06_26.md`
 
 Implemented architecture lives in `docs/current/ARCHITECTURE.md`.
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
@@ -179,6 +180,8 @@ Playable-loop polish update: `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_
 Vertical-slice polish queue: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLAYABLE_LOOP_POLISH_2026_06_26.md` creates issues #220-#239. The focus is Wreck Echo visual follow-through, pressure wreck/cache sprite decisions, local scan/echo feedback, Shell Reef and HUD polish, condition readability review, and first vertical-slice acceptance planning.
 
 Wreck Echo prep backlog review: `docs/planning/BACKLOG_REPLENISHMENT_WRECK_ECHO_PREP_REVIEW_2026_06_26.md` reviewed the open Wreck Echo prep queue after recent visual and tooling fixes. No new issues were created because 20 concrete issues remain open and the queue is already focused on the narrow Wreck Echo implementation path plus current-slice polish.
+
+Post-Wreck-Echo/platform-input backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_WRECK_ECHO_PLATFORM_INPUT_2026_06_26.md` creates issues #384-#403 after Wreck Echo implementation, source-art review, platform/input planning, and screenshot workflow review. The queue prioritizes Playwright evidence hardening, prompt abstraction, player-facing copy review, one more narrow readability/source-art target, no-locator Wreck Echo guardrails, and another MCP/backlog refresh.
 
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
