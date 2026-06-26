@@ -241,6 +241,8 @@ Cohesive vertical-slice art-kit plan: `docs/planning/COHESIVE_VERTICAL_SLICE_ART
 
 Playable vertical-slice acceptance refresh: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_REFRESH_AFTER_MOBILE_MONSTER_ART_2026_06_26.md` keeps the slice pass-with-watchlist after compact upgrade, mobile-like, Monster Research II, lower-route pileup, and art-kit planning work. The slice is structurally playable, but polished acceptance still depends on lower-route cue tuning and future visual-regression checks.
 
+Backlog replenishment after mobile/monster/art planning: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_MOBILE_MONSTER_ART_PLANNING_2026_06_26.md` creates the next ordered 20-issue batch. The queue starts with lower-route cue-priority tuning, then compact HUD skin alignment, surface base/waterline polish, landmark fallback balance, player/sub and Gulper state cohesion, evidence refresh, MCP refresh, and backlog replenishment.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
