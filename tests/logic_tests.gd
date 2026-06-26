@@ -1096,17 +1096,17 @@ func _test_upgrade_bay_readability_states() -> void:
 
 	state = main._format_upgrade_state(PressureSealUpgrade)
 	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label scan-locked upgrades")
-	_expect(state.contains("Needs scan: Thermal Vent"), "upgrade bay should name missing discoveries")
+	_expect(state.contains("Scan: Thermal Vent"), "upgrade bay should name missing discoveries")
 
 	state = main._format_upgrade_state(EchoLensUpgrade)
 	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label Echo Lens I scan-locked before Wreck Signal Cache")
-	_expect(state.contains("Role: broad wreck echoes, not material pings."), "Echo Lens I state should distinguish it from Signal Lens I without a tutorial wall")
+	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I state should distinguish it from Signal Lens I without locator language")
 
 	main.progression_state.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks scanner tuning.")
 	state = main._format_upgrade_state(EchoLensUpgrade)
 	_expect(state.begins_with("State: Locked by upgrade"), "upgrade bay should label Echo Lens I as upgrade-locked before Signal Lens I")
-	_expect(state.contains("Needs upgrade: Signal Lens I"), "upgrade bay should name Signal Lens I as the Echo Lens prerequisite")
-	_expect(state.contains("Role: broad wreck echoes, not material pings."), "Echo Lens I locked-upgrade state should keep its compact role hint")
+	_expect(state.contains("Install: Signal Lens I"), "upgrade bay should name Signal Lens I as the Echo Lens prerequisite")
+	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I locked-upgrade state should keep its compact role hint")
 
 	main.progression_state.purchased_upgrades[SignalLensUpgrade.id] = true
 	main.progression_state.banked_resources = {
@@ -1117,7 +1117,7 @@ func _test_upgrade_bay_readability_states() -> void:
 	state = main._format_upgrade_state(EchoLensUpgrade)
 	_expect(state.begins_with("State: Missing resources"), "upgrade bay should label Echo Lens I missing resources after prerequisites are met")
 	_expect(state.contains("Needs: Glow Plankton x1"), "Echo Lens I missing-resource state should show only remaining cost")
-	_expect(state.contains("Role: broad wreck echoes, not material pings."), "Echo Lens I missing-resource state should keep its compact role hint")
+	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I missing-resource state should keep its compact role hint")
 
 	main.progression_state.banked_resources = {
 		"glow_plankton": 3,
@@ -1126,17 +1126,17 @@ func _test_upgrade_bay_readability_states() -> void:
 	}
 	state = main._format_upgrade_state(EchoLensUpgrade)
 	_expect(state.begins_with("State: Available now"), "upgrade bay should label Echo Lens I available after prerequisites and resources are ready")
-	_expect(state.contains("Role: broad wreck echoes, not material pings."), "Echo Lens I available state should keep its compact role hint")
+	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I available state should keep its compact role hint")
 
 	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
 	state = main._format_upgrade_state(EchoLensUpgrade)
 	_expect(state.begins_with("State: Owned"), "upgrade bay should label Echo Lens I owned after purchase")
-	_expect(state.contains("Role: broad wreck echoes, not material pings."), "Echo Lens I owned state should keep its compact role hint")
+	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I owned state should keep its compact role hint")
 
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
 	state = main._format_upgrade_state(DecoyPulseUpgrade)
 	_expect(state.begins_with("State: Locked by upgrade"), "upgrade bay should label upgrade-locked upgrades")
-	_expect(state.contains("Needs upgrade: Predator Warning I"), "upgrade bay should name missing upgrade prerequisites")
+	_expect(state.contains("Install: Predator Warning I"), "upgrade bay should name missing upgrade prerequisites")
 
 	main.progression_state.purchased_upgrades[PredatorWarningUpgrade.id] = true
 	main.progression_state.banked_resources = {
@@ -1150,6 +1150,10 @@ func _test_upgrade_bay_readability_states() -> void:
 	main.progression_state.purchase_upgrade(DecoyPulseUpgrade.id, DecoyPulseUpgrade.resource_cost)
 	state = main._format_upgrade_state(DecoyPulseUpgrade)
 	_expect(state.begins_with("State: Owned"), "upgrade bay should label Decoy Pulse I owned after purchase")
+	_expect(main._format_upgrade_effect_summary(EchoLensUpgrade).contains("not a locator"), "Echo Lens I compact effect summary should preserve no-locator wording")
+	var feedback := main._format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.")
+	_expect(feedback == "Banked 3 resource(s).\nNo upgrade ready yet.", "upgrade panel feedback should compact deposit copy")
+	_expect_lines_within(feedback, 72, "compacted upgrade feedback")
 	main.free()
 
 func _test_result_and_upgrade_copy_length_guards() -> void:
@@ -1232,6 +1236,11 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 	_expect(run_summary_label.clip_text, "result summary label should clip instead of drawing outside the panel")
 	main_scene.call("_apply_run_panel_layout", true)
 	_expect(run_panel.offset_left == 420.0 and run_panel.offset_bottom == 362.0, "upgrade surface tab should keep compact run panel above the upgrade details")
+	var upgrade_panel: Panel = main_scene.get_node("HUD/UpgradePanel")
+	var upgrade_feedback: Label = main_scene.get_node("HUD/UpgradePanel/UpgradeMenuFeedback")
+	_expect(upgrade_panel.offset_bottom <= 704.0, "upgrade details panel should leave a visible bottom margin at 1280x720")
+	_expect(upgrade_feedback.offset_bottom <= upgrade_panel.offset_bottom - upgrade_panel.offset_top - 14.0, "upgrade feedback label should stay inside the upgrade panel")
+	_expect(upgrade_feedback.clip_text, "upgrade feedback should clip instead of drawing outside the panel")
 	main_scene.queue_free()
 	main.free()
 

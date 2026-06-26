@@ -1419,7 +1419,7 @@ visible = false
 offset_left = 420.0
 offset_top = 376.0
 offset_right = 872.0
-offset_bottom = 728.0
+offset_bottom = 704.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_surface_panel")
 
 [node name="UpgradeMenuTitle" type="Label" parent="HUD/UpgradePanel"]
@@ -1449,14 +1449,15 @@ autowrap_mode = 2
 offset_left = 16.0
 offset_top = 176.0
 offset_right = 442.0
-offset_bottom = 268.0
+offset_bottom = 260.0
 text = "Unavailable: collect and bank more resources."
 autowrap_mode = 2
 
 [node name="UpgradeMenuFeedback" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
-offset_top = 276.0
+offset_top = 266.0
 offset_right = 442.0
-offset_bottom = 336.0
+offset_bottom = 314.0
 text = "Deposit cargo to unlock upgrades."
 autowrap_mode = 2
+clip_text = true

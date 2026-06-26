@@ -1326,7 +1326,7 @@ func _update_upgrade_menu() -> void:
 	upgrade_menu_cost_label.text = "Cost: %s" % _format_upgrade_cost(upgrade.resource_cost)
 	upgrade_menu_state_label.text = _format_upgrade_state(upgrade)
 
-	upgrade_menu_feedback_label.text = upgrade_menu_feedback
+	upgrade_menu_feedback_label.text = _format_upgrade_panel_feedback(upgrade_menu_feedback)
 
 func _format_upgrade_menu_title(selected_position: int, total_count: int) -> String:
 	return "Upgrade Bay (%d/%d) - %s select" % [
@@ -1536,44 +1536,71 @@ func _format_missing_resources(cost: Dictionary) -> String:
 	return " none" if parts.is_empty() else "\n" + "\n".join(parts)
 
 func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
-	var role_hint := _format_upgrade_role_hint(upgrade)
+	var effect_summary := _format_upgrade_effect_summary(upgrade)
 	if progression_state.has_upgrade(upgrade.id):
-		return "State: Owned\n%s%s" % [upgrade.owned_text, role_hint]
+		return "State: Owned\n%s" % effect_summary
 
 	var missing_discovery := _upgrade_missing_discovery(upgrade)
 	if missing_discovery != "":
-		return "State: Locked by scan\nNeeds scan: %s\nMissing resources: %s%s" % [
+		return "State: Locked by scan\nScan: %s\n%s" % [
 			_format_discovery_name(missing_discovery),
-			_format_missing_resources_inline(upgrade.resource_cost),
-			role_hint
+			effect_summary,
 		]
 
 	var missing_upgrade := _upgrade_missing_upgrade(upgrade)
 	if missing_upgrade != "":
-		return "State: Locked by upgrade\nNeeds upgrade: %s\nMissing resources: %s%s" % [
+		return "State: Locked by upgrade\nInstall: %s\n%s" % [
 			_format_upgrade_display_name(missing_upgrade),
-			_format_missing_resources_inline(upgrade.resource_cost),
-			role_hint
+			effect_summary,
 		]
 
 	if progression_state.can_afford(upgrade.resource_cost):
-		return "State: Available now\nAction: press %s to buy\nEffect: %s%s" % [
+		return "State: Available now\n%s: buy\n%s" % [
 			_action_label("interact").replace("/", " or "),
-			upgrade.owned_text,
-			role_hint
+			effect_summary,
 		]
 
-	return "State: Missing resources\nNeeds: %s\nEffect: %s%s" % [
+	return "State: Missing resources\nNeeds: %s\n%s" % [
 		_format_missing_resources_inline(upgrade.resource_cost),
-		upgrade.owned_text,
-		role_hint
+		effect_summary,
 	]
 
-func _format_upgrade_role_hint(upgrade: UpgradeDefinition) -> String:
-	if upgrade.id == ECHO_LENS_UPGRADE_ID:
-		return "\nRole: broad wreck echoes, not material pings."
+func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
+	match upgrade.id:
+		OXYGEN_TANK_UPGRADE_ID:
+			return "Effect: +10 max O2."
+		PRESSURE_SEAL_UPGRADE_ID:
+			return "Effect: opens first pressure route."
+		SIGNAL_LENS_UPGRADE_ID:
+			return "Effect: material scan pulse."
+		ECHO_LENS_UPGRADE_ID:
+			return "Role: broad wreck echoes, not a locator."
+		CARGO_RACK_UPGRADE_ID:
+			return "Effect: +1 cargo slot."
+		PREDATOR_WARNING_UPGRADE_ID:
+			return "Effect: earlier predator warning."
+		DECOY_PULSE_UPGRADE_ID:
+			return "Effect: one decoy window per expedition."
 
-	return ""
+	return "Effect: %s" % upgrade.owned_text
+
+func _format_upgrade_panel_feedback(feedback: String) -> String:
+	if feedback.is_empty():
+		return ""
+
+	var compact := feedback
+	compact = compact.replace("Deposited", "Banked")
+	compact = compact.replace("resource(s) into the bank.", "resource(s).")
+	compact = compact.replace("No upgrade ready yet; check missing requirements below.", "No upgrade ready yet.")
+	compact = compact.replace("Ready upgrade:", "Ready:")
+	compact = compact.replace("Purchased ", "Bought ")
+	compact = compact.replace("\nBanked:", " | Banked:")
+
+	var max_chars := 112
+	if compact.length() > max_chars:
+		return "%s..." % compact.substr(0, max_chars - 3)
+
+	return compact
 
 func _format_ready_upgrade_callout() -> String:
 	var ready: Array[String] = []

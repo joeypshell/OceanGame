@@ -11,7 +11,7 @@ export default defineConfig({
     timeout: 15_000,
   },
   fullyParallel: false,
-  reporter: [["list"], ["html", { open: "never", outputFolder: "../../playwright-report-mobile-like" }]],
+  reporter: [["list"], ["html", { open: "never", outputFolder: "../../test-results/playwright-report-mobile-like" }]],
   outputDir: "../../test-results/playwright-mobile-like",
   use: {
     baseURL: `http://${host}:${port}`,

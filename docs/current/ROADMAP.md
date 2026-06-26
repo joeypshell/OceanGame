@@ -211,6 +211,8 @@ Upgrade details overflow review after prompt/evidence hardening: `docs/planning/
 
 Compact upgrade details fix plan: `docs/planning/COMPACT_UPGRADE_DETAILS_FIX_PLAN_2026_06_26.md` selects a narrow bounds-and-copy fix for the upgrade panel. The implementation should keep the one-selected-upgrade model, move/resize the panel inside a `1280x720` viewport, compact duplicated state/effect/feedback text, and preserve Echo Lens no-locator language.
 
+Compact upgrade details implementation: issue #406 moves the selected-upgrade panel inside the `1280x720` viewport, compacts upgrade state/effect summaries, shortens feedback copy, preserves `Echo Lens I` as broad wreck echoes rather than a locator, and adds logic guards for panel bounds, clipped feedback behavior, and compact copy. The latest Playwright `upgrade-tab.png` shows the final feedback line inside the panel.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
