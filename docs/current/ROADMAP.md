@@ -257,6 +257,8 @@ Echo Lens to Wreck Echo handoff review: `docs/planning/ECHO_LENS_TO_WRECK_ECHO_H
 
 Wreck Echo pressure-dark visual constraints: `docs/planning/WRECK_ECHO_PRESSURE_DARK_VISUAL_CONSTRAINTS_2026_06_26.md` keeps future pressure-dark art as subdued threshold mood only, below oxygen, safe return, predator danger, pressure gate, cache, Echo Lens pulse, and player readability. Existing pressure-dark study art remains unwired.
 
+Wreck Echo normal-scale screenshot checklist: `docs/planning/WRECK_ECHO_NORMAL_SCALE_SCREENSHOT_CHECKLIST_2026_06_26.md` defines future screenshot evidence for surface prep, lower-route approach, pressure/cache context, Echo Lens cue, Wreck Echo pocket, predator relationship, low oxygen, clue recovery, result readback, no-clue return, and failure. Screenshots remain local unless a future issue explicitly asks for committed references.
+
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
 Backlog replenishment after closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines the next ordered twenty-issue queue. The focus is solo first-run evidence, compact acceptance proof, final closeout status, source-art/readability rechecks, and Wreck Echo planning without implementing a new route yet.
