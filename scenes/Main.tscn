@@ -1003,16 +1003,28 @@ shape = SubResource("CircleShape2D_pickup")
 position = Vector2(850, 1688)
 
 [node name="WarningRibs" type="Polygon2D" parent="Predators/PredatorWarning"]
-color = Color(1, 0.35, 0.18, 0.3)
-polygon = PackedVector2Array(-250, -68, -220, -34, -250, 0, -220, 34, -250, 68, -170, 36, -190, 0, -170, -36, 170, -36, 190, 0, 170, 36, 250, 68, 220, 34, 250, 0, 220, -34, 250, -68)
+color = Color(1, 0.35, 0.18, 0.26)
+polygon = PackedVector2Array(-260, -74, -226, -38, -260, -6, -226, 26, -260, 64, -174, 38, -198, 0, -174, -38, -86, -52, -106, 0, -86, 52, 86, 52, 106, 0, 86, -52, 174, -38, 198, 0, 174, 38, 260, 64, 226, 26, 260, -6, 226, -38, 260, -74)
+
+[node name="WarningLaneEdgeTop" type="Polygon2D" parent="Predators/PredatorWarning"]
+color = Color(1, 0.18, 0.12, 0.24)
+polygon = PackedVector2Array(-262, -82, -140, -62, -26, -68, 102, -54, 260, -80, 210, -46, 78, -34, -38, -46, -164, -38)
+
+[node name="WarningLaneEdgeBottom" type="Polygon2D" parent="Predators/PredatorWarning"]
+color = Color(1, 0.18, 0.12, 0.2)
+polygon = PackedVector2Array(-262, 82, -164, 38, -38, 46, 78, 34, 210, 46, 260, 80, 102, 54, -26, 68, -140, 62)
 
 [node name="WarningCurrent" type="Polygon2D" parent="Predators/PredatorWarning"]
-color = Color(1, 0.2, 0.12, 0.22)
-polygon = PackedVector2Array(-230, -22, 220, -34, 270, 0, 220, 34, -230, 22, -278, 0)
+color = Color(1, 0.2, 0.12, 0.18)
+polygon = PackedVector2Array(-238, -20, 214, -32, 274, 0, 214, 32, -238, 20, -282, 0)
 
 [node name="WarningMarker" type="Polygon2D" parent="Predators/PredatorWarning"]
 color = Color(1, 0.14, 0.12, 0.72)
 polygon = PackedVector2Array(-28, -42, 28, -42, 42, 0, 28, 42, -28, 42, -42, 0)
+
+[node name="WarningBiteNotch" type="Polygon2D" parent="Predators/PredatorWarning"]
+color = Color(1, 0.8, 0.24, 0.32)
+polygon = PackedVector2Array(-18, -26, 0, -8, 18, -26, 8, 0, 24, 18, 0, 8, -24, 18, -8, 0)
 
 [node name="WarningEye" type="Polygon2D" parent="Predators/PredatorWarning"]
 color = Color(1, 0.14, 0.12, 0.86)
@@ -1037,12 +1049,24 @@ color = Color(0.95, 1, 0.7, 0.18)
 polygon = PackedVector2Array(0, -74, 58, -42, 74, 0, 58, 42, 0, 74, -58, 42, -74, 0, -58, -42)
 
 [node name="PatrolHint" type="Polygon2D" parent="Predators/GulperEel"]
-color = Color(0.9, 0.1, 0.18, 0.18)
-polygon = PackedVector2Array(-92, -82, 92, -82, 124, 0, 92, 82, -92, 82, -124, 0)
+color = Color(0.9, 0.1, 0.18, 0.16)
+polygon = PackedVector2Array(-124, -82, -40, -98, 74, -72, 138, 0, 74, 72, -40, 98, -124, 82, -162, 0)
+
+[node name="TailFin" type="Polygon2D" parent="Predators/GulperEel"]
+color = Color(0.48, 0.07, 0.14, 1)
+polygon = PackedVector2Array(-68, 0, -118, -36, -100, 0, -118, 36)
 
 [node name="Body" type="Polygon2D" parent="Predators/GulperEel"]
 color = Color(0.68, 0.12, 0.2, 1)
-polygon = PackedVector2Array(-70, 0, -34, -28, 34, -20, 82, 0, 34, 20, -34, 28)
+polygon = PackedVector2Array(-76, 0, -38, -30, 34, -24, 90, 0, 34, 24, -38, 30)
+
+[node name="JawShadow" type="Polygon2D" parent="Predators/GulperEel"]
+color = Color(0.18, 0.02, 0.05, 0.82)
+polygon = PackedVector2Array(32, -10, 94, 0, 32, 12, 58, 0)
+
+[node name="SpineMarks" type="Polygon2D" parent="Predators/GulperEel"]
+color = Color(1, 0.36, 0.22, 0.38)
+polygon = PackedVector2Array(-44, -18, -30, -38, -18, -16, 2, -20, 16, -42, 28, -18, 48, -14, 64, -34, 72, -10)
 
 [node name="Eye" type="Polygon2D" parent="Predators/GulperEel"]
 color = Color(1, 0.86, 0.22, 1)
