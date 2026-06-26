@@ -786,8 +786,8 @@ func _update_hud() -> void:
 	_update_upgrade_menu()
 	var is_diving := dive_session.result == DiveSessionScript.Result.DIVING
 	var has_surface_panel := dive_session.result != DiveSessionScript.Result.DIVING
-	hint_label.visible = not is_diving
-	bounds_hint_label.visible = not is_diving
+	hint_label.visible = false
+	bounds_hint_label.visible = false
 	oxygen_label.visible = is_diving
 	depth_label.visible = is_diving
 	base_direction_label.visible = is_diving
@@ -849,7 +849,7 @@ func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
 		run_title_label.text = "Expedition %d Ready" % progression_state.current_run_number
-		run_summary_label.text = _format_run_summary("Start with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\n%s\n%s\nPress E or Enter to begin.\nF9 resets prototype save." % [
+		run_summary_label.text = _format_run_summary("Move with WASD or arrow keys.\nStart with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\n%s\n%s\nPress E or Enter to begin.\nF9 resets prototype save." % [
 			ceili(dive_session.max_oxygen),
 			_format_condition_briefing(),
 			ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions),
