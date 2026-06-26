@@ -235,6 +235,8 @@ Gulper/Decoy result clarity after Monster Research II: `docs/planning/GULPER_DEC
 
 Next readability target after deep reward lure: `docs/planning/NEXT_READABILITY_TARGET_AFTER_DEEP_REWARD_LURE_2026_06_26.md` selects the lower-route pressure/cache/reward/predator cue stack as the next narrow target. The next step should review composition pileup and tune cue priority before adding another asset; source art is only a backup if tuning cannot separate the meanings.
 
+Lower-route pileup review after deep reward/Wreck Echo: `docs/planning/LOWER_ROUTE_VISUAL_PILEUP_REVIEW_AFTER_DEEP_REWARD_WRECK_ECHO_2026_06_26.md` keeps the route acceptable but flags a narrow tuning need. HUD, safe return, and predator danger pass; reward lure, pressure/cache, Wreck Echo, and player/sub overlap remain watchlist risks, so the next implementation should tune cue priority rather than add labels, maps, checklists, or new content.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
