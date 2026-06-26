@@ -19,6 +19,8 @@ Keep desktop keyboard controls as the current playable target. Do not add touch 
 
 Current input contract review: `docs/planning/INPUT_ACTION_CONTRACT_REVIEW_2026_06_26.md` confirms player-facing gameplay is routed through semantic Godot actions, while F3/F4/F5/F6/F9 remain debug-only keyboard shortcuts. The next risks are controller/touch mapping and keyboard-specific prompt copy, not gameplay rule coupling.
 
+Deferred controller plan: `docs/planning/FUTURE_CONTROLLER_SUPPORT_PLAN_2026_06_26.md` defines action-map-based controller candidates, prompt-copy needs, verification expectations, and non-goals. Controller support remains deferred.
+
 Current work should still preserve platform flexibility:
 
 - route gameplay input through Godot actions rather than direct key checks,
