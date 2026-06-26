@@ -120,7 +120,7 @@ Player-facing UI:
 - oxygen gauge,
 - depth,
 - base direction,
-- cargo slots,
+- compact cargo slots with filled, empty, and locked states,
 - current scan target,
 - low/critical oxygen warning with compact panel placement that stays out of the active route/control text stack.
 

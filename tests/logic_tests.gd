@@ -997,6 +997,12 @@ func _test_compact_dive_hud_helpers() -> void:
 	var inline_cargo: String = main.call("_format_cargo_counts_inline", cargo)
 	_expect(inline_cargo == " - Glow x2, Kelp x1", "active cargo helper should keep carried resources on one line")
 
+	var slot_states: Array = main.call("_cargo_slot_states", cargo, 3, 4)
+	_expect(slot_states == ["glow_plankton", "kelp_fiber", "glow_plankton", "locked"], "cargo slots should show filled slots and lock excess capacity")
+	var upgraded_slot_states: Array = main.call("_cargo_slot_states", cargo, 4, 4)
+	_expect(upgraded_slot_states == ["glow_plankton", "kelp_fiber", "glow_plankton", "empty"], "cargo slots should reveal the fourth slot after capacity upgrade")
+	_expect(main.call("_cargo_slot_color", "empty").a > main.call("_cargo_slot_color", "locked").a, "empty cargo slots should read brighter than locked slots")
+
 	var compact_discoveries: String = main.call("_format_discoveries", true)
 	_expect(compact_discoveries == "Discoveries: 0", "compact discovery helper should show only the count")
 

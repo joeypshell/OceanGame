@@ -68,6 +68,13 @@ const DIVE_STATUS_MAX_CHARS := 92
 @onready var depth_label: Label = $HUD/Depth
 @onready var base_direction_label: Label = $HUD/BaseDirection
 @onready var cargo_label: Label = $HUD/Cargo
+@onready var cargo_slots_root: Node2D = $HUD/CargoSlots
+@onready var cargo_slot_nodes: Array[ColorRect] = [
+	$HUD/CargoSlots/Slot1,
+	$HUD/CargoSlots/Slot2,
+	$HUD/CargoSlots/Slot3,
+	$HUD/CargoSlots/Slot4,
+]
 @onready var bank_label: Label = $HUD/BankedResources
 @onready var upgrade_label: Label = $HUD/Upgrade
 @onready var discoveries_label: Label = $HUD/Discoveries
@@ -919,6 +926,7 @@ func _update_hud() -> void:
 	depth_label.visible = is_diving
 	base_direction_label.visible = is_diving
 	cargo_label.visible = is_diving
+	cargo_slots_root.visible = is_diving
 	oxygen_label.text = _format_oxygen_label(dive_session.oxygen, dive_session.max_oxygen)
 	depth_label.text = "Depth: %dm | Best: %dm" % [
 		roundi(dive_session.current_depth),
@@ -926,11 +934,11 @@ func _update_hud() -> void:
 	]
 	base_direction_label.text = _format_base_direction()
 	_update_oxygen_feedback()
-	cargo_label.text = "Cargo: %d / %d%s" % [
+	cargo_label.text = "Cargo: %d / %d" % [
 		dive_session.current_cargo.size(),
-		dive_session.cargo_limit,
-		_format_cargo_counts_inline(dive_session.current_cargo)
+		dive_session.cargo_limit
 	]
+	_update_cargo_slots()
 	bank_label.text = "Banked:%s" % _format_banked_resources()
 	upgrade_label.text = _format_upgrade_status()
 	discoveries_label.text = _format_discoveries(true)
@@ -1057,6 +1065,37 @@ func _format_cargo_counts_inline(resource_ids: Array[String]) -> String:
 		parts.append("%s x%d" % [_short_resource_name(resource_id), int(counts[resource_id])])
 
 	return " - " + ", ".join(parts)
+
+func _cargo_slot_states(resource_ids: Array[String], capacity: int, visible_slots := 4) -> Array[String]:
+	var states: Array[String] = []
+	for index in range(visible_slots):
+		if index >= capacity:
+			states.append("locked")
+		elif index < resource_ids.size():
+			states.append(resource_ids[index])
+		else:
+			states.append("empty")
+
+	return states
+
+func _cargo_slot_color(state: String) -> Color:
+	match state:
+		"kelp_fiber":
+			return Color(0.38, 0.88, 0.48, 0.95)
+		"shell_fragments":
+			return Color(0.96, 0.82, 0.54, 0.95)
+		"glow_plankton":
+			return Color(0.9, 1.0, 0.24, 0.95)
+		"locked":
+			return Color(0.02, 0.05, 0.07, 0.42)
+		_:
+			return Color(0.08, 0.16, 0.2, 0.82)
+
+func _update_cargo_slots() -> void:
+	var states := _cargo_slot_states(dive_session.current_cargo, dive_session.cargo_limit, cargo_slot_nodes.size())
+	for index in range(cargo_slot_nodes.size()):
+		cargo_slot_nodes[index].color = _cargo_slot_color(states[index])
+		cargo_slot_nodes[index].visible = states[index] != "locked" or dive_session.cargo_limit >= cargo_slot_nodes.size()
 
 func _short_resource_name(resource_id: String) -> String:
 	match resource_id:
