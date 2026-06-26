@@ -7,9 +7,14 @@ static func cluster_pattern_for_seed(seed: int, patterns: Array) -> String:
 
 	return String(patterns[seed % patterns.size()])
 
-static func positions_for_target(root: Node, spawn_point_script: Script, category: String, target_id: String, cluster_pattern: String) -> Array[Vector2]:
+static func positions_for_target(root: Node, spawn_point_script: Script, category: String, target_id: String, cluster_pattern: String, condition_id := "") -> Array[Vector2]:
+	var points: Array[SpawnPoint] = []
+	_collect_points(root, spawn_point_script, category, target_id, cluster_pattern, points)
+	points = _condition_weighted_points(points, category, target_id, condition_id)
+
 	var positions: Array[Vector2] = []
-	_collect_positions(root, spawn_point_script, category, target_id, cluster_pattern, positions)
+	for point in points:
+		positions.append(point.global_position)
 	return positions
 
 static func routes_for_target(root: Node, spawn_point_script: Script, category: String, target_id: String, cluster_pattern: String) -> Dictionary:
@@ -25,17 +30,24 @@ static func routes_for_target(root: Node, spawn_point_script: Script, category: 
 
 	return routes
 
-static func _collect_positions(root: Node, spawn_point_script: Script, category: String, target_id: String, cluster_pattern: String, positions: Array[Vector2]) -> void:
-	for child in root.get_children():
-		if _is_matching_spawn_point(child, spawn_point_script, category, target_id, cluster_pattern):
-			positions.append(child.global_position)
-		_collect_positions(child, spawn_point_script, category, target_id, cluster_pattern, positions)
-
 static func _collect_points(root: Node, spawn_point_script: Script, category: String, target_id: String, cluster_pattern: String, points: Array[SpawnPoint]) -> void:
 	for child in root.get_children():
 		if _is_matching_spawn_point(child, spawn_point_script, category, target_id, cluster_pattern):
 			points.append(child)
 		_collect_points(child, spawn_point_script, category, target_id, cluster_pattern, points)
+
+static func _condition_weighted_points(points: Array[SpawnPoint], category: String, target_id: String, condition_id: String) -> Array[SpawnPoint]:
+	if condition_id != "thermal_bloom":
+		return points
+	if category != "resource" or target_id != "glow_plankton":
+		return points
+
+	var preferred: Array[SpawnPoint] = []
+	for point in points:
+		if point.preferred_condition_id == condition_id:
+			preferred.append(point)
+
+	return preferred if not preferred.is_empty() else points
 
 static func _is_matching_spawn_point(node: Node, spawn_point_script: Script, category: String, target_id: String, cluster_pattern: String) -> bool:
 	if node.get_script() != spawn_point_script:

@@ -6,6 +6,7 @@ extends Marker2D
 @export var target_id: String
 @export_enum("shallow", "midwater", "deep") var depth_band := "shallow"
 @export_enum("any", "cautious", "deep_reward") var cluster_pattern := "any"
+@export var preferred_condition_id: String
 @export var route_id: String
 
 func _ready() -> void:
