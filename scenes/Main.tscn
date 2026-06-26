@@ -195,20 +195,32 @@ polygon = PackedVector2Array(850, 1060, 1160, 1120, 1118, 1210, 782, 1168)
 [node name="ShellReefPocket" type="Node2D" parent="."]
 
 [node name="LandmarkWash" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.84, 0.76, 0.56, 0.18)
-polygon = PackedVector2Array(110, 1000, 360, 946, 664, 1008, 912, 1148, 822, 1278, 492, 1252, 214, 1244, 48, 1158)
+color = Color(0.86, 0.78, 0.58, 0.2)
+polygon = PackedVector2Array(92, 992, 348, 930, 662, 996, 918, 1144, 826, 1284, 490, 1260, 196, 1248, 30, 1156)
 
 [node name="ReefShelf" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.2, 0.24, 0.26, 0.66)
-polygon = PackedVector2Array(154, 1068, 318, 1018, 486, 1048, 610, 1128, 744, 1110, 862, 1178, 748, 1242, 520, 1220, 394, 1186, 218, 1218, 90, 1168)
+color = Color(0.18, 0.22, 0.24, 0.58)
+polygon = PackedVector2Array(134, 1068, 314, 1014, 486, 1046, 612, 1122, 748, 1102, 876, 1176, 750, 1246, 520, 1226, 392, 1192, 210, 1224, 70, 1168)
+
+[node name="ShellBedHighlight" type="Polygon2D" parent="ShellReefPocket"]
+color = Color(0.94, 0.84, 0.58, 0.26)
+polygon = PackedVector2Array(142, 1078, 310, 1038, 482, 1070, 618, 1134, 736, 1122, 824, 1174, 724, 1212, 520, 1200, 386, 1166, 224, 1192, 104, 1160)
 
 [node name="ShellFanA" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.9, 0.76, 0.52, 0.84)
-polygon = PackedVector2Array(250, 1058, 282, 990, 314, 1058, 342, 1006, 356, 1080, 302, 1100)
+color = Color(0.96, 0.78, 0.5, 0.92)
+polygon = PackedVector2Array(236, 1062, 282, 982, 318, 1060, 356, 1004, 374, 1084, 302, 1110)
+
+[node name="ShellFanARibs" type="Polygon2D" parent="ShellReefPocket"]
+color = Color(1, 0.96, 0.72, 0.48)
+polygon = PackedVector2Array(282, 1082, 288, 1078, 282, 1002, 276, 1004, 304, 1086, 310, 1082, 340, 1024, 334, 1022, 260, 1074, 266, 1078, 250, 1030, 244, 1032)
 
 [node name="ShellFanB" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.76, 0.9, 0.82, 0.6)
-polygon = PackedVector2Array(458, 1086, 488, 1018, 526, 1086, 562, 1042, 570, 1120, 500, 1132)
+color = Color(0.82, 0.94, 0.82, 0.64)
+polygon = PackedVector2Array(450, 1090, 488, 1014, 526, 1084, 570, 1038, 582, 1122, 500, 1138)
+
+[node name="ShellFanBRibs" type="Polygon2D" parent="ShellReefPocket"]
+color = Color(0.98, 1, 0.8, 0.38)
+polygon = PackedVector2Array(500, 1114, 506, 1110, 490, 1034, 484, 1036, 526, 1110, 532, 1106, 554, 1058, 548, 1056, 474, 1108, 480, 1112)
 
 [node name="CoralShardA" type="Polygon2D" parent="ShellReefPocket"]
 color = Color(0.66, 0.78, 0.86, 0.52)
@@ -223,11 +235,11 @@ color = Color(0.72, 0.96, 1, 0.08)
 polygon = PackedVector2Array(846, 1018, 1008, 1054, 1138, 1232, 1074, 1302, 936, 1170, 790, 1098)
 
 [node name="ReefReturnCurrent" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.52, 1, 0.86, 0.22)
-polygon = PackedVector2Array(430, 1018, 626, 902, 702, 938, 552, 1044, 660, 1054, 596, 1114, 474, 1080)
+color = Color(0.52, 1, 0.86, 0.26)
+polygon = PackedVector2Array(414, 1014, 624, 894, 708, 938, 548, 1046, 668, 1058, 596, 1122, 468, 1082)
 
 [node name="ReefReturnBeacon" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.74, 1, 0.9, 0.34)
+color = Color(0.74, 1, 0.9, 0.38)
 polygon = PackedVector2Array(610, 922, 646, 874, 682, 922, 646, 950)
 
 [node name="DeepGlowHint" type="Polygon2D" parent="."]
