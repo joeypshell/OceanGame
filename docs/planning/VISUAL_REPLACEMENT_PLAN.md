@@ -8,6 +8,8 @@ Latest source-art priority: `docs/planning/NEXT_SOURCE_ART_AFTER_EVIDENCE_HARDEN
 
 Latest source-art balance review: `docs/planning/DEEP_REWARD_LURE_FALLBACK_BALANCE_REVIEW_2026_06_26.md` keeps the amber `DeepRewardLure` sprite and dimmed fallback stack as pass-with-watchlist. The reward cue now reads more distinctly from pressure/cache, Wreck Echo, and predator danger, while the broader lower-right cluster remains dense enough to warrant the already-open pileup and resource/scan reviews. The previous Wreck Echo balance review remains recorded in `docs/planning/WRECK_ECHO_SOURCE_ART_FALLBACK_BALANCE_REVIEW_2026_06_26.md`.
 
+Latest art-kit integration plan: `docs/planning/COHESIVE_VERTICAL_SLICE_ART_KIT_INTEGRATION_PLAN_2026_06_26.md` keeps final production art lock deferred and orders the next cohesive pass as lower-route cue-priority tuning, compact HUD skin alignment, surface base/waterline polish, landmark sprite/fallback balance, then player/sub and creature state cohesion.
+
 ## Current Visual Inventory
 
 Current runtime visuals are mostly simple Godot nodes:

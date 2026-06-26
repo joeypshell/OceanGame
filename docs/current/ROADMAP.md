@@ -237,6 +237,8 @@ Next readability target after deep reward lure: `docs/planning/NEXT_READABILITY_
 
 Lower-route pileup review after deep reward/Wreck Echo: `docs/planning/LOWER_ROUTE_VISUAL_PILEUP_REVIEW_AFTER_DEEP_REWARD_WRECK_ECHO_2026_06_26.md` keeps the route acceptable but flags a narrow tuning need. HUD, safe return, and predator danger pass; reward lure, pressure/cache, Wreck Echo, and player/sub overlap remain watchlist risks, so the next implementation should tune cue priority rather than add labels, maps, checklists, or new content.
 
+Cohesive vertical-slice art-kit plan: `docs/planning/COHESIVE_VERTICAL_SLICE_ART_KIT_INTEGRATION_PLAN_2026_06_26.md` defines a constrained integration order without final art lock: lower-route cue-priority tuning, compact HUD skin alignment, surface base/waterline polish, landmark sprite/fallback balance, then player/sub and creature state cohesion. Preserve gameplay nodes and verify with screenshot evidence.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
