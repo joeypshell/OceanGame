@@ -92,6 +92,8 @@ This state is reset between expeditions and should not be saved as durable progr
 
 Progression state should be updated only through explicit progression events such as extraction, scan completion, upgrade purchase, best-depth recording, and save/load migration.
 
+Future compact research clues, such as the first planned `Wreck Echo Descent` clue, should begin as run result memory rather than durable progression. Promote them into `ProgressionState` only when a later issue explicitly needs persistence after relaunch, prerequisite checks, or a stable learned-state surface.
+
 ### Authored Content Data
 
 Scene-authored content owns inspectable placement and route definitions:
@@ -162,6 +164,7 @@ Small reusable visual helpers such as `scripts/scan_pulse_visual.gd` may central
 - Do not save active oxygen, active cargo, temporary highlights, selected scan target, current seed telemetry, or surface tab selection as progression.
 - Do not make HUD labels the only source of route meaning; important route states should have visible scene language.
 - Do not add a parallel objective/quest state system while the expedition prep goal formatter is enough.
+- Do not create a broad field guide, quest log, route graph, or map marker to persist one compact research clue before result-only memory has been tested.
 - Do not add broad procedural biome generation until authored route decisions are readable and testable.
 
 ## Testing And Verification
