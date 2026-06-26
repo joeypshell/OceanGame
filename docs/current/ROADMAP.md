@@ -45,6 +45,7 @@ Detailed design rules live in:
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`
 - `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md`
 - `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md`
+- `docs/planning/SURFACE_READY_RESULT_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -115,6 +116,8 @@ Next milestone definition: `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_
 Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLICE_READABILITY_2026_06_26.md` creates issues #240-#259 from the current milestone. The batch prioritizes compact HUD skinning, normal-scale readability evidence, lower-route density cleanup, sprite/fallback reviews, acceptance evidence, and narrow Wreck Echo planning.
 
 Active HUD screenshot review: `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md` confirms the compact active HUD skin is directionally working at normal scale. The immediate follow-up is to move or restyle the active `Discoveries` count, which currently sits between the stats and dive-info panels.
+
+Surface readability review: `docs/planning/SURFACE_READY_RESULT_READABILITY_REVIEW_2026_06_26.md` confirms ready/result/failure/log states keep active HUD clutter hidden. The upgrade tab currently misses the polish bar because long upgrade copy can overflow its panel.
 
 ## Immediate Issue Order
 
