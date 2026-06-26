@@ -87,6 +87,7 @@ func _initialize() -> void:
 	_run("condition briefing copy", _test_condition_briefing_copy)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
+	_run("expanded region world bounds", _test_expanded_region_world_bounds)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
 	_run("player idle and thrust visual states", _test_player_idle_and_thrust_visual_states)
@@ -1618,6 +1619,23 @@ func _test_burst_thruster_movement_helper() -> void:
 
 	player.burst(Vector2.ZERO, 500.0)
 	_expect(player.velocity == Vector2.RIGHT * 500.0, "burst without input should use the last facing direction")
+	player.free()
+
+func _test_expanded_region_world_bounds() -> void:
+	var player := PlayerScript.new()
+	_expect(player.world_bounds.position.x <= 100.0, "expanded bounds should preserve the current main descent column")
+	_expect(player.world_bounds.end.x >= 2000.0, "expanded bounds should allow roughly one extra screen of right-side exploration")
+	_expect(player.world_bounds.position.y >= 240.0, "expanded bounds should keep the sub below the boat hull")
+	_expect(player.world_bounds.end.y >= 2200.0, "expanded bounds should preserve the existing deep route")
+
+	var clamped_high := player.clamp_position_to_world_bounds(Vector2(640.0, 0.0))
+	_expect(clamped_high.y >= player.world_bounds.position.y, "world clamp should prevent surfacing through the boat sprite")
+
+	var clamped_right := player.clamp_position_to_world_bounds(Vector2(2600.0, 900.0))
+	_expect(is_equal_approx(clamped_right.x, player.world_bounds.end.x), "world clamp should stop at the expanded right edge")
+
+	var clamped_left := player.clamp_position_to_world_bounds(Vector2(-80.0, 900.0))
+	_expect(is_equal_approx(clamped_left.x, player.world_bounds.position.x), "world clamp should preserve the left edge of the main column")
 	player.free()
 
 func _test_player_visual_facing_isolation() -> void:

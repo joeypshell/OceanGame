@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export var max_speed := 320.0
 @export var acceleration := 900.0
 @export var drag := 650.0
-@export var world_bounds := Rect2(Vector2(96.0, 245.0), Vector2(1088.0, 1955.0))
+@export var world_bounds := Rect2(Vector2(96.0, 245.0), Vector2(1984.0, 1955.0))
 
 var _movement_disrupt_timer := 0.0
 var _last_move_direction := Vector2.RIGHT
@@ -22,7 +22,7 @@ func _physics_process(delta: float) -> void:
 	if _movement_disrupt_timer > 0.0:
 		_movement_disrupt_timer = maxf(0.0, _movement_disrupt_timer - delta)
 		move_and_slide()
-		global_position = global_position.clamp(world_bounds.position, world_bounds.end)
+		global_position = clamp_position_to_world_bounds(global_position)
 		_sync_movement_visuals(delta, velocity.length() > 8.0)
 		return
 
@@ -34,7 +34,7 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.move_toward(Vector2.ZERO, drag * delta)
 
 	move_and_slide()
-	global_position = global_position.clamp(world_bounds.position, world_bounds.end)
+	global_position = clamp_position_to_world_bounds(global_position)
 
 	if absf(velocity.x) > 1.0:
 		_set_facing_sign(signf(velocity.x))
@@ -48,6 +48,9 @@ func apply_knockback(direction: Vector2, force: float, disruption_seconds: float
 func burst(direction: Vector2, force: float) -> void:
 	var burst_direction := direction.normalized() if direction != Vector2.ZERO else get_burst_direction()
 	velocity = burst_direction * force
+
+func clamp_position_to_world_bounds(position: Vector2) -> Vector2:
+	return position.clamp(world_bounds.position, world_bounds.end)
 
 func get_burst_direction() -> Vector2:
 	var input_vector := Input.get_vector("move_left", "move_right", "move_up", "move_down")

@@ -33,7 +33,7 @@ Recommended first-pass coordinate intent:
 
 ## Required Pieces
 
-1. Wider camera/world bounds.
+1. Wider camera/world bounds. Implemented in #446 with expanded right-side travel room, matching camera limits, and widened base ocean bands.
 2. One side-route branch with placeholder terrain/readability shapes.
 3. One pocket entrance, either cave-like or wreck-hatch-like.
 4. One stable landmark: `East Shelf Arch`.

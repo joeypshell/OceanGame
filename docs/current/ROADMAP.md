@@ -8,6 +8,8 @@ Active priority reset: `docs/planning/PROJECT_HEALTH_PIVOT_EXPANDED_DIVE_REGION_
 
 First expanded region layout: `docs/planning/FIRST_EXPANDED_DIVE_REGION_LAYOUT_2026_06_26.md` defines `East Shelf Spur` as the first wider side-route prototype. It should add a right-side midwater branch, `East Shelf Arch` landmark, cave/wreck-pocket entrance, one seeded daily opportunity, one upgrade-locked promise, and safe-return cues while preserving the current base column and existing loop.
 
+Current expanded-region implementation status: #446 widened the player world bounds, camera limits, and base ocean background bands so the next issues can place the first right-side branch without another camera/bounds pass.
+
 Detailed design rules live in:
 
 - `docs/planning/CORE_LOOP_RULES.md`
