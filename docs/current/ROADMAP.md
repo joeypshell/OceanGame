@@ -44,6 +44,7 @@ Detailed design rules live in:
 - `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`
 - `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md`
+- `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -112,6 +113,8 @@ Playable vertical-slice acceptance: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEP
 Next milestone definition: `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md` distinguishes current, next, deferred, and out-of-scope work for the playable vertical slice. Current work should improve the existing loop and readability; next work can plan deeper Wreck Echo promise only after the slice is clearer; deferred work stays out of the immediate queue.
 
 Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLICE_READABILITY_2026_06_26.md` creates issues #240-#259 from the current milestone. The batch prioritizes compact HUD skinning, normal-scale readability evidence, lower-route density cleanup, sprite/fallback reviews, acceptance evidence, and narrow Wreck Echo planning.
+
+Active HUD screenshot review: `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md` confirms the compact active HUD skin is directionally working at normal scale. The immediate follow-up is to move or restyle the active `Discoveries` count, which currently sits between the stats and dive-info panels.
 
 ## Immediate Issue Order
 
