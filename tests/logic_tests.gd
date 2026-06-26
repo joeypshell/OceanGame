@@ -62,6 +62,7 @@ func _initialize() -> void:
 	_run("result progress callouts", _test_result_progress_callouts)
 	_run("next expedition framing", _test_next_expedition_framing)
 	_run("region memory result callout", _test_region_memory_result_callout)
+	_run("discovery memory result callout", _test_discovery_memory_result_callout)
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("gulper research result callout", _test_gulper_research_result_callout)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
@@ -674,6 +675,27 @@ func _test_region_memory_result_callout() -> void:
 	main.run_predator_contacts = 1
 	_expect(main._format_region_memory_callout().contains("Gulper Route"), "predator evidence should remember Gulper Route as the deepest contested place")
 	_expect(not main._format_region_memory_callout().contains(","), "region memory callout should stay compact and not become a checklist")
+	main.free()
+
+func _test_discovery_memory_result_callout() -> void:
+	var main := MainScript.new()
+
+	_expect(main._format_discovery_memory_callout() == "", "discovery memory should stay hidden when no first-time major discovery happened")
+
+	main.run_completed_scans = ["shell_reef_shelf"]
+	_expect(main._format_discovery_memory_callout().contains("Shell Reef Shelf"), "shell reef first scan should produce discovery memory")
+
+	main.run_completed_scans = ["shell_reef_shelf", "thermal_vent"]
+	_expect(main._format_discovery_memory_callout().contains("Thermal Vent"), "thermal first scan should take priority over shell reef")
+
+	main.run_completed_scans = ["thermal_vent", "gulper_eel"]
+	_expect(main._format_discovery_memory_callout().contains("Gulper Eel"), "gulper first scan should produce creature research memory")
+
+	main.run_completed_scans = ["pressure_wreck_signal", "wreck_signal_cache", "wreck_signal_cache"]
+	var memory := main._format_discovery_memory_callout()
+	_expect(memory.contains("Wreck Signal Cache"), "cache first scan should take priority over outside wreck signal")
+	_expect(memory.find("Wreck Signal Cache") == memory.rfind("Wreck Signal Cache"), "discovery memory should not duplicate repeated ids")
+	_expect(not memory.contains(","), "discovery memory should stay compact and not become a checklist")
 	main.free()
 
 func _test_route_choice_result_callout() -> void:

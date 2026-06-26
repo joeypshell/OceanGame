@@ -225,11 +225,12 @@ func _try_extract() -> void:
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\nBanked %d resource(s).%s\n%s\n%s%s\n%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "%s\nBanked %d resource(s).%s\n%s%s\n%s%s\n%s\n%s\n%s\nBest depth: %dm." % [
 		_format_completed_expedition_line("Extraction"),
 		extracted_count,
 		_format_resource_counts(extracted_cargo),
 		_format_region_memory_callout(),
+		_format_discovery_memory_callout(),
 		_format_route_choice_callout(),
 		_format_gulper_research_callout(),
 		_format_upgrade_progress_callout(),
@@ -251,9 +252,10 @@ func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s\n%s%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "%s\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s%s\n%s%s\n%s\n%s\nBest depth: %dm." % [
 		_format_completed_expedition_line("Failure"),
 		_format_region_memory_callout(),
+		_format_discovery_memory_callout(),
 		_format_route_choice_callout(),
 		_format_gulper_research_callout(),
 		_format_scan_progress_callout("Scans kept"),
@@ -1428,6 +1430,20 @@ func _format_region_memory_callout() -> String:
 		return "Remembered place: Shell Reef - a safer midwater bank route."
 
 	return "Remembered place: Surface Base - safe return resolves the day."
+
+func _format_discovery_memory_callout() -> String:
+	if run_completed_scans.has("wreck_signal_cache"):
+		return "\nDiscovery remembered: Wreck Signal Cache - deeper echoes may be readable later."
+	if run_completed_scans.has("pressure_wreck_signal"):
+		return "\nDiscovery remembered: Pressure-Locked Research Wreck - pressure access can open this route."
+	if run_completed_scans.has("gulper_eel"):
+		return "\nDiscovery remembered: Gulper Eel - warning-lane behavior can be studied."
+	if run_completed_scans.has("thermal_vent"):
+		return "\nDiscovery remembered: Thermal Vent - pressure-seal knowledge is banked."
+	if run_completed_scans.has("shell_reef_shelf"):
+		return "\nDiscovery remembered: Shell Reef Shelf - safer midwater banking route marked."
+
+	return ""
 
 func _format_scan_ids(scan_ids: Array[String]) -> String:
 	if scan_ids.is_empty():
