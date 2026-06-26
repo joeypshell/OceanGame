@@ -23,6 +23,7 @@ Detailed design rules live in:
 - `docs/planning/EXPEDITION_GOAL_II.md`
 - `docs/planning/WRECK_ECHO_DESCENT_NO_IMPLEMENTATION_CRITERIA_2026_06_26.md`
 - `docs/planning/WRECK_ECHO_DESCENT_ROUTE_POCKET_DATA_SHAPE_2026_06_26.md`
+- `docs/planning/WRECK_ECHO_OXYGEN_CARGO_PREPARATION_REVIEW_2026_06_26.md`
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/MONSTER_RESEARCH_LOOP_V1.md`
@@ -192,6 +193,8 @@ Wreck Echo no-implementation criteria: `docs/planning/WRECK_ECHO_DESCENT_NO_IMPL
 Echo Lens no-locator review: `docs/planning/ECHO_LENS_NO_LOCATOR_LANGUAGE_REVIEW_2026_06_26.md` confirms current status text, result text, upgrade role copy, and planning docs remain broad/local/category-based. No runtime copy change is needed; #315 still owns the later Signal Lens versus Echo Lens distinction review.
 
 Wreck Echo data shape: `docs/planning/WRECK_ECHO_DESCENT_ROUTE_POCKET_DATA_SHAPE_2026_06_26.md` documents future ownership, spawn-point needs, optional scan clue requirements, and one-reward shape for Wreck Echo Descent without wiring route nodes, scan targets, resources, collision, markers, or pressure-dark art.
+
+Wreck Echo oxygen/cargo preparation: `docs/planning/WRECK_ECHO_OXYGEN_CARGO_PREPARATION_REVIEW_2026_06_26.md` recommends oxygen as the primary future Wreck Echo pressure, with cargo space as a secondary opportunity cost only if a later implementation chooses a material/sample reward. It changes no costs, resources, upgrades, cargo limits, drain rules, routes, or scene nodes.
 
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 

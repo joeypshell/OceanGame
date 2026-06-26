@@ -98,6 +98,8 @@ Required preparation:
 - enough oxygen margin to descend, inspect, and return,
 - at least one empty cargo slot if the route promises a material sample.
 
+Oxygen/cargo preparation guidance is reviewed in `docs/planning/WRECK_ECHO_OXYGEN_CARGO_PREPARATION_REVIEW_2026_06_26.md`: oxygen should be the primary future route pressure, while cargo space should be secondary and only matter if a future implementation chooses a material/sample reward.
+
 Likely risks:
 
 - pressure-dark threshold that makes the route feel deeper and less safe,
