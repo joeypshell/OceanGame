@@ -183,6 +183,8 @@ Wreck Echo prep backlog review: `docs/planning/BACKLOG_REPLENISHMENT_WRECK_ECHO_
 
 Post-Wreck-Echo/platform-input backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_WRECK_ECHO_PLATFORM_INPUT_2026_06_26.md` creates issues #384-#403 after Wreck Echo implementation, source-art review, platform/input planning, and screenshot workflow review. The queue prioritizes Playwright evidence hardening, prompt abstraction, player-facing copy review, one more narrow readability/source-art target, no-locator Wreck Echo guardrails, and another MCP/backlog refresh.
 
+Player action prompt abstraction plan: `docs/planning/PLAYER_ACTION_PROMPT_ABSTRACTION_PLAN_2026_06_26.md` defines the first prompt-label step before controller or touch work. Current keyboard prompts should route through semantic action labels such as `interact`, `restart_dive`, `move_left_right`, `move_up_down`, `burst_thruster`, and `decoy_pulse`, while controller and mobile/touch label profiles remain future scope.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
