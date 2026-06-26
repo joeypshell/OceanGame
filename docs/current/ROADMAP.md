@@ -57,6 +57,7 @@ Detailed design rules live in:
 - `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md`
 - `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md`
+- `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -155,6 +156,8 @@ Clean-save smoke pass: `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_
 
 Decoy Pulse owned-state review: `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md` keeps `Decoy Pulse I` acceptable as one-use non-lethal route-timing counterplay. The main watchlist is active prompt length when `Burst Thruster` and Decoy text appear together.
 
+Lower-route recheck: `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.md` keeps pressure gate, outside scan, Wreck Signal Cache, deep reward, predator lane, Rare Signal, and Echo Lens pulse as pass or pass-with-watchlist after the HUD and density changes. No new lower-route content should be added from this recheck.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable, not yet polished accepted.
@@ -177,7 +180,7 @@ Remaining before calling the vertical-slice gate fully accepted:
 
 - convert smoke-pass watchlists into normal-scale acceptance evidence after the surface and lower-route follow-ups,
 - recheck `Decoy Pulse I` prompt length in normal-scale HUD evidence,
-- keep lower-route screenshots on the watchlist after any visual change.
+- keep lower-route screenshots on the watchlist after any visual change, especially surface art or future Wreck Echo work.
 
 ## Immediate Issue Order
 
