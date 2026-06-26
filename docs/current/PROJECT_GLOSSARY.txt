@@ -1,0 +1,380 @@
+OceanGame Project Glossary
+==========================
+
+This glossary explains common project-management, testing, planning, and game-development terms used in OceanGame issues, docs, Codex handoffs, and verification notes.
+
+
+Core Project Terms
+------------------
+
+Roadmap
+  The high-level plan for what the game is becoming, what is current, what is next, and what is deferred. In this repo, docs/current/ROADMAP.md is the main current roadmap.
+
+Current docs
+  Docs under docs/current/. These describe implemented behavior or active workflow truth. If the game actually changes, these docs should usually be updated.
+
+Planning docs
+  Docs under docs/planning/. These are proposals, reviews, decisions, checklists, and future feature plans. They may describe work that is not implemented yet.
+
+Archive docs
+  Older notes kept for reference. These are useful history but should not override current docs or active GitHub issues.
+
+Source of truth
+  The place Codex or a human should trust first when deciding how something works. For OceanGame, implemented behavior belongs in docs/current/, while future ideas usually belong in docs/planning/.
+
+Issue
+  A GitHub task with a specific scope, acceptance criteria, relevant files, and verification steps.
+
+Backlog
+  The list of open issues waiting to be done.
+
+Backlog replenishment
+  The process of reviewing the roadmap/planning docs and creating new actionable issues when the open queue gets low.
+
+Acceptance criteria
+  The checklist that defines when an issue is actually done. Good acceptance criteria are specific enough that someone can verify the work.
+
+Non-goals
+  Things explicitly not included in an issue. These are important because they prevent a small task from accidentally becoming a large feature.
+
+Scope
+  The boundaries of a task. Scope says what files, behavior, docs, or systems are allowed to change.
+
+Out of scope
+  Work that should not be done as part of the current issue, even if it seems related.
+
+Blocked
+  A task cannot safely continue because something essential is missing, unclear, unavailable, or dependent on another unfinished task.
+
+Deferred
+  A valid idea intentionally postponed. Deferred does not mean rejected; it means not now.
+
+Watchlist
+  A known risk that is acceptable for now but should be rechecked if related work changes. Example: lower-route visual density after adding new art.
+
+Pass with watchlist
+  The current state is good enough to proceed, but there are specific risks to monitor.
+
+Closeout
+  The final review stage for a milestone or issue. Closeout checks whether the work really meets the intended quality bar.
+
+Handoff
+  A written summary that prepares the next person or agent to continue the work without rediscovering all the context.
+
+
+Testing Terms
+-------------
+
+Test
+  Any repeatable check used to prove something works or did not break.
+
+Automated test
+  A test run by a tool or script instead of a person manually playing the game.
+
+Manual test
+  A human-driven check, such as launching the game, playing a dive, and observing whether the result is readable.
+
+Unit test
+  A focused automated test for a small piece of logic. Example: checking that oxygen failure clears current cargo.
+
+Logic test
+  In this project, the Godot headless tests in tests/logic_tests.gd. These cover game rules, formatting helpers, state reset behavior, upgrade gates, scanner behavior, and layout contracts.
+
+Regression test
+  A test added to make sure a bug does not come back. If text overflow was fixed, a regression test might check that result text stays inside the panel.
+
+Regression
+  Something that used to work but broke after a later change.
+
+Smoke test
+  A quick check that the project basically starts and the most important path is not broken. Example: launching Godot headless to confirm the main scene loads.
+
+Headless test
+  A test run without opening the normal game window. Useful for CI and Codex because it can verify scripts/scenes without manual interaction.
+
+Godot headless launch
+  A smoke check that starts the Godot project without a visible window and quits after a short time. This catches broken scenes, scripts, paths, and resources.
+
+Playwright test
+  A browser automation test. In OceanGame, Playwright can run the exported web build, drive keyboard input, and capture repeatable screenshots.
+
+Visual smoke test
+  A quick automated visual pass that captures important views, such as surface ready, active dive, result, upgrade tab, and lower-route pressure gate.
+
+Screenshot evidence
+  Screenshots used to support a visual/readability decision. They are usually local artifacts and not committed unless an issue explicitly asks for them.
+
+Normal-scale review
+  A review at real gameplay size, not zoomed in. This matters because many placeholder visuals look fine up close but confusing at play scale.
+
+Golden image
+  A saved reference screenshot that future screenshots are compared against. OceanGame mostly avoids committed golden images for now because the visuals are still changing.
+
+CI
+  Continuous Integration. GitHub Actions can automatically run checks when code is pushed.
+
+Verification
+  The checks run before closing an issue. Common verification here includes Godot headless launch, logic tests, MCP self-test, Playwright visual smoke, and git diff --check.
+
+git diff --check
+  A Git command that catches whitespace problems such as trailing spaces.
+
+False positive
+  A test reports a problem even though the game behavior is actually fine.
+
+False negative
+  A test passes even though there is still a real problem.
+
+Flaky test
+  A test that sometimes passes and sometimes fails without a meaningful code change. Flaky tests are dangerous because they make the team stop trusting verification.
+
+Deterministic test
+  A test that gives the same result every time when run from the same starting state.
+
+
+Quality And Risk Terms
+----------------------
+
+Drift
+  Slow movement away from the agreed plan, style, scope, or rules. Example: Echo Lens starts as broad curiosity, then gradually becomes a hidden-object locator unless guarded.
+
+Scope creep
+  When an issue quietly expands beyond its intended size. Example: a HUD polish issue turns into adding inventory, minimap, and quest log.
+
+Feature creep
+  Similar to scope creep, but focused on adding more features than the current milestone needs.
+
+Guardrail
+  A rule that prevents drift or scope creep. Example: "No minimap, exact locator, field guide, or checklist UI."
+
+Invariant
+  A rule that should stay true across changes. Example: oxygen failure clears carried cargo but keeps banked resources.
+
+Non-interference
+  Proof that a change did not alter unrelated systems. Example: adding Wreck Echo should not change Gulper, Decoy, cargo, oxygen, or Pressure Seal behavior.
+
+Blast radius
+  How much of the project a change could affect. A text-only doc change has low blast radius; editing main.gd and Main.tscn has higher blast radius.
+
+Risk
+  The chance that a change causes confusion, bugs, broken tests, or design drift.
+
+Mitigation
+  A step that reduces risk. Example: adding a regression test after fixing panel overflow.
+
+Readability
+  How easily the player understands what they are seeing or what to do next.
+
+Visual language
+  The consistent use of shape, color, motion, layout, and priority to communicate meaning. Example: predator danger should not use the same visual language as rewards.
+
+Information hierarchy
+  The order of importance in what the player sees. In OceanGame, oxygen, safe return, predator danger, and pressure gate states should outrank mystery/reward cues.
+
+Affordance
+  A visual or interaction cue that suggests what the player can do. Example: a scan marker suggests "this can be scanned."
+
+Polish
+  Work that improves clarity, feel, presentation, or quality after the core behavior exists.
+
+Production art lock
+  A point where final art is treated as stable. OceanGame is not there yet; art should still support readability and iteration.
+
+
+Game Design Terms
+-----------------
+
+Core loop
+  The repeated main activity of the game. For OceanGame: prepare, dive, collect/scan, manage oxygen/risk, return or fail, bank progress, upgrade, dive again.
+
+Vertical slice
+  A small but representative playable piece of the game. It should show the intended loop, tone, progression, risk, and readability.
+
+Prototype
+  An early playable version focused on proving ideas, not final art or complete content.
+
+Run
+  One expedition/dive attempt.
+
+Roguelite
+  A game structure where individual runs vary and may fail, while some progress persists across runs.
+
+Persistent progression
+  Progress that survives between runs or relaunches. In OceanGame: banked resources, upgrades, discoveries, and best depth.
+
+Temporary run state
+  State that exists only during the current expedition. In OceanGame: current oxygen, current cargo, active result state, temporary scan effects.
+
+Hybrid ocean
+  OceanGame's model: stable authored geography plus seeded expedition variation. The player learns real places, but runs still vary.
+
+Authored content
+  Content manually placed or defined by the developer, such as landmarks, spawn points, routes, and pressure gates.
+
+Seeded variation
+  Variation chosen from a seed so it is repeatable. Example: starter resource positions or predator route selection.
+
+Seed
+  A number used to generate repeatable variation.
+
+Spawn point
+  An authored candidate position where resources, creatures, or future route content can appear.
+
+Route pocket
+  A small authored area with a specific route decision or payoff. Example: Shell Reef, Thermal Vent, or future Wreck Echo Descent.
+
+Gate
+  Something that blocks or limits access until the player has the right knowledge, upgrade, or preparation. Example: the pressure-locked wreck gate.
+
+Soft gate
+  A gate based on risk or preparedness rather than a hard lock. Example: oxygen margin making a deeper route practical but not strictly impossible.
+
+Hard gate
+  A strict requirement. Example: Pressure Seal I opening the pressure-locked route.
+
+Reward lure
+  A visible temptation that encourages the player to take a risk, such as deep Glow Plankton near danger.
+
+Readable failure
+  A failure that teaches the player what happened and how to improve, instead of feeling random or punitive.
+
+Non-punitive failure
+  Failure that has consequences but does not erase too much progress. OceanGame oxygen failure loses carried cargo but keeps banked progress.
+
+
+OceanGame-Specific Terms
+------------------------
+
+DiveSession
+  The script/object that owns temporary current-dive state: oxygen, cargo, depth, whether the player left base, and result state.
+
+ProgressionState
+  The script/object that owns durable progress: banked resources, upgrades, scan discoveries, best depth, and save schema version.
+
+main.gd
+  The main scene orchestration script. It coordinates input, scans, pickups, upgrades, HUD, extraction, failure, and result formatting.
+
+Main.tscn
+  The main Godot scene containing the current playable ocean slice.
+
+Pressure Seal I
+  Upgrade that opens the first pressure-locked research wreck route.
+
+Signal Lens I
+  Practical scanner upgrade for resource-facing scan help. It should stay material-facing.
+
+Echo Lens I
+  Scanner upgrade for broad wreck curiosity. It should not become an exact locator or material detector.
+
+Wreck Signal Cache
+  Current pressure-route payoff that leads into Signal Lens and Echo Lens curiosity.
+
+Wreck Echo Descent
+  Planned future narrow route promise. It should be one deeper-right route pocket with one compact research clue, not a new broad biome or quest chain.
+
+Gulper Eel
+  Current predator route threat. It should read as avoidable danger, not combat loot.
+
+Decoy Pulse I
+  One-use non-lethal predator countermeasure for a run.
+
+Shell Reef
+  Safer midwater banking/readability route.
+
+Thermal Vent
+  Optional clue route and pressure-seal knowledge source.
+
+Pressure-dark
+  A planned visual mood for deeper Wreck Echo areas. It should be subdued atmosphere, not a marker or objective.
+
+No-locator language
+  Copy that avoids exact navigation. It can say "below the shelf" or "weak echo," but should not say exact coordinates, meters, map marker, or go-to objective.
+
+Result memory
+  Compact result text that tells the player what mattered during a run without becoming a quest log.
+
+Recent Expeditions
+  The compact session log for recent run outcomes. It is not a full journal or field guide.
+
+Debug telemetry
+  Developer-facing seed/pattern/condition/route data. It should stay hidden from normal player-facing UI unless debug mode is enabled.
+
+
+Git And Workflow Terms
+----------------------
+
+Repository
+  The project folder tracked by Git.
+
+Branch
+  A separate line of work in Git. This project often uses branches starting with codex/.
+
+Commit
+  A saved set of changes in Git.
+
+Push
+  Uploading local commits to GitHub.
+
+Pull request
+  A GitHub review request to merge one branch into another.
+
+Working tree
+  The current local files, including saved and unsaved changes.
+
+Dirty worktree
+  A working tree with modified or untracked files.
+
+Untracked file
+  A file Git sees but is not yet tracking.
+
+Staged file
+  A file selected to be included in the next commit.
+
+Unstaged file
+  A changed file not selected for the next commit.
+
+Diff
+  The set of changes between two versions of files.
+
+Self-review
+  Rechecking your own work against the issue before committing or closing it.
+
+Close issue
+  Mark a GitHub issue done, usually after implementation, verification, commit, and push.
+
+
+MCP And Tooling Terms
+---------------------
+
+MCP
+  Model Context Protocol. A way for tools or local servers to provide structured context/actions to AI tools.
+
+MCP context server
+  In OceanGame, .mcp/oceangame-context-server.mjs exposes project context resources to agents.
+
+MCP self-test
+  A command that verifies the MCP context server can start and serve required resources.
+
+Godot AI / godot-ai
+  A Godot plugin/client for AI/MCP-style editor integration. It is separate from the custom OceanGame MCP context server.
+
+Playwright harness
+  The browser automation setup under tests/playwright/ used to export/run the web build and capture screenshots.
+
+Export preset
+  Godot configuration for exporting the project, such as the Web build used by Playwright.
+
+
+Useful Rule Of Thumb
+--------------------
+
+If a term sounds like it might add a new system, ask:
+
+- Is this implemented behavior or only planning?
+- Does this belong in docs/current or docs/planning?
+- What issue owns it?
+- What are the non-goals?
+- What tests or screenshots prove it?
+- Could this create drift toward minimap, quest log, exact locator, combat, broad biome generation, or production-art lock?
+
+That little checklist catches a lot of project-management trouble before it becomes code trouble.

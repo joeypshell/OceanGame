@@ -920,11 +920,11 @@ func _current_condition_id() -> String:
 	return String(current_expedition_condition.get("id", ""))
 
 func _sync_discovery_reveals() -> void:
+	_set_hidden_glow_plankton_active(false)
+
 	if progression_state.has_discovery("thermal_vent"):
 		_reveal_thermal_vent_route()
 	else:
-		hidden_glow_plankton.visible = false
-		hidden_glow_plankton.monitoring = false
 		vent_route_hint.visible = false
 
 	if progression_state.has_discovery("pressure_wreck_signal"):
@@ -936,9 +936,21 @@ func _sync_discovery_reveals() -> void:
 	_sync_predator_warning_upgrade_state()
 
 func _reveal_thermal_vent_route() -> void:
-	hidden_glow_plankton.visible = true
-	hidden_glow_plankton.monitoring = true
-	vent_route_hint.visible = true
+	var route_hint := vent_route_hint
+	if route_hint == null:
+		route_hint = get_node_or_null("VentRouteHint")
+	if route_hint != null:
+		route_hint.visible = true
+
+func _set_hidden_glow_plankton_active(active: bool) -> void:
+	var glow_pickup := hidden_glow_plankton
+	if glow_pickup == null:
+		glow_pickup = get_node_or_null("ResourcePickups/HiddenGlowPlankton")
+	if glow_pickup == null:
+		return
+
+	glow_pickup.visible = active
+	glow_pickup.set("monitoring", active)
 
 func _reveal_pressure_wreck_signal() -> void:
 	wreck_signal_hint.visible = true
@@ -1165,7 +1177,7 @@ func _cargo_slot_states(resource_ids: Array[String], capacity: int, visible_slot
 	var states: Array[String] = []
 	for index in range(visible_slots):
 		if index >= capacity:
-			states.append("locked")
+			states.append("hidden")
 		elif index < resource_ids.size():
 			states.append(resource_ids[index])
 		else:
@@ -1181,6 +1193,8 @@ func _cargo_slot_color(state: String) -> Color:
 			return Color(0.94, 0.76, 0.46, 0.95)
 		"glow_plankton":
 			return Color(0.84, 0.98, 0.28, 0.95)
+		"hidden":
+			return Color(0.0, 0.0, 0.0, 0.0)
 		"locked":
 			return Color(0.012, 0.025, 0.032, 0.5)
 		_:
@@ -1211,11 +1225,12 @@ func _cargo_slot_icon_color(state: String) -> Color:
 func _update_cargo_slots() -> void:
 	var states := _cargo_slot_states(dive_session.current_cargo, dive_session.cargo_limit, cargo_slot_nodes.size())
 	for index in range(cargo_slot_nodes.size()):
+		var slot_visible := states[index] != "hidden"
 		cargo_slot_nodes[index].color = _cargo_slot_color(states[index])
-		cargo_slot_nodes[index].visible = true
+		cargo_slot_nodes[index].visible = slot_visible
 		cargo_slot_icon_nodes[index].polygon = _cargo_slot_icon_polygon(states[index])
 		cargo_slot_icon_nodes[index].color = _cargo_slot_icon_color(states[index])
-		cargo_slot_icon_nodes[index].visible = cargo_slot_nodes[index].visible and cargo_slot_icon_nodes[index].polygon.size() > 0
+		cargo_slot_icon_nodes[index].visible = slot_visible and cargo_slot_icon_nodes[index].polygon.size() > 0
 
 func _short_resource_name(resource_id: String) -> String:
 	match resource_id:

@@ -13,6 +13,8 @@ Detailed design rules live in:
 - `docs/planning/CONDITION_REVIEW_MATRIX_2026_06_26.md`
 - `docs/planning/HYBRID_OCEAN_MODEL.md`
 - `docs/planning/GAME_VISION.md`
+- `docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026_06_26.md`
+- `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
 - `docs/planning/BLIND_VALIDATION_KIT.md`
@@ -134,12 +136,17 @@ Detailed design rules live in:
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLATFORM_INPUT_GUARDRAIL_2026_06_26.md`
 
 Implemented architecture lives in `docs/current/ARCHITECTURE.md`.
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
 Implemented tooling lives in `docs/current/TOOLING.md`.
 Screenshot workflow lives in `docs/current/SCREENSHOT_WORKFLOW.md`.
 Optional local Godot editor MCP policy lives in `docs/current/GODOT_MCP.md`.
+
+Future platform/input targets live in `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`.
+
+Future larger side-view map direction lives in `docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026_06_26.md`.
 
 ## Active Milestone
 
@@ -377,6 +384,12 @@ Pressure wreck/cache backup art pass: `docs/planning/PRESSURE_WRECK_CACHE_BACKUP
 
 Pressure-dark threshold decision: `docs/planning/PRESSURE_DARK_THRESHOLD_USE_DECISION_2026_06_26.md` keeps `study_pressure_dark_threshold_v1` as an unused planning/reference asset for later `Wreck Echo Descent` work. It should not be scene-wired during current vertical-slice closeout because it could imply a new route, objective, pressure zone, or exact locator before that route exists.
 
+Future platform/input update: `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md` records mobile/iPhone landscape-only touch controls and later controller support as future targets. They are compatibility constraints for current input/HUD work, not current milestone implementation scope.
+
+Future dive-level scale update: `docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026_06_26.md` clarifies that the current vertical slice is not the final map scale. The long-term target is larger side-view expedition maps with lateral routes, caves/pockets, branching descents, deeper layers, stable landmarks, and seeded opportunities from authored candidates. Current Wreck Echo work remains the next narrow stepping stone, not a full map expansion.
+
+Latest backlog refresh: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLATFORM_INPUT_GUARDRAIL_2026_06_26.md` defines the next ordered twenty-issue queue. The queue starts with the first narrow `Wreck Echo Descent` runtime pass, then protects route/HUD/readability evidence, then records platform-input planning without implementing mobile or controller UI.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable and close to polished acceptance, but still in closeout/watchlist verification rather than fully accepted.
@@ -414,21 +427,22 @@ Cleared acceptance follow-ups:
 
 Current playable-slice track:
 
-- Close out the current vertical-slice acceptance status after the evidence cleanup batch.
-- Recheck lower-route screenshots after the surface/HUD/condition/Echo Lens updates.
-- Review active prompt compactness when `Burst Thruster` and `Decoy Pulse I` both appear.
-- Improve first-run readability without adding tutorial panels, quest checklists, minimaps, or field-guide UI.
-- Select the next source-art pass based on readability impact after the moonpool/waterline work.
+- Implement the first narrow `Wreck Echo Descent` route pocket with one compact research clue.
+- Add Wreck Echo visual smoke/readability evidence immediately after runtime implementation.
+- Tune Wreck Echo visuals/copy only from evidence, not from broad content ambition.
+- Refresh vertical-slice acceptance evidence after Wreck Echo lands.
+- Select the next source-art/readability pass based on post-Wreck-Echo impact.
 
 Next planning track:
 
-- Plan the later `Wreck Echo Descent` pocket only after the current slice reads cleanly; keep it planning-only while HUD, surface panels, lower-route density, pressure wreck/cache, or predator route readability remain unresolved.
 - Keep Echo Lens curiosity broad and local; avoid locator, map, field-guide, or checklist UI.
 - Select the next source-art replacement based on readability impact, not asset novelty.
+- Review future platform-input readiness through action maps and prompt planning only; do not implement mobile touch UI or controller polish in this batch unless a later issue explicitly changes scope.
 
 Deferred and out-of-scope track:
 
 - Defer large biomes, broad economy, advanced monster-hunting systems, production animation, audio, web polish, save-slot UI, and base-management layers.
+- Defer mobile/iPhone landscape touch controls and controller polish until the playable slice and Wreck Echo preparation remain stable; preserve action-based input now so those targets stay viable later.
 - Keep minimap, route graph, exact scanner locator, objective checklist, weapons, predator harvesting, full procedural ocean, daily challenge calendar, inventory grid, and final production-art lock out of this milestone.
 
 Historical ordered issue batches:
@@ -796,6 +810,7 @@ Different placement is not enough. It must produce different decisions.
 ## Core Design Constraints
 
 - Expeditions start from a surface boat or shallow lab, then push downward through a side-view ocean column.
+- Long-term expedition maps should expand beyond the current narrow column into wider side-view spaces with left/right route choices, cave-like pockets, branching descents, and deeper regions, once smaller route pockets prove readability.
 - The base is a functional hub, not a management sim. It exists to start dives, extract, show results, and buy upgrades.
 - Extraction must provide emotional payoff: danger stops, cargo is counted visibly, discoveries and upgrades are acknowledged, and the next dive can begin quickly.
 - Progression comes from repeated dives: gather materials, scan lifeforms, survive risk, extract, and upgrade the diver/submersible.
@@ -805,6 +820,7 @@ Different placement is not enough. It must produce different decisions.
 - Monster hunting should grow from observation first: scan, learn behavior, avoid danger, then later trap, wound, repel, or hunt specific predators.
 - Every new mechanic should strengthen one question: should the player continue downward or return safely now?
 - State ownership should stay explicit: `DiveSession` owns temporary expedition state, `ProgressionState` owns durable progress, authored scene data owns inspectable route/content placement, and visual/readability assets communicate meaning without owning gameplay truth.
+- Player-facing controls should stay routed through semantic Godot actions so future controller support and landscape mobile/touch controls can be added without rewriting gameplay rules.
 
 ## Current State
 
@@ -897,6 +913,7 @@ Different placement is not enough. It must produce different decisions.
 ## Deferred Work
 
 - Large open-world ocean generation.
+- Large side-view region maps, cave networks, and multi-route level layouts before the current slice and route-pocket model are readable.
 - Full procedural biomes.
 - Full crafting economy, recipe trees, resource rarity tiers, stack sizes, grid inventory, or inventory rearranging.
 - Physical cargo processing, base management, crafting minigames, elaborate environmental upgrades, or restaurant/colony systems.
@@ -905,6 +922,7 @@ Different placement is not enough. It must produce different decisions.
 - Full field guide UI beyond practical scan results.
 - Daily challenge mode with calendar-derived shared seeds.
 - Disk save slots beyond one prototype progression save.
+- Mobile/iPhone landscape touch-control implementation and controller polish.
 - Multiplayer.
 - Polished art, animation, sound design, or final UI styling before the expedition loop proves itself.
 

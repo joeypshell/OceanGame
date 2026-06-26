@@ -67,6 +67,8 @@ Resources:
 - `oceangame://core-loop`
 - `oceangame://seeded-expeditions`
 - `oceangame://game-vision`
+- `oceangame://future-expansive-dive-levels-2026-06-26`
+- `oceangame://future-platform-input-targets-2026-06-26`
 - `oceangame://compulsion-identity-2026-06-26`
 - `oceangame://progression-ladder`
 - `oceangame://predator-direction`
@@ -170,6 +172,7 @@ Resources:
 - `oceangame://backlog-replenishment-after-vertical-slice-readability-2026-06-26`
 - `oceangame://backlog-replenishment-after-vertical-slice-closeout-2026-06-26`
 - `oceangame://backlog-replenishment-wreck-echo-prep-review-2026-06-26`
+- `oceangame://backlog-replenishment-after-platform-input-guardrail-2026-06-26`
 - `oceangame://backlog-replenishment-after-visual-clarity-2026-06-26`
 - `oceangame://thermal-vent-route-review-2026-06-25`
 - `oceangame://backlog-replenishment-thermal-vent-decoy`

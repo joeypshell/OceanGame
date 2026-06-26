@@ -19,6 +19,8 @@ const resources = [
   ["oceangame://core-loop", "docs/planning/CORE_LOOP_RULES.md", "Core loop rules"],
   ["oceangame://seeded-expeditions", "docs/planning/DAILY_RUNS.md", "Seeded expedition guidance"],
   ["oceangame://game-vision", "docs/planning/GAME_VISION.md", "Game vision"],
+  ["oceangame://future-expansive-dive-levels-2026-06-26", "docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026_06_26.md", "Future expansive dive levels"],
+  ["oceangame://future-platform-input-targets-2026-06-26", "docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md", "Future platform and input targets"],
   ["oceangame://compulsion-identity-2026-06-26", "docs/planning/COMPULSION_IDENTITY_2026_06_26.md", "Compulsion identity direction"],
   ["oceangame://progression-ladder", "docs/planning/PROGRESSION_LADDER.md", "Progression ladder"],
   ["oceangame://predator-direction", "docs/planning/PREDATOR_INTERACTION_DIRECTION.md", "Predator interaction direction"],
@@ -127,6 +129,7 @@ const resources = [
   ["oceangame://backlog-replenishment-after-vertical-slice-readability-2026-06-26", "docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md", "Post-vertical-slice-readability backlog replenishment"],
   ["oceangame://backlog-replenishment-after-vertical-slice-closeout-2026-06-26", "docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md", "Post-vertical-slice-closeout backlog replenishment"],
   ["oceangame://backlog-replenishment-wreck-echo-prep-review-2026-06-26", "docs/planning/BACKLOG_REPLENISHMENT_WRECK_ECHO_PREP_REVIEW_2026_06_26.md", "Wreck Echo prep backlog review"],
+  ["oceangame://backlog-replenishment-after-platform-input-guardrail-2026-06-26", "docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLATFORM_INPUT_GUARDRAIL_2026_06_26.md", "Post-platform-input-guardrail backlog replenishment"],
   ["oceangame://backlog-replenishment-after-shell-reef", "docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md", "Post-Shell-Reef backlog replenishment"],
   ["oceangame://backlog-replenishment-2026-06-25", "docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md", "Backlog replenishment"],
 ].map(([uri, filePath, name]) => ({
@@ -236,6 +239,8 @@ function selfTest() {
     "oceangame://compulsion-identity-2026-06-26",
     "oceangame://backlog-replenishment-visual-clarity-foundation-2026-06-26",
     "oceangame://screenshot-workflow",
+    "oceangame://future-expansive-dive-levels-2026-06-26",
+    "oceangame://future-platform-input-targets-2026-06-26",
     "oceangame://monster-research-loop-v1",
     "oceangame://scanner-progression-v2",
     "oceangame://deeper-access-after-echo-lens-2026-06-26",
@@ -310,6 +315,7 @@ function selfTest() {
     "oceangame://backlog-replenishment-after-vertical-slice-readability-2026-06-26",
     "oceangame://backlog-replenishment-after-vertical-slice-closeout-2026-06-26",
     "oceangame://backlog-replenishment-wreck-echo-prep-review-2026-06-26",
+    "oceangame://backlog-replenishment-after-platform-input-guardrail-2026-06-26",
     "oceangame://backlog-replenishment-after-visual-clarity-2026-06-26",
     "oceangame://project-status",
   ];

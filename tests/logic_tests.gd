@@ -1205,6 +1205,16 @@ func _test_thermal_vent_scan_clue_text() -> void:
 	target.free()
 	main.free()
 
+	var main_scene := MainScene.instantiate()
+	root.add_child(main_scene)
+	var hidden_glow: Area2D = main_scene.get_node("ResourcePickups/HiddenGlowPlankton")
+	var vent_route_hint: Node2D = main_scene.get_node("VentRouteHint")
+	main_scene.call("_reveal_thermal_vent_route")
+	_expect(vent_route_hint.visible, "thermal vent scan should reveal the optional route hint")
+	_expect(not hidden_glow.visible, "thermal vent scan should not create an extra active Glow Plankton pickup")
+	_expect(not hidden_glow.monitoring, "thermal vent scan should not enable hidden Glow Plankton collision")
+	main_scene.queue_free()
+
 func _test_shell_reef_scan_clue_text() -> void:
 	var main := MainScript.new()
 	var target := DummyScanTarget.new()
@@ -1318,16 +1328,16 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(inline_cargo == " - Glow x2, Kelp x1", "active cargo helper should keep carried resources on one line")
 
 	var slot_states: Array = main.call("_cargo_slot_states", cargo, 3, 4)
-	_expect(slot_states == ["glow_plankton", "kelp_fiber", "glow_plankton", "locked"], "cargo slots should show filled slots and lock excess capacity")
+	_expect(slot_states == ["glow_plankton", "kelp_fiber", "glow_plankton", "hidden"], "cargo slots should hide excess capacity before Cargo Rack I")
 	var upgraded_slot_states: Array = main.call("_cargo_slot_states", cargo, 4, 4)
 	_expect(upgraded_slot_states == ["glow_plankton", "kelp_fiber", "glow_plankton", "empty"], "cargo slots should reveal the fourth slot after capacity upgrade")
-	_expect(main.call("_cargo_slot_color", "empty").a > main.call("_cargo_slot_color", "locked").a, "empty cargo slots should read brighter than locked slots")
-	_expect(main.call("_cargo_slot_color", "locked").a >= 0.5, "locked cargo slot should remain visible as disabled capacity")
+	_expect(main.call("_cargo_slot_color", "empty").a > main.call("_cargo_slot_color", "hidden").a, "empty cargo slots should read brighter than unavailable slots")
+	_expect(main.call("_cargo_slot_color", "hidden").a == 0.0, "hidden cargo slot color should stay transparent")
 	_expect(main.call("_cargo_slot_icon_polygon", "kelp_fiber").size() > 0, "kelp cargo slots should have a mini-icon polygon")
 	_expect(main.call("_cargo_slot_icon_polygon", "shell_fragments").size() > 0, "shell cargo slots should have a mini-icon polygon")
 	_expect(main.call("_cargo_slot_icon_polygon", "glow_plankton").size() > 0, "glow cargo slots should have a mini-icon polygon")
 	_expect(main.call("_cargo_slot_icon_polygon", "empty").is_empty(), "empty cargo slots should not show a resource mini-icon")
-	_expect(main.call("_cargo_slot_icon_color", "locked").a == 0.0, "locked cargo slot icon color should stay transparent")
+	_expect(main.call("_cargo_slot_icon_color", "hidden").a == 0.0, "hidden cargo slot icon color should stay transparent")
 
 	var compact_discoveries: String = main.call("_format_discoveries", true)
 	_expect(compact_discoveries == "Discoveries: 0", "compact discovery helper should show only the count")
@@ -1341,13 +1351,32 @@ func _test_compact_dive_hud_helpers() -> void:
 	var prompt_label: Label = main_scene.get_node("HUD/ExtractionPrompt")
 	var status_label: Label = main_scene.get_node("HUD/Status")
 	var cargo_slot_4: ColorRect = main_scene.get_node("HUD/CargoSlots/Slot4")
+	var cargo_slot_nodes: Array[ColorRect] = [
+		main_scene.get_node("HUD/CargoSlots/Slot1"),
+		main_scene.get_node("HUD/CargoSlots/Slot2"),
+		main_scene.get_node("HUD/CargoSlots/Slot3"),
+		cargo_slot_4,
+	]
+	var cargo_slot_icon_nodes: Array[Polygon2D] = [
+		main_scene.get_node("HUD/CargoSlots/Icon1"),
+		main_scene.get_node("HUD/CargoSlots/Icon2"),
+		main_scene.get_node("HUD/CargoSlots/Icon3"),
+		main_scene.get_node("HUD/CargoSlots/Icon4"),
+	]
+	main_scene.cargo_slot_nodes = cargo_slot_nodes
+	main_scene.cargo_slot_icon_nodes = cargo_slot_icon_nodes
+	main_scene.dive_session.cargo_limit = 3
+	main_scene.call("_update_cargo_slots")
 	_expect(discoveries_label.offset_top >= active_panel.offset_top, "active Discoveries label should stay inside the compact stats panel")
 	_expect(discoveries_label.offset_bottom <= active_panel.offset_bottom, "active Discoveries label should not spill below the compact stats panel")
 	_expect(dive_info_panel.offset_top > active_panel.offset_bottom, "dive info panel should remain below compact stats content")
 	_expect(scan_target_label.offset_top >= dive_info_panel.offset_top, "scan target should stay inside the dive info panel")
 	_expect(status_label.offset_bottom <= dive_info_panel.offset_bottom, "status text should stay inside the dive info panel")
 	_expect(prompt_label.offset_bottom <= status_label.offset_top, "prompt and status should not overlap")
-	_expect(cargo_slot_4.visible, "locked fourth cargo slot should remain visible as dim capacity")
+	_expect(not cargo_slot_4.visible, "fourth cargo slot should stay hidden before Cargo Rack I")
+	main_scene.dive_session.cargo_limit = 4
+	main_scene.call("_update_cargo_slots")
+	_expect(cargo_slot_4.visible, "fourth cargo slot should appear after Cargo Rack I capacity is active")
 	_expect(scan_target_label.text.begins_with("Scan:"), "scan target label should use compact active HUD copy")
 	_expect(not active_panel.visible, "surface-ready state should hide active stats clutter")
 	_expect(not dive_info_panel.visible, "surface-ready state should hide dive guidance clutter")

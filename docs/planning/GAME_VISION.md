@@ -55,6 +55,8 @@ This is an in-game expedition-day rhythm, not a required real-world daily challe
 
 Regions should become memory anchors, not only depth labels. Each major region should eventually have a fixed landmark, a variable daily opportunity, one major secret, one progression gate or promise, and one creature behavior theme. Initial region candidates are Surface Reef, Wreck Shelf, Thermal Vent Field, Pressure Trench, and Abyssal Ruins.
 
+The current prototype is intentionally small, but the intended long-term dive space is larger than a single vertical shaft: broad side-view expedition maps with left/right route choices, cave-like pockets, branching descents, deeper layers, and authored region layouts. The expansion path is documented in `docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026_06_26.md`.
+
 ## Surface Rhythm
 
 The surface phase should feel emotionally different from the ocean without becoming a management sim:
@@ -78,6 +80,7 @@ It should also borrow the useful lesson from exploration hits without copying th
 
 - No full open-world ocean generation in the prototype.
 - No full procedural biomes until authored expedition decisions are fun.
+- No large map expansion until the current slice and smaller route pockets prove readability, oxygen pressure, and safe-return orientation.
 - No complete ocean reroll that erases persistent place memory.
 - No real-calendar daily challenge mode until the in-game expedition-day loop works.
 - No restaurant, colony, or base-management layer.

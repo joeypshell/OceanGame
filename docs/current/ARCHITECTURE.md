@@ -166,6 +166,11 @@ Small reusable visual helpers such as `scripts/scan_pulse_visual.gd` may central
 - Do not add a parallel objective/quest state system while the expedition prep goal formatter is enough.
 - Do not create a broad field guide, quest log, route graph, or map marker to persist one compact research clue before result-only memory has been tested.
 - Do not add broad procedural biome generation until authored route decisions are readable and testable.
+- Do not couple gameplay rules to keyboard-specific checks. Player-facing input should route through semantic Godot actions so future controller and landscape mobile/touch controls remain viable without changing dive, scan, cargo, predator, pressure, or progression rules.
+
+## Future Platform/Input Direction
+
+Future mobile/iPhone and controller targets are deferred planning constraints, not current implementation scope. The target direction is landscape-locked mobile with touchscreen controls and later controller support mapped onto the same action names. See `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`.
 
 ## Testing And Verification
 

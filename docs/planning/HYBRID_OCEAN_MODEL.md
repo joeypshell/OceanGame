@@ -51,6 +51,8 @@ Initial persistent region candidates:
 
 The prototype does not need all of these regions immediately. The current vertical slice can keep proving the model with Shell Reef, Thermal Vent, the pressure wreck, the Gulper Eel route, and the planned `Wreck Echo Descent` pocket before expanding into a region-select flow.
 
+Long-term region layouts should become wider side-view expedition spaces with meaningful lateral movement, caves, branching descent routes, and deeper layers. `docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026_06_26.md` defines this as the future map-scale direction while keeping the current slice and Wreck Echo pocket intentionally narrow.
+
 Each region should eventually be planned as a memory anchor:
 
 - fixed landmark,
@@ -140,6 +142,7 @@ Do not start with:
 
 - a giant continuous world map,
 - full procedural biome generation,
+- a large cave/region map before smaller authored route pockets prove readability and safe-return orientation,
 - a real-calendar daily challenge mode,
 - a management sim,
 - or a large final-art production pass.
