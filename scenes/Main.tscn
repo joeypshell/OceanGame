@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=30 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -33,6 +33,38 @@ radius = 22.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pressure_boundary"]
 size = Vector2(58, 520)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_panel"]
+bg_color = Color(0.025, 0.075, 0.095, 0.74)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.36, 0.78, 0.9, 0.58)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_warning_panel"]
+bg_color = Color(0.11, 0.055, 0.035, 0.78)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.62, 0.28, 0.72)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main_script")
@@ -1043,6 +1075,14 @@ limit_bottom = 2320
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
+[node name="ActiveStatsPanel" type="Panel" parent="HUD"]
+visible = false
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 372.0
+offset_bottom = 184.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
+
 [node name="Hint" type="Label" parent="HUD"]
 visible = false
 offset_left = 24.0
@@ -1064,6 +1104,10 @@ offset_left = 24.0
 offset_top = 24.0
 offset_right = 360.0
 offset_bottom = 56.0
+theme_override_colors/font_color = Color(0.93, 0.98, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 text = "Oxygen: 30 / 30"
 
 [node name="Depth" type="Label" parent="HUD"]
@@ -1071,6 +1115,10 @@ offset_left = 24.0
 offset_top = 62.0
 offset_right = 360.0
 offset_bottom = 94.0
+theme_override_colors/font_color = Color(0.8, 0.93, 0.98, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 text = "Depth: 0m | Best: 0m"
 
 [node name="BaseDirection" type="Label" parent="HUD"]
@@ -1078,6 +1126,10 @@ offset_left = 24.0
 offset_top = 100.0
 offset_right = 360.0
 offset_bottom = 132.0
+theme_override_colors/font_color = Color(0.74, 0.96, 0.92, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 text = "Base: here"
 
 [node name="Cargo" type="Label" parent="HUD"]
@@ -1085,6 +1137,10 @@ offset_left = 24.0
 offset_top = 138.0
 offset_right = 148.0
 offset_bottom = 170.0
+theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 text = "Cargo: 0 / 3"
 
 [node name="CargoSlots" type="Node2D" parent="HUD"]
@@ -1093,25 +1149,25 @@ position = Vector2(156, 140)
 [node name="Slot1" type="ColorRect" parent="HUD/CargoSlots"]
 offset_right = 26.0
 offset_bottom = 26.0
-color = Color(0.08, 0.16, 0.2, 0.82)
+color = Color(0.035, 0.1, 0.13, 0.9)
 
 [node name="Slot2" type="ColorRect" parent="HUD/CargoSlots"]
 offset_left = 34.0
 offset_right = 60.0
 offset_bottom = 26.0
-color = Color(0.08, 0.16, 0.2, 0.82)
+color = Color(0.035, 0.1, 0.13, 0.9)
 
 [node name="Slot3" type="ColorRect" parent="HUD/CargoSlots"]
 offset_left = 68.0
 offset_right = 94.0
 offset_bottom = 26.0
-color = Color(0.08, 0.16, 0.2, 0.82)
+color = Color(0.035, 0.1, 0.13, 0.9)
 
 [node name="Slot4" type="ColorRect" parent="HUD/CargoSlots"]
 offset_left = 102.0
 offset_right = 128.0
 offset_bottom = 26.0
-color = Color(0.02, 0.05, 0.07, 0.42)
+color = Color(0.015, 0.035, 0.045, 0.42)
 
 [node name="Icon1" type="Polygon2D" parent="HUD/CargoSlots"]
 visible = false
@@ -1160,12 +1216,17 @@ offset_left = 16.0
 offset_top = 204.0
 offset_right = 576.0
 offset_bottom = 372.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
 
 [node name="Status" type="Label" parent="HUD"]
 offset_left = 24.0
 offset_top = 300.0
 offset_right = 560.0
 offset_bottom = 364.0
+theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 text = "Dive status: active"
 autowrap_mode = 2
 
@@ -1174,6 +1235,10 @@ offset_left = 24.0
 offset_top = 252.0
 offset_right = 560.0
 offset_bottom = 292.0
+theme_override_colors/font_color = Color(0.82, 0.95, 0.96, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 text = "Safe base: press E or Enter to extract"
 autowrap_mode = 2
 
@@ -1182,6 +1247,10 @@ offset_left = 24.0
 offset_top = 214.0
 offset_right = 560.0
 offset_bottom = 248.0
+theme_override_colors/font_color = Color(0.7, 0.92, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 text = "Scan target: none nearby"
 
 [node name="OxygenWarningPanel" type="Panel" parent="HUD"]
@@ -1190,12 +1259,17 @@ offset_left = 914.0
 offset_top = 24.0
 offset_right = 1256.0
 offset_bottom = 92.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_warning_panel")
 
 [node name="OxygenWarning" type="Label" parent="HUD/OxygenWarningPanel"]
 offset_left = 16.0
 offset_top = 10.0
 offset_right = 326.0
 offset_bottom = 58.0
+theme_override_colors/font_color = Color(1, 0.88, 0.68, 1)
+theme_override_colors/font_shadow_color = Color(0.06, 0.02, 0.01, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 text = "LOW OXYGEN - PLAN RETURN"
 autowrap_mode = 2
 

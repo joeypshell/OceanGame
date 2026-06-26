@@ -67,6 +67,7 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 @onready var base_zone: Area2D = $BaseZone
 @onready var hint_label: Label = $HUD/Hint
 @onready var bounds_hint_label: Label = $HUD/BoundsHint
+@onready var active_stats_panel: Panel = $HUD/ActiveStatsPanel
 @onready var oxygen_label: Label = $HUD/Oxygen
 @onready var depth_label: Label = $HUD/Depth
 @onready var base_direction_label: Label = $HUD/BaseDirection
@@ -976,6 +977,7 @@ func _update_hud() -> void:
 	var has_surface_panel := dive_session.result != DiveSessionScript.Result.DIVING
 	hint_label.visible = false
 	bounds_hint_label.visible = false
+	active_stats_panel.visible = is_diving
 	oxygen_label.visible = is_diving
 	depth_label.visible = is_diving
 	base_direction_label.visible = is_diving
@@ -1144,15 +1146,15 @@ func _cargo_slot_states(resource_ids: Array[String], capacity: int, visible_slot
 func _cargo_slot_color(state: String) -> Color:
 	match state:
 		"kelp_fiber":
-			return Color(0.38, 0.88, 0.48, 0.95)
+			return Color(0.36, 0.86, 0.5, 0.95)
 		"shell_fragments":
-			return Color(0.96, 0.82, 0.54, 0.95)
+			return Color(0.94, 0.76, 0.46, 0.95)
 		"glow_plankton":
-			return Color(0.9, 1.0, 0.24, 0.95)
+			return Color(0.84, 0.98, 0.28, 0.95)
 		"locked":
-			return Color(0.02, 0.05, 0.07, 0.42)
+			return Color(0.015, 0.035, 0.045, 0.42)
 		_:
-			return Color(0.08, 0.16, 0.2, 0.82)
+			return Color(0.035, 0.1, 0.13, 0.9)
 
 func _cargo_slot_icon_polygon(state: String) -> PackedVector2Array:
 	match state:
