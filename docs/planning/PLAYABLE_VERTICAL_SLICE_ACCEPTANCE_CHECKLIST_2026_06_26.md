@@ -90,3 +90,25 @@ Manual smoke checks for acceptance:
 ## Acceptance Summary
 
 The vertical slice is playable when a tester can complete two short expeditions, buy or clearly progress toward one upgrade, understand one blocked route, understand one danger route, notice one optional clue route, and want to try another expedition without being overwhelmed by overlapping text or unreadable shapes.
+
+## Current Acceptance Status
+
+Updated after the smoke, HUD, surface, upgrade, no-debug, and pressure wreck/cache follow-ups: the current slice is structurally playable and close to polished acceptance, but it remains pass-with-watchlist rather than fully accepted.
+
+Accepted or cleared:
+
+- clean-save two-expedition loop,
+- active `Discoveries` compact HUD placement,
+- surface moonpool/waterline readability as pass-with-watchlist,
+- surface panel opacity over the boat/waterline pass,
+- upgrade-tab wrapping at normal scale,
+- normal no-debug surface views,
+- pressure wreck/cache recheck after surface/HUD changes.
+
+Remaining before declaring the gate fully passed:
+
+- `Decoy Pulse I` owned-state HUD/status and result-memory smoke note,
+- result and upgrade text-length guard coverage,
+- condition visual review with normal-scale screenshots,
+- Echo Lens pulse readability at Wreck Signal Cache,
+- continued lower-route watchlist after any future visual change.

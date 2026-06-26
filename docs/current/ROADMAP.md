@@ -175,7 +175,7 @@ Pressure wreck/cache backup art pass: `docs/planning/PRESSURE_WRECK_CACHE_BACKUP
 
 ## Vertical-Slice Acceptance Status
 
-Current status: structurally playable, not yet polished accepted.
+Current status: structurally playable and close to polished acceptance, but still pass-with-watchlist rather than fully accepted.
 
 Implemented:
 
@@ -193,8 +193,10 @@ Pass with polish:
 
 Remaining before calling the vertical-slice gate fully accepted:
 
-- convert smoke-pass watchlists into normal-scale acceptance evidence after the surface and lower-route follow-ups,
 - recheck `Decoy Pulse I` prompt length in normal-scale HUD evidence,
+- review condition visuals in fresh normal-scale captures after the surface/HUD changes,
+- recheck `Echo Lens I` pulse readability at Wreck Signal Cache,
+- add text-length guards for result and upgrade copy,
 - keep lower-route screenshots on the watchlist after any visual change, especially surface art or future Wreck Echo work.
 
 Cleared acceptance follow-ups:
@@ -202,6 +204,7 @@ Cleared acceptance follow-ups:
 - upgrade tab overflow has normal-scale evidence after the wrapping and surface-panel opacity changes.
 - no-debug surface captures have a sanity review across ready, result, upgrade, and log views.
 - pressure wreck/cache has a combined recheck after the surface/HUD readability changes.
+- clean-save two-expedition smoke, active Discoveries placement, lower-route recheck, surface moonpool/waterline review, and surface panel opacity are no longer blocker-level issues.
 
 ## Immediate Issue Order
 
