@@ -45,3 +45,5 @@ The later implementation should not add new controls or UI. It should formalize 
 ## Acceptance Guardrail
 
 The phrase `Decoy response observed` should always read as timing evidence. It must not become predator damage, stun, capture, harvest, permanent route removal, or a creature-collection step.
+
+State ownership follow-up: `docs/planning/MONSTER_RESEARCH_II_STATE_OWNERSHIP_RESULT_MEMORY_2026_06_26.md` keeps the selected evidence run-scoped by default, allows one compact result line, and defers durable progression state until a specific later upgrade or gate requires it.
