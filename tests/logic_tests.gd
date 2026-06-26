@@ -46,6 +46,7 @@ func _initialize() -> void:
 	_run("spawn-point matching", _test_spawn_point_matching)
 	_run("spawn selection", _test_spawn_selection)
 	_run("condition-weighted spawn selection", _test_condition_weighted_spawn_selection)
+	_run("debug review seed and condition helpers", _test_debug_review_helpers)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("predator scan target", _test_predator_scan_target)
@@ -299,6 +300,17 @@ func _test_condition_weighted_spawn_selection() -> void:
 	_expect(shell_weighted.size() == 1, "thermal bloom should not broaden non-glow resource selection")
 	_expect(shell_weighted.has(Vector2(40.0, 100.0)), "thermal bloom should leave non-glow target positions intact")
 	root.free()
+
+func _test_debug_review_helpers() -> void:
+	var main := MainScript.new()
+	var next_condition := main._debug_next_condition_from_id("calm_current")
+	_expect(next_condition.get("id", "") == "kelp_bloom", "debug condition helper should cycle from the current condition")
+
+	var first_condition := main._debug_next_condition_from_id("unknown_condition")
+	_expect(first_condition.get("id", "") == "calm_current", "debug condition helper should fall back to the first condition")
+	_expect(main._debug_seed_for_delta(8919, 1) == 8920, "debug seed helper should increment review seed")
+	_expect(main._debug_seed_for_delta(1, -10) == 1, "debug seed helper should keep review seed positive")
+	main.free()
 
 func _test_scanner_target_resolver() -> void:
 	var farther_a := _make_scan_target("alpha", "Alpha", Vector2(10.0, 0.0))

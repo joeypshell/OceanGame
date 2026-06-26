@@ -182,6 +182,10 @@ func _process(delta: float) -> void:
 func _unhandled_input(_event: InputEvent) -> void:
 	if _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F3:
 		_toggle_debug_telemetry()
+	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F4:
+		_cycle_debug_condition()
+	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F5:
+		_cycle_debug_seed()
 	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F9:
 		_reset_local_prototype_save()
 	elif Input.is_action_just_pressed("interact"):
@@ -333,6 +337,47 @@ func _toggle_debug_telemetry() -> void:
 	show_debug_telemetry = not show_debug_telemetry
 	status_label.text = "Debug telemetry: %s." % ("shown" if show_debug_telemetry else "hidden")
 	_update_hud()
+
+func _cycle_debug_condition() -> void:
+	if not show_debug_telemetry:
+		return
+
+	current_expedition_condition = _debug_next_condition_from_id(_current_condition_id())
+	_place_starter_resources_for_run()
+	_sync_condition_visuals()
+	_update_hud()
+	status_label.text = "Debug condition: %s." % _format_condition_telemetry()
+
+func _cycle_debug_seed() -> void:
+	if not show_debug_telemetry:
+		return
+
+	progression_state.current_run_seed = _debug_seed_for_delta(progression_state.current_run_seed, 1)
+	current_expedition_condition = ExpeditionConditionScript.condition_for_seed(progression_state.current_run_seed)
+	_reset_resource_pickups()
+	_place_starter_resources_for_run()
+	_sync_condition_visuals()
+	_sync_discovery_reveals()
+	_update_hud()
+	status_label.text = "Debug seed: %d | %s | %s." % [
+		progression_state.current_run_seed,
+		_format_cluster_pattern(current_resource_cluster_pattern),
+		_format_condition_telemetry(),
+	]
+
+func _debug_next_condition_from_id(current_id: String) -> Dictionary:
+	var conditions := ExpeditionConditionScript.all_conditions()
+	if conditions.is_empty():
+		return {}
+
+	for index in range(conditions.size()):
+		if String(conditions[index].get("id", "")) == current_id:
+			return conditions[(index + 1) % conditions.size()].duplicate(true)
+
+	return conditions[0].duplicate(true)
+
+func _debug_seed_for_delta(seed: int, delta: int) -> int:
+	return maxi(1, seed + delta)
 
 func _try_purchase_selected_upgrade() -> void:
 	var upgrade := _selected_upgrade_definition()
