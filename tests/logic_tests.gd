@@ -45,6 +45,7 @@ func _initialize() -> void:
 	_run("discovery prerequisites", _test_discovery_prerequisites)
 	_run("predator warning upgrade metadata", _test_predator_warning_upgrade_metadata)
 	_run("predator warning effect isolation", _test_predator_warning_effect_isolation)
+	_run("decoy pulse effect isolation", _test_decoy_pulse_effect_isolation)
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
 	_run("route choice result callout", _test_route_choice_result_callout)
@@ -328,6 +329,28 @@ func _test_predator_warning_effect_isolation() -> void:
 	_expect(main.dive_session.cargo_limit == 3, "Predator Warning I should not mutate current dive cargo capacity")
 	_expect(not main.progression_state.has_upgrade(PressureSealUpgrade.id), "Predator Warning I should not grant Pressure Seal I")
 	_expect(not main.progression_state.has_upgrade(SignalLensUpgrade.id), "Predator Warning I should not grant Signal Lens I")
+	main.free()
+
+func _test_decoy_pulse_effect_isolation() -> void:
+	var main := MainScript.new()
+	main.base_cargo_limit = 3
+	main.dive_session.reset(30.0)
+	main.dive_session.cargo_limit = main.base_cargo_limit
+	main.dive_session.current_cargo = ["kelp_fiber"]
+	main.run_predator_contacts = 0
+	main.progression_state.purchased_upgrades = {
+		PredatorWarningUpgrade.id: true,
+		DecoyPulseUpgrade.id: true,
+	}
+
+	main._apply_upgrade_effect(DecoyPulseUpgrade.effect_id)
+
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Decoy Pulse I purchase should not change dive result state")
+	_expect(main.dive_session.current_cargo == ["kelp_fiber"], "Decoy Pulse I purchase should not change carried cargo")
+	_expect(main.dive_session.cargo_limit == 3, "Decoy Pulse I purchase should not change cargo capacity")
+	_expect(main.run_predator_contacts == 0, "Decoy Pulse I purchase should not create predator contact")
+	_expect(not main.progression_state.has_upgrade(PressureSealUpgrade.id), "Decoy Pulse I should not grant Pressure Seal I")
+	_expect(not main.progression_state.has_upgrade(SignalLensUpgrade.id), "Decoy Pulse I should not grant Signal Lens I")
 	main.free()
 
 func _test_expedition_prep_goals() -> void:

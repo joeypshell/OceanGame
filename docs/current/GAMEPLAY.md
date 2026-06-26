@@ -39,7 +39,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The prototype save uses schema version `1`. It includes `save_version`, banked resources keyed by resource id, purchased upgrades keyed by upgrade id, scan discoveries keyed by discovery id, and best depth reached.
 - Scan discovery entries still keep a small display snapshot for the current practical scan-result UI, but progression identity should continue to come from discovery ids and upgrade ids rather than copied display text.
 - Missing `save_version` saves are treated as legacy version `0` and migrate by loading the known progression fields. Current version `1` loads the same known fields directly. Unknown newer versions warn and load known fields only so prototype progress is not discarded.
-- The prototype save does not restore active oxygen, current cargo, active run state, temporary effects, current expedition number, or current expedition seed.
+- The prototype save does not restore active oxygen, current cargo, active run state, temporary effects, current expedition number, current expedition seed, or whether the one-use `Decoy Pulse I` has been spent during the active expedition.
 - Extraction only succeeds after the player has left the base and returned.
 - The player starts with three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep. The `Thermal Vent` pocket contributes vent-adjacent `Glow Plankton` candidates for existing seeded selection rather than adding extra active resource pickups.
