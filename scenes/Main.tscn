@@ -187,27 +187,27 @@ polygon = PackedVector2Array(850, 1060, 1160, 1120, 1118, 1210, 782, 1168)
 [node name="ShellReefPocket" type="Node2D" parent="."]
 
 [node name="LandmarkWash" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.84, 0.76, 0.56, 0.13)
+color = Color(0.84, 0.76, 0.56, 0.18)
 polygon = PackedVector2Array(110, 1000, 360, 946, 664, 1008, 912, 1148, 822, 1278, 492, 1252, 214, 1244, 48, 1158)
 
 [node name="ReefShelf" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.18, 0.22, 0.24, 0.58)
+color = Color(0.2, 0.24, 0.26, 0.66)
 polygon = PackedVector2Array(154, 1068, 318, 1018, 486, 1048, 610, 1128, 744, 1110, 862, 1178, 748, 1242, 520, 1220, 394, 1186, 218, 1218, 90, 1168)
 
 [node name="ShellFanA" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.82, 0.68, 0.46, 0.72)
+color = Color(0.9, 0.76, 0.52, 0.84)
 polygon = PackedVector2Array(250, 1058, 282, 990, 314, 1058, 342, 1006, 356, 1080, 302, 1100)
 
 [node name="ShellFanB" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.72, 0.82, 0.76, 0.48)
+color = Color(0.76, 0.9, 0.82, 0.6)
 polygon = PackedVector2Array(458, 1086, 488, 1018, 526, 1086, 562, 1042, 570, 1120, 500, 1132)
 
 [node name="CoralShardA" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.62, 0.74, 0.8, 0.44)
+color = Color(0.66, 0.78, 0.86, 0.52)
 polygon = PackedVector2Array(634, 1122, 650, 1050, 674, 1128, 710, 1070, 700, 1160, 662, 1168)
 
 [node name="CoralShardB" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.9, 0.62, 0.5, 0.4)
+color = Color(0.94, 0.64, 0.52, 0.5)
 polygon = PackedVector2Array(760, 1182, 778, 1118, 802, 1184, 834, 1148, 822, 1222, 786, 1230)
 
 [node name="ReefCurrentGap" type="Polygon2D" parent="ShellReefPocket"]
@@ -346,23 +346,23 @@ shape = SubResource("CircleShape2D_pickup")
 position = Vector2(430, 1260)
 
 [node name="WarmWash" type="Polygon2D" parent="ThermalVentPocket"]
-color = Color(0.92, 0.44, 0.16, 0.13)
+color = Color(0.92, 0.44, 0.16, 0.18)
 polygon = PackedVector2Array(-210, -132, 110, -184, 262, -42, 206, 132, -144, 176, -284, 22)
 
 [node name="CrackedShelf" type="Polygon2D" parent="ThermalVentPocket"]
-color = Color(0.46, 0.34, 0.26, 0.58)
+color = Color(0.5, 0.36, 0.26, 0.68)
 polygon = PackedVector2Array(-168, 74, -74, 30, 32, 54, 132, 24, 194, 76, 74, 108, -52, 116)
 
 [node name="HeatPlume" type="Polygon2D" parent="ThermalVentPocket"]
-color = Color(1, 0.68, 0.24, 0.2)
+color = Color(1, 0.62, 0.2, 0.28)
 polygon = PackedVector2Array(-46, 46, -16, -132, 24, -84, 54, -174, 96, -44, 58, 42)
 
 [node name="BubbleStringA" type="Polygon2D" parent="ThermalVentPocket"]
-color = Color(0.96, 1, 0.82, 0.28)
+color = Color(0.96, 1, 0.82, 0.34)
 polygon = PackedVector2Array(-62, -4, -48, -28, -34, -8, -16, -58, 2, -32, 16, -90, 34, -62)
 
 [node name="BubbleStringB" type="Polygon2D" parent="ThermalVentPocket"]
-color = Color(0.96, 1, 0.82, 0.22)
+color = Color(0.96, 1, 0.82, 0.28)
 polygon = PackedVector2Array(34, 20, 50, -18, 68, 8, 92, -44, 112, -14, 132, -72, 148, -42)
 
 [node name="WarmCurrentRibbon" type="Polygon2D" parent="ThermalVentPocket"]
@@ -927,7 +927,7 @@ color = Color(0.95, 1, 0.7, 0.22)
 polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="Visual" type="Polygon2D" parent="Discoveries/ThermalVent"]
-color = Color(0.92, 0.5, 0.2, 0.82)
+color = Color(0.96, 0.46, 0.16, 0.9)
 polygon = PackedVector2Array(-42, 30, -20, -28, 0, -8, 20, -32, 44, 30)
 
 [node name="Bubbles" type="Polygon2D" parent="Discoveries/ThermalVent"]
@@ -950,7 +950,7 @@ color = Color(0.95, 1, 0.7, 0.22)
 polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="Visual" type="Polygon2D" parent="Discoveries/ShellReefShelf"]
-color = Color(0.94, 0.82, 0.54, 0.52)
+color = Color(0.96, 0.84, 0.56, 0.64)
 polygon = PackedVector2Array(-46, -20, 28, -30, 58, 4, 26, 28, -38, 24, -64, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Discoveries/ShellReefShelf"]
