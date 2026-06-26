@@ -134,6 +134,32 @@ Gulper route review: `docs/planning/GULPER_ROUTE_DANGER_READABILITY_REVIEW_2026_
 
 Playable slice smoke log: `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md` records the current acceptance evidence without requiring external blind testers. The slice is structurally playable, but active `Discoveries` placement and upgrade-tab overflow should be fixed before calling the vertical-slice gate fully accepted.
 
+## Vertical-Slice Acceptance Status
+
+Current status: structurally playable, not yet polished accepted.
+
+Implemented:
+
+- expedition start, dive, oxygen pressure, cargo banking/failure, result flow, next-expedition framing, and durable progression,
+- practical scan targets and upgrade paths for `Oxygen Tank I`, `Pressure Seal I`, `Signal Lens I`, `Echo Lens I`, `Cargo Rack I`, `Predator Warning I`, and `Decoy Pulse I`,
+- readable blocked-route, danger-route, and optional-clue-route examples through pressure wreck/cache, Gulper route, Thermal Vent, and Shell Reef,
+- compact active/surface HUD separation, source-art slots, first sprite integrations, and normal-scale review evidence.
+
+Pass with polish:
+
+- active HUD skin and cargo slots,
+- surface ready/result/failure/log panels,
+- Shell Reef, Thermal Vent, pressure wreck/cache, and Gulper route sprite/fallback balance,
+- Echo Lens and Rare Signal local mystery language.
+
+Remaining before calling the vertical-slice gate fully accepted:
+
+- move or restyle the active `Discoveries` count so it does not sit between HUD panels,
+- fix upgrade-tab text overflow with the current seven-upgrade set,
+- run a short hands-on two-expedition smoke pass from a clean save,
+- recheck `Decoy Pulse I` HUD/status with the upgrade owned,
+- keep lower-route screenshots on the watchlist after any visual change.
+
 ## Immediate Issue Order
 
 Current playable-slice track:

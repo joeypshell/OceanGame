@@ -4,6 +4,8 @@ This file describes implemented behavior. If gameplay, controls, runtime, deploy
 
 Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 
+Current vertical-slice status: the prototype is structurally playable, but not yet a polished accepted vertical slice. The current remaining acceptance blockers are active `Discoveries` count placement, upgrade-tab text overflow, and a short hands-on two-expedition smoke pass from a clean save. The detailed gate lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`, and the current evidence log lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md`.
+
 ## Product Behavior
 
 - The project launches into a side-view vertical ocean slice with a placeholder controllable submersible.
