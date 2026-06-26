@@ -211,6 +211,7 @@ var run_failure_cause := "none"
 var run_echo_lens_echo_fired := false
 var run_wreck_echo_clue_recovered := false
 var debug_wreck_echo_review_staged := false
+var visual_smoke_route_stage := ""
 var recent_expedition_log: Array[Dictionary] = []
 
 func _ready() -> void:
@@ -515,6 +516,36 @@ func _stage_debug_oxygen_visual_review(target_ratio: float, label: String) -> vo
 	status_label.text = "Debug review: %s oxygen staged." % label
 	_update_hud()
 
+func _stage_debug_expanded_route_visual_review() -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var pocket_entrance := get_node_or_null("EastShelfSpur/PocketEntrance") as Node2D
+	if pocket_entrance == null:
+		return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	player = staged_player
+	player.global_position = pocket_entrance.global_position + Vector2(-160.0, -150.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	visual_smoke_route_stage = "east_shelf_spur"
+	status_label.text = "Debug review: East Shelf route staged."
+	_update_depth()
+	_update_hud()
+
 func _consume_visual_smoke_command() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -529,6 +560,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_oxygen_visual_review(0.20, "low")
 		"oxygen_critical":
 			_stage_debug_oxygen_visual_review(0.08, "critical")
+		"expanded_east_shelf_route":
+			_stage_debug_expanded_route_visual_review()
 
 func _debug_next_condition_from_id(current_id: String) -> Dictionary:
 	var conditions := ExpeditionConditionScript.all_conditions()
@@ -1309,6 +1342,7 @@ func _publish_visual_smoke_state() -> void:
 		"upgrade_panel_visible": upgrade_panel.visible,
 		"active_stats_visible": active_stats_panel.visible,
 		"wreck_echo_clue_recovered": run_wreck_echo_clue_recovered,
+		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
 
@@ -1819,6 +1853,7 @@ func _reset_run_telemetry() -> void:
 	run_echo_lens_echo_fired = false
 	run_wreck_echo_clue_recovered = false
 	debug_wreck_echo_review_staged = false
+	visual_smoke_route_stage = ""
 	echo_lens_pulse_timer = 0.0
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false

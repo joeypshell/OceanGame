@@ -89,6 +89,17 @@ export async function stageOxygenState(page, oxygenState) {
   });
 }
 
+export async function stageExpandedRoute(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "expanded_east_shelf_route";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "east_shelf_spur",
+  });
+}
+
 export async function returnToBaseAndExtract(page) {
   await holdKey(page, "ArrowUp", 1_800);
   await page.waitForTimeout(300);

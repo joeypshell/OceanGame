@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageOxygenState } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageExpandedRoute, stageOxygenState } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -84,6 +84,17 @@ test.describe("OceanGame web visual smoke", () => {
       debug_telemetry: false,
       run_panel_visible: true,
       wreck_echo_clue_recovered: true,
+    });
+  });
+
+  test("captures the staged expanded East Shelf route view", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageExpandedRoute(page);
+    await capture(page, testInfo, "expanded-east-shelf-route-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "east_shelf_spur",
     });
   });
 

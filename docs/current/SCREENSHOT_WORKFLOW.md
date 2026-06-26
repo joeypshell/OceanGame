@@ -157,20 +157,21 @@ Default captures include:
 - `extraction-result.png`
 - `upgrade-tab.png`
 - `lower-route-pressure-gate.png`
+- `expanded-east-shelf-route-staged.png`
 - `active-low-oxygen.png`
 - `active-critical-oxygen.png`
 - `wreck-echo-route-staged.png`
 - `wreck-echo-result-readback.png`
 - `wreck-echo-result-player-facing.png`
 
-The screenshots live under `test-results/playwright/` with Playwright traces/reports in ignored local artifact folders. Each `.png` has a same-name `.json` metadata sidecar recording the expected state, the exported game's reported visual state, and viewport size. Use this flow for repeated HUD/layout/route-readability checks. The Wreck Echo screenshots use the debug-gated F6 staging hook after F3 telemetry is enabled, so they are route/result visual evidence rather than gameplay-traversal proof. The `wreck-echo-result-player-facing.png` capture hides telemetry after staging so reviewers can inspect the player-facing result panel without debug text. Use Godot headless logic tests for state ownership, economy, progression, scan rules, pressure rules, predator behavior, and other deterministic gameplay assertions.
+The screenshots live under `test-results/playwright/` with Playwright traces/reports in ignored local artifact folders. Each `.png` has a same-name `.json` metadata sidecar recording the expected state, the exported game's reported visual state, and viewport size. Use this flow for repeated HUD/layout/route-readability checks. The expanded East Shelf capture uses the Web debug-command bridge to stage the side-route view without long keyboard traversal. The Wreck Echo screenshots use the debug-gated F6 staging hook after F3 telemetry is enabled, so they are route/result visual evidence rather than gameplay-traversal proof. The `wreck-echo-result-player-facing.png` capture hides telemetry after staging so reviewers can inspect the player-facing result panel without debug text. Use Godot headless logic tests for state ownership, economy, progression, scan rules, pressure rules, predator behavior, and other deterministic gameplay assertions.
 
 Current workflow gap review: `docs/planning/PLAYWRIGHT_SCREENSHOT_WORKFLOW_GAP_REVIEW_2026_06_26.md`.
 
 Current hardening status:
 
 - `extraction-result.png` and `upgrade-tab.png` now follow a leave-base, return, extract, then open-upgrade-tab flow. Reviewers should still confirm the image actually shows the named surface state before relying on it.
-- Playwright now fails before capture if the exported game reports the wrong visual state for the screenshot name, such as an active dive under `extraction-result.png` or a non-critical state under `active-critical-oxygen.png`.
+- Playwright now fails before capture if the exported game reports the wrong visual state for the screenshot name, such as an active dive under `extraction-result.png`, a non-critical state under `active-critical-oxygen.png`, or the wrong route stage under `expanded-east-shelf-route-staged.png`.
 - Wreck Echo route/result screenshots still use the F6 review hook. Treat them as route/result layout evidence, not normal gameplay-traversal proof.
 - The no-debug Wreck Echo result panel is automated as `wreck-echo-result-player-facing.png`, but it is still staged before telemetry is hidden.
 - Future controller/touch prompt states are not fully automated yet.
