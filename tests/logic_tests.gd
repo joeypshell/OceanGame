@@ -1161,6 +1161,11 @@ func _test_compact_dive_hud_helpers() -> void:
 	var upgraded_slot_states: Array = main.call("_cargo_slot_states", cargo, 4, 4)
 	_expect(upgraded_slot_states == ["glow_plankton", "kelp_fiber", "glow_plankton", "empty"], "cargo slots should reveal the fourth slot after capacity upgrade")
 	_expect(main.call("_cargo_slot_color", "empty").a > main.call("_cargo_slot_color", "locked").a, "empty cargo slots should read brighter than locked slots")
+	_expect(main.call("_cargo_slot_icon_polygon", "kelp_fiber").size() > 0, "kelp cargo slots should have a mini-icon polygon")
+	_expect(main.call("_cargo_slot_icon_polygon", "shell_fragments").size() > 0, "shell cargo slots should have a mini-icon polygon")
+	_expect(main.call("_cargo_slot_icon_polygon", "glow_plankton").size() > 0, "glow cargo slots should have a mini-icon polygon")
+	_expect(main.call("_cargo_slot_icon_polygon", "empty").is_empty(), "empty cargo slots should not show a resource mini-icon")
+	_expect(main.call("_cargo_slot_icon_color", "locked").a == 0.0, "locked cargo slot icon color should stay transparent")
 
 	var compact_discoveries: String = main.call("_format_discoveries", true)
 	_expect(compact_discoveries == "Discoveries: 0", "compact discovery helper should show only the count")

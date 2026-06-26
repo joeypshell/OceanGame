@@ -78,6 +78,12 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 	$HUD/CargoSlots/Slot3,
 	$HUD/CargoSlots/Slot4,
 ]
+@onready var cargo_slot_icon_nodes: Array[Polygon2D] = [
+	$HUD/CargoSlots/Icon1,
+	$HUD/CargoSlots/Icon2,
+	$HUD/CargoSlots/Icon3,
+	$HUD/CargoSlots/Icon4,
+]
 @onready var bank_label: Label = $HUD/BankedResources
 @onready var upgrade_label: Label = $HUD/Upgrade
 @onready var discoveries_label: Label = $HUD/Discoveries
@@ -1143,11 +1149,36 @@ func _cargo_slot_color(state: String) -> Color:
 		_:
 			return Color(0.08, 0.16, 0.2, 0.82)
 
+func _cargo_slot_icon_polygon(state: String) -> PackedVector2Array:
+	match state:
+		"kelp_fiber":
+			return PackedVector2Array([Vector2(-3, 9), Vector2(-8, 4), Vector2(-4, -8), Vector2(0, -10), Vector2(3, 8), Vector2(8, 2), Vector2(6, 8)])
+		"shell_fragments":
+			return PackedVector2Array([Vector2(-9, 7), Vector2(-5, -5), Vector2(0, -9), Vector2(5, -5), Vector2(9, 7), Vector2(3, 10), Vector2(-3, 10)])
+		"glow_plankton":
+			return PackedVector2Array([Vector2(0, -9), Vector2(8, 0), Vector2(0, 9), Vector2(-8, 0)])
+		_:
+			return PackedVector2Array()
+
+func _cargo_slot_icon_color(state: String) -> Color:
+	match state:
+		"kelp_fiber":
+			return Color(0.78, 1.0, 0.74, 0.95)
+		"shell_fragments":
+			return Color(1.0, 0.96, 0.74, 0.95)
+		"glow_plankton":
+			return Color(0.98, 1.0, 0.54, 0.98)
+		_:
+			return Color(1.0, 1.0, 1.0, 0.0)
+
 func _update_cargo_slots() -> void:
 	var states := _cargo_slot_states(dive_session.current_cargo, dive_session.cargo_limit, cargo_slot_nodes.size())
 	for index in range(cargo_slot_nodes.size()):
 		cargo_slot_nodes[index].color = _cargo_slot_color(states[index])
 		cargo_slot_nodes[index].visible = states[index] != "locked" or dive_session.cargo_limit >= cargo_slot_nodes.size()
+		cargo_slot_icon_nodes[index].polygon = _cargo_slot_icon_polygon(states[index])
+		cargo_slot_icon_nodes[index].color = _cargo_slot_icon_color(states[index])
+		cargo_slot_icon_nodes[index].visible = cargo_slot_nodes[index].visible and cargo_slot_icon_nodes[index].polygon.size() > 0
 
 func _short_resource_name(resource_id: String) -> String:
 	match resource_id:

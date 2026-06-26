@@ -37,7 +37,7 @@ The current active HUD is acceptable for the next playable-loop issues. It is mu
 
 The oxygen warning panel is appropriately separated to the upper right. It should remain a temporary urgency surface, not a permanent second status log.
 
-The cargo slots are useful and low-risk. They should remain icon/slot-like placeholders until the broader UI skin pass; avoid adding item-name labels beside each slot.
+The cargo slots are useful and low-risk. They now include tiny filled-slot resource mini-icons while keeping the slot/tint read. Avoid adding item-name labels beside each slot.
 
 No immediate implementation fix is needed. The next HUD work should be a deliberate skin/layout pass, not piecemeal text growth.
 

@@ -13,7 +13,7 @@ The goal is to make oxygen, depth, base direction, cargo, scan target, prompt/st
 - Use compact dark translucent panels with thin cyan/blue-gray borders and warm accent pips for warnings.
 - Treat oxygen as the highest-priority active-dive read, with low/critical states visible but not overpowering route visibility.
 - Keep depth and base direction as quick-glance navigation data rather than large labels.
-- Keep cargo as slots first and text second; avoid item-name lists during active dives.
+- Keep cargo as slots and tiny resource mini-icons first and text second; avoid item-name lists during active dives.
 - Keep scan target, prompt, and status inside the bounded dive info panel.
 - Make empty, filled, and locked cargo states visually distinct before adding more inventory affordances.
 - Reserve stronger animation/pulse for critical oxygen and temporary scan/echo events only.
