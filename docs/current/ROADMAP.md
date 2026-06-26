@@ -115,6 +115,7 @@ Detailed design rules live in:
 - `docs/planning/UPGRADE_BAY_NORMAL_SCALE_AFFORDANCE_REVIEW_AFTER_COPY_TUNE_2026_06_26.md`
 - `docs/planning/SCANNER_FEEDBACK_SIGNAL_VS_ECHO_REVIEW_2026_06_26.md`
 - `docs/planning/NEXT_MONSTER_RESEARCH_READABILITY_MILESTONE_2026_06_26.md`
+- `docs/planning/DECOY_PULSE_HUD_PREDATOR_REVIEW_AFTER_HUD_POLISH_2026_06_26.md`
 - `docs/planning/DURABLE_PROGRESSION_RESET_ONBOARDING_REVIEW_2026_06_26.md`
 - `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
 - `docs/planning/ECHO_LENS_NO_LOCATOR_LANGUAGE_REVIEW_2026_06_26.md`
@@ -271,6 +272,8 @@ Clean-save smoke pass: `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_
 Decoy Pulse owned-state review: `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md` keeps `Decoy Pulse I` acceptable as one-use non-lethal route-timing counterplay. The main watchlist is active prompt length when `Burst Thruster` and Decoy text appear together.
 
 Decoy Pulse smoke note: `docs/planning/DECOY_PULSE_RESULT_MEMORY_HUD_SMOKE_2026_06_26.md` confirms active prompt, activation status, scan feedback, spent state, and result memory read as temporary route timing instead of combat, harvesting, stun/capture, or permanent predator control.
+
+Decoy Pulse HUD and predator review after HUD polish: `docs/planning/DECOY_PULSE_HUD_PREDATOR_REVIEW_AFTER_HUD_POLISH_2026_06_26.md` keeps Decoy Pulse owned-state HUD and the temporary green predator state as pass-with-watchlist. The read is one-use route timing and distraction, not damage, stun, capture, harvest, or victory; predator contact remains possible after mistiming.
 
 Active prompt Burst/Decoy review: `docs/planning/ACTIVE_PROMPT_BURST_DECOY_REVIEW_2026_06_26.md` keeps the combined active-tool prompt understandable with shorter command-first snippets such as `Space: burst -4 O2` and `F: decoy ready`, without adding tool wheels, inventory UI, checklist UI, or combat UI.
 
