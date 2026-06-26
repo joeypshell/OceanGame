@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="320" viewBox="0 0 420 320">
+  <defs>
+    <linearGradient id="column" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9fffee" stop-opacity="0.46"/>
+      <stop offset="0.42" stop-color="#42d7ce" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#0a6c78" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="well" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#102d34" stop-opacity="0.78"/>
+      <stop offset="1" stop-color="#03151d" stop-opacity="0.22"/>
+    </linearGradient>
+    <filter id="soft">
+      <feGaussianBlur stdDeviation="2.2"/>
+    </filter>
+  </defs>
+  <path d="M76 78 C108 60 144 56 210 58 C274 56 318 60 348 78 L318 118 C288 108 250 104 210 104 C166 104 132 108 102 118 Z" fill="#092732" opacity="0.58"/>
+  <path d="M112 78 C144 68 176 66 210 66 C246 66 278 68 310 78 L286 106 C262 100 238 98 210 98 C180 98 154 100 132 106 Z" fill="url(#well)"/>
+  <path d="M142 92 L278 92 L318 304 L102 304 Z" fill="url(#column)"/>
+  <path d="M166 106 L254 106 L274 292 L146 292 Z" fill="#5ef7df" opacity="0.12"/>
+  <path d="M88 104 C124 92 154 94 184 104 C214 114 246 114 284 102 C318 92 352 96 382 108 L366 128 C328 122 298 118 264 128 C226 140 190 138 154 126 C122 116 94 120 58 132 Z" fill="#cafcff" opacity="0.64"/>
+  <path d="M74 116 C112 106 146 108 180 118 C214 128 248 128 286 116 C324 104 356 110 390 122" fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="7" stroke-linecap="round"/>
+  <path d="M96 130 C132 122 162 126 194 136 C226 146 256 146 292 132 C324 120 352 124 382 138" fill="none" stroke="#71f3ff" stroke-opacity="0.38" stroke-width="10" stroke-linecap="round"/>
+  <path d="M166 92 L254 92 L238 116 L182 116 Z" fill="#cffff6" opacity="0.58"/>
+  <path d="M136 118 L284 118 L268 144 L152 144 Z" fill="#082631" opacity="0.32"/>
+  <circle cx="178" cy="142" r="4" fill="#affff2" opacity="0.56"/>
+  <circle cx="236" cy="166" r="3" fill="#affff2" opacity="0.46"/>
+  <circle cx="204" cy="204" r="5" fill="#affff2" opacity="0.28"/>
+  <ellipse cx="210" cy="110" rx="112" ry="20" fill="#061b24" opacity="0.34" filter="url(#soft)"/>
+</svg>

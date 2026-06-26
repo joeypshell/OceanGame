@@ -1,0 +1,5 @@
+Asset: surface_moonpool_waterline_v1.svg
+Source: Created in-repository for OceanGame as a simple SVG source-art pass.
+Authoring: Codex-generated vector shapes based on the project's existing surface boat, moonpool, and waterline readability direction.
+Usage: Runtime export may be used by OceanGame under the repository's project license.
+Notes: This is not copied from external reference art and is not final production art.

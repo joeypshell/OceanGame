@@ -418,6 +418,7 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"RareSignalEmphasis/SoftPingWash",
 		"RareSignalEmphasis/BrokenEchoArc",
 		"SurfaceBaseArt/SpriteAnchor/ResearchBoatSprite",
+		"SurfaceBaseArt/MoonpoolGuide/MoonpoolWaterlineSprite",
 		"SurfaceBaseArt/MoonpoolGuide/LaunchColumn",
 		"SurfaceBaseArt/MoonpoolGuide/WaterlineFoam",
 		"SurfaceBaseArt/FallbackGeometry/LabMoonpool",
@@ -431,6 +432,9 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 
 	for path in required_paths:
 		_expect(main.get_node_or_null(path) != null, "main scene should keep sprite-ready slot or behavior node: %s" % path)
+
+	var moonpool_sprite := main.get_node("SurfaceBaseArt/MoonpoolGuide/MoonpoolWaterlineSprite") as Sprite2D
+	_expect(moonpool_sprite.texture != null, "Surface moonpool/waterline should use the first exported source asset sprite")
 
 	var glow_sprite := main.get_node("ResourcePickups/GlowPlankton/Visuals/SpriteAnchor/Sprite") as Sprite2D
 	var glow_fallback := main.get_node("ResourcePickups/GlowPlankton/Visuals/FallbackVisual") as Node2D
