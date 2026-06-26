@@ -10,6 +10,7 @@ const PlayerScript := preload("res://scripts/player.gd")
 const PlayerScene := preload("res://scenes/Player.tscn")
 const MainScene := preload("res://scenes/Main.tscn")
 const ReadabilityMarkerPatternsScript := preload("res://scripts/readability_marker_patterns.gd")
+const ScanPulseVisualScript := preload("res://scripts/scan_pulse_visual.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
 const MainScript := preload("res://scripts/main.gd")
@@ -51,6 +52,7 @@ func _initialize() -> void:
 	_run("debug review seed and condition helpers", _test_debug_review_helpers)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
+	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
 	_run("landmark region identity metadata", _test_landmark_region_identity_metadata)
 	_run("predator scan target", _test_predator_scan_target)
@@ -359,6 +361,17 @@ func _test_compact_scan_marker() -> void:
 	scannable.set_scan_selected(true)
 	_expect(marker.color.a > 0.5, "selected compact scan marker should brighten")
 	scannable.free()
+
+func _test_scan_pulse_visual_helper() -> void:
+	var idle := ScanPulseVisualScript.idle_modulate()
+	var selected := ScanPulseVisualScript.selected_modulate()
+	var pulse_a := ScanPulseVisualScript.tactical_highlight_modulate(0)
+	var pulse_b := ScanPulseVisualScript.tactical_highlight_modulate(180)
+
+	_expect(idle == Color.WHITE, "scan pulse idle color should be neutral")
+	_expect(selected.r > idle.r and selected.g > idle.g, "selected scan pulse color should brighten the pickup")
+	_expect(pulse_a != pulse_b, "tactical highlight should pulse instead of becoming a static marker")
+	_expect(pulse_a.a == 1.0 and pulse_b.a == 1.0, "tactical highlight should stay a local modulate, not a hidden marker")
 
 func _test_sprite_ready_scene_asset_slots() -> void:
 	var main := MainScene.instantiate()

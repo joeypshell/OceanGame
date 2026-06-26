@@ -154,6 +154,8 @@ Resource pickup gameplay nodes stay in `scenes/Main.tscn` as `Area2D` owners for
 
 Landmark readability clusters should follow the same split when they grow too large for `Main.tscn`: the placed gameplay/landmark holder can remain in the main scene while reusable visual geometry moves into `scenes/readability/`. The Thermal Vent pocket follows this pattern with `scenes/readability/ThermalVentPocketVisuals.tscn`; the scannable Thermal Vent and route reveal behavior remain separate gameplay nodes.
 
+Small reusable visual helpers such as `scripts/scan_pulse_visual.gd` may centralize color/intensity language for repeated readability effects. They should remain presentation-only and should not own scan targeting, cargo, progression, or map state.
+
 ## State-Management Guardrails
 
 - Do not let visual effects mutate durable progression directly.

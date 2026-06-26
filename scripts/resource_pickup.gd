@@ -3,6 +3,8 @@ extends Area2D
 
 signal collected(pickup: ResourcePickup)
 
+const ScanPulseVisualScript := preload("res://scripts/scan_pulse_visual.gd")
+
 @export var definition: ResourceDefinition
 
 var is_collected := false
@@ -36,11 +38,11 @@ func set_tactical_highlight(highlighted: bool) -> void:
 
 func _refresh_scan_modulate() -> void:
 	if is_scan_selected:
-		modulate = Color(1.35, 1.25, 0.58, 1.0)
+		modulate = ScanPulseVisualScript.selected_modulate()
 	elif is_tactical_highlighted:
-		modulate = Color(0.75, 1.45, 0.85, 1.0)
+		modulate = ScanPulseVisualScript.tactical_highlight_modulate(Time.get_ticks_msec())
 	else:
-		modulate = Color.WHITE
+		modulate = ScanPulseVisualScript.idle_modulate()
 
 func _on_body_entered(body: Node2D) -> void:
 	if is_collected or definition == null or not body is CharacterBody2D:
