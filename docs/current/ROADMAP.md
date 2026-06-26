@@ -88,7 +88,7 @@ Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now d
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
 
-Deeper-access direction: `docs/planning/DEEPER_ACCESS_AFTER_ECHO_LENS_2026_06_26.md` selects `Wreck Echo Descent` as the later post-`Echo Lens I` promise. This should begin as one prepared-route question tied to Wreck Shelf memory, scanner curiosity, and pressure access, not as a new generated biome, minimap, field guide, exact locator, or quest checklist.
+Deeper-access direction: `docs/planning/DEEPER_ACCESS_AFTER_ECHO_LENS_2026_06_26.md` selects `Wreck Echo Descent` as the later post-`Echo Lens I` promise and now defines it as one authored deeper-right route pocket candidate. The pocket should require preparation around pressure access, scanner curiosity, oxygen margin, and optional cargo space; it should reward one compact research clue, rare material opportunity, or later prerequisite discovery, not a new generated biome, minimap, field guide, exact locator, or quest checklist.
 
 Expedition-day review checklist: `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md` defines five F5-driven review passes for ready panel, result panel, remembered region, condition copy, scan-only usefulness, and safe-return readability using the screenshot workflow.
 

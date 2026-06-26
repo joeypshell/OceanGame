@@ -1,6 +1,6 @@
 # Deeper Access After Echo Lens I - 2026-06-26
 
-Status: planning note for issue #215.
+Status: planning note for issues #215 and #224.
 
 ## Purpose
 
@@ -40,6 +40,49 @@ When this becomes implementation work, the first slice should be narrow:
 
 This should be one route pocket, not a new biome system.
 
+## Wreck Echo Descent Pocket Candidate
+
+Working name: `Wreck Echo Descent`.
+
+Purpose: create one prepared-route question below/right of the existing Wreck Shelf memory after `Echo Lens I` proves that a weak wreck signal exists. The pocket should make the player ask whether today's expedition has enough oxygen, cargo space, pressure access, and predator timing to investigate a deeper signal, then return safely.
+
+Suggested placement relationship:
+
+- anchored near or below the current Wreck Shelf / pressure wreck memory,
+- directionally described as `deeper-right`,
+- visually separated from the first pressure-locked wreck so it reads as a later descent route, not a missed cache in the same room,
+- reachable only after current route language, oxygen pressure, and pressure-dark readability are strong enough to support another decision layer.
+
+Required preparation:
+
+- `Pressure Seal I` or later pressure access so the player understands this is an access-gated route family,
+- `Signal Lens I` and `Echo Lens I` so the route is motivated by scanner curiosity rather than a visible objective marker,
+- enough oxygen margin to descend, inspect, and return,
+- at least one empty cargo slot if the route promises a material sample.
+
+Likely risks:
+
+- pressure-dark threshold that makes the route feel deeper and less safe,
+- predator route proximity or timing pressure without forcing combat,
+- longer return distance from the surface base,
+- tempting reward placement that competes with safe extraction.
+
+Reward type:
+
+- one compact research clue about deeper wreck signals,
+- one rare material opportunity or prototype sample,
+- or a later upgrade prerequisite discovery.
+
+The first implementation should choose one reward type. Do not make the pocket a multi-objective checklist.
+
+Scene/data shape when implemented:
+
+- one authored route holder under `Main.tscn` or a future placed region holder,
+- one reusable readability scene under `scenes/readability/` for pressure-dark threshold and echo pocket visuals,
+- typed `SpawnPoint` candidates for any resource or condition variation,
+- one scannable route clue if needed,
+- no persistent marker, no minimap node, no exact locator, and no broad procedural region generation.
+
 ## Copy Rules
 
 Allowed language:
@@ -74,7 +117,6 @@ Avoid language:
 
 These are candidates for a later backlog, not immediate implementation commitments:
 
-- Plan one authored Wreck Echo Descent route pocket.
 - Define a later pressure/scanner access upgrade after `Echo Lens I`.
 - Prototype a temporary local echo pulse around the cache or route edge.
 - Review oxygen/cargo cost pressure for a deeper echo attempt.

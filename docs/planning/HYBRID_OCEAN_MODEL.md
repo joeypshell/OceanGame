@@ -49,7 +49,7 @@ Initial persistent region candidates:
 - Pressure Trench,
 - Abyssal Ruins.
 
-The prototype does not need all of these regions immediately. The current vertical slice can keep proving the model with Shell Reef, Thermal Vent, the pressure wreck, and the Gulper Eel route before expanding into a region-select flow.
+The prototype does not need all of these regions immediately. The current vertical slice can keep proving the model with Shell Reef, Thermal Vent, the pressure wreck, the Gulper Eel route, and the planned `Wreck Echo Descent` pocket before expanding into a region-select flow.
 
 Each region should eventually be planned as a memory anchor:
 
@@ -74,6 +74,8 @@ These may change by expedition day:
 - route hints revealed by the current condition.
 
 Variation should select from authored candidates whenever possible. Do not use full free-form procedural map generation until authored route decisions are readable and fun.
+
+`Wreck Echo Descent` is the next planned authored pocket candidate for this model: a persistent deeper-right route question motivated by `Echo Lens I`, with any expedition variation limited to authored pressure, resource, risk, or condition candidates rather than broad map rerolls.
 
 ## Expedition Day Loop
 
