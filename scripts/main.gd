@@ -601,6 +601,40 @@ func _stage_debug_east_shelf_pocket_visual_review() -> void:
 	status_label.text = "Debug review: East Shelf pocket ping staged."
 	_update_hud()
 
+func _stage_debug_lower_connector_visual_review() -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var turnback_hint := get_node_or_null("EastShelfSpur/ShelfDropConnector/TurnbackPocketHint") as Polygon2D
+	if turnback_hint == null:
+		return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	player = staged_player
+	var hint_center := Vector2.ZERO
+	for point in turnback_hint.polygon:
+		hint_center += point
+	hint_center /= max(1, turnback_hint.polygon.size())
+	player.global_position = turnback_hint.global_position + hint_center + Vector2(-120.0, -90.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	visual_smoke_route_stage = "lower_connector"
+	status_label.text = "Debug review: Shelf Drop Connector staged."
+	_update_depth()
+	_update_hud()
+
 func _consume_visual_smoke_command() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -619,6 +653,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_expanded_route_visual_review()
 		"east_shelf_pocket_ping":
 			_stage_debug_east_shelf_pocket_visual_review()
+		"lower_connector":
+			_stage_debug_lower_connector_visual_review()
 
 func _debug_next_condition_from_id(current_id: String) -> Dictionary:
 	var conditions := ExpeditionConditionScript.all_conditions()

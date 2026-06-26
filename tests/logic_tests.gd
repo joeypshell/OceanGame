@@ -663,6 +663,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/SealedShelfHatch/EchoShimmer",
 		"EastShelfSpur/SealedShelfHatch/LockBadge",
 		"EastShelfSpur/SealedShelfHatch/LockLabel",
+		"EastShelfSpur/ShelfDropConnector",
+		"EastShelfSpur/ShelfDropConnector/ConnectorMouth",
+		"EastShelfSpur/ShelfDropConnector/UpperDropShelf",
+		"EastShelfSpur/ShelfDropConnector/LowerDropShelf",
+		"EastShelfSpur/ShelfDropConnector/DownCurrentThread",
+		"EastShelfSpur/ShelfDropConnector/TurnbackPocketHint",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -676,6 +682,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var exit_current := main.get_node("EastShelfSpur/PocketEntrance/ExitCurrentCue") as Polygon2D
 	var sealed_hatch := main.get_node("EastShelfSpur/SealedShelfHatch") as Node2D
 	var hatch_lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
+	var connector_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/ConnectorMouth") as Polygon2D
+	var connector_current := main.get_node("EastShelfSpur/ShelfDropConnector/DownCurrentThread") as Polygon2D
+	var connector_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/TurnbackPocketHint") as Polygon2D
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
 	var shelf_glimmer := main.get_node("EastShelfSpur/ShelfGlimmerOpportunity") as Node2D
@@ -694,6 +703,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(exit_current.polygon[1].x < exit_current.polygon[0].x, "East Shelf pocket exit cue should point back left toward the main route")
 	_expect(sealed_hatch.position.x >= pocket_entrance.position.x, "Sealed Shelf Hatch should sit at or beyond the pocket entrance as a future promise")
 	_expect(hatch_lock_label.text == "ECHO LOCK", "Sealed Shelf Hatch should start as an Echo Lens locked promise")
+	_expect(connector_mouth.polygon[0].x >= 1880.0, "Shelf Drop Connector should start beyond the East Shelf pocket area")
+	_expect(connector_turnback.polygon[connector_turnback.polygon.size() - 1].y >= 2040.0, "Shelf Drop Connector should drop below East Shelf into the lower route space")
+	_expect(connector_current.color.a <= 0.12, "Shelf Drop Connector current should stay subtle until route art and payoff exist")
 
 	main.free()
 
@@ -1742,7 +1754,8 @@ func _test_expanded_region_world_bounds() -> void:
 	_expect(player.world_bounds.position.x <= 100.0, "expanded bounds should preserve the current main descent column")
 	_expect(player.world_bounds.end.x >= 2000.0, "expanded bounds should allow roughly one extra screen of right-side exploration")
 	_expect(player.world_bounds.position.y >= 240.0, "expanded bounds should keep the sub below the boat hull")
-	_expect(player.world_bounds.end.y >= 2200.0, "expanded bounds should preserve the existing deep route")
+	_expect(player.world_bounds.end.y >= 2350.0, "expanded bounds should allow the first lower connector beyond East Shelf")
+	_expect(player.world_bounds.end.x <= 2300.0, "expanded bounds should stay narrow until a larger side-view level is explicitly planned")
 
 	var clamped_high := player.clamp_position_to_world_bounds(Vector2(640.0, 0.0))
 	_expect(clamped_high.y >= player.world_bounds.position.y, "world clamp should prevent surfacing through the boat sprite")

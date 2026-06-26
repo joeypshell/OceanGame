@@ -203,26 +203,26 @@ related_upgrades = "predator_warning_1,decoy_pulse_1"
 readability_priority = "Danger before contact and route timing."
 
 [node name="Sky" type="ColorRect" parent="."]
-offset_right = 2080.0
+offset_right = 2200.0
 offset_bottom = 120.0
 color = Color(0.47, 0.78, 0.88, 1)
 
 [node name="OceanShallows" type="ColorRect" parent="."]
 offset_top = 120.0
-offset_right = 2080.0
+offset_right = 2200.0
 offset_bottom = 760.0
 color = Color(0.014, 0.31, 0.4, 1)
 
 [node name="OceanMidwater" type="ColorRect" parent="."]
 offset_top = 760.0
-offset_right = 2080.0
+offset_right = 2200.0
 offset_bottom = 1460.0
 color = Color(0.01, 0.16, 0.28, 1)
 
 [node name="OceanDeep" type="ColorRect" parent="."]
 offset_top = 1460.0
-offset_right = 2080.0
-offset_bottom = 2320.0
+offset_right = 2200.0
+offset_bottom = 2500.0
 color = Color(0.005, 0.048, 0.115, 1)
 
 [node name="ShallowMidwaterBackgroundStudy" type="Sprite2D" parent="."]
@@ -233,26 +233,26 @@ modulate = Color(1, 1, 1, 0.48)
 
 [node name="ShallowMidwaterTransition" type="ColorRect" parent="."]
 offset_top = 736.0
-offset_right = 2080.0
+offset_right = 2200.0
 offset_bottom = 790.0
 color = Color(0.58, 0.9, 0.92, 0.11)
 
 [node name="MidwaterDeepTransition" type="ColorRect" parent="."]
 offset_top = 1430.0
-offset_right = 2080.0
+offset_right = 2200.0
 offset_bottom = 1494.0
 color = Color(0.24, 0.42, 0.74, 0.14)
 
 [node name="SurfaceLine" type="ColorRect" parent="."]
 offset_top = 118.0
-offset_right = 2080.0
+offset_right = 2200.0
 offset_bottom = 124.0
 color = Color(0.74, 0.96, 1, 1)
 
 [node name="BaseReturnColumn" type="Polygon2D" parent="."]
 visible = false
 color = Color(0.38, 1, 0.9, 0.14)
-polygon = PackedVector2Array(594, 124, 690, 124, 704, 2320, 578, 2320)
+polygon = PackedVector2Array(594, 124, 690, 124, 704, 2500, 578, 2500)
 
 [node name="BaseReturnRibShallow" type="Polygon2D" parent="."]
 visible = false
@@ -429,6 +429,28 @@ offset_right = 70.0
 offset_bottom = 58.0
 theme_override_font_sizes/font_size = 14
 text = "ECHO LOCK"
+
+[node name="ShelfDropConnector" type="Node2D" parent="EastShelfSpur"]
+
+[node name="ConnectorMouth" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector"]
+color = Color(0.014, 0.052, 0.086, 0.56)
+polygon = PackedVector2Array(1906, 1658, 2018, 1606, 2126, 1666, 2154, 1782, 2074, 1860, 1948, 1816)
+
+[node name="UpperDropShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector"]
+color = Color(0.025, 0.085, 0.12, 0.4)
+polygon = PackedVector2Array(1818, 1620, 1942, 1584, 2106, 1634, 2186, 1724, 2144, 1792, 2028, 1704, 1888, 1684)
+
+[node name="LowerDropShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector"]
+color = Color(0.012, 0.055, 0.09, 0.42)
+polygon = PackedVector2Array(1856, 1912, 1994, 1848, 2164, 1906, 2192, 2002, 2080, 2082, 1908, 2018)
+
+[node name="DownCurrentThread" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector"]
+color = Color(0.56, 0.9, 0.96, 0.1)
+polygon = PackedVector2Array(1960, 1708, 2044, 1692, 2114, 1760, 2084, 1838, 2138, 1900, 2040, 1878, 1972, 1808, 2002, 1750)
+
+[node name="TurnbackPocketHint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector"]
+color = Color(0.28, 0.5, 0.56, 0.18)
+polygon = PackedVector2Array(2014, 1988, 2108, 1950, 2180, 2014, 2160, 2090, 2052, 2114, 1982, 2050)
 
 [node name="ShellReefPocket" type="Node2D" parent="."]
 
@@ -1309,8 +1331,8 @@ zoom = Vector2(0.9, 0.9)
 enabled = true
 limit_left = 0
 limit_top = 0
-limit_right = 2080
-limit_bottom = 2320
+limit_right = 2200
+limit_bottom = 2500
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
