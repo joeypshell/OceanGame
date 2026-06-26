@@ -50,6 +50,30 @@ Current desktop scenarios capture surface ready, active dive, extraction result,
 
 The optional mobile-like landscape smoke uses a separate Playwright config at `tests/playwright/mobile-landscape.config.mjs`. It captures surface ready, active dive, lower-route pressure-gate, active low oxygen, active critical oxygen, staged Wreck Echo route, staged Wreck Echo result-readback, and no-debug Wreck Echo result player-facing views at `960x540` with device scale factor `2`, storing local artifacts under `test-results/playwright-mobile-like/`. This is safe-area evidence for future phone landscape work, not touch-control implementation or mobile support certification.
 
+## Tiered Verification Runner
+
+Use `scripts/test.ps1` as the default validation dispatcher so Codex and humans can choose the cheapest useful test tier instead of running screenshot/export checks for every issue.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier quick
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier docs
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier visual
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier mobile-like
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier full
+```
+
+Tier guidance:
+
+- `quick`: Godot headless launch, logic tests, and `git diff --check`. Use for most gameplay/code changes.
+- `docs`: MCP context self-test and `git diff --check`. Use for docs, planning, and MCP resource changes.
+- `visual`: desktop Playwright visual smoke against the existing export. Use after HUD, UI, camera, route, or art changes when the Web export already exists.
+- `mobile-like`: mobile-like Playwright smoke against the existing export. Use only for mobile-like safe-area, HUD, panel, or route-layout questions.
+- `full`: Godot checks, MCP self-test, Web export, desktop visual smoke, mobile-like visual smoke, and `git diff --check`. Reserve for milestone closeout, export/tooling changes, or major visual/camera route changes.
+
+The runner prints compact step summaries and leaves detailed tool output to the underlying command only when needed. Prefer `quick` or `docs` unless the issue actually changes visual layout or export tooling.
+
+Set `OCEANGAME_TEST_VERBOSE=1` before running a tier when you need the full underlying command output on success.
+
 ## MCP Context Server
 
 The first MCP slice is agent workflow support: a small repo-local context server exposes OceanGame source-of-truth docs as MCP resources. It does not control the Godot editor, mutate files, require secrets, or replace the GitHub issue workflow.

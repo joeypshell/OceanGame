@@ -62,6 +62,18 @@ For broad features, write a compact plan under `docs/planning/` before implement
 
 ## Verification Commands
 
+Prefer the tiered runner when possible:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier quick
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier docs
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier visual
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier mobile-like
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier full
+```
+
+Use `quick` for most code/gameplay changes, `docs` for documentation/MCP-only changes, `visual` or `mobile-like` only when layout/art/camera evidence is needed, and `full` for milestone closeout or export/tooling changes.
+
 Primary verification:
 
 ```powershell
