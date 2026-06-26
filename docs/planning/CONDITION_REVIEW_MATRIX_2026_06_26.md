@@ -38,7 +38,7 @@ Record:
 | 3 | Kelp Bloom | Flavor-only today | Surface ready and shallow resource view | Ready-panel copy says shallow growth is thick; no spawn, oxygen, cargo, or return-rule change should be inferred. | Does flavor-only copy imply extra resources that are not actually present? | fill during review |
 | 4 | Predator Migration | Flavor-only today | Gulper Route warning lane | Ready-panel copy says patrols are shifting; current seeded route selection remains normal and debug-only route id stays hidden. | Does the player-facing copy overpromise a visible predator behavior change? | fill during review |
 | 5 | Low Visibility | Flavor-only today | Midwater/deep transition | Copy says deeper water is harder to read; do not infer scan range penalties or hidden hazards. | Does the current visual haze already make the route too hard to parse? | fill during review |
-| 6 | Rare Signal | Flavor-only today | Wreck Shelf / Wreck Signal Cache promise | Copy says weak ping below; should support curiosity without becoming a quest marker. | Does it imply an exact objective or guaranteed upgrade? | fill during review |
+| 6 | Rare Signal | Reviewed in `RARE_SIGNAL_CONDITION_READABILITY_REVIEW_2026_06_26.md`; flavor-only today | Wreck Shelf / Wreck Signal Cache promise | Copy says weak ping below; should support curiosity without becoming a quest marker. | Watch for overpromising a hidden target; future visual emphasis should be subtle/local only. | not captured |
 | 7 | Wreck Shift | Flavor-only today | Pressure-Locked Research Wreck | Copy says pressure exposed a different angle; should support future variation without bypassing Pressure Seal I. | Does it imply the gate moved or opened without the upgrade? | fill during review |
 
 ## Pass Criteria
@@ -57,4 +57,3 @@ Create a follow-up issue only if a row produces a blocker:
 - a condition implies a mechanic that does not exist,
 - a condition makes pressure gate, predator warning, resource, or scan target meanings conflict,
 - the ready panel cannot show condition plus goal without crowding.
-

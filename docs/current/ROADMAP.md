@@ -98,6 +98,8 @@ Visual asset slot review: `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md`
 
 Compact HUD skin plan: `docs/planning/COMPACT_HUD_SKIN_PLAN_2026_06_26.md` defines the first HUD skin pass for oxygen, depth, base direction, cargo slots, scan target, prompt/status, and warning panel. The implementation should keep debug telemetry gated, preserve active/surface mode separation, and avoid minimap, inventory-grid, field-guide, or objective-checklist scope.
 
+Rare Signal condition review: `docs/planning/RARE_SIGNAL_CONDITION_READABILITY_REVIEW_2026_06_26.md` confirms the current `Rare Signal` copy is acceptable as flavor-only Wreck Echo curiosity. A future visual-emphasis prototype is warranted only if it stays subtle/local and avoids exact locators, persistent markers, quest checklists, cache guarantees, and upgrade shortcuts.
+
 ## Immediate Issue Order
 
 Motivation and payoff track:
