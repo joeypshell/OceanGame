@@ -213,6 +213,8 @@ Compact upgrade details fix plan: `docs/planning/COMPACT_UPGRADE_DETAILS_FIX_PLA
 
 Compact upgrade details implementation: issue #406 moves the selected-upgrade panel inside the `1280x720` viewport, compacts upgrade state/effect summaries, shortens feedback copy, preserves `Echo Lens I` as broad wreck echoes rather than a locator, and adds logic guards for panel bounds, clipped feedback behavior, and compact copy. The latest Playwright `upgrade-tab.png` shows the final feedback line inside the panel.
 
+Mobile-like surface/active review: `docs/planning/MOBILE_LIKE_SURFACE_ACTIVE_REVIEW_2026_06_26.md` keeps the `960x540` surface-ready and active-dive captures as pass-with-watchlist. The views are readable, but the ready panel occupies most of the smaller viewport and the active HUD sits in the likely future left thumb-control zone, so this is evidence for planning rather than mobile readiness.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
