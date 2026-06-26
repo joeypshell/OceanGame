@@ -107,6 +107,13 @@ const DIVE_STATUS_MAX_CHARS := 92
 @onready var vent_route_hint: Node2D = $VentRouteHint
 @onready var pressure_boundary: Area2D = $PressureLockedWreck/PressureBoundary
 @onready var pressure_shimmer: Polygon2D = $PressureLockedWreck/PressureShimmer
+@onready var pressure_gate_top: Polygon2D = $PressureLockedWreck/PressureGateTop
+@onready var pressure_gate_bottom: Polygon2D = $PressureLockedWreck/PressureGateBottom
+@onready var pressure_gate_bar_a: Polygon2D = $PressureLockedWreck/PressureGateBarA
+@onready var pressure_gate_bar_b: Polygon2D = $PressureLockedWreck/PressureGateBarB
+@onready var pressure_gate_bar_c: Polygon2D = $PressureLockedWreck/PressureGateBarC
+@onready var pressure_gate_left_rail: Polygon2D = $PressureLockedWreck/GateLeftRail
+@onready var pressure_gate_right_rail: Polygon2D = $PressureLockedWreck/GateRightRail
 @onready var pressure_lock_badge: Polygon2D = $PressureLockedWreck/PressureLockBadge
 @onready var pressure_label: Label = $PressureLockedWreck/PressureLabel
 @onready var wreck_signal_hint: Node2D = $WreckSignalHint
@@ -803,11 +810,25 @@ func _sync_pressure_lock_state() -> void:
 	pressure_boundary.monitoring = not has_pressure_seal
 	pressure_boundary.monitorable = not has_pressure_seal
 	if has_pressure_seal:
-		pressure_shimmer.modulate = Color(0.62, 1.0, 0.72, 0.5)
+		pressure_shimmer.modulate = Color(0.62, 1.0, 0.72, 0.38)
+		pressure_gate_top.color = Color(0.62, 1.0, 0.72, 0.28)
+		pressure_gate_bottom.color = Color(0.62, 1.0, 0.72, 0.28)
+		pressure_gate_bar_a.color = Color(0.62, 1.0, 0.72, 0.16)
+		pressure_gate_bar_b.color = Color(0.62, 1.0, 0.72, 0.16)
+		pressure_gate_bar_c.color = Color(0.62, 1.0, 0.72, 0.16)
+		pressure_gate_left_rail.color = Color(0.32, 0.86, 0.58, 0.22)
+		pressure_gate_right_rail.color = Color(0.32, 0.86, 0.58, 0.22)
 		pressure_lock_badge.color = Color(0.62, 1.0, 0.72, 0.72)
 		pressure_label.text = "OPEN"
 	else:
 		pressure_shimmer.modulate = Color.WHITE
+		pressure_gate_top.color = Color(0.74, 0.86, 1.0, 0.72)
+		pressure_gate_bottom.color = Color(0.74, 0.86, 1.0, 0.72)
+		pressure_gate_bar_a.color = Color(0.74, 0.86, 1.0, 0.62)
+		pressure_gate_bar_b.color = Color(0.74, 0.86, 1.0, 0.62)
+		pressure_gate_bar_c.color = Color(0.74, 0.86, 1.0, 0.62)
+		pressure_gate_left_rail.color = Color(0.26, 0.48, 0.8, 0.5)
+		pressure_gate_right_rail.color = Color(0.26, 0.48, 0.8, 0.5)
 		pressure_lock_badge.color = Color(0.74, 0.86, 1.0, 0.72)
 		pressure_label.text = "LOCKED"
 
