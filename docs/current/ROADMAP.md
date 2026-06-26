@@ -107,6 +107,7 @@ Detailed design rules live in:
 - `docs/planning/LOWER_ROUTE_RECHECK_AFTER_BACKGROUND_STUDY_2026_06_26.md`
 - `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md`
 - `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md`
+- `docs/planning/ACTIVE_HUD_LOW_OXYGEN_REVIEW_AFTER_PROMPT_TUNE_2026_06_26.md`
 - `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
 - `docs/planning/ECHO_LENS_NO_LOCATOR_LANGUAGE_REVIEW_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
@@ -224,6 +225,8 @@ Lower-route recheck after background study: `docs/planning/LOWER_ROUTE_RECHECK_A
 Source-art provenance checklist: `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md` defines reusable source/export/provenance, licensing, scene-wiring, fallback, and verification checks for future sprite batches. It is documentation-only and does not add runtime assets by itself.
 
 Compact HUD final polish plan: `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md` keeps the next HUD pass focused on existing oxygen, depth, base direction, cargo slots, scan target, prompt/status, warning panel, and debug telemetry gating. It explicitly avoids minimap, inventory grid, objective checklist, field-guide UI, route graph, exact locator, and active-dive upgrade/log surfaces.
+
+Active HUD low-oxygen review after prompt tune: `docs/planning/ACTIVE_HUD_LOW_OXYGEN_REVIEW_AFTER_PROMPT_TUNE_2026_06_26.md` keeps normal, low, and critical oxygen states as pass-with-watchlist after the prompt copy trim. Low/critical oxygen remain louder than mystery and reward cues while preserving cargo, scan target, prompt, and status readability.
 
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 
