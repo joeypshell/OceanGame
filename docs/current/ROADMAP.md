@@ -203,7 +203,7 @@ Solo first-run readability: `docs/planning/SOLO_FIRST_RUN_READABILITY_CHECKLIST_
 
 Solo first-run result: `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md` records a pass-with-watchlist solo clean-save review. It does not claim blind validation; watchlist items are already represented by #301, #310, #313, #314, #315, and #317.
 
-Vertical-slice evidence bundle: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` records compact internal evidence for ready, active dive, pickup/scan, return/failure, upgrade view, blocked route, danger route, and optional clue route. It supports continued closeout while keeping the slice pass-with-watchlist until formal status is updated.
+Vertical-slice evidence bundle: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` now consolidates the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, and resource/scan affordance reviews. It distinguishes pass, pass-with-watchlist, deferred, and out-of-scope items while keeping the slice pass-with-watchlist until formal status is updated.
 
 Vertical-slice acceptance status: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` now distinguishes pass, pass-with-watchlist, deferred, and out-of-scope areas after the solo checklist and compact evidence bundle. The slice is structurally playable, but not fully polished while #310, #313, #314, #315, and #317 remain open watchlist reviews.
 
