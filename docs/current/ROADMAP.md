@@ -33,6 +33,7 @@ Detailed design rules live in:
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/SURFACE_UI_LAYOUT_PASS.md`
 - `docs/planning/VISUAL_LANGUAGE_READABILITY_ASSETS.md`
+- `docs/planning/ASSET_SOURCE_PIPELINE_V1.md`
 - `docs/planning/VISUAL_CLARITY_BASELINE_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
