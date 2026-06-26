@@ -42,6 +42,7 @@ Detailed design rules live in:
 - `docs/planning/VISUAL_PASS_IMPACT_REVIEW_2026_06_26.md`
 - `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md`
 - `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`
+- `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -103,6 +104,8 @@ Rare Signal condition review: `docs/planning/RARE_SIGNAL_CONDITION_READABILITY_R
 Wreck Shift condition review: `docs/planning/WRECK_SHIFT_CONDITION_READABILITY_REVIEW_2026_06_26.md` keeps `Wreck Shift` flavor-only for now. Any future visual emphasis must read as wreck-angle/approach variation, not a moved/open pressure gate, alternate entrance, pressure-boundary change, cache reveal, or `Pressure Seal I` bypass.
 
 Vertical-slice art-kit readiness: `docs/planning/VERTICAL_SLICE_ART_KIT_READINESS_REVIEW_2026_06_26.md` says the project is ready for a cohesive vertical-slice art integration pass, but not final production art lock. Highest-priority gaps are waterline/moonpool polish, sub idle/thrust state readability, lower-route density, compact HUD skin, and landmark sprite/fallback balance.
+
+Playable vertical-slice acceptance: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` defines the first playable/polished slice gate across loop playability, visual readability, upgrade/route coverage, non-goals, and verification. It is the quality bar for the next milestone, not a request to expand final-game scope.
 
 ## Immediate Issue Order
 

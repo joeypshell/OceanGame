@@ -6,6 +6,8 @@ Use this when the first cohesive vertical-slice art kit is integrated. This chec
 
 Readiness review: `docs/planning/VERTICAL_SLICE_ART_KIT_READINESS_REVIEW_2026_06_26.md` applies this checklist to the current normal-scale asset state and identifies the highest-priority gaps before a cohesive art integration pass.
 
+Playable slice gate: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` defines the broader playability, readability, polish, and non-goal criteria that screenshots should support.
+
 Related docs:
 
 - `docs/current/SCREENSHOT_WORKFLOW.md`
