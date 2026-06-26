@@ -438,6 +438,21 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 
 	var moonpool_sprite := main.get_node("SurfaceBaseArt/MoonpoolGuide/MoonpoolWaterlineSprite") as Sprite2D
 	_expect(moonpool_sprite.texture != null, "Surface moonpool/waterline should use the first exported source asset sprite")
+	var launch_column := main.get_node("SurfaceBaseArt/MoonpoolGuide/LaunchColumn") as Polygon2D
+	var base_zone := main.get_node("BaseZone") as Area2D
+	var base_core := main.get_node("BaseZone/BaseCore") as Polygon2D
+	var dock_rim := main.get_node("BaseZone/DockRim") as Polygon2D
+	var scene_player := main.get_node("Player") as CharacterBody2D
+	var boat_sprite := main.get_node("SurfaceBaseArt/SpriteAnchor/ResearchBoatSprite") as Sprite2D
+	_expect(base_zone.global_position.y > boat_sprite.global_position.y + 150.0, "base zone should sit below the boat hull, not inside the boat sprite")
+	_expect(scene_player.global_position.y >= base_zone.global_position.y, "player should start in the marked moonpool dock below the boat")
+	_expect(base_core.visible, "base dock core should be visible as an extraction marker")
+	_expect(dock_rim.visible, "base dock rim should be visible as a loading-dock affordance")
+	_expect(base_core.z_index < 0 and dock_rim.z_index < 0, "base dock marker should sit behind the sub, not on top of it")
+	_expect(launch_column.color.a >= 0.16, "moonpool launch column should be visible enough to mark the dock route")
+	var player_contract := PlayerScript.new()
+	_expect(player_contract.world_bounds.position.y >= 240.0, "player top clamp should keep the sub below the boat hull")
+	player_contract.free()
 
 	var shallow_midwater_background := main.get_node("ShallowMidwaterBackgroundStudy") as Sprite2D
 	_expect(shallow_midwater_background.texture != null, "Shallow/midwater background study should use its exported source asset")
