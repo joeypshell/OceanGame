@@ -411,6 +411,8 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"PressureLockedWreck/WreckSignalCache/SpriteAnchor/Sprite",
 		"PressureLockedWreck/WreckSignalCache/FallbackVisual/CacheVisual",
 		"PressureLockedWreck/WreckSignalCache/ScanMarker",
+		"SurfaceBaseArt/ResearchBoatSprite",
+		"SurfaceBaseArt/LabMoonpool",
 		"Discoveries/ThermalVent/SpriteAnchor/Sprite",
 		"Discoveries/ThermalVent/FallbackVisual/Visual",
 		"Discoveries/ThermalVent/ScanMarker",
@@ -438,6 +440,21 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	_expect(not shell_fallback.visible, "Shell Fragments polygon fallback should be hidden while the sprite asset is active")
 
 	main.free()
+
+	var player := PlayerScene.instantiate()
+	var player_required_paths := [
+		"VisualRoot/SubSpriteAnchor/SubSprite",
+		"VisualRoot/SubSpriteAnchor/Body",
+		"VisualRoot/SubSpriteAnchor/Viewport",
+		"VisualRoot/NoseLight",
+		"VisualRoot/BubbleTrail",
+		"VisualRoot/ThrustFlare",
+	]
+
+	for path in player_required_paths:
+		_expect(player.get_node_or_null(path) != null, "player scene should keep sprite-ready visual slot or fallback node: %s" % path)
+
+	player.free()
 
 func _test_landmark_region_identity_metadata() -> void:
 	var main := MainScene.instantiate()

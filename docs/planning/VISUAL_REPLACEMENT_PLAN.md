@@ -2,6 +2,8 @@
 
 Status: integration plan for moving from placeholder visuals toward a polished OceanGame visual identity. This plan does not implement a full visual overhaul.
 
+Latest slot review: `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md` audits the current player, surface base, resource, creature, landmark, pressure-wreck, and cache visual slots after recent extraction work.
+
 ## Current Visual Inventory
 
 Current runtime visuals are mostly simple Godot nodes:
@@ -417,4 +419,3 @@ Explicit non-goals:
 - No unlicensed assets.
 - No broad procedural generation.
 - No final full-game art production.
-

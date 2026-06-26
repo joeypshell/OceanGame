@@ -40,6 +40,7 @@ Detailed design rules live in:
 - `docs/planning/ASSET_SOURCE_PIPELINE_V1.md`
 - `docs/planning/VISUAL_CLARITY_BASELINE_2026_06_26.md`
 - `docs/planning/VISUAL_PASS_IMPACT_REVIEW_2026_06_26.md`
+- `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md`
 - `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
@@ -82,6 +83,8 @@ Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now d
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
 
 Expedition-day review checklist: `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md` defines five F5-driven review passes for ready panel, result panel, remembered region, condition copy, scan-only usefulness, and safe-return readability using the screenshot workflow.
+
+Visual asset slot review: `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md` confirms the current sprite/fallback slot coverage for player, surface base, resources, Lantern Fry, Gulper Eel, Thermal Vent, Shell Reef, pressure wreck, and Wreck Signal Cache, with follow-ups for larger art replacements.
 
 ## Immediate Issue Order
 
