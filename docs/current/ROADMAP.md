@@ -269,6 +269,8 @@ Wreck Echo route-pocket ownership plan: `docs/planning/WRECK_ECHO_ROUTE_POCKET_O
 
 Wreck Echo first-pass acceptance contract: `docs/planning/WRECK_ECHO_FIRST_PASS_ACCEPTANCE_CONTRACT_2026_06_26.md` defines the first runtime promise as one deeper-right `Wreck Echo Descent` route pocket and one compact research clue reward. It lists required preparation, behavior, ownership, non-goals, implementation blockers, and evidence before any runtime route work closes.
 
+Post-closeout Wreck Echo handoff status: `docs/planning/POST_CLOSEOUT_WRECK_ECHO_HANDOFF_STATUS_2026_06_26.md` accepts the current vertical slice as structurally playable and ready for `Wreck Echo Preparation And Slice Polish`, while keeping it pass-with-watchlist for future lower-route, surface-panel, and active-HUD regressions. Wreck Echo remains narrow: one deeper-right route pocket, one compact research clue, and no locator/checklist/minimap/field-guide/combat/broad-biome expansion.
+
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
 Backlog replenishment after closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines the next ordered twenty-issue queue. The focus is solo first-run evidence, compact acceptance proof, final closeout status, source-art/readability rechecks, and Wreck Echo planning without implementing a new route yet.

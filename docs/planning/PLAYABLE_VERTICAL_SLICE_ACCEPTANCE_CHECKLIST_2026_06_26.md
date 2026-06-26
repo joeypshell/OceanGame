@@ -1,6 +1,6 @@
 # Playable Vertical-Slice Acceptance Checklist - 2026-06-26
 
-Status: formal acceptance checklist, refreshed through issue #334.
+Status: formal acceptance checklist, refreshed through issue #340.
 
 This defines the first playable vertical slice. It is a player-facing quality gate for the current prototype, not a final-game feature list or production-art lock.
 
@@ -95,7 +95,7 @@ The vertical slice is playable when a tester can complete two short expeditions,
 
 ## Current Acceptance Status
 
-Updated after the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, resource/scan, low-oxygen, upgrade, scanner-distinction, durable-progression, clean demo, surface-panel contrast, debug hidden-state, and MCP context refresh reviews: the current slice is accepted as structurally playable and close to polished vertical-slice acceptance, but not final production polish.
+Updated after the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning and handoff, resource/scan, low-oxygen, upgrade, scanner-distinction, durable-progression, clean demo, surface-panel contrast, debug hidden-state, Playwright visual smoke, and MCP context refresh reviews: the current slice is accepted as structurally playable and ready for `Wreck Echo Preparation And Slice Polish`, but not final production polish.
 
 It remains pass-with-watchlist because future visual changes can reintroduce lower-route, surface-panel, or HUD confusion, so this status should remain conservative.
 
@@ -139,6 +139,11 @@ Deferred:
 - future `Wreck Echo Descent` implementation,
 - larger biome set,
 - broad economy, audio, web export, base-management, and production-art polish.
+
+Handoff status:
+
+- `docs/planning/POST_CLOSEOUT_WRECK_ECHO_HANDOFF_STATUS_2026_06_26.md` confirms the handoff into Wreck Echo preparation while keeping the current slice pass-with-watchlist.
+- Future Wreck Echo work remains narrow: one deeper-right route pocket, one compact research clue, no locator/checklist/minimap/field-guide/combat/broad-biome scope, and required normal-scale evidence before runtime implementation can close.
 
 Out of scope for this gate:
 

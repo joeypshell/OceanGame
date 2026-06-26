@@ -50,6 +50,15 @@ Next work means planning-ready work that prepares a later route without adding i
 
 Until then, Wreck Echo work should remain planning-only.
 
+Update after the Wreck Echo preparation batch:
+
+- The route promise is now narrowed to one deeper-right `Wreck Echo Descent` pocket.
+- The first reward shape is one compact research clue.
+- Cargo space is not required for the first route while the reward remains a research clue.
+- Pressure-dark visuals remain unwired reference/mood support until a route implementation issue explicitly scopes them.
+- The first-pass implementation contract, ownership plan, entry states, copy rules, screenshot checklist, and no-quest guardrails are documented.
+- Runtime Wreck Echo implementation is still deferred until an issue explicitly uses that contract and supplies tests plus normal-scale evidence.
+
 ## Deferred Work
 
 These remain valid future directions but are deferred beyond this milestone:
@@ -83,4 +92,5 @@ This milestone succeeds when:
 - the current slice remains structurally playable with the remaining watchlists reviewed,
 - the next source-art target is selected by readability impact,
 - Wreck Echo has a no-implementation guardrail and data-shape plan,
+- Wreck Echo has a first-pass acceptance contract and screenshot evidence checklist before runtime work begins,
 - no broad new systems have slipped into the current playable slice.
