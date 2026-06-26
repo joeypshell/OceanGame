@@ -54,6 +54,7 @@ Detailed design rules live in:
 - `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md`
 - `docs/planning/RESULT_MEMORY_READABILITY_REVIEW_2026_06_26.md`
+- `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -142,6 +143,8 @@ Next source-art priority: `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_20
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 
 Result memory review: `docs/planning/RESULT_MEMORY_READABILITY_REVIEW_2026_06_26.md` confirms the result flow covers banked/lost cargo, remembered place, first discovery, route choice, Gulper/Echo Lens research, upgrade progress, scan progress, and next-expedition copy without exposing debug telemetry by default or becoming a checklist.
+
+Upgrade bay review: `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md` confirms the seven-upgrade state model reads without becoming a tech tree, and the surface upgrade panel now wraps long item, cost, state, and feedback copy inside a taller panel.
 
 ## Vertical-Slice Acceptance Status
 
