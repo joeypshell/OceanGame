@@ -386,15 +386,17 @@ Pressure-dark threshold decision: `docs/planning/PRESSURE_DARK_THRESHOLD_USE_DEC
 
 Future platform/input update: `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md` records mobile/iPhone landscape-only touch controls and later controller support as future targets. They are compatibility constraints for current input/HUD work, not current milestone implementation scope.
 
-Future dive-level scale update: `docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026_06_26.md` clarifies that the current vertical slice is not the final map scale. The long-term target is larger side-view expedition maps with lateral routes, caves/pockets, branching descents, deeper layers, stable landmarks, and seeded opportunities from authored candidates. Current Wreck Echo work remains the next narrow stepping stone, not a full map expansion.
+Future dive-level scale update: `docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026_06_26.md` clarifies that the current vertical slice is not the final map scale. The long-term target is larger side-view expedition maps with lateral routes, caves/pockets, branching descents, deeper layers, stable landmarks, and seeded opportunities from authored candidates. The first Wreck Echo pocket is now the current narrow stepping stone, not a full map expansion.
 
-Latest backlog refresh: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLATFORM_INPUT_GUARDRAIL_2026_06_26.md` defines the next ordered twenty-issue queue. The queue starts with the first narrow `Wreck Echo Descent` runtime pass, then protects route/HUD/readability evidence, then records platform-input planning without implementing mobile or controller UI.
+Latest backlog refresh: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLATFORM_INPUT_GUARDRAIL_2026_06_26.md` defines the current ordered issue queue. The first narrow `Wreck Echo Descent` runtime pass, Playwright coverage, normal-scale review, tuning, demo-doc update, and acceptance-evidence refresh are complete; the remaining queue now protects active HUD readability, source-art choice, lower-route pileup, resource/scan affordances, result/upgrade copy, and deferred platform-input planning.
 
-Wreck Echo first runtime pass: issue #364 implements one deeper-right `Wreck Echo Descent` route pocket with one run-scoped compact research clue gated by `Pressure Seal I` and `Echo Lens I`. It deliberately adds no minimap, exact locator, field guide, quest checklist, combat, new economy, persistent marker, or durable Wreck Echo save data. The next follow-up should validate normal-scale Wreck Echo readability and result evidence before expanding or tuning the route.
+Wreck Echo first runtime pass: issue #364 implements one deeper-right `Wreck Echo Descent` route pocket with one run-scoped compact research clue gated by `Pressure Seal I` and `Echo Lens I`. It deliberately adds no minimap, exact locator, field guide, quest checklist, combat, new economy, persistent marker, or durable Wreck Echo save data. Normal-scale review, first tuning, clean-demo docs, and acceptance evidence have now followed it.
 
 Wreck Echo normal-scale review: `docs/planning/WRECK_ECHO_ROUTE_READABILITY_REVIEW_2026_06_26.md` records #366 as pass-with-watchlist. The route can stay implemented, the result readback is fixed and readable, and the next Wreck Echo work should tune the clue/reward/predator visual relationship before adding any broader route scope.
 
 Wreck Echo first tuning pass: issue #367 moves the one Wreck Echo pocket slightly lower/right, quiets the broad wash, and shifts the clue toward a pale blue-white research echo so it separates from green reward lure and red predator lane language. Behavior remains one route, one run-scoped clue, and no map/quest/checklist/field-guide/economy scope.
+
+Wreck Echo acceptance evidence refresh: issue #369 keeps the vertical slice structurally playable and pass-with-watchlist after the first Wreck Echo pass. Playwright visual smoke covers the deterministic ready/active/result/upgrade/lower-route views plus staged Wreck Echo route/result readback. The next risk is not whether Wreck Echo exists; it is whether active HUD compactness, source-art/fallback balance, lower-route density, resource/scan affordances, and result/upgrade copy stay readable after the new route.
 
 ## Vertical-Slice Acceptance Status
 
@@ -404,19 +406,19 @@ Implemented:
 
 - expedition start, dive, oxygen pressure, cargo banking/failure, result flow, next-expedition framing, and durable progression,
 - practical scan targets and upgrade paths for `Oxygen Tank I`, `Pressure Seal I`, `Signal Lens I`, `Echo Lens I`, `Cargo Rack I`, `Predator Warning I`, and `Decoy Pulse I`,
-- readable blocked-route, danger-route, and optional-clue-route examples through pressure wreck/cache, Gulper route, Thermal Vent, and Shell Reef,
+- readable blocked-route, danger-route, and optional-clue-route examples through pressure wreck/cache, Gulper route, Thermal Vent, Shell Reef, Wreck Signal Cache, and the first Wreck Echo pocket,
 - compact active/surface HUD separation, source-art slots, first sprite integrations, and normal-scale review evidence.
 
 Pass with polish:
 
 - active HUD skin and cargo slots,
 - surface ready/result/failure/log panels,
-- Shell Reef, Thermal Vent, pressure wreck/cache, and Gulper route sprite/fallback balance,
+- Shell Reef, Thermal Vent, pressure wreck/cache, first Wreck Echo pocket, and Gulper route sprite/fallback balance,
 - Echo Lens and Rare Signal local mystery language.
 
 Remaining before calling the vertical-slice gate fully accepted:
 
-- keep lower-route screenshots on the watchlist after any visual change, especially surface art or future Wreck Echo work.
+- keep lower-route screenshots on the watchlist after any visual change, especially source-art, Wreck Echo tuning, HUD changes, or route-density changes.
 
 Cleared acceptance follow-ups:
 
@@ -428,15 +430,17 @@ Cleared acceptance follow-ups:
 - Decoy Pulse result memory and active HUD/status feedback have a focused smoke note; prompt length remains a future polish watchlist, not a blocker.
 - Echo Lens pulse readability at Wreck Signal Cache has a focused local/no-locator recheck.
 - result and upgrade text-length guards landed in #273.
+- Wreck Echo first implementation, Playwright staged coverage, normal-scale review, first tuning, clean-demo docs, and acceptance evidence refresh are complete through #369.
 
 ## Immediate Issue Order
 
 Current playable-slice track:
 
-- Validate Wreck Echo visual smoke/readability evidence immediately after the first runtime implementation.
-- Tune Wreck Echo visuals/copy only from evidence, not from broad content ambition.
-- Refresh vertical-slice acceptance evidence after Wreck Echo lands.
-- Select the next source-art/readability pass based on post-Wreck-Echo impact.
+- Review active HUD and prompt compactness after Wreck Echo route additions.
+- Select the next source-art/readability target based on post-Wreck-Echo evidence.
+- Implement only the selected narrow source-art/readability pass.
+- Recheck source-art/fallback balance and lower-route visual pileup before any broader Wreck Echo or route expansion.
+- Review resource/scan affordance readability and result/upgrade copy now that the Wreck Echo clue exists.
 
 Next planning track:
 
@@ -447,7 +451,7 @@ Next planning track:
 Deferred and out-of-scope track:
 
 - Defer large biomes, broad economy, advanced monster-hunting systems, production animation, audio, web polish, save-slot UI, and base-management layers.
-- Defer mobile/iPhone landscape touch controls and controller polish until the playable slice and Wreck Echo preparation remain stable; preserve action-based input now so those targets stay viable later.
+- Defer mobile/iPhone landscape touch controls and controller polish until the playable slice and first Wreck Echo pocket remain stable; preserve action-based input now so those targets stay viable later.
 - Keep minimap, route graph, exact scanner locator, objective checklist, weapons, predator harvesting, full procedural ocean, daily challenge calendar, inventory grid, and final production-art lock out of this milestone.
 
 Historical ordered issue batches:
