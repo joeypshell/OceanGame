@@ -4,6 +4,8 @@ Status: checklist for issue #217.
 
 Use this when the first cohesive vertical-slice art kit is integrated. This checklist does not require final art production now.
 
+Readiness review: `docs/planning/VERTICAL_SLICE_ART_KIT_READINESS_REVIEW_2026_06_26.md` applies this checklist to the current normal-scale asset state and identifies the highest-priority gaps before a cohesive art integration pass.
+
 Related docs:
 
 - `docs/current/SCREENSHOT_WORKFLOW.md`

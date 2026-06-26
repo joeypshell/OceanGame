@@ -102,6 +102,8 @@ Rare Signal condition review: `docs/planning/RARE_SIGNAL_CONDITION_READABILITY_R
 
 Wreck Shift condition review: `docs/planning/WRECK_SHIFT_CONDITION_READABILITY_REVIEW_2026_06_26.md` keeps `Wreck Shift` flavor-only for now. Any future visual emphasis must read as wreck-angle/approach variation, not a moved/open pressure gate, alternate entrance, pressure-boundary change, cache reveal, or `Pressure Seal I` bypass.
 
+Vertical-slice art-kit readiness: `docs/planning/VERTICAL_SLICE_ART_KIT_READINESS_REVIEW_2026_06_26.md` says the project is ready for a cohesive vertical-slice art integration pass, but not final production art lock. Highest-priority gaps are waterline/moonpool polish, sub idle/thrust state readability, lower-route density, compact HUD skin, and landmark sprite/fallback balance.
+
 ## Immediate Issue Order
 
 Motivation and payoff track:
