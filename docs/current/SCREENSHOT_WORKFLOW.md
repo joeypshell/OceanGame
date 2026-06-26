@@ -1,0 +1,128 @@
+# Screenshot Workflow
+
+Use this workflow when a visual-readability issue needs comparable evidence. Screenshots are review artifacts, not committed source files, unless an issue explicitly asks for committed reference images.
+
+## What To Record
+
+For each screenshot or short capture note, record:
+
+- build or commit hash,
+- viewport size,
+- screenshot path,
+- expedition number,
+- seed,
+- condition,
+- cluster pattern,
+- view state: surface ready, active dive, result, or failure,
+- focused route or landmark,
+- immediate confusion or pass/fail observation.
+
+Use `docs/planning/NORMAL_SCALE_READABILITY_CHECKLIST.md` for the full review template.
+
+## Naming Convention
+
+Use lowercase descriptive names with date and state:
+
+```text
+oceangame_<view>_<focus>_<condition-or-seed>_<yyyy_mm_dd>.png
+```
+
+Examples:
+
+```text
+oceangame_surface_ready_thermal_bloom_2026_06_26.png
+oceangame_active_lower_route_seed_8920_2026_06_26.png
+oceangame_result_upgrade_prompt_2026_06_26.png
+```
+
+Local screenshots can live outside the repo, such as Godot user data or a temp folder. In review docs, reference the absolute path used for the review.
+
+## Manual Capture
+
+Use this when inspecting by hand:
+
+1. Launch the project normally from the repository root:
+
+   ```powershell
+   & "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64.exe" --path .
+   ```
+
+2. Keep the default camera zoom and the intended test viewport.
+3. Press F3 if you need debug telemetry for seed, condition, cluster pattern, or predator route.
+4. With debug telemetry visible, press F4 to cycle conditions and F5 to advance the review seed.
+5. Hide debug telemetry again with F3 before taking player-facing readability screenshots.
+6. Use Windows screenshot tools or the Godot editor viewport capture, then record the file path and metadata in the review note.
+
+## Surface And Active-Dive Views
+
+For surface-ready screenshots:
+
+- capture before pressing E or Enter,
+- record the visible condition and goal line,
+- confirm player-facing debug telemetry is hidden unless the screenshot is specifically a debug evidence shot.
+
+For active-dive screenshots:
+
+- press E or Enter to begin the dive,
+- move the player/camera to the route under review,
+- capture with only the active operational HUD visible,
+- include whether the view is testing cargo, scan target, lock, reward, danger, safe return, or mystery/future promise.
+
+## Temporary Script Capture
+
+Use a temporary Godot script outside the repo when a repeatable camera position is useful but no committed capture tool is needed.
+
+Example:
+
+```powershell
+$script = @'
+extends SceneTree
+
+func _initialize() -> void:
+	var scene := load("res://scenes/Main.tscn") as PackedScene
+	var root := scene.instantiate()
+	root.show_debug_telemetry = false
+	get_root().add_child(root)
+	get_root().size = Vector2i(1365, 768)
+	await process_frame
+	await process_frame
+	root.call("_start_dive")
+	var player := root.get_node_or_null("Player") as Node2D
+	if player != null:
+		player.global_position = Vector2(980, 1660)
+	await process_frame
+	await process_frame
+	var path := "user://oceangame_active_lower_route_seed_review.png"
+	var err := get_root().get_texture().get_image().save_png(path)
+	print("screenshot=", ProjectSettings.globalize_path(path), " err=", err)
+	quit(0 if err == OK else 1)
+'@
+$temp = Join-Path $env:TEMP "oceangame_capture.gd"
+Set-Content -LiteralPath $temp -Value $script -Encoding UTF8
+& "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --path . --script $temp
+```
+
+This is appropriate for issue notes and planning reviews. Do not commit the temporary script or generated screenshots unless the issue explicitly asks for reference assets.
+
+## Optional Godot AI MCP Capture
+
+If the local `hi-godot/godot-ai` plugin is installed, enabled in Godot, and its MCP server is running, it may be used for live editor screenshots and scene inspection. This repository does not vendor that plugin and does not require it for normal verification.
+
+When using Godot AI MCP, record:
+
+- plugin/server was active,
+- whether the capture came from the editor viewport or running game,
+- seed/condition/cluster metadata from debug telemetry if relevant,
+- screenshot path or attachment id.
+
+If Godot AI MCP is not active, use manual capture or the temporary script workflow instead.
+
+## Verification Expectations
+
+Screenshot workflow changes are documentation/tooling changes. Run:
+
+```powershell
+node .mcp/oceangame-context-server.mjs --self-test
+git diff --check
+```
+

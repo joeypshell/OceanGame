@@ -46,6 +46,7 @@ Detailed design rules live in:
 Implemented architecture lives in `docs/current/ARCHITECTURE.md`.
 Implemented behavior lives in `docs/current/GAMEPLAY.md`.
 Implemented tooling lives in `docs/current/TOOLING.md`.
+Screenshot workflow lives in `docs/current/SCREENSHOT_WORKFLOW.md`.
 Optional local Godot editor MCP policy lives in `docs/current/GODOT_MCP.md`.
 
 ## Active Milestone

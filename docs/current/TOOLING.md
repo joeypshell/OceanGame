@@ -10,6 +10,14 @@ Policy and setup notes live in:
 
 - `docs/current/GODOT_MCP.md`
 
+## Screenshot Workflow
+
+Repeatable visual review capture guidance lives in:
+
+- `docs/current/SCREENSHOT_WORKFLOW.md`
+
+Use it for surface-ready, active-dive, lower-route, condition, and UI readability screenshots. It documents manual capture, temporary local script capture, and optional Godot AI MCP capture without requiring unavailable automation.
+
 ## MCP Context Server
 
 The first MCP slice is agent workflow support: a small repo-local context server exposes OceanGame source-of-truth docs as MCP resources. It does not control the Godot editor, mutate files, require secrets, or replace the GitHub issue workflow.
@@ -26,6 +34,7 @@ Resources:
 - `oceangame://gameplay`
 - `oceangame://tooling`
 - `oceangame://godot-mcp`
+- `oceangame://screenshot-workflow`
 - `oceangame://project-status`
 - `oceangame://core-loop`
 - `oceangame://seeded-expeditions`
