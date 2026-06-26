@@ -16,6 +16,7 @@ Detailed design rules live in:
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
 - `docs/planning/BLIND_VALIDATION_KIT.md`
 - `docs/planning/SCANNER_IMPROVEMENT_I.md`
+- `docs/planning/SCANNER_PROGRESSION_V2.md`
 - `docs/planning/CARGO_IMPROVEMENT_I.md`
 - `docs/planning/EXPEDITION_GOAL_II.md`
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`

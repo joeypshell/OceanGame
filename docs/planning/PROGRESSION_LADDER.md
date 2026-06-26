@@ -34,7 +34,7 @@ Avoid future upgrades that are only larger numbers unless they directly create a
 - Recommended first upgrade: `Signal Lens I`, unlocked from `Wreck Signal Cache`.
 - Recommended behavior change: repeat-scanning a discovered resource target sends a short directional pulse toward the nearest visible uncollected deposit of that same resource in the current expedition.
 - Constraint: avoid a full field guide until practical scan outcomes are proven.
-- Planning note: `docs/planning/SCANNER_IMPROVEMENT_I.md`.
+- Planning notes: `docs/planning/SCANNER_IMPROVEMENT_I.md` and `docs/planning/SCANNER_PROGRESSION_V2.md`.
 
 ## 4. Cargo Improvement
 

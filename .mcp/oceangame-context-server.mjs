@@ -25,6 +25,7 @@ const resources = [
   ["oceangame://blind-validation-kit", "docs/planning/BLIND_VALIDATION_KIT.md", "Blind validation kit"],
   ["oceangame://expedition-goal-ii", "docs/planning/EXPEDITION_GOAL_II.md", "Expedition Goal II plan"],
   ["oceangame://scanner-improvement-i", "docs/planning/SCANNER_IMPROVEMENT_I.md", "Scanner Improvement I plan"],
+  ["oceangame://scanner-progression-v2", "docs/planning/SCANNER_PROGRESSION_V2.md", "Scanner Progression v2 plan"],
   ["oceangame://cargo-improvement-i", "docs/planning/CARGO_IMPROVEMENT_I.md", "Cargo Improvement I plan"],
   ["oceangame://burst-thruster", "docs/planning/BURST_THRUSTER_MILESTONE.md", "Burst Thruster milestone plan"],
   ["oceangame://monster-observation-i", "docs/planning/MONSTER_OBSERVATION_I.md", "Monster Observation I plan"],
@@ -150,6 +151,7 @@ function selfTest() {
     "oceangame://backlog-replenishment-visual-clarity-foundation-2026-06-26",
     "oceangame://screenshot-workflow",
     "oceangame://monster-research-loop-v1",
+    "oceangame://scanner-progression-v2",
     "oceangame://project-status",
   ];
   if (
