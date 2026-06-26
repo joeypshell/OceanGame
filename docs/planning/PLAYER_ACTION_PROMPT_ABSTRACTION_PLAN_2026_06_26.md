@@ -1,6 +1,6 @@
 # Player Action Prompt Abstraction Plan - 2026-06-26
 
-Status: helper implemented; prompt routing remains next.
+Status: helper implemented and current prompt routing complete; guard expansion remains next.
 
 Issue: #388.
 
@@ -33,7 +33,7 @@ Recommended ids:
 - `burst_thruster`: `Space`
 - `decoy_pulse`: `F`
 
-The helper may live in `scripts/main.gd` for the first pass because every current prompt is formatted there. Extract it later only if prompt formatting grows beyond this scene. Issue #389 implemented this first helper as `_action_label(action_id)` with logic coverage for the current keyboard labels.
+The helper may live in `scripts/main.gd` for the first pass because every current prompt is formatted there. Extract it later only if prompt formatting grows beyond this scene. Issue #389 implemented this first helper as `_action_label(action_id)` with logic coverage for the current keyboard labels. Issue #390 routed the active HUD, surface result, failure, upgrade bay, ready panel, Burst, Decoy, and next-expedition prompt strings through the helper while preserving keyboard behavior.
 
 ## Guardrails
 
@@ -45,8 +45,8 @@ The helper may live in `scripts/main.gd` for the first pass because every curren
 
 ## Follow-Up Order
 
-1. Implement the keyboard label helper for current actions.
-2. Route active HUD and surface prompts through the helper.
+1. Implement the keyboard label helper for current actions. Done in #389.
+2. Route active HUD and surface prompts through the helper. Done in #390.
 3. Add guard coverage for helper output and the most important prompt strings.
 4. Review result, upgrade, and active HUD copy after the routing pass.
 

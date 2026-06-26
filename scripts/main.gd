@@ -1181,19 +1181,31 @@ func _update_hud() -> void:
 	status_label.text = _compact_dive_status(status_label.text) if is_diving else status_label.text
 
 	if dive_session.result == DiveSessionScript.Result.READY:
-		prompt_label.text = "Press E or Enter to begin the dive"
+		prompt_label.text = "Press %s to begin the dive" % _action_label("interact").replace("/", " or ")
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		if _all_upgrades_owned():
-			prompt_label.text = "Extraction complete - press R for next expedition | Left/Right surface view"
+			prompt_label.text = "Extraction complete - press %s for next expedition | %s surface view" % [
+				_action_label("restart_dive"),
+				_action_label("move_left_right"),
+			]
 		elif surface_tab_index == SURFACE_TAB_UPGRADES:
-			prompt_label.text = "Upgrade bay: Up/Down select, E purchase, R next expedition | Left/Right surface view"
+			prompt_label.text = "Upgrade bay: %s select, %s purchase, %s next expedition | %s surface view" % [
+				_action_label("move_up_down"),
+				_action_label("interact"),
+				_action_label("restart_dive"),
+				_action_label("move_left_right"),
+			]
 		else:
-			prompt_label.text = "Extraction complete - press E for upgrades, R next expedition | Left/Right surface view"
+			prompt_label.text = "Extraction complete - press %s for upgrades, %s next expedition | %s surface view" % [
+				_action_label("interact"),
+				_action_label("restart_dive"),
+				_action_label("move_left_right"),
+			]
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
-		prompt_label.text = "Expedition failed - press R for next expedition"
+		prompt_label.text = "Expedition failed - press %s for next expedition" % _action_label("restart_dive")
 	elif player_in_base:
 		if dive_session.has_left_base:
-			prompt_label.text = "At base: E/Enter extract"
+			prompt_label.text = "At base: %s extract" % _action_label("interact")
 		else:
 			prompt_label.text = "Leave moonpool, then return"
 	else:
@@ -1250,8 +1262,10 @@ func _update_run_panel() -> void:
 		run_panel.visible = true
 		if surface_tab_index == SURFACE_TAB_UPGRADES:
 			run_title_label.text = "Surface Upgrade Bay"
-			run_summary_label.text = _format_run_summary("Banked:%s\nUp/Down choose; E/Enter buys.\n%s" % [
+			run_summary_label.text = _format_run_summary("Banked:%s\n%s choose; %s buys.\n%s" % [
 				_format_banked_resources(),
+				_action_label("move_up_down"),
+				_action_label("interact"),
 				_format_next_expedition_prompt(),
 			], "extracted")
 		elif surface_tab_index == SURFACE_TAB_LOG:
@@ -1309,7 +1323,11 @@ func _update_upgrade_menu() -> void:
 	upgrade_menu_feedback_label.text = upgrade_menu_feedback
 
 func _format_upgrade_menu_title(selected_position: int, total_count: int) -> String:
-	return "Upgrade Bay (%d/%d) - Up/Down select" % [selected_position, total_count]
+	return "Upgrade Bay (%d/%d) - %s select" % [
+		selected_position,
+		total_count,
+		_action_label("move_up_down"),
+	]
 
 func _format_ready_panel_summary() -> String:
 	var lines: Array[String] = [
@@ -1317,7 +1335,7 @@ func _format_ready_panel_summary() -> String:
 		"Collect, scan, push deeper, then return to bank cargo.",
 		_format_condition_briefing(),
 		ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions),
-		"E/Enter begins.",
+		"%s begins." % _action_label("interact"),
 	]
 	if show_debug_telemetry:
 		lines.append("Debug: F9 resets prototype save.")
@@ -1458,11 +1476,11 @@ func _format_burst_thruster_prompt() -> String:
 	if burst_thruster_cooldown_remaining > 0.0:
 		return "Burst: %ds cooldown" % ceili(burst_thruster_cooldown_remaining)
 
-	return "Space: burst -%d O2" % ceili(burst_thruster_oxygen_cost)
+	return "%s: burst -%d O2" % [_action_label("burst_thruster"), ceili(burst_thruster_oxygen_cost)]
 
 func _format_decoy_pulse_prompt() -> String:
 	if progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
-		return "Decoy spent" if decoy_pulse_used_this_run else "F: decoy ready"
+		return "Decoy spent" if decoy_pulse_used_this_run else "%s: decoy ready" % _action_label("decoy_pulse")
 	if progression_state.has_discovery("gulper_eel"):
 		return "Decoy locked"
 
@@ -1533,7 +1551,8 @@ func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 		]
 
 	if progression_state.can_afford(upgrade.resource_cost):
-		return "State: Available now\nAction: press E or Enter to buy\nEffect: %s%s" % [
+		return "State: Available now\nAction: press %s to buy\nEffect: %s%s" % [
+			_action_label("interact").replace("/", " or "),
 			upgrade.owned_text,
 			role_hint
 		]
@@ -1739,7 +1758,10 @@ func _format_run_summary(player_summary: String, result_name: String) -> String:
 	return "%s\n%s" % [player_summary, _format_run_telemetry(result_name)]
 
 func _format_next_expedition_prompt() -> String:
-	return "Next: press R for Expedition %d; the ocean shifts again." % (progression_state.current_run_number + 1)
+	return "Next: press %s for Expedition %d; the ocean shifts again." % [
+		_action_label("restart_dive"),
+		progression_state.current_run_number + 1,
+	]
 
 func _format_expedition_ready_status() -> String:
 	return "Expedition %d ready: the ocean changed overnight." % progression_state.current_run_number
