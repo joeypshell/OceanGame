@@ -74,6 +74,12 @@ Resources:
 - `oceangame://solo-first-run-readability-checklist-2026-06-26`
 - `oceangame://expedition-goal-ii`
 - `oceangame://scanner-improvement-i`
+- `oceangame://scanner-progression-v2`
+- `oceangame://deeper-access-after-echo-lens-2026-06-26`
+- `oceangame://next-milestone-after-vertical-slice-closeout-2026-06-26`
+- `oceangame://wreck-echo-descent-no-implementation-criteria-2026-06-26`
+- `oceangame://wreck-echo-descent-route-pocket-data-shape-2026-06-26`
+- `oceangame://wreck-echo-oxygen-cargo-preparation-review-2026-06-26`
 - `oceangame://cargo-improvement-i`
 - `oceangame://burst-thruster`
 - `oceangame://monster-observation-i`
@@ -159,9 +165,11 @@ Resources:
 - `oceangame://expedition-day-five-seed-review-findings-2026-06-26`
 - `oceangame://backlog-replenishment-playable-loop-polish-2026-06-26`
 - `oceangame://backlog-replenishment-after-playable-loop-polish-2026-06-26`
+- `oceangame://backlog-replenishment-after-playable-loop-closeout-2026-06-26`
 - `oceangame://backlog-replenishment-vertical-slice-readability-2026-06-26`
 - `oceangame://backlog-replenishment-after-vertical-slice-readability-2026-06-26`
 - `oceangame://backlog-replenishment-after-vertical-slice-closeout-2026-06-26`
+- `oceangame://backlog-replenishment-wreck-echo-prep-review-2026-06-26`
 - `oceangame://backlog-replenishment-after-visual-clarity-2026-06-26`
 - `oceangame://thermal-vent-route-review-2026-06-25`
 - `oceangame://backlog-replenishment-thermal-vent-decoy`
