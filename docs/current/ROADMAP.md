@@ -116,6 +116,7 @@ Detailed design rules live in:
 - `docs/planning/SCANNER_FEEDBACK_SIGNAL_VS_ECHO_REVIEW_2026_06_26.md`
 - `docs/planning/NEXT_MONSTER_RESEARCH_READABILITY_MILESTONE_2026_06_26.md`
 - `docs/planning/DECOY_PULSE_HUD_PREDATOR_REVIEW_AFTER_HUD_POLISH_2026_06_26.md`
+- `docs/planning/GULPER_TIMING_RESULT_CLARITY_REVIEW_2026_06_26.md`
 - `docs/planning/DURABLE_PROGRESSION_RESET_ONBOARDING_REVIEW_2026_06_26.md`
 - `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
 - `docs/planning/ECHO_LENS_NO_LOCATOR_LANGUAGE_REVIEW_2026_06_26.md`
@@ -274,6 +275,8 @@ Decoy Pulse owned-state review: `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_20
 Decoy Pulse smoke note: `docs/planning/DECOY_PULSE_RESULT_MEMORY_HUD_SMOKE_2026_06_26.md` confirms active prompt, activation status, scan feedback, spent state, and result memory read as temporary route timing instead of combat, harvesting, stun/capture, or permanent predator control.
 
 Decoy Pulse HUD and predator review after HUD polish: `docs/planning/DECOY_PULSE_HUD_PREDATOR_REVIEW_AFTER_HUD_POLISH_2026_06_26.md` keeps Decoy Pulse owned-state HUD and the temporary green predator state as pass-with-watchlist. The read is one-use route timing and distraction, not damage, stun, capture, harvest, or victory; predator contact remains possible after mistiming.
+
+Gulper timing result clarity review: `docs/planning/GULPER_TIMING_RESULT_CLARITY_REVIEW_2026_06_26.md` keeps scan, contact, and Decoy Pulse result copy as pass-with-watchlist. The result panel tells the player what was learned about route timing without becoming a field guide, combat log, loot record, capture system, health UI, or hunting contract.
 
 Active prompt Burst/Decoy review: `docs/planning/ACTIVE_PROMPT_BURST_DECOY_REVIEW_2026_06_26.md` keeps the combined active-tool prompt understandable with shorter command-first snippets such as `Space: burst -4 O2` and `F: decoy ready`, without adding tool wheels, inventory UI, checklist UI, or combat UI.
 
