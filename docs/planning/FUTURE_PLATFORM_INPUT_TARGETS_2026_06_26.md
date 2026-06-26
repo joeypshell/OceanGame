@@ -17,6 +17,8 @@ Record long-term platform/input direction so current control, HUD, and scene dec
 
 Keep desktop keyboard controls as the current playable target. Do not add touch UI, mobile export polish, controller prompts, save/profile UI, or platform-specific settings during the current slice unless a future issue explicitly promotes them.
 
+Current input contract review: `docs/planning/INPUT_ACTION_CONTRACT_REVIEW_2026_06_26.md` confirms player-facing gameplay is routed through semantic Godot actions, while F3/F4/F5/F6/F9 remain debug-only keyboard shortcuts. The next risks are controller/touch mapping and keyboard-specific prompt copy, not gameplay rule coupling.
+
 Current work should still preserve platform flexibility:
 
 - route gameplay input through Godot actions rather than direct key checks,
