@@ -86,6 +86,7 @@ Detailed design rules live in:
 - `docs/planning/FIRST_RUN_SURFACE_READY_COMPREHENSION_REVIEW_2026_06_26.md`
 - `docs/planning/FIRST_RUN_ACTIVE_DIVE_COMPREHENSION_REVIEW_2026_06_26.md`
 - `docs/planning/SAVE_PROGRESSION_PERSISTENCE_EXPECTATION_2026_06_26.md`
+- `docs/planning/SUB_IDLE_THRUST_NORMAL_SCALE_RECHECK_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -189,6 +190,8 @@ Surface moonpool/waterline review: `docs/planning/SURFACE_MOONPOOL_WATERLINE_REV
 First-run surface ready review: `docs/planning/FIRST_RUN_SURFACE_READY_COMPREHENSION_REVIEW_2026_06_26.md` keeps the first ready screen as pass-with-watchlist. The start prompt, condition copy, goal line, boat/moonpool read, and hidden-debug expectations are understandable without tutorial panels or quest UI.
 
 First-run active dive review: `docs/planning/FIRST_RUN_ACTIVE_DIVE_COMPREHENSION_REVIEW_2026_06_26.md` keeps the first active dive minute as pass-with-watchlist. Oxygen, depth, base direction, cargo slots, scan target, Burst prompt, and first pickup/scan guidance are understandable without objective checklists or tutorial overlays.
+
+Sub idle/thrust normal-scale recheck: `docs/planning/SUB_IDLE_THRUST_NORMAL_SCALE_RECHECK_2026_06_26.md` keeps idle bubble, movement trail, thrust flare, and facing behavior as pass-with-watchlist. Future polish should improve source-art/animation clarity without changing movement, collision, oxygen, burst, or bounds.
 
 Save progression persistence expectation: `docs/planning/SAVE_PROGRESSION_PERSISTENCE_EXPECTATION_2026_06_26.md` clarifies that owned upgrades, banked resources, scan discoveries, and best depth intentionally survive relaunch, while active oxygen, carried cargo, temporary tool state, and in-progress expedition state do not.
 
