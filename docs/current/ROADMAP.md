@@ -161,6 +161,8 @@ Playable-loop polish update: `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_
 
 Vertical-slice polish queue: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLAYABLE_LOOP_POLISH_2026_06_26.md` creates issues #220-#239. The focus is Wreck Echo visual follow-through, pressure wreck/cache sprite decisions, local scan/echo feedback, Shell Reef and HUD polish, condition readability review, and first vertical-slice acceptance planning.
 
+Wreck Echo prep backlog review: `docs/planning/BACKLOG_REPLENISHMENT_WRECK_ECHO_PREP_REVIEW_2026_06_26.md` reviewed the open Wreck Echo prep queue after recent visual and tooling fixes. No new issues were created because 20 concrete issues remain open and the queue is already focused on the narrow Wreck Echo implementation path plus current-slice polish.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
