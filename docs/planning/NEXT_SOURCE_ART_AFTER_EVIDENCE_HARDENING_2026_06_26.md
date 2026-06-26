@@ -1,6 +1,6 @@
 # Next Source Art After Evidence Hardening - 2026-06-26
 
-Status: selected narrow target.
+Status: selected and implemented in #396.
 
 Issue: #395.
 
@@ -9,6 +9,8 @@ Issue: #395.
 Select the lower-route `DeepRewardLure` / reward-cue cluster as the next narrow source-art readability target.
 
 The goal is not a full lower-route repaint. The goal is to make the optional deep reward read less like the pressure/cache/Wreck Echo signal family and less like predator danger, using one authored source-art pass plus conservative runtime wiring.
+
+Implementation note: #396 added `deep_reward_lure_sprite_v1.svg` as source/export/provenance-covered amber reward art and wired it into `DeepRewardLure/SpriteAnchor/Sprite`. Existing fallback glow geometry remains present but quieter.
 
 ## Why This Target
 

@@ -177,7 +177,6 @@ test.describe("OceanGame web visual smoke", () => {
       active_stats_visible: true,
     });
 
-    await page.waitForTimeout(3_200);
     await capture(page, testInfo, "active-critical-oxygen", {
       result: "diving",
       oxygen_state: "critical",

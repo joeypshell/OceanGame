@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="96" viewBox="0 0 140 96">
+  <title>Deep reward lure v1</title>
+  <defs>
+    <linearGradient id="amberCore" x1="28" y1="28" x2="112" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffe2a3"/>
+      <stop offset="0.55" stop-color="#f3a83f"/>
+      <stop offset="1" stop-color="#8f4d18"/>
+    </linearGradient>
+    <linearGradient id="darkShell" x1="18" y1="22" x2="120" y2="82" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#473019"/>
+      <stop offset="1" stop-color="#1f1720"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke-linejoin="round">
+    <path d="M18 54 C30 28 58 16 91 22 C111 25 124 38 130 54 C116 70 92 78 62 74 C41 72 27 64 18 54 Z" fill="#2a1d1c" fill-opacity="0.66" stroke="#6f4b2b" stroke-opacity="0.55" stroke-width="3"/>
+    <path d="M32 55 C42 38 61 30 88 34 C101 36 111 43 116 54 C105 63 87 68 64 65 C49 63 38 60 32 55 Z" fill="url(#darkShell)" fill-opacity="0.92" stroke="#c57a2e" stroke-opacity="0.72" stroke-width="2"/>
+    <path d="M45 54 C55 42 74 37 93 43 C101 45 107 49 110 55 C100 61 84 64 66 61 C57 60 50 57 45 54 Z" fill="url(#amberCore)" fill-opacity="0.94" stroke="#ffd37a" stroke-opacity="0.82" stroke-width="1.6"/>
+    <path d="M55 52 L67 44 L82 46 L94 54 L79 60 L63 58 Z" fill="#fff0a8" fill-opacity="0.46"/>
+    <path d="M20 54 L8 46 M21 56 L8 62 M128 52 L137 45 M128 57 L136 64" stroke="#d08338" stroke-opacity="0.46" stroke-width="2" stroke-linecap="round"/>
+    <path d="M42 29 C57 18 84 15 105 24" stroke="#ffd17a" stroke-opacity="0.22" stroke-width="5" stroke-linecap="round"/>
+    <path d="M34 78 C57 88 91 86 112 72" stroke="#8c4f28" stroke-opacity="0.28" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="38" cy="46" r="2.5" fill="#ffd889" fill-opacity="0.62" stroke="none"/>
+    <circle cx="115" cy="43" r="2" fill="#ffbe55" fill-opacity="0.44" stroke="none"/>
+    <circle cx="101" cy="68" r="2.4" fill="#f49a32" fill-opacity="0.48" stroke="none"/>
+  </g>
+</svg>

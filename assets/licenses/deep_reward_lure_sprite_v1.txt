@@ -1,0 +1,10 @@
+Asset path: assets/exports/sprites/deep_reward_lure_sprite_v1.svg
+Source path: assets/source/sprites/deep_reward_lure_sprite_v1.svg
+Creator or tool: Codex-authored SVG source art.
+License or usage basis: Original project asset for OceanGame.
+Source URL: n/a
+Date added: 2026-06-26
+Prompt summary, if generated: none; authored as editable SVG code
+Edited after generation: n/a
+Intended use: prototype readability source/export asset for the optional deep reward lure in the lower route
+Restrictions: Preserve the lure as optional material opportunity. Do not use this asset as a map marker, objective marker, quest step, field-guide icon, combat reward, Wreck Echo clue, pressure gate, or exact locator.

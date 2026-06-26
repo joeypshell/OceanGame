@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=34 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/landmark_shell_reef_shelf_scan_sprite_v1.svg" id="24_shell_reef_shelf_scan_sprite"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/surface_moonpool_waterline_v1.svg" id="25_surface_moonpool_waterline"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/shallow_midwater_background_study_v1.svg" id="26_shallow_midwater_background"]
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/deep_reward_lure_sprite_v1.svg" id="27_deep_reward_lure_sprite"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -296,24 +297,31 @@ polygon = PackedVector2Array(0, 1460, 1280, 1460, 1280, 2320, 0, 2320)
 [node name="DeepRewardLure" type="Node2D" parent="."]
 visible = false
 
+[node name="SpriteAnchor" type="Node2D" parent="DeepRewardLure"]
+position = Vector2(1030, 1738)
+
+[node name="Sprite" type="Sprite2D" parent="DeepRewardLure/SpriteAnchor"]
+modulate = Color(1, 0.92, 0.72, 0.9)
+texture = ExtResource("27_deep_reward_lure_sprite")
+
 [node name="CurrentTrail" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.5, 1, 0.35, 0.04)
+color = Color(0.95, 0.56, 0.24, 0.035)
 polygon = PackedVector2Array(910, 1320, 1006, 1372, 1060, 1690, 1118, 1900, 1010, 1846, 954, 1510)
 
 [node name="DistantBloom" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.74, 1, 0.26, 0.12)
+color = Color(1, 0.64, 0.24, 0.075)
 polygon = PackedVector2Array(1018, 1668, 1060, 1712, 1116, 1718, 1070, 1760, 1086, 1824, 1028, 1788, 970, 1818, 988, 1756, 940, 1710, 1002, 1710)
 
 [node name="RewardCore" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.9, 1, 0.34, 0.52)
+color = Color(1, 0.66, 0.22, 0.22)
 polygon = PackedVector2Array(1030, 1704, 1050, 1724, 1078, 1738, 1050, 1752, 1030, 1772, 1010, 1752, 982, 1738, 1010, 1724)
 
 [node name="RewardPing" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.84, 1, 0.45, 0.08)
+color = Color(1, 0.6, 0.26, 0.05)
 polygon = PackedVector2Array(940, 1688, 982, 1674, 970, 1706, 1074, 1748, 1128, 1736, 1086, 1714)
 
 [node name="LureParticles" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.84, 1, 0.45, 0.1)
+color = Color(1, 0.66, 0.28, 0.075)
 polygon = PackedVector2Array(920, 1334, 932, 1318, 946, 1336, 932, 1352, 952, 1438, 966, 1420, 982, 1442, 964, 1458, 1056, 1628, 1070, 1612, 1084, 1632, 1068, 1648)
 
 [node name="PressureLockedWreck" type="Node2D" parent="."]

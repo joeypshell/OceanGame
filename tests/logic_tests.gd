@@ -450,6 +450,8 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"WreckEchoDescent/ClueTrigger/CollisionShape2D",
 		"RareSignalEmphasis/SoftPingWash",
 		"RareSignalEmphasis/BrokenEchoArc",
+		"DeepRewardLure/SpriteAnchor/Sprite",
+		"DeepRewardLure/RewardCore",
 		"ShallowMidwaterBackgroundStudy",
 		"SurfaceBaseArt/SpriteAnchor/ResearchBoatSprite",
 		"SurfaceBaseArt/MoonpoolGuide/MoonpoolWaterlineSprite",
@@ -574,9 +576,12 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	var reward_core := main.get_node("DeepRewardLure/RewardCore") as Polygon2D
 	var reward_bloom := main.get_node("DeepRewardLure/DistantBloom") as Polygon2D
 	var reward_particles := main.get_node("DeepRewardLure/LureParticles") as Polygon2D
-	_expect(reward_core.color.a >= 0.5, "deep reward lure should keep one compact readable core")
-	_expect(reward_bloom.color.a <= 0.14, "deep reward bloom should not wash over Shell Reef and predator signals")
-	_expect(reward_particles.color.a <= 0.12, "deep reward particles should remain secondary to the reward core")
+	var reward_sprite := main.get_node("DeepRewardLure/SpriteAnchor/Sprite") as Sprite2D
+	_expect(reward_sprite.texture != null, "deep reward lure should use the selected exported source asset")
+	_expect(reward_sprite.modulate.a >= 0.85, "deep reward lure sprite should carry the main reward read")
+	_expect(reward_core.color.a <= 0.24, "deep reward fallback core should stay subordinate to the source asset")
+	_expect(reward_bloom.color.a <= 0.08, "deep reward bloom should not wash over Shell Reef and predator signals")
+	_expect(reward_particles.color.a <= 0.08, "deep reward particles should remain secondary to the reward sprite")
 
 	var cache_visual := main.get_node("PressureLockedWreck/WreckSignalCache/FallbackVisual/CacheVisual") as Polygon2D
 	var cache_marker := main.get_node("PressureLockedWreck/WreckSignalCache/ScanMarker") as Polygon2D
