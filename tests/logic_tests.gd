@@ -66,6 +66,7 @@ func _initialize() -> void:
 	_run("recent expedition log", _test_recent_expedition_log)
 	_run("thermal vent scan clue text", _test_thermal_vent_scan_clue_text)
 	_run("shell reef scan clue text", _test_shell_reef_scan_clue_text)
+	_run("wreck signal cache repeat scan hint", _test_wreck_signal_cache_repeat_scan_hint)
 	_run("pressure lock guidance text", _test_pressure_lock_guidance_text)
 	_run("surface summary tabs", _test_surface_summary_tabs)
 	_run("condition briefing copy", _test_condition_briefing_copy)
@@ -789,6 +790,23 @@ func _test_shell_reef_scan_clue_text() -> void:
 	_expect(main._format_repeat_scan_effect_text(target).contains("Reef route clue refreshed"), "shell reef repeat scan should give compact feedback")
 	_expect(main._format_first_scan_guidance(target).contains("midwater bank route"), "shell reef first scan should explain the route decision")
 	_expect(main._format_scan_target_type(target) == "environment", "shell reef scan target should be environmental metadata")
+	target.free()
+	main.free()
+
+func _test_wreck_signal_cache_repeat_scan_hint() -> void:
+	var main := MainScript.new()
+	var target := DummyScanTarget.new()
+	target.discovery_id = "wreck_signal_cache"
+	target.display_name = "Wreck Signal Cache"
+	target.description = "Cache ping."
+
+	_expect(main._format_repeat_scan_effect_text(target).contains("Signal Lens I"), "cache repeat scan before Signal Lens I should refresh the current upgrade clue")
+	main.progression_state.purchased_upgrades[SignalLensUpgrade.id] = true
+	var repeat_hint := main._format_repeat_scan_effect_text(target)
+	_expect(repeat_hint.contains("Echo Lens"), "cache repeat scan after Signal Lens I should hint at future echo-lens study")
+	_expect(repeat_hint.contains("deeper wreck signals"), "cache repeat scan should imply unresolved wreck signals without exact coordinates")
+	_expect(not repeat_hint.to_lower().contains("map"), "cache repeat scan should not introduce map UI language")
+	_expect(main._format_signal_lens_pulse_text(target) == "", "Wreck Signal Cache repeat hint should not reuse resource pulse behavior")
 	target.free()
 	main.free()
 
