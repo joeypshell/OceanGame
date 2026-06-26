@@ -123,6 +123,7 @@ Detailed design rules live in:
 - `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md`
 - `docs/planning/COMPACT_HUD_FINAL_NORMAL_SCALE_REVIEW_2026_06_26.md`
 - `docs/planning/ACTIVE_HUD_LOW_OXYGEN_REVIEW_AFTER_PROMPT_TUNE_2026_06_26.md`
+- `docs/planning/WRECK_ECHO_ACTIVE_HUD_COMPACTNESS_REVIEW_2026_06_26.md`
 - `docs/planning/UPGRADE_BAY_NORMAL_SCALE_AFFORDANCE_REVIEW_AFTER_COPY_TUNE_2026_06_26.md`
 - `docs/planning/SCANNER_FEEDBACK_SIGNAL_VS_ECHO_REVIEW_2026_06_26.md`
 - `docs/planning/NEXT_MONSTER_RESEARCH_READABILITY_MILESTONE_2026_06_26.md`
@@ -397,6 +398,8 @@ Wreck Echo normal-scale review: `docs/planning/WRECK_ECHO_ROUTE_READABILITY_REVI
 Wreck Echo first tuning pass: issue #367 moves the one Wreck Echo pocket slightly lower/right, quiets the broad wash, and shifts the clue toward a pale blue-white research echo so it separates from green reward lure and red predator lane language. Behavior remains one route, one run-scoped clue, and no map/quest/checklist/field-guide/economy scope.
 
 Wreck Echo acceptance evidence refresh: issue #369 keeps the vertical slice structurally playable and pass-with-watchlist after the first Wreck Echo pass. Playwright visual smoke covers the deterministic ready/active/result/upgrade/lower-route views plus staged Wreck Echo route/result readback. The next risk is not whether Wreck Echo exists; it is whether active HUD compactness, source-art/fallback balance, lower-route density, resource/scan affordances, and result/upgrade copy stay readable after the new route.
+
+Wreck Echo active HUD compactness review: `docs/planning/WRECK_ECHO_ACTIVE_HUD_COMPACTNESS_REVIEW_2026_06_26.md` records #371 as pass-with-watchlist. Wreck Echo adds no prompt segment, uses one compact status line for clue recovery, leaves oxygen/base/scan surfaces intact, and moves research readback to the extraction result panel. No HUD layout or copy change is needed before source-art and lower-route follow-up reviews.
 
 ## Vertical-Slice Acceptance Status
 
