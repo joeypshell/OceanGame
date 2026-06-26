@@ -54,6 +54,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_POLISH_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLICE_READABILITY_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -110,6 +111,8 @@ Playable vertical-slice acceptance: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEP
 
 Next milestone definition: `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md` distinguishes current, next, deferred, and out-of-scope work for the playable vertical slice. Current work should improve the existing loop and readability; next work can plan deeper Wreck Echo promise only after the slice is clearer; deferred work stays out of the immediate queue.
 
+Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLICE_READABILITY_2026_06_26.md` creates issues #240-#259 from the current milestone. The batch prioritizes compact HUD skinning, normal-scale readability evidence, lower-route density cleanup, sprite/fallback reviews, acceptance evidence, and narrow Wreck Echo planning.
+
 ## Immediate Issue Order
 
 Current playable-slice track:
@@ -132,6 +135,29 @@ Deferred and out-of-scope track:
 - Keep minimap, route graph, exact scanner locator, objective checklist, weapons, predator harvesting, full procedural ocean, daily challenge calendar, inventory grid, and final production-art lock out of this milestone.
 
 Historical ordered issue batches:
+
+Next vertical-slice readability batch from `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLICE_READABILITY_2026_06_26.md`:
+
+1. #240 Implement compact active-dive HUD skin.
+2. #241 Add normal-scale active HUD screenshot review.
+3. #242 Add surface ready and result readability review.
+4. #243 Reduce lower-route visual density around pressure wreck and predator route.
+5. #244 Tune Rare Signal and cache cues for local mystery readability.
+6. #245 Review Shell Reef sprite and fallback balance.
+7. #246 Review Thermal Vent sprite and fallback balance.
+8. #247 Review pressure wreck and Wreck Signal Cache sprite/fallback balance.
+9. #248 Review Gulper route danger readability with current sprites.
+10. #249 Add playable vertical-slice manual smoke acceptance log.
+11. #250 Add vertical-slice acceptance status summary to current docs.
+12. #251 Add Echo Lens no-locator regression coverage.
+13. #252 Plan Wreck Echo Descent implementation constraints.
+14. #253 Plan the next source-art replacement priority after readability reviews.
+15. #254 Review expedition condition visuals against playable-slice acceptance.
+16. #255 Add screenshot workflow note for acceptance evidence naming.
+17. #256 Add compact result-memory readability review.
+18. #257 Review upgrade bay readability against current upgrade set.
+19. #258 Update MCP context resources after vertical-slice readability planning.
+20. #259 Replenish backlog after vertical-slice readability batch.
 
 Completed ordered replenishment batch from `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`:
 
