@@ -82,6 +82,7 @@ func _initialize() -> void:
 	_run("pressure lock guidance text", _test_pressure_lock_guidance_text)
 	_run("surface summary tabs", _test_surface_summary_tabs)
 	_run("keyboard action prompt labels", _test_keyboard_action_prompt_labels)
+	_run("prompt formatter guard coverage", _test_prompt_formatter_guard_coverage)
 	_run("condition briefing copy", _test_condition_briefing_copy)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
@@ -1368,6 +1369,42 @@ func _test_keyboard_action_prompt_labels() -> void:
 	_expect(main._action_label("burst_thruster") == "Space", "burst prompt label should match the current keyboard binding")
 	_expect(main._action_label("decoy_pulse") == "F", "decoy prompt label should match the current keyboard binding")
 	_expect(main._action_label("future_action") == "future_action", "unknown prompt labels should fall back to their action id")
+	main.free()
+
+func _test_prompt_formatter_guard_coverage() -> void:
+	var main := MainScript.new()
+	var interact_label: String = main._action_label("interact")
+	var interact_words := interact_label.replace("/", " or ")
+	var restart_label: String = main._action_label("restart_dive")
+	var horizontal_label: String = main._action_label("move_left_right")
+	var vertical_label: String = main._action_label("move_up_down")
+	var burst_label: String = main._action_label("burst_thruster")
+	var decoy_label: String = main._action_label("decoy_pulse")
+
+	_expect(main._format_ready_panel_summary().contains("%s begins." % interact_label), "ready summary should derive its start label from the prompt helper")
+	_expect(main._format_upgrade_menu_title(2, 7).contains("%s select" % vertical_label), "upgrade title should derive selection labels from the prompt helper")
+	_expect(main._format_next_expedition_prompt().contains("press %s" % restart_label), "next expedition prompt should derive restart labels from the prompt helper")
+	_expect(main._format_burst_thruster_prompt().begins_with("%s: burst" % burst_label), "burst prompt should derive its label from the prompt helper")
+	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks decoy.")
+	main.progression_state.purchased_upgrades[DecoyPulseUpgrade.id] = true
+	_expect(main._format_decoy_pulse_prompt() == "%s: decoy ready" % decoy_label, "decoy prompt should derive its ready label from the prompt helper")
+	main.dive_session.reset(main.max_oxygen)
+	_expect(main._format_hud_prompt() == "Press %s to begin the dive" % interact_words, "ready HUD prompt should derive interact wording from the prompt helper")
+
+	main.dive_session.extract()
+	main.surface_tab_index = main.SURFACE_TAB_RESULT
+	var result_prompt := main._format_hud_prompt()
+	_expect(result_prompt.contains("press %s for upgrades" % interact_label), "result HUD prompt should derive upgrade-open labels from the prompt helper")
+	_expect(result_prompt.contains("%s next expedition" % restart_label), "result HUD prompt should derive restart labels from the prompt helper")
+	_expect(result_prompt.contains("%s surface view" % horizontal_label), "result HUD prompt should derive surface-tab labels from the prompt helper")
+
+	main.surface_tab_index = main.SURFACE_TAB_UPGRADES
+	var upgrade_prompt := main._format_hud_prompt()
+	_expect(upgrade_prompt.contains("%s select" % vertical_label), "upgrade HUD prompt should derive selection labels from the prompt helper")
+	_expect(upgrade_prompt.contains("%s purchase" % interact_label), "upgrade HUD prompt should derive purchase labels from the prompt helper")
+
+	main.dive_session.fail()
+	_expect(main._format_hud_prompt().contains("press %s for next expedition" % restart_label), "failure HUD prompt should derive restart labels from the prompt helper")
 	main.free()
 
 func _test_condition_briefing_copy() -> void:

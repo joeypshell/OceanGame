@@ -513,6 +513,47 @@ func _debug_seed_for_delta(seed: int, delta: int) -> int:
 func _action_label(action_id: String) -> String:
 	return String(KEYBOARD_ACTION_LABELS.get(action_id, action_id))
 
+func _format_hud_prompt() -> String:
+	var prompt := ""
+	if dive_session.result == DiveSessionScript.Result.READY:
+		prompt = "Press %s to begin the dive" % _action_label("interact").replace("/", " or ")
+	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
+		if _all_upgrades_owned():
+			prompt = "Extraction complete - press %s for next expedition | %s surface view" % [
+				_action_label("restart_dive"),
+				_action_label("move_left_right"),
+			]
+		elif surface_tab_index == SURFACE_TAB_UPGRADES:
+			prompt = "Upgrade bay: %s select, %s purchase, %s next expedition | %s surface view" % [
+				_action_label("move_up_down"),
+				_action_label("interact"),
+				_action_label("restart_dive"),
+				_action_label("move_left_right"),
+			]
+		else:
+			prompt = "Extraction complete - press %s for upgrades, %s next expedition | %s surface view" % [
+				_action_label("interact"),
+				_action_label("restart_dive"),
+				_action_label("move_left_right"),
+			]
+	elif dive_session.result == DiveSessionScript.Result.FAILED:
+		prompt = "Expedition failed - press %s for next expedition" % _action_label("restart_dive")
+	elif player_in_base:
+		if dive_session.has_left_base:
+			prompt = "At base: %s extract" % _action_label("interact")
+		else:
+			prompt = "Leave moonpool, then return"
+	else:
+		prompt = "Explore, bank at base"
+
+	if dive_session.result == DiveSessionScript.Result.DIVING:
+		prompt += " | %s" % _format_burst_thruster_prompt()
+		var decoy_prompt := _format_decoy_pulse_prompt()
+		if not decoy_prompt.is_empty():
+			prompt += " | %s" % decoy_prompt
+
+	return prompt
+
 func _try_purchase_selected_upgrade() -> void:
 	var upgrade := _selected_upgrade_definition()
 	if upgrade == null:
@@ -1180,42 +1221,7 @@ func _update_hud() -> void:
 	prompt_label.visible = is_diving
 	status_label.text = _compact_dive_status(status_label.text) if is_diving else status_label.text
 
-	if dive_session.result == DiveSessionScript.Result.READY:
-		prompt_label.text = "Press %s to begin the dive" % _action_label("interact").replace("/", " or ")
-	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
-		if _all_upgrades_owned():
-			prompt_label.text = "Extraction complete - press %s for next expedition | %s surface view" % [
-				_action_label("restart_dive"),
-				_action_label("move_left_right"),
-			]
-		elif surface_tab_index == SURFACE_TAB_UPGRADES:
-			prompt_label.text = "Upgrade bay: %s select, %s purchase, %s next expedition | %s surface view" % [
-				_action_label("move_up_down"),
-				_action_label("interact"),
-				_action_label("restart_dive"),
-				_action_label("move_left_right"),
-			]
-		else:
-			prompt_label.text = "Extraction complete - press %s for upgrades, %s next expedition | %s surface view" % [
-				_action_label("interact"),
-				_action_label("restart_dive"),
-				_action_label("move_left_right"),
-			]
-	elif dive_session.result == DiveSessionScript.Result.FAILED:
-		prompt_label.text = "Expedition failed - press %s for next expedition" % _action_label("restart_dive")
-	elif player_in_base:
-		if dive_session.has_left_base:
-			prompt_label.text = "At base: %s extract" % _action_label("interact")
-		else:
-			prompt_label.text = "Leave moonpool, then return"
-	else:
-		prompt_label.text = "Explore, bank at base"
-
-	if dive_session.result == DiveSessionScript.Result.DIVING:
-		prompt_label.text += " | %s" % _format_burst_thruster_prompt()
-		var decoy_prompt := _format_decoy_pulse_prompt()
-		if not decoy_prompt.is_empty():
-			prompt_label.text += " | %s" % decoy_prompt
+	prompt_label.text = _format_hud_prompt()
 
 	_publish_visual_smoke_state()
 
