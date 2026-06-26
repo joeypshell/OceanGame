@@ -98,7 +98,7 @@ Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now d
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
 
-Deeper-access direction: `docs/planning/DEEPER_ACCESS_AFTER_ECHO_LENS_2026_06_26.md` selects `Wreck Echo Descent` as the later post-`Echo Lens I` promise and now defines it as one authored deeper-right route pocket candidate. The pocket should require preparation around pressure access, scanner curiosity, oxygen margin, and optional cargo space; it should reward one compact research clue, rare material opportunity, or later prerequisite discovery, not a new generated biome, minimap, field guide, exact locator, or quest checklist.
+Deeper-access direction: `docs/planning/DEEPER_ACCESS_AFTER_ECHO_LENS_2026_06_26.md` selects `Wreck Echo Descent` as the later post-`Echo Lens I` promise and now defines it as one authored deeper-right route pocket candidate with explicit implementation constraints. The pocket should wait until the current slice remains readable at normal scale, require preparation around pressure access, scanner curiosity, oxygen margin, and optional cargo space, and reward one compact research clue, rare material opportunity, or later prerequisite discovery, not a new generated biome, minimap, field guide, exact locator, or quest checklist.
 
 Expedition-day review checklist: `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md` defines five F5-driven review passes for ready panel, result panel, remembered region, condition copy, scan-only usefulness, and safe-return readability using the screenshot workflow.
 
@@ -172,7 +172,7 @@ Current playable-slice track:
 
 Next planning track:
 
-- Plan the later `Wreck Echo Descent` pocket only after the current slice reads cleanly.
+- Plan the later `Wreck Echo Descent` pocket only after the current slice reads cleanly; keep it planning-only while HUD, surface panels, lower-route density, pressure wreck/cache, or predator route readability remain unresolved.
 - Keep Echo Lens curiosity broad and local; avoid locator, map, field-guide, or checklist UI.
 - Select the next source-art replacement based on readability impact, not asset novelty.
 

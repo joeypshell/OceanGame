@@ -29,6 +29,7 @@ Next work means planning-ready items after the current readability gate is stabl
 
 - plan the later `Wreck Echo Descent` pocket from `docs/planning/DEEPER_ACCESS_AFTER_ECHO_LENS_2026_06_26.md`,
 - define how Echo Lens curiosity can point toward deeper-right wreck pressure without exact locator UI,
+- keep `Wreck Echo Descent` planning-only until the current HUD, surface panels, pressure wreck/cache, predator route, and lower-route visuals pass the playable-slice readability gate,
 - decide which landmark or creature receives the next source-art replacement after the current slice is readable,
 - expand condition reviews only when they remain presentation-first and do not imply unavailable mechanics,
 - capture a small acceptance evidence bundle using `docs/current/SCREENSHOT_WORKFLOW.md`.

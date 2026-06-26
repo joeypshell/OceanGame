@@ -46,6 +46,42 @@ Working name: `Wreck Echo Descent`.
 
 Purpose: create one prepared-route question below/right of the existing Wreck Shelf memory after `Echo Lens I` proves that a weak wreck signal exists. The pocket should make the player ask whether today's expedition has enough oxygen, cargo space, pressure access, and predator timing to investigate a deeper signal, then return safely.
 
+## Implementation Constraints
+
+Do not implement `Wreck Echo Descent` until the current vertical slice stays readable at normal scale. The current gate is the playable-slice checklist, active HUD review, surface review, lower-route density pass, and pressure wreck/cache balance review. If the current Wreck Shelf, pressure gate, cache, predator route, or HUD text is still visually confusing, this pocket should remain planning-only.
+
+Trigger:
+
+- player has discovered `Wreck Signal Cache`,
+- player owns `Signal Lens I` and `Echo Lens I`,
+- player has opened or understood the first pressure route through `Pressure Seal I`,
+- the current expedition context can frame the attempt as optional preparation, not a required objective.
+
+Route promise:
+
+- one authored deeper-right pressure route related to the Wreck Shelf memory,
+- broad local Echo Lens language such as "weak wreck signal deeper-right" or "deeper pressure echo",
+- readable route risk before commitment: pressure-dark threshold, return distance, predator timing, oxygen margin, or cargo-space tradeoff.
+
+Constraints:
+
+- one pocket, one route question, one reward choice,
+- no map node, exact coordinate, minimap arrow, objective checklist, quest journal, or field-guide entry,
+- no broad procedural region generation, new biome family, daily challenge system, or multi-step story screen,
+- no upgrade bypass: `Echo Lens I` motivates the route but does not replace pressure access, oxygen preparation, or safe-return decisions.
+
+Reward rule:
+
+- choose exactly one first reward type when implemented: compact research clue, rare material opportunity, or later prerequisite discovery,
+- the result should support "I learned enough to plan another dive," not "I completed a quest chain."
+
+Acceptance for a future implementation issue:
+
+- a player can notice the route promise without reading a paragraph,
+- a player can understand why they should not always enter it,
+- the result panel remembers the attempt in one compact line,
+- screenshots still pass the current visual-readability bar with the existing HUD and lower-route elements visible.
+
 Suggested placement relationship:
 
 - anchored near or below the current Wreck Shelf / pressure wreck memory,
