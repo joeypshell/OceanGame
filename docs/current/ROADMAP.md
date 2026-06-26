@@ -81,6 +81,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_ACCEPTANCE_EVIDENCE_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_CLOSEOUT_REVIEW_2026_06_26.md`
+- `docs/planning/LOWER_ROUTE_ACCEPTANCE_CLEANUP_RECHECK_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -174,6 +175,8 @@ Decoy Pulse owned-state review: `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_20
 Decoy Pulse smoke note: `docs/planning/DECOY_PULSE_RESULT_MEMORY_HUD_SMOKE_2026_06_26.md` confirms active prompt, activation status, scan feedback, spent state, and result memory read as temporary route timing instead of combat, harvesting, stun/capture, or permanent predator control.
 
 Lower-route recheck: `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.md` keeps pressure gate, outside scan, Wreck Signal Cache, deep reward, predator lane, Rare Signal, and Echo Lens pulse as pass or pass-with-watchlist after the HUD and density changes. No new lower-route content should be added from this recheck.
+
+Lower-route acceptance cleanup recheck: `docs/planning/LOWER_ROUTE_ACCEPTANCE_CLEANUP_RECHECK_2026_06_26.md` keeps the lower-route stack as pass-with-watchlist after the surface, HUD, condition, Decoy Pulse, Echo Lens, and text-guard cleanup. Future work should reduce overlap rather than add concepts.
 
 Surface moonpool/waterline review: `docs/planning/SURFACE_MOONPOOL_WATERLINE_REVIEW_2026_06_26.md` keeps the #264 source-art pass wired as pass-with-watchlist. Boat, waterline, moonpool column, safe base, launch, and result surface read as one system; translucent surface panels remain the #266 watchlist.
 
