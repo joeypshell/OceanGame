@@ -22,6 +22,8 @@ signal contacted(predator: Node)
 @onready var eye_visual := get_node_or_null("FallbackVisual/Eye") as Polygon2D
 
 const MarkerPatterns := preload("res://scripts/readability_marker_patterns.gd")
+const BODY_OVERLAY_ALPHA := 0.44
+const EYE_OVERLAY_ALPHA := 0.82
 
 var _target := Vector2.ZERO
 var _chase_time := 0.0
@@ -159,24 +161,24 @@ func _apply_visual_state(state: String) -> void:
 		"decoy":
 			fallback_visual.modulate = Color(0.68, 1.0, 0.78, 0.92)
 			if body_visual != null:
-				body_visual.color = Color(0.34, 0.46, 0.24, 1.0)
+				body_visual.color = Color(0.34, 0.46, 0.24, BODY_OVERLAY_ALPHA)
 			if eye_visual != null:
-				eye_visual.color = Color(0.62, 1.0, 0.72, 1.0)
+				eye_visual.color = Color(0.62, 1.0, 0.72, EYE_OVERLAY_ALPHA)
 		"chase":
 			fallback_visual.modulate = Color(1.22, 0.72, 0.58, 1.0)
 			if body_visual != null:
-				body_visual.color = Color(0.86, 0.08, 0.16, 1.0)
+				body_visual.color = Color(0.86, 0.08, 0.16, BODY_OVERLAY_ALPHA)
 			if eye_visual != null:
-				eye_visual.color = Color(1.0, 0.2, 0.12, 1.0)
+				eye_visual.color = Color(1.0, 0.2, 0.12, EYE_OVERLAY_ALPHA)
 		"warning":
 			fallback_visual.modulate = Color(1.12, 0.86, 0.62, 1.0)
 			if body_visual != null:
-				body_visual.color = Color(0.74, 0.14, 0.2, 1.0)
+				body_visual.color = Color(0.74, 0.14, 0.2, BODY_OVERLAY_ALPHA)
 			if eye_visual != null:
-				eye_visual.color = Color(1.0, 0.62, 0.18, 1.0)
+				eye_visual.color = Color(1.0, 0.62, 0.18, EYE_OVERLAY_ALPHA)
 		_:
 			fallback_visual.modulate = Color.WHITE
 			if body_visual != null:
-				body_visual.color = Color(0.68, 0.12, 0.2, 1.0)
+				body_visual.color = Color(0.68, 0.12, 0.2, BODY_OVERLAY_ALPHA)
 			if eye_visual != null:
-				eye_visual.color = Color(1.0, 0.86, 0.22, 1.0)
+				eye_visual.color = Color(1.0, 0.86, 0.22, EYE_OVERLAY_ALPHA)

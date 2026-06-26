@@ -517,6 +517,54 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	_expect(pressure_wreck_scan_sprite.texture != null, "Pressure-Locked Research Wreck outside scan should use the first exported source asset sprite")
 	_expect(pressure_wreck_scan_fallback.visible, "Pressure-Locked Research Wreck outside scan fallback should remain available for pressure clue readability")
 
+	var midwater_shelf := main.get_node("MidwaterShelf") as Polygon2D
+	var midwater_wreck := main.get_node("MidwaterWreckSilhouette") as Polygon2D
+	var deep_pressure_haze := main.get_node("DeepPressureHaze") as Polygon2D
+	_expect(midwater_shelf.color.a <= 0.36, "lower-route shelf wash should stay behind core gameplay signals")
+	_expect(midwater_wreck.color.a <= 0.24, "lower-route wreck silhouette should not compete with pressure/cache markers")
+	_expect(deep_pressure_haze.color.a <= 0.06, "deep pressure haze should stay subtle behind route signals")
+
+	var reef_landmark_wash := main.get_node("ShellReefPocket/Visuals/FallbackGeometry/LandmarkWash") as Polygon2D
+	var reef_shelf := main.get_node("ShellReefPocket/Visuals/FallbackGeometry/ReefShelf") as Polygon2D
+	var reef_fan := main.get_node("ShellReefPocket/Visuals/FallbackGeometry/ShellFanA") as Polygon2D
+	var reef_current := main.get_node("ShellReefPocket/Visuals/FallbackGeometry/ReefReturnCurrent") as Polygon2D
+	_expect(reef_landmark_wash.color.a <= 0.14, "Shell Reef landmark wash should stay subdued in the lower-route stack")
+	_expect(reef_shelf.color.a <= 0.38, "Shell Reef shelf fallback should support the sprite without becoming the loudest shape")
+	_expect(reef_fan.color.a <= 0.5, "Shell Reef fan fallback should not overpower pressure/cache/reward reads")
+	_expect(reef_current.color.a <= 0.18, "Shell Reef return current should remain a soft route cue")
+
+	var pressure_shimmer := main.get_node("PressureLockedWreck/Visuals/FallbackGeometry/PressureGateVisuals/PressureShimmer") as Polygon2D
+	var pressure_gate_bar := main.get_node("PressureLockedWreck/Visuals/FallbackGeometry/PressureGateVisuals/PressureGateBarA") as Polygon2D
+	var pressure_badge := main.get_node("PressureLockedWreck/Visuals/FallbackGeometry/PressureGateVisuals/PressureLockBadge") as Polygon2D
+	_expect(pressure_shimmer.color.a <= 0.36, "pressure shimmer fill should be quieter than the lock badge")
+	_expect(pressure_gate_bar.color.a <= 0.42, "pressure gate bars should not create a dominant lower-route wall")
+	_expect(pressure_badge.color.a >= 0.7, "pressure lock badge should remain the readable blocked-route marker")
+
+	var reward_core := main.get_node("DeepRewardLure/RewardCore") as Polygon2D
+	var reward_bloom := main.get_node("DeepRewardLure/DistantBloom") as Polygon2D
+	var reward_particles := main.get_node("DeepRewardLure/LureParticles") as Polygon2D
+	_expect(reward_core.color.a >= 0.5, "deep reward lure should keep one compact readable core")
+	_expect(reward_bloom.color.a <= 0.14, "deep reward bloom should not wash over Shell Reef and predator signals")
+	_expect(reward_particles.color.a <= 0.12, "deep reward particles should remain secondary to the reward core")
+
+	var cache_visual := main.get_node("PressureLockedWreck/WreckSignalCache/FallbackVisual/CacheVisual") as Polygon2D
+	var cache_marker := main.get_node("PressureLockedWreck/WreckSignalCache/ScanMarker") as Polygon2D
+	var rare_signal_wash := main.get_node("RareSignalEmphasis/SoftPingWash") as Polygon2D
+	_expect(cache_visual.color.a <= 0.34, "Wreck Signal Cache fallback should not overpower the cache sprite")
+	_expect(cache_marker.color.a <= 0.18, "Wreck Signal Cache scan marker should stay compact until selected")
+	_expect(rare_signal_wash.color.a <= 0.04, "Rare Signal condition wash should be atmospheric, not a route marker")
+
+	var warning_ribs := main.get_node("Predators/PredatorWarning/WarningRibs") as Polygon2D
+	var warning_current := main.get_node("Predators/PredatorWarning/WarningCurrent") as Polygon2D
+	var warning_marker := main.get_node("Predators/PredatorWarning/WarningMarker") as Polygon2D
+	_expect(warning_ribs.color.a <= 0.12, "predator warning ribs should frame danger without filling the route")
+	_expect(warning_current.color.a <= 0.08, "predator warning current should be a soft lane cue")
+	_expect(warning_marker.color.a >= 0.65, "predator warning marker should remain the primary hazard read")
+	_expect(gulper_body_overlay.color.a <= 0.46, "Gulper overlay body should tint the sprite without becoming a second opaque predator")
+	_expect(gulper_eye_overlay.color.a >= 0.78, "Gulper overlay eye should keep the predator state readable")
+	_expect(PredatorScript.BODY_OVERLAY_ALPHA <= 0.46, "runtime Gulper body overlays should stay translucent across predator states")
+	_expect(PredatorScript.EYE_OVERLAY_ALPHA >= 0.78, "runtime Gulper eye overlays should stay readable across predator states")
+
 	main.free()
 
 	var player := PlayerScene.instantiate()

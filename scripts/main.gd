@@ -960,13 +960,13 @@ func _sync_pressure_lock_state() -> void:
 		pressure_label.text = "OPEN"
 	else:
 		pressure_shimmer.modulate = Color.WHITE
-		pressure_gate_top.color = Color(0.74, 0.86, 1.0, 0.58)
-		pressure_gate_bottom.color = Color(0.74, 0.86, 1.0, 0.58)
-		pressure_gate_bar_a.color = Color(0.74, 0.86, 1.0, 0.46)
-		pressure_gate_bar_b.color = Color(0.74, 0.86, 1.0, 0.46)
-		pressure_gate_bar_c.color = Color(0.74, 0.86, 1.0, 0.46)
-		pressure_gate_left_rail.color = Color(0.26, 0.48, 0.8, 0.42)
-		pressure_gate_right_rail.color = Color(0.26, 0.48, 0.8, 0.42)
+		pressure_gate_top.color = Color(0.74, 0.86, 1.0, 0.54)
+		pressure_gate_bottom.color = Color(0.74, 0.86, 1.0, 0.54)
+		pressure_gate_bar_a.color = Color(0.74, 0.86, 1.0, 0.4)
+		pressure_gate_bar_b.color = Color(0.74, 0.86, 1.0, 0.4)
+		pressure_gate_bar_c.color = Color(0.74, 0.86, 1.0, 0.4)
+		pressure_gate_left_rail.color = Color(0.26, 0.48, 0.8, 0.34)
+		pressure_gate_right_rail.color = Color(0.26, 0.48, 0.8, 0.34)
 		pressure_lock_badge.color = Color(0.74, 0.86, 1.0, 0.72)
 		pressure_label.text = "LOCKED"
 
