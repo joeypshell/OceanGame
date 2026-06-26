@@ -215,6 +215,8 @@ Compact upgrade details implementation: issue #406 moves the selected-upgrade pa
 
 Mobile-like surface/active review: `docs/planning/MOBILE_LIKE_SURFACE_ACTIVE_REVIEW_2026_06_26.md` keeps the `960x540` surface-ready and active-dive captures as pass-with-watchlist. The views are readable, but the ready panel occupies most of the smaller viewport and the active HUD sits in the likely future left thumb-control zone, so this is evidence for planning rather than mobile readiness.
 
+Mobile-like lower-route review: `docs/planning/MOBILE_LIKE_LOWER_ROUTE_READABILITY_REVIEW_2026_06_26.md` keeps the `960x540` lower-route capture as pass-with-watchlist. HUD and safe-return text are readable, predator danger reads clearly, but pressure/cache/reward cues are compressed and partly cropped near the right/top route cluster, so future touch zones and lower-route pileup work should avoid covering the player or predator lane.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
