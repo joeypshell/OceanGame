@@ -326,6 +326,14 @@ polygon = PackedVector2Array(1370, 1254, 1472, 1228, 1530, 1264, 1458, 1298)
 color = Color(0.76, 0.96, 0.9, 0.09)
 polygon = PackedVector2Array(1630, 1366, 1744, 1344, 1818, 1390, 1710, 1424)
 
+[node name="CurrentSurgeLane" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.66, 0.96, 1, 0.09)
+polygon = PackedVector2Array(1296, 1184, 1458, 1136, 1664, 1198, 1812, 1290, 1772, 1340, 1604, 1264, 1438, 1222, 1304, 1260)
+
+[node name="CurrentSurgeRib" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.9, 1, 0.94, 0.16)
+polygon = PackedVector2Array(1440, 1168, 1498, 1154, 1548, 1192, 1492, 1212)
+
 [node name="EastShelfArch" type="Node2D" parent="EastShelfSpur"]
 position = Vector2(1518, 1248)
 

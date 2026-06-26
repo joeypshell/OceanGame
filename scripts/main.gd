@@ -62,6 +62,7 @@ const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
 const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
 const DIVE_STATUS_MAX_CHARS := 76
 const ECHO_LENS_PULSE_DURATION := 1.2
+const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
@@ -171,6 +172,8 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 @onready var wreck_echo_clue_core: Polygon2D = $WreckEchoDescent/ClueTrigger/ClueCore
 @onready var rare_signal_emphasis: Node2D = $RareSignalEmphasis
 @onready var shelf_glimmer_opportunity: Node2D = $EastShelfSpur/ShelfGlimmerOpportunity
+@onready var east_shelf_current_surge_lane: Polygon2D = $EastShelfSpur/CurrentSurgeLane
+@onready var east_shelf_current_surge_rib: Polygon2D = $EastShelfSpur/CurrentSurgeRib
 @onready var east_shelf_pocket_interact_zone: Area2D = $EastShelfSpur/PocketEntrance/InteractZone
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
 @onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
@@ -186,6 +189,7 @@ var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
 var echo_lens_pulse_timer := 0.0
+var east_shelf_current_surge_timer := 0.0
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -239,6 +243,7 @@ func _process(delta: float) -> void:
 	_update_glow_plankton_highlight(delta)
 	_update_resource_scan_highlight(delta)
 	_update_echo_lens_pulse(delta)
+	_update_east_shelf_current_surge(delta)
 	_update_lantern_fry_idle()
 	_update_burst_thruster_cooldown(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -849,6 +854,18 @@ func _update_echo_lens_pulse(delta: float) -> void:
 	echo_lens_pulse.modulate = Color(1.0, 1.0, 1.0, lerpf(0.9, 0.0, age_ratio))
 	if echo_lens_pulse_timer <= 0.0:
 		echo_lens_pulse.visible = false
+
+func _update_east_shelf_current_surge(delta: float) -> void:
+	east_shelf_current_surge_timer = fposmod(east_shelf_current_surge_timer + delta, EAST_SHELF_SURGE_PERIOD_SECONDS)
+	var surge_alpha := _east_shelf_current_surge_alpha(east_shelf_current_surge_timer)
+	if east_shelf_current_surge_lane != null:
+		east_shelf_current_surge_lane.color = Color(0.66, 0.96, 1.0, surge_alpha)
+	if east_shelf_current_surge_rib != null:
+		east_shelf_current_surge_rib.color = Color(0.9, 1.0, 0.94, surge_alpha + 0.06)
+
+func _east_shelf_current_surge_alpha(timer_seconds: float) -> float:
+	var phase := sin((timer_seconds / EAST_SHELF_SURGE_PERIOD_SECONDS) * TAU)
+	return 0.08 + (phase + 1.0) * 0.045
 
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):

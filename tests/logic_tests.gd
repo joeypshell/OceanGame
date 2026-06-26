@@ -93,6 +93,7 @@ func _initialize() -> void:
 	_run("expanded region base direction", _test_expanded_region_base_direction)
 	_run("expanded region reset state ownership", _test_expanded_region_reset_state_ownership)
 	_run("East Shelf pocket prompt interaction", _test_east_shelf_pocket_prompt_interaction)
+	_run("East Shelf current surge visual timing", _test_east_shelf_current_surge_visual_timing)
 	_run("sealed shelf hatch promise state", _test_sealed_shelf_hatch_promise_state)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
@@ -636,6 +637,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/RouteGapCue",
 		"EastShelfSpur/RouteRibA",
 		"EastShelfSpur/RouteRibB",
+		"EastShelfSpur/CurrentSurgeLane",
+		"EastShelfSpur/CurrentSurgeRib",
 		"EastShelfSpur/EastShelfArch",
 		"EastShelfSpur/EastShelfArch/ArchSpan",
 		"EastShelfSpur/EastShelfArch/LeftPillar",
@@ -665,6 +668,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
 
 	var approach_current := main.get_node("EastShelfSpur/ApproachCurrent") as Polygon2D
+	var current_surge_lane := main.get_node("EastShelfSpur/CurrentSurgeLane") as Polygon2D
+	var current_surge_rib := main.get_node("EastShelfSpur/CurrentSurgeRib") as Polygon2D
 	var terminal_hint := main.get_node("EastShelfSpur/TerminalPocketHint") as Polygon2D
 	var pocket_entrance := main.get_node("EastShelfSpur/PocketEntrance") as Node2D
 	var mouth_shadow := main.get_node("EastShelfSpur/PocketEntrance/MouthShadow") as Polygon2D
@@ -678,6 +683,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(approach_current.polygon[1].x >= 1200.0, "East Shelf Spur should branch right of the existing main column")
 	_expect(terminal_hint.polygon[terminal_hint.polygon.size() - 1].x >= 1800.0, "East Shelf Spur should reach into the expanded camera space")
 	_expect(approach_current.color.a <= 0.14, "East Shelf Spur current cue should stay subtle until full route art exists")
+	_expect(current_surge_lane.color.a <= 0.18, "East Shelf current-surge lane should read as timing guidance, not a damage wall")
+	_expect(current_surge_rib.polygon.size() >= 4, "East Shelf current-surge rib should provide a readable timing tick")
 	_expect(arch.position.x >= 1450.0, "East Shelf Arch should sit on the right-side branch before the pocket entrance")
 	_expect(arch_return.polygon[1].x < arch_return.polygon[0].x, "East Shelf Arch return current should point left toward the base column")
 	_expect(not shelf_glimmer.visible, "Shelf Glimmer opportunity should start hidden until its seeded condition is active")
@@ -1833,6 +1840,17 @@ func _test_east_shelf_pocket_prompt_interaction() -> void:
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_east_shelf_pocket_ping_recovered, "East Shelf pocket research ping should reset between expeditions")
 	main.queue_free()
+
+func _test_east_shelf_current_surge_visual_timing() -> void:
+	var main := MainScript.new()
+	var low_alpha: float = main.call("_east_shelf_current_surge_alpha", 0.0)
+	var high_alpha: float = main.call("_east_shelf_current_surge_alpha", MainScript.EAST_SHELF_SURGE_PERIOD_SECONDS * 0.25)
+	var return_alpha: float = main.call("_east_shelf_current_surge_alpha", MainScript.EAST_SHELF_SURGE_PERIOD_SECONDS * 0.5)
+
+	_expect(high_alpha > low_alpha, "East Shelf current-surge alpha should pulse upward to suggest timing")
+	_expect(is_equal_approx(low_alpha, return_alpha), "East Shelf current-surge pulse should repeat smoothly")
+	_expect(low_alpha >= 0.08 and high_alpha <= 0.18, "East Shelf current-surge pulse should stay subtle and non-combat")
+	main.free()
 
 func _test_sealed_shelf_hatch_promise_state() -> void:
 	var main := MainScene.instantiate()
