@@ -414,6 +414,7 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"PressureLockedWreck/WreckSignalCache/SpriteAnchor/Sprite",
 		"PressureLockedWreck/WreckSignalCache/FallbackVisual/CacheVisual",
 		"PressureLockedWreck/WreckSignalCache/ScanMarker",
+		"PressureLockedWreck/WreckSignalCache/EchoPulse",
 		"SurfaceBaseArt/SpriteAnchor/ResearchBoatSprite",
 		"SurfaceBaseArt/FallbackGeometry/LabMoonpool",
 		"Discoveries/ThermalVent/SpriteAnchor/Sprite",
@@ -465,8 +466,11 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 
 	var wreck_cache_sprite := main.get_node("PressureLockedWreck/WreckSignalCache/SpriteAnchor/Sprite") as Sprite2D
 	var wreck_cache_fallback := main.get_node("PressureLockedWreck/WreckSignalCache/FallbackVisual/CacheVisual") as Polygon2D
+	var wreck_cache_echo_pulse := main.get_node("PressureLockedWreck/WreckSignalCache/EchoPulse") as Sprite2D
 	_expect(wreck_cache_sprite.texture != null, "Wreck Signal Cache should use the first exported source asset sprite")
 	_expect(wreck_cache_fallback.visible, "Wreck Signal Cache fallback glow should remain available for scan/mystery readability")
+	_expect(wreck_cache_echo_pulse.texture != null, "Wreck Signal Cache should have the scan/echo pulse sprite available for Echo Lens I")
+	_expect(not wreck_cache_echo_pulse.visible, "Echo Lens I pulse should start hidden so it reads as temporary local feedback")
 
 	var pressure_wreck_scan_sprite := main.get_node("PressureLockedWreck/OuterScan/SpriteAnchor/Sprite") as Sprite2D
 	var pressure_wreck_scan_fallback := main.get_node("PressureLockedWreck/OuterScan/FallbackVisual/ScanVisual") as Polygon2D

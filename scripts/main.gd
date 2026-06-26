@@ -41,6 +41,7 @@ const SURFACE_TAB_UPGRADES := 1
 const SURFACE_TAB_LOG := 2
 const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
 const DIVE_STATUS_MAX_CHARS := 92
+const ECHO_LENS_PULSE_DURATION := 1.2
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
@@ -129,6 +130,7 @@ const DIVE_STATUS_MAX_CHARS := 92
 @onready var pressure_gate_right_rail: Polygon2D = $PressureLockedWreck/Visuals/FallbackGeometry/PressureGateVisuals/GateRightRail
 @onready var pressure_lock_badge: Polygon2D = $PressureLockedWreck/Visuals/FallbackGeometry/PressureGateVisuals/PressureLockBadge
 @onready var pressure_label: Label = $PressureLockedWreck/Visuals/FallbackGeometry/PressureGateVisuals/PressureLabel
+@onready var echo_lens_pulse: Sprite2D = $PressureLockedWreck/WreckSignalCache/EchoPulse
 @onready var wreck_signal_hint: Node2D = $WreckSignalHint
 @onready var predator_warning: Node2D = $Predators/PredatorWarning
 @onready var gulper_eel: Node = $Predators/GulperEel
@@ -139,6 +141,7 @@ var player_in_base := true
 var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
+var echo_lens_pulse_timer := 0.0
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -183,6 +186,7 @@ func _process(delta: float) -> void:
 	_update_depth()
 	_update_glow_plankton_highlight(delta)
 	_update_resource_scan_highlight(delta)
+	_update_echo_lens_pulse(delta)
 	_update_lantern_fry_idle()
 	_update_burst_thruster_cooldown(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -505,6 +509,7 @@ func _try_scan() -> void:
 		_activate_scan_effect(target)
 		if discovery_id == "wreck_signal_cache" and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
 			run_echo_lens_echo_fired = true
+			_trigger_echo_lens_pulse()
 		status_label.text = _compact_dive_status("%s known.%s" % [
 			display_name,
 			_format_repeat_scan_effect_text(target) + _format_signal_lens_pulse_text(target)
@@ -571,6 +576,25 @@ func _activate_scan_effect(target: Node) -> void:
 		_reveal_pressure_wreck_signal()
 	elif _scan_target_id(target) == "gulper_eel":
 		_try_trigger_decoy_pulse()
+
+func _trigger_echo_lens_pulse() -> void:
+	echo_lens_pulse_timer = ECHO_LENS_PULSE_DURATION
+	echo_lens_pulse.visible = true
+	echo_lens_pulse.scale = Vector2(1.4, 1.4)
+	echo_lens_pulse.modulate = Color(1.0, 1.0, 1.0, 0.9)
+
+func _update_echo_lens_pulse(delta: float) -> void:
+	if echo_lens_pulse_timer <= 0.0:
+		echo_lens_pulse.visible = false
+		return
+
+	echo_lens_pulse_timer = maxf(echo_lens_pulse_timer - delta, 0.0)
+	var age_ratio := 1.0 - (echo_lens_pulse_timer / ECHO_LENS_PULSE_DURATION)
+	var pulse_scale := lerpf(1.4, 2.2, age_ratio)
+	echo_lens_pulse.scale = Vector2(pulse_scale, pulse_scale)
+	echo_lens_pulse.modulate = Color(1.0, 1.0, 1.0, lerpf(0.9, 0.0, age_ratio))
+	if echo_lens_pulse_timer <= 0.0:
+		echo_lens_pulse.visible = false
 
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
@@ -1416,6 +1440,9 @@ func _reset_run_telemetry() -> void:
 	run_predator_contacts = 0
 	run_failure_cause = "none"
 	run_echo_lens_echo_fired = false
+	echo_lens_pulse_timer = 0.0
+	if echo_lens_pulse != null:
+		echo_lens_pulse.visible = false
 
 func _format_run_telemetry(result_name: String) -> String:
 	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
