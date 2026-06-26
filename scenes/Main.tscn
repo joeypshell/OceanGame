@@ -202,51 +202,57 @@ polygon = PackedVector2Array(850, 1060, 1160, 1120, 1118, 1210, 782, 1168)
 
 [node name="ShellReefPocket" type="Node2D" parent="."]
 
-[node name="LandmarkWash" type="Polygon2D" parent="ShellReefPocket"]
+[node name="SpriteAnchor" type="Node2D" parent="ShellReefPocket"]
+
+[node name="Sprite" type="Sprite2D" parent="ShellReefPocket/SpriteAnchor"]
+
+[node name="FallbackGeometry" type="Node2D" parent="ShellReefPocket"]
+
+[node name="LandmarkWash" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.86, 0.78, 0.58, 0.2)
 polygon = PackedVector2Array(92, 992, 348, 930, 662, 996, 918, 1144, 826, 1284, 490, 1260, 196, 1248, 30, 1156)
 
-[node name="ReefShelf" type="Polygon2D" parent="ShellReefPocket"]
+[node name="ReefShelf" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.18, 0.22, 0.24, 0.58)
 polygon = PackedVector2Array(134, 1068, 314, 1014, 486, 1046, 612, 1122, 748, 1102, 876, 1176, 750, 1246, 520, 1226, 392, 1192, 210, 1224, 70, 1168)
 
-[node name="ShellBedHighlight" type="Polygon2D" parent="ShellReefPocket"]
+[node name="ShellBedHighlight" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.94, 0.84, 0.58, 0.26)
 polygon = PackedVector2Array(142, 1078, 310, 1038, 482, 1070, 618, 1134, 736, 1122, 824, 1174, 724, 1212, 520, 1200, 386, 1166, 224, 1192, 104, 1160)
 
-[node name="ShellFanA" type="Polygon2D" parent="ShellReefPocket"]
+[node name="ShellFanA" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.96, 0.78, 0.5, 0.92)
 polygon = PackedVector2Array(236, 1062, 282, 982, 318, 1060, 356, 1004, 374, 1084, 302, 1110)
 
-[node name="ShellFanARibs" type="Polygon2D" parent="ShellReefPocket"]
+[node name="ShellFanARibs" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(1, 0.96, 0.72, 0.48)
 polygon = PackedVector2Array(282, 1082, 288, 1078, 282, 1002, 276, 1004, 304, 1086, 310, 1082, 340, 1024, 334, 1022, 260, 1074, 266, 1078, 250, 1030, 244, 1032)
 
-[node name="ShellFanB" type="Polygon2D" parent="ShellReefPocket"]
+[node name="ShellFanB" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.82, 0.94, 0.82, 0.64)
 polygon = PackedVector2Array(450, 1090, 488, 1014, 526, 1084, 570, 1038, 582, 1122, 500, 1138)
 
-[node name="ShellFanBRibs" type="Polygon2D" parent="ShellReefPocket"]
+[node name="ShellFanBRibs" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.98, 1, 0.8, 0.38)
 polygon = PackedVector2Array(500, 1114, 506, 1110, 490, 1034, 484, 1036, 526, 1110, 532, 1106, 554, 1058, 548, 1056, 474, 1108, 480, 1112)
 
-[node name="CoralShardA" type="Polygon2D" parent="ShellReefPocket"]
+[node name="CoralShardA" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.66, 0.78, 0.86, 0.52)
 polygon = PackedVector2Array(634, 1122, 650, 1050, 674, 1128, 710, 1070, 700, 1160, 662, 1168)
 
-[node name="CoralShardB" type="Polygon2D" parent="ShellReefPocket"]
+[node name="CoralShardB" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.94, 0.64, 0.52, 0.5)
 polygon = PackedVector2Array(760, 1182, 778, 1118, 802, 1184, 834, 1148, 822, 1222, 786, 1230)
 
-[node name="ReefCurrentGap" type="Polygon2D" parent="ShellReefPocket"]
+[node name="ReefCurrentGap" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.72, 0.96, 1, 0.08)
 polygon = PackedVector2Array(846, 1018, 1008, 1054, 1138, 1232, 1074, 1302, 936, 1170, 790, 1098)
 
-[node name="ReefReturnCurrent" type="Polygon2D" parent="ShellReefPocket"]
+[node name="ReefReturnCurrent" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.52, 1, 0.86, 0.26)
 polygon = PackedVector2Array(414, 1014, 624, 894, 708, 938, 548, 1046, 668, 1058, 596, 1122, 468, 1082)
 
-[node name="ReefReturnBeacon" type="Polygon2D" parent="ShellReefPocket"]
+[node name="ReefReturnBeacon" type="Polygon2D" parent="ShellReefPocket/FallbackGeometry"]
 color = Color(0.74, 1, 0.9, 0.38)
 polygon = PackedVector2Array(610, 922, 646, 874, 682, 922, 646, 950)
 
@@ -283,75 +289,81 @@ polygon = PackedVector2Array(920, 1334, 932, 1318, 946, 1336, 932, 1352, 952, 14
 
 [node name="PressureLockedWreck" type="Node2D" parent="."]
 
-[node name="PromiseGlow" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="SpriteAnchor" type="Node2D" parent="PressureLockedWreck"]
+
+[node name="Sprite" type="Sprite2D" parent="PressureLockedWreck/SpriteAnchor"]
+
+[node name="FallbackGeometry" type="Node2D" parent="PressureLockedWreck"]
+
+[node name="PromiseGlow" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.64, 1, 1, 0.055)
 polygon = PackedVector2Array(1080, 1466, 1238, 1418, 1322, 1566, 1224, 1758, 1052, 1694, 984, 1548)
 
-[node name="PressureShimmer" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="PressureShimmer" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.18, 0.52, 1, 0.5)
 polygon = PackedVector2Array(1024, 1360, 1100, 1360, 1088, 1492, 1102, 1638, 1086, 1780, 1100, 1906, 1024, 1906, 1038, 1780, 1022, 1640, 1038, 1492)
 
-[node name="GateLeftRail" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="GateLeftRail" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.26, 0.48, 0.8, 0.5)
 polygon = PackedVector2Array(1002, 1370, 1024, 1360, 1024, 1906, 1002, 1896)
 
-[node name="GateRightRail" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="GateRightRail" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.26, 0.48, 0.8, 0.5)
 polygon = PackedVector2Array(1100, 1360, 1122, 1370, 1122, 1896, 1100, 1906)
 
-[node name="PressureGateTop" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="PressureGateTop" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.74, 0.86, 1, 0.72)
 polygon = PackedVector2Array(986, 1360, 1138, 1360, 1116, 1408, 1008, 1408)
 
-[node name="PressureGateBottom" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="PressureGateBottom" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.74, 0.86, 1, 0.72)
 polygon = PackedVector2Array(1008, 1858, 1116, 1858, 1138, 1906, 986, 1906)
 
-[node name="PressureGateBarA" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="PressureGateBarA" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.74, 0.86, 1, 0.62)
 polygon = PackedVector2Array(1012, 1478, 1110, 1488, 1106, 1518, 1016, 1508)
 
-[node name="PressureGateBarB" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="PressureGateBarB" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.74, 0.86, 1, 0.62)
 polygon = PackedVector2Array(1016, 1584, 1106, 1594, 1110, 1624, 1012, 1614)
 
-[node name="PressureGateBarC" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="PressureGateBarC" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.74, 0.86, 1, 0.62)
 polygon = PackedVector2Array(1012, 1690, 1110, 1700, 1106, 1730, 1016, 1720)
 
-[node name="WreckHull" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="WreckHull" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.08, 0.13, 0.16, 0.88)
 polygon = PackedVector2Array(1110, 1518, 1236, 1478, 1274, 1556, 1214, 1664, 1096, 1638)
 
-[node name="WreckKeel" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="WreckKeel" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.05, 0.09, 0.12, 0.76)
 polygon = PackedVector2Array(1120, 1642, 1212, 1662, 1182, 1708, 1086, 1668)
 
-[node name="WreckBrokenBow" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="WreckBrokenBow" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.12, 0.2, 0.24, 0.78)
 polygon = PackedVector2Array(1238, 1480, 1312, 1514, 1276, 1556)
 
-[node name="WreckInteriorShadow" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="WreckInteriorShadow" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.01, 0.03, 0.05, 0.5)
 polygon = PackedVector2Array(1138, 1588, 1214, 1564, 1234, 1614, 1160, 1632)
 
-[node name="WreckWindow" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="WreckWindow" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.35, 0.85, 1, 0.52)
 polygon = PackedVector2Array(1160, 1548, 1198, 1538, 1210, 1574, 1168, 1584)
 
-[node name="SignalLight" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="SignalLight" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.86, 1, 0.32, 0.5)
 polygon = PackedVector2Array(1118, 1494, 1138, 1474, 1162, 1496, 1140, 1518)
 
-[node name="SignalHalo" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="SignalHalo" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.86, 1, 0.32, 0.085)
 polygon = PackedVector2Array(1082, 1496, 1140, 1436, 1200, 1496, 1140, 1558)
 
-[node name="PressureLockBadge" type="Polygon2D" parent="PressureLockedWreck"]
+[node name="PressureLockBadge" type="Polygon2D" parent="PressureLockedWreck/FallbackGeometry"]
 color = Color(0.74, 0.86, 1, 0.72)
 polygon = PackedVector2Array(1062, 1302, 1090, 1320, 1090, 1352, 1062, 1370, 1034, 1352, 1034, 1320)
 
-[node name="PressureLabel" type="Label" parent="PressureLockedWreck"]
+[node name="PressureLabel" type="Label" parent="PressureLockedWreck/FallbackGeometry"]
 offset_left = 1002.0
 offset_top = 1318.0
 offset_right = 1122.0
@@ -367,11 +379,17 @@ display_name = "Pressure-Locked Research Wreck"
 description = "An old research hull is trapped beyond a pressure shimmer. A weak signal leaks through the boundary."
 gameplay_fact = "Buy Pressure Seal I at the surface, then return for the cache."
 
+[node name="SpriteAnchor" type="Node2D" parent="PressureLockedWreck/OuterScan"]
+
+[node name="Sprite" type="Sprite2D" parent="PressureLockedWreck/OuterScan/SpriteAnchor"]
+
+[node name="FallbackVisual" type="Node2D" parent="PressureLockedWreck/OuterScan"]
+
 [node name="ScanMarker" type="Polygon2D" parent="PressureLockedWreck/OuterScan"]
 color = Color(0.95, 1, 0.7, 0.24)
 polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
-[node name="ScanVisual" type="Polygon2D" parent="PressureLockedWreck/OuterScan"]
+[node name="ScanVisual" type="Polygon2D" parent="PressureLockedWreck/OuterScan/FallbackVisual"]
 color = Color(0.86, 1, 0.36, 0.42)
 polygon = PackedVector2Array(-34, -30, 34, -30, 52, 0, 34, 30, -34, 30, -52, 0)
 
@@ -392,11 +410,17 @@ display_name = "Wreck Signal Cache"
 description = "A sealed research cache still pinging from inside the wreck alcove."
 gameplay_fact = "Points toward a future scanner improvement and deeper research objective."
 
+[node name="SpriteAnchor" type="Node2D" parent="PressureLockedWreck/WreckSignalCache"]
+
+[node name="Sprite" type="Sprite2D" parent="PressureLockedWreck/WreckSignalCache/SpriteAnchor"]
+
+[node name="FallbackVisual" type="Node2D" parent="PressureLockedWreck/WreckSignalCache"]
+
 [node name="ScanMarker" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache"]
 color = Color(0.95, 1, 0.7, 0.24)
 polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
-[node name="CacheVisual" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache"]
+[node name="CacheVisual" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache/FallbackVisual"]
 color = Color(0.95, 1, 0.34, 0.62)
 polygon = PackedVector2Array(-30, -18, 30, -18, 38, 18, -38, 18)
 
@@ -406,47 +430,53 @@ shape = SubResource("CircleShape2D_pickup")
 [node name="ThermalVentPocket" type="Node2D" parent="."]
 position = Vector2(430, 1260)
 
-[node name="WarmWash" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="SpriteAnchor" type="Node2D" parent="ThermalVentPocket"]
+
+[node name="Sprite" type="Sprite2D" parent="ThermalVentPocket/SpriteAnchor"]
+
+[node name="FallbackGeometry" type="Node2D" parent="ThermalVentPocket"]
+
+[node name="WarmWash" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(0.92, 0.44, 0.16, 0.16)
 polygon = PackedVector2Array(-226, -126, -38, -206, 138, -162, 272, -38, 210, 126, -102, 182, -286, 36)
 
-[node name="CrackedShelf" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="CrackedShelf" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(0.42, 0.28, 0.22, 0.72)
 polygon = PackedVector2Array(-188, 82, -90, 30, -18, 50, 44, 30, 116, 48, 198, 82, 92, 118, -54, 124)
 
-[node name="VentMouthShadow" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="VentMouthShadow" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(0.16, 0.12, 0.11, 0.58)
 polygon = PackedVector2Array(-62, 74, -22, 44, 32, 46, 76, 78, 36, 98, -22, 98)
 
-[node name="VentRimGlow" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="VentRimGlow" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(1, 0.58, 0.18, 0.42)
 polygon = PackedVector2Array(-72, 70, -20, 36, 38, 40, 84, 74, 38, 110, -24, 108)
 
-[node name="VentChimneyLeft" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="VentChimneyLeft" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(0.32, 0.22, 0.2, 0.86)
 polygon = PackedVector2Array(-104, 74, -78, -22, -40, -70, -20, 58, -54, 92)
 
-[node name="VentChimneyRight" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="VentChimneyRight" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(0.34, 0.24, 0.21, 0.84)
 polygon = PackedVector2Array(84, 76, 112, -50, 152, -4, 142, 82, 108, 104)
 
-[node name="HeatPlume" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="HeatPlume" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(1, 0.62, 0.2, 0.24)
 polygon = PackedVector2Array(-54, 44, -28, -128, 6, -72, 42, -188, 82, -72, 112, -132, 94, 40, 44, 78)
 
-[node name="HeatPlumeCore" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="HeatPlumeCore" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(1, 0.84, 0.38, 0.18)
 polygon = PackedVector2Array(-12, 56, 8, -70, 30, -20, 56, -112, 74, -20, 48, 58)
 
-[node name="BubbleStringA" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="BubbleStringA" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(0.96, 1, 0.82, 0.34)
 polygon = PackedVector2Array(-88, 2, -72, -24, -54, -6, -36, -62, -16, -34, 0, -96, 20, -66)
 
-[node name="BubbleStringB" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="BubbleStringB" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(0.96, 1, 0.82, 0.28)
 polygon = PackedVector2Array(44, 14, 60, -24, 78, 4, 104, -58, 124, -24, 146, -92, 166, -54)
 
-[node name="WarmCurrentRibbon" type="Polygon2D" parent="ThermalVentPocket"]
+[node name="WarmCurrentRibbon" type="Polygon2D" parent="ThermalVentPocket/FallbackGeometry"]
 color = Color(0.72, 1, 0.62, 0.07)
 polygon = PackedVector2Array(-34, -34, 100, -82, 214, -50, 150, -10, 226, 26, 92, 48, -20, 12)
 
@@ -888,19 +918,25 @@ position = Vector2(760, 390)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("4_kelp_fiber")
 
-[node name="Visual" type="Polygon2D" parent="ResourcePickups/KelpFiber"]
+[node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/KelpFiber"]
+
+[node name="Sprite" type="Sprite2D" parent="ResourcePickups/KelpFiber/SpriteAnchor"]
+
+[node name="FallbackVisual" type="Node2D" parent="ResourcePickups/KelpFiber"]
+
+[node name="Visual" type="Polygon2D" parent="ResourcePickups/KelpFiber/FallbackVisual"]
 color = Color(0.16, 0.78, 0.34, 1)
 polygon = PackedVector2Array(-12, 34, -18, 6, -10, -30, 2, -44, 12, -18, 8, 12, 22, 32, 4, 20)
 
-[node name="FrondA" type="Polygon2D" parent="ResourcePickups/KelpFiber"]
+[node name="FrondA" type="Polygon2D" parent="ResourcePickups/KelpFiber/FallbackVisual"]
 color = Color(0.36, 1, 0.54, 0.86)
 polygon = PackedVector2Array(-8, 26, -30, 8, -24, -16, -6, -2, 0, 22)
 
-[node name="FrondB" type="Polygon2D" parent="ResourcePickups/KelpFiber"]
+[node name="FrondB" type="Polygon2D" parent="ResourcePickups/KelpFiber/FallbackVisual"]
 color = Color(0.1, 0.55, 0.3, 0.88)
 polygon = PackedVector2Array(4, 20, 22, 0, 28, -28, 10, -8, 0, 22)
 
-[node name="StemLine" type="Polygon2D" parent="ResourcePickups/KelpFiber"]
+[node name="StemLine" type="Polygon2D" parent="ResourcePickups/KelpFiber/FallbackVisual"]
 color = Color(0.72, 1, 0.68, 0.58)
 polygon = PackedVector2Array(-4, 28, 1, 24, 4, -30, -1, -26)
 
@@ -912,19 +948,25 @@ position = Vector2(450, 900)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("5_shell_fragments")
 
-[node name="Visual" type="Polygon2D" parent="ResourcePickups/ShellFragments"]
+[node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/ShellFragments"]
+
+[node name="Sprite" type="Sprite2D" parent="ResourcePickups/ShellFragments/SpriteAnchor"]
+
+[node name="FallbackVisual" type="Node2D" parent="ResourcePickups/ShellFragments"]
+
+[node name="Visual" type="Polygon2D" parent="ResourcePickups/ShellFragments/FallbackVisual"]
 color = Color(0.96, 0.78, 0.48, 1)
 polygon = PackedVector2Array(-36, 16, -24, -12, -2, -30, 24, -20, 38, 8, 14, 30, -16, 30)
 
-[node name="ShellRibA" type="Polygon2D" parent="ResourcePickups/ShellFragments"]
+[node name="ShellRibA" type="Polygon2D" parent="ResourcePickups/ShellFragments/FallbackVisual"]
 color = Color(1, 0.94, 0.68, 0.68)
 polygon = PackedVector2Array(-21, 20, -16, 18, -4, -19, -8, -20)
 
-[node name="ShellRibB" type="Polygon2D" parent="ResourcePickups/ShellFragments"]
+[node name="ShellRibB" type="Polygon2D" parent="ResourcePickups/ShellFragments/FallbackVisual"]
 color = Color(1, 0.94, 0.68, 0.58)
 polygon = PackedVector2Array(-3, 24, 2, 23, 3, -23, -2, -23)
 
-[node name="ShellRibC" type="Polygon2D" parent="ResourcePickups/ShellFragments"]
+[node name="ShellRibC" type="Polygon2D" parent="ResourcePickups/ShellFragments/FallbackVisual"]
 color = Color(1, 0.94, 0.68, 0.62)
 polygon = PackedVector2Array(16, 20, 20, 17, 11, -15, 7, -13)
 
@@ -936,15 +978,21 @@ position = Vector2(760, 1490)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
-[node name="Visual" type="Polygon2D" parent="ResourcePickups/GlowPlankton"]
+[node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/GlowPlankton"]
+
+[node name="Sprite" type="Sprite2D" parent="ResourcePickups/GlowPlankton/SpriteAnchor"]
+
+[node name="FallbackVisual" type="Node2D" parent="ResourcePickups/GlowPlankton"]
+
+[node name="Visual" type="Polygon2D" parent="ResourcePickups/GlowPlankton/FallbackVisual"]
 color = Color(0.82, 1, 0.28, 0.64)
 polygon = PackedVector2Array(0, -42, 15, -17, 40, -12, 21, 9, 25, 36, 0, 22, -25, 36, -21, 9, -40, -12, -15, -17)
 
-[node name="GlowCore" type="Polygon2D" parent="ResourcePickups/GlowPlankton"]
+[node name="GlowCore" type="Polygon2D" parent="ResourcePickups/GlowPlankton/FallbackVisual"]
 color = Color(0.96, 1, 0.42, 0.96)
 polygon = PackedVector2Array(0, -22, 14, -8, 22, 0, 14, 8, 0, 22, -14, 8, -22, 0, -14, -8)
 
-[node name="GlowHalo" type="Polygon2D" parent="ResourcePickups/GlowPlankton"]
+[node name="GlowHalo" type="Polygon2D" parent="ResourcePickups/GlowPlankton/FallbackVisual"]
 color = Color(0.52, 1, 0.82, 0.18)
 polygon = PackedVector2Array(0, -58, 30, -34, 58, 0, 30, 34, 0, 58, -30, 34, -58, 0, -30, -34)
 
@@ -958,15 +1006,21 @@ monitoring = false
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
-[node name="Visual" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton"]
+[node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/HiddenGlowPlankton"]
+
+[node name="Sprite" type="Sprite2D" parent="ResourcePickups/HiddenGlowPlankton/SpriteAnchor"]
+
+[node name="FallbackVisual" type="Node2D" parent="ResourcePickups/HiddenGlowPlankton"]
+
+[node name="Visual" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton/FallbackVisual"]
 color = Color(0.82, 1, 0.28, 0.64)
 polygon = PackedVector2Array(0, -42, 15, -17, 40, -12, 21, 9, 25, 36, 0, 22, -25, 36, -21, 9, -40, -12, -15, -17)
 
-[node name="GlowCore" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton"]
+[node name="GlowCore" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton/FallbackVisual"]
 color = Color(0.96, 1, 0.42, 0.96)
 polygon = PackedVector2Array(0, -22, 14, -8, 22, 0, 14, 8, 0, 22, -14, 8, -22, 0, -14, -8)
 
-[node name="GlowHalo" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton"]
+[node name="GlowHalo" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton/FallbackVisual"]
 color = Color(0.52, 1, 0.82, 0.18)
 polygon = PackedVector2Array(0, -58, 30, -34, 58, 0, 30, 34, 0, 58, -30, 34, -58, 0, -30, -34)
 
@@ -978,15 +1032,21 @@ position = Vector2(1040, 1900)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
-[node name="Visual" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton"]
+[node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/DeepGlowPlankton"]
+
+[node name="Sprite" type="Sprite2D" parent="ResourcePickups/DeepGlowPlankton/SpriteAnchor"]
+
+[node name="FallbackVisual" type="Node2D" parent="ResourcePickups/DeepGlowPlankton"]
+
+[node name="Visual" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton/FallbackVisual"]
 color = Color(0.82, 1, 0.28, 0.64)
 polygon = PackedVector2Array(0, -42, 15, -17, 40, -12, 21, 9, 25, 36, 0, 22, -25, 36, -21, 9, -40, -12, -15, -17)
 
-[node name="GlowCore" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton"]
+[node name="GlowCore" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton/FallbackVisual"]
 color = Color(0.96, 1, 0.42, 0.96)
 polygon = PackedVector2Array(0, -22, 14, -8, 22, 0, 14, 8, 0, 22, -14, 8, -22, 0, -14, -8)
 
-[node name="GlowHalo" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton"]
+[node name="GlowHalo" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton/FallbackVisual"]
 color = Color(0.52, 1, 0.82, 0.18)
 polygon = PackedVector2Array(0, -58, 30, -34, 58, 0, 30, 34, 0, 58, -30, 34, -58, 0, -30, -34)
 
@@ -1109,15 +1169,21 @@ display_name = "Thermal Vent"
 description = "A warm current escaping from a cracked shelf in the midwater."
 gameplay_fact = "Reveals a current path toward hidden Glow Plankton."
 
+[node name="SpriteAnchor" type="Node2D" parent="Discoveries/ThermalVent"]
+
+[node name="Sprite" type="Sprite2D" parent="Discoveries/ThermalVent/SpriteAnchor"]
+
+[node name="FallbackVisual" type="Node2D" parent="Discoveries/ThermalVent"]
+
 [node name="ScanMarker" type="Polygon2D" parent="Discoveries/ThermalVent"]
 color = Color(0.95, 1, 0.7, 0.22)
 polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
-[node name="Visual" type="Polygon2D" parent="Discoveries/ThermalVent"]
+[node name="Visual" type="Polygon2D" parent="Discoveries/ThermalVent/FallbackVisual"]
 color = Color(0.96, 0.46, 0.16, 0.9)
 polygon = PackedVector2Array(-42, 30, -20, -28, 0, -8, 20, -32, 44, 30)
 
-[node name="Bubbles" type="Polygon2D" parent="Discoveries/ThermalVent"]
+[node name="Bubbles" type="Polygon2D" parent="Discoveries/ThermalVent/FallbackVisual"]
 color = Color(0.9, 1, 0.86, 0.34)
 polygon = PackedVector2Array(-18, -54, -8, -76, 6, -52, 24, -88, 38, -56, 10, -36)
 
@@ -1132,11 +1198,17 @@ display_name = "Shell Reef Shelf"
 description = "A pale midwater reef shelf with shell fragments scattered along open return lanes."
 gameplay_fact = "A safer midwater banking route before deeper pressure and predator risk."
 
+[node name="SpriteAnchor" type="Node2D" parent="Discoveries/ShellReefShelf"]
+
+[node name="Sprite" type="Sprite2D" parent="Discoveries/ShellReefShelf/SpriteAnchor"]
+
+[node name="FallbackVisual" type="Node2D" parent="Discoveries/ShellReefShelf"]
+
 [node name="ScanMarker" type="Polygon2D" parent="Discoveries/ShellReefShelf"]
 color = Color(0.95, 1, 0.7, 0.22)
 polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
-[node name="Visual" type="Polygon2D" parent="Discoveries/ShellReefShelf"]
+[node name="Visual" type="Polygon2D" parent="Discoveries/ShellReefShelf/FallbackVisual"]
 color = Color(0.96, 0.84, 0.56, 0.64)
 polygon = PackedVector2Array(-46, -20, 28, -30, 58, 4, 26, 28, -38, 24, -64, 0)
 

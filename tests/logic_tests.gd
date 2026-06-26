@@ -8,6 +8,7 @@ const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const PlayerScript := preload("res://scripts/player.gd")
 const PlayerScene := preload("res://scenes/Player.tscn")
+const MainScene := preload("res://scenes/Main.tscn")
 const ReadabilityMarkerPatternsScript := preload("res://scripts/readability_marker_patterns.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
@@ -50,6 +51,7 @@ func _initialize() -> void:
 	_run("debug review seed and condition helpers", _test_debug_review_helpers)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
+	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
 	_run("predator scan target", _test_predator_scan_target)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
 	_run("predator warning upgrade metadata", _test_predator_warning_upgrade_metadata)
@@ -349,6 +351,45 @@ func _test_compact_scan_marker() -> void:
 	scannable.set_scan_selected(true)
 	_expect(marker.color.a > 0.5, "selected compact scan marker should brighten")
 	scannable.free()
+
+func _test_sprite_ready_scene_asset_slots() -> void:
+	var main := MainScene.instantiate()
+	var required_paths := [
+		"ResourcePickups/KelpFiber/SpriteAnchor/Sprite",
+		"ResourcePickups/KelpFiber/FallbackVisual/Visual",
+		"ResourcePickups/KelpFiber/CollisionShape2D",
+		"ResourcePickups/ShellFragments/SpriteAnchor/Sprite",
+		"ResourcePickups/ShellFragments/FallbackVisual/Visual",
+		"ResourcePickups/ShellFragments/CollisionShape2D",
+		"ResourcePickups/GlowPlankton/SpriteAnchor/Sprite",
+		"ResourcePickups/GlowPlankton/FallbackVisual/Visual",
+		"ResourcePickups/HiddenGlowPlankton/SpriteAnchor/Sprite",
+		"ResourcePickups/DeepGlowPlankton/SpriteAnchor/Sprite",
+		"ShellReefPocket/SpriteAnchor/Sprite",
+		"ShellReefPocket/FallbackGeometry/ReefShelf",
+		"ThermalVentPocket/SpriteAnchor/Sprite",
+		"ThermalVentPocket/FallbackGeometry/WarmWash",
+		"PressureLockedWreck/SpriteAnchor/Sprite",
+		"PressureLockedWreck/FallbackGeometry/PressureShimmer",
+		"PressureLockedWreck/OuterScan/SpriteAnchor/Sprite",
+		"PressureLockedWreck/OuterScan/FallbackVisual/ScanVisual",
+		"PressureLockedWreck/OuterScan/ScanMarker",
+		"PressureLockedWreck/OuterScan/CollisionShape2D",
+		"PressureLockedWreck/WreckSignalCache/SpriteAnchor/Sprite",
+		"PressureLockedWreck/WreckSignalCache/FallbackVisual/CacheVisual",
+		"PressureLockedWreck/WreckSignalCache/ScanMarker",
+		"Discoveries/ThermalVent/SpriteAnchor/Sprite",
+		"Discoveries/ThermalVent/FallbackVisual/Visual",
+		"Discoveries/ThermalVent/ScanMarker",
+		"Discoveries/ShellReefShelf/SpriteAnchor/Sprite",
+		"Discoveries/ShellReefShelf/FallbackVisual/Visual",
+		"Discoveries/ShellReefShelf/ScanMarker",
+	]
+
+	for path in required_paths:
+		_expect(main.get_node_or_null(path) != null, "main scene should keep sprite-ready slot or behavior node: %s" % path)
+
+	main.free()
 
 func _test_predator_scan_target() -> void:
 	var predator := PredatorScript.new()
