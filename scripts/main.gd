@@ -90,6 +90,12 @@ const DIVE_STATUS_MAX_CHARS := 92
 @onready var starter_resource_candidates: Node2D = $StarterResourceCandidates
 @onready var creature_route_candidates: Node2D = $CreatureRouteCandidates
 @onready var deep_reward_lure: Node2D = $DeepRewardLure
+@onready var base_return_column: Polygon2D = $BaseReturnColumn
+@onready var base_return_rib_shallow: Polygon2D = $BaseReturnRibShallow
+@onready var base_return_rib_midwater: Polygon2D = $BaseReturnRibMidwater
+@onready var base_return_rib_deep: Polygon2D = $BaseReturnRibDeep
+@onready var base_return_beacon: Polygon2D = $BaseReturnBeacon
+@onready var base_return_beacon_rib: Polygon2D = $BaseReturnBeaconRib
 @onready var thermal_warm_wash: Polygon2D = $ThermalVentPocket/WarmWash
 @onready var thermal_heat_plume: Polygon2D = $ThermalVentPocket/HeatPlume
 @onready var thermal_bubble_string_a: Polygon2D = $ThermalVentPocket/BubbleStringA
@@ -749,7 +755,15 @@ func _spawn_routes_for_target(category: String, target_id: String, cluster_patte
 	return SpawnSelectionScript.routes_for_target(creature_route_candidates, SpawnPointScript, category, target_id, cluster_pattern)
 
 func _sync_condition_visuals() -> void:
-	var is_thermal_bloom := _current_condition_id() == "thermal_bloom"
+	var condition_id := _current_condition_id()
+	var is_thermal_bloom := condition_id == "thermal_bloom"
+	var is_calm_current := condition_id == "calm_current"
+	base_return_column.color = Color(0.38, 1.0, 0.9, 0.18) if is_calm_current else Color(0.38, 1.0, 0.9, 0.14)
+	base_return_rib_shallow.color = Color(0.62, 1.0, 0.9, 0.22) if is_calm_current else Color(0.62, 1.0, 0.9, 0.18)
+	base_return_rib_midwater.color = Color(0.62, 1.0, 0.9, 0.2) if is_calm_current else Color(0.62, 1.0, 0.9, 0.16)
+	base_return_rib_deep.color = Color(0.62, 1.0, 0.9, 0.19) if is_calm_current else Color(0.62, 1.0, 0.9, 0.15)
+	base_return_beacon.color = Color(0.74, 1.0, 0.9, 0.42) if is_calm_current else Color(0.74, 1.0, 0.9, 0.34)
+	base_return_beacon_rib.color = Color(0.62, 1.0, 0.9, 0.26) if is_calm_current else Color(0.62, 1.0, 0.9, 0.2)
 	thermal_warm_wash.color = Color(0.98, 0.52, 0.18, 0.26) if is_thermal_bloom else Color(0.92, 0.44, 0.16, 0.18)
 	thermal_heat_plume.color = Color(1.0, 0.68, 0.24, 0.38) if is_thermal_bloom else Color(1.0, 0.62, 0.2, 0.28)
 	thermal_bubble_string_a.color = Color(1.0, 1.0, 0.84, 0.46) if is_thermal_bloom else Color(0.96, 1.0, 0.82, 0.34)
