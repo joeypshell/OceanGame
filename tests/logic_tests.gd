@@ -52,6 +52,7 @@ func _initialize() -> void:
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
+	_run("landmark region identity metadata", _test_landmark_region_identity_metadata)
 	_run("predator scan target", _test_predator_scan_target)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
 	_run("predator warning upgrade metadata", _test_predator_warning_upgrade_metadata)
@@ -398,6 +399,25 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	var glow_fallback := main.get_node("ResourcePickups/GlowPlankton/FallbackVisual") as Node2D
 	_expect(glow_sprite.texture != null, "Glow Plankton should use the first exported source asset sprite")
 	_expect(not glow_fallback.visible, "Glow Plankton polygon fallback should be hidden while the sprite asset is active")
+
+	main.free()
+
+func _test_landmark_region_identity_metadata() -> void:
+	var main := MainScene.instantiate()
+	var metadata_root := main.get_node("LandmarkMetadata")
+	var expected_regions := {
+		"SurfaceBase": "Surface Base",
+		"ShellReef": "Shell Reef",
+		"ThermalVentField": "Thermal Vent Field",
+		"WreckShelf": "Wreck Shelf",
+		"PressureLockedWreck": "Wreck Shelf",
+		"GulperRoute": "Gulper Route",
+	}
+
+	for node_name in expected_regions.keys():
+		var landmark := metadata_root.get_node(node_name)
+		_expect(String(landmark.get("stable_region_name")) == expected_regions[node_name], "landmark should expose stable region name: %s" % node_name)
+		_expect(not String(landmark.get("memory_goal")).is_empty(), "landmark should describe its player memory goal: %s" % node_name)
 
 	main.free()
 

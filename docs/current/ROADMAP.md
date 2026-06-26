@@ -161,6 +161,7 @@ Next ordered replenishment queue: #180 through #199 from `docs/planning/BACKLOG_
 
 Recently completed:
 
+- #170 added stable region names and player memory goals to existing `LandmarkMetadata` nodes without adding map UI.
 - #169 planned the first remembered-region identity map in `docs/planning/REGION_IDENTITY_MAP_V1.md` and selected stable region-name copy as the first implementation step.
 - #168 reviewed the open pressure-gate state with predator warning visible and recorded pass-with-polish findings in `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`.
 - #101 updated MCP context resources and roadmap status after the Thermal Vent and Decoy Pulse batch.

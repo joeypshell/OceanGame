@@ -16,9 +16,11 @@ Use lightweight authored metadata with these fields:
 | --- | --- |
 | `id` | Stable machine id such as `shell_reef` or `thermal_vent_field`. |
 | `display_name` | Player-facing place name. |
+| `stable_region_name` | The remembered region/place name that should stay consistent across expedition days. |
 | `kind` | `base`, `region`, `landmark`, `route`, `gate`, or `threat_route`. |
 | `depth_band` | `surface`, `shallow`, `midwater`, `deep`, or `trench`. |
 | `role` | Why the place exists in the current loop. |
+| `memory_goal` | What the player should remember about this place after seeing, scanning, or surviving it. |
 | `persistent_facts` | What the player can learn and rely on across expeditions. |
 | `variable_hooks` | What may change by seed or expedition-day condition. |
 | `related_discoveries` | Scan ids that reveal or explain the place. |
@@ -37,6 +39,8 @@ Metadata should support briefing, review, and future condition logic. It should 
 | `wreck_shelf` | Wreck Shelf | `region` | `midwater`/`deep` | Pressure-locked promise, future cache payoff, and later wreck-route variation space. |
 | `pressure_locked_wreck` | Pressure-Locked Research Wreck | `gate` | `deep` | Visible blocked route that returns payoff after `Pressure Seal I`. |
 | `gulper_route` | Gulper Route | `threat_route` | `deep` | Predator-controlled risk/reward route and observation/countermeasure learning space. |
+
+`pressure_locked_wreck` keeps its specific display name but uses `Wreck Shelf` as its stable region name, because the gate is a remembered feature inside the broader wreck region rather than a separate map region.
 
 ## Persistent Facts
 
@@ -97,7 +101,7 @@ These are allowed future hooks, not current behavior requirements:
 
 ## First Implementation Candidate
 
-The next narrow implementation should add inspectable metadata for existing scene landmarks only:
+Implemented first slice: existing scene landmarks now expose `stable_region_name` and `memory_goal` metadata for:
 
 - `surface_base`,
 - `shell_reef`,
@@ -106,4 +110,4 @@ The next narrow implementation should add inspectable metadata for existing scen
 - `pressure_locked_wreck`,
 - `gulper_route`.
 
-It should not change placement, scans, upgrades, predator behavior, resource selection, or UI.
+This metadata does not change placement, scans, upgrades, predator behavior, resource selection, or UI.
