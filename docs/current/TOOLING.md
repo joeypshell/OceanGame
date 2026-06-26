@@ -18,6 +18,34 @@ Repeatable visual review capture guidance lives in:
 
 Use it for surface-ready, active-dive, lower-route, condition, and UI readability screenshots. It documents manual capture, temporary local script capture, and optional Godot AI MCP capture without requiring unavailable automation.
 
+## Playwright Web Visual Smoke
+
+The project has a Playwright harness for repeatable Godot Web screenshot smoke tests. Use it when the question is visual layout/readability across known player-facing states, especially before or after HUD, route, surface panel, or lower-route art changes. Keep Godot headless logic tests as the source for deterministic gameplay/state assertions; Playwright is for exported-browser confidence and screenshot artifacts.
+
+Setup:
+
+```powershell
+npm install
+npm run playwright:install
+```
+
+Run the full export plus browser smoke:
+
+```powershell
+npm run test:visual
+```
+
+Useful split commands:
+
+```powershell
+npm run web:export
+npm run test:visual:existing
+```
+
+The Web export preset writes to `exports/web/index.html`. The Playwright server serves that folder with the cross-origin isolation headers Godot Web builds need. Screenshots, traces, and reports are local artifacts under `test-results/` and `playwright-report/`; do not commit them unless a future issue explicitly asks for reference images.
+
+Current scenarios capture surface ready, active dive, extraction result, upgrade tab, and lower-route pressure-gate views. The test resets the prototype save with the existing F9 debug hook before capture so runs start from a deterministic first-expedition state.
+
 ## MCP Context Server
 
 The first MCP slice is agent workflow support: a small repo-local context server exposes OceanGame source-of-truth docs as MCP resources. It does not control the Godot editor, mutate files, require secrets, or replace the GitHub issue workflow.

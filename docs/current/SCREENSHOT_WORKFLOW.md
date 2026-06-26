@@ -125,6 +125,39 @@ Set-Content -LiteralPath $temp -Value $script -Encoding UTF8
 
 This is appropriate for issue notes and planning reviews. Do not commit the temporary script or generated screenshots unless the issue explicitly asks for reference assets.
 
+## Playwright Web Capture
+
+Use Playwright when a visual smoke pass should be repeatable in the exported browser build rather than driven by hand or by temporary Godot scripts. The harness exports the Web build, serves it with Godot-compatible cross-origin isolation headers, resets the local prototype save, drives deterministic keyboard scenarios, and writes named screenshots as local test artifacts.
+
+Setup once:
+
+```powershell
+npm install
+npm run playwright:install
+```
+
+Run export plus smoke screenshots:
+
+```powershell
+npm run test:visual
+```
+
+Run against an already-exported build:
+
+```powershell
+npm run test:visual:existing
+```
+
+Default captures include:
+
+- `surface-ready.png`
+- `active-dive.png`
+- `extraction-result.png`
+- `upgrade-tab.png`
+- `lower-route-pressure-gate.png`
+
+The screenshots live under `test-results/playwright/` with Playwright traces/reports in ignored local artifact folders. Use this flow for repeated HUD/layout/route-readability checks. Use Godot headless logic tests for state ownership, economy, progression, scan rules, pressure rules, predator behavior, and other deterministic gameplay assertions.
+
 ## Optional Godot AI MCP Capture
 
 If the local `hi-godot/godot-ai` plugin is installed, enabled in Godot, and its MCP server is running, it may be used for live editor screenshots and scene inspection. This repository does not vendor that plugin and does not require it for normal verification.

@@ -1,0 +1,16 @@
+{
+  "name": "oceangame",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "playwright:install": "playwright install chromium",
+    "web:export": "node tests/playwright/export-web.mjs",
+    "web:serve": "node tests/playwright/serve-web.mjs",
+    "test:visual": "npm run web:export && playwright test --config tests/playwright/playwright.config.mjs",
+    "test:visual:existing": "playwright test --config tests/playwright/playwright.config.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}
