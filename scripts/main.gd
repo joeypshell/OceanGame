@@ -187,6 +187,7 @@ var run_predator_contacts := 0
 var run_failure_cause := "none"
 var run_echo_lens_echo_fired := false
 var run_wreck_echo_clue_recovered := false
+var debug_wreck_echo_review_staged := false
 var recent_expedition_log: Array[Dictionary] = []
 
 func _ready() -> void:
@@ -227,6 +228,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 		_cycle_debug_condition()
 	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F5:
 		_cycle_debug_seed()
+	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F6:
+		_stage_debug_wreck_echo_visual_review()
 	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F9:
 		_reset_local_prototype_save()
 	elif Input.is_action_just_pressed("interact"):
@@ -431,6 +434,61 @@ func _cycle_debug_seed() -> void:
 		_format_cluster_pattern(current_resource_cluster_pattern),
 		_format_condition_telemetry(),
 	]
+
+func _stage_debug_wreck_echo_visual_review() -> void:
+	if not show_debug_telemetry:
+		return
+
+	progression_state.purchased_upgrades[SIGNAL_LENS_UPGRADE_ID] = true
+	progression_state.purchased_upgrades[PRESSURE_SEAL_UPGRADE_ID] = true
+	progression_state.purchased_upgrades[ECHO_LENS_UPGRADE_ID] = true
+	if pressure_boundary != null:
+		_sync_pressure_lock_state()
+	_sync_wreck_echo_state()
+
+	if dive_session.result != DiveSessionScript.Result.DIVING or not debug_wreck_echo_review_staged:
+		if dive_session.result != DiveSessionScript.Result.DIVING:
+			dive_session.start()
+		var trigger := wreck_echo_clue_trigger
+		if trigger == null:
+			trigger = get_node_or_null("WreckEchoDescent/ClueTrigger") as Area2D
+		if trigger == null:
+			return
+		var staged_player := player
+		if staged_player == null:
+			staged_player = get_node_or_null("Player") as CharacterBody2D
+		if staged_player == null:
+			return
+		player = staged_player
+		player.global_position = trigger.global_position + Vector2(-95.0, -34.0)
+		player.velocity = Vector2.ZERO
+		dive_session.has_left_base = true
+		debug_wreck_echo_review_staged = true
+		if status_label != null:
+			status_label.text = "Debug review: Wreck Echo route staged."
+		_update_depth()
+		if is_inside_tree():
+			_update_hud()
+		return
+
+	run_wreck_echo_clue_recovered = true
+	_sync_wreck_echo_state()
+	var review_base := base_zone
+	if review_base == null:
+		review_base = get_node_or_null("BaseZone") as Area2D
+	if player == null:
+		player = get_node_or_null("Player") as CharacterBody2D
+	if review_base == null or player == null:
+		return
+	base_zone = review_base
+	player.global_position = base_zone.global_position
+	player.velocity = Vector2.ZERO
+	player_in_base = true
+	if not is_inside_tree():
+		dive_session.extract()
+		last_result_summary = _format_wreck_echo_research_callout()
+		return
+	_try_extract()
 
 func _debug_next_condition_from_id(current_id: String) -> Dictionary:
 	var conditions := ExpeditionConditionScript.all_conditions()
@@ -1587,6 +1645,7 @@ func _reset_run_telemetry() -> void:
 	run_failure_cause = "none"
 	run_echo_lens_echo_fired = false
 	run_wreck_echo_clue_recovered = false
+	debug_wreck_echo_review_staged = false
 	echo_lens_pulse_timer = 0.0
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false

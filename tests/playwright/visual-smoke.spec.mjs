@@ -64,4 +64,20 @@ test.describe("OceanGame web visual smoke", () => {
     await holdKeys(page, ["ArrowRight", "ArrowDown"], 8_500);
     await capture(page, testInfo, "lower-route-pressure-gate");
   });
+
+  test("captures staged Wreck Echo route and result readback views", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await page.keyboard.press("F3");
+    await page.waitForTimeout(400);
+    await page.keyboard.press("Enter");
+    await page.waitForTimeout(500);
+
+    await page.keyboard.press("F6");
+    await page.waitForTimeout(900);
+    await capture(page, testInfo, "wreck-echo-route-staged");
+
+    await page.keyboard.press("F6");
+    await page.waitForTimeout(900);
+    await capture(page, testInfo, "wreck-echo-result-readback");
+  });
 });

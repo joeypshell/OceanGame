@@ -51,6 +51,7 @@ func _initialize() -> void:
 	_run("spawn selection", _test_spawn_selection)
 	_run("condition-weighted spawn selection", _test_condition_weighted_spawn_selection)
 	_run("debug review seed and condition helpers", _test_debug_review_helpers)
+	_run("debug Wreck Echo visual staging", _test_debug_wreck_echo_visual_staging)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
@@ -331,6 +332,27 @@ func _test_debug_review_helpers() -> void:
 	_expect(main._debug_seed_for_delta(8919, 1) == 8920, "debug seed helper should increment review seed")
 	_expect(main._debug_seed_for_delta(1, -10) == 1, "debug seed helper should keep review seed positive")
 	main.free()
+
+func _test_debug_wreck_echo_visual_staging() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.reset(main.max_oxygen)
+
+	main.show_debug_telemetry = false
+	main.call("_stage_debug_wreck_echo_visual_review")
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wreck Echo visual staging should be ignored while debug telemetry is hidden")
+
+	main.show_debug_telemetry = true
+	main.call("_stage_debug_wreck_echo_visual_review")
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Wreck Echo visual staging should start or keep a dive active")
+	_expect(main.debug_wreck_echo_review_staged, "Wreck Echo visual staging should remember the active route view state")
+	_expect(main._wreck_echo_route_available(), "Wreck Echo visual staging should prepare the route prerequisites")
+	_expect(not main.run_wreck_echo_clue_recovered, "first Wreck Echo visual staging press should not auto-complete the clue")
+
+	main.call("_stage_debug_wreck_echo_visual_review")
+	_expect(main.dive_session.result == DiveSessionScript.Result.EXTRACTED, "second Wreck Echo visual staging press should produce the result view")
+	_expect(main.last_result_summary.contains("Wreck Echo clue carried"), "staged Wreck Echo result should include the compact clue readback")
+	main.queue_free()
 
 func _test_scanner_target_resolver() -> void:
 	var farther_a := _make_scan_target("alpha", "Alpha", Vector2(10.0, 0.0))

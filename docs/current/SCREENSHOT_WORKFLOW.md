@@ -157,8 +157,10 @@ Default captures include:
 - `extraction-result.png`
 - `upgrade-tab.png`
 - `lower-route-pressure-gate.png`
+- `wreck-echo-route-staged.png`
+- `wreck-echo-result-readback.png`
 
-The screenshots live under `test-results/playwright/` with Playwright traces/reports in ignored local artifact folders. Use this flow for repeated HUD/layout/route-readability checks. Use Godot headless logic tests for state ownership, economy, progression, scan rules, pressure rules, predator behavior, and other deterministic gameplay assertions.
+The screenshots live under `test-results/playwright/` with Playwright traces/reports in ignored local artifact folders. Use this flow for repeated HUD/layout/route-readability checks. The Wreck Echo screenshots use the debug-gated F6 staging hook after F3 telemetry is enabled, so they are route/result visual evidence rather than gameplay-traversal proof. Use Godot headless logic tests for state ownership, economy, progression, scan rules, pressure rules, predator behavior, and other deterministic gameplay assertions.
 
 ## Optional Godot AI MCP Capture
 
