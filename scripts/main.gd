@@ -590,6 +590,17 @@ func _stage_debug_expanded_route_visual_review() -> void:
 	_update_depth()
 	_update_hud()
 
+func _stage_debug_east_shelf_pocket_visual_review() -> void:
+	_stage_debug_expanded_route_visual_review()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	player_near_east_shelf_pocket = true
+	_try_east_shelf_pocket_interaction()
+	visual_smoke_route_stage = "east_shelf_pocket"
+	status_label.text = "Debug review: East Shelf pocket ping staged."
+	_update_hud()
+
 func _consume_visual_smoke_command() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -606,6 +617,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_oxygen_visual_review(0.08, "critical")
 		"expanded_east_shelf_route":
 			_stage_debug_expanded_route_visual_review()
+		"east_shelf_pocket_ping":
+			_stage_debug_east_shelf_pocket_visual_review()
 
 func _debug_next_condition_from_id(current_id: String) -> Dictionary:
 	var conditions := ExpeditionConditionScript.all_conditions()
@@ -1400,6 +1413,7 @@ func _publish_visual_smoke_state() -> void:
 		"upgrade_panel_visible": upgrade_panel.visible,
 		"active_stats_visible": active_stats_panel.visible,
 		"wreck_echo_clue_recovered": run_wreck_echo_clue_recovered,
+		"east_shelf_pocket_ping_recovered": run_east_shelf_pocket_ping_recovered,
 		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)

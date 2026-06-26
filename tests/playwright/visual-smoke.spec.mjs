@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageExpandedRoute, stageOxygenState } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageEastShelfPocketPing, stageExpandedRoute, stageOxygenState } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -95,6 +95,18 @@ test.describe("OceanGame web visual smoke", () => {
       debug_telemetry: false,
       active_stats_visible: true,
       route_stage: "east_shelf_spur",
+    });
+  });
+
+  test("captures the staged East Shelf pocket interaction payoff", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageEastShelfPocketPing(page);
+    await capture(page, testInfo, "east-shelf-pocket-ping-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "east_shelf_pocket",
+      east_shelf_pocket_ping_recovered: true,
     });
   });
 

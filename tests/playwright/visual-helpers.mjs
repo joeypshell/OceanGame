@@ -100,6 +100,18 @@ export async function stageExpandedRoute(page) {
   });
 }
 
+export async function stageEastShelfPocketPing(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "east_shelf_pocket_ping";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "east_shelf_pocket",
+    east_shelf_pocket_ping_recovered: true,
+  });
+}
+
 export async function returnToBaseAndExtract(page) {
   await holdKey(page, "ArrowUp", 1_800);
   await page.waitForTimeout(300);
