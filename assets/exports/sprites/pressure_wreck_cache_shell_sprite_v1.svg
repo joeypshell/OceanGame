@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="330" viewBox="0 0 420 330">
+  <defs>
+    <linearGradient id="hull" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#25485a"/>
+      <stop offset="54%" stop-color="#102533"/>
+      <stop offset="100%" stop-color="#06111b"/>
+    </linearGradient>
+    <linearGradient id="cutShadow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071420" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#02070c" stop-opacity="0.58"/>
+    </linearGradient>
+    <radialGradient id="cachePocket" cx="70%" cy="44%" r="44%">
+      <stop offset="0%" stop-color="#d9f7a4" stop-opacity="0.45"/>
+      <stop offset="48%" stop-color="#6ee8ff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#0e2735" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pressureWash" cx="48%" cy="52%" r="68%">
+      <stop offset="0%" stop-color="#6bd8ff" stop-opacity="0.11"/>
+      <stop offset="100%" stop-color="#15384d" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path d="M24 186 C74 116 146 70 236 64 C308 60 368 94 398 154 C370 226 304 278 210 286 C128 292 62 252 24 186 Z" fill="url(#pressureWash)"/>
+  <path d="M44 174 L112 92 L238 56 L378 126 L344 226 L188 280 L64 232 Z" fill="url(#hull)" opacity="0.92"/>
+  <path d="M76 184 L132 118 L240 92 L330 136 L304 202 L178 240 L86 214 Z" fill="url(#cutShadow)" opacity="0.78"/>
+  <path d="M44 174 L112 92 L96 50 L156 86 Z" fill="#386175" opacity="0.48"/>
+  <path d="M238 56 L354 58 L378 126 Z" fill="#1b3b4e" opacity="0.66"/>
+  <path d="M64 232 L188 280 L160 314 L72 262 Z" fill="#07131d" opacity="0.62"/>
+  <path d="M250 132 L338 142 L308 194 L232 202 L208 168 Z" fill="#06111a" opacity="0.72"/>
+  <ellipse cx="304" cy="164" rx="82" ry="68" fill="url(#cachePocket)"/>
+  <path d="M120 152 L166 138 L202 154 L184 188 L126 194 L98 174 Z" fill="#65d9ff" opacity="0.12"/>
+  <path d="M218 210 L306 194 L286 230 L202 254 Z" fill="#36586a" opacity="0.24"/>
+  <path d="M146 118 L196 104 L216 118 L168 136 Z" fill="#76eaff" opacity="0.14"/>
+  <path d="M282 146 L314 150 L322 166 L296 180 L264 174 L254 158 Z" fill="#d7f87b" opacity="0.2"/>
+  <path d="M78 214 L24 246 M188 280 L166 320 M340 226 L398 266" stroke="#6ee8ff" stroke-width="8" stroke-linecap="round" opacity="0.1"/>
+</svg>

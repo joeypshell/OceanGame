@@ -1,12 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://pressure_wreck_visuals"]
+[gd_scene load_steps=3 format=3 uid="uid://pressure_wreck_visuals"]
 
 [ext_resource type="PackedScene" path="res://scenes/readability/PressureGateVisuals.tscn" id="1_pressure_gate_visuals"]
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/pressure_wreck_cache_shell_sprite_v1.svg" id="2_pressure_wreck_shell"]
 
 [node name="Visuals" type="Node2D"]
 
 [node name="SpriteAnchor" type="Node2D" parent="."]
 
 [node name="Sprite" type="Sprite2D" parent="SpriteAnchor"]
+position = Vector2(930, 1410)
+texture = ExtResource("2_pressure_wreck_shell")
+centered = false
 
 [node name="FallbackGeometry" type="Node2D" parent="."]
 
@@ -17,29 +21,29 @@ polygon = PackedVector2Array(1080, 1466, 1238, 1418, 1322, 1566, 1224, 1758, 105
 [node name="PressureGateVisuals" parent="FallbackGeometry" instance=ExtResource("1_pressure_gate_visuals")]
 
 [node name="WreckHull" type="Polygon2D" parent="FallbackGeometry"]
-color = Color(0.08, 0.13, 0.16, 0.88)
+color = Color(0.08, 0.13, 0.16, 0.34)
 polygon = PackedVector2Array(1110, 1518, 1236, 1478, 1274, 1556, 1214, 1664, 1096, 1638)
 
 [node name="WreckKeel" type="Polygon2D" parent="FallbackGeometry"]
-color = Color(0.05, 0.09, 0.12, 0.76)
+color = Color(0.05, 0.09, 0.12, 0.28)
 polygon = PackedVector2Array(1120, 1642, 1212, 1662, 1182, 1708, 1086, 1668)
 
 [node name="WreckBrokenBow" type="Polygon2D" parent="FallbackGeometry"]
-color = Color(0.12, 0.2, 0.24, 0.78)
+color = Color(0.12, 0.2, 0.24, 0.32)
 polygon = PackedVector2Array(1238, 1480, 1312, 1514, 1276, 1556)
 
 [node name="WreckInteriorShadow" type="Polygon2D" parent="FallbackGeometry"]
-color = Color(0.01, 0.03, 0.05, 0.5)
+color = Color(0.01, 0.03, 0.05, 0.24)
 polygon = PackedVector2Array(1138, 1588, 1214, 1564, 1234, 1614, 1160, 1632)
 
 [node name="WreckWindow" type="Polygon2D" parent="FallbackGeometry"]
-color = Color(0.35, 0.85, 1, 0.52)
+color = Color(0.35, 0.85, 1, 0.22)
 polygon = PackedVector2Array(1160, 1548, 1198, 1538, 1210, 1574, 1168, 1584)
 
 [node name="SignalLight" type="Polygon2D" parent="FallbackGeometry"]
-color = Color(0.86, 1, 0.32, 0.5)
+color = Color(0.86, 1, 0.32, 0.24)
 polygon = PackedVector2Array(1118, 1494, 1138, 1474, 1162, 1496, 1140, 1518)
 
 [node name="SignalHalo" type="Polygon2D" parent="FallbackGeometry"]
-color = Color(0.86, 1, 0.32, 0.085)
+color = Color(0.86, 1, 0.32, 0.045)
 polygon = PackedVector2Array(1082, 1496, 1140, 1436, 1200, 1496, 1140, 1558)
