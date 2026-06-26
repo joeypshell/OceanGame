@@ -10,6 +10,7 @@ const PlayerScript := preload("res://scripts/player.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
 const MainScript := preload("res://scripts/main.gd")
+const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PressureSealUpgrade := preload("res://resources/upgrades/pressure_seal_1.tres")
@@ -44,6 +45,7 @@ func _initialize() -> void:
 	_run("spawn-point matching", _test_spawn_point_matching)
 	_run("spawn selection", _test_spawn_selection)
 	_run("scanner target resolver", _test_scanner_target_resolver)
+	_run("compact scan marker", _test_compact_scan_marker)
 	_run("predator scan target", _test_predator_scan_target)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
 	_run("predator warning upgrade metadata", _test_predator_warning_upgrade_metadata)
@@ -287,6 +289,22 @@ func _test_scanner_target_resolver() -> void:
 	farther_a.free()
 	farther_b.free()
 	nearest.free()
+
+func _test_compact_scan_marker() -> void:
+	var scannable := ScannableScript.new()
+	var marker := Polygon2D.new()
+	marker.name = "ScanMarker"
+	scannable.add_child(marker)
+	scannable._ready()
+
+	_expect(marker.polygon.size() == 8, "compact scan marker should use the standard diamond polygon")
+	_expect(marker.color.a < 0.3, "compact scan marker should be subtle while idle")
+	_expect(scannable.get_node_or_null("ScanFocusBracketA") != null, "compact scan marker should create first focus bracket")
+	_expect(scannable.get_node_or_null("ScanFocusBracketB") != null, "compact scan marker should create second focus bracket")
+
+	scannable.set_scan_selected(true)
+	_expect(marker.color.a > 0.5, "selected compact scan marker should brighten")
+	scannable.free()
 
 func _test_predator_scan_target() -> void:
 	var predator := PredatorScript.new()
