@@ -1179,6 +1179,18 @@ func _test_compact_dive_hud_helpers() -> void:
 	var compact_discoveries: String = main.call("_format_discoveries", true)
 	_expect(compact_discoveries == "Discoveries: 0", "compact discovery helper should show only the count")
 
+	var main_scene := MainScene.instantiate()
+	root.add_child(main_scene)
+	var active_panel: Panel = main_scene.get_node("HUD/ActiveStatsPanel")
+	var discoveries_label: Label = main_scene.get_node("HUD/Discoveries")
+	var dive_info_panel: Panel = main_scene.get_node("HUD/DiveInfoPanel")
+	_expect(discoveries_label.offset_top >= active_panel.offset_top, "active Discoveries label should stay inside the compact stats panel")
+	_expect(discoveries_label.offset_bottom <= active_panel.offset_bottom, "active Discoveries label should not spill below the compact stats panel")
+	_expect(dive_info_panel.offset_top > active_panel.offset_bottom, "dive info panel should remain below compact stats content")
+	_expect(not active_panel.visible, "surface-ready state should hide active stats clutter")
+	_expect(not dive_info_panel.visible, "surface-ready state should hide dive guidance clutter")
+	main_scene.queue_free()
+
 	var long_status := "Scanned Thermal Vent.\nWarm current marks optional glow; bank Pressure Seal clue. Return safely before oxygen runs out."
 	var compact_status: String = main.call("_compact_dive_status", long_status)
 	_expect(not compact_status.contains("\n"), "compact dive status should remove line breaks")
