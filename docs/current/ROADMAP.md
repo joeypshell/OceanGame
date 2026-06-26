@@ -392,6 +392,8 @@ Latest backlog refresh: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLATFORM_INPU
 
 Wreck Echo first runtime pass: issue #364 implements one deeper-right `Wreck Echo Descent` route pocket with one run-scoped compact research clue gated by `Pressure Seal I` and `Echo Lens I`. It deliberately adds no minimap, exact locator, field guide, quest checklist, combat, new economy, persistent marker, or durable Wreck Echo save data. The next follow-up should validate normal-scale Wreck Echo readability and result evidence before expanding or tuning the route.
 
+Wreck Echo normal-scale review: `docs/planning/WRECK_ECHO_ROUTE_READABILITY_REVIEW_2026_06_26.md` records #366 as pass-with-watchlist. The route can stay implemented, the result readback is fixed and readable, and the next Wreck Echo work should tune the clue/reward/predator visual relationship before adding any broader route scope.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable and close to polished acceptance, but still in closeout/watchlist verification rather than fully accepted.

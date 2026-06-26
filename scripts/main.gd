@@ -269,20 +269,7 @@ func _try_extract() -> void:
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\n%s\n%s%s\n%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
-		_format_completed_expedition_line("Extraction"),
-		_format_extraction_banking_line(extracted_count, extracted_cargo),
-		_format_region_memory_callout(),
-		_format_discovery_memory_callout(),
-		_format_route_choice_callout(),
-		_format_gulper_research_callout(),
-		_format_echo_lens_research_callout(),
-		_format_wreck_echo_research_callout(),
-		_format_upgrade_progress_callout(),
-		_format_scan_progress_callout("Discoveries recorded"),
-		roundi(progression_state.best_depth_reached),
-		_format_next_expedition_prompt()
-	]
+	last_result_summary = _format_extraction_result_summary(extracted_count, extracted_cargo)
 	upgrade_menu_feedback = "Deposited %d resource(s) into the bank.%s\n%s" % [
 		extracted_count,
 		_format_resource_counts(extracted_cargo),
@@ -1696,6 +1683,22 @@ func _format_completed_expedition_line(result_name: String) -> String:
 	return "Expedition Day %d: %s." % [
 		progression_state.current_run_number,
 		result_name,
+	]
+
+func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Array[String]) -> String:
+	return "%s\n%s\n%s%s\n%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
+		_format_completed_expedition_line("Extraction"),
+		_format_extraction_banking_line(extracted_count, extracted_cargo),
+		_format_region_memory_callout(),
+		_format_discovery_memory_callout(),
+		_format_route_choice_callout(),
+		_format_gulper_research_callout(),
+		_format_echo_lens_research_callout(),
+		_format_wreck_echo_research_callout(),
+		_format_upgrade_progress_callout(),
+		_format_scan_progress_callout("Discoveries recorded"),
+		roundi(progression_state.best_depth_reached),
+		_format_next_expedition_prompt()
 	]
 
 func _format_condition_briefing() -> String:
