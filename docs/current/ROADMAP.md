@@ -46,6 +46,7 @@ Detailed design rules live in:
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`
 - `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md`
 - `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md`
+- `docs/planning/NEXT_MILESTONE_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md`
 - `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md`
 - `docs/planning/SURFACE_READY_RESULT_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/SHELL_REEF_SPRITE_FALLBACK_BALANCE_REVIEW_2026_06_26.md`
@@ -180,6 +181,8 @@ Solo first-run result: `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_
 Vertical-slice evidence bundle: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` records compact internal evidence for ready, active dive, pickup/scan, return/failure, upgrade view, blocked route, danger route, and optional clue route. It supports continued closeout while keeping the slice pass-with-watchlist until formal status is updated.
 
 Vertical-slice acceptance status: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` now distinguishes pass, pass-with-watchlist, deferred, and out-of-scope areas after the solo checklist and compact evidence bundle. The slice is structurally playable, but not fully polished while #310, #313, #314, #315, and #317 remain open watchlist reviews.
+
+Next milestone after closeout: `docs/planning/NEXT_MILESTONE_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines `Wreck Echo Preparation And Slice Polish`. It keeps current work focused on remaining readability watchlists, allows Wreck Echo planning and source-art selection, and keeps route implementation, broad biomes, minimap/checklist UI, combat systems, and final art lock deferred.
 
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 

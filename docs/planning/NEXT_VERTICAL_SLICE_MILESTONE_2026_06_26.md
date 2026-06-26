@@ -73,3 +73,9 @@ The next issue batch should prioritize:
 4. sprite/fallback balance reviews,
 5. acceptance evidence,
 6. narrow Wreck Echo planning only after the current slice is readable.
+
+## Next Milestone Handoff
+
+After the #300-#302 solo/evidence/status updates, the next milestone is defined in `docs/planning/NEXT_MILESTONE_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md`.
+
+The handoff direction is `Wreck Echo Preparation And Slice Polish`: finish the remaining current-slice watchlists, select the next source-art target by readability impact, and plan Wreck Echo Descent without implementing a new route until the current slice stays readable.
