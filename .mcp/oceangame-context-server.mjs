@@ -28,6 +28,7 @@ const resources = [
   ["oceangame://cargo-improvement-i", "docs/planning/CARGO_IMPROVEMENT_I.md", "Cargo Improvement I plan"],
   ["oceangame://burst-thruster", "docs/planning/BURST_THRUSTER_MILESTONE.md", "Burst Thruster milestone plan"],
   ["oceangame://monster-observation-i", "docs/planning/MONSTER_OBSERVATION_I.md", "Monster Observation I plan"],
+  ["oceangame://monster-research-loop-v1", "docs/planning/MONSTER_RESEARCH_LOOP_V1.md", "Monster Research Loop v1 plan"],
   ["oceangame://predator-warning-i", "docs/planning/PREDATOR_WARNING_I.md", "Predator Warning I plan"],
   ["oceangame://biome-pocket-i", "docs/planning/BIOME_POCKET_I.md", "Biome Pocket I plan"],
   ["oceangame://biome-pocket-ii", "docs/planning/BIOME_POCKET_II.md", "Biome Pocket II plan"],
@@ -148,6 +149,7 @@ function selfTest() {
     "oceangame://compulsion-identity-2026-06-26",
     "oceangame://backlog-replenishment-visual-clarity-foundation-2026-06-26",
     "oceangame://screenshot-workflow",
+    "oceangame://monster-research-loop-v1",
     "oceangame://project-status",
   ];
   if (

@@ -20,6 +20,7 @@ Detailed design rules live in:
 - `docs/planning/EXPEDITION_GOAL_II.md`
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
+- `docs/planning/MONSTER_RESEARCH_LOOP_V1.md`
 - `docs/planning/NORMAL_SCALE_READABILITY_CHECKLIST.md`
 - `docs/planning/LOWER_ROUTE_VISUAL_OVERLAP_REVIEW_2026_06_26.md`
 - `docs/planning/PREDATOR_WARNING_I.md`
