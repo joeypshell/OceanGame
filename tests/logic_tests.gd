@@ -449,6 +449,13 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	_expect(not lantern_body_fallback.visible, "Lantern Fry body polygon should be hidden while the sprite asset is active")
 	_expect(lantern_glow_fallback.visible, "Lantern Fry glow fallback should remain available for visual-only idle pulsing")
 
+	var gulper_sprite := main.get_node("Predators/GulperEel/SpriteAnchor/Sprite") as Sprite2D
+	var gulper_body_overlay := main.get_node("Predators/GulperEel/FallbackVisual/Body") as Polygon2D
+	var gulper_eye_overlay := main.get_node("Predators/GulperEel/FallbackVisual/Eye") as Polygon2D
+	_expect(gulper_sprite.texture != null, "Gulper Eel should use the first exported source asset sprite")
+	_expect(gulper_body_overlay.visible, "Gulper Eel fallback body should remain available for state tint overlays")
+	_expect(gulper_eye_overlay.visible, "Gulper Eel fallback eye should remain available for warning/chase state overlays")
+
 	main.free()
 
 	var player := PlayerScene.instantiate()
