@@ -36,7 +36,7 @@ No new screenshots were committed for this pass.
 ## Highest-Priority Gaps
 
 1. Waterline and boat moonpool polish.
-   - The surface base is now a strong sprite, but the under-boat entry/exit area still needs integrated waterline/moonpool readability.
+   - First pass complete: `SurfaceBaseArt/MoonpoolGuide` now clarifies the under-boat launch column behind the hull. Continue to review it at normal scale during the cohesive art pass.
 
 2. Player sub state polish.
    - The sub sprite is strong, but idle bubbles and thrust state should be tuned so movement direction and activity are readable at normal scale.
@@ -56,7 +56,7 @@ The project is ready for a cohesive vertical-slice art integration pass, but not
 
 Recommended next work:
 
-- finish waterline/moonpool readability polish,
+- review the new waterline/moonpool guide at normal scale,
 - review sub idle bubble and thrust readability,
 - keep the compact HUD skin as a planned follow-up,
 - avoid adding new lower-route content until existing pressure/wreck/predator cues are reviewed at normal scale.

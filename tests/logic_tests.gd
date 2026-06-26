@@ -418,6 +418,8 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"RareSignalEmphasis/SoftPingWash",
 		"RareSignalEmphasis/BrokenEchoArc",
 		"SurfaceBaseArt/SpriteAnchor/ResearchBoatSprite",
+		"SurfaceBaseArt/MoonpoolGuide/LaunchColumn",
+		"SurfaceBaseArt/MoonpoolGuide/WaterlineFoam",
 		"SurfaceBaseArt/FallbackGeometry/LabMoonpool",
 		"Discoveries/ThermalVent/SpriteAnchor/Sprite",
 		"Discoveries/ThermalVent/FallbackVisual/Visual",
