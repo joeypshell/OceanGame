@@ -171,6 +171,9 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 @onready var wreck_echo_clue_core: Polygon2D = $WreckEchoDescent/ClueTrigger/ClueCore
 @onready var rare_signal_emphasis: Node2D = $RareSignalEmphasis
 @onready var shelf_glimmer_opportunity: Node2D = $EastShelfSpur/ShelfGlimmerOpportunity
+@onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
+@onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
+@onready var sealed_shelf_hatch_lock_label: Label = $EastShelfSpur/SealedShelfHatch/LockLabel
 @onready var predator_warning: Node2D = $Predators/PredatorWarning
 @onready var gulper_eel: Node = $Predators/GulperEel
 
@@ -225,6 +228,7 @@ func _ready() -> void:
 	_update_hud()
 
 func _process(delta: float) -> void:
+	_consume_visual_smoke_command()
 	_update_depth()
 	_update_glow_plankton_highlight(delta)
 	_update_resource_scan_highlight(delta)
@@ -511,6 +515,21 @@ func _stage_debug_oxygen_visual_review(target_ratio: float, label: String) -> vo
 	status_label.text = "Debug review: %s oxygen staged." % label
 	_update_hud()
 
+func _consume_visual_smoke_command() -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var command = JavaScriptBridge.eval("window.__oceangameDebugCommand || ''", true)
+	if typeof(command) != TYPE_STRING or String(command).is_empty():
+		return
+
+	JavaScriptBridge.eval("window.__oceangameDebugCommand = '';", true)
+	match String(command):
+		"oxygen_low":
+			_stage_debug_oxygen_visual_review(0.20, "low")
+		"oxygen_critical":
+			_stage_debug_oxygen_visual_review(0.08, "critical")
+
 func _debug_next_condition_from_id(current_id: String) -> Dictionary:
 	var conditions := ExpeditionConditionScript.all_conditions()
 	if conditions.is_empty():
@@ -644,6 +663,7 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 			pass
 		"echo_lens_wreck_echo":
 			_sync_wreck_echo_state()
+			_sync_sealed_shelf_hatch_state()
 		"cargo_limit_4":
 			dive_session.cargo_limit = _current_cargo_limit()
 		"predator_warning_range_1":
@@ -1085,6 +1105,7 @@ func _sync_discovery_reveals() -> void:
 	_sync_pressure_lock_state()
 	_sync_predator_warning_upgrade_state()
 	_sync_wreck_echo_state()
+	_sync_sealed_shelf_hatch_state()
 
 func _reveal_thermal_vent_route() -> void:
 	var route_hint := vent_route_hint
@@ -1132,6 +1153,29 @@ func _sync_pressure_lock_state() -> void:
 		pressure_gate_right_rail.color = Color(0.26, 0.48, 0.8, 0.34)
 		pressure_lock_badge.color = Color(0.74, 0.86, 1.0, 0.72)
 		pressure_label.text = "LOCKED"
+
+func _sync_sealed_shelf_hatch_state() -> void:
+	var echo_shimmer := sealed_shelf_hatch_echo_shimmer
+	if echo_shimmer == null:
+		echo_shimmer = get_node_or_null("EastShelfSpur/SealedShelfHatch/EchoShimmer") as Polygon2D
+	var lock_badge := sealed_shelf_hatch_lock_badge
+	if lock_badge == null:
+		lock_badge = get_node_or_null("EastShelfSpur/SealedShelfHatch/LockBadge") as Polygon2D
+	var lock_label := sealed_shelf_hatch_lock_label
+	if lock_label == null:
+		lock_label = get_node_or_null("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
+	if echo_shimmer == null or lock_badge == null or lock_label == null:
+		return
+
+	var has_echo_lens := progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
+	if has_echo_lens:
+		echo_shimmer.color = Color(0.62, 1.0, 0.78, 0.22)
+		lock_badge.color = Color(0.62, 1.0, 0.72, 0.72)
+		lock_label.text = "ECHO PING"
+	else:
+		echo_shimmer.color = Color(0.62, 0.94, 1.0, 0.11)
+		lock_badge.color = Color(0.74, 0.86, 1.0, 0.74)
+		lock_label.text = "ECHO LOCK"
 
 func _wreck_echo_route_available() -> bool:
 	return progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID) and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)

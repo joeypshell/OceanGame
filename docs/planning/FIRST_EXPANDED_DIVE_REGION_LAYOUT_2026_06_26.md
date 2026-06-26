@@ -39,7 +39,7 @@ Recommended first-pass coordinate intent:
 4. One stable landmark: `East Shelf Arch`. Implemented in #449 with scene geometry and passive landmark metadata.
 5. Safe-return cues pointing back toward the surface/base column. Implemented in #449 with left/up return-current geometry and horizontal HUD base-direction copy such as `up-left`.
 6. One seeded daily opportunity using authored candidates. Implemented in #450 as `Shelf Glimmer`, a Rare Signal side-route visual research ping near East Shelf Arch.
-7. One visible upgrade-locked promise.
+7. One visible upgrade-locked promise. Implemented in #451 as `Sealed Shelf Hatch`, an Echo Lens I-locked branch promise that changes from `ECHO LOCK` to `ECHO PING` when scanner readiness exists without adding an interior yet.
 
 ## Stable Landmark
 

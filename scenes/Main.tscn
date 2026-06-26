@@ -385,6 +385,33 @@ polygon = PackedVector2Array(-82, -8, -18, -34, 62, -22, 86, 0, 62, 22, -18, 34,
 color = Color(0.72, 1, 0.92, 0.12)
 polygon = PackedVector2Array(-42, 72, -172, 42, -246, 56, -184, 16, -246, -24, -170, -10, -40, -44)
 
+[node name="SealedShelfHatch" type="Node2D" parent="EastShelfSpur"]
+position = Vector2(1994, 1578)
+
+[node name="HatchPlate" type="Polygon2D" parent="EastShelfSpur/SealedShelfHatch"]
+color = Color(0.12, 0.24, 0.32, 0.58)
+polygon = PackedVector2Array(-70, -44, 36, -58, 82, -8, 54, 52, -56, 62, -96, 10)
+
+[node name="SealBars" type="Polygon2D" parent="EastShelfSpur/SealedShelfHatch"]
+color = Color(0.58, 0.82, 1, 0.34)
+polygon = PackedVector2Array(-58, -32, 42, -42, 54, -26, -44, -16, -66, 6, 38, -6, 50, 10, -54, 22, -48, 40, 38, 30, 48, 44, -42, 54)
+
+[node name="EchoShimmer" type="Polygon2D" parent="EastShelfSpur/SealedShelfHatch"]
+color = Color(0.62, 0.94, 1, 0.11)
+polygon = PackedVector2Array(-106, -58, -10, -96, 92, -58, 126, 2, 72, 72, -46, 96, -128, 34)
+
+[node name="LockBadge" type="Polygon2D" parent="EastShelfSpur/SealedShelfHatch"]
+color = Color(0.74, 0.86, 1, 0.74)
+polygon = PackedVector2Array(-22, -24, 22, -24, 34, 0, 22, 24, -22, 24, -34, 0)
+
+[node name="LockLabel" type="Label" parent="EastShelfSpur/SealedShelfHatch"]
+offset_left = -48.0
+offset_top = 30.0
+offset_right = 70.0
+offset_bottom = 58.0
+theme_override_font_sizes/font_size = 14
+text = "ECHO LOCK"
+
 [node name="ShellReefPocket" type="Node2D" parent="."]
 
 [node name="Visuals" parent="ShellReefPocket" instance=ExtResource("17_shell_reef_pocket_visuals")]

@@ -90,6 +90,7 @@ func _initialize() -> void:
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
 	_run("expanded region base direction", _test_expanded_region_base_direction)
+	_run("sealed shelf hatch promise state", _test_sealed_shelf_hatch_promise_state)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
 	_run("player idle and thrust visual states", _test_player_idle_and_thrust_visual_states)
@@ -648,6 +649,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/PocketEntrance/OuterRim",
 		"EastShelfSpur/PocketEntrance/ThresholdGlow",
 		"EastShelfSpur/PocketEntrance/ExitCurrentCue",
+		"EastShelfSpur/SealedShelfHatch",
+		"EastShelfSpur/SealedShelfHatch/HatchPlate",
+		"EastShelfSpur/SealedShelfHatch/SealBars",
+		"EastShelfSpur/SealedShelfHatch/EchoShimmer",
+		"EastShelfSpur/SealedShelfHatch/LockBadge",
+		"EastShelfSpur/SealedShelfHatch/LockLabel",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -657,6 +664,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var pocket_entrance := main.get_node("EastShelfSpur/PocketEntrance") as Node2D
 	var mouth_shadow := main.get_node("EastShelfSpur/PocketEntrance/MouthShadow") as Polygon2D
 	var exit_current := main.get_node("EastShelfSpur/PocketEntrance/ExitCurrentCue") as Polygon2D
+	var sealed_hatch := main.get_node("EastShelfSpur/SealedShelfHatch") as Node2D
+	var hatch_lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
 	var shelf_glimmer := main.get_node("EastShelfSpur/ShelfGlimmerOpportunity") as Node2D
@@ -671,6 +680,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(pocket_entrance.position.x >= 1880.0, "East Shelf pocket entrance should sit at the far end of the side route")
 	_expect(mouth_shadow.color.a >= 0.6, "East Shelf pocket entrance should read as an opening, not another translucent current")
 	_expect(exit_current.polygon[1].x < exit_current.polygon[0].x, "East Shelf pocket exit cue should point back left toward the main route")
+	_expect(sealed_hatch.position.x >= pocket_entrance.position.x, "Sealed Shelf Hatch should sit at or beyond the pocket entrance as a future promise")
+	_expect(hatch_lock_label.text == "ECHO LOCK", "Sealed Shelf Hatch should start as an Echo Lens locked promise")
 
 	main.free()
 
@@ -1719,6 +1730,24 @@ func _test_expanded_region_base_direction() -> void:
 
 	scene_player.global_position = main.start_position
 	_expect(main.call("_format_base_direction") == "Base: here", "base direction should still read here at the surface base")
+	main.queue_free()
+
+func _test_sealed_shelf_hatch_promise_state() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
+	var lock_badge := main.get_node("EastShelfSpur/SealedShelfHatch/LockBadge") as Polygon2D
+	main.sealed_shelf_hatch_echo_shimmer = main.get_node("EastShelfSpur/SealedShelfHatch/EchoShimmer") as Polygon2D
+	main.sealed_shelf_hatch_lock_badge = lock_badge
+	main.sealed_shelf_hatch_lock_label = lock_label
+	var locked_badge_color := lock_badge.color
+	main.call("_sync_sealed_shelf_hatch_state")
+	_expect(lock_label.text == "ECHO LOCK", "Sealed Shelf Hatch should advertise the missing Echo Lens upgrade before ownership")
+
+	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	main.call("_sync_sealed_shelf_hatch_state")
+	_expect(lock_label.text == "ECHO PING", "Sealed Shelf Hatch should change to a scanner-ready promise after Echo Lens I")
+	_expect(lock_badge.color != locked_badge_color, "Sealed Shelf Hatch badge should visually react to Echo Lens I ownership")
 	main.queue_free()
 
 func _test_player_visual_facing_isolation() -> void:

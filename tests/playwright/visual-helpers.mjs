@@ -78,8 +78,10 @@ export async function capture(page, testInfo, name, expectedState = {}) {
 }
 
 export async function stageOxygenState(page, oxygenState) {
-  const key = oxygenState === "critical" ? "F8" : "F7";
-  await page.keyboard.press(key);
+  const command = oxygenState === "critical" ? "oxygen_critical" : "oxygen_low";
+  await page.evaluate((nextCommand) => {
+    window.__oceangameDebugCommand = nextCommand;
+  }, command);
   await assertVisualState(page, {
     result: "diving",
     oxygen_state: oxygenState,
