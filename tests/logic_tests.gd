@@ -1004,6 +1004,12 @@ func _test_compact_dive_hud_helpers() -> void:
 	var compact_status: String = main.call("_compact_dive_status", long_status)
 	_expect(not compact_status.contains("\n"), "compact dive status should remove line breaks")
 	_expect(compact_status.length() <= 92, "compact dive status should stay within the dive HUD limit")
+
+	_expect(main.call("_oxygen_state", 30.0, 40.0) == "normal", "oxygen helper should treat safe oxygen as normal")
+	_expect(main.call("_oxygen_state", 10.0, 40.0) == "low", "oxygen helper should mark 25 percent oxygen as low")
+	_expect(main.call("_oxygen_state", 4.0, 40.0) == "critical", "oxygen helper should mark 10 percent oxygen as critical")
+	_expect(main.call("_format_oxygen_label", 10.0, 40.0).contains("LOW"), "oxygen label should carry low state inline")
+	_expect(main.call("_oxygen_warning_text", "critical").contains("RETURN TO BASE"), "critical warning should emphasize the return route")
 	main.free()
 
 func _test_burst_thruster_movement_helper() -> void:

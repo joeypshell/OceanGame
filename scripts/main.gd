@@ -75,7 +75,8 @@ const DIVE_STATUS_MAX_CHARS := 92
 @onready var prompt_label: Label = $HUD/ExtractionPrompt
 @onready var scan_target_label: Label = $HUD/ScanTarget
 @onready var dive_info_panel: Panel = $HUD/DiveInfoPanel
-@onready var oxygen_warning_label: Label = $HUD/OxygenWarning
+@onready var oxygen_warning_panel: Panel = $HUD/OxygenWarningPanel
+@onready var oxygen_warning_label: Label = $HUD/OxygenWarningPanel/OxygenWarning
 @onready var recent_expedition_log_label: Label = $HUD/RecentExpeditionLog
 @onready var run_panel: Panel = $HUD/RunPanel
 @onready var surface_tabs_label: Label = $HUD/RunPanel/SurfaceTabs
@@ -918,7 +919,7 @@ func _update_hud() -> void:
 	depth_label.visible = is_diving
 	base_direction_label.visible = is_diving
 	cargo_label.visible = is_diving
-	oxygen_label.text = "Oxygen: %d / %d" % [ceili(dive_session.oxygen), ceili(dive_session.max_oxygen)]
+	oxygen_label.text = _format_oxygen_label(dive_session.oxygen, dive_session.max_oxygen)
 	depth_label.text = "Depth: %dm | Best: %dm" % [
 		roundi(dive_session.current_depth),
 		roundi(progression_state.best_depth_reached)
@@ -1618,8 +1619,46 @@ func _format_base_direction() -> String:
 
 	return "Base: below %.0fm" % (absf(vertical_delta) / pixels_per_meter)
 
+func _oxygen_state(current_oxygen: float, maximum_oxygen: float) -> String:
+	if maximum_oxygen <= 0.0:
+		return "normal"
+
+	var oxygen_ratio := current_oxygen / maximum_oxygen
+	if oxygen_ratio <= CRITICAL_OXYGEN_RATIO:
+		return "critical"
+	if oxygen_ratio <= LOW_OXYGEN_RATIO:
+		return "low"
+
+	return "normal"
+
+func _format_oxygen_label(current_oxygen: float, maximum_oxygen: float) -> String:
+	var state := _oxygen_state(current_oxygen, maximum_oxygen)
+	var suffix := ""
+	if state == "critical":
+		suffix = "  CRITICAL"
+	elif state == "low":
+		suffix = "  LOW"
+
+	return "Oxygen: %d / %d%s" % [ceili(current_oxygen), ceili(maximum_oxygen), suffix]
+
+func _oxygen_warning_text(state: String) -> String:
+	if state == "critical":
+		return "CRITICAL OXYGEN\nRETURN TO BASE"
+	if state == "low":
+		return "LOW OXYGEN\nPLAN RETURN"
+
+	return ""
+
+func _oxygen_state_color(state: String) -> Color:
+	if state == "critical":
+		return Color(1.0, 0.18, 0.12, 1.0)
+	if state == "low":
+		return Color(1.0, 0.76, 0.22, 1.0)
+
+	return Color.WHITE
+
 func _update_oxygen_feedback() -> void:
-	oxygen_warning_label.visible = false
+	oxygen_warning_panel.visible = false
 	oxygen_label.modulate = Color.WHITE
 	base_direction_label.modulate = Color.WHITE
 	oxygen_label.scale = Vector2.ONE
@@ -1628,21 +1667,22 @@ func _update_oxygen_feedback() -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING or dive_session.max_oxygen <= 0.0:
 		return
 
-	var oxygen_ratio := dive_session.oxygen / dive_session.max_oxygen
-	if oxygen_ratio <= CRITICAL_OXYGEN_RATIO:
+	var oxygen_state := _oxygen_state(dive_session.oxygen, dive_session.max_oxygen)
+	var oxygen_color := _oxygen_state_color(oxygen_state)
+	if oxygen_state == "critical":
 		var pulse := 1.0 + 0.08 * absf(sin(Time.get_ticks_msec() / 90.0))
-		oxygen_warning_label.visible = true
-		oxygen_warning_label.text = "CRITICAL OXYGEN - RETURN TO BASE"
-		oxygen_warning_label.modulate = Color(1.0, 0.18, 0.12, 1.0)
-		oxygen_label.modulate = Color(1.0, 0.18, 0.12, 1.0)
+		oxygen_warning_panel.visible = true
+		oxygen_warning_label.text = _oxygen_warning_text(oxygen_state)
+		oxygen_warning_label.modulate = oxygen_color
+		oxygen_label.modulate = oxygen_color
 		base_direction_label.modulate = Color(1.0, 0.22, 0.14, 1.0)
 		oxygen_label.scale = Vector2(pulse, pulse)
 		base_direction_label.scale = Vector2(pulse, pulse)
-	elif oxygen_ratio <= LOW_OXYGEN_RATIO:
-		oxygen_warning_label.visible = true
-		oxygen_warning_label.text = "LOW OXYGEN - PLAN RETURN"
-		oxygen_warning_label.modulate = Color(1.0, 0.76, 0.22, 1.0)
-		oxygen_label.modulate = Color(1.0, 0.76, 0.22, 1.0)
+	elif oxygen_state == "low":
+		oxygen_warning_panel.visible = true
+		oxygen_warning_label.text = _oxygen_warning_text(oxygen_state)
+		oxygen_warning_label.modulate = oxygen_color
+		oxygen_label.modulate = oxygen_color
 		base_direction_label.modulate = Color(1.0, 0.86, 0.36, 1.0)
 
 func _load_progression() -> void:

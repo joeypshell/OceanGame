@@ -1171,13 +1171,20 @@ offset_right = 560.0
 offset_bottom = 248.0
 text = "Scan target: none nearby"
 
-[node name="OxygenWarning" type="Label" parent="HUD"]
+[node name="OxygenWarningPanel" type="Panel" parent="HUD"]
 visible = false
-offset_left = 24.0
-offset_top = 356.0
-offset_right = 560.0
-offset_bottom = 388.0
+offset_left = 914.0
+offset_top = 24.0
+offset_right = 1256.0
+offset_bottom = 92.0
+
+[node name="OxygenWarning" type="Label" parent="HUD/OxygenWarningPanel"]
+offset_left = 16.0
+offset_top = 10.0
+offset_right = 326.0
+offset_bottom = 58.0
 text = "LOW OXYGEN - PLAN RETURN"
+autowrap_mode = 2
 
 [node name="RecentExpeditionLog" type="Label" parent="HUD"]
 offset_left = 24.0

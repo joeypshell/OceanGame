@@ -122,7 +122,7 @@ Player-facing UI:
 - base direction,
 - cargo slots,
 - current scan target,
-- low/critical oxygen warning.
+- low/critical oxygen warning with compact panel placement that stays out of the active route/control text stack.
 
 Debug/playtest UI:
 
@@ -137,4 +137,3 @@ Debug UI should stay behind a debug toggle before any public demo. Player-facing
 ## Target Feeling
 
 OceanGame should feel like a cozy research expedition into a beautiful but increasingly impossible alien ocean. The surface should feel human and safe; the deeper ocean should feel beautiful, strange, and eventually hostile. The player should want to dive again because a visible route, creature behavior, scan echo, pressure door, or glow in the dark suggests that tomorrow they can understand or reach a little more.
-
