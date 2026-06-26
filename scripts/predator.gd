@@ -17,6 +17,9 @@ signal contacted(predator: Node)
 
 @onready var patrol_hint: Polygon2D = $PatrolHint
 @onready var scan_marker: Polygon2D = $ScanMarker
+@onready var fallback_visual := get_node_or_null("FallbackVisual") as Node2D
+@onready var body_visual := get_node_or_null("FallbackVisual/Body") as Polygon2D
+@onready var eye_visual := get_node_or_null("FallbackVisual/Eye") as Polygon2D
 
 const MarkerPatterns := preload("res://scripts/readability_marker_patterns.gd")
 
@@ -45,6 +48,7 @@ func _physics_process(delta: float) -> void:
 	if _decoy_time > 0.0:
 		_decoy_time = maxf(0.0, _decoy_time - delta)
 		_chase_time = 0.0
+		_apply_visual_state("decoy")
 		if patrol_hint != null:
 			patrol_hint.modulate = Color(0.62, 1.0, 0.72, 0.72)
 		global_position = global_position.move_toward(_decoy_target, chase_speed * decoy_speed_multiplier * delta)
@@ -55,6 +59,7 @@ func _physics_process(delta: float) -> void:
 
 	if _chase_time > 0.0 and player != null:
 		_chase_time = maxf(0.0, _chase_time - delta)
+		_apply_visual_state("chase")
 		global_position = global_position.move_toward(player.global_position, chase_speed * delta)
 		return
 
@@ -130,14 +135,48 @@ func _update_warning_feedback(player: Node2D) -> void:
 
 	if player == null:
 		patrol_hint.modulate = Color.WHITE
+		_apply_visual_state("patrol")
 		return
 
 	var distance := global_position.distance_to(player.global_position)
 	if distance <= detect_radius:
 		var pulse := 0.75 + 0.25 * absf(sin(Time.get_ticks_msec() / 80.0))
 		patrol_hint.modulate = Color(1.0, 0.15, 0.12, pulse)
+		_apply_visual_state("chase")
 	elif distance <= warning_radius():
 		var warning_strength := 1.0 - ((distance - detect_radius) / (warning_radius() - detect_radius))
 		patrol_hint.modulate = Color(1.0, 0.55, 0.18, 0.45 + 0.25 * warning_strength)
+		_apply_visual_state("warning")
 	else:
 		patrol_hint.modulate = Color.WHITE
+		_apply_visual_state("patrol")
+
+func _apply_visual_state(state: String) -> void:
+	if fallback_visual == null:
+		return
+
+	match state:
+		"decoy":
+			fallback_visual.modulate = Color(0.68, 1.0, 0.78, 0.92)
+			if body_visual != null:
+				body_visual.color = Color(0.34, 0.46, 0.24, 1.0)
+			if eye_visual != null:
+				eye_visual.color = Color(0.62, 1.0, 0.72, 1.0)
+		"chase":
+			fallback_visual.modulate = Color(1.22, 0.72, 0.58, 1.0)
+			if body_visual != null:
+				body_visual.color = Color(0.86, 0.08, 0.16, 1.0)
+			if eye_visual != null:
+				eye_visual.color = Color(1.0, 0.2, 0.12, 1.0)
+		"warning":
+			fallback_visual.modulate = Color(1.12, 0.86, 0.62, 1.0)
+			if body_visual != null:
+				body_visual.color = Color(0.74, 0.14, 0.2, 1.0)
+			if eye_visual != null:
+				eye_visual.color = Color(1.0, 0.62, 0.18, 1.0)
+		_:
+			fallback_visual.modulate = Color.WHITE
+			if body_visual != null:
+				body_visual.color = Color(0.68, 0.12, 0.2, 1.0)
+			if eye_visual != null:
+				eye_visual.color = Color(1.0, 0.86, 0.22, 1.0)
