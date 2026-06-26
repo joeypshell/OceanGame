@@ -71,6 +71,7 @@ func _initialize() -> void:
 	_run("discovery memory result callout", _test_discovery_memory_result_callout)
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("gulper research result callout", _test_gulper_research_result_callout)
+	_run("monster research non-combat guardrails", _test_monster_research_non_combat_guardrails)
 	_run("echo lens result callout", _test_echo_lens_result_callout)
 	_run("wreck echo route first pass", _test_wreck_echo_route_first_pass)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
@@ -1017,6 +1018,32 @@ func _test_gulper_research_result_callout() -> void:
 	_expect(main._format_gulper_research_callout().contains("Decoy timing"), "Decoy evidence should take priority as a stronger research result")
 	main.free()
 
+func _test_monster_research_non_combat_guardrails() -> void:
+	var main := MainScript.new()
+	main.run_completed_scans = ["gulper_eel"]
+	var scan_callout := main._format_gulper_research_callout()
+	_expect_no_monster_combat_language(scan_callout, "Gulper scan research")
+
+	main.run_predator_contacts = 1
+	var contact_callout := main._format_gulper_research_callout()
+	_expect(contact_callout.contains("warning lane"), "contact research should stay framed as route danger")
+	_expect_no_monster_combat_language(contact_callout, "Gulper contact research")
+
+	main.decoy_pulse_used_this_run = true
+	var decoy_callout := main._format_gulper_research_callout()
+	_expect(decoy_callout.contains("Decoy timing"), "Monster Research II candidate should stay framed as decoy timing")
+	_expect_no_monster_combat_language(decoy_callout, "Decoy response research")
+
+	var summary := main._format_run_summary(decoy_callout, "extracted")
+	_expect_no_monster_combat_language(summary, "Monster research result summary")
+	_expect(not summary.contains("field guide"), "Monster research result should not add field-guide UI language")
+	_expect(not summary.contains("checklist"), "Monster research result should not add checklist UI language")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("monster_research"), "Monster Research II planning should not add durable monster research save state")
+	_expect(not saved.has("creature_inventory"), "Monster Research II planning should not add creature inventory save state")
+	main.free()
+
 func _test_echo_lens_result_callout() -> void:
 	var main := MainScript.new()
 
@@ -1718,5 +1745,25 @@ func _expect_no_echo_lens_locator_language(text: String, context: String) -> voi
 		"exact",
 		"locator",
 		"gps",
+	]:
+		_expect(not lowered.contains(blocked), "%s should not introduce %s language" % [context, blocked])
+
+func _expect_no_monster_combat_language(text: String, context: String) -> void:
+	var lowered := text.to_lower()
+	for blocked in [
+		"weapon",
+		"harpoon",
+		"damage",
+		"stun",
+		"kill",
+		"killed",
+		"loot",
+		"harvest",
+		"capture",
+		"cage",
+		"health",
+		"bounty",
+		"monster part",
+		"victory",
 	]:
 		_expect(not lowered.contains(blocked), "%s should not introduce %s language" % [context, blocked])

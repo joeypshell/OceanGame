@@ -229,6 +229,8 @@ Monster Research II first evidence selection: `docs/planning/MONSTER_RESEARCH_II
 
 Monster Research II state ownership: `docs/planning/MONSTER_RESEARCH_II_STATE_OWNERSHIP_RESULT_MEMORY_2026_06_26.md` keeps `Decoy response observed` run-scoped by default, allows one compact result `Research:` line, and defers durable progression state until a specific future upgrade or gate needs it. It should not create a field guide, checklist, minimap, route graph, creature inventory, combat log, or broad research tree.
 
+Monster Research II guardrail coverage: `docs/planning/MONSTER_RESEARCH_II_NON_COMBAT_GUARDRAIL_COVERAGE_2026_06_26.md` adds logic-test coverage that Gulper scan/contact/decoy research copy stays non-combat, result summaries avoid field-guide/checklist language, and current progression save data does not gain durable monster-research or creature-inventory keys.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
