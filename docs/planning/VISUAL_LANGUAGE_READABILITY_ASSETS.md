@@ -146,6 +146,12 @@ Prefer small reusable Godot-native assets before final art:
 
 These may start as `Polygon2D`, `Label`, `Node2D`, and small scripts. They should be authored in scenes and wired by `main.gd` or small helper scripts, not generated procedurally without inspection.
 
+Current shared runtime helper:
+
+- `scripts/readability_marker_patterns.gd`: shared compact scan marker polygons, focus bracket polygons, and selected/idle colors used by both generic scannables and predator scan targets.
+
+This helper is the first central pattern owner. It keeps repeated marker data out of individual gameplay scripts while still leaving gameplay truth in scanner, predator, progression, and scene systems.
+
 Current reusable prototype scenes:
 
 - `scenes/readability/PressureGatePrototype.tscn`: locked/open route language for pressure or future progression gates.

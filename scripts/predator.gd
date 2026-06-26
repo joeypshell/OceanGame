@@ -18,10 +18,7 @@ signal contacted(predator: Node)
 @onready var patrol_hint: Polygon2D = $PatrolHint
 @onready var scan_marker: Polygon2D = $ScanMarker
 
-const SCAN_MARKER_IDLE_COLOR := Color(0.95, 1.0, 0.7, 0.24)
-const SCAN_MARKER_SELECTED_COLOR := Color(1.0, 1.0, 0.55, 0.54)
-const SCAN_BRACKET_IDLE_COLOR := Color(0.9, 1.0, 1.0, 0.0)
-const SCAN_BRACKET_SELECTED_COLOR := Color(0.9, 1.0, 1.0, 0.34)
+const MarkerPatterns := preload("res://scripts/readability_marker_patterns.gd")
 
 var _target := Vector2.ZERO
 var _chase_time := 0.0
@@ -108,62 +105,20 @@ func _prepare_scan_marker() -> void:
 	if scan_marker == null:
 		return
 
-	scan_marker.polygon = _scan_marker_polygon()
-	focus_bracket_a = _ensure_focus_bracket("ScanFocusBracketA", _focus_bracket_a_polygon())
-	focus_bracket_b = _ensure_focus_bracket("ScanFocusBracketB", _focus_bracket_b_polygon())
+	scan_marker.polygon = MarkerPatterns.scan_marker_polygon()
+	focus_bracket_a = MarkerPatterns.ensure_focus_bracket(self, "ScanFocusBracketA", MarkerPatterns.scan_focus_bracket_a_polygon())
+	focus_bracket_b = MarkerPatterns.ensure_focus_bracket(self, "ScanFocusBracketB", MarkerPatterns.scan_focus_bracket_b_polygon())
 	_refresh_scan_marker()
-
-func _scan_marker_polygon() -> PackedVector2Array:
-	return PackedVector2Array([
-		Vector2(0, -36),
-		Vector2(28, -18),
-		Vector2(36, 0),
-		Vector2(28, 18),
-		Vector2(0, 36),
-		Vector2(-28, 18),
-		Vector2(-36, 0),
-		Vector2(-28, -18),
-	])
-
-func _focus_bracket_a_polygon() -> PackedVector2Array:
-	return PackedVector2Array([
-		Vector2(-48, -42),
-		Vector2(-24, -42),
-		Vector2(-24, -34),
-		Vector2(-40, -34),
-		Vector2(-40, -18),
-		Vector2(-48, -18),
-	])
-
-func _focus_bracket_b_polygon() -> PackedVector2Array:
-	return PackedVector2Array([
-		Vector2(48, 42),
-		Vector2(24, 42),
-		Vector2(24, 34),
-		Vector2(40, 34),
-		Vector2(40, 18),
-		Vector2(48, 18),
-	])
-
-func _ensure_focus_bracket(node_name: String, polygon: PackedVector2Array) -> Polygon2D:
-	var bracket := get_node_or_null(node_name) as Polygon2D
-	if bracket == null:
-		bracket = Polygon2D.new()
-		bracket.name = node_name
-		add_child(bracket)
-
-	bracket.polygon = polygon
-	return bracket
 
 func _refresh_scan_marker() -> void:
 	if scan_marker == null:
 		return
 
-	scan_marker.color = SCAN_MARKER_SELECTED_COLOR if is_scan_selected else SCAN_MARKER_IDLE_COLOR
+	scan_marker.color = MarkerPatterns.scan_marker_color(is_scan_selected)
 	if focus_bracket_a != null:
-		focus_bracket_a.color = SCAN_BRACKET_SELECTED_COLOR if is_scan_selected else SCAN_BRACKET_IDLE_COLOR
+		focus_bracket_a.color = MarkerPatterns.scan_bracket_color(is_scan_selected)
 	if focus_bracket_b != null:
-		focus_bracket_b.color = SCAN_BRACKET_SELECTED_COLOR if is_scan_selected else SCAN_BRACKET_IDLE_COLOR
+		focus_bracket_b.color = MarkerPatterns.scan_bracket_color(is_scan_selected)
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
