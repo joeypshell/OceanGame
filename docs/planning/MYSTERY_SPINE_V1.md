@@ -136,6 +136,7 @@ This works because each step turns a prior observation into a future decision.
 - Do not add a general story system before the scanner and route loop are readable.
 - Do not make `Echo Lens I` replace `Signal Lens I`; it should answer a different question.
 - Do not add a new scanner energy economy for this spine.
+- Keep `Wreck Echo Descent` planning-only under `docs/planning/WRECK_ECHO_DESCENT_NO_IMPLEMENTATION_CRITERIA_2026_06_26.md` until a future implementation issue explicitly clears the current readability gates.
 
 ## First Implementation Recommendation
 

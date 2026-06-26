@@ -38,7 +38,7 @@ Next work means planning-ready work that prepares a later route without adding i
 
 ## When Wreck Echo Planning Can Become Implementation
 
-`Wreck Echo Descent` can become implementation work only after all of these are true:
+`Wreck Echo Descent` can become implementation work only after `docs/planning/WRECK_ECHO_DESCENT_NO_IMPLEMENTATION_CRITERIA_2026_06_26.md` is satisfied and all of these are true:
 
 - the current playable-slice checklist has no blocker-level readability failures,
 - lower-route pressure gate/cache/predator overlap is pass or pass-with-low-risk watchlist at normal scale,

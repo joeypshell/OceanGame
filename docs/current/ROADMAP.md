@@ -21,6 +21,7 @@ Detailed design rules live in:
 - `docs/planning/SCANNER_PROGRESSION_V2.md`
 - `docs/planning/CARGO_IMPROVEMENT_I.md`
 - `docs/planning/EXPEDITION_GOAL_II.md`
+- `docs/planning/WRECK_ECHO_DESCENT_NO_IMPLEMENTATION_CRITERIA_2026_06_26.md`
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/MONSTER_RESEARCH_LOOP_V1.md`
@@ -183,6 +184,8 @@ Vertical-slice evidence bundle: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENC
 Vertical-slice acceptance status: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` now distinguishes pass, pass-with-watchlist, deferred, and out-of-scope areas after the solo checklist and compact evidence bundle. The slice is structurally playable, but not fully polished while #310, #313, #314, #315, and #317 remain open watchlist reviews.
 
 Next milestone after closeout: `docs/planning/NEXT_MILESTONE_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines `Wreck Echo Preparation And Slice Polish`. It keeps current work focused on remaining readability watchlists, allows Wreck Echo planning and source-art selection, and keeps route implementation, broad biomes, minimap/checklist UI, combat systems, and final art lock deferred.
+
+Wreck Echo no-implementation criteria: `docs/planning/WRECK_ECHO_DESCENT_NO_IMPLEMENTATION_CRITERIA_2026_06_26.md` allows copy rules, acceptance criteria, data-shape sketches, source-art constraints, and preparation reviews, but blocks route nodes, scan targets, resources, collision, pressure zones, persistent markers, exact locators, and scene-wired pressure-dark art until a future implementation issue explicitly clears the readability gates.
 
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 

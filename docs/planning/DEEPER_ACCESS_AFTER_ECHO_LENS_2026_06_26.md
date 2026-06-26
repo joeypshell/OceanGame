@@ -50,6 +50,8 @@ Purpose: create one prepared-route question below/right of the existing Wreck Sh
 
 Do not implement `Wreck Echo Descent` until the current vertical slice stays readable at normal scale. The current gate is the playable-slice checklist, active HUD review, surface review, lower-route density pass, and pressure wreck/cache balance review. If the current Wreck Shelf, pressure gate, cache, predator route, or HUD text is still visually confusing, this pocket should remain planning-only.
 
+The no-implementation contract lives in `docs/planning/WRECK_ECHO_DESCENT_NO_IMPLEMENTATION_CRITERIA_2026_06_26.md`. Until a future implementation issue explicitly clears that contract, Wreck Echo work may produce copy rules, acceptance criteria, data-shape sketches, source-art constraints, and preparation reviews, but must not add route nodes, scan targets, resources, collision, pressure zones, persistent markers, exact locators, or scene-wired pressure-dark art.
+
 Trigger:
 
 - player has discovered `Wreck Signal Cache`,
