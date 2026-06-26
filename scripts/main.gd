@@ -225,10 +225,11 @@ func _try_extract() -> void:
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\n%s\n%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\n%s%s\n%s\n%s\n%s\nBest depth: %dm." % [
 		extracted_count,
 		_format_resource_counts(extracted_cargo),
 		_format_route_choice_callout(),
+		_format_gulper_research_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
 		_format_next_expedition_prompt(),
@@ -248,8 +249,9 @@ func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s%s\n%s\n%s\nBest depth: %dm." % [
 		_format_route_choice_callout(),
+		_format_gulper_research_callout(),
 		_format_scan_progress_callout("Scans kept"),
 		_format_next_expedition_prompt(),
 		roundi(progression_state.best_depth_reached),
@@ -1366,6 +1368,16 @@ func _format_route_choice_callout() -> String:
 		return "Route choice: returned without banking cargo."
 
 	return "Route choice: banked a cautious resource run."
+
+func _format_gulper_research_callout() -> String:
+	if decoy_pulse_used_this_run:
+		return "\nResearch: Decoy timing bent the Gulper route briefly."
+	if run_predator_contacts > 0:
+		return "\nResearch: Gulper strike confirms the warning lane is dangerous."
+	if run_completed_scans.has("gulper_eel"):
+		return "\nResearch: Gulper route timing observed."
+
+	return ""
 
 func _format_scan_ids(scan_ids: Array[String]) -> String:
 	if scan_ids.is_empty():

@@ -61,6 +61,7 @@ func _initialize() -> void:
 	_run("result progress callouts", _test_result_progress_callouts)
 	_run("next expedition framing", _test_next_expedition_framing)
 	_run("route choice result callout", _test_route_choice_result_callout)
+	_run("gulper research result callout", _test_gulper_research_result_callout)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("recent expedition log", _test_recent_expedition_log)
 	_run("thermal vent scan clue text", _test_thermal_vent_scan_clue_text)
@@ -664,6 +665,24 @@ func _test_route_choice_result_callout() -> void:
 	summary = main._format_run_summary(main._format_route_choice_callout(), "extracted")
 	_expect(summary.contains("Playtest data:"), "debug telemetry should appear only when enabled")
 	_expect(summary.contains("Condition: Thermal Bloom (thermal_bloom)"), "debug telemetry should include condition display and id")
+	main.free()
+
+func _test_gulper_research_result_callout() -> void:
+	var main := MainScript.new()
+
+	_expect(main._format_gulper_research_callout() == "", "Gulper research should stay hidden without evidence")
+
+	main.run_completed_scans = ["gulper_eel"]
+	_expect(main._format_gulper_research_callout().contains("Gulper route timing observed"), "Gulper scan should produce a research callout")
+	var summary := main._format_run_summary("%s%s" % [main._format_route_choice_callout(), main._format_gulper_research_callout()], "extracted")
+	_expect(summary.contains("Research:"), "player-facing summary should include compact creature research when relevant")
+	_expect(not summary.contains("Playtest data:"), "creature research should not expose debug telemetry")
+
+	main.run_predator_contacts = 1
+	_expect(main._format_gulper_research_callout().contains("warning lane"), "Gulper contact should take priority over scan research")
+
+	main.decoy_pulse_used_this_run = true
+	_expect(main._format_gulper_research_callout().contains("Decoy timing"), "Decoy evidence should take priority as a stronger research result")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:
