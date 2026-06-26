@@ -349,6 +349,8 @@ Status: prototype-only visual study, not wired into `Main.tscn`.
 
 Intent: explore a compact broken-hull plus cold signal-glow read for the Wreck Echo spine. The study should inform a future pressure-wreck or cache sprite pass without changing the current pressure gate, cache scan target, boundary denial, Echo Lens planning copy, route layout, or hidden objective behavior.
 
+Scene review: `docs/planning/PRESSURE_WRECK_CACHE_PROVENANCE_SCENE_REVIEW_2026_06_26.md` keeps this as an unwired study for now because the current outside scan and cache scene slots already have more focused source/export sprites.
+
 Non-goals:
 
 - No new route or map marker.
