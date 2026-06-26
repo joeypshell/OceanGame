@@ -2,7 +2,7 @@
 
 ## Status
 
-Review completed after compact marker passes for scan, lock, return, danger, and reward cues.
+Review completed after compact marker passes for scan, lock, return, danger, and reward cues. Post-asset addendum added after the Shell Reef, Thermal Vent, pressure-lock/wreck, and Gulper route visual passes.
 
 ## Scope
 
@@ -96,3 +96,52 @@ The lower-route issue is now visual density, not text density. Long world labels
 Proceed with the planned condition telemetry and condition-visual-effect issues. Do not add more lower-route content until the first condition effects are reviewed.
 
 Text clutter is no longer the blocker here. Visual separation and brightness priority are the remaining risks.
+
+## Post-Asset Addendum - Lower Route Screenshot Review
+
+Reviewed after the first visual-clarity asset passes:
+
+- Shell Reef landmark and route visual pass.
+- Thermal Vent pocket visual pass.
+- Pressure lock and wreck visual pass.
+- Gulper route danger visual pass.
+
+Captured views:
+
+- Ready-state lower route: `C:/Users/pirat/AppData/Roaming/Godot/app_userdata/OceanGame/lower_route_overlap_review_2026_06_26.png`
+- Active-dive lower route: `C:/Users/pirat/AppData/Roaming/Godot/app_userdata/OceanGame/lower_route_overlap_review_active_2026_06_26.png`
+
+Capture context:
+
+- Viewport: 1365 x 768.
+- Player/camera review position: approximately `Vector2(980, 1660)`.
+- Active review HUD state: dive started through `_start_dive()` before moving the player.
+- Visible scan target during active review: `Pressure-Locked Research Wreck`.
+- Visible route states: pressure route locked, deep reward visible, predator warning lane visible, safe-return column visible.
+
+### Current Read After Asset Pass
+
+The lower route is dense but now understandable at normal scale. The main route categories are visually separable:
+
+- Safe return: vertical cyan return lane remains readable on the left side of the reviewed cluster.
+- Pressure lock: blue vertical shimmer, rails, crossbars, and compact `LOCKED` badge read as the clearest blocked-route cue.
+- Wreck promise: hull silhouette and subdued cache glow read as a future payoff behind the gate rather than an immediate pickup.
+- Predator danger: red warning lane, ribs, bite marker, and the Gulper silhouette read as the most dangerous route cue.
+- Reward temptation: lime/yellow glow remains readable as valuable cargo, but it no longer owns the whole lower-right cluster.
+
+### Blockers
+
+No new blocker-level follow-up is required from this review.
+
+The previous blocker, overlapping playfield text, is outside this lower-route view after the HUD separation work. The remaining concern is visual density, not an inability to understand what the route is asking.
+
+### Polish Risks
+
+- The lower-right area still stacks pressure gate, reward glow, future cache signal, and predator lane in a tight cluster. This is acceptable for the current risk/reward promise, but future content should avoid this exact area until layout spacing is revisited.
+- The pressure gate is now intentionally dominant while locked. If the route is open, a later screenshot review should confirm the softened green passable state is still clear when the predator lane is also visible.
+- The active dive HUD is readable in this lower-route capture, but it takes meaningful left-side space. Future HUD expansion should remain panel-bounded and avoid adding loose world text.
+- The deep reward and scan marker colors can still become similar when selected nearby. This is polish unless a player mistakes the reward for an objective marker.
+
+### Follow-Up Recommendation
+
+Do not open a new lower-route fix issue from this review alone. Continue with the already planned visual review checklist, screenshot workflow, debug seed/condition helper, and performance/readability review issues. Those issues are better owners for repeatable captures, open-state comparison, and any later concrete overlap bug.
