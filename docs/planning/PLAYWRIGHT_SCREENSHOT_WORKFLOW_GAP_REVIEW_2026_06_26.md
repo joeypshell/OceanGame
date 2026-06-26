@@ -27,6 +27,7 @@ The current Playwright smoke is useful and should remain part of visual regressi
 - resets local prototype progress,
 - captures deterministic surface/active/lower-route states,
 - captures staged Wreck Echo route, result readback, and no-debug player-facing result states,
+- asserts exported visual state before each screenshot and writes same-name metadata sidecars,
 - gives repeatable local screenshot artifacts for review notes.
 
 ## Observed Gaps
@@ -47,7 +48,7 @@ The next Playwright tooling pass should focus on current desktop slice reliabili
 
 1. Make `extraction-result.png` prove a completed extraction panel is visible.
 2. Make `upgrade-tab.png` prove the surface upgrade tab is visible.
-3. Add assertions or screenshot labels that fail if the captured state is still active dive.
+3. Add assertions or screenshot labels that fail if the captured state is still active dive. Done with the Web-export visual state bridge and per-capture metadata sidecars.
 4. Add a no-debug Wreck Echo result or ordinary result capture if it can be staged without relying on player traversal. Done for Wreck Echo player-facing layout by hiding telemetry after staging; normal traversal proof remains outside this harness.
 5. Add low/critical oxygen capture only after the result/upgrade state bug is resolved.
 

@@ -40,6 +40,12 @@ const SURFACE_TAB_RESULT := 0
 const SURFACE_TAB_UPGRADES := 1
 const SURFACE_TAB_LOG := 2
 const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
+const DIVE_RESULT_NAMES := {
+	DiveSessionScript.Result.READY: "ready",
+	DiveSessionScript.Result.DIVING: "diving",
+	DiveSessionScript.Result.EXTRACTED: "extracted",
+	DiveSessionScript.Result.FAILED: "failed",
+}
 const RUN_PANEL_COMPACT_RECT := Rect2(Vector2(420.0, 32.0), Vector2(452.0, 330.0))
 const RUN_PANEL_TALL_RECT := Rect2(Vector2(44.0, 32.0), Vector2(806.0, 640.0))
 const RUN_SUMMARY_COMPACT_BOTTOM := 314.0
@@ -1187,6 +1193,32 @@ func _update_hud() -> void:
 		var decoy_prompt := _format_decoy_pulse_prompt()
 		if not decoy_prompt.is_empty():
 			prompt_label.text += " | %s" % decoy_prompt
+
+	_publish_visual_smoke_state()
+
+func _publish_visual_smoke_state() -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var state := {
+		"result": String(DIVE_RESULT_NAMES.get(dive_session.result, "unknown")),
+		"surface_tab": SURFACE_TAB_NAMES[surface_tab_index].to_lower(),
+		"debug_telemetry": show_debug_telemetry,
+		"oxygen_state": _oxygen_state(dive_session.oxygen, dive_session.max_oxygen),
+		"oxygen": ceili(dive_session.oxygen),
+		"max_oxygen": ceili(dive_session.max_oxygen),
+		"depth_meters": roundi(dive_session.current_depth),
+		"best_depth_meters": roundi(progression_state.best_depth_reached),
+		"cargo_count": dive_session.current_cargo.size(),
+		"cargo_limit": dive_session.cargo_limit,
+		"player_in_base": player_in_base,
+		"has_left_base": dive_session.has_left_base,
+		"run_panel_visible": run_panel.visible,
+		"upgrade_panel_visible": upgrade_panel.visible,
+		"active_stats_visible": active_stats_panel.visible,
+		"wreck_echo_clue_recovered": run_wreck_echo_clue_recovered,
+	}
+	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
 
 func _active_hud_visible_for_result(result: int) -> bool:
 	return result == DiveSessionScript.Result.DIVING
