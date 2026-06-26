@@ -23,6 +23,8 @@ Deferred controller plan: `docs/planning/FUTURE_CONTROLLER_SUPPORT_PLAN_2026_06_
 
 Deferred mobile/touch plan: `docs/planning/FUTURE_MOBILE_LANDSCAPE_TOUCH_PLAN_2026_06_26.md` defines landscape-only mobile direction, likely touch zones, safe-area requirements, overlap risks, evidence gates, and non-goals. Mobile support remains deferred.
 
+Touch safe-zone constraints from mobile-like evidence: `docs/planning/FUTURE_TOUCH_SAFE_ZONE_CONSTRAINTS_FROM_MOBILE_EVIDENCE_2026_06_26.md` records that future touch controls must avoid covering the active HUD, safe-return text, player/sub, predator lane, pressure/cache/reward cues, Wreck Echo cues, result panel, and upgrade panel. This remains planning only; it does not implement touch controls or mobile export settings.
+
 Current work should still preserve platform flexibility:
 
 - route gameplay input through Godot actions rather than direct key checks,

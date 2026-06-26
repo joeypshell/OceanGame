@@ -217,6 +217,8 @@ Mobile-like surface/active review: `docs/planning/MOBILE_LIKE_SURFACE_ACTIVE_REV
 
 Mobile-like lower-route review: `docs/planning/MOBILE_LIKE_LOWER_ROUTE_READABILITY_REVIEW_2026_06_26.md` keeps the `960x540` lower-route capture as pass-with-watchlist. HUD and safe-return text are readable, predator danger reads clearly, but pressure/cache/reward cues are compressed and partly cropped near the right/top route cluster, so future touch zones and lower-route pileup work should avoid covering the player or predator lane.
 
+Future touch safe-zone constraints: `docs/planning/FUTURE_TOUCH_SAFE_ZONE_CONSTRAINTS_FROM_MOBILE_EVIDENCE_2026_06_26.md` translates mobile-like evidence into deferred mobile constraints. Future touch controls must preserve active HUD, safe-return, player/sub, predator, pressure/cache/reward, Wreck Echo, result, and upgrade readability before mobile support can be promoted.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
