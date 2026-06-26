@@ -158,8 +158,11 @@ Resources:
 - `oceangame://compact-hud-final-normal-scale-review-2026-06-26`
 - `oceangame://active-hud-low-oxygen-review-after-prompt-tune-2026-06-26`
 - `oceangame://upgrade-bay-normal-scale-affordance-review-after-copy-tune-2026-06-26`
+- `oceangame://player-action-prompt-abstraction-plan-2026-06-26`
+- `oceangame://result-upgrade-active-copy-review-after-prompt-abstraction-2026-06-26`
 - `oceangame://scanner-feedback-signal-vs-echo-review-2026-06-26`
 - `oceangame://next-monster-research-readability-milestone-2026-06-26`
+- `oceangame://monster-research-next-step-readiness-review-2026-06-26`
 - `oceangame://decoy-pulse-hud-predator-review-after-hud-polish-2026-06-26`
 - `oceangame://gulper-timing-result-clarity-review-2026-06-26`
 - `oceangame://durable-progression-reset-onboarding-review-2026-06-26`
@@ -171,6 +174,12 @@ Resources:
 - `oceangame://lower-route-recheck-after-wreck-echo-source-art-2026-06-26`
 - `oceangame://resource-scan-affordance-review-after-wreck-echo-2026-06-26`
 - `oceangame://result-upgrade-copy-review-after-wreck-echo-2026-06-26`
+- `oceangame://lower-route-recheck-after-evidence-hardening-2026-06-26`
+- `oceangame://next-source-art-after-evidence-hardening-2026-06-26`
+- `oceangame://deep-reward-lure-fallback-balance-review-2026-06-26`
+- `oceangame://active-hud-touch-safe-margin-review-2026-06-26`
+- `oceangame://mobile-like-landscape-screenshot-scaffold-2026-06-26`
+- `oceangame://wreck-echo-no-locator-drift-review-after-prompt-screenshot-2026-06-26`
 - `oceangame://vertical-slice-art-kit-screenshot-checklist-2026-06-26`
 - `oceangame://resource-scan-affordance-review-after-pressure-shell-2026-06-26`
 - `oceangame://resource-scan-source-art-target-decision-2026-06-26`

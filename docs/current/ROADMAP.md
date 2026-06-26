@@ -203,6 +203,8 @@ Wreck Echo no-locator drift review after prompt/screenshot hardening: `docs/plan
 
 Monster-research next-step readiness: `docs/planning/MONSTER_RESEARCH_NEXT_STEP_READINESS_REVIEW_2026_06_26.md` selects planning the next monster step as non-combat behavior evidence rather than weapons, harvesting, capture, predator health, field-guide UI, or creature collection. The current loop wording now says `avoid or study dangerous creatures` so future issues do not accidentally treat combat as current scope.
 
+MCP context refresh after evidence/prompt/readability updates: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the prompt abstraction plan, result/upgrade/active copy review, lower-route evidence-hardening recheck, next source-art target, deep reward lure balance review, active HUD touch-safe review, mobile-like landscape screenshot scaffold, Wreck Echo no-locator drift review, and Monster Research II readiness review.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
