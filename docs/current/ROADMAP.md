@@ -66,6 +66,7 @@ Detailed design rules live in:
 - `docs/planning/CONDITION_VISUAL_NORMAL_SCALE_REVIEW_2026_06_26.md`
 - `docs/planning/DECOY_PULSE_RESULT_MEMORY_HUD_SMOKE_2026_06_26.md`
 - `docs/planning/ECHO_LENS_CACHE_PULSE_READABILITY_RECHECK_2026_06_26.md`
+- `docs/planning/SURFACE_MOONPOOL_ASSET_PROVENANCE_REQUIREMENTS_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -171,6 +172,8 @@ Decoy Pulse smoke note: `docs/planning/DECOY_PULSE_RESULT_MEMORY_HUD_SMOKE_2026_
 Lower-route recheck: `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.md` keeps pressure gate, outside scan, Wreck Signal Cache, deep reward, predator lane, Rare Signal, and Echo Lens pulse as pass or pass-with-watchlist after the HUD and density changes. No new lower-route content should be added from this recheck.
 
 Surface moonpool/waterline review: `docs/planning/SURFACE_MOONPOOL_WATERLINE_REVIEW_2026_06_26.md` keeps the #264 source-art pass wired as pass-with-watchlist. Boat, waterline, moonpool column, safe base, launch, and result surface read as one system; translucent surface panels remain the #266 watchlist.
+
+Surface moonpool provenance requirements: `docs/planning/SURFACE_MOONPOOL_ASSET_PROVENANCE_REQUIREMENTS_2026_06_26.md` records the source/export/license file requirements for `surface_moonpool_waterline_v1.svg`, allowed generated/source-art usage, reference-copy restrictions, and the guardrail that `BaseZone` gameplay ownership stays separate from art.
 
 Upgrade tab normal-scale review: `docs/planning/UPGRADE_TAB_NORMAL_SCALE_REVIEW_2026_06_26.md` keeps the upgrade tab as pass-with-watchlist after the wrapping, surface art, and panel-opacity passes. Missing-resource, available, owned, scan-locked, and dependency-locked states stay inside the one-selected-upgrade panel model.
 
