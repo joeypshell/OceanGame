@@ -6,7 +6,7 @@ Latest slot review: `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md` audit
 
 Latest source-art priority: `docs/planning/NEXT_SOURCE_ART_AFTER_EVIDENCE_HARDENING_2026_06_26.md` selects a narrow lower-route `DeepRewardLure` / reward-cue source-art separation pass after screenshot and prompt evidence hardening. The current sharper risk is bright reward/cache/route cue stacking in the same lower-right visual band; do not start a broad HUD skin, Wreck Echo expansion, biome repaint, controller/touch pass, or full lower-route overhaul.
 
-Latest source-art balance review: `docs/planning/WRECK_ECHO_SOURCE_ART_FALLBACK_BALANCE_REVIEW_2026_06_26.md` keeps the Wreck Echo clue marker as pass-with-watchlist. The marker is clearer than the fallback core/ring alone, while the lower-route stack remains visually dense enough to warrant the already-open pileup and resource/scan reviews.
+Latest source-art balance review: `docs/planning/DEEP_REWARD_LURE_FALLBACK_BALANCE_REVIEW_2026_06_26.md` keeps the amber `DeepRewardLure` sprite and dimmed fallback stack as pass-with-watchlist. The reward cue now reads more distinctly from pressure/cache, Wreck Echo, and predator danger, while the broader lower-right cluster remains dense enough to warrant the already-open pileup and resource/scan reviews. The previous Wreck Echo balance review remains recorded in `docs/planning/WRECK_ECHO_SOURCE_ART_FALLBACK_BALANCE_REVIEW_2026_06_26.md`.
 
 ## Current Visual Inventory
 

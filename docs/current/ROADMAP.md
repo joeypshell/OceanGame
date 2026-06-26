@@ -193,6 +193,8 @@ Lower-route recheck after evidence hardening: `docs/planning/LOWER_ROUTE_RECHECK
 
 Deep reward cue source-art pass after evidence hardening: `docs/planning/NEXT_SOURCE_ART_AFTER_EVIDENCE_HARDENING_2026_06_26.md` selects and implements the lower-route `DeepRewardLure` / reward-cue cluster as a small source-art separation pass. The amber reward lure sprite helps optional material opportunity read separately from pressure/cache, Wreck Echo, and predator danger without changing gameplay or expanding scope.
 
+Deep reward lure fallback balance review: `docs/planning/DEEP_REWARD_LURE_FALLBACK_BALANCE_REVIEW_2026_06_26.md` keeps the amber reward sprite and dimmed fallback stack as pass-with-watchlist. Do not remove the fallback geometry yet; it still provides local presence if the sprite is partially obscured, but the broader lower-right cluster remains on the watchlist before polished acceptance.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
