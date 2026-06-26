@@ -36,6 +36,8 @@ Expected read: the loop is understandable as dive, decide, return or fail, read 
 - Predator route: approach the Gulper route far enough to see warning language and route danger. It should read as avoidable timing risk, not combat.
 - Optional clue route: point out Shell Reef or Thermal Vent as useful optional route knowledge rather than a mandatory objective.
 
+Optional Wreck Echo prep note: if asked what comes next, describe Wreck Echo as the planned next research-route milestone built from the existing pressure wreck, `Wreck Signal Cache`, and `Echo Lens I` curiosity. Do not demo it as a runtime route yet; the current slice only proves the handoff language, preparation pressure, no-locator guardrails, and lower-route readability needed before implementation.
+
 ## Failure Variant
 
 If the demo naturally fails by oxygen depletion:
@@ -52,6 +54,7 @@ Expected read: failure is understandable and recoverable, not a broken state.
 - Do not claim final art, final UI, or production polish.
 - Do not imply a minimap, exact scanner locator, field guide, quest log, inventory grid, combat loop, or full procedural ocean exists.
 - Do not claim `Wreck Echo Descent` is implemented; it remains future planning.
+- Do not point to a Wreck Echo entrance, marker, route, reward, or failure state as if it exists in the current build.
 
 ## Pass Criteria
 
