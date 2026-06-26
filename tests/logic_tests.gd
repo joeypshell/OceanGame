@@ -456,6 +456,13 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	_expect(gulper_body_overlay.visible, "Gulper Eel fallback body should remain available for state tint overlays")
 	_expect(gulper_eye_overlay.visible, "Gulper Eel fallback eye should remain available for warning/chase state overlays")
 
+	var thermal_vent_sprite := main.get_node("Discoveries/ThermalVent/SpriteAnchor/Sprite") as Sprite2D
+	var thermal_vent_fallback := main.get_node("Discoveries/ThermalVent/FallbackVisual/Visual") as Polygon2D
+	var thermal_vent_bubbles := main.get_node("Discoveries/ThermalVent/FallbackVisual/Bubbles") as Polygon2D
+	_expect(thermal_vent_sprite.texture != null, "Thermal Vent should use the first exported source asset sprite")
+	_expect(thermal_vent_fallback.visible, "Thermal Vent fallback geometry should remain available for optional route readability")
+	_expect(thermal_vent_bubbles.visible, "Thermal Vent bubbles should remain available for condition/readability visuals")
+
 	main.free()
 
 	var player := PlayerScene.instantiate()

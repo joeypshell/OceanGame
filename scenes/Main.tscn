@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=24 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" path="res://scenes/readability/ShellReefPocketVisuals.tscn" id="17_shell_reef_pocket_visuals"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/creature_lantern_fry_sprite_v1.svg" id="18_lantern_fry_sprite"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/creature_gulper_eel_sprite_v1.svg" id="19_gulper_eel_sprite"]
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/landmark_thermal_vent_sprite_v1.svg" id="20_thermal_vent_sprite"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -981,6 +982,7 @@ gameplay_fact = "Reveals a current path toward hidden Glow Plankton."
 [node name="SpriteAnchor" type="Node2D" parent="Discoveries/ThermalVent"]
 
 [node name="Sprite" type="Sprite2D" parent="Discoveries/ThermalVent/SpriteAnchor"]
+texture = ExtResource("20_thermal_vent_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="Discoveries/ThermalVent"]
 
