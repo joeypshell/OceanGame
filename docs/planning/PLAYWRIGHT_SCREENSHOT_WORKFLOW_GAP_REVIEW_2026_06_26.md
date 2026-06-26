@@ -26,7 +26,7 @@ The current Playwright smoke is useful and should remain part of visual regressi
 - serves it with required browser headers,
 - resets local prototype progress,
 - captures deterministic surface/active/lower-route states,
-- captures staged Wreck Echo route and result readback states,
+- captures staged Wreck Echo route, result readback, and no-debug player-facing result states,
 - gives repeatable local screenshot artifacts for review notes.
 
 ## Observed Gaps
@@ -35,7 +35,7 @@ The current Playwright smoke is useful and should remain part of visual regressi
 | --- | --- | --- |
 | True result view capture | Recent `extraction-result.png` artifact can still show active-dive state, making result review rely on Wreck Echo staged result or manual notes. | Yes, next tooling issue. |
 | True upgrade tab capture | Recent `upgrade-tab.png` artifact can still show active-dive state, so upgrade-panel evidence is weaker than intended. | Yes, next tooling issue. |
-| No-debug player-facing Wreck Echo result | Staged Wreck Echo result enables debug telemetry to use F6, so it is route/result evidence but not a normal player-facing capture. | Yes, when touching Wreck Echo/result UI. |
+| No-debug player-facing Wreck Echo result | Automated as `wreck-echo-result-player-facing.png` by staging with F6, hiding telemetry, then capturing the result panel. It is player-facing layout evidence, not normal traversal proof. | Done for layout evidence; revisit only if normal traversal proof becomes required. |
 | Low/critical oxygen HUD | Current default smoke does not lock in low/critical oxygen and return-decision states. | Yes, after result/upgrade capture is reliable. |
 | Input prompt states | Controller/touch planning needs prompt/copy state evidence, but current screenshots are keyboard-only and desktop-size. | Later, after prompt abstraction exists. |
 | Mobile-like landscape viewport | Future iPhone/touch work needs safe-area and lower-corner overlay evidence. | Deferred until mobile/touch implementation is promoted. |
@@ -48,7 +48,7 @@ The next Playwright tooling pass should focus on current desktop slice reliabili
 1. Make `extraction-result.png` prove a completed extraction panel is visible.
 2. Make `upgrade-tab.png` prove the surface upgrade tab is visible.
 3. Add assertions or screenshot labels that fail if the captured state is still active dive.
-4. Add a no-debug Wreck Echo result or ordinary result capture if it can be staged without relying on player traversal.
+4. Add a no-debug Wreck Echo result or ordinary result capture if it can be staged without relying on player traversal. Done for Wreck Echo player-facing layout by hiding telemetry after staging; normal traversal proof remains outside this harness.
 5. Add low/critical oxygen capture only after the result/upgrade state bug is resolved.
 
 Do not automate mobile safe areas, touch overlays, controller prompts, or device/browser matrices yet.

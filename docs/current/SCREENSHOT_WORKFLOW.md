@@ -161,16 +161,18 @@ Default captures include:
 - `active-critical-oxygen.png`
 - `wreck-echo-route-staged.png`
 - `wreck-echo-result-readback.png`
+- `wreck-echo-result-player-facing.png`
 
-The screenshots live under `test-results/playwright/` with Playwright traces/reports in ignored local artifact folders. Use this flow for repeated HUD/layout/route-readability checks. The Wreck Echo screenshots use the debug-gated F6 staging hook after F3 telemetry is enabled, so they are route/result visual evidence rather than gameplay-traversal proof. Use Godot headless logic tests for state ownership, economy, progression, scan rules, pressure rules, predator behavior, and other deterministic gameplay assertions.
+The screenshots live under `test-results/playwright/` with Playwright traces/reports in ignored local artifact folders. Use this flow for repeated HUD/layout/route-readability checks. The Wreck Echo screenshots use the debug-gated F6 staging hook after F3 telemetry is enabled, so they are route/result visual evidence rather than gameplay-traversal proof. The `wreck-echo-result-player-facing.png` capture hides telemetry after staging so reviewers can inspect the player-facing result panel without debug text. Use Godot headless logic tests for state ownership, economy, progression, scan rules, pressure rules, predator behavior, and other deterministic gameplay assertions.
 
 Current workflow gap review: `docs/planning/PLAYWRIGHT_SCREENSHOT_WORKFLOW_GAP_REVIEW_2026_06_26.md`.
 
 Current hardening status:
 
 - `extraction-result.png` and `upgrade-tab.png` now follow a leave-base, return, extract, then open-upgrade-tab flow. Reviewers should still confirm the image actually shows the named surface state before relying on it.
-- Wreck Echo staged result screenshots can include debug telemetry because they use the F6 review hook. Treat them as route/result layout evidence, not normal player-facing no-debug evidence.
-- No-debug Wreck Echo result, mobile-like landscape safe-area, and future controller/touch prompt states are not fully automated yet.
+- Wreck Echo route/result screenshots still use the F6 review hook. Treat them as route/result layout evidence, not normal gameplay-traversal proof.
+- The no-debug Wreck Echo result panel is automated as `wreck-echo-result-player-facing.png`, but it is still staged before telemetry is hidden.
+- Mobile-like landscape safe-area and future controller/touch prompt states are not fully automated yet.
 
 Next worthwhile automation should add explicit state assertions/metadata. Mobile/device and touch overlay automation remain deferred until mobile/touch implementation is promoted.
 
