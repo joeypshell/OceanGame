@@ -173,9 +173,31 @@ Current hardening status:
 - Playwright now fails before capture if the exported game reports the wrong visual state for the screenshot name, such as an active dive under `extraction-result.png` or a non-critical state under `active-critical-oxygen.png`.
 - Wreck Echo route/result screenshots still use the F6 review hook. Treat them as route/result layout evidence, not normal gameplay-traversal proof.
 - The no-debug Wreck Echo result panel is automated as `wreck-echo-result-player-facing.png`, but it is still staged before telemetry is hidden.
-- Mobile-like landscape safe-area and future controller/touch prompt states are not fully automated yet.
+- Future controller/touch prompt states are not fully automated yet.
 
-Next worthwhile automation should add mobile-like landscape safe-area capture once mobile/touch implementation is promoted.
+## Mobile-Like Landscape Capture
+
+Use the mobile-like Playwright smoke when reviewing future iPhone/phone landscape safe-area risk before touch controls exist. This is evidence-only: it does not implement touch UI, mobile export settings, controller support, or device automation.
+
+Run export plus mobile-like landscape smoke:
+
+```powershell
+npm run test:visual:mobile-like
+```
+
+Run against an already-exported build:
+
+```powershell
+npm run test:visual:mobile-like:existing
+```
+
+The scaffold uses a `960x540` viewport with device scale factor `2` and writes local artifacts under `test-results/playwright-mobile-like/`. Current captures include:
+
+- `mobile-like-surface-ready.png`
+- `mobile-like-active-dive.png`
+- `mobile-like-lower-route-pressure-gate.png`
+
+Use this workflow to inspect whether the active HUD, warning panel, surface panel, player, lower-route pressure/cache cluster, and future virtual-control safe zones remain plausible at a phone-like landscape width. Passing this smoke does not mean mobile support is complete; it only provides repeatable evidence before future touch-control planning.
 
 ## Optional Godot AI MCP Capture
 

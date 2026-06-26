@@ -8,7 +8,9 @@
     "web:export": "node tests/playwright/export-web.mjs",
     "web:serve": "node tests/playwright/serve-web.mjs",
     "test:visual": "npm run web:export && playwright test --config tests/playwright/playwright.config.mjs",
-    "test:visual:existing": "playwright test --config tests/playwright/playwright.config.mjs"
+    "test:visual:existing": "playwright test --config tests/playwright/playwright.config.mjs",
+    "test:visual:mobile-like": "npm run web:export && playwright test --config tests/playwright/mobile-landscape.config.mjs",
+    "test:visual:mobile-like:existing": "playwright test --config tests/playwright/mobile-landscape.config.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1"

@@ -197,6 +197,8 @@ Deep reward lure fallback balance review: `docs/planning/DEEP_REWARD_LURE_FALLBA
 
 Active HUD touch-safe margin review: `docs/planning/ACTIVE_HUD_TOUCH_SAFE_MARGIN_REVIEW_2026_06_26.md` keeps the current active HUD acceptable for the desktop vertical slice, while marking mobile-like landscape safe areas as unverified. Do not add touch controls or mobile export settings yet; first add evidence-only mobile-like viewport notes or capture scaffolding.
 
+Mobile-like landscape screenshot scaffold: `docs/planning/MOBILE_LIKE_LANDSCAPE_SCREENSHOT_SCAFFOLD_2026_06_26.md` adds an optional Playwright workflow for `960x540` phone-like landscape captures. Use `npm run test:visual:mobile-like` when future HUD, surface panel, route, or virtual-control safe-zone changes need evidence at a smaller landscape width. This is not mobile/touch implementation and does not certify mobile support.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.

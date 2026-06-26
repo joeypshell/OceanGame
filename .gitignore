@@ -12,6 +12,7 @@ node_modules/
 artifacts/
 test-results/
 playwright-report/
+playwright-report-mobile-like/
 
 # OS/editor noise
 .DS_Store
