@@ -61,6 +61,7 @@ Detailed design rules live in:
 - `docs/planning/SURFACE_MOONPOOL_WATERLINE_REVIEW_2026_06_26.md`
 - `docs/planning/UPGRADE_TAB_NORMAL_SCALE_REVIEW_2026_06_26.md`
 - `docs/planning/NO_DEBUG_SURFACE_CAPTURE_SANITY_REVIEW_2026_06_26.md`
+- `docs/planning/PRESSURE_WRECK_CACHE_RECHECK_AFTER_SURFACE_READABILITY_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -167,6 +168,8 @@ Upgrade tab normal-scale review: `docs/planning/UPGRADE_TAB_NORMAL_SCALE_REVIEW_
 
 No-debug surface sanity review: `docs/planning/NO_DEBUG_SURFACE_CAPTURE_SANITY_REVIEW_2026_06_26.md` confirms normal ready, result, upgrade, and recent-log views hide seeds, raw condition ids, cluster patterns, predator route ids, F9 reset copy, oxygen-at-result internals, and failure-cause internals when debug telemetry is off.
 
+Pressure wreck/cache recheck: `docs/planning/PRESSURE_WRECK_CACHE_RECHECK_AFTER_SURFACE_READABILITY_2026_06_26.md` keeps the pressure wreck/cache stack as pass-with-watchlist after the recent surface and HUD readability passes. Locked gate, outside scan, open route, cache, Echo Lens pulse, and predator-lane overlap remain distinct enough for the current slice.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable, not yet polished accepted.
@@ -195,6 +198,7 @@ Cleared acceptance follow-ups:
 
 - upgrade tab overflow has normal-scale evidence after the wrapping and surface-panel opacity changes.
 - no-debug surface captures have a sanity review across ready, result, upgrade, and log views.
+- pressure wreck/cache has a combined recheck after the surface/HUD readability changes.
 
 ## Immediate Issue Order
 
