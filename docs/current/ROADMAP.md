@@ -38,6 +38,7 @@ Detailed design rules live in:
 - `docs/planning/ASSET_SOURCE_PIPELINE_V1.md`
 - `docs/planning/VISUAL_CLARITY_BASELINE_2026_06_26.md`
 - `docs/planning/VISUAL_PASS_IMPACT_REVIEW_2026_06_26.md`
+- `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -159,6 +160,7 @@ Next ordered replenishment queue: #180 through #199 from `docs/planning/BACKLOG_
 
 Recently completed:
 
+- #168 reviewed the open pressure-gate state with predator warning visible and recorded pass-with-polish findings in `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`.
 - #101 updated MCP context resources and roadmap status after the Thermal Vent and Decoy Pulse batch.
 - #100 added explicit Decoy Pulse non-lethal/isolation test and docs coverage.
 - #99 added Decoy Pulse prompt/status feedback and temporary predator hint color.
