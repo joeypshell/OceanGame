@@ -265,6 +265,8 @@ Wreck Echo compact research clue copy: `docs/planning/WRECK_ECHO_COMPACT_RESEARC
 
 Wreck Echo entry readability states: `docs/planning/WRECK_ECHO_ENTRY_READABILITY_STATES_2026_06_26.md` defines future unavailable, locked/context, prepared, route-attempt, clue-recovered, quiet/no-clue, and result-readback states. It keeps Wreck Echo downstream of pressure gate, cache, Echo Lens, safe return, and predator danger without adding runtime state.
 
+Wreck Echo route-pocket ownership plan: `docs/planning/WRECK_ECHO_ROUTE_POCKET_OWNERSHIP_PLAN_2026_06_26.md` assigns future placement to authored scene nodes, orchestration/result formatting to `main.gd`, temporary attempt/clue state to `DiveSession` or a run helper, durable progression only to existing categories by default, and visuals to presentation-only readability scenes.
+
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
 Backlog replenishment after closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines the next ordered twenty-issue queue. The focus is solo first-run evidence, compact acceptance proof, final closeout status, source-art/readability rechecks, and Wreck Echo planning without implementing a new route yet.
