@@ -21,6 +21,8 @@ Current input contract review: `docs/planning/INPUT_ACTION_CONTRACT_REVIEW_2026_
 
 Deferred controller plan: `docs/planning/FUTURE_CONTROLLER_SUPPORT_PLAN_2026_06_26.md` defines action-map-based controller candidates, prompt-copy needs, verification expectations, and non-goals. Controller support remains deferred.
 
+Deferred mobile/touch plan: `docs/planning/FUTURE_MOBILE_LANDSCAPE_TOUCH_PLAN_2026_06_26.md` defines landscape-only mobile direction, likely touch zones, safe-area requirements, overlap risks, evidence gates, and non-goals. Mobile support remains deferred.
+
 Current work should still preserve platform flexibility:
 
 - route gameplay input through Godot actions rather than direct key checks,
