@@ -65,6 +65,7 @@ Detailed design rules live in:
 - `docs/planning/PRESSURE_WRECK_CACHE_BACKUP_ART_PASS_CONSTRAINTS_2026_06_26.md`
 - `docs/planning/CONDITION_VISUAL_NORMAL_SCALE_REVIEW_2026_06_26.md`
 - `docs/planning/DECOY_PULSE_RESULT_MEMORY_HUD_SMOKE_2026_06_26.md`
+- `docs/planning/ECHO_LENS_CACHE_PULSE_READABILITY_RECHECK_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -177,6 +178,8 @@ No-debug surface sanity review: `docs/planning/NO_DEBUG_SURFACE_CAPTURE_SANITY_R
 
 Pressure wreck/cache recheck: `docs/planning/PRESSURE_WRECK_CACHE_RECHECK_AFTER_SURFACE_READABILITY_2026_06_26.md` keeps the pressure wreck/cache stack as pass-with-watchlist after the recent surface and HUD readability passes. Locked gate, outside scan, open route, cache, Echo Lens pulse, and predator-lane overlap remain distinct enough for the current slice.
 
+Echo Lens cache pulse recheck: `docs/planning/ECHO_LENS_CACHE_PULSE_READABILITY_RECHECK_2026_06_26.md` keeps the Echo Lens pulse as pass-with-watchlist. The pulse is local, temporary, hidden by default, and paired with broad no-locator copy around `Wreck Signal Cache`.
+
 Pressure wreck/cache backup art pass: `docs/planning/PRESSURE_WRECK_CACHE_BACKUP_ART_PASS_CONSTRAINTS_2026_06_26.md` defines the constraints for a later backup source-art pass. It may clarify the existing wreck shell, gate, cache alcove, pressure-dark atmosphere, and overlap balance, but must preserve current route behavior and keep `Wreck Echo Descent` planning-only.
 
 ## Vertical-Slice Acceptance Status
@@ -199,7 +202,6 @@ Pass with polish:
 
 Remaining before calling the vertical-slice gate fully accepted:
 
-- recheck `Echo Lens I` pulse readability at Wreck Signal Cache,
 - add text-length guards for result and upgrade copy,
 - keep lower-route screenshots on the watchlist after any visual change, especially surface art or future Wreck Echo work.
 
@@ -211,6 +213,7 @@ Cleared acceptance follow-ups:
 - clean-save two-expedition smoke, active Discoveries placement, lower-route recheck, surface moonpool/waterline review, and surface panel opacity are no longer blocker-level issues.
 - condition visuals have a normal-scale review after the surface/HUD changes, with Wreck Shift kept flavor-only.
 - Decoy Pulse result memory and active HUD/status feedback have a focused smoke note; prompt length remains a future polish watchlist, not a blocker.
+- Echo Lens pulse readability at Wreck Signal Cache has a focused local/no-locator recheck.
 
 ## Immediate Issue Order
 
