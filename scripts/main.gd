@@ -1069,26 +1069,26 @@ func _sync_wreck_echo_state() -> void:
 	if wash == null:
 		wash = get_node_or_null("WreckEchoDescent/RouteWash") as Polygon2D
 	if wash != null:
-		wash.color = Color(0.42, 0.92, 1.0, 0.1 if route_available else 0.045)
+		wash.color = Color(0.54, 0.86, 1.0, 0.07 if route_available else 0.035)
 
 	var rib_a := wreck_echo_rib_a
 	if rib_a == null:
 		rib_a = get_node_or_null("WreckEchoDescent/RibA") as Polygon2D
 	if rib_a != null:
-		rib_a.color = Color(0.72, 1.0, 1.0, 0.16 if route_available else 0.06)
+		rib_a.color = Color(0.78, 0.9, 1.0, 0.12 if route_available else 0.055)
 
 	var rib_b := wreck_echo_rib_b
 	if rib_b == null:
 		rib_b = get_node_or_null("WreckEchoDescent/RibB") as Polygon2D
 	if rib_b != null:
-		rib_b.color = Color(0.72, 1.0, 1.0, 0.14 if route_available else 0.05)
+		rib_b.color = Color(0.78, 0.9, 1.0, 0.1 if route_available else 0.05)
 
 	var clue_core := wreck_echo_clue_core
 	if clue_core == null:
 		clue_core = get_node_or_null("WreckEchoDescent/ClueTrigger/ClueCore") as Polygon2D
 	if clue_core != null:
 		clue_core.visible = route_available
-		clue_core.color = Color(0.76, 1.0, 0.68, 0.32) if run_wreck_echo_clue_recovered else Color(0.72, 1.0, 1.0, 0.62)
+		clue_core.color = Color(0.82, 0.96, 1.0, 0.34) if run_wreck_echo_clue_recovered else Color(0.82, 0.96, 1.0, 0.66)
 
 func _sync_predator_warning_upgrade_state() -> void:
 	var multiplier := predator_warning_1_multiplier if progression_state.has_upgrade(PREDATOR_WARNING_UPGRADE_ID) else 1.45

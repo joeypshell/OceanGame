@@ -387,33 +387,33 @@ shape = SubResource("CircleShape2D_pickup")
 [node name="WreckEchoDescent" type="Node2D" parent="."]
 
 [node name="RouteWash" type="Polygon2D" parent="WreckEchoDescent"]
-position = Vector2(1094, 2012)
-color = Color(0.42, 0.92, 1, 0.045)
-polygon = PackedVector2Array(-170, -90, -64, -130, 94, -92, 170, -18, 118, 68, -18, 112, -150, 48)
+position = Vector2(1112, 2102)
+color = Color(0.54, 0.86, 1, 0.035)
+polygon = PackedVector2Array(-148, -70, -44, -104, 86, -78, 142, -10, 92, 52, -18, 88, -132, 36)
 
 [node name="RibA" type="Polygon2D" parent="WreckEchoDescent"]
-position = Vector2(1042, 1962)
-color = Color(0.72, 1, 1, 0.06)
-polygon = PackedVector2Array(-42, -12, 28, -30, 58, -12, 20, 20, -42, 18)
+position = Vector2(1054, 2052)
+color = Color(0.78, 0.9, 1, 0.055)
+polygon = PackedVector2Array(-34, -10, 22, -24, 48, -8, 16, 16, -34, 16)
 
 [node name="RibB" type="Polygon2D" parent="WreckEchoDescent"]
-position = Vector2(1140, 2072)
-color = Color(0.72, 1, 1, 0.05)
-polygon = PackedVector2Array(-58, -20, 22, -34, 62, -8, 38, 26, -50, 22)
+position = Vector2(1162, 2164)
+color = Color(0.78, 0.9, 1, 0.05)
+polygon = PackedVector2Array(-46, -16, 18, -28, 52, -6, 30, 22, -42, 18)
 
 [node name="ClueTrigger" type="Area2D" parent="WreckEchoDescent"]
 visible = false
-position = Vector2(1120, 2036)
+position = Vector2(1144, 2140)
 monitoring = false
 monitorable = false
 
 [node name="ClueCore" type="Polygon2D" parent="WreckEchoDescent/ClueTrigger"]
-color = Color(0.72, 1, 1, 0.62)
-polygon = PackedVector2Array(0, -24, 20, -8, 16, 18, -12, 24, -24, 0)
+color = Color(0.82, 0.96, 1, 0.66)
+polygon = PackedVector2Array(0, -22, 18, -6, 14, 16, -10, 22, -22, 0)
 
 [node name="EchoRing" type="Polygon2D" parent="WreckEchoDescent/ClueTrigger"]
-color = Color(0.72, 1, 1, 0.2)
-polygon = PackedVector2Array(0, -38, 30, -22, 38, 0, 30, 22, 0, 38, -30, 22, -38, 0, -30, -22)
+color = Color(0.62, 0.82, 1, 0.16)
+polygon = PackedVector2Array(0, -34, 26, -20, 34, 0, 26, 20, 0, 34, -26, 20, -34, 0, -26, -20)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WreckEchoDescent/ClueTrigger"]
 shape = SubResource("CircleShape2D_pickup")

@@ -394,6 +394,8 @@ Wreck Echo first runtime pass: issue #364 implements one deeper-right `Wreck Ech
 
 Wreck Echo normal-scale review: `docs/planning/WRECK_ECHO_ROUTE_READABILITY_REVIEW_2026_06_26.md` records #366 as pass-with-watchlist. The route can stay implemented, the result readback is fixed and readable, and the next Wreck Echo work should tune the clue/reward/predator visual relationship before adding any broader route scope.
 
+Wreck Echo first tuning pass: issue #367 moves the one Wreck Echo pocket slightly lower/right, quiets the broad wash, and shifts the clue toward a pale blue-white research echo so it separates from green reward lure and red predator lane language. Behavior remains one route, one run-scoped clue, and no map/quest/checklist/field-guide/economy scope.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable and close to polished acceptance, but still in closeout/watchlist verification rather than fully accepted.
