@@ -90,6 +90,7 @@ func _initialize() -> void:
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
 	_run("expanded region base direction", _test_expanded_region_base_direction)
+	_run("expanded region reset state ownership", _test_expanded_region_reset_state_ownership)
 	_run("sealed shelf hatch promise state", _test_sealed_shelf_hatch_promise_state)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
@@ -1730,6 +1731,47 @@ func _test_expanded_region_base_direction() -> void:
 
 	scene_player.global_position = main.start_position
 	_expect(main.call("_format_base_direction") == "Base: here", "base direction should still read here at the surface base")
+	main.queue_free()
+
+func _test_expanded_region_reset_state_ownership() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var scene_player := main.get_node("Player") as CharacterBody2D
+	main.player = scene_player
+	var run_before_restart: int = main.progression_state.current_run_number
+
+	main.progression_state.banked_resources["glow_plankton"] = 2
+	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	main.run_wreck_echo_clue_recovered = true
+	main.run_collected_resources.append("kelp_fiber")
+	main.run_completed_scans.append("east_shelf_arch")
+	main.run_predator_contacts = 1
+	main.decoy_pulse_used_this_run = true
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_in_base = false
+	scene_player.global_position = main.start_position + Vector2(1280.0, 980.0)
+	scene_player.velocity = Vector2(123.0, 45.0)
+
+	main.call("_restart_dive")
+
+	_expect(main.progression_state.current_run_number == run_before_restart + 1, "restart should advance to the next expedition seed")
+	_expect(scene_player.global_position == main.start_position, "restart should return the sub to the marked base start")
+	_expect(scene_player.velocity == Vector2.ZERO, "restart should clear expanded-route movement velocity")
+	_expect(main.player_in_base, "restart should restore extraction-zone ownership to the base")
+	_expect(not main.dive_session.has_left_base, "restart should require leaving base before extraction can succeed again")
+	_expect(not main.dive_session.can_extract(main.player_in_base), "restart should preserve extraction safety at the starting base")
+	_expect(main.dive_session.cargo.is_empty(), "restart should clear carried cargo from the previous expedition")
+	_expect(not main.run_wreck_echo_clue_recovered, "restart should clear run-scoped Wreck Echo clue state")
+	_expect(main.run_collected_resources.is_empty(), "restart should clear run-scoped collected-resource telemetry")
+	_expect(main.run_completed_scans.is_empty(), "restart should clear run-scoped scan telemetry")
+	_expect(main.run_predator_contacts == 0, "restart should clear run-scoped predator contact telemetry")
+	_expect(not main.decoy_pulse_used_this_run, "restart should clear run-scoped decoy pulse use")
+	_expect(main.progression_state.resource_count("glow_plankton") == 2, "restart should preserve banked persistent resources")
+	_expect(main.progression_state.has_upgrade(EchoLensUpgrade.id), "restart should preserve purchased persistent upgrades")
+
+	var lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
+	_expect(lock_label.text == "ECHO PING", "restart should preserve persistent upgrade promise state after reset")
 	main.queue_free()
 
 func _test_sealed_shelf_hatch_promise_state() -> void:
