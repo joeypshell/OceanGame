@@ -60,7 +60,9 @@ Seeded expedition variation is temporary and selected from authored candidates:
 - route/reward cluster patterns,
 - future expedition-day conditions such as currents, visibility, migrations, blooms, and rare signals.
 
-Current expedition conditions are presentation-only deterministic data selected from the expedition seed. They may be shown to the player as briefing context, but they must not change resource placement, predator routes, pressure locks, oxygen, cargo, or upgrades until a future issue explicitly adds a mechanical effect.
+Current expedition conditions are deterministic data selected from the expedition seed. Most effects remain presentation/readability-only, but a condition may apply a narrow authored weighting rule when an issue explicitly defines the target candidate set and guardrails. The first implemented rule is `Thermal Bloom` preferring existing authored vent-pocket `Glow Plankton` candidates; it does not increase pickup count, move other resources, change predator routes, pressure locks, oxygen, cargo, movement, or upgrades.
+
+Conditions are active-run context, not durable progression. Do not save active condition state directly; relaunch should load durable progress and prepare a fresh expedition from the current seed/session flow.
 
 Do not let seeded variation erase persistent place memory. Broad procedural biome generation remains deferred until the authored route decisions are readable and testable.
 
@@ -101,9 +103,10 @@ Scene-authored content owns inspectable placement and route definitions:
 - scannable discovery nodes,
 - biome-pocket landmarks.
 - pocket-specific placement candidates such as Shell Reef shell candidates and Thermal Vent glow-route candidates.
+- optional `SpawnPoint` condition-preference ids for bounded authored weighting.
 - passive `LandmarkMetadata` nodes that describe persistent place identity without driving gameplay behavior.
 
-When route or placement logic grows, prefer typed authored data or small resources over hidden hard-coded coordinates. Randomization should select among readable authored candidates rather than generate broad uninspected layouts.
+When route or placement logic grows, prefer typed authored data or small resources over hidden hard-coded coordinates. Randomization and condition weighting should select among readable authored candidates rather than generate broad uninspected layouts.
 
 ### Visual And Readability Assets
 
