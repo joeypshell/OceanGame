@@ -24,7 +24,7 @@ Ready panel:
 
 - Pass: expedition day number and condition framing are present through the current ready panel.
 - Pass: raw seed, condition id, cluster pattern, and predator route remain debug-gated by F3.
-- Watch: the ready panel still includes `F9 resets prototype save`, which is useful during development but reads like prototype/debug control text in player-facing review.
+- Resolved by #204: the ready panel hides `F9 resets prototype save` unless debug telemetry is visible, keeping the development reset available without putting prototype-control copy in the normal player-facing panel.
 
 Result panel:
 
@@ -55,7 +55,7 @@ Safe return:
 
 ## Highest-Priority Follow-Up
 
-Use issue #204 to remove or debug-gate the `F9 resets prototype save` instruction from the normal player-facing ready panel. It is the clearest current mismatch between expedition-day polish and prototype-control text.
+Issue #204 debug-gated the `F9 resets prototype save` instruction from the normal player-facing ready panel. The reset control remains available for development, but the normal ready panel now supports expedition-day polish without prototype-control text.
 
 ## Follow-Up Candidates
 

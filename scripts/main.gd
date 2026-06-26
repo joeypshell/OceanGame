@@ -1000,11 +1000,7 @@ func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
 		run_title_label.text = _format_expedition_day_title("Ready")
-		run_summary_label.text = _format_run_summary("Start with %d oxygen.\nCollect, scan, push deeper, then return to bank cargo.\n%s\n%s\nE/Enter begins. F9 resets prototype save." % [
-			ceili(dive_session.max_oxygen),
-			_format_condition_briefing(),
-			ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions),
-		], "ready")
+		run_summary_label.text = _format_run_summary(_format_ready_panel_summary(), "ready")
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		run_panel.visible = true
 		if surface_tab_index == SURFACE_TAB_UPGRADES:
@@ -1053,6 +1049,19 @@ func _update_upgrade_menu() -> void:
 	upgrade_menu_state_label.text = _format_upgrade_state(upgrade)
 
 	upgrade_menu_feedback_label.text = upgrade_menu_feedback
+
+func _format_ready_panel_summary() -> String:
+	var lines: Array[String] = [
+		"Start with %d oxygen." % ceili(dive_session.max_oxygen),
+		"Collect, scan, push deeper, then return to bank cargo.",
+		_format_condition_briefing(),
+		ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions),
+		"E/Enter begins.",
+	]
+	if show_debug_telemetry:
+		lines.append("Debug: F9 resets prototype save.")
+
+	return "\n".join(lines)
 
 func _format_resource_counts(resource_ids: Array[String]) -> String:
 	if resource_ids.is_empty():

@@ -1032,6 +1032,13 @@ func _test_pressure_lock_guidance_text() -> void:
 func _test_surface_summary_tabs() -> void:
 	var main := MainScript.new()
 
+	var ready_summary := main._format_ready_panel_summary()
+	_expect(ready_summary.contains("E/Enter begins."), "ready panel should keep the start action visible")
+	_expect(not ready_summary.contains("F9"), "ready panel should hide prototype reset copy when debug telemetry is off")
+	main.show_debug_telemetry = true
+	_expect(main._format_ready_panel_summary().contains("F9 resets prototype save"), "ready panel may expose reset copy when debug telemetry is on")
+	main.show_debug_telemetry = false
+
 	_expect(not main._surface_tabs_enabled(), "surface tabs should be hidden before extraction")
 	main.dive_session.extract()
 	_expect(main._surface_tabs_enabled(), "surface tabs should be available after extraction")
