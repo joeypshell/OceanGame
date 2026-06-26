@@ -102,6 +102,7 @@ Detailed design rules live in:
 - `docs/planning/SHALLOW_MIDWATER_BACKGROUND_ART_PASS_CONSTRAINTS_2026_06_26.md`
 - `docs/planning/SHALLOW_MIDWATER_BACKGROUND_STUDY_WIRING_2026_06_26.md`
 - `docs/planning/SHALLOW_MIDWATER_BACKGROUND_READABILITY_REVIEW_2026_06_26.md`
+- `docs/planning/NEXT_SOURCE_ART_AFTER_BACKGROUND_REVIEW_2026_06_26.md`
 - `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
 - `docs/planning/ECHO_LENS_NO_LOCATOR_LANGUAGE_REVIEW_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
@@ -209,6 +210,8 @@ Shallow/midwater background constraints: `docs/planning/SHALLOW_MIDWATER_BACKGRO
 Shallow/midwater background wiring: `docs/planning/SHALLOW_MIDWATER_BACKGROUND_STUDY_WIRING_2026_06_26.md` records the first background study source/export/provenance files and confirms it is wired as subdued visual support only, behind gameplay cues, HUD, scan targets, route cues, collisions, and spawn logic.
 
 Shallow/midwater background review: `docs/planning/SHALLOW_MIDWATER_BACKGROUND_READABILITY_REVIEW_2026_06_26.md` keeps the study wired at its current subdued treatment. It passes resources, scan targets, safe return, pressure gate/cache, predator lane, and HUD contrast with watchlist notes, but does not approve brighter art, animation, parallax, new gameplay, or production-art lock.
+
+Next source-art after background review: `docs/planning/NEXT_SOURCE_ART_AFTER_BACKGROUND_REVIEW_2026_06_26.md` selects the pressure wreck/cache environment shell as the next source-art target, with compact HUD final polish as backup. The priority is lower-route readability, not asset novelty; `Wreck Echo Descent`, minimaps, checklist UI, new route behavior, resources, upgrades, and procedural scope remain out of implementation.
 
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 
