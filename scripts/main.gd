@@ -973,8 +973,8 @@ func _update_hud() -> void:
 	_update_scan_target_feedback()
 	_update_run_panel()
 	_update_upgrade_menu()
-	var is_diving := dive_session.result == DiveSessionScript.Result.DIVING
-	var has_surface_panel := dive_session.result != DiveSessionScript.Result.DIVING
+	var is_diving := _active_hud_visible_for_result(dive_session.result)
+	var has_surface_panel := _surface_hud_visible_for_result(dive_session.result)
 	hint_label.visible = false
 	bounds_hint_label.visible = false
 	active_stats_panel.visible = is_diving
@@ -1033,6 +1033,12 @@ func _update_hud() -> void:
 		var decoy_prompt := _format_decoy_pulse_prompt()
 		if not decoy_prompt.is_empty():
 			prompt_label.text += " | %s" % decoy_prompt
+
+func _active_hud_visible_for_result(result: int) -> bool:
+	return result == DiveSessionScript.Result.DIVING
+
+func _surface_hud_visible_for_result(result: int) -> bool:
+	return result != DiveSessionScript.Result.DIVING
 
 func _update_run_panel() -> void:
 	surface_tabs_label.visible = _surface_tabs_enabled()

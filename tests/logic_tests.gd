@@ -81,6 +81,7 @@ func _initialize() -> void:
 	_run("surface summary tabs", _test_surface_summary_tabs)
 	_run("condition briefing copy", _test_condition_briefing_copy)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
+	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
 	_run("player idle and thrust visual states", _test_player_idle_and_thrust_visual_states)
@@ -1306,6 +1307,47 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(main.call("_format_oxygen_label", 40.0, 40.0).begins_with("O2:"), "oxygen label should use compact active HUD copy")
 	_expect(main.call("_oxygen_warning_text", "critical").contains("RETURN TO BASE"), "critical warning should emphasize the return route")
 	main.free()
+
+func _test_active_hud_final_polish_regression() -> void:
+	var main := MainScript.new()
+	_expect(not main.call("_active_hud_visible_for_result", DiveSessionScript.Result.READY), "ready state should hide active operational HUD rows")
+	_expect(main.call("_surface_hud_visible_for_result", DiveSessionScript.Result.READY), "ready state should show a surface panel")
+	_expect(main.call("_active_hud_visible_for_result", DiveSessionScript.Result.DIVING), "diving state should show active operational HUD rows")
+	_expect(not main.call("_surface_hud_visible_for_result", DiveSessionScript.Result.DIVING), "diving state should hide surface panels")
+	_expect(not main.call("_active_hud_visible_for_result", DiveSessionScript.Result.EXTRACTED), "extracted result should hide active operational HUD rows")
+	_expect(main.call("_surface_hud_visible_for_result", DiveSessionScript.Result.EXTRACTED), "extracted result should show a surface panel")
+	_expect(not main.call("_active_hud_visible_for_result", DiveSessionScript.Result.FAILED), "failure result should hide active operational HUD rows")
+	_expect(main.call("_surface_hud_visible_for_result", DiveSessionScript.Result.FAILED), "failure result should show a surface panel")
+
+	main.show_debug_telemetry = false
+	var hidden_summary: String = main.call("_format_run_summary", "Compact result check.", "extracted")
+	_expect(not hidden_summary.contains("Playtest data:"), "result summary should hide debug telemetry by default")
+	_expect(not hidden_summary.contains("Seed:"), "result summary should hide raw seed by default")
+
+	main.show_debug_telemetry = true
+	var debug_summary: String = main.call("_format_run_summary", "Debug result check.", "extracted")
+	_expect(debug_summary.contains("Playtest data:"), "result summary should expose debug telemetry only when enabled")
+	_expect(debug_summary.contains("Seed:"), "debug telemetry should include raw seed only when enabled")
+	main.free()
+
+	var main_scene := MainScene.instantiate()
+	root.add_child(main_scene)
+
+	var active_panel: Panel = main_scene.get_node("HUD/ActiveStatsPanel")
+	var oxygen_label: Label = main_scene.get_node("HUD/Oxygen")
+	var dive_info_panel: Panel = main_scene.get_node("HUD/DiveInfoPanel")
+	var scan_target_label: Label = main_scene.get_node("HUD/ScanTarget")
+	var prompt_label: Label = main_scene.get_node("HUD/ExtractionPrompt")
+	var run_panel: Panel = main_scene.get_node("HUD/RunPanel")
+
+	_expect(not active_panel.visible, "raw scene should start with the active stats panel hidden")
+	_expect(not dive_info_panel.visible, "raw scene should start with the dive info panel hidden")
+	_expect(run_panel.visible, "raw scene should keep the surface panel visible")
+	_expect(oxygen_label.text.begins_with("O2:"), "active dive should use compact oxygen label")
+	_expect(scan_target_label.text.begins_with("Scan:"), "active dive should use compact scan label")
+	_expect(prompt_label.text.length() <= 72, "active prompt should stay short after HUD final polish")
+
+	main_scene.queue_free()
 
 func _test_burst_thruster_movement_helper() -> void:
 	var player := PlayerScript.new()
