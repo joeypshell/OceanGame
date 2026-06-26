@@ -25,6 +25,7 @@ Detailed design rules live in:
 - `docs/planning/WRECK_ECHO_DESCENT_ROUTE_POCKET_DATA_SHAPE_2026_06_26.md`
 - `docs/planning/WRECK_ECHO_OXYGEN_CARGO_PREPARATION_REVIEW_2026_06_26.md`
 - `docs/planning/WRECK_ECHO_READINESS_GATE_AFTER_SHELL_HUD_2026_06_26.md`
+- `docs/planning/WRECK_ECHO_REWARD_CHOICE_2026_06_26.md`
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/MONSTER_RESEARCH_LOOP_V1.md`
@@ -214,6 +215,8 @@ Wreck Echo data shape: `docs/planning/WRECK_ECHO_DESCENT_ROUTE_POCKET_DATA_SHAPE
 Wreck Echo oxygen/cargo preparation: `docs/planning/WRECK_ECHO_OXYGEN_CARGO_PREPARATION_REVIEW_2026_06_26.md` recommends oxygen as the primary future Wreck Echo pressure, with cargo space as a secondary opportunity cost only if a later implementation chooses a material/sample reward. It changes no costs, resources, upgrades, cargo limits, drain rules, routes, or scene nodes.
 
 Wreck Echo readiness gate after shell/HUD polish: `docs/planning/WRECK_ECHO_READINESS_GATE_AFTER_SHELL_HUD_2026_06_26.md` keeps `Wreck Echo Descent` not ready for implementation yet. Shell, lower-route, HUD, no-locator, upgrade, oxygen/cargo, and route-pocket planning are pass or pass-with-watchlist, but the required single reward type is still unselected and should be handled by #329 before route wiring.
+
+Wreck Echo reward choice: `docs/planning/WRECK_ECHO_REWARD_CHOICE_2026_06_26.md` selects a compact research clue as the first future Wreck Echo reward type, with rare material/prototype sample as backup. Later prerequisite discovery is rejected for the first implementation because it risks quest-chain/checklist pressure before the route is proven readable.
 
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
