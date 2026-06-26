@@ -56,6 +56,7 @@ func _initialize() -> void:
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
+	_run("east shelf spur branch scene contract", _test_east_shelf_spur_branch_scene_contract)
 	_run("landmark region identity metadata", _test_landmark_region_identity_metadata)
 	_run("predator scan target", _test_predator_scan_target)
 	_run("discovery prerequisites", _test_discovery_prerequisites)
@@ -619,6 +620,29 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		_expect(player.get_node_or_null(path) != null, "player scene should keep sprite-ready visual slot or fallback node: %s" % path)
 
 	player.free()
+
+func _test_east_shelf_spur_branch_scene_contract() -> void:
+	var main := MainScene.instantiate()
+	var branch_paths := [
+		"EastShelfSpur",
+		"EastShelfSpur/ApproachCurrent",
+		"EastShelfSpur/UpperShelfSilhouette",
+		"EastShelfSpur/LowerShelfSilhouette",
+		"EastShelfSpur/RouteGapCue",
+		"EastShelfSpur/RouteRibA",
+		"EastShelfSpur/RouteRibB",
+		"EastShelfSpur/TerminalPocketHint",
+	]
+	for path in branch_paths:
+		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
+
+	var approach_current := main.get_node("EastShelfSpur/ApproachCurrent") as Polygon2D
+	var terminal_hint := main.get_node("EastShelfSpur/TerminalPocketHint") as Polygon2D
+	_expect(approach_current.polygon[1].x >= 1200.0, "East Shelf Spur should branch right of the existing main column")
+	_expect(terminal_hint.polygon[terminal_hint.polygon.size() - 1].x >= 1800.0, "East Shelf Spur should reach into the expanded camera space")
+	_expect(approach_current.color.a <= 0.14, "East Shelf Spur current cue should stay subtle until full route art exists")
+
+	main.free()
 
 func _test_landmark_region_identity_metadata() -> void:
 	var main := MainScene.instantiate()

@@ -77,6 +77,16 @@ export async function capture(page, testInfo, name, expectedState = {}) {
   testInfo.attachments.push({ name: `${name}-metadata`, path: metadataPath, contentType: "application/json" });
 }
 
+export async function stageOxygenState(page, oxygenState) {
+  const key = oxygenState === "critical" ? "F8" : "F7";
+  await page.keyboard.press(key);
+  await assertVisualState(page, {
+    result: "diving",
+    oxygen_state: oxygenState,
+    active_stats_visible: true,
+  });
+}
+
 export async function returnToBaseAndExtract(page) {
   await holdKey(page, "ArrowUp", 1_800);
   await page.waitForTimeout(300);

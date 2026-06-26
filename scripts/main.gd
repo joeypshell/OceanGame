@@ -249,6 +249,10 @@ func _unhandled_input(_event: InputEvent) -> void:
 		_cycle_debug_seed()
 	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F6:
 		_stage_debug_wreck_echo_visual_review()
+	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F7:
+		_stage_debug_oxygen_visual_review(0.20, "low")
+	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F8:
+		_stage_debug_oxygen_visual_review(0.08, "critical")
 	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F9:
 		_reset_local_prototype_save()
 	elif Input.is_action_just_pressed("interact"):
@@ -495,6 +499,16 @@ func _stage_debug_wreck_echo_visual_review() -> void:
 		last_result_summary = _format_wreck_echo_research_callout()
 		return
 	_try_extract()
+
+func _stage_debug_oxygen_visual_review(target_ratio: float, label: String) -> void:
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING or dive_session.max_oxygen <= 0.0:
+		return
+
+	dive_session.oxygen = maxf(1.0, dive_session.max_oxygen * target_ratio)
+	status_label.text = "Debug review: %s oxygen staged." % label
+	_update_hud()
 
 func _debug_next_condition_from_id(current_id: String) -> Dictionary:
 	var conditions := ExpeditionConditionScript.all_conditions()

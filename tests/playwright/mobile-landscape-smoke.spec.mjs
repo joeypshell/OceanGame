@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, stageOxygenState } from "./visual-helpers.mjs";
 
 test.describe("OceanGame mobile-like landscape visual smoke", () => {
   test("captures active HUD and lower-route views at a phone-like landscape viewport", async ({ page }, testInfo) => {
@@ -35,7 +35,7 @@ test.describe("OceanGame mobile-like landscape visual smoke", () => {
     await page.waitForTimeout(600);
     await holdKey(page, "ArrowDown", 2_000);
 
-    await page.waitForTimeout(22_000);
+    await stageOxygenState(page, "low");
     await capture(page, testInfo, "mobile-like-active-low-oxygen", {
       result: "diving",
       oxygen_state: "low",
@@ -43,6 +43,7 @@ test.describe("OceanGame mobile-like landscape visual smoke", () => {
       active_stats_visible: true,
     });
 
+    await stageOxygenState(page, "critical");
     await capture(page, testInfo, "mobile-like-active-critical-oxygen", {
       result: "diving",
       oxygen_state: "critical",

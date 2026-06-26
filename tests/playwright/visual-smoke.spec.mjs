@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageOxygenState } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -93,7 +93,7 @@ test.describe("OceanGame web visual smoke", () => {
     await page.waitForTimeout(600);
     await holdKey(page, "ArrowDown", 2_000);
 
-    await page.waitForTimeout(22_000);
+    await stageOxygenState(page, "low");
     await capture(page, testInfo, "active-low-oxygen", {
       result: "diving",
       oxygen_state: "low",
@@ -101,6 +101,7 @@ test.describe("OceanGame web visual smoke", () => {
       active_stats_visible: true,
     });
 
+    await stageOxygenState(page, "critical");
     await capture(page, testInfo, "active-critical-oxygen", {
       result: "diving",
       oxygen_state: "critical",

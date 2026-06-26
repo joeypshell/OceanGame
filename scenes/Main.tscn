@@ -282,6 +282,36 @@ polygon = PackedVector2Array(0, 1328, 244, 1304, 468, 1350, 720, 1308, 1280, 136
 color = Color(0.02, 0.08, 0.12, 0.22)
 polygon = PackedVector2Array(850, 1060, 1160, 1120, 1118, 1210, 782, 1168)
 
+[node name="EastShelfSpur" type="Node2D" parent="."]
+
+[node name="ApproachCurrent" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.58, 0.92, 0.88, 0.08)
+polygon = PackedVector2Array(1010, 1008, 1270, 936, 1578, 986, 1896, 1136, 1840, 1218, 1544, 1098, 1266, 1054, 1032, 1118)
+
+[node name="UpperShelfSilhouette" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.035, 0.105, 0.145, 0.44)
+polygon = PackedVector2Array(1108, 1128, 1324, 1076, 1548, 1110, 1854, 1238, 1996, 1348, 1972, 1438, 1666, 1332, 1392, 1264, 1122, 1306)
+
+[node name="LowerShelfSilhouette" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.02, 0.075, 0.11, 0.38)
+polygon = PackedVector2Array(1260, 1428, 1510, 1358, 1778, 1428, 2038, 1570, 2018, 1668, 1742, 1588, 1488, 1532, 1232, 1586)
+
+[node name="RouteGapCue" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.66, 0.98, 0.9, 0.13)
+polygon = PackedVector2Array(1198, 1188, 1268, 1154, 1336, 1188, 1268, 1224)
+
+[node name="RouteRibA" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.76, 0.96, 0.9, 0.1)
+polygon = PackedVector2Array(1370, 1254, 1472, 1228, 1530, 1264, 1458, 1298)
+
+[node name="RouteRibB" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.76, 0.96, 0.9, 0.09)
+polygon = PackedVector2Array(1630, 1366, 1744, 1344, 1818, 1390, 1710, 1424)
+
+[node name="TerminalPocketHint" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.26, 0.45, 0.5, 0.2)
+polygon = PackedVector2Array(1828, 1488, 1920, 1446, 2014, 1508, 2038, 1598, 1944, 1664, 1832, 1618)
+
 [node name="ShellReefPocket" type="Node2D" parent="."]
 
 [node name="Visuals" parent="ShellReefPocket" instance=ExtResource("17_shell_reef_pocket_visuals")]

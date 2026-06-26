@@ -34,7 +34,7 @@ Recommended first-pass coordinate intent:
 ## Required Pieces
 
 1. Wider camera/world bounds. Implemented in #446 with expanded right-side travel room, matching camera limits, and widened base ocean bands.
-2. One side-route branch with placeholder terrain/readability shapes.
+2. One side-route branch with placeholder terrain/readability shapes. Implemented in #447 as the first `East Shelf Spur` scaffold with current wash, shelf silhouettes, route ribs, gap cue, and terminal pocket hint.
 3. One pocket entrance, either cave-like or wreck-hatch-like.
 4. One stable landmark: `East Shelf Arch`.
 5. Safe-return cues pointing back toward the surface/base column.
