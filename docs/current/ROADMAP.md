@@ -52,6 +52,7 @@ Detailed design rules live in:
 - `docs/planning/GULPER_ROUTE_DANGER_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md`
 - `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_2026_06_26.md`
+- `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -136,6 +137,8 @@ Gulper route review: `docs/planning/GULPER_ROUTE_DANGER_READABILITY_REVIEW_2026_
 Playable slice smoke log: `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md` records the current acceptance evidence without requiring external blind testers. The slice is structurally playable, but active `Discoveries` placement and upgrade-tab overflow should be fixed before calling the vertical-slice gate fully accepted.
 
 Next source-art priority: `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_2026_06_26.md` selects the surface base moonpool/waterline integration as the next replacement target, with pressure wreck/cache environment treatment as backup. The priority is readability impact, not final art lock or a large visual batch.
+
+Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 
 ## Vertical-Slice Acceptance Status
 
