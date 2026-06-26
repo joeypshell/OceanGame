@@ -212,6 +212,7 @@ var run_predator_contacts := 0
 var run_failure_cause := "none"
 var run_echo_lens_echo_fired := false
 var run_wreck_echo_clue_recovered := false
+var run_east_shelf_pocket_ping_recovered := false
 var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
 var recent_expedition_log: Array[Dictionary] = []
@@ -413,8 +414,16 @@ func _try_east_shelf_pocket_interaction() -> bool:
 	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_east_shelf_pocket:
 		return false
 
+	if run_east_shelf_pocket_ping_recovered:
+		if status_label != null:
+			status_label.text = "East Shelf pocket ping already recorded for this expedition."
+		if is_inside_tree():
+			_update_hud()
+		return true
+
+	run_east_shelf_pocket_ping_recovered = true
 	if status_label != null:
-		status_label.text = "East Shelf pocket hums behind the threshold. No entry yet."
+		status_label.text = "East Shelf pocket research ping recorded. Return safely to keep the note."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -1884,6 +1893,7 @@ func _reset_run_telemetry() -> void:
 	run_failure_cause = "none"
 	run_echo_lens_echo_fired = false
 	run_wreck_echo_clue_recovered = false
+	run_east_shelf_pocket_ping_recovered = false
 	debug_wreck_echo_review_staged = false
 	visual_smoke_route_stage = ""
 	echo_lens_pulse_timer = 0.0

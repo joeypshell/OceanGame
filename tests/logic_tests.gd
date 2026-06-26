@@ -1789,12 +1789,21 @@ func _test_east_shelf_pocket_prompt_interaction() -> void:
 
 	var handled: bool = main.call("_try_east_shelf_pocket_interaction")
 	_expect(handled, "East Shelf pocket should handle interact while the player is nearby during a dive")
+	_expect(main.run_east_shelf_pocket_ping_recovered, "East Shelf pocket interaction should record one run-scoped research ping")
 	if main.status_label != null:
-		_expect(main.status_label.text.contains("No entry yet"), "East Shelf pocket interaction should stay a prompt, not open an interior yet")
+		_expect(main.status_label.text.contains("research ping recorded"), "East Shelf pocket interaction should acknowledge the run-scoped payoff")
+
+	var repeat_handled: bool = main.call("_try_east_shelf_pocket_interaction")
+	_expect(repeat_handled, "East Shelf pocket should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recorded"), "East Shelf pocket repeat interaction should not duplicate the payoff")
 
 	main.player_near_east_shelf_pocket = false
 	var not_handled: bool = main.call("_try_east_shelf_pocket_interaction")
 	_expect(not not_handled, "East Shelf pocket should not consume interact outside its proximity zone")
+
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_east_shelf_pocket_ping_recovered, "East Shelf pocket research ping should reset between expeditions")
 	main.queue_free()
 
 func _test_sealed_shelf_hatch_promise_state() -> void:
