@@ -1226,30 +1226,43 @@ func _format_missing_resources(cost: Dictionary) -> String:
 	return " none" if parts.is_empty() else "\n" + "\n".join(parts)
 
 func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
+	var role_hint := _format_upgrade_role_hint(upgrade)
 	if progression_state.has_upgrade(upgrade.id):
-		return "State: Owned\n%s" % upgrade.owned_text
+		return "State: Owned\n%s%s" % [upgrade.owned_text, role_hint]
 
 	var missing_discovery := _upgrade_missing_discovery(upgrade)
 	if missing_discovery != "":
-		return "State: Locked by scan\nNeeds scan: %s\nMissing resources: %s" % [
+		return "State: Locked by scan\nNeeds scan: %s\nMissing resources: %s%s" % [
 			_format_discovery_name(missing_discovery),
-			_format_missing_resources_inline(upgrade.resource_cost)
+			_format_missing_resources_inline(upgrade.resource_cost),
+			role_hint
 		]
 
 	var missing_upgrade := _upgrade_missing_upgrade(upgrade)
 	if missing_upgrade != "":
-		return "State: Locked by upgrade\nNeeds upgrade: %s\nMissing resources: %s" % [
+		return "State: Locked by upgrade\nNeeds upgrade: %s\nMissing resources: %s%s" % [
 			_format_upgrade_display_name(missing_upgrade),
-			_format_missing_resources_inline(upgrade.resource_cost)
+			_format_missing_resources_inline(upgrade.resource_cost),
+			role_hint
 		]
 
 	if progression_state.can_afford(upgrade.resource_cost):
-		return "State: Available now\nAction: press E or Enter to buy\nEffect: %s" % upgrade.owned_text
+		return "State: Available now\nAction: press E or Enter to buy\nEffect: %s%s" % [
+			upgrade.owned_text,
+			role_hint
+		]
 
-	return "State: Missing resources\nNeeds: %s\nEffect: %s" % [
+	return "State: Missing resources\nNeeds: %s\nEffect: %s%s" % [
 		_format_missing_resources_inline(upgrade.resource_cost),
-		upgrade.owned_text
+		upgrade.owned_text,
+		role_hint
 	]
+
+func _format_upgrade_role_hint(upgrade: UpgradeDefinition) -> String:
+	if upgrade.id == ECHO_LENS_UPGRADE_ID:
+		return "\nRole: broad wreck echoes, not material pings."
+
+	return ""
 
 func _format_ready_upgrade_callout() -> String:
 	var ready: Array[String] = []

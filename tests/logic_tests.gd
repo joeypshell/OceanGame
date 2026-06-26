@@ -926,10 +926,40 @@ func _test_upgrade_bay_readability_states() -> void:
 	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label scan-locked upgrades")
 	_expect(state.contains("Needs scan: Thermal Vent"), "upgrade bay should name missing discoveries")
 
+	state = main._format_upgrade_state(EchoLensUpgrade)
+	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label Echo Lens I scan-locked before Wreck Signal Cache")
+	_expect(state.contains("Role: broad wreck echoes, not material pings."), "Echo Lens I state should distinguish it from Signal Lens I without a tutorial wall")
+
 	main.progression_state.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks scanner tuning.")
 	state = main._format_upgrade_state(EchoLensUpgrade)
 	_expect(state.begins_with("State: Locked by upgrade"), "upgrade bay should label Echo Lens I as upgrade-locked before Signal Lens I")
 	_expect(state.contains("Needs upgrade: Signal Lens I"), "upgrade bay should name Signal Lens I as the Echo Lens prerequisite")
+	_expect(state.contains("Role: broad wreck echoes, not material pings."), "Echo Lens I locked-upgrade state should keep its compact role hint")
+
+	main.progression_state.purchased_upgrades[SignalLensUpgrade.id] = true
+	main.progression_state.banked_resources = {
+		"glow_plankton": 2,
+		"kelp_fiber": 1,
+		"shell_fragments": 2,
+	}
+	state = main._format_upgrade_state(EchoLensUpgrade)
+	_expect(state.begins_with("State: Missing resources"), "upgrade bay should label Echo Lens I missing resources after prerequisites are met")
+	_expect(state.contains("Needs: Glow Plankton x1"), "Echo Lens I missing-resource state should show only remaining cost")
+	_expect(state.contains("Role: broad wreck echoes, not material pings."), "Echo Lens I missing-resource state should keep its compact role hint")
+
+	main.progression_state.banked_resources = {
+		"glow_plankton": 3,
+		"kelp_fiber": 1,
+		"shell_fragments": 2,
+	}
+	state = main._format_upgrade_state(EchoLensUpgrade)
+	_expect(state.begins_with("State: Available now"), "upgrade bay should label Echo Lens I available after prerequisites and resources are ready")
+	_expect(state.contains("Role: broad wreck echoes, not material pings."), "Echo Lens I available state should keep its compact role hint")
+
+	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	state = main._format_upgrade_state(EchoLensUpgrade)
+	_expect(state.begins_with("State: Owned"), "upgrade bay should label Echo Lens I owned after purchase")
+	_expect(state.contains("Role: broad wreck echoes, not material pings."), "Echo Lens I owned state should keep its compact role hint")
 
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
 	state = main._format_upgrade_state(DecoyPulseUpgrade)
