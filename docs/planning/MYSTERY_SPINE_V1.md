@@ -42,6 +42,29 @@ This question is narrow enough for the current vertical slice and broad enough t
 8. Future `Echo Lens I` turns the hint into a route question.
    It should report broad echo category and direction, not a location checklist.
 
+## Pressure Wreck And Cache Meaning
+
+The pressure wreck and cache should imply a layered signal, not a quest chain.
+
+What the player should infer:
+
+- Wreck Shelf is a remembered place worth returning to.
+- The pressure gate is a visible promise that upgrades can turn memory into access.
+- `Wreck Signal Cache` is proof that reaching a blocked place can produce useful research.
+- The unresolved cache echo suggests deeper wreck signals exist below or beyond the current safe route.
+- Future scanner upgrades can make those echoes more readable, but only as broad route questions.
+
+What this does not implement yet:
+
+- exact signal coordinates,
+- a persistent objective list,
+- a map marker,
+- a field-guide entry,
+- a new story screen,
+- a guaranteed safe route to the deeper signal.
+
+The mystery signal should sit below practical priorities. If oxygen, cargo, predator warning, or safe return is urgent, those signals should remain louder than the wreck echo.
+
 ## Mystery Questions
 
 The current slice should only raise a few questions:
@@ -88,6 +111,8 @@ The Wreck Echo spine depends on remembered places:
 - Pressure-Locked Research Wreck is the return payoff.
 - Deeper water is the unresolved echo space.
 
+Result copy and planning language should reinforce that chain as memory: "I saw Wreck Shelf, returned with Pressure Seal I, found the cache, and now know there may be a deeper wreck signal." It should not become "complete these objectives in order."
+
 Daily variation should change whether a remembered place feels tempting today, not erase what the player learned yesterday.
 
 ## One-More-Expedition Pull
@@ -125,4 +150,3 @@ Acceptance sketch:
 - Result or status copy can remember that the dive preserved a useful mystery clue even if cargo is empty.
 - Existing `Signal Lens I` resource-pulse behavior is unchanged.
 - No minimap, field guide, exact coordinate, route graph, or persistent objective list is added.
-
