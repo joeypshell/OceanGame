@@ -291,12 +291,17 @@ polygon = PackedVector2Array(1118, 1494, 1138, 1474, 1162, 1496, 1140, 1518)
 color = Color(0.86, 1, 0.32, 0.12)
 polygon = PackedVector2Array(1082, 1496, 1140, 1436, 1200, 1496, 1140, 1558)
 
+[node name="PressureLockBadge" type="Polygon2D" parent="PressureLockedWreck"]
+color = Color(0.74, 0.86, 1, 0.72)
+polygon = PackedVector2Array(1062, 1302, 1090, 1320, 1090, 1352, 1062, 1370, 1034, 1352, 1034, 1320)
+
 [node name="PressureLabel" type="Label" parent="PressureLockedWreck"]
-offset_left = 840.0
-offset_top = 1310.0
-offset_right = 1262.0
+offset_left = 1002.0
+offset_top = 1318.0
+offset_right = 1122.0
 offset_bottom = 1350.0
-text = "LOCKED: Pressure Seal I"
+text = "LOCKED"
+horizontal_alignment = 1
 
 [node name="OuterScan" type="Area2D" parent="PressureLockedWreck"]
 position = Vector2(1010, 1548)

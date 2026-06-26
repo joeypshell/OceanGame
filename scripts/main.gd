@@ -95,6 +95,7 @@ const DIVE_STATUS_MAX_CHARS := 92
 @onready var vent_route_hint: Node2D = $VentRouteHint
 @onready var pressure_boundary: Area2D = $PressureLockedWreck/PressureBoundary
 @onready var pressure_shimmer: Polygon2D = $PressureLockedWreck/PressureShimmer
+@onready var pressure_lock_badge: Polygon2D = $PressureLockedWreck/PressureLockBadge
 @onready var pressure_label: Label = $PressureLockedWreck/PressureLabel
 @onready var wreck_signal_hint: Node2D = $WreckSignalHint
 @onready var predator_warning: Node2D = $Predators/PredatorWarning
@@ -770,10 +771,12 @@ func _sync_pressure_lock_state() -> void:
 	pressure_boundary.monitorable = not has_pressure_seal
 	if has_pressure_seal:
 		pressure_shimmer.modulate = Color(0.62, 1.0, 0.72, 0.5)
-		pressure_label.text = "OPEN: Wreck route"
+		pressure_lock_badge.color = Color(0.62, 1.0, 0.72, 0.72)
+		pressure_label.text = "OPEN"
 	else:
 		pressure_shimmer.modulate = Color.WHITE
-		pressure_label.text = "LOCKED: Pressure Seal I"
+		pressure_lock_badge.color = Color(0.74, 0.86, 1.0, 0.72)
+		pressure_label.text = "LOCKED"
 
 func _sync_predator_warning_upgrade_state() -> void:
 	var multiplier := predator_warning_1_multiplier if progression_state.has_upgrade(PREDATOR_WARNING_UPGRADE_ID) else 1.45
