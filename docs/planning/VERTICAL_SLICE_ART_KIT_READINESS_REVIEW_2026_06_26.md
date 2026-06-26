@@ -22,7 +22,7 @@ No new screenshots were committed for this pass.
 | View | Readiness | Notes |
 | --- | --- | --- |
 | Surface ready | Pass with polish | Boat/lab sprite and panel separation are much stronger. Remaining gap: waterline/moonpool integration still needs polish. |
-| Shallow start | Pass with polish | Sub sprite, base, and safe-return language exist. Remaining gap: sub bubbles/thrust state should be reviewed after sprite integration. |
+| Shallow start | Pass with polish | Sub sprite, base, and safe-return language exist. Sub bubbles/thrust state has a first polish review; re-check at normal scale after HUD skinning. |
 | Shallow resource | Pass | Resource sprites and fallback slots exist for Kelp, Shell, and Glow. |
 | Midwater Shell Reef | Pass with watchlist | Shell Reef pocket and Shell Reef Shelf scan target now have source/export sprites. Sprite/fallback balance should be reviewed at normal scale. |
 | Thermal Vent | Pass with watchlist | Thermal Vent scan target has source/export art and pocket geometry is extracted. Pocket still depends heavily on fallback geometry for place identity. |
@@ -39,7 +39,7 @@ No new screenshots were committed for this pass.
    - First pass complete: `SurfaceBaseArt/MoonpoolGuide` now clarifies the under-boat launch column behind the hull. Continue to review it at normal scale during the cohesive art pass.
 
 2. Player sub state polish.
-   - The sub sprite is strong, but idle bubbles and thrust state should be tuned so movement direction and activity are readable at normal scale.
+   - First pass complete: idle bubbles and thrust flare were tuned and reviewed in `docs/planning/SUB_IDLE_THRUST_POLISH_REVIEW_2026_06_26.md`. Re-check after HUD skinning.
 
 3. Lower-route density.
    - Pressure gate, outside scan, Wreck Signal Cache, rare signal shimmer, deep reward, and predator language are all close together. Future art should reduce overlap, not add more bright cues there.
@@ -57,7 +57,7 @@ The project is ready for a cohesive vertical-slice art integration pass, but not
 Recommended next work:
 
 - review the new waterline/moonpool guide at normal scale,
-- review sub idle bubble and thrust readability,
+- re-check sub idle bubble and thrust readability after HUD skinning,
 - keep the compact HUD skin as a planned follow-up,
 - avoid adding new lower-route content until existing pressure/wreck/predator cues are reviewed at normal scale.
 
