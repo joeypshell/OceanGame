@@ -408,6 +408,11 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	_expect(kelp_sprite.texture != null, "Kelp Fiber should use the first exported source asset sprite")
 	_expect(not kelp_fallback.visible, "Kelp Fiber polygon fallback should be hidden while the sprite asset is active")
 
+	var shell_sprite := main.get_node("ResourcePickups/ShellFragments/SpriteAnchor/Sprite") as Sprite2D
+	var shell_fallback := main.get_node("ResourcePickups/ShellFragments/FallbackVisual") as Node2D
+	_expect(shell_sprite.texture != null, "Shell Fragments should use the first exported source asset sprite")
+	_expect(not shell_fallback.visible, "Shell Fragments polygon fallback should be hidden while the sprite asset is active")
+
 	main.free()
 
 func _test_landmark_region_identity_metadata() -> void:
