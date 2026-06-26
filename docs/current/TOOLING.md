@@ -48,7 +48,7 @@ The Web export preset writes to `exports/web/index.html`. The Playwright server 
 
 Current desktop scenarios capture surface ready, active dive, extraction result, upgrade tab, lower-route pressure-gate, active low oxygen, active critical oxygen, staged Wreck Echo route, staged Wreck Echo result-readback, and no-debug Wreck Echo result player-facing views. The test resets the prototype save with the existing F9 debug hook before capture so runs start from a deterministic first-expedition state. The extraction/upgrade path now leaves base, returns to the moonpool, extracts, and opens the upgrade tab before capturing those named states; reviewers should still confirm the screenshot content when using artifacts as evidence. The exported Web build publishes a small `window.__oceangameVisualState` object so Playwright can assert result state, surface tab, debug telemetry visibility, oxygen state, and panel visibility before each screenshot. Each screenshot also gets a same-name `.json` metadata sidecar in `test-results/playwright/`. `docs/planning/PLAYWRIGHT_SCREENSHOT_WORKFLOW_GAP_REVIEW_2026_06_26.md` records remaining hardening targets. The low/critical oxygen path uses normal active-dive oxygen drain rather than a debug hook. The Wreck Echo smoke path enables debug telemetry and uses the F6 review hook to stage route/result screenshots, then hides telemetry for the player-facing result capture; this is visual layout evidence, not a replacement for Godot logic tests or manual gameplay validation.
 
-The optional mobile-like landscape smoke uses a separate Playwright config at `tests/playwright/mobile-landscape.config.mjs`. It captures surface ready, active dive, and lower-route pressure-gate views at `960x540` with device scale factor `2`, storing local artifacts under `test-results/playwright-mobile-like/`. This is safe-area evidence for future phone landscape work, not touch-control implementation or mobile support certification.
+The optional mobile-like landscape smoke uses a separate Playwright config at `tests/playwright/mobile-landscape.config.mjs`. It captures surface ready, active dive, lower-route pressure-gate, active low oxygen, active critical oxygen, staged Wreck Echo route, staged Wreck Echo result-readback, and no-debug Wreck Echo result player-facing views at `960x540` with device scale factor `2`, storing local artifacts under `test-results/playwright-mobile-like/`. This is safe-area evidence for future phone landscape work, not touch-control implementation or mobile support certification.
 
 ## MCP Context Server
 
@@ -179,7 +179,22 @@ Resources:
 - `oceangame://deep-reward-lure-fallback-balance-review-2026-06-26`
 - `oceangame://active-hud-touch-safe-margin-review-2026-06-26`
 - `oceangame://mobile-like-landscape-screenshot-scaffold-2026-06-26`
+- `oceangame://mobile-like-lower-route-readability-review-2026-06-26`
+- `oceangame://future-touch-safe-zone-constraints-from-mobile-evidence-2026-06-26`
+- `oceangame://mobile-like-low-critical-oxygen-capture-coverage-2026-06-26`
+- `oceangame://mobile-like-wreck-echo-route-result-review-2026-06-26`
 - `oceangame://wreck-echo-no-locator-drift-review-after-prompt-screenshot-2026-06-26`
+- `oceangame://upgrade-details-overflow-review-after-prompt-evidence-2026-06-26`
+- `oceangame://compact-upgrade-details-fix-plan-2026-06-26`
+- `oceangame://monster-research-ii-non-combat-behavior-evidence-2026-06-26`
+- `oceangame://monster-research-ii-first-evidence-type-selection-2026-06-26`
+- `oceangame://monster-research-ii-state-ownership-result-memory-2026-06-26`
+- `oceangame://monster-research-ii-non-combat-guardrail-coverage-2026-06-26`
+- `oceangame://gulper-decoy-result-clarity-after-monster-research-ii-2026-06-26`
+- `oceangame://next-readability-target-after-deep-reward-lure-2026-06-26`
+- `oceangame://lower-route-visual-pileup-review-after-deep-reward-wreck-echo-2026-06-26`
+- `oceangame://cohesive-vertical-slice-art-kit-integration-plan-2026-06-26`
+- `oceangame://playable-vertical-slice-acceptance-refresh-after-mobile-monster-art-2026-06-26`
 - `oceangame://vertical-slice-art-kit-screenshot-checklist-2026-06-26`
 - `oceangame://resource-scan-affordance-review-after-pressure-shell-2026-06-26`
 - `oceangame://resource-scan-source-art-target-decision-2026-06-26`
