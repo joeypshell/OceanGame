@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52">
+  <title>Wreck Echo clue marker v1</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M26 4 L40 14 L46 28 L37 42 L22 48 L9 38 L5 23 L15 9 Z" fill="#9edfff" fill-opacity="0.13" stroke="#c9f4ff" stroke-opacity="0.44" stroke-width="2"/>
+    <path d="M26 11 L36 18 L39 29 L32 39 L21 42 L12 34 L11 23 L18 14 Z" fill="#d8fbff" fill-opacity="0.2" stroke="#e8fdff" stroke-opacity="0.68" stroke-width="1.6"/>
+    <path d="M25 17 L33 23 L33 31 L25 37 L17 31 L17 23 Z" fill="#f2ffff" fill-opacity="0.54" stroke="#ffffff" stroke-opacity="0.82" stroke-width="1.4"/>
+    <path d="M16 15 C10 19 8 27 11 34" stroke="#b6f0ff" stroke-opacity="0.42" stroke-width="2"/>
+    <path d="M36 37 C42 32 43 24 39 17" stroke="#b6f0ff" stroke-opacity="0.42" stroke-width="2"/>
+    <path d="M21 24 L25 20 L31 26 L26 32 L22 29" stroke="#07374a" stroke-opacity="0.42" stroke-width="1.2"/>
+  </g>
+</svg>

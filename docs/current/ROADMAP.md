@@ -404,6 +404,8 @@ Wreck Echo active HUD compactness review: `docs/planning/WRECK_ECHO_ACTIVE_HUD_C
 
 Next source-art target after Wreck Echo evidence: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_EVIDENCE_2026_06_26.md` selects a narrow Wreck Echo clue-marker/source-art separation pass for #373, with non-resource scan marker polish as backup. The choice is based on post-implementation evidence: the HUD is compact enough for now, while the Wreck Echo clue still shares lower-route visual space with reward, predator, and pressure/cache cues. The pass must preserve existing gameplay and no-locator/no-checklist guardrails.
 
+Wreck Echo clue marker source-art pass: issue #373 adds `wreck_echo_clue_marker_v1.svg` as a small source/export/provenance vector reference mirrored by scene-native marker polygons under the existing `WreckEchoDescent/ClueTrigger`. The marker supports the clue read while fallback polygons remain subdued and available, without requiring generated import metadata. The pass changes no route, collision, gating, scan, pressure, predator, cargo, oxygen, progression, or save/load behavior.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable and close to polished acceptance, but still in closeout/watchlist verification rather than fully accepted.

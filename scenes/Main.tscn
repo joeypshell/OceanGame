@@ -407,12 +407,32 @@ position = Vector2(1144, 2140)
 monitoring = false
 monitorable = false
 
+[node name="ClueMarkerOuter" type="Polygon2D" parent="WreckEchoDescent/ClueTrigger"]
+color = Color(0.62, 0.86, 1, 0.12)
+polygon = PackedVector2Array(0, -26, 14, -16, 20, -2, 11, 16, -4, 22, -17, 12, -21, -3, -11, -17)
+
+[node name="ClueMarkerInner" type="Polygon2D" parent="WreckEchoDescent/ClueTrigger"]
+color = Color(0.82, 0.96, 1, 0.24)
+polygon = PackedVector2Array(0, -15, 10, -8, 13, 3, 6, 13, -5, 16, -14, 8, -15, -3, -8, -12)
+
+[node name="ClueMarkerFacet" type="Polygon2D" parent="WreckEchoDescent/ClueTrigger"]
+color = Color(0.94, 1, 1, 0.5)
+polygon = PackedVector2Array(-1, -9, 7, -3, 7, 5, -1, 11, -9, 5, -9, -3)
+
+[node name="ClueMarkerArcA" type="Polygon2D" parent="WreckEchoDescent/ClueTrigger"]
+color = Color(0.7, 0.94, 1, 0.18)
+polygon = PackedVector2Array(-23, -11, -19, -18, -12, -23, -15, -18, -19, -10, -19, 0, -15, 11, -22, 8, -26, -2)
+
+[node name="ClueMarkerArcB" type="Polygon2D" parent="WreckEchoDescent/ClueTrigger"]
+color = Color(0.7, 0.94, 1, 0.18)
+polygon = PackedVector2Array(22, 10, 26, 0, 23, -11, 17, -18, 14, -23, 22, -17, 27, -5, 26, 5)
+
 [node name="ClueCore" type="Polygon2D" parent="WreckEchoDescent/ClueTrigger"]
-color = Color(0.82, 0.96, 1, 0.66)
+color = Color(0.82, 0.96, 1, 0.1)
 polygon = PackedVector2Array(0, -22, 18, -6, 14, 16, -10, 22, -22, 0)
 
 [node name="EchoRing" type="Polygon2D" parent="WreckEchoDescent/ClueTrigger"]
-color = Color(0.62, 0.82, 1, 0.16)
+color = Color(0.62, 0.82, 1, 0.08)
 polygon = PackedVector2Array(0, -34, 26, -20, 34, 0, 26, 20, 0, 34, -26, 20, -34, 0, -26, -20)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WreckEchoDescent/ClueTrigger"]

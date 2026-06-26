@@ -1,0 +1,10 @@
+Asset path: assets/exports/sprites/wreck_echo_clue_marker_v1.svg
+Source path: assets/source/sprites/wreck_echo_clue_marker_v1.svg
+Creator or tool: Codex-authored SVG source art.
+License or usage basis: Original project asset for OceanGame.
+Source URL: n/a
+Date added: 2026-06-26
+Prompt summary, if generated: none; authored as editable SVG code
+Edited after generation: n/a
+Intended use: prototype readability source/export asset for the first Wreck Echo clue marker
+Restrictions: Preserve Wreck Echo as one optional run-scoped research clue. Do not use this marker as an exact locator, persistent objective, minimap icon, route arrow, field-guide entry, cargo reward, combat reward, or broad biome marker.
