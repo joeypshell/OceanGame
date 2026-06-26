@@ -1,6 +1,6 @@
 # Vertical-Slice Clean Demo Script - 2026-06-26
 
-Status: manual demo script for issue #335.
+Status: manual demo script for issue #368, refreshed after the first Wreck Echo implementation pass.
 
 ## Purpose
 
@@ -35,8 +35,9 @@ Expected read: the loop is understandable as dive, decide, return or fail, read 
 - Pressure/wreck promise: approach or describe the pressure-locked research wreck. It should read as blocked until `Pressure Seal I`, then as an opened route to the `Wreck Signal Cache` after ownership.
 - Predator route: approach the Gulper route far enough to see warning language and route danger. It should read as avoidable timing risk, not combat.
 - Optional clue route: point out Shell Reef or Thermal Vent as useful optional route knowledge rather than a mandatory objective.
+- Optional Wreck Echo route: only if the demo state already owns `Pressure Seal I` and `Echo Lens I`, show the single deeper-right `Wreck Echo Descent` pocket as a small research curiosity. Recovering its clue should ask the player to return, and successful extraction should add one compact `Research:` line. Do not spend a first-run demo trying to grind prerequisites just to show it.
 
-Optional Wreck Echo prep note: if asked what comes next, describe Wreck Echo as the planned next research-route milestone built from the existing pressure wreck, `Wreck Signal Cache`, and `Echo Lens I` curiosity. Do not demo it as a runtime route yet; the current slice only proves the handoff language, preparation pressure, no-locator guardrails, and lower-route readability needed before implementation.
+Wreck Echo note: the current build now includes only the first narrow route pocket and one run-scoped clue. It is safe to describe as an implemented research-route promise, not as a new biome, map system, quest chain, durable collection, exact locator, or guaranteed safe route.
 
 ## Failure Variant
 
@@ -53,8 +54,8 @@ Expected read: failure is understandable and recoverable, not a broken state.
 - Do not call this blind validation.
 - Do not claim final art, final UI, or production polish.
 - Do not imply a minimap, exact scanner locator, field guide, quest log, inventory grid, combat loop, or full procedural ocean exists.
-- Do not claim `Wreck Echo Descent` is implemented; it remains future planning.
-- Do not point to a Wreck Echo entrance, marker, route, reward, or failure state as if it exists in the current build.
+- Do not claim `Wreck Echo Descent` is a full biome, full level layer, broad route system, durable research collection, or production-polished feature.
+- Do not describe the Wreck Echo clue as a quest objective, map marker, exact scanner locator, field-guide entry, upgrade unlock, cargo reward, or combat reward.
 
 ## Pass Criteria
 
@@ -66,7 +67,8 @@ The demo passes if the reviewer can follow:
 - how to collect or scan something useful,
 - how to return or understand failure,
 - where upgrade progress is shown,
-- why the pressure/wreck route is a future promise,
+- why the pressure/wreck route is an upgrade-gated route promise,
+- why the first Wreck Echo pocket is a later optional research curiosity after pressure/scanner preparation,
 - why the predator route is risk/timing rather than combat.
 
 ## Watchlist Notes

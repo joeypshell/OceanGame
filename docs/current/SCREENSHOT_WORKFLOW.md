@@ -19,7 +19,7 @@ For each screenshot or short capture note, record:
 
 Use `docs/planning/NORMAL_SCALE_READABILITY_CHECKLIST.md` for the full readability review template. Use `docs/planning/SOLO_FIRST_RUN_READABILITY_CHECKLIST_2026_06_26.md` when no outside helpers are available and the review specifically concerns first-run readability. Use `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md` when the review specifically concerns expedition-day framing across F5-driven seeds.
 
-Use `docs/planning/WRECK_ECHO_NORMAL_SCALE_SCREENSHOT_CHECKLIST_2026_06_26.md` when a future Wreck Echo implementation or visual review needs route-readability evidence for surface prep, lower-route approach, pressure/cache context, Echo Lens cue, predator relationship, low oxygen, and result readback.
+Use `docs/planning/WRECK_ECHO_NORMAL_SCALE_SCREENSHOT_CHECKLIST_2026_06_26.md` when the implemented first Wreck Echo pocket or any future Wreck Echo visual change needs route-readability evidence for surface prep, lower-route approach, pressure/cache context, Echo Lens cue, predator relationship, low oxygen, and result readback.
 
 ## Naming Convention
 
