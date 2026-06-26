@@ -37,6 +37,27 @@ oceangame_result_upgrade_prompt_2026_06_26.png
 
 Local screenshots can live outside the repo, such as Godot user data or a temp folder. In review docs, reference the absolute path used for the review.
 
+## Vertical-Slice Acceptance Evidence Names
+
+For playable vertical-slice acceptance evidence, use the checklist in `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` and include date, seed or review state, view, condition, and a short pass/fail note in the filename:
+
+```text
+oceangame_acceptance_<yyyy_mm_dd>_<seed-or-review-state>_<view>_<condition>_<pass-or-fail-note>.png
+```
+
+Examples:
+
+```text
+oceangame_acceptance_2026_06_26_seed_8919_surface_ready_kelpbloom_pass.png
+oceangame_acceptance_2026_06_26_clean_save_active_dive_calmcurrent_fail_discoveries_overlap.png
+oceangame_acceptance_2026_06_26_seed_24757_pressure_gate_raresignal_pass_watchlist.png
+oceangame_acceptance_2026_06_26_post_extract_upgrade_tab_thermalbloom_fail_text_overflow.png
+```
+
+Use short, stable view names such as `surface_ready`, `active_dive`, `low_oxygen`, `pressure_gate`, `predator_route`, `result`, `upgrade_tab`, or `expedition_log`.
+
+Keep acceptance screenshots local unless an issue explicitly requests committed reference images. When writing the review note, record the local absolute path, commit hash, viewport size, seed/review state, condition, view, and pass/fail observation.
+
 ## Manual Capture
 
 Use this when inspecting by hand:
