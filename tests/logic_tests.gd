@@ -403,6 +403,11 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	_expect(glow_sprite.texture != null, "Glow Plankton should use the first exported source asset sprite")
 	_expect(not glow_fallback.visible, "Glow Plankton polygon fallback should be hidden while the sprite asset is active")
 
+	var kelp_sprite := main.get_node("ResourcePickups/KelpFiber/SpriteAnchor/Sprite") as Sprite2D
+	var kelp_fallback := main.get_node("ResourcePickups/KelpFiber/FallbackVisual") as Node2D
+	_expect(kelp_sprite.texture != null, "Kelp Fiber should use the first exported source asset sprite")
+	_expect(not kelp_fallback.visible, "Kelp Fiber polygon fallback should be hidden while the sprite asset is active")
+
 	main.free()
 
 func _test_landmark_region_identity_metadata() -> void:

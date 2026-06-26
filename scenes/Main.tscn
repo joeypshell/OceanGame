@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=18 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/base/research_boat_clean.png" id="11_research_boat"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/resource_glow_plankton_sprite_v1.svg" id="12_glow_plankton_sprite"]
 [ext_resource type="PackedScene" path="res://scenes/readability/PressureGateVisuals.tscn" id="13_pressure_gate_visuals"]
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/resource_kelp_fiber_sprite_v1.svg" id="14_kelp_fiber_sprite"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -893,8 +894,10 @@ definition = ExtResource("4_kelp_fiber")
 [node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/KelpFiber"]
 
 [node name="Sprite" type="Sprite2D" parent="ResourcePickups/KelpFiber/SpriteAnchor"]
+texture = ExtResource("14_kelp_fiber_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="ResourcePickups/KelpFiber"]
+visible = false
 
 [node name="Visual" type="Polygon2D" parent="ResourcePickups/KelpFiber/FallbackVisual"]
 color = Color(0.16, 0.78, 0.34, 1)
