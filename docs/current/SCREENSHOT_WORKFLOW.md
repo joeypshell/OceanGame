@@ -162,6 +162,16 @@ Default captures include:
 
 The screenshots live under `test-results/playwright/` with Playwright traces/reports in ignored local artifact folders. Use this flow for repeated HUD/layout/route-readability checks. The Wreck Echo screenshots use the debug-gated F6 staging hook after F3 telemetry is enabled, so they are route/result visual evidence rather than gameplay-traversal proof. Use Godot headless logic tests for state ownership, economy, progression, scan rules, pressure rules, predator behavior, and other deterministic gameplay assertions.
 
+Current workflow gap review: `docs/planning/PLAYWRIGHT_SCREENSHOT_WORKFLOW_GAP_REVIEW_2026_06_26.md`.
+
+Known gaps:
+
+- `extraction-result.png` and `upgrade-tab.png` should be treated as intended capture names, but reviewers should confirm the image actually shows the result or upgrade surface state before relying on it.
+- Wreck Echo staged result screenshots can include debug telemetry because they use the F6 review hook. Treat them as route/result layout evidence, not normal player-facing no-debug evidence.
+- Low/critical oxygen, no-debug Wreck Echo result, mobile-like landscape safe-area, and future controller/touch prompt states are not fully automated yet.
+
+Next worthwhile automation should harden desktop slice captures first: true extraction result, true upgrade tab, explicit state assertions, and then low/critical oxygen. Mobile/device and touch overlay automation remain deferred until mobile/touch implementation is promoted.
+
 ## Optional Godot AI MCP Capture
 
 If the local `hi-godot/godot-ai` plugin is installed, enabled in Godot, and its MCP server is running, it may be used for live editor screenshots and scene inspection. This repository does not vendor that plugin and does not require it for normal verification.
