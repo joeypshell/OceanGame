@@ -249,6 +249,8 @@ Wreck Echo first implementation breakdown: `docs/planning/WRECK_ECHO_FIRST_IMPLE
 
 Wreck Echo active HUD/prompt review: `docs/planning/WRECK_ECHO_ACTIVE_HUD_PROMPT_REVIEW_2026_06_26.md` keeps future Wreck Echo attempts inside the existing compact `Scan`, prompt, status, oxygen, depth, base, and cargo HUD surfaces. It rejects route panels, minimaps, active quest/objective UI, field guides, and new active upgrade/log surfaces.
 
+Wreck Echo lower-route capacity review: `docs/planning/WRECK_ECHO_LOWER_ROUTE_CAPACITY_REVIEW_2026_06_26.md` says the current lower route can support one future Wreck Echo pocket only as a deeper-right extension with a small footprint. Direct lower-right placement inside the pressure gate/cache/reward/predator stack should be avoided or deferred.
+
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
 Backlog replenishment after closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines the next ordered twenty-issue queue. The focus is solo first-run evidence, compact acceptance proof, final closeout status, source-art/readability rechecks, and Wreck Echo planning without implementing a new route yet.
