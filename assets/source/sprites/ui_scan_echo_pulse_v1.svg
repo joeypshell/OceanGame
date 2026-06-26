@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <defs>
+    <radialGradient id="echoCore" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f8ffd8" stop-opacity="0.9"/>
+      <stop offset="45%" stop-color="#8af8ff" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#668cff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softPulse" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="48" cy="48" r="30" fill="url(#echoCore)" filter="url(#softPulse)"/>
+  <path d="M48 16 C61 16 72 24 78 35" fill="none" stroke="#d8fff8" stroke-width="4" stroke-linecap="round" opacity="0.86"/>
+  <path d="M80 48 C80 61 72 72 61 78" fill="none" stroke="#8af8ff" stroke-width="4" stroke-linecap="round" opacity="0.62"/>
+  <path d="M48 80 C35 80 24 72 18 61" fill="none" stroke="#d8fff8" stroke-width="4" stroke-linecap="round" opacity="0.78"/>
+  <path d="M16 48 C16 35 24 24 35 18" fill="none" stroke="#8af8ff" stroke-width="4" stroke-linecap="round" opacity="0.54"/>
+  <path d="M32 32 L22 32 L22 42 M64 32 L74 32 L74 42 M32 64 L22 64 L22 54 M64 64 L74 64 L74 54" fill="none" stroke="#f3ffc2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.82"/>
+  <circle cx="48" cy="48" r="6" fill="#f6ff94" opacity="0.82"/>
+  <circle cx="48" cy="48" r="15" fill="none" stroke="#b7fbff" stroke-width="2" stroke-dasharray="4 6" opacity="0.62"/>
+</svg>

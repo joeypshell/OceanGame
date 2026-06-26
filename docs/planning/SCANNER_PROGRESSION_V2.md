@@ -114,6 +114,8 @@ Use existing surfaces:
 - result summary for one compact route-planning line if an echo was followed or banked,
 - upgrade bay for future `Echo Lens I` availability.
 
+Potential future visual support: `assets/source/sprites/ui_scan_echo_pulse_v1.svg` / `assets/exports/sprites/ui_scan_echo_pulse_v1.svg` is a compact scan/echo pulse study for local feedback. It is not wired into gameplay yet and should only be used later if it reinforces temporary, partial scanner information without implying a persistent marker.
+
 Avoid:
 
 - field guide,

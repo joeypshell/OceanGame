@@ -210,6 +210,8 @@ Use these rules for prototype readability assets. They are not final art directi
 
 Keep color categories distinct. Do not solve readability by making every important thing bright cyan, bright green, or bright red.
 
+Prototype source/export scan-echo motif: `assets/source/sprites/ui_scan_echo_pulse_v1.svg` and `assets/exports/sprites/ui_scan_echo_pulse_v1.svg`, with provenance in `assets/licenses/ui_scan_echo_pulse_v1.txt`. This asset is intended for compact local scan/echo feedback experiments only. It should hug a target or HUD readout, expire quickly, and stay below oxygen/safe-return/predator urgency. It is not a minimap icon, scanner energy meter, persistent objective marker, exact-coordinate indicator, or route arrow.
+
 ## Shape Rules
 
 - Safe return: vertical columns, upward lanes, beacon diamonds, and stable repeated ribs. Shapes should be calm and continuous.
