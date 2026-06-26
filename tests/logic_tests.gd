@@ -698,7 +698,7 @@ func _test_next_expedition_framing() -> void:
 
 	var prompt := main._format_next_expedition_prompt()
 	_expect(prompt.contains("Expedition 4"), "result prompt should point to the next expedition number")
-	_expect(prompt.contains("ocean will shift"), "result prompt should frame restart as a changed ocean")
+	_expect(prompt.contains("ocean shifts again"), "result prompt should frame restart as a changed ocean")
 	_expect(not prompt.to_lower().contains("restart"), "result prompt should avoid raw restart language")
 
 	main.progression_state.current_run_number = 4
@@ -707,7 +707,7 @@ func _test_next_expedition_framing() -> void:
 	_expect(ready_status.contains("ocean changed"), "ready status should describe the changed ocean")
 	_expect(main._format_expedition_day_title("Ready") == "Expedition Day 4 Ready", "ready title should show expedition day number")
 	_expect(main._format_expedition_day_title("Result: Extraction") == "Expedition Day 4 Result: Extraction", "result title should show completed expedition day number")
-	_expect(main._format_completed_expedition_line("Failure") == "Expedition Day 4 complete: Failure.", "result summary should name the completed expedition day")
+	_expect(main._format_completed_expedition_line("Failure") == "Expedition Day 4: Failure.", "result summary should name the completed expedition day")
 	main.free()
 
 func _test_region_memory_result_callout() -> void:

@@ -236,7 +236,7 @@ func _try_extract() -> void:
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\n%s\n%s%s\n%s%s\n%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "%s\n%s\n%s%s\n%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(extracted_count, extracted_cargo),
 		_format_region_memory_callout(),
@@ -245,8 +245,8 @@ func _try_extract() -> void:
 		_format_gulper_research_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
-		_format_next_expedition_prompt(),
-		roundi(progression_state.best_depth_reached)
+		roundi(progression_state.best_depth_reached),
+		_format_next_expedition_prompt()
 	]
 	upgrade_menu_feedback = "Deposited %d resource(s) into the bank.%s\n%s" % [
 		extracted_count,
@@ -262,15 +262,15 @@ func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s%s\n%s%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "%s\nCargo lost. Banked resources, upgrades, scans, and best depth kept.\n%s%s\n%s%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Failure"),
 		_format_region_memory_callout(),
 		_format_discovery_memory_callout(),
 		_format_route_choice_callout(),
 		_format_gulper_research_callout(),
 		_format_scan_progress_callout("Scans kept"),
-		_format_next_expedition_prompt(),
 		roundi(progression_state.best_depth_reached),
+		_format_next_expedition_prompt(),
 	]
 	upgrade_menu_feedback = ""
 	_record_recent_expedition("Failed", 0)
@@ -984,7 +984,7 @@ func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
 		run_title_label.text = _format_expedition_day_title("Ready")
-		run_summary_label.text = _format_run_summary("Move with WASD or arrow keys.\nStart with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\n%s\n%s\nPress E or Enter to begin.\nF9 resets prototype save." % [
+		run_summary_label.text = _format_run_summary("Start with %d oxygen.\nCollect, scan, push deeper, then return to bank cargo.\n%s\n%s\nE/Enter begins. F9 resets prototype save." % [
 			ceili(dive_session.max_oxygen),
 			_format_condition_briefing(),
 			ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions),
@@ -993,7 +993,7 @@ func _update_run_panel() -> void:
 		run_panel.visible = true
 		if surface_tab_index == SURFACE_TAB_UPGRADES:
 			run_title_label.text = "Surface Upgrade Bay"
-			run_summary_label.text = _format_run_summary("Banked:%s\nSelect an upgrade below, then press E or Enter to purchase.\n%s" % [
+			run_summary_label.text = _format_run_summary("Banked:%s\nChoose upgrade below; E/Enter buys.\n%s" % [
 				_format_banked_resources(),
 				_format_next_expedition_prompt(),
 			], "extracted")
@@ -1406,7 +1406,7 @@ func _format_run_summary(player_summary: String, result_name: String) -> String:
 	return "%s\n%s" % [player_summary, _format_run_telemetry(result_name)]
 
 func _format_next_expedition_prompt() -> String:
-	return "Next: press R to prepare Expedition %d; the ocean will shift again." % (progression_state.current_run_number + 1)
+	return "Next: press R for Expedition %d; the ocean shifts again." % (progression_state.current_run_number + 1)
 
 func _format_expedition_ready_status() -> String:
 	return "Expedition %d ready: the ocean changed overnight." % progression_state.current_run_number
@@ -1418,7 +1418,7 @@ func _format_expedition_day_title(suffix: String) -> String:
 	]
 
 func _format_completed_expedition_line(result_name: String) -> String:
-	return "Expedition Day %d complete: %s." % [
+	return "Expedition Day %d: %s." % [
 		progression_state.current_run_number,
 		result_name,
 	]

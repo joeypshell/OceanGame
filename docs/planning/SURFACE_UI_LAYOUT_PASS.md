@@ -1,6 +1,11 @@
 # Surface UI Layout Pass
 
-Status: planning complete. Recommended future implementation issue title: `Add compact surface summary tabs`.
+Status: implemented, with follow-up copy tightening complete.
+
+Implemented issues:
+
+- `Add compact surface summary tabs`
+- `Add surface result panel hierarchy review and copy tightening`
 
 ## Purpose
 
@@ -105,6 +110,17 @@ The player should be able to quickly choose:
 - buy an available upgrade,
 - review recent expedition outcomes,
 - check banked resources or discoveries only when relevant.
+
+## Follow-Up Copy Pass
+
+The surface result copy now favors compact hierarchy over repeated instructions:
+
+- result summaries name the completed expedition day first,
+- cargo/banking or cargo-loss information appears immediately after the result,
+- route, research, upgrade, scan, and best-depth lines stay compact,
+- the next-expedition prompt is a short final action line,
+- the upgrade tab uses short purchase language,
+- debug telemetry remains hidden unless F3 is enabled.
 
 ## Verification Criteria
 
