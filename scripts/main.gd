@@ -74,6 +74,7 @@ const DIVE_STATUS_MAX_CHARS := 92
 @onready var status_label: Label = $HUD/Status
 @onready var prompt_label: Label = $HUD/ExtractionPrompt
 @onready var scan_target_label: Label = $HUD/ScanTarget
+@onready var dive_info_panel: Panel = $HUD/DiveInfoPanel
 @onready var oxygen_warning_label: Label = $HUD/OxygenWarning
 @onready var recent_expedition_log_label: Label = $HUD/RecentExpeditionLog
 @onready var run_panel: Panel = $HUD/RunPanel
@@ -811,6 +812,7 @@ func _update_hud() -> void:
 	upgrade_label.visible = false
 	recent_expedition_log_label.visible = false
 	discoveries_label.visible = not has_surface_panel
+	dive_info_panel.visible = is_diving
 	scan_target_label.visible = is_diving
 	status_label.visible = is_diving
 	prompt_label.visible = is_diving

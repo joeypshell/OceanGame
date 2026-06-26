@@ -1029,6 +1029,13 @@ offset_right = 360.0
 offset_bottom = 208.0
 text = "Discoveries: 0 / 3"
 
+[node name="DiveInfoPanel" type="Panel" parent="HUD"]
+visible = false
+offset_left = 16.0
+offset_top = 204.0
+offset_right = 576.0
+offset_bottom = 372.0
+
 [node name="Status" type="Label" parent="HUD"]
 offset_left = 24.0
 offset_top = 300.0
