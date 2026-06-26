@@ -72,6 +72,7 @@ func _initialize() -> void:
 	_run("gulper research result callout", _test_gulper_research_result_callout)
 	_run("echo lens result callout", _test_echo_lens_result_callout)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
+	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
 	_run("thermal vent scan clue text", _test_thermal_vent_scan_clue_text)
 	_run("shell reef scan clue text", _test_shell_reef_scan_clue_text)
@@ -1011,6 +1012,73 @@ func _test_upgrade_bay_readability_states() -> void:
 	_expect(state.begins_with("State: Owned"), "upgrade bay should label Decoy Pulse I owned after purchase")
 	main.free()
 
+func _test_result_and_upgrade_copy_length_guards() -> void:
+	var main := MainScript.new()
+	main.progression_state.current_run_number = 4
+	main.progression_state.current_run_seed = 32676
+	main.current_resource_cluster_pattern = "deep_reward"
+	main.current_predator_route_id = "lower_predator_gate"
+	main.current_expedition_condition = {
+		"id": "thermal_bloom",
+		"display_name": "Thermal Bloom",
+		"briefing": "Warm water stirs.",
+	}
+	main.run_collected_resources = ["glow_plankton", "shell_fragments", "kelp_fiber"]
+	main.run_completed_scans = ["thermal_vent", "wreck_signal_cache", "gulper_eel"]
+	main.run_predator_contacts = 1
+	main.run_echo_lens_echo_fired = true
+	main.decoy_pulse_used_this_run = true
+
+	var compact_result := "\n".join([
+		main._format_completed_expedition_line("Extraction"),
+		main._format_extraction_banking_line(3, main.run_collected_resources),
+		main._format_region_memory_callout(),
+		main._format_discovery_memory_callout(),
+		main._format_route_choice_callout(),
+		main._format_gulper_research_callout(),
+		main._format_echo_lens_research_callout(),
+		main._format_upgrade_progress_callout(),
+		main._format_scan_progress_callout("Discoveries recorded"),
+		main._format_next_expedition_prompt(),
+	])
+	_expect_lines_within(compact_result, 96, "player-facing result summary")
+	_expect(not main._format_run_summary(compact_result, "Extraction").contains("Playtest data:"), "result copy length guard should keep debug telemetry gated")
+
+	main.show_debug_telemetry = true
+	_expect(main._format_run_summary(compact_result, "Extraction").contains("Playtest data:"), "debug telemetry should remain opt-in for long result checks")
+	main.show_debug_telemetry = false
+
+	main.progression_state.banked_resources = {
+		"glow_plankton": 3,
+		"kelp_fiber": 1,
+		"shell_fragments": 2,
+	}
+	main.progression_state.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal cache.", "Scanner curiosity.")
+	var upgrade_states := [
+		main._format_upgrade_state(OxygenTankUpgrade),
+		main._format_upgrade_state(PressureSealUpgrade),
+		main._format_upgrade_state(EchoLensUpgrade),
+	]
+	main.progression_state.purchased_upgrades[SignalLensUpgrade.id] = true
+	upgrade_states.append(main._format_upgrade_state(EchoLensUpgrade))
+	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	upgrade_states.append(main._format_upgrade_state(EchoLensUpgrade))
+	for index in range(upgrade_states.size()):
+		_expect_lines_within(String(upgrade_states[index]), 88, "upgrade state %d" % index)
+
+	var main_scene := MainScene.instantiate()
+	root.add_child(main_scene)
+	for label_path in [
+		"HUD/UpgradePanel/UpgradeMenuItem",
+		"HUD/UpgradePanel/UpgradeMenuCost",
+		"HUD/UpgradePanel/UpgradeMenuState",
+		"HUD/UpgradePanel/UpgradeMenuFeedback",
+	]:
+		var label: Label = main_scene.get_node(label_path)
+		_expect(label.autowrap_mode != TextServer.AUTOWRAP_OFF, "%s should keep wrapping enabled" % label_path)
+	main_scene.queue_free()
+	main.free()
+
 func _test_recent_expedition_log() -> void:
 	var main := MainScript.new()
 	main.current_resource_cluster_pattern = "cautious"
@@ -1317,6 +1385,10 @@ func _expect(condition: bool, message: String) -> void:
 		return
 
 	_failures.append(message)
+
+func _expect_lines_within(text: String, max_length: int, context: String) -> void:
+	for line in text.split("\n", false):
+		_expect(line.length() <= max_length, "%s line should stay within %d characters: %s" % [context, max_length, line])
 
 func _expect_no_echo_lens_locator_language(text: String, context: String) -> void:
 	var lowered := text.to_lower()
