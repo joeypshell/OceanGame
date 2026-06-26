@@ -241,6 +241,8 @@ Wreck Echo test coverage plan: `docs/planning/WRECK_ECHO_TEST_COVERAGE_PLAN_2026
 
 Wreck Echo research clue ownership: `docs/planning/WRECK_ECHO_RESEARCH_CLUE_OWNERSHIP_2026_06_26.md` keeps the first future Wreck Echo clue as run-scoped result memory by default. Durable progression should only be added by a later explicit issue if result-only memory proves insufficient or a future feature needs persistence.
 
+Next source-art after Wreck Echo prep: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_PREP_2026_06_26.md` selects compact HUD skin and icon/frame polish as the next source-art target. Additional pressure shell art, Wreck Echo route-marker art, and resource/scan marker art are deferred unless future evidence or an authorized implementation issue reopens them.
+
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
 Backlog replenishment after closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines the next ordered twenty-issue queue. The focus is solo first-run evidence, compact acceptance proof, final closeout status, source-art/readability rechecks, and Wreck Echo planning without implementing a new route yet.

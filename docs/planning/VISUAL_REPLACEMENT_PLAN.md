@@ -4,6 +4,8 @@ Status: integration plan for moving from placeholder visuals toward a polished O
 
 Latest slot review: `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md` audits the current player, surface base, resource, creature, landmark, pressure-wreck, and cache visual slots after recent extraction work.
 
+Latest source-art priority: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_PREP_2026_06_26.md` selects compact HUD skin and icon/frame polish as the next source-art target after Wreck Echo preparation planning. Wreck Echo route-marker art remains deferred until route implementation is explicitly authorized.
+
 ## Current Visual Inventory
 
 Current runtime visuals are mostly simple Godot nodes:
@@ -382,6 +384,8 @@ Non-goals:
 Summary: Skin the core oxygen/depth/cargo/scan UI toward a clean cozy sci-fi style while keeping debug telemetry gated.
 
 Planning status: `docs/planning/COMPACT_HUD_SKIN_PLAN_2026_06_26.md` defines the first compact active HUD skin pass. Implementation should follow that plan rather than expanding active HUD text.
+
+Current priority status: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_PREP_2026_06_26.md` promotes this HUD skin work as the next source-art target because it supports oxygen, cargo, scan, result, and future Wreck Echo clarity without adding route-marker or objective UI scope.
 
 User story/problem: As a player, I should see oxygen, depth, cargo, base direction, and scan target as polished game UI instead of raw debug text.
 
