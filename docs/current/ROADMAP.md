@@ -111,6 +111,7 @@ Detailed design rules live in:
 - `docs/planning/UPGRADE_BAY_NORMAL_SCALE_AFFORDANCE_REVIEW_AFTER_COPY_TUNE_2026_06_26.md`
 - `docs/planning/SCANNER_FEEDBACK_SIGNAL_VS_ECHO_REVIEW_2026_06_26.md`
 - `docs/planning/NEXT_MONSTER_RESEARCH_READABILITY_MILESTONE_2026_06_26.md`
+- `docs/planning/DURABLE_PROGRESSION_RESET_ONBOARDING_REVIEW_2026_06_26.md`
 - `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
 - `docs/planning/ECHO_LENS_NO_LOCATOR_LANGUAGE_REVIEW_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
@@ -236,6 +237,8 @@ Upgrade bay normal-scale affordance review: `docs/planning/UPGRADE_BAY_NORMAL_SC
 Scanner feedback distinction review: `docs/planning/SCANNER_FEEDBACK_SIGNAL_VS_ECHO_REVIEW_2026_06_26.md` confirms `Signal Lens I` remains practical visible-resource support while `Echo Lens I` remains broad Wreck Echo curiosity and remembered-place planning. Existing tests already guard role hints, cache repeat-scan copy, result text, and no-locator language.
 
 Next monster research readability milestone: `docs/planning/NEXT_MONSTER_RESEARCH_READABILITY_MILESTONE_2026_06_26.md` keeps the next creature work centered on `Gulper Route Research Readability`: whether the route reads as timing rather than a wall, and whether `Predator Warning I` plus `Decoy Pulse I` read as preparation tools rather than combat. Weapons, health, harvesting, capture, loot, contracts, field-guide UI, minimap, and new predator species remain out of scope.
+
+Durable progression reset/onboarding review: `docs/planning/DURABLE_PROGRESSION_RESET_ONBOARDING_REVIEW_2026_06_26.md` confirms F9 reset copy is debug-gated, clean first-run review uses F9 before hiding debug telemetry, relaunch keeps durable progression, and active expedition state does not persist. No save or runtime copy change is needed.
 
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 
