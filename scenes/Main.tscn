@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=32 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -66,6 +66,22 @@ content_margin_left = 12.0
 content_margin_top = 10.0
 content_margin_right = 12.0
 content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_surface_panel"]
+bg_color = Color(0.018, 0.055, 0.07, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.42, 0.86, 0.96, 0.62)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 14.0
+content_margin_top = 12.0
+content_margin_right = 14.0
+content_margin_bottom = 12.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main_script")
@@ -1295,6 +1311,7 @@ offset_left = 420.0
 offset_top = 32.0
 offset_right = 872.0
 offset_bottom = 362.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_surface_panel")
 
 [node name="SurfaceTabs" type="Label" parent="HUD/RunPanel"]
 offset_left = 16.0
@@ -1323,6 +1340,7 @@ offset_left = 420.0
 offset_top = 376.0
 offset_right = 872.0
 offset_bottom = 728.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_surface_panel")
 
 [node name="UpgradeMenuTitle" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
