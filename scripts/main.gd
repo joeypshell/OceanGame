@@ -744,10 +744,10 @@ func _sync_pressure_lock_state() -> void:
 	pressure_boundary.monitorable = not has_pressure_seal
 	if has_pressure_seal:
 		pressure_shimmer.modulate = Color(0.62, 1.0, 0.72, 0.5)
-		pressure_label.text = "Pressure Seal I active - wreck route open"
+		pressure_label.text = "OPEN: Wreck route"
 	else:
 		pressure_shimmer.modulate = Color.WHITE
-		pressure_label.text = "LOCKED ROUTE: Pressure Seal I required"
+		pressure_label.text = "LOCKED: Pressure Seal I"
 
 func _sync_predator_warning_upgrade_state() -> void:
 	var multiplier := predator_warning_1_multiplier if progression_state.has_upgrade(PREDATOR_WARNING_UPGRADE_ID) else 1.45
