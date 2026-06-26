@@ -363,16 +363,16 @@ func _test_compact_scan_marker() -> void:
 func _test_sprite_ready_scene_asset_slots() -> void:
 	var main := MainScene.instantiate()
 	var required_paths := [
-		"ResourcePickups/KelpFiber/SpriteAnchor/Sprite",
-		"ResourcePickups/KelpFiber/FallbackVisual/Visual",
+		"ResourcePickups/KelpFiber/Visuals/SpriteAnchor/Sprite",
+		"ResourcePickups/KelpFiber/Visuals/FallbackVisual/Visual",
 		"ResourcePickups/KelpFiber/CollisionShape2D",
-		"ResourcePickups/ShellFragments/SpriteAnchor/Sprite",
-		"ResourcePickups/ShellFragments/FallbackVisual/Visual",
+		"ResourcePickups/ShellFragments/Visuals/SpriteAnchor/Sprite",
+		"ResourcePickups/ShellFragments/Visuals/FallbackVisual/Visual",
 		"ResourcePickups/ShellFragments/CollisionShape2D",
-		"ResourcePickups/GlowPlankton/SpriteAnchor/Sprite",
-		"ResourcePickups/GlowPlankton/FallbackVisual/Visual",
-		"ResourcePickups/HiddenGlowPlankton/SpriteAnchor/Sprite",
-		"ResourcePickups/DeepGlowPlankton/SpriteAnchor/Sprite",
+		"ResourcePickups/GlowPlankton/Visuals/SpriteAnchor/Sprite",
+		"ResourcePickups/GlowPlankton/Visuals/FallbackVisual/Visual",
+		"ResourcePickups/HiddenGlowPlankton/Visuals/SpriteAnchor/Sprite",
+		"ResourcePickups/DeepGlowPlankton/Visuals/SpriteAnchor/Sprite",
 		"Creatures/LanternFry/SpriteAnchor/Sprite",
 		"Creatures/LanternFry/FallbackVisual/Visual",
 		"Creatures/LanternFry/FallbackVisual/Glow",
@@ -409,18 +409,18 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	for path in required_paths:
 		_expect(main.get_node_or_null(path) != null, "main scene should keep sprite-ready slot or behavior node: %s" % path)
 
-	var glow_sprite := main.get_node("ResourcePickups/GlowPlankton/SpriteAnchor/Sprite") as Sprite2D
-	var glow_fallback := main.get_node("ResourcePickups/GlowPlankton/FallbackVisual") as Node2D
+	var glow_sprite := main.get_node("ResourcePickups/GlowPlankton/Visuals/SpriteAnchor/Sprite") as Sprite2D
+	var glow_fallback := main.get_node("ResourcePickups/GlowPlankton/Visuals/FallbackVisual") as Node2D
 	_expect(glow_sprite.texture != null, "Glow Plankton should use the first exported source asset sprite")
 	_expect(not glow_fallback.visible, "Glow Plankton polygon fallback should be hidden while the sprite asset is active")
 
-	var kelp_sprite := main.get_node("ResourcePickups/KelpFiber/SpriteAnchor/Sprite") as Sprite2D
-	var kelp_fallback := main.get_node("ResourcePickups/KelpFiber/FallbackVisual") as Node2D
+	var kelp_sprite := main.get_node("ResourcePickups/KelpFiber/Visuals/SpriteAnchor/Sprite") as Sprite2D
+	var kelp_fallback := main.get_node("ResourcePickups/KelpFiber/Visuals/FallbackVisual") as Node2D
 	_expect(kelp_sprite.texture != null, "Kelp Fiber should use the first exported source asset sprite")
 	_expect(not kelp_fallback.visible, "Kelp Fiber polygon fallback should be hidden while the sprite asset is active")
 
-	var shell_sprite := main.get_node("ResourcePickups/ShellFragments/SpriteAnchor/Sprite") as Sprite2D
-	var shell_fallback := main.get_node("ResourcePickups/ShellFragments/FallbackVisual") as Node2D
+	var shell_sprite := main.get_node("ResourcePickups/ShellFragments/Visuals/SpriteAnchor/Sprite") as Sprite2D
+	var shell_fallback := main.get_node("ResourcePickups/ShellFragments/Visuals/FallbackVisual") as Node2D
 	_expect(shell_sprite.texture != null, "Shell Fragments should use the first exported source asset sprite")
 	_expect(not shell_fallback.visible, "Shell Fragments polygon fallback should be hidden while the sprite asset is active")
 

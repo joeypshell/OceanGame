@@ -11,10 +11,10 @@
 [ext_resource type="Script" path="res://scripts/spawn_point.gd" id="9_spawn_point"]
 [ext_resource type="Script" path="res://scripts/landmark_metadata.gd" id="10_landmark_metadata"]
 [ext_resource type="Texture2D" path="res://assets/sprites/base/research_boat_clean.png" id="11_research_boat"]
-[ext_resource type="Texture2D" path="res://assets/exports/sprites/resource_glow_plankton_sprite_v1.svg" id="12_glow_plankton_sprite"]
+[ext_resource type="PackedScene" path="res://scenes/resources/GlowPlanktonVisual.tscn" id="12_glow_plankton_visual"]
 [ext_resource type="PackedScene" path="res://scenes/readability/PressureGateVisuals.tscn" id="13_pressure_gate_visuals"]
-[ext_resource type="Texture2D" path="res://assets/exports/sprites/resource_kelp_fiber_sprite_v1.svg" id="14_kelp_fiber_sprite"]
-[ext_resource type="Texture2D" path="res://assets/exports/sprites/resource_shell_fragments_sprite_v1.svg" id="15_shell_fragments_sprite"]
+[ext_resource type="PackedScene" path="res://scenes/resources/KelpFiberVisual.tscn" id="14_kelp_fiber_visual"]
+[ext_resource type="PackedScene" path="res://scenes/resources/ShellFragmentsVisual.tscn" id="15_shell_fragments_visual"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -892,29 +892,7 @@ position = Vector2(760, 390)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("4_kelp_fiber")
 
-[node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/KelpFiber"]
-
-[node name="Sprite" type="Sprite2D" parent="ResourcePickups/KelpFiber/SpriteAnchor"]
-texture = ExtResource("14_kelp_fiber_sprite")
-
-[node name="FallbackVisual" type="Node2D" parent="ResourcePickups/KelpFiber"]
-visible = false
-
-[node name="Visual" type="Polygon2D" parent="ResourcePickups/KelpFiber/FallbackVisual"]
-color = Color(0.16, 0.78, 0.34, 1)
-polygon = PackedVector2Array(-12, 34, -18, 6, -10, -30, 2, -44, 12, -18, 8, 12, 22, 32, 4, 20)
-
-[node name="FrondA" type="Polygon2D" parent="ResourcePickups/KelpFiber/FallbackVisual"]
-color = Color(0.36, 1, 0.54, 0.86)
-polygon = PackedVector2Array(-8, 26, -30, 8, -24, -16, -6, -2, 0, 22)
-
-[node name="FrondB" type="Polygon2D" parent="ResourcePickups/KelpFiber/FallbackVisual"]
-color = Color(0.1, 0.55, 0.3, 0.88)
-polygon = PackedVector2Array(4, 20, 22, 0, 28, -28, 10, -8, 0, 22)
-
-[node name="StemLine" type="Polygon2D" parent="ResourcePickups/KelpFiber/FallbackVisual"]
-color = Color(0.72, 1, 0.68, 0.58)
-polygon = PackedVector2Array(-4, 28, 1, 24, 4, -30, -1, -26)
+[node name="Visuals" parent="ResourcePickups/KelpFiber" instance=ExtResource("14_kelp_fiber_visual")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/KelpFiber"]
 shape = SubResource("CircleShape2D_pickup")
@@ -924,29 +902,7 @@ position = Vector2(450, 900)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("5_shell_fragments")
 
-[node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/ShellFragments"]
-
-[node name="Sprite" type="Sprite2D" parent="ResourcePickups/ShellFragments/SpriteAnchor"]
-texture = ExtResource("15_shell_fragments_sprite")
-
-[node name="FallbackVisual" type="Node2D" parent="ResourcePickups/ShellFragments"]
-visible = false
-
-[node name="Visual" type="Polygon2D" parent="ResourcePickups/ShellFragments/FallbackVisual"]
-color = Color(0.96, 0.78, 0.48, 1)
-polygon = PackedVector2Array(-36, 16, -24, -12, -2, -30, 24, -20, 38, 8, 14, 30, -16, 30)
-
-[node name="ShellRibA" type="Polygon2D" parent="ResourcePickups/ShellFragments/FallbackVisual"]
-color = Color(1, 0.94, 0.68, 0.68)
-polygon = PackedVector2Array(-21, 20, -16, 18, -4, -19, -8, -20)
-
-[node name="ShellRibB" type="Polygon2D" parent="ResourcePickups/ShellFragments/FallbackVisual"]
-color = Color(1, 0.94, 0.68, 0.58)
-polygon = PackedVector2Array(-3, 24, 2, 23, 3, -23, -2, -23)
-
-[node name="ShellRibC" type="Polygon2D" parent="ResourcePickups/ShellFragments/FallbackVisual"]
-color = Color(1, 0.94, 0.68, 0.62)
-polygon = PackedVector2Array(16, 20, 20, 17, 11, -15, 7, -13)
+[node name="Visuals" parent="ResourcePickups/ShellFragments" instance=ExtResource("15_shell_fragments_visual")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/ShellFragments"]
 shape = SubResource("CircleShape2D_pickup")
@@ -956,26 +912,7 @@ position = Vector2(760, 1490)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
-[node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/GlowPlankton"]
-
-[node name="Sprite" type="Sprite2D" parent="ResourcePickups/GlowPlankton/SpriteAnchor"]
-scale = Vector2(0.78, 0.78)
-texture = ExtResource("12_glow_plankton_sprite")
-
-[node name="FallbackVisual" type="Node2D" parent="ResourcePickups/GlowPlankton"]
-visible = false
-
-[node name="Visual" type="Polygon2D" parent="ResourcePickups/GlowPlankton/FallbackVisual"]
-color = Color(0.82, 1, 0.28, 0.64)
-polygon = PackedVector2Array(0, -42, 15, -17, 40, -12, 21, 9, 25, 36, 0, 22, -25, 36, -21, 9, -40, -12, -15, -17)
-
-[node name="GlowCore" type="Polygon2D" parent="ResourcePickups/GlowPlankton/FallbackVisual"]
-color = Color(0.96, 1, 0.42, 0.96)
-polygon = PackedVector2Array(0, -22, 14, -8, 22, 0, 14, 8, 0, 22, -14, 8, -22, 0, -14, -8)
-
-[node name="GlowHalo" type="Polygon2D" parent="ResourcePickups/GlowPlankton/FallbackVisual"]
-color = Color(0.52, 1, 0.82, 0.18)
-polygon = PackedVector2Array(0, -58, 30, -34, 58, 0, 30, 34, 0, 58, -30, 34, -58, 0, -30, -34)
+[node name="Visuals" parent="ResourcePickups/GlowPlankton" instance=ExtResource("12_glow_plankton_visual")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/GlowPlankton"]
 shape = SubResource("CircleShape2D_pickup")
@@ -987,26 +924,7 @@ monitoring = false
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
-[node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/HiddenGlowPlankton"]
-
-[node name="Sprite" type="Sprite2D" parent="ResourcePickups/HiddenGlowPlankton/SpriteAnchor"]
-scale = Vector2(0.78, 0.78)
-texture = ExtResource("12_glow_plankton_sprite")
-
-[node name="FallbackVisual" type="Node2D" parent="ResourcePickups/HiddenGlowPlankton"]
-visible = false
-
-[node name="Visual" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton/FallbackVisual"]
-color = Color(0.82, 1, 0.28, 0.64)
-polygon = PackedVector2Array(0, -42, 15, -17, 40, -12, 21, 9, 25, 36, 0, 22, -25, 36, -21, 9, -40, -12, -15, -17)
-
-[node name="GlowCore" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton/FallbackVisual"]
-color = Color(0.96, 1, 0.42, 0.96)
-polygon = PackedVector2Array(0, -22, 14, -8, 22, 0, 14, 8, 0, 22, -14, 8, -22, 0, -14, -8)
-
-[node name="GlowHalo" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton/FallbackVisual"]
-color = Color(0.52, 1, 0.82, 0.18)
-polygon = PackedVector2Array(0, -58, 30, -34, 58, 0, 30, 34, 0, 58, -30, 34, -58, 0, -30, -34)
+[node name="Visuals" parent="ResourcePickups/HiddenGlowPlankton" instance=ExtResource("12_glow_plankton_visual")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/HiddenGlowPlankton"]
 shape = SubResource("CircleShape2D_pickup")
@@ -1016,26 +934,7 @@ position = Vector2(1040, 1900)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
-[node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/DeepGlowPlankton"]
-
-[node name="Sprite" type="Sprite2D" parent="ResourcePickups/DeepGlowPlankton/SpriteAnchor"]
-scale = Vector2(0.78, 0.78)
-texture = ExtResource("12_glow_plankton_sprite")
-
-[node name="FallbackVisual" type="Node2D" parent="ResourcePickups/DeepGlowPlankton"]
-visible = false
-
-[node name="Visual" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton/FallbackVisual"]
-color = Color(0.82, 1, 0.28, 0.64)
-polygon = PackedVector2Array(0, -42, 15, -17, 40, -12, 21, 9, 25, 36, 0, 22, -25, 36, -21, 9, -40, -12, -15, -17)
-
-[node name="GlowCore" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton/FallbackVisual"]
-color = Color(0.96, 1, 0.42, 0.96)
-polygon = PackedVector2Array(0, -22, 14, -8, 22, 0, 14, 8, 0, 22, -14, 8, -22, 0, -14, -8)
-
-[node name="GlowHalo" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton/FallbackVisual"]
-color = Color(0.52, 1, 0.82, 0.18)
-polygon = PackedVector2Array(0, -58, 30, -34, 58, 0, 30, 34, 0, 58, -30, 34, -58, 0, -30, -34)
+[node name="Visuals" parent="ResourcePickups/DeepGlowPlankton" instance=ExtResource("12_glow_plankton_visual")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/DeepGlowPlankton"]
 shape = SubResource("CircleShape2D_pickup")

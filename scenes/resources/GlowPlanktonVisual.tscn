@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://glow_plankton_visual"]
+
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/resource_glow_plankton_sprite_v1.svg" id="1_glow_sprite"]
+
+[node name="Visuals" type="Node2D"]
+
+[node name="SpriteAnchor" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="SpriteAnchor"]
+texture = ExtResource("1_glow_sprite")
+
+[node name="FallbackVisual" type="Node2D" parent="."]
+visible = false
+
+[node name="Visual" type="Polygon2D" parent="FallbackVisual"]
+color = Color(0.7, 1, 0.28, 1)
+polygon = PackedVector2Array(0, -38, 12, -12, 42, -8, 18, 10, 24, 38, 0, 20, -24, 38, -18, 10, -42, -8, -12, -12)
+
+[node name="GlowCore" type="Polygon2D" parent="FallbackVisual"]
+color = Color(1, 1, 0.4, 0.86)
+polygon = PackedVector2Array(-20, -8, 0, -18, 20, -8, 22, 8, 0, 18, -22, 8)
+
+[node name="GlowHalo" type="Polygon2D" parent="FallbackVisual"]
+color = Color(0.5, 1, 0.8, 0.22)
+polygon = PackedVector2Array(0, -66, 44, -44, 66, 0, 44, 44, 0, 66, -44, 44, -66, 0, -44, -44)

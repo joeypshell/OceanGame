@@ -150,6 +150,8 @@ Final art should replace readable prototypes, not redefine the gameplay state mo
 
 Committed asset source conventions live under `assets/`: `assets/source/` for editable source files and prompts, `assets/exports/` for runtime-ready committed art used by the Godot project, and `assets/licenses/` for attribution/provenance notes. Godot caches, `.import` metadata, local screenshots, and platform builds stay out of source control.
 
+Resource pickup gameplay nodes stay in `scenes/Main.tscn` as `Area2D` owners for definitions, collision, scan groups, spawn placement, and cargo behavior. Replaceable resource art lives in reusable child scenes under `scenes/resources/`, with `SpriteAnchor/Sprite` and `FallbackVisual` children preserving the placeholder-to-asset workflow.
+
 ## State-Management Guardrails
 
 - Do not let visual effects mutate durable progression directly.

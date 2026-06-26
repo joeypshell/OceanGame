@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://shell_fragments_visual"]
+
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/resource_shell_fragments_sprite_v1.svg" id="1_shell_sprite"]
+
+[node name="Visuals" type="Node2D"]
+
+[node name="SpriteAnchor" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="SpriteAnchor"]
+texture = ExtResource("1_shell_sprite")
+
+[node name="FallbackVisual" type="Node2D" parent="."]
+visible = false
+
+[node name="Visual" type="Polygon2D" parent="FallbackVisual"]
+color = Color(0.96, 0.78, 0.48, 1)
+polygon = PackedVector2Array(-36, 16, -24, -12, -2, -30, 24, -20, 38, 8, 14, 30, -16, 30)
+
+[node name="ShellRibA" type="Polygon2D" parent="FallbackVisual"]
+color = Color(1, 0.94, 0.68, 0.68)
+polygon = PackedVector2Array(-21, 20, -16, 18, -4, -19, -8, -20)
+
+[node name="ShellRibB" type="Polygon2D" parent="FallbackVisual"]
+color = Color(1, 0.94, 0.68, 0.58)
+polygon = PackedVector2Array(-3, 24, 2, 23, 3, -23, -2, -23)
+
+[node name="ShellRibC" type="Polygon2D" parent="FallbackVisual"]
+color = Color(1, 0.94, 0.68, 0.62)
+polygon = PackedVector2Array(16, 20, 20, 17, 11, -15, 7, -13)

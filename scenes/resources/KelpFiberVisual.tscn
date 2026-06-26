@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://kelp_fiber_visual"]
+
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/resource_kelp_fiber_sprite_v1.svg" id="1_kelp_sprite"]
+
+[node name="Visuals" type="Node2D"]
+
+[node name="SpriteAnchor" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="SpriteAnchor"]
+texture = ExtResource("1_kelp_sprite")
+
+[node name="FallbackVisual" type="Node2D" parent="."]
+visible = false
+
+[node name="Visual" type="Polygon2D" parent="FallbackVisual"]
+color = Color(0.16, 0.78, 0.34, 1)
+polygon = PackedVector2Array(-12, 34, -18, 6, -10, -30, 2, -44, 12, -18, 8, 12, 22, 32, 4, 20)
+
+[node name="FrondA" type="Polygon2D" parent="FallbackVisual"]
+color = Color(0.36, 1, 0.54, 0.86)
+polygon = PackedVector2Array(-8, 26, -30, 8, -24, -16, -6, -2, 0, 22)
+
+[node name="FrondB" type="Polygon2D" parent="FallbackVisual"]
+color = Color(0.1, 0.55, 0.3, 0.88)
+polygon = PackedVector2Array(4, 20, 22, 0, 28, -28, 10, -8, 0, 22)
+
+[node name="StemLine" type="Polygon2D" parent="FallbackVisual"]
+color = Color(0.72, 1, 0.68, 0.58)
+polygon = PackedVector2Array(-4, 28, 1, 24, 4, -30, -1, -26)
