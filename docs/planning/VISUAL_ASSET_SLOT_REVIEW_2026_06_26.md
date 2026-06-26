@@ -21,7 +21,7 @@ This review does not replace any additional art. Larger visual replacements shou
 | Gulper Eel | `Predators/GulperEel/SpriteAnchor/Sprite` plus `FallbackVisual`, `PatrolHint`, and `ScanMarker` | Replaceable while preserving predator behavior/state visuals. Covered by tests. Future sprite work should preserve state tint/hint nodes. |
 | Thermal Vent pocket | `ThermalVentPocket/Visuals/SpriteAnchor/Sprite` plus `FallbackGeometry` in `scenes/readability/ThermalVentPocketVisuals.tscn` | Good extracted landmark-readability scene. Covered by tests. |
 | Thermal Vent scan target | `Discoveries/ThermalVent/SpriteAnchor/Sprite` plus `FallbackVisual`, `ScanMarker`, and collision | Consistent scannable pattern. Covered by tests. |
-| Shell Reef pocket | `ShellReefPocket/SpriteAnchor/Sprite` plus `FallbackGeometry` | Consistent landmark pocket pattern. Covered by tests. |
+| Shell Reef pocket | `ShellReefPocket/Visuals/SpriteAnchor/Sprite` plus `FallbackGeometry` in `scenes/readability/ShellReefPocketVisuals.tscn` | Good extracted landmark-readability scene. Covered by tests. |
 | Shell Reef Shelf scan target | `Discoveries/ShellReefShelf/SpriteAnchor/Sprite` plus `FallbackVisual`, `ScanMarker`, and collision | Consistent scannable pattern. Covered by tests. |
 | Pressure-Locked Research Wreck | `PressureLockedWreck/SpriteAnchor/Sprite` plus `FallbackGeometry`; pressure gate visuals extracted as child scene | Consistent landmark/gate pattern. Covered by tests. |
 | Wreck outside scan target | `PressureLockedWreck/OuterScan/SpriteAnchor/Sprite` plus `FallbackVisual`, `ScanMarker`, and collision | Consistent scannable pattern. Covered by tests. |
@@ -62,10 +62,10 @@ The player may keep its dedicated `VisualRoot` because it owns facing/motion pre
 
 ## Follow-Up Candidates
 
-- Consider extracting `ShellReefPocket` into `scenes/readability/` if its geometry grows the way Thermal Vent did.
+- Shell Reef pocket extraction is complete; future work should focus on a source/export art replacement once the landmark composition is stable.
 - Consider extracting `PressureLockedWreck` hull/cache visuals only after the pressure gate, cache, and Echo Lens direction stabilize.
 - Add source/export/provenance assets for Lantern Fry, Gulper Eel, Thermal Vent, pressure wreck, and cache in separate visual replacement issues.
 
 ## Verification
 
-Updated `tests/logic_tests.gd` to include player and surface base visual slot checks in the sprite-ready scene contract test. Existing tests already cover resource scenes, Lantern Fry, Gulper Eel, Thermal Vent, Shell Reef, pressure wreck, outside scan target, and Wreck Signal Cache paths.
+Updated `tests/logic_tests.gd` to include player, surface base, and extracted Shell Reef pocket visual slot checks in the sprite-ready scene contract test. Existing tests also cover resource scenes, Lantern Fry, Gulper Eel, Thermal Vent, pressure wreck, outside scan target, and Wreck Signal Cache paths.

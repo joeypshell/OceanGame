@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://shell_reef_pocket_visuals"]
+
+[node name="ShellReefPocketVisuals" type="Node2D"]
+
+[node name="SpriteAnchor" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="SpriteAnchor"]
+
+[node name="FallbackGeometry" type="Node2D" parent="."]
+
+[node name="LandmarkWash" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.86, 0.78, 0.58, 0.2)
+polygon = PackedVector2Array(92, 992, 348, 930, 662, 996, 918, 1144, 826, 1284, 490, 1260, 196, 1248, 30, 1156)
+
+[node name="ReefShelf" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.18, 0.22, 0.24, 0.58)
+polygon = PackedVector2Array(134, 1068, 314, 1014, 486, 1046, 612, 1122, 748, 1102, 876, 1176, 750, 1246, 520, 1226, 392, 1192, 210, 1224, 70, 1168)
+
+[node name="ShellBedHighlight" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.94, 0.84, 0.58, 0.26)
+polygon = PackedVector2Array(142, 1078, 310, 1038, 482, 1070, 618, 1134, 736, 1122, 824, 1174, 724, 1212, 520, 1200, 386, 1166, 224, 1192, 104, 1160)
+
+[node name="ShellFanA" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.96, 0.78, 0.5, 0.92)
+polygon = PackedVector2Array(236, 1062, 282, 982, 318, 1060, 356, 1004, 374, 1084, 302, 1110)
+
+[node name="ShellFanARibs" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(1, 0.96, 0.72, 0.48)
+polygon = PackedVector2Array(282, 1082, 288, 1078, 282, 1002, 276, 1004, 304, 1086, 310, 1082, 340, 1024, 334, 1022, 260, 1074, 266, 1078, 250, 1030, 244, 1032)
+
+[node name="ShellFanB" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.82, 0.94, 0.82, 0.64)
+polygon = PackedVector2Array(450, 1090, 488, 1014, 526, 1084, 570, 1038, 582, 1122, 500, 1138)
+
+[node name="ShellFanBRibs" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.98, 1, 0.8, 0.38)
+polygon = PackedVector2Array(500, 1114, 506, 1110, 490, 1034, 484, 1036, 526, 1110, 532, 1106, 554, 1058, 548, 1056, 474, 1108, 480, 1112)
+
+[node name="CoralShardA" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.66, 0.78, 0.86, 0.52)
+polygon = PackedVector2Array(634, 1122, 650, 1050, 674, 1128, 710, 1070, 700, 1160, 662, 1168)
+
+[node name="CoralShardB" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.94, 0.64, 0.52, 0.5)
+polygon = PackedVector2Array(760, 1182, 778, 1118, 802, 1184, 834, 1148, 822, 1222, 786, 1230)
+
+[node name="ReefCurrentGap" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.72, 0.96, 1, 0.08)
+polygon = PackedVector2Array(846, 1018, 1008, 1054, 1138, 1232, 1074, 1302, 936, 1170, 790, 1098)
+
+[node name="ReefReturnCurrent" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.52, 1, 0.86, 0.26)
+polygon = PackedVector2Array(414, 1014, 624, 894, 708, 938, 548, 1046, 668, 1058, 596, 1122, 468, 1082)
+
+[node name="ReefReturnBeacon" type="Polygon2D" parent="FallbackGeometry"]
+color = Color(0.74, 1, 0.9, 0.38)
+polygon = PackedVector2Array(610, 922, 646, 874, 682, 922, 646, 950)
