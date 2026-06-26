@@ -249,6 +249,14 @@ polygon = PackedVector2Array(910, 1320, 1006, 1372, 1060, 1690, 1118, 1900, 1010
 color = Color(0.74, 1, 0.26, 0.26)
 polygon = PackedVector2Array(1018, 1668, 1060, 1712, 1116, 1718, 1070, 1760, 1086, 1824, 1028, 1788, 970, 1818, 988, 1756, 940, 1710, 1002, 1710)
 
+[node name="RewardCore" type="Polygon2D" parent="DeepRewardLure"]
+color = Color(0.9, 1, 0.34, 0.58)
+polygon = PackedVector2Array(1030, 1704, 1050, 1724, 1078, 1738, 1050, 1752, 1030, 1772, 1010, 1752, 982, 1738, 1010, 1724)
+
+[node name="RewardPing" type="Polygon2D" parent="DeepRewardLure"]
+color = Color(0.84, 1, 0.45, 0.18)
+polygon = PackedVector2Array(940, 1688, 982, 1674, 970, 1706, 1074, 1748, 1128, 1736, 1086, 1714)
+
 [node name="LureParticles" type="Polygon2D" parent="DeepRewardLure"]
 color = Color(0.84, 1, 0.45, 0.3)
 polygon = PackedVector2Array(920, 1334, 932, 1318, 946, 1336, 932, 1352, 952, 1438, 966, 1420, 982, 1442, 964, 1458, 1056, 1628, 1070, 1612, 1084, 1632, 1068, 1648)
