@@ -95,16 +95,16 @@ The vertical slice is playable when a tester can complete two short expeditions,
 
 ## Current Acceptance Status
 
-Updated after the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, resource/scan, low-oxygen, upgrade, scanner-distinction, and durable-progression reviews: the current slice is accepted as structurally playable and close to polished vertical-slice acceptance, but not yet declared fully polished.
+Updated after the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, resource/scan, low-oxygen, upgrade, scanner-distinction, durable-progression, clean demo, and surface-panel contrast reviews: the current slice is accepted as structurally playable and close to polished vertical-slice acceptance, but not yet declared fully polished.
 
-It remains pass-with-watchlist because final evidence still needs a clean playable demo script, surface panel contrast recheck, debug hidden-state sanity review, and MCP context refresh after the playable-loop polish batch. Future visual changes can also reintroduce lower-route or HUD confusion, so this status should remain conservative.
+It remains pass-with-watchlist because final evidence still needs a debug hidden-state sanity review and MCP context refresh after the playable-loop polish batch. Future visual changes can also reintroduce lower-route, surface-panel, or HUD confusion, so this status should remain conservative.
 
 This is internal development evidence, not blind validation.
 
 | Area | Status | Evidence | Remaining Watchlist |
 | --- | --- | --- | --- |
 | Core loop | Pass | Clean-save two-expedition smoke, solo first-run result, compact evidence bundle | Keep normal play-feel checks when art, HUD, or route density changes. |
-| Ready screen | Pass with watchlist | Solo first-run result, surface ready/result reviews, final compact HUD review | Surface panel contrast after final HUD polish remains the next evidence check. |
+| Ready screen | Pass with watchlist | Solo first-run result, surface ready/result reviews, final compact HUD review, surface panel contrast review | Recheck only if boat scale, waterline placement, panel opacity, background art, or copy changes. |
 | Active dive | Pass with watchlist | Active HUD review, compact HUD placement, low/critical oxygen review, final compact HUD evidence bundle | Fixed top-left HUD can cover incidental left-side art; do not expand UI to solve this yet. |
 | Pickup/scan | Pass with watchlist | Evidence bundle, scanner/resource tests, Signal Lens/Echo Lens review, resource/scan affordance review | New resource/scan source-art is deferred unless future evidence shows concrete confusion. |
 | Return/failure | Pass with watchlist | Clean-save smoke, result memory review, solo first-run result, durable progression/reset review | Maintain the distinction between durable progress and temporary active-dive state. |
@@ -132,11 +132,9 @@ Accepted or cleared:
 
 Remaining before declaring the gate fully polished:
 
-- clean vertical-slice demo script for a repeatable playable pass,
-- surface panel contrast review after final HUD polish,
 - debug hidden-state sanity review after the refreshed evidence,
 - MCP context refresh after the playable-loop polish batch,
-- continued lower-route and active-HUD watchlist after any future visual change.
+- continued lower-route, surface-panel, and active-HUD watchlist after any future visual change.
 
 Deferred:
 

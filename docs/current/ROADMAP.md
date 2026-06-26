@@ -103,6 +103,7 @@ Detailed design rules live in:
 - `docs/planning/SUB_IDLE_THRUST_SOURCE_ART_POLISH_CONSTRAINTS_2026_06_26.md`
 - `docs/planning/SURFACE_LAUNCH_RETURN_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/NEXT_SOURCE_ART_AFTER_MOONPOOL_DECISION_2026_06_26.md`
+- `docs/planning/SURFACE_PANEL_CONTRAST_REVIEW_AFTER_FINAL_HUD_2026_06_26.md`
 - `docs/planning/SHALLOW_MIDWATER_BACKGROUND_ART_PASS_CONSTRAINTS_2026_06_26.md`
 - `docs/planning/SHALLOW_MIDWATER_BACKGROUND_STUDY_WIRING_2026_06_26.md`
 - `docs/planning/SHALLOW_MIDWATER_BACKGROUND_READABILITY_REVIEW_2026_06_26.md`
@@ -206,9 +207,11 @@ Solo first-run result: `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_
 
 Vertical-slice evidence bundle: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` now consolidates the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, and resource/scan affordance reviews. It distinguishes pass, pass-with-watchlist, deferred, and out-of-scope items while keeping the slice pass-with-watchlist until formal status is updated.
 
-Vertical-slice acceptance status: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` now reflects the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, resource/scan, low-oxygen, upgrade, scanner-distinction, and durable-progression reviews. The slice is structurally playable and close to polished acceptance, but remains pass-with-watchlist until the demo script, surface panel contrast, debug hidden-state sanity, MCP refresh, and future visual-change watchlists are cleared.
+Vertical-slice acceptance status: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` now reflects the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, resource/scan, low-oxygen, upgrade, scanner-distinction, durable-progression, clean demo, and surface-panel contrast reviews. The slice is structurally playable and close to polished acceptance, but remains pass-with-watchlist until debug hidden-state sanity, MCP refresh, and future visual-change watchlists are cleared.
 
 Vertical-slice clean demo script: `docs/planning/VERTICAL_SLICE_CLEAN_DEMO_SCRIPT_2026_06_26.md` gives a short 5-to-8-minute manual pass for clean start/reset expectation, first dive, pickup or scan, return/failure, upgrade view, pressure/wreck promise, predator route read, and no-claim guardrails. It is solo/internal evidence, not blind validation.
+
+Surface panel contrast after final HUD polish: `docs/planning/SURFACE_PANEL_CONTRAST_REVIEW_AFTER_FINAL_HUD_2026_06_26.md` keeps ready, result, failure, upgrade, and log surface views as pass or pass-with-watchlist. Boat/moonpool art remains a strong first-read surface signal, and no immediate opacity or placement change is needed.
 
 Next milestone after closeout: `docs/planning/NEXT_MILESTONE_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines `Wreck Echo Preparation And Slice Polish`. It keeps current work focused on remaining readability watchlists, allows Wreck Echo planning and source-art selection, and keeps route implementation, broad biomes, minimap/checklist UI, combat systems, and final art lock deferred.
 
