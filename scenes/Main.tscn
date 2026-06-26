@@ -149,23 +149,23 @@ offset_bottom = 124.0
 color = Color(0.74, 0.96, 1, 1)
 
 [node name="BaseReturnColumn" type="Polygon2D" parent="."]
-color = Color(0.38, 1, 0.9, 0.09)
+color = Color(0.38, 1, 0.9, 0.14)
 polygon = PackedVector2Array(594, 124, 690, 124, 704, 2320, 578, 2320)
 
 [node name="BaseReturnRibShallow" type="Polygon2D" parent="."]
-color = Color(0.62, 1, 0.9, 0.12)
+color = Color(0.62, 1, 0.9, 0.18)
 polygon = PackedVector2Array(568, 438, 728, 438, 710, 470, 586, 470)
 
 [node name="BaseReturnRibMidwater" type="Polygon2D" parent="."]
-color = Color(0.62, 1, 0.9, 0.1)
+color = Color(0.62, 1, 0.9, 0.16)
 polygon = PackedVector2Array(558, 1010, 738, 1010, 716, 1046, 580, 1046)
 
 [node name="BaseReturnRibDeep" type="Polygon2D" parent="."]
-color = Color(0.62, 1, 0.9, 0.08)
+color = Color(0.62, 1, 0.9, 0.15)
 polygon = PackedVector2Array(546, 1648, 750, 1648, 724, 1688, 572, 1688)
 
 [node name="SurfaceSafetyGlow" type="Polygon2D" parent="."]
-color = Color(0.72, 1, 0.9, 0.16)
+color = Color(0.72, 1, 0.9, 0.22)
 polygon = PackedVector2Array(454, 120, 826, 120, 764, 300, 516, 300)
 
 [node name="ShallowLightRays" type="Polygon2D" parent="."]
@@ -211,19 +211,19 @@ color = Color(0.9, 0.62, 0.5, 0.4)
 polygon = PackedVector2Array(760, 1182, 778, 1118, 802, 1184, 834, 1148, 822, 1222, 786, 1230)
 
 [node name="ReefCurrentGap" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.72, 0.96, 1, 0.12)
+color = Color(0.72, 0.96, 1, 0.08)
 polygon = PackedVector2Array(846, 1018, 1008, 1054, 1138, 1232, 1074, 1302, 936, 1170, 790, 1098)
 
 [node name="ReefReturnCurrent" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.52, 1, 0.86, 0.15)
+color = Color(0.52, 1, 0.86, 0.22)
 polygon = PackedVector2Array(430, 1018, 626, 902, 702, 938, 552, 1044, 660, 1054, 596, 1114, 474, 1080)
 
 [node name="ReefReturnBeacon" type="Polygon2D" parent="ShellReefPocket"]
-color = Color(0.74, 1, 0.9, 0.24)
+color = Color(0.74, 1, 0.9, 0.34)
 polygon = PackedVector2Array(610, 922, 646, 874, 682, 922, 646, 950)
 
 [node name="DeepGlowHint" type="Polygon2D" parent="."]
-color = Color(0.52, 1, 0.22, 0.24)
+color = Color(0.52, 1, 0.22, 0.18)
 polygon = PackedVector2Array(806, 1420, 974, 1420, 1038, 1760, 744, 1760)
 
 [node name="DeepPressureHaze" type="Polygon2D" parent="."]
@@ -234,15 +234,15 @@ polygon = PackedVector2Array(0, 1460, 1280, 1460, 1280, 2320, 0, 2320)
 visible = false
 
 [node name="CurrentTrail" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.5, 1, 0.35, 0.13)
+color = Color(0.5, 1, 0.35, 0.09)
 polygon = PackedVector2Array(910, 1320, 1006, 1372, 1060, 1690, 1118, 1900, 1010, 1846, 954, 1510)
 
 [node name="DistantBloom" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.74, 1, 0.26, 0.34)
+color = Color(0.74, 1, 0.26, 0.26)
 polygon = PackedVector2Array(1018, 1668, 1060, 1712, 1116, 1718, 1070, 1760, 1086, 1824, 1028, 1788, 970, 1818, 988, 1756, 940, 1710, 1002, 1710)
 
 [node name="LureParticles" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.84, 1, 0.45, 0.42)
+color = Color(0.84, 1, 0.45, 0.3)
 polygon = PackedVector2Array(920, 1334, 932, 1318, 946, 1336, 932, 1352, 952, 1438, 966, 1420, 982, 1442, 964, 1458, 1056, 1628, 1070, 1612, 1084, 1632, 1068, 1648)
 
 [node name="PressureLockedWreck" type="Node2D" parent="."]
@@ -366,7 +366,7 @@ color = Color(0.96, 1, 0.82, 0.22)
 polygon = PackedVector2Array(34, 20, 50, -18, 68, 8, 92, -44, 112, -14, 132, -72, 148, -42)
 
 [node name="WarmCurrentRibbon" type="Polygon2D" parent="ThermalVentPocket"]
-color = Color(0.72, 1, 0.62, 0.12)
+color = Color(0.72, 1, 0.62, 0.09)
 polygon = PackedVector2Array(-28, -42, 108, -88, 222, -54, 154, -8, 238, 30, 92, 56, -18, 16)
 
 [node name="WreckSignalHint" type="Node2D" parent="."]
@@ -382,7 +382,7 @@ visible = false
 
 [node name="RouteArrow" type="Polygon2D" parent="VentRouteHint"]
 position = Vector2(588, 1290)
-color = Color(0.62, 1, 0.72, 0.12)
+color = Color(0.62, 1, 0.72, 0.08)
 polygon = PackedVector2Array(-132, -22, 18, -58, 126, -28, 74, 14, 122, 38, -26, 52, -112, 14)
 
 [node name="DepthMarkers" type="Node2D" parent="."]
