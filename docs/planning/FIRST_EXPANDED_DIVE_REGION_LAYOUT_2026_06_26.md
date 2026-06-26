@@ -35,7 +35,7 @@ Recommended first-pass coordinate intent:
 
 1. Wider camera/world bounds. Implemented in #446 with expanded right-side travel room, matching camera limits, and widened base ocean bands.
 2. One side-route branch with placeholder terrain/readability shapes. Implemented in #447 as the first `East Shelf Spur` scaffold with current wash, shelf silhouettes, route ribs, gap cue, and terminal pocket hint.
-3. One pocket entrance, either cave-like or wreck-hatch-like.
+3. One pocket entrance, either cave-like or wreck-hatch-like. Implemented in #448 as a visible far-end pocket mouth with rim, threshold glow, and leftward exit-current cue; no interior system yet.
 4. One stable landmark: `East Shelf Arch`.
 5. Safe-return cues pointing back toward the surface/base column.
 6. One seeded daily opportunity using authored candidates.

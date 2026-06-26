@@ -312,6 +312,25 @@ polygon = PackedVector2Array(1630, 1366, 1744, 1344, 1818, 1390, 1710, 1424)
 color = Color(0.26, 0.45, 0.5, 0.2)
 polygon = PackedVector2Array(1828, 1488, 1920, 1446, 2014, 1508, 2038, 1598, 1944, 1664, 1832, 1618)
 
+[node name="PocketEntrance" type="Node2D" parent="EastShelfSpur"]
+position = Vector2(1924, 1560)
+
+[node name="MouthShadow" type="Polygon2D" parent="EastShelfSpur/PocketEntrance"]
+color = Color(0.004, 0.028, 0.048, 0.68)
+polygon = PackedVector2Array(-96, -58, -22, -92, 72, -62, 110, 0, 74, 62, -28, 92, -104, 48)
+
+[node name="OuterRim" type="Polygon2D" parent="EastShelfSpur/PocketEntrance"]
+color = Color(0.18, 0.35, 0.39, 0.42)
+polygon = PackedVector2Array(-132, -82, -26, -126, 96, -84, 148, 0, 96, 84, -32, 124, -138, 72, -104, 38, -34, 72, 66, 48, 102, 0, 66, -48, -28, -74, -102, -38)
+
+[node name="ThresholdGlow" type="Polygon2D" parent="EastShelfSpur/PocketEntrance"]
+color = Color(0.58, 0.96, 0.9, 0.18)
+polygon = PackedVector2Array(-82, -8, -18, -34, 62, -22, 86, 0, 62, 22, -18, 34, -82, 8)
+
+[node name="ExitCurrentCue" type="Polygon2D" parent="EastShelfSpur/PocketEntrance"]
+color = Color(0.72, 1, 0.92, 0.12)
+polygon = PackedVector2Array(-42, 72, -172, 42, -246, 56, -184, 16, -246, -24, -170, -10, -40, -44)
+
 [node name="ShellReefPocket" type="Node2D" parent="."]
 
 [node name="Visuals" parent="ShellReefPocket" instance=ExtResource("17_shell_reef_pocket_visuals")]

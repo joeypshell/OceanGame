@@ -632,15 +632,26 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/RouteRibA",
 		"EastShelfSpur/RouteRibB",
 		"EastShelfSpur/TerminalPocketHint",
+		"EastShelfSpur/PocketEntrance",
+		"EastShelfSpur/PocketEntrance/MouthShadow",
+		"EastShelfSpur/PocketEntrance/OuterRim",
+		"EastShelfSpur/PocketEntrance/ThresholdGlow",
+		"EastShelfSpur/PocketEntrance/ExitCurrentCue",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
 
 	var approach_current := main.get_node("EastShelfSpur/ApproachCurrent") as Polygon2D
 	var terminal_hint := main.get_node("EastShelfSpur/TerminalPocketHint") as Polygon2D
+	var pocket_entrance := main.get_node("EastShelfSpur/PocketEntrance") as Node2D
+	var mouth_shadow := main.get_node("EastShelfSpur/PocketEntrance/MouthShadow") as Polygon2D
+	var exit_current := main.get_node("EastShelfSpur/PocketEntrance/ExitCurrentCue") as Polygon2D
 	_expect(approach_current.polygon[1].x >= 1200.0, "East Shelf Spur should branch right of the existing main column")
 	_expect(terminal_hint.polygon[terminal_hint.polygon.size() - 1].x >= 1800.0, "East Shelf Spur should reach into the expanded camera space")
 	_expect(approach_current.color.a <= 0.14, "East Shelf Spur current cue should stay subtle until full route art exists")
+	_expect(pocket_entrance.position.x >= 1880.0, "East Shelf pocket entrance should sit at the far end of the side route")
+	_expect(mouth_shadow.color.a >= 0.6, "East Shelf pocket entrance should read as an opening, not another translucent current")
+	_expect(exit_current.polygon[1].x < exit_current.polygon[0].x, "East Shelf pocket exit cue should point back left toward the main route")
 
 	main.free()
 
