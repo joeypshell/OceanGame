@@ -233,6 +233,8 @@ Monster Research II guardrail coverage: `docs/planning/MONSTER_RESEARCH_II_NON_C
 
 Gulper/Decoy result clarity after Monster Research II: `docs/planning/GULPER_DECOY_RESULT_CLARITY_AFTER_MONSTER_RESEARCH_II_2026_06_26.md` keeps the current scan/contact/Decoy result copy as pass-with-watchlist. No runtime or copy change is needed; if `bent the Gulper route briefly` later feels too abstract, use a copy-only tune rather than adding field-guide, checklist, combat, capture, harvest, or health UI.
 
+Next readability target after deep reward lure: `docs/planning/NEXT_READABILITY_TARGET_AFTER_DEEP_REWARD_LURE_2026_06_26.md` selects the lower-route pressure/cache/reward/predator cue stack as the next narrow target. The next step should review composition pileup and tune cue priority before adding another asset; source art is only a backup if tuning cannot separate the meanings.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
