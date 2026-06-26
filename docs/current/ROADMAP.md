@@ -58,6 +58,7 @@ Detailed design rules live in:
 - `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md`
 - `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.md`
+- `docs/planning/SURFACE_MOONPOOL_WATERLINE_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -157,6 +158,8 @@ Clean-save smoke pass: `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_
 Decoy Pulse owned-state review: `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md` keeps `Decoy Pulse I` acceptable as one-use non-lethal route-timing counterplay. The main watchlist is active prompt length when `Burst Thruster` and Decoy text appear together.
 
 Lower-route recheck: `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.md` keeps pressure gate, outside scan, Wreck Signal Cache, deep reward, predator lane, Rare Signal, and Echo Lens pulse as pass or pass-with-watchlist after the HUD and density changes. No new lower-route content should be added from this recheck.
+
+Surface moonpool/waterline review: `docs/planning/SURFACE_MOONPOOL_WATERLINE_REVIEW_2026_06_26.md` keeps the #264 source-art pass wired as pass-with-watchlist. Boat, waterline, moonpool column, safe base, launch, and result surface read as one system; translucent surface panels remain the #266 watchlist.
 
 ## Vertical-Slice Acceptance Status
 
