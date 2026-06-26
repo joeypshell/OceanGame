@@ -4,6 +4,8 @@ This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remai
 
 Current direction: build a 2D alien-ocean expedition game where every morning the ocean changes, the player dives for cargo and knowledge, and persistent discoveries plus upgrades unlock deeper remembered places.
 
+Active priority reset: `docs/planning/PROJECT_HEALTH_PIVOT_EXPANDED_DIVE_REGION_2026_06_26.md` supersedes the previous polish-heavy queue. The current slice is good enough to move forward as a foundation; the next work should make the playable ocean wider and more game-like through a first expanded dive region, side route, cave/wreck pocket, stable landmark, variable daily opportunity, upgrade-locked promise, safe-return readability, and cheaper tiered testing.
+
 Detailed design rules live in:
 
 - `docs/planning/CORE_LOOP_RULES.md`
