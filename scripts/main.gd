@@ -469,9 +469,9 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 	elif _scan_target_id(target) == "lantern_fry":
 		return " Nearby Glow Plankton pulsed again."
 	elif _scan_target_id(target) == "thermal_vent":
-		return " Warm-current clue refreshed; glow route remains optional."
+		return " Warm clue refreshed; glow route optional."
 	elif _scan_target_id(target) == "shell_reef_shelf":
-		return " Shell Reef route clue refreshed."
+		return " Reef route clue refreshed."
 	elif _scan_target_id(target) == "gulper_eel":
 		return " %s" % _format_decoy_pulse_scan_feedback()
 
@@ -542,18 +542,18 @@ func _format_first_scan_guidance(target: Node) -> String:
 		"lantern_fry":
 			return " Follow the plankton pulse if oxygen allows, then return to base."
 		"thermal_vent":
-			return " Follow warm current toward glow only if oxygen allows; otherwise return with the Pressure Seal clue."
+			return " Warm current marks optional glow; bank Pressure Seal clue."
 		"shell_reef_shelf":
-			return " Use the reef as a midwater bank route, or push deeper only if oxygen allows."
+			return " Reef marks a safer midwater bank route."
 		"pressure_wreck_signal":
 			if progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID):
-				return " Pressure Seal I is installed: enter if oxygen allows, then scan the cache."
+				return " Pressure Seal active: enter and scan cache if oxygen allows."
 
-			return " Route locked for now: buy Pressure Seal I at the surface, then return."
+			return " Locked: buy Pressure Seal I, then return."
 		"wreck_signal_cache":
-			return " Return to base with this discovery; future scanner upgrades can use the clue."
+			return " Bank cache clue for future scanner upgrades."
 		"gulper_eel":
-			return " Use the warning current and patrol hint to time the route, or return with cargo."
+			return " Time warning current, or return with cargo."
 		_:
 			return " Use the clue if it helps, then return to base before oxygen runs out."
 

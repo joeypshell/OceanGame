@@ -584,10 +584,10 @@ func _test_thermal_vent_scan_clue_text() -> void:
 	target.description = "Warm current."
 
 	var first_guidance := main._format_first_scan_guidance(target)
-	_expect(first_guidance.contains("warm current"), "thermal vent first scan should name the warm-current clue")
-	_expect(first_guidance.contains("glow only if oxygen allows"), "thermal vent first scan should keep glow route optional")
+	_expect(first_guidance.contains("Warm current"), "thermal vent first scan should name the warm-current clue")
+	_expect(first_guidance.contains("optional glow"), "thermal vent first scan should keep glow route optional")
 	_expect(first_guidance.contains("Pressure Seal clue"), "thermal vent first scan should explain pressure-seal knowledge")
-	_expect(main._format_repeat_scan_effect_text(target).contains("glow route remains optional"), "thermal vent repeat scan should stay concise and optional")
+	_expect(main._format_repeat_scan_effect_text(target).contains("glow route optional"), "thermal vent repeat scan should stay concise and optional")
 	target.free()
 	main.free()
 
@@ -599,7 +599,7 @@ func _test_shell_reef_scan_clue_text() -> void:
 	target.description = "Reef shelf."
 
 	_expect(main._format_discovery_name("shell_reef_shelf") == "Shell Reef Shelf", "shell reef discovery should have a readable name")
-	_expect(main._format_repeat_scan_effect_text(target).contains("Shell Reef route clue refreshed"), "shell reef repeat scan should give compact feedback")
+	_expect(main._format_repeat_scan_effect_text(target).contains("Reef route clue refreshed"), "shell reef repeat scan should give compact feedback")
 	_expect(main._format_first_scan_guidance(target).contains("midwater bank route"), "shell reef first scan should explain the route decision")
 	_expect(main._format_scan_target_type(target) == "environment", "shell reef scan target should be environmental metadata")
 	target.free()
@@ -613,14 +613,14 @@ func _test_pressure_lock_guidance_text() -> void:
 	target.description = "Pressure lock."
 
 	var locked_guidance := main._format_first_scan_guidance(target)
-	_expect(locked_guidance.contains("Route locked"), "pressure lock guidance should first say the route is blocked")
-	_expect(locked_guidance.contains("buy Pressure Seal I at the surface"), "pressure lock guidance should name the surface upgrade step")
+	_expect(locked_guidance.contains("Locked"), "pressure lock guidance should first say the route is blocked")
+	_expect(locked_guidance.contains("buy Pressure Seal I"), "pressure lock guidance should name the surface upgrade step")
 	_expect(locked_guidance.contains("then return"), "pressure lock guidance should explain the return loop")
 
 	main.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
 	var open_guidance := main._format_first_scan_guidance(target)
-	_expect(open_guidance.contains("enter if oxygen allows"), "open pressure route guidance should invite entry only if oxygen allows")
-	_expect(open_guidance.contains("scan the cache"), "open pressure route guidance should name the cache payoff")
+	_expect(open_guidance.contains("if oxygen allows"), "open pressure route guidance should invite entry only if oxygen allows")
+	_expect(open_guidance.contains("scan cache"), "open pressure route guidance should name the cache payoff")
 	target.free()
 	main.free()
 
