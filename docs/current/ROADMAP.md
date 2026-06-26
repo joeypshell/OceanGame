@@ -187,6 +187,8 @@ Player action prompt abstraction plan: `docs/planning/PLAYER_ACTION_PROMPT_ABSTR
 
 Post-prompt copy review: `docs/planning/RESULT_UPGRADE_ACTIVE_COPY_REVIEW_AFTER_PROMPT_ABSTRACTION_2026_06_26.md` keeps the prompt abstraction as pass-with-watchlist. Result and active HUD copy remain readable and keyboard-only; upgrade detail text still risks bottom-panel overflow and should stay on the narrow polish watchlist before a polished playable build.
 
+Vertical-slice evidence refresh after screenshot/prompt hardening: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` is refreshed through #393. Current Playwright evidence is state-asserted, includes metadata sidecars, covers low/critical oxygen and no-debug Wreck Echo result readback, and keeps the slice at `pass with watchlist` rather than polished acceptance.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
