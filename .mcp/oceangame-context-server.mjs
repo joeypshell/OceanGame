@@ -18,6 +18,7 @@ const resources = [
   ["oceangame://core-loop", "docs/planning/CORE_LOOP_RULES.md", "Core loop rules"],
   ["oceangame://seeded-expeditions", "docs/planning/DAILY_RUNS.md", "Seeded expedition guidance"],
   ["oceangame://game-vision", "docs/planning/GAME_VISION.md", "Game vision"],
+  ["oceangame://compulsion-identity-2026-06-26", "docs/planning/COMPULSION_IDENTITY_2026_06_26.md", "Compulsion identity direction"],
   ["oceangame://progression-ladder", "docs/planning/PROGRESSION_LADDER.md", "Progression ladder"],
   ["oceangame://predator-direction", "docs/planning/PREDATOR_INTERACTION_DIRECTION.md", "Predator interaction direction"],
   ["oceangame://blind-validation-kit", "docs/planning/BLIND_VALIDATION_KIT.md", "Blind validation kit"],
@@ -36,6 +37,7 @@ const resources = [
   ["oceangame://resource-economy-tuning-i", "docs/planning/RESOURCE_ECONOMY_TUNING_I.md", "Resource Economy Tuning I plan"],
   ["oceangame://thermal-vent-route-review-2026-06-25", "docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md", "Thermal Vent five-seed review"],
   ["oceangame://backlog-replenishment-thermal-vent-decoy", "docs/planning/BACKLOG_REPLENISHMENT_THERMAL_VENT_DECOY_2026_06_25.md", "Thermal Vent and Decoy backlog replenishment"],
+  ["oceangame://backlog-replenishment-visual-clarity-foundation-2026-06-26", "docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md", "Visual clarity foundation backlog replenishment"],
   ["oceangame://backlog-replenishment-after-shell-reef", "docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md", "Post-Shell-Reef backlog replenishment"],
   ["oceangame://backlog-replenishment-2026-06-25", "docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md", "Backlog replenishment"],
 ].map(([uri, filePath, name]) => ({
@@ -142,6 +144,8 @@ function selfTest() {
     "oceangame://expedition-goal-ii",
     "oceangame://backlog-replenishment-after-shell-reef",
     "oceangame://thermal-vent-route-review-2026-06-25",
+    "oceangame://compulsion-identity-2026-06-26",
+    "oceangame://backlog-replenishment-visual-clarity-foundation-2026-06-26",
     "oceangame://project-status",
   ];
   if (

@@ -1,6 +1,18 @@
 # Progression Ladder
 
-This is not a tech tree. It is a compact ladder for the first prototype progression steps. Every upgrade should unlock a route, choice, interaction, or strategy.
+This is not a tech tree. It is a compact ladder for the first prototype progression steps. Every upgrade should unlock a route, choice, interaction, verb, or strategy.
+
+## Upgrade Access Rule
+
+Prefer upgrades that create a remembered return moment:
+
+1. The player sees something desirable or strange.
+2. The player cannot safely reach or use it yet.
+3. Scanning, cargo, failure data, or lab analysis explains what is missing.
+4. The upgrade is purchased.
+5. The player returns and does something newly possible.
+
+Avoid future upgrades that are only larger numbers unless they directly create a new route decision.
 
 ## 1. Oxygen Tank I
 
@@ -47,3 +59,9 @@ This is not a tech tree. It is a compact ladder for the first prototype progress
 - Possible gate: a later implementation issue should decide whether it starts unlocked for testing or becomes a scan/material-gated module.
 - Constraint: non-lethal and recovery-focused. It should not damage predators or bypass pressure/progression gates.
 - Planning note: `docs/planning/BURST_THRUSTER_MILESTONE.md`.
+
+## Future Candidate: Region And Mystery Access
+
+- Purpose: make deeper ocean progress feel like uncovering forbidden places, not just buying stats.
+- Possible unlocks: pressure pockets, wreck interiors, hidden vent routes, predator-safe timing windows, strange scan signatures, and abyssal-region entrances.
+- Constraint: mystery clues should point toward curiosity and route planning, not exact checklist coordinates.

@@ -2,11 +2,28 @@
 
 ## Pitch
 
-Pilot a small research sub through short, seeded alien-ocean expeditions where every descent asks whether to push deeper for knowledge and cargo or return safely before oxygen runs out.
+Every morning the alien ocean changes. Pilot a fragile research sub, scan what the sea reveals today, and survive long enough to bring back the knowledge that lets you go deeper tomorrow.
+
+Short form:
+
+Pilot a small research sub through seeded alien-ocean expedition days where every descent asks whether to push deeper for knowledge and cargo or return safely before oxygen runs out.
 
 ## Player Role
 
 The player is an expedition pilot and field researcher working from a surface boat or shallow lab. They gather materials, scan useful discoveries, read predator behavior, and upgrade the sub to reach stranger and riskier opportunities.
+
+## Core Fantasy
+
+The player is a researcher-pilot slowly learning a dangerous alien ocean that changes each expedition day.
+
+The fantasy should be instantly legible:
+
+- the ocean is a coherent place,
+- today's conditions change the opportunity landscape,
+- knowledge survives failed dives,
+- upgrades open forbidden routes,
+- creatures have learnable behaviors,
+- deeper water implies a strange hidden mystery.
 
 ## Expedition Length
 
@@ -20,6 +37,14 @@ Each expedition should start calm and promising, become tense as oxygen, cargo, 
 
 The next expedition should offer a different route, a visible goal left behind, a newly understood resource, or an upgrade that changes what is reachable. Persistent knowledge should make the player feel smarter, not just stronger.
 
+The "one more expedition day" pull should come from:
+
+- a morning report that hints at today's condition or opportunity,
+- a visible route or discovery the player could not reach yet,
+- lab analysis that turns scans and failure into useful knowledge,
+- an upgrade that opens a remembered place,
+- a mystery clue that points below the current safe depth.
+
 ## World Model
 
 The core world model is persistent geography with variable opportunity.
@@ -28,9 +53,26 @@ The player should learn stable places, landmarks, depth bands, and upgrade-locke
 
 This is an in-game expedition-day rhythm, not a required real-world daily challenge.
 
+Regions should become memory anchors, not only depth labels. Each major region should eventually have a fixed landmark, a variable daily opportunity, one major secret, one progression gate or promise, and one creature behavior theme. Initial region candidates are Surface Reef, Wreck Shelf, Thermal Vent Field, Pressure Trench, and Abyssal Ruins.
+
+## Surface Rhythm
+
+The surface phase should feel emotionally different from the ocean without becoming a management sim:
+
+- oxygen pressure stops,
+- cargo and scans are counted,
+- lab analysis clarifies what was learned,
+- upgrades and locked-route promises are surfaced,
+- the player sleeps or advances to the next expedition day,
+- the ocean condition shifts.
+
+This is the game's answer to a second loop: relief, analysis, upgrade, and changed opportunity.
+
 ## Distinction
 
 The game borrows underwater wonder from Subnautica but uses compact, seeded expedition days instead of a large fixed open world or a fully procedural ocean. It borrows the readable side-view descent and surface-return rhythm from Dave the Diver, but the focus is alien research, route risk, and roguelite expedition planning rather than restaurant/base management.
+
+It should also borrow the useful lesson from exploration hits without copying their systems: upgrades should open places, failures should teach, creatures should mean something, and secrets should imply a world deeper than the current prototype.
 
 ## Non-Goals
 

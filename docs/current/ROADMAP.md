@@ -2,7 +2,7 @@
 
 This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remain the active task contract; this file explains the active milestone, immediate issue order, success gates, completed work, and deferred scope.
 
-Current direction: build a 2D underwater roguelite about repeated expeditions into alien ocean biomes, where scanning, surviving, gathering, and predator counterplay unlock deeper opportunities.
+Current direction: build a 2D alien-ocean expedition game where every morning the ocean changes, the player dives for cargo and knowledge, and persistent discoveries plus upgrades unlock deeper remembered places.
 
 Detailed design rules live in:
 
@@ -38,6 +38,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_THERMAL_VENT_DECOY_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_DEMO_READABILITY_HYBRID_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md`
+- `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
@@ -54,16 +55,16 @@ Status: next ordered issue batch ready to execute.
 
 Goal: replace the most confusing placeholder visuals with a small reusable visual language so playtests can judge the core dive loop, route choices, danger, rewards, locks, and safe return without relying on large on-playfield text.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, `Decoy Pulse I`, surface result memory, compact surface views, clean-save reset, HUD mode separation, runtime compact markers, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a documented hybrid-ocean model, expedition-day condition data, visual `Thermal Bloom`/`Calm Current` effects, and the first narrow condition-driven authored `Glow Plankton` weighting rule. The next step is to make the normal play view visually legible and appealing enough for repeated route-loop testing.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, `Decoy Pulse I`, surface result memory, compact surface views, clean-save reset, HUD mode separation, runtime compact markers, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a documented hybrid-ocean model, expedition-day condition data, visual `Thermal Bloom`/`Calm Current` effects, and the first narrow condition-driven authored `Glow Plankton` weighting rule. The next step is to make the normal play view visually legible and appealing enough for repeated route-loop testing while sharpening the fantasy: a researcher-pilot returns to a known-but-changing alien ocean each expedition day.
 
-Latest batch plan: `docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md` chooses visual clarity before monster research, scanner progression depth, or another route pocket.
+Latest direction update: `docs/planning/COMPULSION_IDENTITY_2026_06_26.md` keeps the active visual-clarity batch but frames it around the "one more expedition day" loop: morning ocean change, risky dive, lab analysis, upgrade access, sleep, and a changed ocean tomorrow.
 
 ## Immediate Issue Order
 
 Visual baseline and rules track:
 
 - Capture a normal-scale visual clarity baseline screenshot set.
-- Define visual language style guide v1.
+- Define visual language style guide v1 around readability, alien-ocean research identity, daily-change cues, forbidden-route promise, and deeper mystery.
 - Create reusable marker scene patterns.
 
 Asset clarity track:
@@ -78,7 +79,10 @@ Review and future-planning track:
 - Run a post-asset lower-route overlap review.
 - Add visual review checklist and screenshot workflow docs.
 - Add debug seed/condition selection support for repeatable visual reviews.
-- Plan Monster Research Loop v1, Scanner Progression v2, and asset source pipeline conventions.
+- Plan Monster Research Loop v1 around learnable creature behavior.
+- Plan Scanner Progression v2 around partial information, curiosity, and route planning.
+- Plan asset source pipeline conventions.
+- In the next replenishment, consider day/sleep/ocean-change flow, first region identity map, and mystery spine before adding another large content system.
 
 Later design and demo-readiness issues:
 
@@ -102,6 +106,7 @@ The milestone succeeds only when:
 - route meaning is communicated primarily through shapes, color, placement, and compact HUD/status surfaces rather than paragraphs in the ocean,
 - asset source/export conventions are documented,
 - visual reviews are repeatable by seed and condition,
+- the visual language supports stable regions, daily variation, forbidden-route promises, and mystery clues,
 - no planned variation obscures surface direction, safe return, depth-band identity, or major upgrade-gated route promises.
 
 Technical implementation alone is not sufficient.

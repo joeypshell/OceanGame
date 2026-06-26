@@ -8,6 +8,16 @@ Every new mechanic should strengthen one question:
 
 Should the player continue downward or return safely now?
 
+## Compulsion Question
+
+Every expedition should leave at least one reason to start the next:
+
+- a visible place the player could not reach yet,
+- a scan clue that changed what the player understands,
+- a creature behavior the player can exploit later,
+- an upgrade that opens a remembered route,
+- a mystery hint below the current safe depth.
+
 ## Current-Dive State
 
 Current-dive state should remain temporary:
@@ -67,6 +77,8 @@ The scanner must be useful from its first implementation. Scan results should re
 
 Do not add scans that are only flavor before the core loop is proven.
 
+Scan phrasing should reveal enough to make the player curious and better prepared, but not so much that discoveries become checklist directions. The player should feel like a researcher interpreting clues, not following coordinates.
+
 Separate scanner outcomes into two layers:
 
 ### Permanent Discovery Knowledge
@@ -109,6 +121,7 @@ Scanner targeting must be legible:
 - Later upgrades may require both resources and a thematically related scan discovery.
 - Scan requirements must clearly explain why that knowledge unlocks the technology.
 - Do not add scan requirements merely to lengthen progression.
+- Favor upgrades that unlock routes, verbs, information, or creature counterplay over upgrades that only improve numbers.
 
 Initial candidates:
 

@@ -30,6 +30,7 @@ Resources:
 - `oceangame://core-loop`
 - `oceangame://seeded-expeditions`
 - `oceangame://game-vision`
+- `oceangame://compulsion-identity-2026-06-26`
 - `oceangame://progression-ladder`
 - `oceangame://predator-direction`
 - `oceangame://blind-validation-kit`
@@ -48,6 +49,7 @@ Resources:
 - `oceangame://resource-economy-tuning-i`
 - `oceangame://thermal-vent-route-review-2026-06-25`
 - `oceangame://backlog-replenishment-thermal-vent-decoy`
+- `oceangame://backlog-replenishment-visual-clarity-foundation-2026-06-26`
 - `oceangame://backlog-replenishment-after-shell-reef`
 - `oceangame://backlog-replenishment-2026-06-25`
 

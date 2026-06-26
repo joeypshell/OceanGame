@@ -17,6 +17,22 @@ The design shorthand is:
 
 Persistent geography, variable opportunity.
 
+The compulsion shorthand is:
+
+Every morning the alien ocean changes. Dive, scan, and survive long enough to bring back the knowledge that lets you go deeper tomorrow.
+
+## Target Day Loop
+
+The long-term expedition day should read as:
+
+1. Morning report: show the current ocean condition, one partial opportunity hint, and the current practical objective.
+2. Dive: gather, scan, observe creatures, manage oxygen/cargo, and decide whether to bank or push deeper.
+3. Return or failure: stop oxygen pressure, resolve cargo, preserve durable knowledge, and summarize the most important lesson.
+4. Evening lab analysis: turn scans, failures, and discoveries into upgrade clues, region knowledge, or mystery hints.
+5. Sleep/ocean shift: advance the expedition seed and condition so tomorrow feels familiar but changed.
+
+The surface phase should be relief and analysis, not restaurant/base management. It exists to create the next reason to dive.
+
 ## Expedition Shape
 
 - Start from the surface boat/lab with persistent upgrades, banked resources, scan knowledge, and unlocked equipment.
@@ -41,9 +57,20 @@ Introduce randomization in controlled layers:
 
 The authored vertical slice is still the proving ground. Avoid full procedural biomes until expedition decisions are fun and readable.
 
+## First-60-Seconds Rule
+
+Each expedition should quickly give the player a reward, a decision, and a hint of something bigger:
+
+- within 10 seconds: see the base/safe return and first reachable opportunity,
+- within 30 seconds: see a deeper lure, landmark, or scan target,
+- within 60 seconds: make a real choice between banking, scanning, or pushing deeper.
+
+This rule should guide level layout, surface briefing, and visual clarity work.
+
 ## Persistent Geography Rules
 
 - Regions and landmarks should be stable enough for the player to remember.
+- Regions should eventually have a fixed landmark, variable daily opportunity, one major secret, one progression gate or promise, and one creature behavior theme.
 - Major gates should remain learnable promises, not hidden random walls.
 - Safe return direction must never be randomized into confusion.
 - Changes should be communicated as ocean conditions, migrations, currents, blooms, or temporary exposed routes rather than invisible dice rolls.

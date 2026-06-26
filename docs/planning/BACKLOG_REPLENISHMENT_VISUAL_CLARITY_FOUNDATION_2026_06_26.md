@@ -6,6 +6,8 @@ This batch follows the demo readability and hybrid-variation work that added cle
 
 The next milestone should make the prototype readable and appealing enough that playtests can judge the game loop instead of fighting placeholder shapes, overlapping cues, and unclear route language.
 
+After the compulsion-identity review, this milestone should also make the game's identity clearer: a researcher-pilot returns to a recognizable alien ocean that changes each expedition day.
+
 ## Current Read
 
 The core loop is now viable:
@@ -24,6 +26,13 @@ The biggest remaining risk is visual communication:
 - screenshots should be used as the main review artifact,
 - future monster/progression work should wait until the current route language is readable.
 
+The biggest strategic opportunity is compulsion:
+
+- the player needs a stronger "one more expedition day" reason,
+- regions should become memorable places rather than only depth bands,
+- mystery clues should imply something below the current safe depth,
+- upgrades should create return-to-a-remembered-place moments.
+
 ## Milestone Choice
 
 Choose visual language and playable clarity before monster research, progression depth, or another route pocket.
@@ -33,6 +42,7 @@ Reasoning:
 - Monster research and progression depth will add more UI and more world cues; doing them before a visual language pass risks increasing confusion.
 - Another route pocket would expand authored content before the existing pockets are readable.
 - The current prototype already has enough loop to test if players can see where to go, what is dangerous, what is optional, and how to return.
+- The day/sleep/ocean-change loop will land better once the player can visually recognize what stayed familiar and what changed.
 
 ## Batch Principles
 
@@ -42,6 +52,7 @@ Reasoning:
 - Keep world text minimal; explanations belong in compact HUD, ready/result panels, or docs.
 - Preserve authored hybrid-ocean constraints: no broad procedural regions, no minimap, no field guide, no weapons, no cargo grid inventory.
 - Verify with screenshots and normal-scale play checks, not only code tests.
+- Make the visual language serve alien-ocean research, daily change, forbidden-route promise, learnable creature behavior, and deeper mystery.
 
 ## Ordered Issue Batch
 
@@ -49,7 +60,7 @@ Reasoning:
    - Purpose: collect surface-ready, early dive, midwater reef, Thermal Vent, pressure lock, and Gulper route screenshots before asset changes.
 
 2. Define visual language style guide v1.
-   - Purpose: document palette, silhouette, marker, opacity, and depth-band rules for readable prototype art.
+   - Purpose: document palette, silhouette, marker, opacity, depth-band, daily-change, forbidden-route, and mystery-supporting rules for readable prototype art.
 
 3. Create reusable marker scene patterns.
    - Purpose: centralize scan, lock, return, danger, and reward marker shapes so future tuning is consistent.
@@ -88,10 +99,10 @@ Reasoning:
     - Purpose: clarify how to capture comparable images from the editor, local launch, or context tools.
 
 15. Plan Monster Research Loop v1.
-    - Purpose: define the next non-combat monster hunting/research step after visual clarity improves.
+    - Purpose: define the next non-combat creature research step around learnable behavior, practical knowledge, and progression payoff after visual clarity improves.
 
 16. Plan Scanner Progression v2 from Wreck Signal Cache.
-    - Purpose: decide the next scanner upgrade payoff without adding a field guide or minimap.
+    - Purpose: decide the next scanner upgrade payoff around partial information, curiosity, and route planning without adding a field guide or minimap.
 
 17. Plan first art asset source pipeline.
     - Purpose: decide whether assets start as generated bitmap sprites, hand-authored vector/polygon scenes, or a hybrid source folder.
@@ -103,7 +114,7 @@ Reasoning:
     - Purpose: confirm new assets do not obscure gameplay, break web viability, or degrade launch/test stability.
 
 20. Replenish backlog after visual clarity foundation.
-    - Purpose: choose whether to move next into monster research, scanner progression, economy depth, or another authored route pocket.
+    - Purpose: choose whether to move next into the day/sleep/ocean-change loop, region identity map, mystery spine, monster research, scanner progression, economy depth, or another authored route pocket.
 
 ## Success Gate
 
@@ -114,4 +125,5 @@ This batch succeeds when:
 - major route pockets have distinct silhouettes and color/opacity rules,
 - future assets have a documented source/export convention,
 - visual reviews are repeatable by seed and condition,
-- monster/progression planning is ready but not implemented ahead of visual clarity.
+- monster/progression planning is ready but not implemented ahead of visual clarity,
+- the next milestone decision explicitly considers day rhythm, region memory, mystery, and upgrade-as-access progression.

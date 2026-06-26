@@ -43,12 +43,21 @@ These should remain stable enough for the player to learn:
 Initial persistent region candidates:
 
 - Surface Base,
-- Shallow Reef,
+- Surface Reef,
 - Wreck Shelf,
 - Thermal Vent Field,
-- Pressure Trench.
+- Pressure Trench,
+- Abyssal Ruins.
 
 The prototype does not need all of these regions immediately. The current vertical slice can keep proving the model with Shell Reef, Thermal Vent, the pressure wreck, and the Gulper Eel route before expanding into a region-select flow.
+
+Each region should eventually be planned as a memory anchor:
+
+- fixed landmark,
+- variable daily opportunity,
+- major secret,
+- progression gate or promise,
+- creature behavior theme.
 
 ### Seeded Expedition Variation
 
@@ -77,6 +86,8 @@ Use "expedition day" as an in-game rhythm, not a real-world daily challenge.
 5. Night: the ocean state shifts and the next expedition seed becomes active.
 
 This creates daily rhythm without adding a restaurant, colony, or management game.
+
+The purpose of the day loop is compulsion: a player should end one expedition with a clearer reason to begin the next.
 
 ## Player Communication
 
