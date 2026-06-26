@@ -59,6 +59,7 @@ Detailed design rules live in:
 - `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.md`
 - `docs/planning/SURFACE_MOONPOOL_WATERLINE_REVIEW_2026_06_26.md`
+- `docs/planning/UPGRADE_TAB_NORMAL_SCALE_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -161,6 +162,8 @@ Lower-route recheck: `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.m
 
 Surface moonpool/waterline review: `docs/planning/SURFACE_MOONPOOL_WATERLINE_REVIEW_2026_06_26.md` keeps the #264 source-art pass wired as pass-with-watchlist. Boat, waterline, moonpool column, safe base, launch, and result surface read as one system; translucent surface panels remain the #266 watchlist.
 
+Upgrade tab normal-scale review: `docs/planning/UPGRADE_TAB_NORMAL_SCALE_REVIEW_2026_06_26.md` keeps the upgrade tab as pass-with-watchlist after the wrapping, surface art, and panel-opacity passes. Missing-resource, available, owned, scan-locked, and dependency-locked states stay inside the one-selected-upgrade panel model.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable, not yet polished accepted.
@@ -184,6 +187,10 @@ Remaining before calling the vertical-slice gate fully accepted:
 - convert smoke-pass watchlists into normal-scale acceptance evidence after the surface and lower-route follow-ups,
 - recheck `Decoy Pulse I` prompt length in normal-scale HUD evidence,
 - keep lower-route screenshots on the watchlist after any visual change, especially surface art or future Wreck Echo work.
+
+Cleared acceptance follow-ups:
+
+- upgrade tab overflow has normal-scale evidence after the wrapping and surface-panel opacity changes.
 
 ## Immediate Issue Order
 
