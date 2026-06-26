@@ -7,6 +7,7 @@ The current system is not a calendar-based daily challenge. It uses deterministi
 Related model:
 
 - `docs/planning/HYBRID_OCEAN_MODEL.md`
+- `docs/planning/EXPEDITION_DAY_CONDITIONS.md`
 
 ## Intent
 
