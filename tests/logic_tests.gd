@@ -55,6 +55,7 @@ func _initialize() -> void:
 	_run("shell reef scan clue text", _test_shell_reef_scan_clue_text)
 	_run("pressure lock guidance text", _test_pressure_lock_guidance_text)
 	_run("surface summary tabs", _test_surface_summary_tabs)
+	_run("condition briefing copy", _test_condition_briefing_copy)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("predator decoy pulse helper", _test_predator_decoy_pulse_helper)
 	_run("decoy pulse feedback text", _test_decoy_pulse_feedback_text)
@@ -635,6 +636,21 @@ func _test_surface_summary_tabs() -> void:
 	_expect(main._format_surface_tabs() == "Result  [Upgrades]  Log", "surface tabs should mark the upgrade view")
 	main.surface_tab_index = main.SURFACE_TAB_LOG
 	_expect(main._format_surface_tabs() == "Result  Upgrades  [Log]", "surface tabs should mark the log view")
+	main.free()
+
+func _test_condition_briefing_copy() -> void:
+	var main := MainScript.new()
+	main.current_expedition_condition = {
+		"id": "thermal_bloom",
+		"display_name": "Thermal Bloom",
+		"briefing": "Warm water stirs near the vent field.",
+		"tags": ["thermal", "scan"],
+	}
+
+	var briefing := main._format_condition_briefing()
+	_expect(briefing.contains("Condition: Thermal Bloom"), "condition briefing should show the player-facing condition name")
+	_expect(briefing.contains("Warm water stirs"), "condition briefing should show one short player-facing line")
+	_expect(not briefing.contains("thermal_bloom"), "condition briefing should not expose raw condition ids")
 	main.free()
 
 func _test_burst_thruster_movement_helper() -> void:

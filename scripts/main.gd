@@ -810,8 +810,9 @@ func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
 		run_title_label.text = "Expedition %d Ready" % progression_state.current_run_number
-		run_summary_label.text = _format_run_summary("Start with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\n%s\nPress E or Enter to begin." % [
+		run_summary_label.text = _format_run_summary("Start with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\n%s\n%s\nPress E or Enter to begin." % [
 			ceili(dive_session.max_oxygen),
+			_format_condition_briefing(),
 			ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions),
 		], "ready")
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
@@ -1149,6 +1150,15 @@ func _format_run_summary(player_summary: String, result_name: String) -> String:
 		return player_summary
 
 	return "%s\n%s" % [player_summary, _format_run_telemetry(result_name)]
+
+func _format_condition_briefing() -> String:
+	if current_expedition_condition.is_empty():
+		return "Condition: No unusual activity."
+
+	return "Condition: %s\n%s" % [
+		String(current_expedition_condition.get("display_name", "Unknown")),
+		String(current_expedition_condition.get("briefing", "")),
+	]
 
 func _format_route_choice_callout() -> String:
 	if run_predator_contacts > 0:
