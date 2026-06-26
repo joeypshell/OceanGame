@@ -73,6 +73,18 @@ Resources:
 - `oceangame://expedition-condition-visual-acceptance-review-2026-06-26`
 - `oceangame://result-memory-readability-review-2026-06-26`
 - `oceangame://upgrade-bay-readability-review-2026-06-26`
+- `oceangame://clean-save-two-expedition-smoke-pass-2026-06-26`
+- `oceangame://decoy-pulse-owned-state-review-2026-06-26`
+- `oceangame://lower-route-readability-recheck-2026-06-26`
+- `oceangame://surface-moonpool-waterline-review-2026-06-26`
+- `oceangame://upgrade-tab-normal-scale-review-2026-06-26`
+- `oceangame://no-debug-surface-capture-sanity-review-2026-06-26`
+- `oceangame://pressure-wreck-cache-recheck-after-surface-readability-2026-06-26`
+- `oceangame://pressure-wreck-cache-backup-art-pass-constraints-2026-06-26`
+- `oceangame://condition-visual-normal-scale-review-2026-06-26`
+- `oceangame://decoy-pulse-result-memory-hud-smoke-2026-06-26`
+- `oceangame://echo-lens-cache-pulse-readability-recheck-2026-06-26`
+- `oceangame://surface-moonpool-asset-provenance-requirements-2026-06-26`
 - `oceangame://wreck-shelf-echo-lens-route-review-2026-06-26`
 - `oceangame://vertical-slice-art-kit-screenshot-checklist-2026-06-26`
 - `oceangame://resource-economy-tuning-i`
@@ -80,6 +92,7 @@ Resources:
 - `oceangame://backlog-replenishment-playable-loop-polish-2026-06-26`
 - `oceangame://backlog-replenishment-after-playable-loop-polish-2026-06-26`
 - `oceangame://backlog-replenishment-vertical-slice-readability-2026-06-26`
+- `oceangame://backlog-replenishment-after-vertical-slice-readability-2026-06-26`
 - `oceangame://backlog-replenishment-after-visual-clarity-2026-06-26`
 - `oceangame://thermal-vent-route-review-2026-06-25`
 - `oceangame://backlog-replenishment-thermal-vent-decoy`
