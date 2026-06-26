@@ -1180,6 +1180,9 @@ func _test_east_shelf_pocket_result_callout() -> void:
 	var extraction_summary := main._format_extraction_result_summary(0, [])
 	_expect(extraction_summary.contains("East Shelf pocket ping"), "East Shelf pocket extraction summary should include recovered ping memory")
 	_expect(not extraction_summary.contains("%s"), "East Shelf pocket extraction summary should not leak string placeholders")
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("east_shelf_pocket_ping"), "East Shelf pocket ping should not become durable save data")
+	_expect(not saved.has("east_shelf_routes"), "East Shelf pocket ping should not create durable route state")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:
