@@ -1,6 +1,6 @@
 # Playable Vertical-Slice Acceptance Checklist - 2026-06-26
 
-Status: formal acceptance checklist, refreshed through issue #369.
+Status: formal acceptance checklist, refreshed through issue #421.
 
 This defines the first playable vertical slice. It is a player-facing quality gate for the current prototype, not a final-game feature list or production-art lock.
 
@@ -14,6 +14,7 @@ Related docs:
 - `docs/planning/VERTICAL_SLICE_ART_KIT_SCREENSHOT_CHECKLIST_2026_06_26.md`
 - `docs/planning/VERTICAL_SLICE_ART_KIT_READINESS_REVIEW_2026_06_26.md`
 - `docs/planning/COMPACT_HUD_SKIN_PLAN_2026_06_26.md`
+- `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_REFRESH_AFTER_MOBILE_MONSTER_ART_2026_06_26.md`
 
 ## Playable Criteria
 
@@ -96,7 +97,7 @@ The vertical slice is playable when a tester can complete two short expeditions,
 
 ## Current Acceptance Status
 
-Updated after the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, first Wreck Echo implementation, Wreck Echo normal-scale review/tuning, resource/scan, low-oxygen, upgrade, scanner-distinction, durable-progression, clean demo, surface-panel contrast, debug hidden-state, Playwright visual smoke, and MCP context refresh reviews: the current slice remains structurally playable after Wreck Echo landed, but it is not final production polish.
+Updated after the latest compact HUD, compact upgrade details fix, pressure shell, lower-route, Decoy/Gulper, Monster Research II non-combat guardrails, first Wreck Echo implementation, Wreck Echo normal-scale and mobile-like review/tuning, mobile-like low/critical oxygen coverage, resource/scan, low-oxygen, upgrade, scanner-distinction, durable-progression, clean demo, surface-panel contrast, debug hidden-state, Playwright visual smoke, and MCP context refresh reviews: the current slice remains structurally playable after Wreck Echo landed, but it is not final production polish.
 
 It remains pass-with-watchlist because future visual changes or Wreck Echo expansion can reintroduce lower-route, surface-panel, or HUD confusion, so this status should remain conservative.
 
@@ -115,6 +116,9 @@ This is internal development evidence, not blind validation.
 | Optional clue route | Pass with watchlist | Thermal Vent, Shell Reef, Wreck Signal Cache, condition visuals, and evidence bundle | Keep condition visuals and mystery signals presentation-first. |
 | No locator/checklist drift | Pass | Echo Lens pulse recheck, Signal/Echo distinction review, no-locator tests/docs | Recheck if Wreck Echo route or scanner copy changes. |
 | Wreck Echo state | Pass with watchlist | Wreck Echo route readability review, first tuning pass, Playwright staged route/result smoke, logic tests | Keep as one optional run-scoped research clue; do not expand into map, quest, durable collection, combat, or broad biome scope without new evidence. |
+| Mobile-like landscape evidence | Pass with watchlist | Mobile-like surface/active/lower-route/low-oxygen/critical-oxygen/Wreck Echo Playwright captures | Planning evidence only; does not certify mobile support or touch controls. |
+| Monster Research II direction | Pass | Non-combat planning contract, selected Decoy response evidence, state ownership plan, guardrail tests | Keep as behavior evidence and avoid combat, harvest, capture, health, field-guide, checklist, or creature-inventory drift. |
+| Art-kit integration readiness | Pass with watchlist | Cohesive art-kit integration plan and lower-route pileup review | Start with lower-route cue-priority tuning; final art lock remains deferred. |
 
 Accepted or cleared:
 
@@ -129,13 +133,16 @@ Accepted or cleared:
 - Decoy Pulse result-memory and HUD smoke note,
 - Echo Lens cache pulse local/no-locator recheck,
 - result and upgrade text-length guard coverage.
+- compact upgrade details panel bounds/copy fix,
+- mobile-like landscape screenshot scaffold and Wreck Echo/oxygen captures,
+- Monster Research II non-combat guardrail coverage.
 - solo first-run clean-save checklist result,
 - compact acceptance evidence bundle,
 - Wreck Echo staged route/result Playwright smoke after the first implementation and tuning pass.
 
 Remaining before declaring the gate fully polished:
 
-- continued lower-route, surface-panel, and active-HUD watchlist after any future visual change.
+- continued lower-route, surface-panel, active-HUD, and mobile-like safe-zone watchlist after any future visual change.
 
 Deferred:
 
