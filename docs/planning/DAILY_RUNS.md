@@ -77,6 +77,7 @@ Current report:
 Checklist template:
 
 - `docs/planning/RUN_PLAYTEST_CHECKLIST.md`
+- `docs/planning/HYBRID_OCEAN_FIVE_SEED_REVIEW_TEMPLATE.md`
 
 Current tuning pass:
 
