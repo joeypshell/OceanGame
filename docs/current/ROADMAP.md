@@ -97,6 +97,7 @@ Detailed design rules live in:
 - `docs/planning/SHALLOW_MIDWATER_BACKGROUND_ART_PASS_CONSTRAINTS_2026_06_26.md`
 - `docs/planning/SHALLOW_MIDWATER_BACKGROUND_STUDY_WIRING_2026_06_26.md`
 - `docs/planning/SHALLOW_MIDWATER_BACKGROUND_READABILITY_REVIEW_2026_06_26.md`
+- `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -172,6 +173,8 @@ Gulper route review: `docs/planning/GULPER_ROUTE_DANGER_READABILITY_REVIEW_2026_
 Playable slice smoke log: `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md` records the current acceptance evidence without requiring external blind testers. The slice is structurally playable, but active `Discoveries` placement and upgrade-tab overflow should be fixed before calling the vertical-slice gate fully accepted.
 
 Solo first-run readability: `docs/planning/SOLO_FIRST_RUN_READABILITY_CHECKLIST_2026_06_26.md` replaces unavailable blind-validation helpers with a repeatable internal checklist. It covers first ready screen, first dive, first pickup/scan, first return/failure, and first upgrade view, and must not be described as blind validation.
+
+Solo first-run result: `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md` records a pass-with-watchlist solo clean-save review. It does not claim blind validation; watchlist items are already represented by #301, #310, #313, #314, #315, and #317.
 
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
