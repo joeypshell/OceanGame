@@ -109,6 +109,7 @@ Detailed design rules live in:
 - `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md`
 - `docs/planning/ACTIVE_HUD_LOW_OXYGEN_REVIEW_AFTER_PROMPT_TUNE_2026_06_26.md`
 - `docs/planning/UPGRADE_BAY_NORMAL_SCALE_AFFORDANCE_REVIEW_AFTER_COPY_TUNE_2026_06_26.md`
+- `docs/planning/SCANNER_FEEDBACK_SIGNAL_VS_ECHO_REVIEW_2026_06_26.md`
 - `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
 - `docs/planning/ECHO_LENS_NO_LOCATOR_LANGUAGE_REVIEW_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
@@ -230,6 +231,8 @@ Compact HUD final polish plan: `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026
 Active HUD low-oxygen review after prompt tune: `docs/planning/ACTIVE_HUD_LOW_OXYGEN_REVIEW_AFTER_PROMPT_TUNE_2026_06_26.md` keeps normal, low, and critical oxygen states as pass-with-watchlist after the prompt copy trim. Low/critical oxygen remain louder than mystery and reward cues while preserving cargo, scan target, prompt, and status readability.
 
 Upgrade bay normal-scale affordance review: `docs/planning/UPGRADE_BAY_NORMAL_SCALE_AFFORDANCE_REVIEW_AFTER_COPY_TUNE_2026_06_26.md` keeps the one-selected-upgrade surface bay as pass-with-watchlist after the Up/Down copy tune. Up/Down selection and E/Enter purchase are understandable without adding grid, tree, inventory, field-guide, checklist, minimap, or economy scope.
+
+Scanner feedback distinction review: `docs/planning/SCANNER_FEEDBACK_SIGNAL_VS_ECHO_REVIEW_2026_06_26.md` confirms `Signal Lens I` remains practical visible-resource support while `Echo Lens I` remains broad Wreck Echo curiosity and remembered-place planning. Existing tests already guard role hints, cache repeat-scan copy, result text, and no-locator language.
 
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 
