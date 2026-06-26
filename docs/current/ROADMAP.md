@@ -44,6 +44,7 @@ Detailed design rules live in:
 - `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md`
 - `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`
+- `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md`
 - `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md`
 - `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md`
 - `docs/planning/SURFACE_READY_RESULT_READABILITY_REVIEW_2026_06_26.md`
@@ -175,6 +176,8 @@ Playable slice smoke log: `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LO
 Solo first-run readability: `docs/planning/SOLO_FIRST_RUN_READABILITY_CHECKLIST_2026_06_26.md` replaces unavailable blind-validation helpers with a repeatable internal checklist. It covers first ready screen, first dive, first pickup/scan, first return/failure, and first upgrade view, and must not be described as blind validation.
 
 Solo first-run result: `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md` records a pass-with-watchlist solo clean-save review. It does not claim blind validation; watchlist items are already represented by #301, #310, #313, #314, #315, and #317.
+
+Vertical-slice evidence bundle: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` records compact internal evidence for ready, active dive, pickup/scan, return/failure, upgrade view, blocked route, danger route, and optional clue route. It supports continued closeout while keeping the slice pass-with-watchlist until formal status is updated.
 
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 

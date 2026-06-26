@@ -9,6 +9,7 @@ This is a solo acceptance log for the first playable vertical slice. It does not
 Related docs:
 
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`
+- `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md`
 - `docs/current/SCREENSHOT_WORKFLOW.md`
 - `docs/current/GAMEPLAY.md`
 - `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md`
@@ -75,5 +76,7 @@ Use this when doing the next actual hands-on acceptance run:
 Update after #260-#271: `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md` records the two-expedition clean-save loop as structurally acceptable. The active `Discoveries` placement issue has been addressed by moving the count into the compact active stats HUD treatment and adding placement regression coverage. The lower-route and pressure wreck/cache stack remain pass-with-watchlist after rechecks. Surface moonpool/waterline, panel opacity, upgrade tab, and no-debug surface views now have review evidence.
 
 The slice is structurally playable and close to polished acceptance, but it is not yet a fully polished accepted vertical slice.
+
+Update after #301: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` records a compact internal evidence bundle across ready screen, active dive, pickup/scan, return/failure, upgrade view, blocked route, danger route, and optional clue route. It supports continued closeout but keeps the slice pass-with-watchlist until the next formal checklist/status update.
 
 Next work should finish the remaining pass-with-watchlist evidence around Decoy Pulse owned-state HUD/status, result/upgrade text-length guards, condition visuals, and Echo Lens pulse readability before declaring the vertical-slice acceptance gate fully passed.
