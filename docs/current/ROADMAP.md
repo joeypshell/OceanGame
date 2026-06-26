@@ -205,6 +205,8 @@ Monster-research next-step readiness: `docs/planning/MONSTER_RESEARCH_NEXT_STEP_
 
 MCP context refresh after evidence/prompt/readability updates: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the prompt abstraction plan, result/upgrade/active copy review, lower-route evidence-hardening recheck, next source-art target, deep reward lure balance review, active HUD touch-safe review, mobile-like landscape screenshot scaffold, Wreck Echo no-locator drift review, and Monster Research II readiness review.
 
+Backlog replenishment after evidence, prompt, and readability hardening: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EVIDENCE_PROMPT_READABILITY_2026_06_26.md` creates issues #404-#423. The queue starts with upgrade-panel overflow polish, then uses the mobile-like screenshot scaffold for evidence-only reviews, plans Monster Research II as non-combat behavior evidence, rechecks lower-route/source-art risks, and ends with vertical-slice acceptance and MCP/backlog refreshes.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
