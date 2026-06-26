@@ -17,7 +17,7 @@ For each screenshot or short capture note, record:
 - focused route or landmark,
 - immediate confusion or pass/fail observation.
 
-Use `docs/planning/NORMAL_SCALE_READABILITY_CHECKLIST.md` for the full review template.
+Use `docs/planning/NORMAL_SCALE_READABILITY_CHECKLIST.md` for the full readability review template. Use `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md` when the review specifically concerns expedition-day framing across F5-driven seeds.
 
 ## Naming Convention
 
@@ -125,4 +125,3 @@ Screenshot workflow changes are documentation/tooling changes. Run:
 node .mcp/oceangame-context-server.mjs --self-test
 git diff --check
 ```
-

@@ -51,6 +51,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
+- `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
@@ -79,6 +80,8 @@ Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_ID
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
+
+Expedition-day review checklist: `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md` defines five F5-driven review passes for ready panel, result panel, remembered region, condition copy, scan-only usefulness, and safe-return readability using the screenshot workflow.
 
 ## Immediate Issue Order
 
