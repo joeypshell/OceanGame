@@ -101,6 +101,7 @@ Scene-authored content owns inspectable placement and route definitions:
 - scannable discovery nodes,
 - biome-pocket landmarks.
 - pocket-specific placement candidates such as Shell Reef shell candidates and Thermal Vent glow-route candidates.
+- passive `LandmarkMetadata` nodes that describe persistent place identity without driving gameplay behavior.
 
 When route or placement logic grows, prefer typed authored data or small resources over hidden hard-coded coordinates. Randomization should select among readable authored candidates rather than generate broad uninspected layouts.
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=14 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/scannable.gd" id="7_scannable"]
 [ext_resource type="Script" path="res://scripts/predator.gd" id="8_predator"]
 [ext_resource type="Script" path="res://scripts/spawn_point.gd" id="9_spawn_point"]
+[ext_resource type="Script" path="res://scripts/landmark_metadata.gd" id="10_landmark_metadata"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -21,6 +22,90 @@ size = Vector2(58, 520)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main_script")
+
+[node name="LandmarkMetadata" type="Node" parent="."]
+
+[node name="SurfaceBase" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "surface_base"
+display_name = "Surface Base"
+kind = "base"
+depth_band = "surface"
+role = "Safe start, extraction, results, upgrades, and next-expedition briefing hub."
+persistent_facts = "Player starts here.
+Extraction succeeds only after leaving and returning.
+Safe return orientation should always point back here."
+variable_hooks = "Shows the current expedition condition briefing before the dive."
+readability_priority = "Safe return and extraction orientation."
+
+[node name="ShellReef" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "shell_reef"
+display_name = "Shell Reef"
+kind = "landmark"
+depth_band = "midwater"
+role = "Safer bank route and first persistent midwater place memory."
+persistent_facts = "Associated with safer banking and Shell Fragments.
+Should remain recognizable across expedition seeds."
+variable_hooks = "Authored shell candidate selection and return-current emphasis."
+related_discoveries = "shell_reef_shelf"
+readability_priority = "Midwater landmark and return-current language."
+
+[node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "thermal_vent_field"
+display_name = "Thermal Vent Field"
+kind = "landmark"
+depth_band = "midwater/deep"
+role = "Optional warm-current clue route and Pressure Seal I knowledge source."
+persistent_facts = "Thermal Vent scan supplies pressure-seal knowledge.
+Revealed route hints remain optional, not objective arrows."
+variable_hooks = "Vent-adjacent Glow Plankton candidate weighting and Thermal Bloom presentation."
+related_discoveries = "thermal_vent"
+related_upgrades = "pressure_seal_1"
+readability_priority = "Optional warm-current route language."
+
+[node name="WreckShelf" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "wreck_shelf"
+display_name = "Wreck Shelf"
+kind = "region"
+depth_band = "midwater/deep"
+role = "Pressure-locked promise, future cache payoff, and later wreck-route variation space."
+persistent_facts = "Wreck promise is visible before entry.
+Outside scan explains the return loop."
+variable_hooks = "Authored wreck signal or entrance angle emphasis under Wreck Shift or Rare Signal."
+related_discoveries = "pressure_wreck_signal,wreck_signal_cache"
+related_upgrades = "pressure_seal_1,signal_lens_1"
+readability_priority = "Blocked promise versus future payoff."
+
+[node name="PressureLockedWreck" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "pressure_locked_wreck"
+display_name = "Pressure-Locked Research Wreck"
+kind = "gate"
+depth_band = "deep"
+role = "Visible blocked route that returns payoff after Pressure Seal I."
+persistent_facts = "Pressure Seal I opens the first pressure-locked route.
+Wreck Signal Cache is the inside payoff."
+variable_hooks = "Future authored cache approach or signal emphasis."
+related_discoveries = "pressure_wreck_signal,wreck_signal_cache"
+related_upgrades = "pressure_seal_1,signal_lens_1"
+readability_priority = "Locked/open pressure gate state."
+
+[node name="GulperRoute" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "gulper_route"
+display_name = "Gulper Route"
+kind = "threat_route"
+depth_band = "deep"
+role = "Predator-controlled risk/reward route and observation/countermeasure learning space."
+persistent_facts = "Warning current and patrol hint communicate danger before contact.
+Observation, warning, and decoy upgrades interact without creating combat loot."
+variable_hooks = "Authored predator route selection and Predator Migration warning presentation."
+related_discoveries = "gulper_eel"
+related_upgrades = "predator_warning_1,decoy_pulse_1"
+readability_priority = "Danger before contact and route timing."
 
 [node name="Sky" type="ColorRect" parent="."]
 offset_right = 1280.0

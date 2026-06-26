@@ -47,6 +47,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The player starts with three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep. The `Thermal Vent` pocket contributes vent-adjacent `Glow Plankton` candidates for existing seeded selection rather than adding extra active resource pickups.
 - Starter resource candidate points use typed `SpawnPoint` nodes with category, target id, depth band, and position data so later hazards, creatures, discoveries, and resource clusters can use the same placement model.
+- The main scene includes passive `LandmarkMetadata` nodes for Surface Base, Shell Reef, Thermal Vent Field, Wreck Shelf, Pressure-Locked Research Wreck, and Gulper Route. These describe persistent place identity for future planning/review but do not change current gameplay behavior.
 - `Cautious shallows` clusters keep the first three starter resources closer to safer shallow/midwater banking routes, while `Deep reward route` clusters pull the deeper `Glow Plankton` toward the predator-controlled route.
 - `Deep reward route` runs show a faint glow/current lure below the `Shell Reef` decision band, hinting at valuable deep `Glow Plankton` after the player can read the safer midwater bank route.
 - A compact authored `Shell Reef` pocket sits in the midwater band as a pale shell/coral route landmark. It is lightweight scene geometry with typed `Shell Fragments` spawn candidates, but it does not add extra pickup count, collision, a new resource tier, a new predator, or procedural biome behavior.
@@ -113,6 +114,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scripts/spawn_point.gd`: typed candidate placement points for seeded resource and creature route variation.
   - `scripts/spawn_selection.gd`: deterministic helper for seed-to-pattern selection, spawn positions, and authored route dictionaries.
   - `scripts/expedition_condition.gd`: deterministic presentation data for seeded expedition-day conditions.
+  - `scripts/landmark_metadata.gd`: passive authored metadata for persistent place identity.
   - `scripts/scan_target_resolver.gd`: deterministic helper for scan target validity, identity, display fields, and nearest-target tie-breaking.
   - `scripts/predator.gd`: simple patrol, detection, chase, and contact behavior.
   - `scripts/upgrade_definition.gd`: small data model for upgrade definitions and generic purchase handling.
