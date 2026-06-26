@@ -87,6 +87,7 @@ Detailed design rules live in:
 - `docs/planning/FIRST_RUN_ACTIVE_DIVE_COMPREHENSION_REVIEW_2026_06_26.md`
 - `docs/planning/SAVE_PROGRESSION_PERSISTENCE_EXPECTATION_2026_06_26.md`
 - `docs/planning/SUB_IDLE_THRUST_NORMAL_SCALE_RECHECK_2026_06_26.md`
+- `docs/planning/SUB_IDLE_THRUST_SOURCE_ART_POLISH_CONSTRAINTS_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -192,6 +193,8 @@ First-run surface ready review: `docs/planning/FIRST_RUN_SURFACE_READY_COMPREHEN
 First-run active dive review: `docs/planning/FIRST_RUN_ACTIVE_DIVE_COMPREHENSION_REVIEW_2026_06_26.md` keeps the first active dive minute as pass-with-watchlist. Oxygen, depth, base direction, cargo slots, scan target, Burst prompt, and first pickup/scan guidance are understandable without objective checklists or tutorial overlays.
 
 Sub idle/thrust normal-scale recheck: `docs/planning/SUB_IDLE_THRUST_NORMAL_SCALE_RECHECK_2026_06_26.md` keeps idle bubble, movement trail, thrust flare, and facing behavior as pass-with-watchlist. Future polish should improve source-art/animation clarity without changing movement, collision, oxygen, burst, or bounds.
+
+Sub idle/thrust source-art constraints: `docs/planning/SUB_IDLE_THRUST_SOURCE_ART_POLISH_CONSTRAINTS_2026_06_26.md` defines what future sub effect polish may tune or replace while preserving movement, collision, facing, burst behavior, bounds, and gameplay ownership.
 
 Save progression persistence expectation: `docs/planning/SAVE_PROGRESSION_PERSISTENCE_EXPECTATION_2026_06_26.md` clarifies that owned upgrades, banked resources, scan discoveries, and best depth intentionally survive relaunch, while active oxygen, carried cargo, temporary tool state, and in-progress expedition state do not.
 
