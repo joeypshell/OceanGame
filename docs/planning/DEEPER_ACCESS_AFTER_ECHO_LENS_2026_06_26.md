@@ -83,6 +83,8 @@ Scene/data shape when implemented:
 - one scannable route clue if needed,
 - no persistent marker, no minimap node, no exact locator, and no broad procedural region generation.
 
+Prototype visual study: `assets/source/sprites/study_pressure_dark_threshold_v1.svg` and `assets/exports/sprites/study_pressure_dark_threshold_v1.svg` explore the threshold mood for this pocket, with provenance in `assets/licenses/study_pressure_dark_threshold_v1.txt`. The asset is not scene-wired and does not add route behavior.
+
 ## Copy Rules
 
 Allowed language:

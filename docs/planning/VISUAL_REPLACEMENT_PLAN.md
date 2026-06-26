@@ -357,6 +357,24 @@ Non-goals:
 - No production-art approval until a later visual review issue.
 - No new predator species.
 
+### Pressure-Dark Threshold Visual Study
+
+Current study asset: `assets/source/sprites/study_pressure_dark_threshold_v1.svg`
+Runtime export: `assets/exports/sprites/study_pressure_dark_threshold_v1.svg`
+Provenance: `assets/licenses/study_pressure_dark_threshold_v1.txt`
+
+Status: prototype-only visual study, not wired into `Main.tscn`.
+
+Intent: explore a darker cyan-to-navy route-threshold read for the future `Wreck Echo Descent` pocket. The study should support pressure-dark mood, faint echo promise, and deeper-right route readability without adding a route, marker, gate, region, or objective.
+
+Non-goals:
+
+- No new route behavior.
+- No minimap, exact locator, or persistent objective marker.
+- No replacement of current pressure gate or wreck cache assets.
+- No broad biome generation.
+- No production-art approval until a later visual review issue.
+
 ### 5. Add player-facing UI skin and debug UI toggle
 
 Summary: Skin the core oxygen/depth/cargo/scan UI toward a clean cozy sci-fi style while keeping debug telemetry gated.
