@@ -21,6 +21,7 @@ Detailed design rules live in:
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/NORMAL_SCALE_READABILITY_CHECKLIST.md`
+- `docs/planning/LOWER_ROUTE_VISUAL_OVERLAP_REVIEW_2026_06_26.md`
 - `docs/planning/PREDATOR_WARNING_I.md`
 - `docs/planning/PREDATOR_COUNTERMEASURE_I.md`
 - `docs/planning/REGION_LANDMARK_METADATA.md`
@@ -35,6 +36,8 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_THERMAL_VENT_DECOY_2026_06_25.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_DEMO_READABILITY_HYBRID_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
@@ -45,43 +48,47 @@ Optional local Godot editor MCP policy lives in `docs/current/GODOT_MCP.md`.
 
 ## Active Milestone
 
-Hybrid Ocean Model And Readability Reset.
+Visual Language And Playable Clarity Foundation.
 
-Status: planning and issue replenishment needed before continuing issue-driven implementation.
+Status: next ordered issue batch ready to execute.
 
-Goal: formalize the core world model as persistent geography with seeded expedition-day variation, then address the current playtest blocker where noisy placeholder visuals and overlapping world text make the dive hard to understand.
+Goal: replace the most confusing placeholder visuals with a small reusable visual language so playtests can judge the core dive loop, route choices, danger, rewards, locks, and safe return without relying on large on-playfield text.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a first economy review recommending no immediate cost changes, first-pass visual/readability assets, and `Decoy Pulse I` as the first true non-lethal predator countermeasure. The next planning step is to turn this into a clearer hybrid ocean structure while reducing playfield text and visual noise enough that routes, gates, scan targets, rewards, danger, and safe return are readable during normal play.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, `Decoy Pulse I`, surface result memory, compact surface views, clean-save reset, HUD mode separation, runtime compact markers, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a documented hybrid-ocean model, expedition-day condition data, visual `Thermal Bloom`/`Calm Current` effects, and the first narrow condition-driven authored `Glow Plankton` weighting rule. The next step is to make the normal play view visually legible and appealing enough for repeated route-loop testing.
 
-Latest route review: `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md` led to the completed #96 readability tuning pass for scan-revealed `VentRouteHint` language and opacity, without changing placement, resource counts, costs, or mechanics.
+Latest batch plan: `docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md` chooses visual clarity before monster research, scanner progression depth, or another route pocket.
 
 ## Immediate Issue Order
 
-Tooling track:
+Visual baseline and rules track:
 
-No active tooling issues are currently queued.
+- Capture a normal-scale visual clarity baseline screenshot set.
+- Define visual language style guide v1.
+- Create reusable marker scene patterns.
 
-Gameplay and validation track:
+Asset clarity track:
 
-- Plan the persistent-versus-variable ocean contract for expedition days.
-- Reduce on-playfield text clutter so labels no longer obscure the player, route, pickups, gates, or predator warning.
-- Replace at least one long world explanation with HUD/status/result text plus visual language.
-- Define first expedition-day condition vocabulary such as current shift, thermal bloom, predator migration, low visibility, or rare signal.
-- Add a narrow prototype surface briefing for the current expedition condition before adding any new region or mechanic.
+- Replace resource pickup placeholder visuals.
+- Improve player and surface base silhouettes.
+- Improve depth-band background readability.
+- Rework Shell Reef, Thermal Vent, pressure lock/wreck, and Gulper route visuals.
 
-Technical support track:
+Review and future-planning track:
 
-No active technical support issues are currently queued.
+- Run a post-asset lower-route overlap review.
+- Add visual review checklist and screenshot workflow docs.
+- Add debug seed/condition selection support for repeatable visual reviews.
+- Plan Monster Research Loop v1, Scanner Progression v2, and asset source pipeline conventions.
 
 Later design and demo-readiness issues:
 
-Candidate backlog should stay focused on hybrid-ocean planning and readability, not new systems for their own sake.
+Candidate backlog should stay focused on clean playtesting, readability, and narrow hybrid-ocean variation, not new systems for their own sake.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, predator harvesting, full procedural biomes, large art sets, oxygen refills, new resource systems, a region-select screen, or real-calendar daily challenges during this milestone.
 
 ## Rolling Backlog Policy
 
-Maintain about 10 open actionable GitHub issues. When the queue drops below that target, expand planning docs first if needed, then create scoped issues with acceptance criteria, relevant docs/code areas, dependencies, and verification steps.
+Maintain about 10-20 open actionable GitHub issues. When the queue drops below that target, expand planning docs first if needed, then create scoped issues with acceptance criteria, relevant docs/code areas, dependencies, and verification steps.
 
 Do not create filler issues just to hit the number. Prefer a slightly smaller queue over vague epics, duplicate work, or issues for intentionally deferred systems.
 
@@ -89,11 +96,12 @@ Do not create filler issues just to hit the number. Prefer a slightly smaller qu
 
 The milestone succeeds only when:
 
-- the roadmap and planning docs clearly define persistent geography versus seeded expedition-day variation,
-- the next issues can be created from concrete docs rather than vague desire for "more procedural ocean",
-- overlapping world text is reduced enough that the normal playtest view remains readable,
+- normal-scale screenshots clearly show the player, base, safe return, pickups, scan targets, locks, rewards, and danger,
+- first-pass assets reduce reliance on large on-playfield text,
+- route pockets have distinct silhouettes and color/opacity rules,
 - route meaning is communicated primarily through shapes, color, placement, and compact HUD/status surfaces rather than paragraphs in the ocean,
-- at least one future issue is ready to prototype an expedition-day condition without adding a new biome or full procedural generation,
+- asset source/export conventions are documented,
+- visual reviews are repeatable by seed and condition,
 - no planned variation obscures surface direction, safe return, depth-band identity, or major upgrade-gated route promises.
 
 Technical implementation alone is not sufficient.
@@ -102,18 +110,9 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-Planning candidates for the next issue batch:
+Current ordered batch:
 
-1. Add a persistent-versus-variable ocean model contract to current docs.
-2. Audit and remove or relocate overlapping world labels from the main dive scene.
-3. Convert long scan/route explanations into compact HUD/status/result language.
-4. Add a first `Expedition Condition` planning doc or data sketch using existing seeds.
-5. Add a surface briefing copy pass for current expedition conditions.
-6. Add region/landmark metadata planning for Shell Reef, Thermal Vent, pressure wreck, and future Wreck Shelf.
-7. Run a normal-scale readability review focused on player, pickup, scan target, gate, predator warning, and return-path visibility.
-8. Create a small set of replacement icon/marker rules for scan, lock, danger, reward, and return language.
-9. Add a five-seed hybrid-ocean review template that asks what stayed familiar and what changed.
-10. Update MCP/project context after the hybrid-ocean and readability planning batch.
+The next 20 issues are defined in `docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md`. Work them in order unless a blocking implementation detail forces a narrow reorder.
 
 Recently completed:
 
