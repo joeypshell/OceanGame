@@ -1,6 +1,6 @@
 # Scanner Progression v2
 
-Status: planning recommendation for the next scanner payoff after `Signal Lens I`.
+Status: planning recommendation for the next scanner payoff after `Signal Lens I`; the initial `Wreck Signal Cache` repeat-scan planning hint is implemented.
 
 ## Direction
 
@@ -81,7 +81,7 @@ Reason:
 Recommended first behavior:
 
 - Re-scan `Wreck Signal Cache` after owning `Signal Lens I`.
-- If no v2 upgrade exists yet, show a compact planning hint that the cache can be studied further.
+- If no v2 upgrade exists yet, show a compact planning hint that the cache can be studied further. Implemented copy currently reads as a local unresolved `cache echo`, not a map marker or objective tracker.
 - After `Echo Lens I` exists, the re-scan can produce a vague wreck echo such as `deeper-right` or `signal quiet`.
 
 ## UI Surface
@@ -149,4 +149,3 @@ Acceptance sketch:
 - Hidden pressure-locked or future content is not revealed as exact location data.
 - Add logic coverage for scanner v2 copy and existing Signal Lens behavior.
 - Verify with Godot headless launch, logic tests, normal timed launch, MCP self-test if docs/resources change, and `git diff --check`.
-

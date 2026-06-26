@@ -585,13 +585,17 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 	elif _scan_target_id(target) == "shell_reef_shelf":
 		return " Reef route clue refreshed."
 	elif _scan_target_id(target) == "wreck_signal_cache":
-		if progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID):
-			return " Echo trace unresolved: future Echo Lens study may read deeper wreck signals."
-		return " Cache clue refreshed for Signal Lens I."
+		return _format_wreck_cache_repeat_hint()
 	elif _scan_target_id(target) == "gulper_eel":
 		return " %s" % _format_decoy_pulse_scan_feedback()
 
 	return ""
+
+func _format_wreck_cache_repeat_hint() -> String:
+	if progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID):
+		return " Cache echo unresolved: future Echo Lens study may read deeper wreck signals."
+
+	return " Cache clue refreshed for Signal Lens I."
 
 func _format_signal_lens_pulse_text(target: Node) -> String:
 	if not progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID) or not target is ResourcePickup:

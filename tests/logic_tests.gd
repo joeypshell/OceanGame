@@ -925,6 +925,7 @@ func _test_wreck_signal_cache_repeat_scan_hint() -> void:
 
 	_expect(main._format_repeat_scan_effect_text(target).contains("Signal Lens I"), "cache repeat scan before Signal Lens I should refresh the current upgrade clue")
 	main.progression_state.purchased_upgrades[SignalLensUpgrade.id] = true
+	_expect(main._format_wreck_cache_repeat_hint().contains("Cache echo unresolved"), "cache repeat helper should name the unresolved echo")
 	var repeat_hint := main._format_repeat_scan_effect_text(target)
 	_expect(repeat_hint.contains("Echo Lens"), "cache repeat scan after Signal Lens I should hint at future echo-lens study")
 	_expect(repeat_hint.contains("deeper wreck signals"), "cache repeat scan should imply unresolved wreck signals without exact coordinates")
