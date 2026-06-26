@@ -82,4 +82,17 @@ test.describe("OceanGame web visual smoke", () => {
     await page.waitForTimeout(900);
     await capture(page, testInfo, "wreck-echo-result-readback");
   });
+
+  test("captures active low and critical oxygen HUD states", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await page.keyboard.press("Enter");
+    await page.waitForTimeout(600);
+    await holdKey(page, "ArrowDown", 2_000);
+
+    await page.waitForTimeout(22_000);
+    await capture(page, testInfo, "active-low-oxygen");
+
+    await page.waitForTimeout(4_200);
+    await capture(page, testInfo, "active-critical-oxygen");
+  });
 });

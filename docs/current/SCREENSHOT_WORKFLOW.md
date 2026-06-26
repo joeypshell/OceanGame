@@ -157,6 +157,8 @@ Default captures include:
 - `extraction-result.png`
 - `upgrade-tab.png`
 - `lower-route-pressure-gate.png`
+- `active-low-oxygen.png`
+- `active-critical-oxygen.png`
 - `wreck-echo-route-staged.png`
 - `wreck-echo-result-readback.png`
 
@@ -168,9 +170,9 @@ Current hardening status:
 
 - `extraction-result.png` and `upgrade-tab.png` now follow a leave-base, return, extract, then open-upgrade-tab flow. Reviewers should still confirm the image actually shows the named surface state before relying on it.
 - Wreck Echo staged result screenshots can include debug telemetry because they use the F6 review hook. Treat them as route/result layout evidence, not normal player-facing no-debug evidence.
-- Low/critical oxygen, no-debug Wreck Echo result, mobile-like landscape safe-area, and future controller/touch prompt states are not fully automated yet.
+- No-debug Wreck Echo result, mobile-like landscape safe-area, and future controller/touch prompt states are not fully automated yet.
 
-Next worthwhile automation should add explicit state assertions/metadata and then low/critical oxygen. Mobile/device and touch overlay automation remain deferred until mobile/touch implementation is promoted.
+Next worthwhile automation should add explicit state assertions/metadata. Mobile/device and touch overlay automation remain deferred until mobile/touch implementation is promoted.
 
 ## Optional Godot AI MCP Capture
 
