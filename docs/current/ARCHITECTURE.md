@@ -152,6 +152,8 @@ Committed asset source conventions live under `assets/`: `assets/source/` for ed
 
 Resource pickup gameplay nodes stay in `scenes/Main.tscn` as `Area2D` owners for definitions, collision, scan groups, spawn placement, and cargo behavior. Replaceable resource art lives in reusable child scenes under `scenes/resources/`, with `SpriteAnchor/Sprite` and `FallbackVisual` children preserving the placeholder-to-asset workflow.
 
+Landmark readability clusters should follow the same split when they grow too large for `Main.tscn`: the placed gameplay/landmark holder can remain in the main scene while reusable visual geometry moves into `scenes/readability/`. The Thermal Vent pocket follows this pattern with `scenes/readability/ThermalVentPocketVisuals.tscn`; the scannable Thermal Vent and route reveal behavior remain separate gameplay nodes.
+
 ## State-Management Guardrails
 
 - Do not let visual effects mutate durable progression directly.
