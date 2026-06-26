@@ -8,6 +8,7 @@ Detailed design rules live in:
 
 - `docs/planning/CORE_LOOP_RULES.md`
 - `docs/planning/DAILY_RUNS.md`
+- `docs/planning/EXPEDITION_CONDITION_BRIEFING.md`
 - `docs/planning/EXPEDITION_DAY_CONDITIONS.md`
 - `docs/planning/HYBRID_OCEAN_MODEL.md`
 - `docs/planning/GAME_VISION.md`

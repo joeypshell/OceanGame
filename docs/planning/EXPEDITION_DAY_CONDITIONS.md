@@ -40,6 +40,8 @@ Start with a presentation-only condition:
 
 This lets the player learn the morning-briefing rhythm before the conditions own mechanics.
 
+Briefing layout guidance lives in `docs/planning/EXPEDITION_CONDITION_BRIEFING.md`.
+
 ## Copy Style
 
 Use short, observable language:
