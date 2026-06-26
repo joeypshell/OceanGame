@@ -1199,10 +1199,11 @@ func _reset_run_telemetry() -> void:
 	run_failure_cause = "none"
 
 func _format_run_telemetry(result_name: String) -> String:
-	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nPredator route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
+	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
 		result_name,
 		progression_state.current_run_seed,
 		_format_cluster_pattern(current_resource_cluster_pattern),
+		_format_condition_telemetry(),
 		current_predator_route_id,
 		_format_resource_counts(run_collected_resources),
 		_format_scan_ids(run_completed_scans),
@@ -1210,6 +1211,15 @@ func _format_run_telemetry(result_name: String) -> String:
 		ceili(dive_session.oxygen),
 		ceili(dive_session.max_oxygen),
 		run_failure_cause
+	]
+
+func _format_condition_telemetry() -> String:
+	if current_expedition_condition.is_empty():
+		return "none"
+
+	return "%s (%s)" % [
+		String(current_expedition_condition.get("display_name", "Unknown")),
+		String(current_expedition_condition.get("id", "unknown")),
 	]
 
 func _format_run_summary(player_summary: String, result_name: String) -> String:

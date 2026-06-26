@@ -542,6 +542,11 @@ func _test_route_choice_result_callout() -> void:
 	main.run_predator_contacts = 0
 	main.run_completed_scans = ["thermal_vent"]
 	main.run_collected_resources = []
+	main.current_expedition_condition = {
+		"id": "thermal_bloom",
+		"display_name": "Thermal Bloom",
+		"briefing": "Warm water stirs.",
+	}
 	_expect(main._format_route_choice_callout().contains("Pressure Seal I"), "thermal vent scan should produce a pressure seal route callout")
 
 	main.run_collected_resources = ["glow_plankton"]
@@ -551,10 +556,12 @@ func _test_route_choice_result_callout() -> void:
 	_expect(summary.contains("Route choice:"), "player-facing result summary should include the route callout")
 	_expect(not summary.contains("Playtest data:"), "result summary should not include debug telemetry unless F3 is enabled")
 	_expect(not summary.contains("Predator route:"), "predator route telemetry should stay hidden unless F3 is enabled")
+	_expect(not summary.contains("thermal_bloom"), "condition id should stay hidden unless debug telemetry is enabled")
 
 	main.show_debug_telemetry = true
 	summary = main._format_run_summary(main._format_route_choice_callout(), "extracted")
 	_expect(summary.contains("Playtest data:"), "debug telemetry should appear only when enabled")
+	_expect(summary.contains("Condition: Thermal Bloom (thermal_bloom)"), "debug telemetry should include condition display and id")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:
