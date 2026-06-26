@@ -40,6 +40,14 @@ const SURFACE_TAB_RESULT := 0
 const SURFACE_TAB_UPGRADES := 1
 const SURFACE_TAB_LOG := 2
 const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
+const KEYBOARD_ACTION_LABELS := {
+	"interact": "E/Enter",
+	"restart_dive": "R",
+	"move_left_right": "Left/Right",
+	"move_up_down": "Up/Down",
+	"burst_thruster": "Space",
+	"decoy_pulse": "F",
+}
 const DIVE_RESULT_NAMES := {
 	DiveSessionScript.Result.READY: "ready",
 	DiveSessionScript.Result.DIVING: "diving",
@@ -501,6 +509,9 @@ func _debug_next_condition_from_id(current_id: String) -> Dictionary:
 
 func _debug_seed_for_delta(seed: int, delta: int) -> int:
 	return maxi(1, seed + delta)
+
+func _action_label(action_id: String) -> String:
+	return String(KEYBOARD_ACTION_LABELS.get(action_id, action_id))
 
 func _try_purchase_selected_upgrade() -> void:
 	var upgrade := _selected_upgrade_definition()

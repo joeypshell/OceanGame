@@ -1,6 +1,6 @@
 # Player Action Prompt Abstraction Plan - 2026-06-26
 
-Status: ready for first implementation.
+Status: helper implemented; prompt routing remains next.
 
 Issue: #388.
 
@@ -33,7 +33,7 @@ Recommended ids:
 - `burst_thruster`: `Space`
 - `decoy_pulse`: `F`
 
-The helper may live in `scripts/main.gd` for the first pass because every current prompt is formatted there. Extract it later only if prompt formatting grows beyond this scene.
+The helper may live in `scripts/main.gd` for the first pass because every current prompt is formatted there. Extract it later only if prompt formatting grows beyond this scene. Issue #389 implemented this first helper as `_action_label(action_id)` with logic coverage for the current keyboard labels.
 
 ## Guardrails
 

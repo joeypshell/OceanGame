@@ -81,6 +81,7 @@ func _initialize() -> void:
 	_run("wreck signal cache repeat scan hint", _test_wreck_signal_cache_repeat_scan_hint)
 	_run("pressure lock guidance text", _test_pressure_lock_guidance_text)
 	_run("surface summary tabs", _test_surface_summary_tabs)
+	_run("keyboard action prompt labels", _test_keyboard_action_prompt_labels)
 	_run("condition briefing copy", _test_condition_briefing_copy)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
@@ -1356,6 +1357,17 @@ func _test_surface_summary_tabs() -> void:
 	_expect(main._format_upgrade_menu_title(1, 7) == "Upgrade Bay (1/7) - Up/Down select", "upgrade bay title should keep selection controls visible")
 	main.surface_tab_index = main.SURFACE_TAB_LOG
 	_expect(main._format_surface_tabs() == "Result  Upgrades  [Log]", "surface tabs should mark the log view")
+	main.free()
+
+func _test_keyboard_action_prompt_labels() -> void:
+	var main := MainScript.new()
+	_expect(main._action_label("interact") == "E/Enter", "interact prompt label should match the current keyboard binding")
+	_expect(main._action_label("restart_dive") == "R", "restart prompt label should match the current keyboard binding")
+	_expect(main._action_label("move_left_right") == "Left/Right", "tab cycling prompt label should match the current keyboard binding")
+	_expect(main._action_label("move_up_down") == "Up/Down", "selection prompt label should match the current keyboard binding")
+	_expect(main._action_label("burst_thruster") == "Space", "burst prompt label should match the current keyboard binding")
+	_expect(main._action_label("decoy_pulse") == "F", "decoy prompt label should match the current keyboard binding")
+	_expect(main._action_label("future_action") == "future_action", "unknown prompt labels should fall back to their action id")
 	main.free()
 
 func _test_condition_briefing_copy() -> void:
