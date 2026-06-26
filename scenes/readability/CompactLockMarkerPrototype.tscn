@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://compact_lock_marker_prototype"]
+
+[node name="CompactLockMarkerPrototype" type="Node2D"]
+
+[node name="ShimmerPlane" type="Polygon2D" parent="."]
+color = Color(0.18, 0.52, 1, 0.5)
+polygon = PackedVector2Array(-26, -82, 26, -82, 26, 82, -26, 82)
+
+[node name="TopCap" type="Polygon2D" parent="."]
+color = Color(0.74, 0.86, 1, 0.72)
+polygon = PackedVector2Array(-58, -82, 58, -82, 42, -54, -42, -54)
+
+[node name="BottomCap" type="Polygon2D" parent="."]
+color = Color(0.74, 0.86, 1, 0.72)
+polygon = PackedVector2Array(-42, 54, 42, 54, 58, 82, -58, 82)
+
+[node name="GateBars" type="Polygon2D" parent="."]
+color = Color(0.74, 0.86, 1, 0.55)
+polygon = PackedVector2Array(-44, -28, 44, -28, 44, -12, -44, -12, -44, 12, 44, 12, 44, 28, -44, 28)
+
+[node name="CompactLabel" type="Label" parent="."]
+offset_left = -98.0
+offset_top = -124.0
+offset_right = 98.0
+offset_bottom = -92.0
+text = "LOCKED"
+horizontal_alignment = 1

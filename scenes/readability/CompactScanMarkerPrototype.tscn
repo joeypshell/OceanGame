@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://compact_scan_marker_prototype"]
+
+[node name="CompactScanMarkerPrototype" type="Node2D"]
+
+[node name="ScanDiamond" type="Polygon2D" parent="."]
+color = Color(0.95, 1, 0.7, 0.24)
+polygon = PackedVector2Array(0, -36, 28, -18, 36, 0, 28, 18, 0, 36, -28, 18, -36, 0, -28, -18)
+
+[node name="FocusBracketA" type="Polygon2D" parent="."]
+color = Color(0.9, 1, 1, 0.24)
+polygon = PackedVector2Array(-48, -42, -24, -42, -24, -34, -40, -34, -40, -18, -48, -18)
+
+[node name="FocusBracketB" type="Polygon2D" parent="."]
+color = Color(0.9, 1, 1, 0.24)
+polygon = PackedVector2Array(48, 42, 24, 42, 24, 34, 40, 34, 40, 18, 48, 18)

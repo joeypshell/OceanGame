@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://compact_danger_marker_prototype"]
+
+[node name="CompactDangerMarkerPrototype" type="Node2D"]
+
+[node name="WarningLane" type="Polygon2D" parent="."]
+color = Color(1, 0.2, 0.12, 0.22)
+polygon = PackedVector2Array(-118, -18, 92, -28, 128, 0, 92, 28, -118, 18, -146, 0)
+
+[node name="WarningRibs" type="Polygon2D" parent="."]
+color = Color(1, 0.35, 0.18, 0.3)
+polygon = PackedVector2Array(-122, -52, -94, -24, -122, 0, -94, 24, -122, 52, -54, 24, -70, 0, -54, -24, 54, -24, 70, 0, 54, 24, 122, 52, 94, 24, 122, 0, 94, -24, 122, -52)
+
+[node name="WarningEye" type="Polygon2D" parent="."]
+color = Color(1, 0.14, 0.12, 0.86)
+polygon = PackedVector2Array(-34, -4, 0, -18, 34, -4, 0, 14)

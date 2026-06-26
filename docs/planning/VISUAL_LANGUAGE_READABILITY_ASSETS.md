@@ -48,6 +48,11 @@ Current reusable prototype scenes:
 - `scenes/readability/PressureGatePrototype.tscn`: locked/open route language for pressure or future progression gates.
 - `scenes/readability/CurrentHintPrototype.tscn`: low-opacity directional current language for optional route clues.
 - `scenes/readability/SignalHintPrototype.tscn`: future payoff or signal language for subdued route rewards.
+- `scenes/readability/CompactScanMarkerPrototype.tscn`: compact scan diamond/bracket marker that hugs a target.
+- `scenes/readability/CompactLockMarkerPrototype.tscn`: compact firm lock marker with bars and a short label.
+- `scenes/readability/CompactDangerMarkerPrototype.tscn`: compact danger lane/ribs/eye marker.
+- `scenes/readability/CompactRewardMarkerPrototype.tscn`: compact reward bloom/ping marker.
+- `scenes/readability/CompactReturnMarkerPrototype.tscn`: compact safe-return lane/rib/beacon marker.
 
 These scenes are reference assets for future instance/copy work. They do not own pressure-lock state, scan reveal state, route safety, or progression unlock rules.
 

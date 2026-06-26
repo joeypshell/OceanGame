@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://compact_reward_marker_prototype"]
+
+[node name="CompactRewardMarkerPrototype" type="Node2D"]
+
+[node name="RewardBloom" type="Polygon2D" parent="."]
+color = Color(0.74, 1, 0.26, 0.28)
+polygon = PackedVector2Array(0, -58, 20, -20, 58, -14, 28, 12, 34, 52, 0, 30, -34, 52, -28, 12, -58, -14, -20, -20)
+
+[node name="RewardCore" type="Polygon2D" parent="."]
+color = Color(0.9, 1, 0.34, 0.72)
+polygon = PackedVector2Array(0, -24, 14, -8, 28, 0, 14, 8, 0, 24, -14, 8, -28, 0, -14, -8)
+
+[node name="RewardPing" type="Polygon2D" parent="."]
+color = Color(0.84, 1, 0.45, 0.22)
+polygon = PackedVector2Array(-72, -8, -44, -18, -54, 8, 48, 18, 74, 6, 52, -8)

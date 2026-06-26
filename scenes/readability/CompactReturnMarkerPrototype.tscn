@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://compact_return_marker_prototype"]
+
+[node name="CompactReturnMarkerPrototype" type="Node2D"]
+
+[node name="ReturnLane" type="Polygon2D" parent="."]
+color = Color(0.38, 1, 0.9, 0.18)
+polygon = PackedVector2Array(-34, -96, 34, -96, 44, 96, -44, 96)
+
+[node name="ReturnRibA" type="Polygon2D" parent="."]
+color = Color(0.62, 1, 0.9, 0.2)
+polygon = PackedVector2Array(-58, -58, 58, -58, 46, -36, -46, -36)
+
+[node name="ReturnRibB" type="Polygon2D" parent="."]
+color = Color(0.62, 1, 0.9, 0.18)
+polygon = PackedVector2Array(-52, 8, 52, 8, 40, 30, -40, 30)
+
+[node name="ReturnBeacon" type="Polygon2D" parent="."]
+color = Color(0.74, 1, 0.9, 0.34)
+polygon = PackedVector2Array(0, -126, 28, -92, 0, -62, -28, -92)
