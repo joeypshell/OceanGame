@@ -1,6 +1,8 @@
 # Blind Validation Kit
 
-Use this kit when unfamiliar players are available. The project no longer requires full blind validation or a solo evidence pass to advance; outside-player notes are optional bonus evidence.
+Use this kit when unfamiliar players are available. The project no longer requires full blind validation to advance; outside-player notes are optional bonus evidence.
+
+When no helpers are available, use `docs/planning/SOLO_FIRST_RUN_READABILITY_CHECKLIST_2026_06_26.md` instead. That solo checklist is internal readability evidence only and should not be described as blind validation.
 
 ## Goal
 

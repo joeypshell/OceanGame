@@ -16,6 +16,7 @@ Detailed design rules live in:
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
 - `docs/planning/BLIND_VALIDATION_KIT.md`
+- `docs/planning/SOLO_FIRST_RUN_READABILITY_CHECKLIST_2026_06_26.md`
 - `docs/planning/SCANNER_IMPROVEMENT_I.md`
 - `docs/planning/SCANNER_PROGRESSION_V2.md`
 - `docs/planning/CARGO_IMPROVEMENT_I.md`
@@ -168,6 +169,8 @@ Pressure wreck/cache balance review: `docs/planning/PRESSURE_WRECK_CACHE_SPRITE_
 Gulper route review: `docs/planning/GULPER_ROUTE_DANGER_READABILITY_REVIEW_2026_06_26.md` confirms the current Gulper route reads as avoidable danger rather than combat. Warning, chase, reward, pressure lock, and decoy visuals remain distinct; decoy HUD/status should be rechecked in a manual smoke pass with the upgrade owned.
 
 Playable slice smoke log: `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md` records the current acceptance evidence without requiring external blind testers. The slice is structurally playable, but active `Discoveries` placement and upgrade-tab overflow should be fixed before calling the vertical-slice gate fully accepted.
+
+Solo first-run readability: `docs/planning/SOLO_FIRST_RUN_READABILITY_CHECKLIST_2026_06_26.md` replaces unavailable blind-validation helpers with a repeatable internal checklist. It covers first ready screen, first dive, first pickup/scan, first return/failure, and first upgrade view, and must not be described as blind validation.
 
 Next source-art priority: `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_2026_06_26.md` selects the surface base moonpool/waterline integration as the next replacement target, with pressure wreck/cache environment treatment as backup. The priority is readability impact, not final art lock or a large visual batch.
 
