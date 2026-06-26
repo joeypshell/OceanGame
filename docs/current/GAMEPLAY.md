@@ -4,7 +4,7 @@ This file describes implemented behavior. If gameplay, controls, runtime, deploy
 
 Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 
-Current vertical-slice status: the prototype is structurally playable and most earlier readability blockers have been cleared with review evidence. It is close to polished acceptance, but the remaining closeout work is still pass-with-watchlist around MCP context freshness and future visual-change checks. The detailed gate lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`, the current evidence log lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md`, and the concise clean demo script lives in `docs/planning/VERTICAL_SLICE_CLEAN_DEMO_SCRIPT_2026_06_26.md`.
+Current vertical-slice status: the prototype is structurally playable and most earlier readability blockers have been cleared with review evidence. It is close to polished acceptance; the remaining pass-with-watchlist risk is future visual-change regression rather than a known closeout blocker. The detailed gate lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`, the current evidence log lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md`, and the concise clean demo script lives in `docs/planning/VERTICAL_SLICE_CLEAN_DEMO_SCRIPT_2026_06_26.md`.
 
 ## Product Behavior
 

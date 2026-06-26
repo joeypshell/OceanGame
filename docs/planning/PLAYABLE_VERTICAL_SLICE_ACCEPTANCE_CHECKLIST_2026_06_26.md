@@ -95,9 +95,9 @@ The vertical slice is playable when a tester can complete two short expeditions,
 
 ## Current Acceptance Status
 
-Updated after the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, resource/scan, low-oxygen, upgrade, scanner-distinction, durable-progression, clean demo, surface-panel contrast, and debug hidden-state reviews: the current slice is accepted as structurally playable and close to polished vertical-slice acceptance, but not yet declared fully polished.
+Updated after the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, resource/scan, low-oxygen, upgrade, scanner-distinction, durable-progression, clean demo, surface-panel contrast, debug hidden-state, and MCP context refresh reviews: the current slice is accepted as structurally playable and close to polished vertical-slice acceptance, but not final production polish.
 
-It remains pass-with-watchlist because final evidence still needs an MCP context refresh after the playable-loop polish batch. Future visual changes can also reintroduce lower-route, surface-panel, or HUD confusion, so this status should remain conservative.
+It remains pass-with-watchlist because future visual changes can reintroduce lower-route, surface-panel, or HUD confusion, so this status should remain conservative.
 
 This is internal development evidence, not blind validation.
 
@@ -132,7 +132,6 @@ Accepted or cleared:
 
 Remaining before declaring the gate fully polished:
 
-- MCP context refresh after the playable-loop polish batch,
 - continued lower-route, surface-panel, and active-HUD watchlist after any future visual change.
 
 Deferred:
