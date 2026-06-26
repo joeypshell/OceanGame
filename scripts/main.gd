@@ -225,10 +225,9 @@ func _try_extract() -> void:
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\nBanked %d resource(s).%s\n%s%s\n%s%s\n%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "%s\n%s\n%s%s\n%s%s\n%s\n%s\n%s\nBest depth: %dm." % [
 		_format_completed_expedition_line("Extraction"),
-		extracted_count,
-		_format_resource_counts(extracted_cargo),
+		_format_extraction_banking_line(extracted_count, extracted_cargo),
 		_format_region_memory_callout(),
 		_format_discovery_memory_callout(),
 		_format_route_choice_callout(),
@@ -1238,6 +1237,17 @@ func _format_scan_progress_callout(prefix: String) -> String:
 		parts.append(_format_discovery_name(discovery_id))
 
 	return "%s: %s." % [prefix, ", ".join(parts)]
+
+func _format_extraction_banking_line(extracted_count: int, extracted_cargo: Array[String]) -> String:
+	if extracted_count > 0:
+		return "Banked %d resource(s).%s" % [
+			extracted_count,
+			_format_resource_counts(extracted_cargo),
+		]
+	if not run_completed_scans.is_empty():
+		return "Banked 0 resources. Useful dive: scan data came home."
+
+	return "Banked 0 resources. No cargo or new scans came home."
 
 func _upgrade_missing_discovery(upgrade: UpgradeDefinition) -> String:
 	return UpgradePurchaseScript.missing_discovery(progression_state, upgrade)

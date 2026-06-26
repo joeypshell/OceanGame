@@ -60,6 +60,7 @@ func _initialize() -> void:
 	_run("decoy pulse effect isolation", _test_decoy_pulse_effect_isolation)
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
+	_run("extraction banking result copy", _test_extraction_banking_result_copy)
 	_run("next expedition framing", _test_next_expedition_framing)
 	_run("region memory result callout", _test_region_memory_result_callout)
 	_run("discovery memory result callout", _test_discovery_memory_result_callout)
@@ -638,6 +639,23 @@ func _test_result_progress_callouts() -> void:
 
 	main.run_completed_scans.clear()
 	_expect(main._format_scan_progress_callout("Discoveries recorded") == "Discoveries recorded: none this dive.", "result progress should stay explicit when no scans were recorded")
+	main.free()
+
+func _test_extraction_banking_result_copy() -> void:
+	var main := MainScript.new()
+
+	var cargo: Array[String] = ["kelp_fiber"]
+	_expect(main._format_extraction_banking_line(1, cargo).contains("Banked 1 resource"), "cargo extraction should keep resource banking copy")
+	_expect(main._format_extraction_banking_line(1, cargo).contains("Kelp Fiber x1"), "cargo extraction should keep resource counts")
+
+	main.run_completed_scans = ["thermal_vent"]
+	var scan_only := main._format_extraction_banking_line(0, [])
+	_expect(scan_only.contains("Banked 0 resources"), "scan-only extraction should not imply phantom cargo")
+	_expect(scan_only.contains("scan data came home"), "scan-only extraction should read as useful")
+
+	main.run_completed_scans.clear()
+	var empty_return := main._format_extraction_banking_line(0, [])
+	_expect(empty_return.contains("No cargo or new scans"), "empty extraction should remain clearly low-value")
 	main.free()
 
 func _test_next_expedition_framing() -> void:
