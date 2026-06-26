@@ -7,6 +7,9 @@ extends CharacterBody2D
 
 var _movement_disrupt_timer := 0.0
 var _last_move_direction := Vector2.RIGHT
+var _facing_sign := 1.0
+
+@onready var _visual_root: Node2D = get_node_or_null("VisualRoot")
 
 func _ready() -> void:
 	add_to_group("player")
@@ -29,7 +32,7 @@ func _physics_process(delta: float) -> void:
 	global_position = global_position.clamp(world_bounds.position, world_bounds.end)
 
 	if absf(velocity.x) > 1.0:
-		scale.x = signf(velocity.x)
+		_set_facing_sign(signf(velocity.x))
 
 func apply_knockback(direction: Vector2, force: float, disruption_seconds: float) -> void:
 	velocity = direction.normalized() * force
@@ -47,4 +50,14 @@ func get_burst_direction() -> Vector2:
 	if _last_move_direction != Vector2.ZERO:
 		return _last_move_direction.normalized()
 
-	return Vector2(signf(scale.x), 0.0)
+	return Vector2(_facing_sign, 0.0)
+
+func _set_facing_sign(next_sign: float) -> void:
+	if next_sign == 0.0:
+		return
+
+	_facing_sign = signf(next_sign)
+	if _visual_root == null:
+		_visual_root = get_node_or_null("VisualRoot")
+	if _visual_root != null:
+		_visual_root.scale.x = _facing_sign

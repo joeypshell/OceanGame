@@ -7,6 +7,7 @@ const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const PlayerScript := preload("res://scripts/player.gd")
+const PlayerScene := preload("res://scenes/Player.tscn")
 const ReadabilityMarkerPatternsScript := preload("res://scripts/readability_marker_patterns.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
@@ -66,6 +67,7 @@ func _initialize() -> void:
 	_run("condition briefing copy", _test_condition_briefing_copy)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
+	_run("player visual facing isolation", _test_player_visual_facing_isolation)
 	_run("predator decoy pulse helper", _test_predator_decoy_pulse_helper)
 	_run("decoy pulse feedback text", _test_decoy_pulse_feedback_text)
 
@@ -783,6 +785,25 @@ func _test_burst_thruster_movement_helper() -> void:
 	player.burst(Vector2.ZERO, 500.0)
 	_expect(player.velocity == Vector2.RIGHT * 500.0, "burst without input should use the last facing direction")
 	player.free()
+
+func _test_player_visual_facing_isolation() -> void:
+	var player := PlayerScene.instantiate()
+	root.add_child(player)
+	var visual_root: Node2D = player.get_node("VisualRoot")
+
+	player.call("_set_facing_sign", -1.0)
+	_expect(player.scale == Vector2.ONE, "facing should not mirror the physics/player root")
+	_expect(visual_root.scale.x == -1.0, "facing left should mirror only the visual root")
+	player.set("_last_move_direction", Vector2.ZERO)
+	_expect(player.get_burst_direction() == Vector2.LEFT, "burst fallback should use the tracked left-facing sign")
+
+	player.call("_set_facing_sign", 1.0)
+	_expect(player.scale == Vector2.ONE, "facing right should keep the physics/player root unmirrored")
+	_expect(visual_root.scale.x == 1.0, "facing right should restore the visual root")
+	player.set("_last_move_direction", Vector2.ZERO)
+	_expect(player.get_burst_direction() == Vector2.RIGHT, "burst fallback should use the tracked right-facing sign")
+
+	player.queue_free()
 
 func _test_predator_decoy_pulse_helper() -> void:
 	var predator := PredatorScript.new()
