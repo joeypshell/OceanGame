@@ -60,3 +60,5 @@ The next issue should select exactly one first evidence type for `Monster Resear
 - `Warning-lane confirmation`
 
 Selection should favor whichever gives the clearest player learning while preserving the current Gulper, Decoy, oxygen, cargo, extraction, scan, and result behavior.
+
+Selected first evidence type: `docs/planning/MONSTER_RESEARCH_II_FIRST_EVIDENCE_TYPE_SELECTION_2026_06_26.md` chooses `Decoy response observed` because it builds on existing Gulper scan, Predator Warning, Decoy Pulse, and compact result-memory behavior without adding new verbs, combat, capture, harvesting, or UI surfaces.
