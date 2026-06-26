@@ -33,6 +33,13 @@ async function capture(page, testInfo, name) {
   testInfo.attachments.push({ name, path, contentType: "image/png" });
 }
 
+async function returnToBaseAndExtract(page) {
+  await holdKey(page, "ArrowUp", 1_800);
+  await page.waitForTimeout(300);
+  await page.keyboard.press("Enter");
+  await page.waitForTimeout(800);
+}
+
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
     await bootGame(page);
@@ -43,12 +50,7 @@ test.describe("OceanGame web visual smoke", () => {
     await holdKey(page, "ArrowDown", 900);
     await capture(page, testInfo, "active-dive");
 
-    await page.keyboard.press("KeyR");
-    await page.waitForTimeout(700);
-    await page.keyboard.press("Enter");
-    await page.waitForTimeout(300);
-    await page.keyboard.press("Enter");
-    await page.waitForTimeout(700);
+    await returnToBaseAndExtract(page);
     await capture(page, testInfo, "extraction-result");
 
     await page.keyboard.press("Enter");

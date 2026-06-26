@@ -164,13 +164,13 @@ The screenshots live under `test-results/playwright/` with Playwright traces/rep
 
 Current workflow gap review: `docs/planning/PLAYWRIGHT_SCREENSHOT_WORKFLOW_GAP_REVIEW_2026_06_26.md`.
 
-Known gaps:
+Current hardening status:
 
-- `extraction-result.png` and `upgrade-tab.png` should be treated as intended capture names, but reviewers should confirm the image actually shows the result or upgrade surface state before relying on it.
+- `extraction-result.png` and `upgrade-tab.png` now follow a leave-base, return, extract, then open-upgrade-tab flow. Reviewers should still confirm the image actually shows the named surface state before relying on it.
 - Wreck Echo staged result screenshots can include debug telemetry because they use the F6 review hook. Treat them as route/result layout evidence, not normal player-facing no-debug evidence.
 - Low/critical oxygen, no-debug Wreck Echo result, mobile-like landscape safe-area, and future controller/touch prompt states are not fully automated yet.
 
-Next worthwhile automation should harden desktop slice captures first: true extraction result, true upgrade tab, explicit state assertions, and then low/critical oxygen. Mobile/device and touch overlay automation remain deferred until mobile/touch implementation is promoted.
+Next worthwhile automation should add explicit state assertions/metadata and then low/critical oxygen. Mobile/device and touch overlay automation remain deferred until mobile/touch implementation is promoted.
 
 ## Optional Godot AI MCP Capture
 
