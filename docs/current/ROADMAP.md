@@ -27,6 +27,7 @@ Detailed design rules live in:
 - `docs/planning/PREDATOR_WARNING_I.md`
 - `docs/planning/PREDATOR_COUNTERMEASURE_I.md`
 - `docs/planning/REGION_LANDMARK_METADATA.md`
+- `docs/planning/REGION_IDENTITY_MAP_V1.md`
 - `docs/planning/BIOME_POCKET_I.md`
 - `docs/planning/BIOME_POCKET_II.md`
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
@@ -160,6 +161,7 @@ Next ordered replenishment queue: #180 through #199 from `docs/planning/BACKLOG_
 
 Recently completed:
 
+- #169 planned the first remembered-region identity map in `docs/planning/REGION_IDENTITY_MAP_V1.md` and selected stable region-name copy as the first implementation step.
 - #168 reviewed the open pressure-gate state with predator warning visible and recorded pass-with-polish findings in `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`.
 - #101 updated MCP context resources and roadmap status after the Thermal Vent and Decoy Pulse batch.
 - #100 added explicit Decoy Pulse non-lethal/isolation test and docs coverage.
