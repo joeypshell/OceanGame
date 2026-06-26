@@ -54,6 +54,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_POLISH_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
+- `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
 
@@ -86,6 +87,8 @@ Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now d
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
 
 Expedition-day review checklist: `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md` defines five F5-driven review passes for ready panel, result panel, remembered region, condition copy, scan-only usefulness, and safe-return readability using the screenshot workflow.
+
+Expedition-day review findings: `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md` reviewed seeds `8919`, `16838`, `24757`, `32676`, and `40595`. The highest-priority follow-up is to remove or debug-gate the `F9 resets prototype save` instruction from the normal ready panel.
 
 Visual asset slot review: `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md` confirms the current sprite/fallback slot coverage for player, surface base, resources, Lantern Fry, Gulper Eel, Thermal Vent, Shell Reef, pressure wreck, and Wreck Signal Cache, with follow-ups for larger art replacements.
 
