@@ -75,4 +75,4 @@ Next milestone: playable-slice closeout and first-run readability.
 
 This is not broad content expansion. It should finish evidence and guards for the current loop, then choose the next source-art pass by readability impact.
 
-Update after #302: the formal acceptance checklist now distinguishes pass, pass-with-watchlist, deferred, and out-of-scope areas. The current slice is structurally playable, but not yet fully polished while low-oxygen, upgrade affordance, scanner distinction, durable progression/onboarding, and lower-route watchlists remain in the open queue.
+Update after #334: the formal acceptance checklist now reflects the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, resource/scan, low-oxygen, upgrade, scanner-distinction, and durable-progression reviews. The current slice is structurally playable and close to polished acceptance, but it remains pass-with-watchlist until the clean demo script, surface panel contrast, debug hidden-state sanity, MCP refresh, and future visual-change watchlists are cleared.

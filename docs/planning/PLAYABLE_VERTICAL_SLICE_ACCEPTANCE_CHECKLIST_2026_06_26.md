@@ -1,6 +1,6 @@
 # Playable Vertical-Slice Acceptance Checklist - 2026-06-26
 
-Status: checklist for issue #237.
+Status: formal acceptance checklist, refreshed through issue #334.
 
 This defines the first playable vertical slice. It is a player-facing quality gate for the current prototype, not a final-game feature list or production-art lock.
 
@@ -95,22 +95,24 @@ The vertical slice is playable when a tester can complete two short expeditions,
 
 ## Current Acceptance Status
 
-Updated after the #300-#301 solo first-run and compact evidence passes: the current slice is accepted as structurally playable, but not yet fully polished. It remains pass-with-watchlist where normal-scale review or future visual changes could still reintroduce confusion.
+Updated after the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, resource/scan, low-oxygen, upgrade, scanner-distinction, and durable-progression reviews: the current slice is accepted as structurally playable and close to polished vertical-slice acceptance, but not yet declared fully polished.
+
+It remains pass-with-watchlist because final evidence still needs a clean playable demo script, surface panel contrast recheck, debug hidden-state sanity review, and MCP context refresh after the playable-loop polish batch. Future visual changes can also reintroduce lower-route or HUD confusion, so this status should remain conservative.
 
 This is internal development evidence, not blind validation.
 
 | Area | Status | Evidence | Remaining Watchlist |
 | --- | --- | --- | --- |
-| Core loop | Pass | Clean-save two-expedition smoke, solo first-run result, compact evidence bundle | Continue normal play-feel checks as art and HUD change. |
-| Ready screen | Pass with watchlist | Solo first-run result and surface ready/result reviews | Surface art/panel changes still need recheck. |
-| Active dive | Pass with watchlist | Active HUD review, compact HUD placement, evidence bundle | Low/critical oxygen state review remains #313. |
-| Pickup/scan | Pass | Evidence bundle and scanner/resource tests | Signal Lens versus Echo Lens distinction remains #315. |
-| Return/failure | Pass with watchlist | Clean-save smoke, result memory review, solo first-run result | Durable progression/reset onboarding copy remains #317. |
-| Upgrade view | Pass with watchlist | Upgrade bay review, Up/Down affordance tune, evidence bundle | Normal-scale affordance review remains #314. |
-| Blocked route | Pass | Pressure wreck/cache reviews and evidence bundle | Lower-route pileup recheck remains #310. |
-| Danger route | Pass with watchlist | Gulper route danger review, Decoy Pulse smoke, evidence bundle | Recheck after lower-route art/HUD changes. |
-| Optional clue route | Pass with watchlist | Thermal Vent and Shell Reef reviews, evidence bundle | Keep condition visuals presentation-first. |
-| No locator/checklist drift | Pass | Echo Lens pulse recheck, no-locator tests/docs | Recheck route language in #305 and scanner distinction in #315. |
+| Core loop | Pass | Clean-save two-expedition smoke, solo first-run result, compact evidence bundle | Keep normal play-feel checks when art, HUD, or route density changes. |
+| Ready screen | Pass with watchlist | Solo first-run result, surface ready/result reviews, final compact HUD review | Surface panel contrast after final HUD polish remains the next evidence check. |
+| Active dive | Pass with watchlist | Active HUD review, compact HUD placement, low/critical oxygen review, final compact HUD evidence bundle | Fixed top-left HUD can cover incidental left-side art; do not expand UI to solve this yet. |
+| Pickup/scan | Pass with watchlist | Evidence bundle, scanner/resource tests, Signal Lens/Echo Lens review, resource/scan affordance review | New resource/scan source-art is deferred unless future evidence shows concrete confusion. |
+| Return/failure | Pass with watchlist | Clean-save smoke, result memory review, solo first-run result, durable progression/reset review | Maintain the distinction between durable progress and temporary active-dive state. |
+| Upgrade view | Pass with watchlist | Upgrade bay review, Up/Down affordance tune, normal-scale affordance review, evidence bundle | Recheck if more upgrades are added or copy grows longer. |
+| Blocked route | Pass with watchlist | Pressure wreck/cache reviews, pressure shell normal-scale review, lower-route shell recheck, evidence bundle | `Wreck Echo Descent` remains deferred until a separate implementation issue proves route readiness. |
+| Danger route | Pass with watchlist | Gulper route danger review, Decoy Pulse smoke, Decoy/Gulper follow-up reviews, evidence bundle | Preserve mistimed-contact risk and avoid combat/capture/loot framing. |
+| Optional clue route | Pass with watchlist | Thermal Vent, Shell Reef, Wreck Signal Cache, condition visuals, and evidence bundle | Keep condition visuals and mystery signals presentation-first. |
+| No locator/checklist drift | Pass | Echo Lens pulse recheck, Signal/Echo distinction review, no-locator tests/docs | Recheck if Wreck Echo route or scanner copy changes. |
 
 Accepted or cleared:
 
@@ -130,12 +132,11 @@ Accepted or cleared:
 
 Remaining before declaring the gate fully polished:
 
-- lower-route normal-scale screenshot recheck after the cleanup batch,
-- low/critical oxygen review after prompt/title changes,
-- upgrade bay normal-scale affordance review after copy tune,
-- scanner feedback distinction review for `Signal Lens I` and `Echo Lens I`,
-- durable progression reset/onboarding copy review,
-- continued lower-route watchlist after any future visual change.
+- clean vertical-slice demo script for a repeatable playable pass,
+- surface panel contrast review after final HUD polish,
+- debug hidden-state sanity review after the refreshed evidence,
+- MCP context refresh after the playable-loop polish batch,
+- continued lower-route and active-HUD watchlist after any future visual change.
 
 Deferred:
 
