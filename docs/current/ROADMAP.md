@@ -43,6 +43,7 @@ Detailed design rules live in:
 - `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md`
 - `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`
+- `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -67,13 +68,13 @@ Optional local Godot editor MCP policy lives in `docs/current/GODOT_MCP.md`.
 
 ## Active Milestone
 
-One More Expedition Motivation Slice.
+Playable Vertical Slice Readability And Cohesion.
 
-Status: next ordered issue batch ready to execute after the visual clarity foundation.
+Status: current planning updated after the Wreck Echo, source-art, HUD, and playable-slice acceptance passes. The next issue queue should come from `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md`.
 
-Goal: connect the now-readable dive space to the compulsion loop: start the next expedition day, recognize remembered places, learn from creature/scanner evidence, improve one source-art object, and create a clearer reason to dive again tomorrow.
+Goal: make the existing side-view expedition slice playable and understandable at normal scale without developer explanation. The focus is not more breadth; it is loop clarity, active HUD skinning, lower-route readability, source-art/fallback balance, and acceptance evidence for the current upgrade and route promises.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, `Decoy Pulse I`, surface result memory, compact surface views, clean-save reset, HUD mode separation, runtime compact markers, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a documented hybrid-ocean model, expedition-day condition data, visual `Thermal Bloom`/`Calm Current` effects, the first narrow condition-driven authored `Glow Plankton` weighting rule, a visual clarity foundation, screenshot workflow, debug seed/condition helpers, and asset source conventions. The next step is to turn this readable prototype into a stronger one-more-expedition loop.
+Current implemented signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, `Decoy Pulse I`, `Echo Lens I`, surface result memory, compact surface views, clean-save reset, HUD mode separation, runtime compact markers, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, pressure wreck/cache follow-through, a documented hybrid-ocean model, expedition-day condition data, first source/export sprites for the player, boat, resources, creatures, and major landmarks, reusable readability scenes, screenshot workflow, debug seed/condition helpers, asset source conventions, and a playable vertical-slice acceptance checklist.
 
 Latest direction update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md` promotes the next milestone around the "one more expedition day" loop: day framing, remembered regions, creature/scanner research payoff, first source-art replacement, and mystery/access planning.
 
@@ -107,29 +108,30 @@ Vertical-slice art-kit readiness: `docs/planning/VERTICAL_SLICE_ART_KIT_READINES
 
 Playable vertical-slice acceptance: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` defines the first playable/polished slice gate across loop playability, visual readability, upgrade/route coverage, non-goals, and verification. It is the quality bar for the next milestone, not a request to expand final-game scope.
 
+Next milestone definition: `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md` distinguishes current, next, deferred, and out-of-scope work for the playable vertical slice. Current work should improve the existing loop and readability; next work can plan deeper Wreck Echo promise only after the slice is clearer; deferred work stays out of the immediate queue.
+
 ## Immediate Issue Order
 
-Motivation and payoff track:
+Current playable-slice track:
 
-- Add next-expedition day framing to restart/result flow.
-- Add Gulper route research result callout.
-- Add Wreck Signal Cache re-scan planning hint.
-- Tune ready-panel changed-ocean copy.
+- Implement the compact active-dive HUD skin without restoring playfield text clutter.
+- Capture normal-scale screenshot evidence for surface ready, active dive, pressure lock/open, predator route, and result UI.
+- Reduce lower-route density where pressure wreck, cache, rare-signal shimmer, deep reward, and predator danger overlap.
+- Review sprite/fallback balance for Shell Reef, Thermal Vent, pressure wreck, Wreck Signal Cache, and Gulper route.
+- Verify the acceptance checklist through short manual smoke runs once the HUD/readability passes land.
 
-Art and structure track:
+Next planning track:
 
-- Replace Glow Plankton with the first source/export asset.
-- Extract pressure gate visuals into a reusable scene.
-- Review open pressure-gate screenshots with predator warning visible.
+- Plan the later `Wreck Echo Descent` pocket only after the current slice reads cleanly.
+- Keep Echo Lens curiosity broad and local; avoid locator, map, field-guide, or checklist UI.
+- Select the next source-art replacement based on readability impact, not asset novelty.
 
-Region, condition, and mystery planning track:
+Deferred and out-of-scope track:
 
-- Plan first region identity map v1.
-- Add stable region names to landmark metadata and review copy.
-- Add condition review matrix using F3/F4/F5.
-- Plan first mystery spine v1.
+- Defer large biomes, broad economy, advanced monster-hunting systems, production animation, audio, web polish, save-slot UI, and base-management layers.
+- Keep minimap, route graph, exact scanner locator, objective checklist, weapons, predator harvesting, full procedural ocean, daily challenge calendar, inventory grid, and final production-art lock out of this milestone.
 
-Later design and demo-readiness issues:
+Historical ordered issue batches:
 
 Completed ordered replenishment batch from `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`:
 
