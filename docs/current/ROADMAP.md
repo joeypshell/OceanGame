@@ -82,6 +82,8 @@ Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_ID
 
 Playable-loop polish update: `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_POLISH_2026_06_26.md` defines the next ordered queue after #180-#199. The focus moves to narrow `Echo Lens I` implementation, expedition-day review evidence, visual slot standardization, first creature/landmark source-art follow-through, HUD review, provenance, and another backlog refresh.
 
+Vertical-slice polish queue: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLAYABLE_LOOP_POLISH_2026_06_26.md` creates issues #220-#239. The focus is Wreck Echo visual follow-through, pressure wreck/cache sprite decisions, local scan/echo feedback, Shell Reef and HUD polish, condition readability review, and first vertical-slice acceptance planning.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
@@ -165,6 +167,29 @@ Next ordered replenishment batch from `docs/planning/BACKLOG_REPLENISHMENT_PLAYA
 18. #217 Add screenshot checklist for first polished vertical-slice art kit.
 19. #218 Update MCP context resources after playable-loop polish planning.
 20. #219 Replenish backlog after playable-loop polish.
+
+Next vertical-slice polish batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLAYABLE_LOOP_POLISH_2026_06_26.md`:
+
+1. #220 Add `Wreck Signal Cache` first source/export sprite.
+2. #221 Add pressure wreck outside scan source/export sprite.
+3. #222 Extract `PressureLockedWreck` fallback visuals into reusable scene.
+4. #223 Prototype local `Echo Lens` pulse visual using scan echo asset.
+5. #224 Add Wreck Echo Descent route pocket plan.
+6. #225 Add pressure-dark threshold visual study asset.
+7. #226 Add Shell Reef pocket first source/export landmark asset.
+8. #227 Add Shell Reef Shelf scan target source/export sprite.
+9. #228 Plan compact HUD skin for oxygen depth cargo and scan.
+10. #229 Prototype cargo slot resource mini-icons.
+11. #230 Add Rare Signal condition readability review.
+12. #231 Add Wreck Shift condition readability review.
+13. #232 Prototype Rare Signal visual emphasis without objective marker.
+14. #233 Review normal-scale vertical-slice art kit readiness.
+15. #234 Add waterline and boat moonpool readability polish.
+16. #235 Add sub idle bubble and thrust sprite polish review.
+17. #236 Add pressure wreck cache provenance-to-scene review.
+18. #237 Add playable vertical-slice acceptance checklist.
+19. #238 Update roadmap around next vertical-slice milestone.
+20. #239 Replenish backlog after vertical-slice milestone update.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, predator harvesting, full procedural biomes, large art sets, oxygen refills, new resource systems, a region-select screen, or real-calendar daily challenges during this milestone.
 

@@ -52,6 +52,7 @@ const resources = [
   ["oceangame://backlog-replenishment-visual-clarity-foundation-2026-06-26", "docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md", "Visual clarity foundation backlog replenishment"],
   ["oceangame://backlog-replenishment-after-visual-clarity-2026-06-26", "docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md", "Post-visual-clarity backlog replenishment"],
   ["oceangame://backlog-replenishment-playable-loop-polish-2026-06-26", "docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_POLISH_2026_06_26.md", "Playable loop polish backlog replenishment"],
+  ["oceangame://backlog-replenishment-after-playable-loop-polish-2026-06-26", "docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLAYABLE_LOOP_POLISH_2026_06_26.md", "Post-playable-loop-polish backlog replenishment"],
   ["oceangame://backlog-replenishment-after-shell-reef", "docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md", "Post-Shell-Reef backlog replenishment"],
   ["oceangame://backlog-replenishment-2026-06-25", "docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md", "Backlog replenishment"],
 ].map(([uri, filePath, name]) => ({
@@ -173,6 +174,7 @@ function selfTest() {
     "oceangame://vertical-slice-art-kit-screenshot-checklist-2026-06-26",
     "oceangame://expedition-day-five-seed-review-findings-2026-06-26",
     "oceangame://backlog-replenishment-playable-loop-polish-2026-06-26",
+    "oceangame://backlog-replenishment-after-playable-loop-polish-2026-06-26",
     "oceangame://backlog-replenishment-after-visual-clarity-2026-06-26",
     "oceangame://project-status",
   ];
