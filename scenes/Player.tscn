@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://ocean_player_scene"]
+[gd_scene load_steps=4 format=3 uid="uid://ocean_player_scene"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/research_sub.png" id="2_research_sub"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
 radius = 18.0
@@ -9,29 +10,68 @@ height = 52.0
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_player_script")
 
-[node name="Body" type="Polygon2D" parent="."]
-color = Color(0.28, 0.86, 0.94, 1)
-polygon = PackedVector2Array(-36, -13, -8, -24, 26, -18, 42, 0, 26, 18, -8, 24, -36, 13)
+[node name="VisualRoot" type="Node2D" parent="."]
 
-[node name="TailFin" type="Polygon2D" parent="."]
-color = Color(0.12, 0.46, 0.62, 1)
-polygon = PackedVector2Array(-36, -13, -60, -28, -48, 0, -60, 28, -36, 13)
+[node name="BubbleTrail" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.72, 0.96, 1, 0.28)
+polygon = PackedVector2Array(-72, -6, -64, -16, -54, -6, -64, 4, -90, 8, -82, -2, -72, 8, -82, 18, -112, -8, -106, -16, -98, -8, -106, 0)
 
-[node name="TopFin" type="Polygon2D" parent="."]
-color = Color(0.2, 0.62, 0.78, 1)
+[node name="SubSpriteAnchor" type="Node2D" parent="VisualRoot"]
+
+[node name="SubSprite" type="Sprite2D" parent="VisualRoot/SubSpriteAnchor"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_research_sub")
+offset = Vector2(36, 56)
+
+[node name="TailFin" type="Polygon2D" parent="VisualRoot/SubSpriteAnchor"]
+visible = false
+color = Color(0.58, 0.38, 0.14, 1)
+polygon = PackedVector2Array(-36, -13, -62, -28, -50, 0, -62, 28, -36, 13)
+
+[node name="Body" type="Polygon2D" parent="VisualRoot/SubSpriteAnchor"]
+visible = false
+color = Color(0.92, 0.58, 0.18, 1)
+polygon = PackedVector2Array(-38, -14, -10, -26, 25, -20, 44, 0, 25, 20, -10, 26, -38, 14)
+
+[node name="HullShadow" type="Polygon2D" parent="VisualRoot/SubSpriteAnchor"]
+visible = false
+color = Color(0.34, 0.18, 0.08, 0.42)
+polygon = PackedVector2Array(-34, 10, -6, 20, 24, 16, 40, 2, 22, 24, -12, 30, -40, 16)
+
+[node name="TopFin" type="Polygon2D" parent="VisualRoot/SubSpriteAnchor"]
+visible = false
+color = Color(0.75, 0.44, 0.12, 1)
 polygon = PackedVector2Array(-8, -24, 8, -42, 20, -20)
 
-[node name="BottomFin" type="Polygon2D" parent="."]
-color = Color(0.16, 0.54, 0.68, 1)
+[node name="BottomFin" type="Polygon2D" parent="VisualRoot/SubSpriteAnchor"]
+visible = false
+color = Color(0.66, 0.36, 0.1, 1)
 polygon = PackedVector2Array(-6, 24, 12, 40, 20, 20)
 
-[node name="Viewport" type="Polygon2D" parent="."]
-color = Color(0.02, 0.13, 0.2, 1)
-polygon = PackedVector2Array(8, -11, 30, 0, 8, 11)
+[node name="Viewport" type="Polygon2D" parent="VisualRoot/SubSpriteAnchor"]
+visible = false
+color = Color(0.03, 0.16, 0.22, 1)
+polygon = PackedVector2Array(6, -12, 30, 0, 6, 12)
 
-[node name="NoseLight" type="Polygon2D" parent="."]
+[node name="ViewportGlow" type="Polygon2D" parent="VisualRoot/SubSpriteAnchor"]
+visible = false
+color = Color(0.74, 1, 0.92, 0.46)
+polygon = PackedVector2Array(10, -7, 25, 0, 10, 7)
+
+[node name="WarmCabinLight" type="Polygon2D" parent="VisualRoot/SubSpriteAnchor"]
+visible = false
+color = Color(1, 0.84, 0.36, 0.42)
+polygon = PackedVector2Array(-14, -13, 2, -18, 9, -10, -2, -4)
+
+[node name="ScannerMount" type="Polygon2D" parent="VisualRoot/SubSpriteAnchor"]
+visible = false
+color = Color(0.18, 0.34, 0.42, 1)
+polygon = PackedVector2Array(-4, -26, 4, -26, 4, -36, 12, -40, 16, -36, 8, -32, 8, -24)
+
+[node name="NoseLight" type="Polygon2D" parent="VisualRoot"]
+visible = false
 color = Color(0.9, 1, 0.78, 0.74)
-polygon = PackedVector2Array(36, -5, 56, 0, 36, 5)
+polygon = PackedVector2Array(38, -6, 66, 0, 38, 6)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_player")
