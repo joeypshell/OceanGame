@@ -12,6 +12,7 @@ const ExpeditionConditionScript := preload("res://scripts/expedition_condition.g
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
+const ECHO_LENS_UPGRADE := preload("res://resources/upgrades/echo_lens_1.tres")
 const CARGO_RACK_UPGRADE := preload("res://resources/upgrades/cargo_rack_1.tres")
 const PREDATOR_WARNING_UPGRADE := preload("res://resources/upgrades/predator_warning_1.tres")
 const DECOY_PULSE_UPGRADE := preload("res://resources/upgrades/decoy_pulse_1.tres")
@@ -19,6 +20,7 @@ const DECOY_PULSE_UPGRADE := preload("res://resources/upgrades/decoy_pulse_1.tre
 const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
 const PRESSURE_SEAL_UPGRADE_ID := "pressure_seal_1"
 const SIGNAL_LENS_UPGRADE_ID := "signal_lens_1"
+const ECHO_LENS_UPGRADE_ID := "echo_lens_1"
 const CARGO_RACK_UPGRADE_ID := "cargo_rack_1"
 const PREDATOR_WARNING_UPGRADE_ID := "predator_warning_1"
 const DECOY_PULSE_UPGRADE_ID := "decoy_pulse_1"
@@ -151,6 +153,7 @@ var upgrade_definitions: Array[UpgradeDefinition] = [
 	OXYGEN_TANK_UPGRADE,
 	PRESSURE_SEAL_UPGRADE,
 	SIGNAL_LENS_UPGRADE,
+	ECHO_LENS_UPGRADE,
 	CARGO_RACK_UPGRADE,
 	PREDATOR_WARNING_UPGRADE,
 	DECOY_PULSE_UPGRADE,
@@ -470,6 +473,8 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 		"open_pressure_wreck":
 			_sync_pressure_lock_state()
 		"resource_signal_pulse":
+			pass
+		"echo_lens_wreck_echo":
 			pass
 		"cargo_limit_4":
 			dive_session.cargo_limit = _current_cargo_limit()

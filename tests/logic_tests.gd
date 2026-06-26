@@ -19,6 +19,7 @@ const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PressureSealUpgrade := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SignalLensUpgrade := preload("res://resources/upgrades/signal_lens_1.tres")
+const EchoLensUpgrade := preload("res://resources/upgrades/echo_lens_1.tres")
 const CargoRackUpgrade := preload("res://resources/upgrades/cargo_rack_1.tres")
 const PredatorWarningUpgrade := preload("res://resources/upgrades/predator_warning_1.tres")
 const DecoyPulseUpgrade := preload("res://resources/upgrades/decoy_pulse_1.tres")
@@ -60,6 +61,7 @@ func _initialize() -> void:
 	_run("predator warning upgrade metadata", _test_predator_warning_upgrade_metadata)
 	_run("predator warning effect isolation", _test_predator_warning_effect_isolation)
 	_run("decoy pulse effect isolation", _test_decoy_pulse_effect_isolation)
+	_run("echo lens effect isolation", _test_echo_lens_effect_isolation)
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
 	_run("extraction banking result copy", _test_extraction_banking_result_copy)
@@ -498,6 +500,12 @@ func _test_discovery_prerequisites() -> void:
 	_expect(OxygenTankUpgrade.required_discovery.is_empty(), "Oxygen Tank I should not require a discovery")
 	_expect(PressureSealUpgrade.required_discovery == "thermal_vent", "Pressure Seal I should require Thermal Vent")
 	_expect(SignalLensUpgrade.required_discovery == "wreck_signal_cache", "Signal Lens I should require Wreck Signal Cache")
+	_expect(EchoLensUpgrade.required_discovery == "wreck_signal_cache", "Echo Lens I should require Wreck Signal Cache")
+	_expect(EchoLensUpgrade.required_upgrade == SignalLensUpgrade.id, "Echo Lens I should require Signal Lens I")
+	_expect(EchoLensUpgrade.effect_id == "echo_lens_wreck_echo", "Echo Lens I should use the broad wreck echo effect id")
+	_expect(int(EchoLensUpgrade.resource_cost.get("glow_plankton", 0)) == 3, "Echo Lens I should cost three glow plankton")
+	_expect(int(EchoLensUpgrade.resource_cost.get("kelp_fiber", 0)) == 1, "Echo Lens I should cost one kelp fiber")
+	_expect(int(EchoLensUpgrade.resource_cost.get("shell_fragments", 0)) == 2, "Echo Lens I should cost two shell fragments")
 	_expect(CargoRackUpgrade.required_discovery.is_empty(), "Cargo Rack I should not require a discovery")
 	_expect(CargoRackUpgrade.effect_id == "cargo_limit_4", "Cargo Rack I should use cargo limit effect")
 	_expect(PredatorWarningUpgrade.required_discovery == "gulper_eel", "Predator Warning I should require Gulper Eel")
@@ -509,6 +517,8 @@ func _test_discovery_prerequisites() -> void:
 	_expect(UpgradePurchaseScript.missing_discovery(progression, OxygenTankUpgrade) == "", "upgrade with no prerequisite should not be locked")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "thermal_vent", "Pressure Seal I prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, SignalLensUpgrade) == "wreck_signal_cache", "Signal Lens I prerequisite should start missing")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, EchoLensUpgrade) == "wreck_signal_cache", "Echo Lens I discovery prerequisite should start missing")
+	_expect(UpgradePurchaseScript.missing_upgrade(progression, EchoLensUpgrade) == SignalLensUpgrade.id, "Echo Lens I upgrade prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, CargoRackUpgrade) == "", "Cargo Rack I prerequisite should be satisfied by default")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PredatorWarningUpgrade) == "gulper_eel", "Predator Warning I prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_upgrade(progression, DecoyPulseUpgrade) == PredatorWarningUpgrade.id, "Decoy Pulse I upgrade prerequisite should start missing")
@@ -516,6 +526,10 @@ func _test_discovery_prerequisites() -> void:
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "", "Pressure Seal I prerequisite should be satisfied by Thermal Vent discovery")
 	progression.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks Signal Lens I.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, SignalLensUpgrade) == "", "Signal Lens I prerequisite should be satisfied by Wreck Signal Cache discovery")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, EchoLensUpgrade) == "", "Echo Lens I discovery prerequisite should be satisfied by Wreck Signal Cache discovery")
+	_expect(not UpgradePurchaseScript.purchase(progression, EchoLensUpgrade), "Echo Lens I should not purchase before Signal Lens I")
+	progression.purchased_upgrades[SignalLensUpgrade.id] = true
+	_expect(UpgradePurchaseScript.missing_upgrade(progression, EchoLensUpgrade) == "", "Echo Lens I upgrade prerequisite should be satisfied by Signal Lens I")
 	progression.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PredatorWarningUpgrade) == "", "Predator Warning I prerequisite should be satisfied by Gulper Eel discovery")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, DecoyPulseUpgrade) == "", "Decoy Pulse I discovery prerequisite should be satisfied by Gulper Eel discovery")
@@ -579,6 +593,23 @@ func _test_decoy_pulse_effect_isolation() -> void:
 	_expect(main.run_predator_contacts == 0, "Decoy Pulse I purchase should not create predator contact")
 	_expect(not main.progression_state.has_upgrade(PressureSealUpgrade.id), "Decoy Pulse I should not grant Pressure Seal I")
 	_expect(not main.progression_state.has_upgrade(SignalLensUpgrade.id), "Decoy Pulse I should not grant Signal Lens I")
+	main.free()
+
+func _test_echo_lens_effect_isolation() -> void:
+	var main := MainScript.new()
+	main.dive_session.reset(30.0)
+	main.dive_session.current_cargo = ["kelp_fiber"]
+	main.progression_state.purchased_upgrades = {
+		SignalLensUpgrade.id: true,
+		EchoLensUpgrade.id: true,
+	}
+
+	main._apply_upgrade_effect(EchoLensUpgrade.effect_id)
+
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Echo Lens I purchase should not change dive result state")
+	_expect(main.dive_session.current_cargo == ["kelp_fiber"], "Echo Lens I purchase should not change carried cargo")
+	_expect(not main.progression_state.has_upgrade(PressureSealUpgrade.id), "Echo Lens I should not grant Pressure Seal I")
+	_expect(not main.progression_state.has_upgrade(DecoyPulseUpgrade.id), "Echo Lens I should not grant Decoy Pulse I")
 	main.free()
 
 func _test_expedition_prep_goals() -> void:
@@ -832,6 +863,7 @@ func _test_upgrade_bay_readability_states() -> void:
 		OxygenTankUpgrade,
 		PressureSealUpgrade,
 		SignalLensUpgrade,
+		EchoLensUpgrade,
 		CargoRackUpgrade,
 		PredatorWarningUpgrade,
 	]
@@ -856,6 +888,11 @@ func _test_upgrade_bay_readability_states() -> void:
 	state = main._format_upgrade_state(PressureSealUpgrade)
 	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label scan-locked upgrades")
 	_expect(state.contains("Needs scan: Thermal Vent"), "upgrade bay should name missing discoveries")
+
+	main.progression_state.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks scanner tuning.")
+	state = main._format_upgrade_state(EchoLensUpgrade)
+	_expect(state.begins_with("State: Locked by upgrade"), "upgrade bay should label Echo Lens I as upgrade-locked before Signal Lens I")
+	_expect(state.contains("Needs upgrade: Signal Lens I"), "upgrade bay should name Signal Lens I as the Echo Lens prerequisite")
 
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
 	state = main._format_upgrade_state(DecoyPulseUpgrade)

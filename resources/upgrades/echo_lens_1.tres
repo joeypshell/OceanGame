@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3 uid="uid://echo_lens_1_upgrade"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="1_upgrade_definition"]
+
+[resource]
+script = ExtResource("1_upgrade_definition")
+id = "echo_lens_1"
+display_name = "Echo Lens I"
+description = "Tunes known route clues into broad unresolved signal echoes."
+resource_cost = {
+"glow_plankton": 3,
+"kelp_fiber": 1,
+"shell_fragments": 2
+}
+required_discovery = "wreck_signal_cache"
+required_upgrade = "signal_lens_1"
+effect_id = "echo_lens_wreck_echo"
+locked_reason = "Wreck Signal Cache data and Signal Lens I are needed before the scanner can study unresolved echoes."
+available_text = "Available: press E or Enter to purchase."
+owned_text = "Owned: future cache scans can study broad unresolved echoes."

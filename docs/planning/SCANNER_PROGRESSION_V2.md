@@ -1,6 +1,6 @@
 # Scanner Progression v2
 
-Status: planning recommendation for the next scanner payoff after `Signal Lens I`; the initial `Wreck Signal Cache` repeat-scan planning hint is implemented.
+Status: planning recommendation for the next scanner payoff after `Signal Lens I`; the initial `Wreck Signal Cache` repeat-scan planning hint and `Echo Lens I` upgrade definition are implemented.
 
 ## Direction
 
@@ -23,7 +23,7 @@ Unlock source: `Wreck Signal Cache`, after `Signal Lens I` is owned.
 
 Role: detect one nearby unresolved signal category as a vague route clue after the player has enough context to care.
 
-Likely cost target: `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x3`. This should be tuned later against oxygen margin and cargo pressure, but it should cost slightly more deep-biological material than `Signal Lens I` so the player has a reason to plan another glow/deep expedition before buying it.
+Implemented cost target: `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x3`. This should still be tuned later against oxygen margin and cargo pressure, but it costs slightly more deep-biological material than `Signal Lens I` so the player has a reason to plan another glow/deep expedition before buying it.
 
 Likely discovery gate: `wreck_signal_cache`.
 
