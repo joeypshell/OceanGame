@@ -51,6 +51,7 @@ Detailed design rules live in:
 - `docs/planning/PRESSURE_WRECK_CACHE_SPRITE_FALLBACK_BALANCE_REVIEW_2026_06_26.md`
 - `docs/planning/GULPER_ROUTE_DANGER_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md`
+- `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -133,6 +134,8 @@ Pressure wreck/cache balance review: `docs/planning/PRESSURE_WRECK_CACHE_SPRITE_
 Gulper route review: `docs/planning/GULPER_ROUTE_DANGER_READABILITY_REVIEW_2026_06_26.md` confirms the current Gulper route reads as avoidable danger rather than combat. Warning, chase, reward, pressure lock, and decoy visuals remain distinct; decoy HUD/status should be rechecked in a manual smoke pass with the upgrade owned.
 
 Playable slice smoke log: `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md` records the current acceptance evidence without requiring external blind testers. The slice is structurally playable, but active `Discoveries` placement and upgrade-tab overflow should be fixed before calling the vertical-slice gate fully accepted.
+
+Next source-art priority: `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_2026_06_26.md` selects the surface base moonpool/waterline integration as the next replacement target, with pressure wreck/cache environment treatment as backup. The priority is readability impact, not final art lock or a large visual batch.
 
 ## Vertical-Slice Acceptance Status
 
