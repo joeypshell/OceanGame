@@ -162,6 +162,7 @@ Next ordered replenishment queue: #180 through #199 from `docs/planning/BACKLOG_
 
 Recently completed:
 
+- #173 planned the first Wreck Echo mystery spine in `docs/planning/MYSTERY_SPINE_V1.md`, connecting pressure-wreck memory, Wreck Signal Cache, `Signal Lens I`, and future `Echo Lens I` without adding map or quest UI.
 - #171 added the F3/F4/F5 condition review matrix in `docs/planning/CONDITION_REVIEW_MATRIX_2026_06_26.md`.
 - #170 added stable region names and player memory goals to existing `LandmarkMetadata` nodes without adding map UI.
 - #169 planned the first remembered-region identity map in `docs/planning/REGION_IDENTITY_MAP_V1.md` and selected stable region-name copy as the first implementation step.
