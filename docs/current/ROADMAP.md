@@ -106,6 +106,7 @@ Detailed design rules live in:
 - `docs/planning/NEXT_SOURCE_ART_AFTER_BACKGROUND_REVIEW_2026_06_26.md`
 - `docs/planning/PRESSURE_WRECK_CACHE_SOURCE_ART_SHELL_CONSTRAINTS_V2_2026_06_26.md`
 - `docs/planning/PRESSURE_WRECK_CACHE_SHELL_NORMAL_SCALE_REVIEW_2026_06_26.md`
+- `docs/planning/LOWER_ROUTE_RECHECK_AFTER_PRESSURE_SHELL_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_RECHECK_AFTER_BACKGROUND_STUDY_2026_06_26.md`
 - `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md`
 - `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md`
@@ -229,6 +230,8 @@ Next source-art after background review: `docs/planning/NEXT_SOURCE_ART_AFTER_BA
 Pressure wreck/cache shell v2 constraints: `docs/planning/PRESSURE_WRECK_CACHE_SOURCE_ART_SHELL_CONSTRAINTS_V2_2026_06_26.md` narrows the selected source-art pass to environment-shell readability support only. It preserves the existing pressure gate, outside scan, cache, Echo Lens pulse, predator lane, route layout, and all gameplay state while keeping `Wreck Echo Descent` unimplemented.
 
 Pressure wreck/cache shell normal-scale review: `docs/planning/PRESSURE_WRECK_CACHE_SHELL_NORMAL_SCALE_REVIEW_2026_06_26.md` keeps the source-art shell wired as pass-with-watchlist. The shell clarifies the wreck mass while the pressure gate, outside clue, cache, Echo Lens pulse, and predator lane stay separate; fallback geometry should remain subdued rather than removed until screenshot evidence proves the shell can carry the read alone.
+
+Lower-route recheck after pressure shell: `docs/planning/LOWER_ROUTE_RECHECK_AFTER_PRESSURE_SHELL_2026_06_26.md` keeps the lower pressure/cache/predator area as pass-with-watchlist. The shell reduces shape pileup and creates no new gameplay confusion; remaining risks are already covered by the compact HUD, Decoy/Gulper, Wreck Echo readiness, and resource/scan affordance watchlist issues.
 
 Lower-route recheck after background study: `docs/planning/LOWER_ROUTE_RECHECK_AFTER_BACKGROUND_STUDY_2026_06_26.md` keeps the lower route as pass-with-watchlist after the shallow/midwater background wiring. The background does not add new shape pileup; remaining risks stay with pressure/cache, reward lure, predator lane, and HUD-state intersections.
 
