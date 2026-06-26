@@ -40,13 +40,13 @@ Screenshots are local review artifacts under Godot user data and are not committ
 
 | Gate | Current Status | Evidence | Notes |
 | --- | --- | --- | --- |
-| Two short expeditions | Needs hands-on pass | Implemented loop and surface result reviews | Requires manual play from clean save or scripted smoke to confirm pacing. |
-| One upgrade path | Pass with polish | Current gameplay docs and upgrade tests | Upgrade bay works, but `SURFACE_READY_RESULT_READABILITY_REVIEW_2026_06_26.md` flags upgrade-tab text overflow. |
+| Two short expeditions | Pass with watchlist | Clean-save smoke pass and implemented loop reviews | Structurally acceptable; still worth one hands-on feel pass after surface art work. |
+| One upgrade path | Pass with watchlist | Current gameplay docs, upgrade tests, and upgrade bay review | Upgrade bay now wraps in a taller panel; normal-scale review remains queued. |
 | One blocked route | Pass | Pressure wreck/cache review | `LOCKED`/`OPEN` pressure states are distinct and pressure bypass is not added. |
 | One danger route | Pass with watchlist | Gulper route review | Gulper route reads as avoidable danger; decoy HUD/status should be rechecked with upgrade owned. |
 | One optional clue route | Pass with watchlist | Thermal Vent and Shell Reef reviews | Thermal Vent reads optional, Shell Reef reads as a midwater banking landmark. |
-| Active HUD readability | Pass with immediate fix | Active HUD screenshot review | Move or restyle active `Discoveries` count. |
-| Surface readability | Pass with immediate fix | Surface ready/result review | Upgrade tab text can overflow. |
+| Active HUD readability | Pass with watchlist | Active HUD screenshot review and #260 HUD placement fix | Recheck after future HUD changes. |
+| Surface readability | Pass with watchlist | Surface ready/result review and #257 upgrade bay fix | Upgrade tab normal-scale review remains queued. |
 | No map/checklist/locator drift | Pass | Echo Lens/local mystery tests and docs | Echo Lens wording now uses local `below the shelf` language. |
 
 ## Manual Smoke Script
@@ -65,13 +65,15 @@ Use this when doing the next actual hands-on acceptance run:
 
 ## Known Readability Blockers
 
-1. Active `Discoveries` count sits between HUD panels and can collide visually with the cargo row.
-2. Upgrade tab copy can overflow the panel with the current seven-upgrade set.
-3. Surface ready/result panels are readable, but the translucent panel lets boat/sub art show behind titles and first lines.
-4. Lower-route pressure/cache/predator area is pass-with-watchlist; continue checking it after each visual change.
+1. Surface ready/result panels are readable, but the translucent panel lets boat/sub art show behind titles and first lines.
+2. Lower-route pressure/cache/predator area is pass-with-watchlist; continue checking it after each visual change.
+3. `Decoy Pulse I` HUD/status should be rechecked with the upgrade owned.
+4. Upgrade tab wrapping should be rechecked at normal scale after #257.
 
 ## Current Decision
 
+Update after #260 and #261: `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md` records the two-expedition clean-save loop as structurally acceptable. The active `Discoveries` placement issue has been addressed by moving the count into the compact active stats HUD treatment, and the upgrade tab has a wrapping/panel fix from #257. The slice still needs queued normal-scale evidence for Decoy Pulse owned-state, lower-route recheck, surface moonpool/waterline readability, and the upgrade-tab wrapping fix before calling the gate fully polished accepted.
+
 The slice is structurally playable and close enough to keep moving, but it is not yet a polished accepted vertical slice.
 
-Next work should fix the active `Discoveries` placement and upgrade-tab overflow before declaring the vertical-slice acceptance gate fully passed.
+Next work should gather the queued normal-scale acceptance evidence before declaring the vertical-slice acceptance gate fully passed.

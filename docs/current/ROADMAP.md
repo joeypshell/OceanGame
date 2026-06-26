@@ -55,6 +55,7 @@ Detailed design rules live in:
 - `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md`
 - `docs/planning/RESULT_MEMORY_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md`
+- `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -149,6 +150,8 @@ Upgrade bay review: `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md`
 
 Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md` creates issues #260-#279. The batch focuses on clearing the remaining acceptance blockers, clean smoke evidence, Decoy Pulse owned-state review, lower-route rechecks, surface moonpool/waterline readability, and context refreshes.
 
+Clean-save smoke pass: `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md` records the two-expedition loop as structurally acceptable from a reset state. The slice is still not fully polished accepted until the queued Decoy Pulse, lower-route, surface moonpool/waterline, and upgrade-tab visual reviews land.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable, not yet polished accepted.
@@ -169,8 +172,7 @@ Pass with polish:
 
 Remaining before calling the vertical-slice gate fully accepted:
 
-- move or restyle the active `Discoveries` count so it does not sit between HUD panels,
-- run a short hands-on two-expedition smoke pass from a clean save,
+- convert smoke-pass watchlists into normal-scale acceptance evidence after the surface and lower-route follow-ups,
 - recheck `Decoy Pulse I` HUD/status with the upgrade owned,
 - keep lower-route screenshots on the watchlist after any visual change.
 
