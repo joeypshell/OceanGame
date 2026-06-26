@@ -8,6 +8,7 @@ const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const PlayerScript := preload("res://scripts/player.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
+const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
 const MainScript := preload("res://scripts/main.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -38,6 +39,7 @@ func _initialize() -> void:
 	_run("upgrade affordability", _test_upgrade_affordability)
 	_run("save/load behavior", _test_save_load_behavior)
 	_run("deterministic seed generation", _test_deterministic_seed_generation)
+	_run("expedition condition selection", _test_expedition_condition_selection)
 	_run("spawn-point matching", _test_spawn_point_matching)
 	_run("spawn selection", _test_spawn_selection)
 	_run("scanner target resolver", _test_scanner_target_resolver)
@@ -184,6 +186,21 @@ func _test_deterministic_seed_generation() -> void:
 		_expect(first.current_run_number == index + 1, "run number should advance deterministically")
 		_expect(first.current_run_seed == 1000 + first.current_run_number * 7919, "run seed should follow the documented formula")
 		_expect(first.current_run_seed == second.current_run_seed, "two progression states should generate the same seed sequence")
+
+func _test_expedition_condition_selection() -> void:
+	var first := ExpeditionConditionScript.condition_for_seed(8919)
+	var first_again := ExpeditionConditionScript.condition_for_seed(8919)
+	_expect(first.get("id", "") == first_again.get("id", ""), "same seed should select the same expedition condition")
+	_expect(not String(first.get("display_name", "")).is_empty(), "condition should include a display name")
+	_expect(not String(first.get("briefing", "")).is_empty(), "condition should include a briefing line")
+	_expect(first.get("tags", []) is Array, "condition should include tag metadata")
+
+	var ids := {}
+	for seed in [8919, 16838, 24757, 32676, 40595]:
+		ids[ExpeditionConditionScript.id_for_seed(seed)] = true
+
+	_expect(ids.size() >= 2, "small seed set should produce at least two expedition conditions")
+	_expect(ExpeditionConditionScript.id_for_seed(8919) == String(first.get("id", "")), "id_for_seed should match condition_for_seed")
 
 func _test_spawn_point_matching() -> void:
 	var point := SpawnPointScript.new()
