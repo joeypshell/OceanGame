@@ -262,7 +262,7 @@ polygon = PackedVector2Array(850, 1060, 1160, 1120, 1118, 1210, 782, 1168)
 [node name="Visuals" parent="ShellReefPocket" instance=ExtResource("17_shell_reef_pocket_visuals")]
 
 [node name="DeepGlowHint" type="Polygon2D" parent="."]
-color = Color(0.52, 1, 0.22, 0.12)
+color = Color(0.52, 1, 0.22, 0.08)
 polygon = PackedVector2Array(806, 1420, 974, 1420, 1038, 1760, 744, 1760)
 
 [node name="DeepPressureHaze" type="Polygon2D" parent="."]
@@ -273,23 +273,23 @@ polygon = PackedVector2Array(0, 1460, 1280, 1460, 1280, 2320, 0, 2320)
 visible = false
 
 [node name="CurrentTrail" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.5, 1, 0.35, 0.09)
+color = Color(0.5, 1, 0.35, 0.06)
 polygon = PackedVector2Array(910, 1320, 1006, 1372, 1060, 1690, 1118, 1900, 1010, 1846, 954, 1510)
 
 [node name="DistantBloom" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.74, 1, 0.26, 0.26)
+color = Color(0.74, 1, 0.26, 0.18)
 polygon = PackedVector2Array(1018, 1668, 1060, 1712, 1116, 1718, 1070, 1760, 1086, 1824, 1028, 1788, 970, 1818, 988, 1756, 940, 1710, 1002, 1710)
 
 [node name="RewardCore" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.9, 1, 0.34, 0.58)
+color = Color(0.9, 1, 0.34, 0.52)
 polygon = PackedVector2Array(1030, 1704, 1050, 1724, 1078, 1738, 1050, 1752, 1030, 1772, 1010, 1752, 982, 1738, 1010, 1724)
 
 [node name="RewardPing" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.84, 1, 0.45, 0.18)
+color = Color(0.84, 1, 0.45, 0.12)
 polygon = PackedVector2Array(940, 1688, 982, 1674, 970, 1706, 1074, 1748, 1128, 1736, 1086, 1714)
 
 [node name="LureParticles" type="Polygon2D" parent="DeepRewardLure"]
-color = Color(0.84, 1, 0.45, 0.3)
+color = Color(0.84, 1, 0.45, 0.18)
 polygon = PackedVector2Array(920, 1334, 932, 1318, 946, 1336, 932, 1352, 952, 1438, 966, 1420, 982, 1442, 964, 1458, 1056, 1628, 1070, 1612, 1084, 1632, 1068, 1648)
 
 [node name="PressureLockedWreck" type="Node2D" parent="."]
@@ -312,11 +312,11 @@ texture = ExtResource("22_pressure_wreck_outer_scan_sprite")
 [node name="FallbackVisual" type="Node2D" parent="PressureLockedWreck/OuterScan"]
 
 [node name="ScanMarker" type="Polygon2D" parent="PressureLockedWreck/OuterScan"]
-color = Color(0.95, 1, 0.7, 0.24)
+color = Color(0.95, 1, 0.7, 0.16)
 polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="ScanVisual" type="Polygon2D" parent="PressureLockedWreck/OuterScan/FallbackVisual"]
-color = Color(0.86, 1, 0.36, 0.42)
+color = Color(0.86, 1, 0.36, 0.28)
 polygon = PackedVector2Array(-34, -30, 34, -30, 52, 0, 34, 30, -34, 30, -52, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PressureLockedWreck/OuterScan"]
@@ -344,11 +344,11 @@ texture = ExtResource("21_wreck_signal_cache_sprite")
 [node name="FallbackVisual" type="Node2D" parent="PressureLockedWreck/WreckSignalCache"]
 
 [node name="ScanMarker" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache"]
-color = Color(0.95, 1, 0.7, 0.24)
+color = Color(0.95, 1, 0.7, 0.16)
 polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="CacheVisual" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache/FallbackVisual"]
-color = Color(0.95, 1, 0.34, 0.62)
+color = Color(0.95, 1, 0.34, 0.5)
 polygon = PackedVector2Array(-30, -18, 30, -18, 38, 18, -38, 18)
 
 [node name="EchoPulse" type="Sprite2D" parent="PressureLockedWreck/WreckSignalCache"]
@@ -378,12 +378,12 @@ visible = false
 
 [node name="SoftPingWash" type="Polygon2D" parent="RareSignalEmphasis"]
 position = Vector2(1044, 1470)
-color = Color(0.72, 1, 1, 0.075)
+color = Color(0.72, 1, 1, 0.055)
 polygon = PackedVector2Array(-178, -70, -70, -132, 84, -104, 190, -28, 118, 72, -42, 112, -162, 46)
 
 [node name="BrokenEchoArc" type="Polygon2D" parent="RareSignalEmphasis"]
 position = Vector2(1078, 1504)
-color = Color(0.92, 1, 0.62, 0.16)
+color = Color(0.92, 1, 0.62, 0.12)
 polygon = PackedVector2Array(-84, -12, -36, -48, 32, -44, 86, -8, 70, 8, 24, -18, -28, -16, -68, 10)
 
 [node name="VentRouteHint" type="Node2D" parent="."]
@@ -928,19 +928,19 @@ shape = SubResource("CircleShape2D_pickup")
 position = Vector2(850, 1688)
 
 [node name="WarningRibs" type="Polygon2D" parent="Predators/PredatorWarning"]
-color = Color(1, 0.35, 0.18, 0.26)
+color = Color(1, 0.35, 0.18, 0.18)
 polygon = PackedVector2Array(-260, -74, -226, -38, -260, -6, -226, 26, -260, 64, -174, 38, -198, 0, -174, -38, -86, -52, -106, 0, -86, 52, 86, 52, 106, 0, 86, -52, 174, -38, 198, 0, 174, 38, 260, 64, 226, 26, 260, -6, 226, -38, 260, -74)
 
 [node name="WarningLaneEdgeTop" type="Polygon2D" parent="Predators/PredatorWarning"]
-color = Color(1, 0.18, 0.12, 0.24)
+color = Color(1, 0.18, 0.12, 0.16)
 polygon = PackedVector2Array(-262, -82, -140, -62, -26, -68, 102, -54, 260, -80, 210, -46, 78, -34, -38, -46, -164, -38)
 
 [node name="WarningLaneEdgeBottom" type="Polygon2D" parent="Predators/PredatorWarning"]
-color = Color(1, 0.18, 0.12, 0.2)
+color = Color(1, 0.18, 0.12, 0.14)
 polygon = PackedVector2Array(-262, 82, -164, 38, -38, 46, 78, 34, 210, 46, 260, 80, 102, 54, -26, 68, -140, 62)
 
 [node name="WarningCurrent" type="Polygon2D" parent="Predators/PredatorWarning"]
-color = Color(1, 0.2, 0.12, 0.18)
+color = Color(1, 0.2, 0.12, 0.12)
 polygon = PackedVector2Array(-238, -20, 214, -32, 274, 0, 214, 32, -238, 20, -282, 0)
 
 [node name="WarningMarker" type="Polygon2D" parent="Predators/PredatorWarning"]
@@ -948,7 +948,7 @@ color = Color(1, 0.14, 0.12, 0.72)
 polygon = PackedVector2Array(-28, -42, 28, -42, 42, 0, 28, 42, -28, 42, -42, 0)
 
 [node name="WarningBiteNotch" type="Polygon2D" parent="Predators/PredatorWarning"]
-color = Color(1, 0.8, 0.24, 0.32)
+color = Color(1, 0.8, 0.24, 0.26)
 polygon = PackedVector2Array(-18, -26, 0, -8, 18, -26, 8, 0, 24, 18, 0, 8, -24, 18, -8, 0)
 
 [node name="WarningEye" type="Polygon2D" parent="Predators/PredatorWarning"]
@@ -981,7 +981,7 @@ color = Color(0.95, 1, 0.7, 0.18)
 polygon = PackedVector2Array(0, -74, 58, -42, 74, 0, 58, 42, 0, 74, -58, 42, -74, 0, -58, -42)
 
 [node name="PatrolHint" type="Polygon2D" parent="Predators/GulperEel"]
-color = Color(0.9, 0.1, 0.18, 0.16)
+color = Color(0.9, 0.1, 0.18, 0.11)
 polygon = PackedVector2Array(-124, -82, -40, -98, 74, -72, 138, 0, 74, 72, -40, 98, -124, 82, -162, 0)
 
 [node name="TailFin" type="Polygon2D" parent="Predators/GulperEel/FallbackVisual"]
