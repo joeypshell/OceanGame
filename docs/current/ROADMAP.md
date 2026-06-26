@@ -33,6 +33,8 @@ Detailed design rules live in:
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/SURFACE_UI_LAYOUT_PASS.md`
 - `docs/planning/VISUAL_LANGUAGE_READABILITY_ASSETS.md`
+- `docs/planning/ART_DIRECTION.md`
+- `docs/planning/VISUAL_REPLACEMENT_PLAN.md`
 - `docs/planning/ASSET_SOURCE_PIPELINE_V1.md`
 - `docs/planning/VISUAL_CLARITY_BASELINE_2026_06_26.md`
 - `docs/planning/VISUAL_PASS_IMPACT_REVIEW_2026_06_26.md`
@@ -44,6 +46,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_DEMO_READABILITY_HYBRID_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
@@ -65,6 +68,10 @@ Goal: connect the now-readable dive space to the compulsion loop: start the next
 Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, `Decoy Pulse I`, surface result memory, compact surface views, clean-save reset, HUD mode separation, runtime compact markers, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a documented hybrid-ocean model, expedition-day condition data, visual `Thermal Bloom`/`Calm Current` effects, the first narrow condition-driven authored `Glow Plankton` weighting rule, a visual clarity foundation, screenshot workflow, debug seed/condition helpers, and asset source conventions. The next step is to turn this readable prototype into a stronger one-more-expedition loop.
 
 Latest direction update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md` promotes the next milestone around the "one more expedition day" loop: day framing, remembered regions, creature/scanner research payoff, first source-art replacement, and mystery/access planning.
+
+Visual identity update: `docs/planning/ART_DIRECTION.md` and `docs/planning/VISUAL_REPLACEMENT_PLAN.md` define the desired polished direction as a cozy research expedition into a beautiful but increasingly impossible alien ocean. Polished visuals remain deferred until the gameplay loop is validated, and the current task is planning/integration only, not a full art overhaul.
+
+Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md` adds the next ordered twenty-issue queue after the current one-more-expedition motivation set. The queue keeps the focus on expedition-day identity, scan/result memory, source-art follow-through, reusable visual extraction, player-facing HUD readability, and mystery/scanner planning.
 
 ## Immediate Issue Order
 
@@ -89,6 +96,29 @@ Region, condition, and mystery planning track:
 - Plan first mystery spine v1.
 
 Later design and demo-readiness issues:
+
+Next ordered replenishment batch from `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`:
+
+1. #180 Add expedition day number to result and ready panel state.
+2. #181 Add remembered-region result line from the deepest meaningful landmark reached.
+3. #182 Add first-time discovery memory line for Thermal Vent, Shell Reef, Wreck, and Gulper scans.
+4. #183 Add no-cargo useful-dive result copy when the player returns with scans only.
+5. #184 Replace Kelp Fiber with a first source/export sprite.
+6. #185 Replace Shell Fragments with a first source/export sprite.
+7. #186 Add sprite-ready Lantern Fry visual slot and idle motion polish.
+8. #187 Add sprite-ready Gulper Eel visual slot and state color polish.
+9. #188 Extract resource pickup visuals into reusable child scenes.
+10. #189 Extract Thermal Vent pocket visuals into a reusable scene.
+11. #190 Add scan pulse visual helper for resource highlight feedback.
+12. #191 Add low-oxygen visual warning treatment to player-facing HUD.
+13. #192 Add cargo slot UI placeholders for player-facing cargo readability.
+14. #193 Add surface result panel hierarchy review and copy tightening.
+15. #194 Add scanner echo copy for Wreck Signal Cache repeat scans.
+16. #195 Plan Echo Lens I as the next scanner curiosity upgrade.
+17. #196 Add mystery signal planning notes to pressure-wreck and cache docs.
+18. #197 Add five-seed expedition-day review checklist.
+19. #198 Review visual asset slots after resource/landmark extraction.
+20. #199 Replenish backlog after expedition identity and visual follow-through.
 
 Candidate backlog should stay focused on clean playtesting, readability, and narrow hybrid-ocean variation, not new systems for their own sake.
 
@@ -124,6 +154,8 @@ Current ordered batch:
 The next issues are defined in `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md`. Work them in order unless a blocking implementation detail forces a narrow reorder.
 
 Current queue: #163 through #174.
+
+Next ordered replenishment queue: #180 through #199 from `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`. Work the existing open issues first unless a new issue is a dependency-free visual/polish task that safely unblocks later art integration.
 
 Recently completed:
 
