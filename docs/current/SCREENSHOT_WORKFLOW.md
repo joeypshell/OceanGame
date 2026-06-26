@@ -196,6 +196,8 @@ The scaffold uses a `960x540` viewport with device scale factor `2` and writes l
 - `mobile-like-surface-ready.png`
 - `mobile-like-active-dive.png`
 - `mobile-like-lower-route-pressure-gate.png`
+- `mobile-like-active-low-oxygen.png`
+- `mobile-like-active-critical-oxygen.png`
 
 Use this workflow to inspect whether the active HUD, warning panel, surface panel, player, lower-route pressure/cache cluster, and future virtual-control safe zones remain plausible at a phone-like landscape width. Passing this smoke does not mean mobile support is complete; it only provides repeatable evidence before future touch-control planning.
 

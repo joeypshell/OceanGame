@@ -28,4 +28,26 @@ test.describe("OceanGame mobile-like landscape visual smoke", () => {
       active_stats_visible: true,
     });
   });
+
+  test("captures low and critical oxygen HUD states at a phone-like landscape viewport", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await page.keyboard.press("Enter");
+    await page.waitForTimeout(600);
+    await holdKey(page, "ArrowDown", 2_000);
+
+    await page.waitForTimeout(22_000);
+    await capture(page, testInfo, "mobile-like-active-low-oxygen", {
+      result: "diving",
+      oxygen_state: "low",
+      debug_telemetry: false,
+      active_stats_visible: true,
+    });
+
+    await capture(page, testInfo, "mobile-like-active-critical-oxygen", {
+      result: "diving",
+      oxygen_state: "critical",
+      debug_telemetry: false,
+      active_stats_visible: true,
+    });
+  });
 });
