@@ -261,6 +261,8 @@ Wreck Echo normal-scale screenshot checklist: `docs/planning/WRECK_ECHO_NORMAL_S
 
 Wreck Echo oxygen/cargo prep recheck: `docs/planning/WRECK_ECHO_OXYGEN_CARGO_PREP_RECHECK_2026_06_26.md` confirms the first Wreck Echo route can use existing progression without extra systems. `Pressure Seal I` and `Echo Lens I` provide required context, `Oxygen Tank I` is soft survival preparation, and `Cargo Rack I` is not required while the reward is a compact research clue.
 
+Wreck Echo compact research clue copy: `docs/planning/WRECK_ECHO_COMPACT_RESEARCH_CLUE_COPY_2026_06_26.md` defines approved scan, active status, result, and no-clue/turnback copy directions. The copy stays broad/local/category-based and avoids objective, quest, checklist, map, marker, field-guide, exact-location, and route-unlocked language.
+
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
 Backlog replenishment after closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines the next ordered twenty-issue queue. The focus is solo first-run evidence, compact acceptance proof, final closeout status, source-art/readability rechecks, and Wreck Echo planning without implementing a new route yet.
