@@ -185,6 +185,8 @@ Post-Wreck-Echo/platform-input backlog update: `docs/planning/BACKLOG_REPLENISHM
 
 Player action prompt abstraction plan: `docs/planning/PLAYER_ACTION_PROMPT_ABSTRACTION_PLAN_2026_06_26.md` defines the first prompt-label step before controller or touch work. Current keyboard prompts should route through semantic action labels such as `interact`, `restart_dive`, `move_left_right`, `move_up_down`, `burst_thruster`, and `decoy_pulse`, while controller and mobile/touch label profiles remain future scope.
 
+Post-prompt copy review: `docs/planning/RESULT_UPGRADE_ACTIVE_COPY_REVIEW_AFTER_PROMPT_ABSTRACTION_2026_06_26.md` keeps the prompt abstraction as pass-with-watchlist. Result and active HUD copy remain readable and keyboard-only; upgrade detail text still risks bottom-panel overflow and should stay on the narrow polish watchlist before a polished playable build.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
