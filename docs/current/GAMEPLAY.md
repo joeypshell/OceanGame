@@ -34,6 +34,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - After a successful extraction, the surface HUD uses compact `Result`, `Upgrades`, and `Log` views so the run result, upgrade bay, and recent-expedition log do not all compete for attention. Press Left/Right to cycle these surface views.
 - The `Result` view keeps the extraction summary in focus, the `Upgrades` view focuses the data-backed upgrade bay with Up/Down selection and E or Enter purchase, and the `Log` view shows the recent expedition history in the run panel.
 - Each expedition has a session number and deterministic seed. The raw seed is visible only when development telemetry is enabled.
+- Each expedition now selects a deterministic presentation-only expedition condition from the current seed. The condition has an id, display name, short briefing line, and tags, but it does not yet change spawns, predator routes, oxygen, scan range, pressure gates, cargo, resources, or upgrades.
 - Each expedition selects a seeded resource cluster pattern: `Cautious shallows` or `Deep reward route`. The raw pattern label is visible only when development telemetry is enabled.
 - Pressing R after a result prepares the next seeded expedition, advancing the session number and seed while preserving banked resources, upgrades, discoveries, and best depth.
 - Session progression lives in `ProgressionState`: banked resources, purchased upgrades, scan discoveries, and best depth reached.
@@ -111,6 +112,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
   - `scripts/scannable.gd`: simple scannable targets, including passive moving creatures.
   - `scripts/spawn_point.gd`: typed candidate placement points for seeded resource and creature route variation.
   - `scripts/spawn_selection.gd`: deterministic helper for seed-to-pattern selection, spawn positions, and authored route dictionaries.
+  - `scripts/expedition_condition.gd`: deterministic presentation data for seeded expedition-day conditions.
   - `scripts/scan_target_resolver.gd`: deterministic helper for scan target validity, identity, display fields, and nearest-target tie-breaking.
   - `scripts/predator.gd`: simple patrol, detection, chase, and contact behavior.
   - `scripts/upgrade_definition.gd`: small data model for upgrade definitions and generic purchase handling.

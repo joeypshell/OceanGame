@@ -32,6 +32,7 @@ Scene orchestration
         +--> Data/helpers
                resource definitions
                upgrade definitions
+               expedition conditions
                spawn points
                scan target resolver
                spawn selection
@@ -58,6 +59,8 @@ Seeded expedition variation is temporary and selected from authored candidates:
 - creature route candidates,
 - route/reward cluster patterns,
 - future expedition-day conditions such as currents, visibility, migrations, blooms, and rare signals.
+
+Current expedition conditions are presentation-only deterministic data selected from the expedition seed. They may be shown to the player as briefing context, but they must not change resource placement, predator routes, pressure locks, oxygen, cargo, or upgrades until a future issue explicitly adds a mechanical effect.
 
 Do not let seeded variation erase persistent place memory. Broad procedural biome generation remains deferred until the authored route decisions are readable and testable.
 

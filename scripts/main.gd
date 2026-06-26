@@ -8,6 +8,7 @@ const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
+const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -107,6 +108,7 @@ var decoy_pulse_activated_this_scan := false
 var last_result_summary := ""
 var upgrade_menu_feedback := ""
 var current_resource_cluster_pattern := "cautious"
+var current_expedition_condition: Dictionary = {}
 var current_predator_route_id := "none"
 var current_scan_target: Node = null
 var selected_upgrade_index := 0
@@ -247,6 +249,7 @@ func _restart_dive() -> void:
 
 func _prepare_next_run() -> void:
 	progression_state.advance_run()
+	current_expedition_condition = ExpeditionConditionScript.condition_for_seed(progression_state.current_run_seed)
 	dive_session.reset(_current_max_oxygen())
 	dive_session.cargo_limit = _current_cargo_limit()
 	_reset_run_telemetry()
