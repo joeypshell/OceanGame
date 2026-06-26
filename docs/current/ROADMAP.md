@@ -80,6 +80,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLICE_READABILITY_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_ACCEPTANCE_EVIDENCE_2026_06_26.md`
+- `docs/planning/PLAYABLE_VERTICAL_SLICE_CLOSEOUT_REVIEW_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -133,6 +134,8 @@ Wreck Shift condition review: `docs/planning/WRECK_SHIFT_CONDITION_READABILITY_R
 Vertical-slice art-kit readiness: `docs/planning/VERTICAL_SLICE_ART_KIT_READINESS_REVIEW_2026_06_26.md` says the project is ready for a cohesive vertical-slice art integration pass, but not final production art lock. Highest-priority gaps are waterline/moonpool polish, sub idle/thrust state readability, lower-route density, compact HUD skin, and landmark sprite/fallback balance.
 
 Playable vertical-slice acceptance: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` defines the first playable/polished slice gate across loop playability, visual readability, upgrade/route coverage, non-goals, and verification. It is the quality bar for the next milestone, not a request to expand final-game scope.
+
+Playable vertical-slice closeout: `docs/planning/PLAYABLE_VERTICAL_SLICE_CLOSEOUT_REVIEW_2026_06_26.md` summarizes what the current slice proves across loop, progression, routes, readability, and non-goals. The next milestone remains closeout/watchlist verification and first-run readability, not broad content expansion.
 
 Next milestone definition: `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md` distinguishes current, next, deferred, and out-of-scope work for the playable vertical slice. Current work should improve the existing loop and readability; next work can plan deeper Wreck Echo promise only after the slice is clearer; deferred work stays out of the immediate queue.
 
