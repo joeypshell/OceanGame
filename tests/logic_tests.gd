@@ -1850,6 +1850,24 @@ func _test_east_shelf_current_surge_visual_timing() -> void:
 	_expect(high_alpha > low_alpha, "East Shelf current-surge alpha should pulse upward to suggest timing")
 	_expect(is_equal_approx(low_alpha, return_alpha), "East Shelf current-surge pulse should repeat smoothly")
 	_expect(low_alpha >= 0.08 and high_alpha <= 0.18, "East Shelf current-surge pulse should stay subtle and non-combat")
+
+	main.dive_session.reset(30.0)
+	main.dive_session.start()
+	main.dive_session.oxygen = 24.0
+	main.dive_session.current_cargo = ["kelp_fiber"]
+	main.dive_session.has_left_base = true
+	main.player_in_base = false
+	main.run_predator_contacts = 1
+	main.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
+
+	main.call("_update_east_shelf_current_surge", 0.7)
+	_expect(is_equal_approx(main.dive_session.oxygen, 24.0), "East Shelf current surge should not drain oxygen")
+	_expect(main.dive_session.current_cargo == ["kelp_fiber"], "East Shelf current surge should not change carried cargo")
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "East Shelf current surge should not change dive result")
+	_expect(main.dive_session.has_left_base, "East Shelf current surge should not reset extraction eligibility")
+	_expect(not main.player_in_base, "East Shelf current surge should not move the player into the base")
+	_expect(main.run_predator_contacts == 1, "East Shelf current surge should not create predator contacts")
+	_expect(main.progression_state.has_upgrade(PressureSealUpgrade.id), "East Shelf current surge should not mutate pressure upgrade state")
 	main.free()
 
 func _test_sealed_shelf_hatch_promise_state() -> void:
