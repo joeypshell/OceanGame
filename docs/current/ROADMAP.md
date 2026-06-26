@@ -12,6 +12,8 @@ Current expanded-region implementation status: #446 widened the player world bou
 
 Expanded-region status review: `docs/planning/EXPANDED_REGION_PROTOTYPE_STATUS_2026_06_26.md` records what landed, what is still only a spatial promise, and what should come next. The next batch should prioritize a minimal pocket interaction, route payoff, branch risk/timing choice, and result memory.
 
+Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
+
 Detailed design rules live in:
 
 - `docs/planning/CORE_LOOP_RULES.md`
