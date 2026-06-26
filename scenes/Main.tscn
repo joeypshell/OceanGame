@@ -138,6 +138,20 @@ Safe return points left/up toward the surface base column."
 variable_hooks = "Future side-route daily opportunity can appear near or beyond this landmark."
 readability_priority = "Side-route memory and safe return orientation."
 
+[node name="DropArch" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "drop_arch"
+display_name = "Drop Arch"
+stable_region_name = "Shelf Drop Connector"
+kind = "landmark"
+depth_band = "deep"
+role = "Persistent lower-connector memory anchor and return-orientation clue below East Shelf."
+memory_goal = "Remember Drop Arch as the first lower continuation beyond East Shelf; returning from it means following the pale current up-left toward East Shelf and the base column."
+persistent_facts = "Marks the first downward-right connector from East Shelf.
+This is a turnback/route-continuation landmark, not a full biome or quest destination."
+variable_hooks = "Future lower-connector opportunities can appear near or below this landmark."
+readability_priority = "Lower connector memory and up-left safe return orientation."
+
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
 script = ExtResource("10_landmark_metadata")
 metadata_id = "thermal_vent_field"
@@ -447,6 +461,29 @@ polygon = PackedVector2Array(1856, 1912, 1994, 1848, 2164, 1906, 2192, 2002, 208
 [node name="DownCurrentThread" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector"]
 color = Color(0.56, 0.9, 0.96, 0.1)
 polygon = PackedVector2Array(1960, 1708, 2044, 1692, 2114, 1760, 2084, 1838, 2138, 1900, 2040, 1878, 1972, 1808, 2002, 1750)
+
+[node name="DropArch" type="Node2D" parent="EastShelfSpur/ShelfDropConnector"]
+position = Vector2(2056, 1902)
+
+[node name="ArchSpan" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/DropArch"]
+color = Color(0.18, 0.38, 0.46, 0.38)
+polygon = PackedVector2Array(-112, -50, -56, -108, 30, -118, 102, -64, 126, 8, 86, 30, 48, -30, -16, -58, -70, -28, -96, 48, -132, 18)
+
+[node name="LeftPillar" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/DropArch"]
+color = Color(0.08, 0.21, 0.28, 0.48)
+polygon = PackedVector2Array(-120, 8, -68, -18, -42, 108, -108, 142)
+
+[node name="RightPillar" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/DropArch"]
+color = Color(0.08, 0.21, 0.28, 0.46)
+polygon = PackedVector2Array(72, -4, 126, 16, 98, 134, 40, 104)
+
+[node name="ReturnCurrentUpLeft" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/DropArch"]
+color = Color(0.72, 1, 0.94, 0.13)
+polygon = PackedVector2Array(-16, 48, -152, -36, -244, -54, -174, -82, -230, -132, -142, -102, -8, -18)
+
+[node name="ReturnRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/DropArch"]
+color = Color(0.82, 1, 0.96, 0.13)
+polygon = PackedVector2Array(-174, -22, -100, -46, -52, -18, -132, 12)
 
 [node name="TurnbackPocketHint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector"]
 color = Color(0.28, 0.5, 0.56, 0.18)

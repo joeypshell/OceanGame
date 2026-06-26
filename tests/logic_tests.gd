@@ -668,6 +668,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/UpperDropShelf",
 		"EastShelfSpur/ShelfDropConnector/LowerDropShelf",
 		"EastShelfSpur/ShelfDropConnector/DownCurrentThread",
+		"EastShelfSpur/ShelfDropConnector/DropArch",
+		"EastShelfSpur/ShelfDropConnector/DropArch/ArchSpan",
+		"EastShelfSpur/ShelfDropConnector/DropArch/LeftPillar",
+		"EastShelfSpur/ShelfDropConnector/DropArch/RightPillar",
+		"EastShelfSpur/ShelfDropConnector/DropArch/ReturnCurrentUpLeft",
+		"EastShelfSpur/ShelfDropConnector/DropArch/ReturnRib",
 		"EastShelfSpur/ShelfDropConnector/TurnbackPocketHint",
 	]
 	for path in branch_paths:
@@ -684,6 +690,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hatch_lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
 	var connector_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/ConnectorMouth") as Polygon2D
 	var connector_current := main.get_node("EastShelfSpur/ShelfDropConnector/DownCurrentThread") as Polygon2D
+	var drop_arch := main.get_node("EastShelfSpur/ShelfDropConnector/DropArch") as Node2D
+	var drop_arch_return := main.get_node("EastShelfSpur/ShelfDropConnector/DropArch/ReturnCurrentUpLeft") as Polygon2D
 	var connector_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/TurnbackPocketHint") as Polygon2D
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -706,6 +714,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(connector_mouth.polygon[0].x >= 1880.0, "Shelf Drop Connector should start beyond the East Shelf pocket area")
 	_expect(connector_turnback.polygon[connector_turnback.polygon.size() - 1].y >= 2040.0, "Shelf Drop Connector should drop below East Shelf into the lower route space")
 	_expect(connector_current.color.a <= 0.12, "Shelf Drop Connector current should stay subtle until route art and payoff exist")
+	_expect(drop_arch.position.y >= 1860.0, "Drop Arch should sit inside the lower connector rather than the East Shelf approach")
+	_expect(drop_arch_return.polygon[1].x < drop_arch_return.polygon[0].x, "Drop Arch return current should point up-left toward East Shelf and the base column")
+	_expect(drop_arch_return.polygon[1].y < drop_arch_return.polygon[0].y, "Drop Arch return current should show upward return direction")
 
 	main.free()
 
@@ -716,6 +727,7 @@ func _test_landmark_region_identity_metadata() -> void:
 		"SurfaceBase": "Surface Base",
 		"ShellReef": "Shell Reef",
 		"EastShelfArch": "East Shelf Spur",
+		"DropArch": "Shelf Drop Connector",
 		"ThermalVentField": "Thermal Vent Field",
 		"WreckShelf": "Wreck Shelf",
 		"PressureLockedWreck": "Wreck Shelf",
