@@ -50,6 +50,7 @@ Detailed design rules live in:
 - `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`
 - `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md`
+- `docs/planning/VERTICAL_SLICE_CLEAN_DEMO_SCRIPT_2026_06_26.md`
 - `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md`
 - `docs/planning/NEXT_MILESTONE_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md`
 - `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md`
@@ -206,6 +207,8 @@ Solo first-run result: `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_
 Vertical-slice evidence bundle: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` now consolidates the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, and resource/scan affordance reviews. It distinguishes pass, pass-with-watchlist, deferred, and out-of-scope items while keeping the slice pass-with-watchlist until formal status is updated.
 
 Vertical-slice acceptance status: `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md` now reflects the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning, resource/scan, low-oxygen, upgrade, scanner-distinction, and durable-progression reviews. The slice is structurally playable and close to polished acceptance, but remains pass-with-watchlist until the demo script, surface panel contrast, debug hidden-state sanity, MCP refresh, and future visual-change watchlists are cleared.
+
+Vertical-slice clean demo script: `docs/planning/VERTICAL_SLICE_CLEAN_DEMO_SCRIPT_2026_06_26.md` gives a short 5-to-8-minute manual pass for clean start/reset expectation, first dive, pickup or scan, return/failure, upgrade view, pressure/wreck promise, predator route read, and no-claim guardrails. It is solo/internal evidence, not blind validation.
 
 Next milestone after closeout: `docs/planning/NEXT_MILESTONE_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines `Wreck Echo Preparation And Slice Polish`. It keeps current work focused on remaining readability watchlists, allows Wreck Echo planning and source-art selection, and keeps route implementation, broad biomes, minimap/checklist UI, combat systems, and final art lock deferred.
 
