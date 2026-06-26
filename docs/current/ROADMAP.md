@@ -195,6 +195,8 @@ Deep reward cue source-art pass after evidence hardening: `docs/planning/NEXT_SO
 
 Deep reward lure fallback balance review: `docs/planning/DEEP_REWARD_LURE_FALLBACK_BALANCE_REVIEW_2026_06_26.md` keeps the amber reward sprite and dimmed fallback stack as pass-with-watchlist. Do not remove the fallback geometry yet; it still provides local presence if the sprite is partially obscured, but the broader lower-right cluster remains on the watchlist before polished acceptance.
 
+Active HUD touch-safe margin review: `docs/planning/ACTIVE_HUD_TOUCH_SAFE_MARGIN_REVIEW_2026_06_26.md` keeps the current active HUD acceptable for the desktop vertical slice, while marking mobile-like landscape safe areas as unverified. Do not add touch controls or mobile export settings yet; first add evidence-only mobile-like viewport notes or capture scaffolding.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
