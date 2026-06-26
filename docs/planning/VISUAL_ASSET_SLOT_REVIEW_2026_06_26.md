@@ -13,7 +13,7 @@ This review does not replace any additional art. Larger visual replacements shou
 | Target | Current Slot Structure | Review |
 | --- | --- | --- |
 | Player sub | `Player/VisualRoot/SubSpriteAnchor/SubSprite`, fallback polygons under `SubSpriteAnchor`, separate `NoseLight`, `BubbleTrail`, `ThrustFlare` | Replaceable and covered by tests. Slightly different from `FallbackVisual` naming, but acceptable because player uses a dedicated `VisualRoot` for facing/motion state. |
-| Surface base / boat | `SurfaceBaseArt/ResearchBoatSprite`, fallback boat/moonpool polygons under `SurfaceBaseArt` | Replaceable and now covered by tests. This is the least standardized structure because it predates the `SpriteAnchor/FallbackVisual` pattern. Future work can split it into `SpriteAnchor` and `FallbackGeometry` if the base receives more art states. |
+| Surface base / boat | `SurfaceBaseArt/SpriteAnchor/ResearchBoatSprite`, fallback boat/moonpool polygons under `SurfaceBaseArt/FallbackGeometry` | Standardized and covered by tests. `BaseZone` remains the separate gameplay extraction/start node. |
 | Kelp Fiber | `ResourcePickups/KelpFiber/Visuals/SpriteAnchor/Sprite` plus `FallbackVisual` in `scenes/resources/KelpFiberVisual.tscn` | Consistent reusable resource scene. Covered by tests. |
 | Shell Fragments | `ResourcePickups/ShellFragments/Visuals/SpriteAnchor/Sprite` plus `FallbackVisual` in `scenes/resources/ShellFragmentsVisual.tscn` | Consistent reusable resource scene. Covered by tests. |
 | Glow Plankton | `ResourcePickups/*GlowPlankton/Visuals/SpriteAnchor/Sprite` plus `FallbackVisual` in `scenes/resources/GlowPlanktonVisual.tscn` | Consistent reusable resource scene shared by visible/hidden/deep variants. Covered by tests. |
@@ -58,11 +58,10 @@ Visuals
   FallbackVisual or FallbackGeometry
 ```
 
-The player may keep its dedicated `VisualRoot` because it owns facing/motion presentation. Surface base may keep `SurfaceBaseArt` for now, but should be standardized if it gains more animated/art states.
+The player may keep its dedicated `VisualRoot` because it owns facing/motion presentation. Surface base now follows the `SpriteAnchor` plus `FallbackGeometry` pattern.
 
 ## Follow-Up Candidates
 
-- Standardize `SurfaceBaseArt` into `SpriteAnchor` plus `FallbackGeometry` if future surface/base art work expands.
 - Consider extracting `ShellReefPocket` into `scenes/readability/` if its geometry grows the way Thermal Vent did.
 - Consider extracting `PressureLockedWreck` hull/cache visuals only after the pressure gate, cache, and Echo Lens direction stabilize.
 - Add source/export/provenance assets for Lantern Fry, Gulper Eel, Thermal Vent, pressure wreck, and cache in separate visual replacement issues.

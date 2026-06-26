@@ -449,51 +449,55 @@ text = "150m"
 [node name="SurfaceBaseArt" type="Node2D" parent="."]
 position = Vector2(640, 92)
 
-[node name="ResearchBoatSprite" type="Sprite2D" parent="SurfaceBaseArt"]
+[node name="SpriteAnchor" type="Node2D" parent="SurfaceBaseArt"]
+
+[node name="ResearchBoatSprite" type="Sprite2D" parent="SurfaceBaseArt/SpriteAnchor"]
 scale = Vector2(0.22, 0.22)
 texture = ExtResource("11_research_boat")
 
-[node name="BeaconMast" type="Polygon2D" parent="SurfaceBaseArt"]
+[node name="FallbackGeometry" type="Node2D" parent="SurfaceBaseArt"]
+
+[node name="BeaconMast" type="Polygon2D" parent="SurfaceBaseArt/FallbackGeometry"]
 visible = false
 color = Color(0.16, 0.24, 0.28, 1)
 polygon = PackedVector2Array(48, -102, 62, -102, 58, -48, 52, -48)
 
-[node name="BeaconLight" type="Polygon2D" parent="SurfaceBaseArt"]
+[node name="BeaconLight" type="Polygon2D" parent="SurfaceBaseArt/FallbackGeometry"]
 visible = false
 color = Color(0.98, 1, 0.58, 0.9)
 polygon = PackedVector2Array(40, -122, 70, -122, 82, -102, 28, -102)
 
-[node name="DeckLine" type="Polygon2D" parent="SurfaceBaseArt"]
+[node name="DeckLine" type="Polygon2D" parent="SurfaceBaseArt/FallbackGeometry"]
 visible = false
 color = Color(0.94, 0.72, 0.36, 0.9)
 polygon = PackedVector2Array(-142, -8, 148, -8, 154, 0, -150, 0)
 
-[node name="BoatHull" type="Polygon2D" parent="SurfaceBaseArt"]
+[node name="BoatHull" type="Polygon2D" parent="SurfaceBaseArt/FallbackGeometry"]
 visible = false
 color = Color(0.78, 0.5, 0.23, 1)
 polygon = PackedVector2Array(-174, -2, 168, -2, 112, 48, -124, 48)
 
-[node name="Cabin" type="Polygon2D" parent="SurfaceBaseArt"]
+[node name="Cabin" type="Polygon2D" parent="SurfaceBaseArt/FallbackGeometry"]
 visible = false
 color = Color(0.88, 0.93, 0.9, 1)
 polygon = PackedVector2Array(-58, -56, 50, -56, 86, -2, -78, -2)
 
-[node name="CabinWindow" type="Polygon2D" parent="SurfaceBaseArt"]
+[node name="CabinWindow" type="Polygon2D" parent="SurfaceBaseArt/FallbackGeometry"]
 visible = false
 color = Color(0.12, 0.38, 0.48, 0.92)
 polygon = PackedVector2Array(-28, -42, 20, -42, 34, -16, -42, -16)
 
-[node name="LabMoonpool" type="Polygon2D" parent="SurfaceBaseArt"]
+[node name="LabMoonpool" type="Polygon2D" parent="SurfaceBaseArt/FallbackGeometry"]
 visible = false
 color = Color(0.1, 0.38, 0.5, 1)
 polygon = PackedVector2Array(-92, 46, 92, 46, 58, 102, -58, 102)
 
-[node name="MoonpoolRim" type="Polygon2D" parent="SurfaceBaseArt"]
+[node name="MoonpoolRim" type="Polygon2D" parent="SurfaceBaseArt/FallbackGeometry"]
 visible = false
 color = Color(0.62, 1, 0.92, 0.54)
 polygon = PackedVector2Array(-70, 70, 70, 70, 56, 88, -56, 88)
 
-[node name="MoonpoolLight" type="Polygon2D" parent="SurfaceBaseArt"]
+[node name="MoonpoolLight" type="Polygon2D" parent="SurfaceBaseArt/FallbackGeometry"]
 visible = false
 color = Color(0.52, 1, 0.88, 0.3)
 polygon = PackedVector2Array(-46, 92, 46, 92, 88, 208, -88, 208)
