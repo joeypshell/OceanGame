@@ -20,6 +20,7 @@ Detailed design rules live in:
 - `docs/planning/EXPEDITION_GOAL_II.md`
 - `docs/planning/BURST_THRUSTER_MILESTONE.md`
 - `docs/planning/MONSTER_OBSERVATION_I.md`
+- `docs/planning/NORMAL_SCALE_READABILITY_CHECKLIST.md`
 - `docs/planning/PREDATOR_WARNING_I.md`
 - `docs/planning/PREDATOR_COUNTERMEASURE_I.md`
 - `docs/planning/REGION_LANDMARK_METADATA.md`
