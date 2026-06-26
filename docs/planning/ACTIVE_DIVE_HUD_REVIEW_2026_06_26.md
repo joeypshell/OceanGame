@@ -41,6 +41,8 @@ The cargo slots are useful and low-risk. They should remain icon/slot-like place
 
 No immediate implementation fix is needed. The next HUD work should be a deliberate skin/layout pass, not piecemeal text growth.
 
+Follow-up plan: `docs/planning/COMPACT_HUD_SKIN_PLAN_2026_06_26.md` defines the first compact HUD skin pass for oxygen, depth, base direction, cargo slots, scan target, prompt/status, and warning panel.
+
 ## Watchlist
 
 - Keep active status copy at or below the current compact limit.

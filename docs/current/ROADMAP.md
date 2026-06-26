@@ -96,6 +96,8 @@ Expedition-day review findings: `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_F
 
 Visual asset slot review: `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md` confirms the current sprite/fallback slot coverage for player, surface base, resources, Lantern Fry, Gulper Eel, Thermal Vent, Shell Reef, pressure wreck, and Wreck Signal Cache, with follow-ups for larger art replacements.
 
+Compact HUD skin plan: `docs/planning/COMPACT_HUD_SKIN_PLAN_2026_06_26.md` defines the first HUD skin pass for oxygen, depth, base direction, cargo slots, scan target, prompt/status, and warning panel. The implementation should keep debug telemetry gated, preserve active/surface mode separation, and avoid minimap, inventory-grid, field-guide, or objective-checklist scope.
+
 ## Immediate Issue Order
 
 Motivation and payoff track:

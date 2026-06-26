@@ -379,6 +379,8 @@ Non-goals:
 
 Summary: Skin the core oxygen/depth/cargo/scan UI toward a clean cozy sci-fi style while keeping debug telemetry gated.
 
+Planning status: `docs/planning/COMPACT_HUD_SKIN_PLAN_2026_06_26.md` defines the first compact active HUD skin pass. Implementation should follow that plan rather than expanding active HUD text.
+
 User story/problem: As a player, I should see oxygen, depth, cargo, base direction, and scan target as polished game UI instead of raw debug text.
 
 Acceptance criteria:
