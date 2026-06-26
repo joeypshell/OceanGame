@@ -39,6 +39,28 @@ Scene orchestration
 
 ## Ownership Rules
 
+### Hybrid Ocean State Model
+
+The current architectural direction is persistent geography with seeded expedition variation. See `docs/planning/HYBRID_OCEAN_MODEL.md` for the planning model.
+
+Persistent geography is authored and inspectable:
+
+- surface base location,
+- named landmarks and route pockets,
+- depth-band identities,
+- major pressure gates and wreck promises,
+- safe return orientation,
+- upgrade-locked route locations.
+
+Seeded expedition variation is temporary and selected from authored candidates:
+
+- starter resource positions,
+- creature route candidates,
+- route/reward cluster patterns,
+- future expedition-day conditions such as currents, visibility, migrations, blooms, and rare signals.
+
+Do not let seeded variation erase persistent place memory. Broad procedural biome generation remains deferred until the authored route decisions are readable and testable.
+
 ### Current-Dive State
 
 `DiveSession` owns temporary run state:

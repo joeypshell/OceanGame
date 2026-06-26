@@ -20,14 +20,24 @@ Each expedition should start calm and promising, become tense as oxygen, cargo, 
 
 The next expedition should offer a different route, a visible goal left behind, a newly understood resource, or an upgrade that changes what is reachable. Persistent knowledge should make the player feel smarter, not just stronger.
 
+## World Model
+
+The core world model is persistent geography with variable opportunity.
+
+The player should learn stable places, landmarks, depth bands, and upgrade-locked promises, then adapt because each expedition day changes some active opportunities inside those places. Resource clusters, predator routes, currents, visibility, rare scans, and temporary entrances may shift, but the surface base, region identities, safe return orientation, and major route promises should remain learnable.
+
+This is an in-game expedition-day rhythm, not a required real-world daily challenge.
+
 ## Distinction
 
-The game borrows underwater wonder from Subnautica but uses compact, reshuffled expeditions instead of a large fixed open world. It borrows the readable side-view descent and surface-return rhythm from Dave the Diver, but the focus is alien research, route risk, and roguelite expedition planning rather than restaurant/base management.
+The game borrows underwater wonder from Subnautica but uses compact, seeded expedition days instead of a large fixed open world or a fully procedural ocean. It borrows the readable side-view descent and surface-return rhythm from Dave the Diver, but the focus is alien research, route risk, and roguelite expedition planning rather than restaurant/base management.
 
 ## Non-Goals
 
 - No full open-world ocean generation in the prototype.
 - No full procedural biomes until authored expedition decisions are fun.
+- No complete ocean reroll that erases persistent place memory.
+- No real-calendar daily challenge mode until the in-game expedition-day loop works.
 - No restaurant, colony, or base-management layer.
 - No full crafting economy or grid inventory.
 - No full field guide before scans prove useful in the core loop.

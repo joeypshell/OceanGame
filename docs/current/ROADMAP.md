@@ -8,6 +8,7 @@ Detailed design rules live in:
 
 - `docs/planning/CORE_LOOP_RULES.md`
 - `docs/planning/DAILY_RUNS.md`
+- `docs/planning/HYBRID_OCEAN_MODEL.md`
 - `docs/planning/GAME_VISION.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
@@ -40,13 +41,13 @@ Optional local Godot editor MCP policy lives in `docs/current/GODOT_MCP.md`.
 
 ## Active Milestone
 
-Thermal Vent And Predator Countermeasure.
+Hybrid Ocean Model And Readability Reset.
 
-Status: completed by #92-#101. Replenish the backlog before continuing issue-driven implementation.
+Status: planning and issue replenishment needed before continuing issue-driven implementation.
 
-Goal completed: added one more authored route pocket around the existing `Thermal Vent`, then added the first narrow non-lethal `Gulper Eel` countermeasure without broadening into procedural biomes, weapons, or a tool-wheel system.
+Goal: formalize the core world model as persistent geography with seeded expedition-day variation, then address the current playtest blocker where noisy placeholder visuals and overlapping world text make the dive hard to understand.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a first economy review recommending no immediate cost changes, first-pass visual/readability assets, and `Decoy Pulse I` as the first true non-lethal predator countermeasure.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a first economy review recommending no immediate cost changes, first-pass visual/readability assets, and `Decoy Pulse I` as the first true non-lethal predator countermeasure. The next planning step is to turn this into a clearer hybrid ocean structure while reducing playfield text and visual noise enough that routes, gates, scan targets, rewards, danger, and safe return are readable during normal play.
 
 Latest route review: `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md` led to the completed #96 readability tuning pass for scan-revealed `VentRouteHint` language and opacity, without changing placement, resource counts, costs, or mechanics.
 
@@ -58,7 +59,11 @@ No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-No active gameplay validation issues are currently queued.
+- Plan the persistent-versus-variable ocean contract for expedition days.
+- Reduce on-playfield text clutter so labels no longer obscure the player, route, pickups, gates, or predator warning.
+- Replace at least one long world explanation with HUD/status/result text plus visual language.
+- Define first expedition-day condition vocabulary such as current shift, thermal bloom, predator migration, low visibility, or rare signal.
+- Add a narrow prototype surface briefing for the current expedition condition before adding any new region or mechanic.
 
 Technical support track:
 
@@ -66,9 +71,9 @@ No active technical support issues are currently queued.
 
 Later design and demo-readiness issues:
 
-No active design or demo-readiness issues are currently queued.
+Candidate backlog should stay focused on hybrid-ocean planning and readability, not new systems for their own sake.
 
-Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, predator harvesting, full procedural biomes, large art sets, oxygen refills, or new resource systems during this milestone.
+Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, predator harvesting, full procedural biomes, large art sets, oxygen refills, new resource systems, a region-select screen, or real-calendar daily challenges during this milestone.
 
 ## Rolling Backlog Policy
 
@@ -80,16 +85,12 @@ Do not create filler issues just to hit the number. Prefer a slightly smaller qu
 
 The milestone succeeds only when:
 
-- #92 implements the `Thermal Vent` pocket as authored route language without changing its existing discovery role.
-- #93 keeps vent scan/result language concise and avoids tutorial walls or route overlays.
-- #94 keeps placement growth typed and inspectable rather than hidden or broadly procedural.
-- #95 records concrete vent-route observations across five deterministic seeds before tuning.
-- #96 makes only narrow route-readability or placement changes justified by review evidence.
-- #97 adds `Decoy Pulse I` as a gated upgrade using existing upgrade-bay patterns and resources.
-- #98 makes Decoy Pulse a temporary non-lethal predator-distraction window, not damage, stun, harvest, capture, or route removal.
-- #99 gives Decoy Pulse clear feedback without confusing it with `Burst Thruster`, scan hints, or passive predator warning.
-- #100 covers Decoy Pulse behavior with focused tests and current docs.
-- #101 keeps MCP planning context and roadmap status current after the batch changes.
+- the roadmap and planning docs clearly define persistent geography versus seeded expedition-day variation,
+- the next issues can be created from concrete docs rather than vague desire for "more procedural ocean",
+- overlapping world text is reduced enough that the normal playtest view remains readable,
+- route meaning is communicated primarily through shapes, color, placement, and compact HUD/status surfaces rather than paragraphs in the ocean,
+- at least one future issue is ready to prototype an expedition-day condition without adding a new biome or full procedural generation,
+- no planned variation obscures surface direction, safe return, depth-band identity, or major upgrade-gated route promises.
 
 Technical implementation alone is not sufficient.
 
@@ -97,7 +98,18 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-No active progression candidates are currently queued. Replenish the backlog before continuing issue-driven work.
+Planning candidates for the next issue batch:
+
+1. Add a persistent-versus-variable ocean model contract to current docs.
+2. Audit and remove or relocate overlapping world labels from the main dive scene.
+3. Convert long scan/route explanations into compact HUD/status/result language.
+4. Add a first `Expedition Condition` planning doc or data sketch using existing seeds.
+5. Add a surface briefing copy pass for current expedition conditions.
+6. Add region/landmark metadata planning for Shell Reef, Thermal Vent, pressure wreck, and future Wreck Shelf.
+7. Run a normal-scale readability review focused on player, pickup, scan target, gate, predator warning, and return-path visibility.
+8. Create a small set of replacement icon/marker rules for scan, lock, danger, reward, and return language.
+9. Add a five-seed hybrid-ocean review template that asks what stayed familiar and what changed.
+10. Update MCP/project context after the hybrid-ocean and readability planning batch.
 
 Recently completed:
 

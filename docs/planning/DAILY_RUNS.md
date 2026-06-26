@@ -1,18 +1,26 @@
-# Seeded Expeditions
+# Seeded Expedition Days
 
 This note captures design guidance for the current seeded roguelite expedition loop. `docs/current/ROADMAP.md` tracks the active issue order, and `docs/current/GAMEPLAY.md` tracks implemented behavior.
 
 The current system is not a calendar-based daily challenge. It uses deterministic session seeds to create repeatable expeditions. A shared daily challenge can be a later mode if the seed is derived from a calendar date and presented consistently for that day.
 
+Related model:
+
+- `docs/planning/HYBRID_OCEAN_MODEL.md`
+
 ## Intent
 
-The intended game loop is closer to "Subnautica as short roguelite expeditions" than to one fixed ocean map. Each dive is a seeded expedition: the player launches from the surface base with persistent upgrades and knowledge, explores a randomized or reshuffled ocean layout, extracts whatever they can safely bring back, then uses the results to prepare for future expeditions.
+The intended game loop is closer to "Subnautica as short roguelite expeditions" than to one fixed solved map or a fully regenerated procedural ocean. Each dive is a seeded expedition day: the player launches from the surface base with persistent upgrades and knowledge, revisits recognizable ocean geography, adapts to the current expedition's active conditions, extracts whatever they can safely bring back, then uses the results to prepare for future expeditions.
+
+The design shorthand is:
+
+Persistent geography, variable opportunity.
 
 ## Expedition Shape
 
 - Start from the surface boat/lab with persistent upgrades, banked resources, scan knowledge, and unlocked equipment.
-- Generate or reshuffle the dive layout for the current expedition seed.
-- Randomize or vary resource nodes, creature positions, hazards, wrecks, caves, and special discoveries within readable depth-band rules.
+- Preserve recognizable regions, landmarks, depth identities, route promises, and safe return orientation.
+- Randomize or vary resource nodes, creature positions, hazards, currents, visibility, temporary entrances, and special discoveries within readable depth-band and authored-candidate rules.
 - Dive downward, make oxygen/cargo/risk decisions, and extract before failure.
 - Bank extracted cargo; lose carried cargo on failure; keep scans, banked resources, upgrades, and long-term knowledge.
 - Use between-expedition progression to reach deeper bands, survive more dangerous routes, and identify better opportunities on future dives.
@@ -28,8 +36,17 @@ Introduce randomization in controlled layers:
 5. Resource cluster patterns.
 6. Hazard and creature route variation.
 7. Special discoveries and wreck/cave opportunities.
+8. Expedition-day conditions such as current shifts, predator migrations, thermal blooms, low visibility, or rare signals.
 
 The authored vertical slice is still the proving ground. Avoid full procedural biomes until expedition decisions are fun and readable.
+
+## Persistent Geography Rules
+
+- Regions and landmarks should be stable enough for the player to remember.
+- Major gates should remain learnable promises, not hidden random walls.
+- Safe return direction must never be randomized into confusion.
+- Changes should be communicated as ocean conditions, migrations, currents, blooms, or temporary exposed routes rather than invisible dice rolls.
+- Do not let "daily variation" erase what the player learned from a previous dive.
 
 ## Authored Spawn-Point Rules
 

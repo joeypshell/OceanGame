@@ -65,6 +65,18 @@ Several important meanings are currently communicated by overlapping labels, tra
 
 The player should be able to understand these meanings from repeated visual language before reading every HUD line.
 
+Recent playtest feedback raised this from a polish concern to a blocking readability issue: the prototype is visually noisy, and world text can obscure the playfield so badly that it is hard to tell what action the game expects. The next visual batch should reduce on-playfield text, separate HUD explanation from world geometry, and make the first screen of any route decision readable without relying on overlapping labels.
+
+## Text Clutter Reduction Rules
+
+- Do not place long sentence labels directly over the dive route.
+- Move explanatory scan results, upgrade clues, and route summaries into HUD/status/result surfaces where possible.
+- Keep world labels only for selected scan focus, true blockers, or short prototype affordances that prevent immediate confusion.
+- Prefer icons, silhouettes, shimmer states, current ribbons, scan brackets, and route color language over paragraphs in the ocean.
+- Labels must not cover the player, active pickups, predator routes, pressure gates, or the visible path back to the surface.
+- If two labels overlap, the issue is not solved until at least one label is removed, shortened, moved to HUD, or replaced with visual language.
+- Every readability issue should include a manual playtest check at normal camera scale, not just scene inspection.
+
 ## First Visual Vocabulary
 
 Use these rules for prototype readability assets. They are not final art direction; they are a shared gameplay language for placeholder and reusable assets.

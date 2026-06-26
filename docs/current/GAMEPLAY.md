@@ -9,6 +9,8 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - The project launches into a side-view vertical ocean slice with a placeholder controllable submersible.
 - The selected direction is a 2D underwater roguelite where each dive is an expedition into alien ocean biomes.
 - Intended first loop: dive from a safe base, gather resources, scan lifeforms, avoid or hunt predators, return before oxygen runs out, and craft upgrades that allow deeper future dives.
+- Current world model: persistent geography with seeded expedition variation. The player should learn stable places, depth bands, safe return orientation, major gates, and upgrade-locked route promises while each expedition can vary resource placement, route/reward cluster pattern, and predator route selection from authored candidates.
+- Full procedural biome generation, complete ocean rerolls, and real-calendar daily challenge rules are not implemented in the current prototype.
 - Current controls: move with WASD or arrow keys, and press Spacebar for `Burst Thruster` during active dives.
 - Extraction controls: return to the safe base and press E or Enter to end the dive successfully.
 - Test reset: press R after extraction or oxygen failure to restart the prototype dive.
