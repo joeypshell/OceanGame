@@ -90,6 +90,12 @@ const DIVE_STATUS_MAX_CHARS := 92
 @onready var starter_resource_candidates: Node2D = $StarterResourceCandidates
 @onready var creature_route_candidates: Node2D = $CreatureRouteCandidates
 @onready var deep_reward_lure: Node2D = $DeepRewardLure
+@onready var thermal_warm_wash: Polygon2D = $ThermalVentPocket/WarmWash
+@onready var thermal_heat_plume: Polygon2D = $ThermalVentPocket/HeatPlume
+@onready var thermal_bubble_string_a: Polygon2D = $ThermalVentPocket/BubbleStringA
+@onready var thermal_bubble_string_b: Polygon2D = $ThermalVentPocket/BubbleStringB
+@onready var thermal_vent_visual: Polygon2D = $Discoveries/ThermalVent/Visual
+@onready var thermal_vent_bubbles: Polygon2D = $Discoveries/ThermalVent/Bubbles
 @onready var glow_plankton_visual: Polygon2D = $ResourcePickups/GlowPlankton/Visual
 @onready var hidden_glow_plankton: Node = $ResourcePickups/HiddenGlowPlankton
 @onready var vent_route_hint: Node2D = $VentRouteHint
@@ -280,6 +286,7 @@ func _prepare_next_run() -> void:
 	burst_thruster_cooldown_remaining = 0.0
 	decoy_pulse_used_this_run = false
 	_place_starter_resources_for_run()
+	_sync_condition_visuals()
 
 func _on_base_zone_body_entered(body: Node2D) -> void:
 	if body == player:
@@ -740,6 +747,18 @@ func _spawn_positions_for_target(category: String, target_id: String, cluster_pa
 
 func _spawn_routes_for_target(category: String, target_id: String, cluster_pattern: String) -> Dictionary:
 	return SpawnSelectionScript.routes_for_target(creature_route_candidates, SpawnPointScript, category, target_id, cluster_pattern)
+
+func _sync_condition_visuals() -> void:
+	var is_thermal_bloom := _current_condition_id() == "thermal_bloom"
+	thermal_warm_wash.color = Color(0.98, 0.52, 0.18, 0.26) if is_thermal_bloom else Color(0.92, 0.44, 0.16, 0.18)
+	thermal_heat_plume.color = Color(1.0, 0.68, 0.24, 0.38) if is_thermal_bloom else Color(1.0, 0.62, 0.2, 0.28)
+	thermal_bubble_string_a.color = Color(1.0, 1.0, 0.84, 0.46) if is_thermal_bloom else Color(0.96, 1.0, 0.82, 0.34)
+	thermal_bubble_string_b.color = Color(1.0, 1.0, 0.84, 0.4) if is_thermal_bloom else Color(0.96, 1.0, 0.82, 0.28)
+	thermal_vent_visual.color = Color(1.0, 0.5, 0.18, 1.0) if is_thermal_bloom else Color(0.96, 0.46, 0.16, 0.9)
+	thermal_vent_bubbles.color = Color(0.98, 1.0, 0.86, 0.46) if is_thermal_bloom else Color(0.9, 1.0, 0.86, 0.34)
+
+func _current_condition_id() -> String:
+	return String(current_expedition_condition.get("id", ""))
 
 func _sync_discovery_reveals() -> void:
 	if progression_state.has_discovery("thermal_vent"):
