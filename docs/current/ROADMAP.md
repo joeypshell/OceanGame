@@ -201,6 +201,8 @@ Mobile-like landscape screenshot scaffold: `docs/planning/MOBILE_LIKE_LANDSCAPE_
 
 Wreck Echo no-locator drift review after prompt/screenshot hardening: `docs/planning/WRECK_ECHO_NO_LOCATOR_DRIFT_REVIEW_AFTER_PROMPT_SCREENSHOT_2026_06_26.md` confirms the first Wreck Echo pocket still uses one run-scoped clue, one return-focused active status line, and one extraction-only `Research:` result line. No map, checklist, field guide, route graph, exact locator, durable Wreck Echo state, or new prompt segment is needed.
 
+Monster-research next-step readiness: `docs/planning/MONSTER_RESEARCH_NEXT_STEP_READINESS_REVIEW_2026_06_26.md` selects planning the next monster step as non-combat behavior evidence rather than weapons, harvesting, capture, predator health, field-guide UI, or creature collection. The current loop wording now says `avoid or study dangerous creatures` so future issues do not accidentally treat combat as current scope.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
