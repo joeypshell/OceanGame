@@ -110,6 +110,7 @@ Detailed design rules live in:
 - `docs/planning/ACTIVE_HUD_LOW_OXYGEN_REVIEW_AFTER_PROMPT_TUNE_2026_06_26.md`
 - `docs/planning/UPGRADE_BAY_NORMAL_SCALE_AFFORDANCE_REVIEW_AFTER_COPY_TUNE_2026_06_26.md`
 - `docs/planning/SCANNER_FEEDBACK_SIGNAL_VS_ECHO_REVIEW_2026_06_26.md`
+- `docs/planning/NEXT_MONSTER_RESEARCH_READABILITY_MILESTONE_2026_06_26.md`
 - `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
 - `docs/planning/ECHO_LENS_NO_LOCATOR_LANGUAGE_REVIEW_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
@@ -233,6 +234,8 @@ Active HUD low-oxygen review after prompt tune: `docs/planning/ACTIVE_HUD_LOW_OX
 Upgrade bay normal-scale affordance review: `docs/planning/UPGRADE_BAY_NORMAL_SCALE_AFFORDANCE_REVIEW_AFTER_COPY_TUNE_2026_06_26.md` keeps the one-selected-upgrade surface bay as pass-with-watchlist after the Up/Down copy tune. Up/Down selection and E/Enter purchase are understandable without adding grid, tree, inventory, field-guide, checklist, minimap, or economy scope.
 
 Scanner feedback distinction review: `docs/planning/SCANNER_FEEDBACK_SIGNAL_VS_ECHO_REVIEW_2026_06_26.md` confirms `Signal Lens I` remains practical visible-resource support while `Echo Lens I` remains broad Wreck Echo curiosity and remembered-place planning. Existing tests already guard role hints, cache repeat-scan copy, result text, and no-locator language.
+
+Next monster research readability milestone: `docs/planning/NEXT_MONSTER_RESEARCH_READABILITY_MILESTONE_2026_06_26.md` keeps the next creature work centered on `Gulper Route Research Readability`: whether the route reads as timing rather than a wall, and whether `Predator Warning I` plus `Decoy Pulse I` read as preparation tools rather than combat. Weapons, health, harvesting, capture, loot, contracts, field-guide UI, minimap, and new predator species remain out of scope.
 
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 
