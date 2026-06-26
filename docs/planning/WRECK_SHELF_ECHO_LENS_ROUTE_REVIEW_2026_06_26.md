@@ -29,7 +29,7 @@ No new screenshots were committed for this pass.
 | Wreck Signal Cache | Inside cache scan unlocks scanner progression and repeat scans now support unresolved echo curiosity. | Pass. Cache meaning is now stronger than before, but it still depends on reaching the alcove instead of broadcasting a remote objective. |
 | Safe return | Base direction HUD, return lane language, and oxygen warnings remain higher-priority than wreck curiosity. | Pass with watchlist. Future Wreck Shelf visual art must leave return lanes visible during low oxygen. |
 | Predator proximity | Gulper route remains a separate danger vocabulary: red/orange, patrol hint, scan target, contact risk. | Pass. Predator danger is visually and mechanically distinct from pressure gate/mystery signal language. |
-| Mystery language | `Cache echo unresolved`, `Echo Lens: weak wreck signal deeper-right`, and result `Research:` copy are broad and compact. | Pass. Current copy avoids map, exact-coordinate, field-guide, and checklist language. |
+| Mystery language | `Cache echo unresolved`, current `Echo Lens: weak wreck echo lingers below the shelf`, future broad `deeper-right` planning language, and result `Research:` copy are broad and compact. | Pass. Current copy avoids map, exact-coordinate, field-guide, and checklist language. |
 
 ## Current Readability Issues
 

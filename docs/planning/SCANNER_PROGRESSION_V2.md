@@ -35,7 +35,7 @@ Player-facing effect:
 - The hint names a signal type and broad direction/depth band, not exact coordinates.
 - The hint expires quickly and does not persist as a map marker.
 
-Example status lines:
+Example future status lines:
 
 ```text
 Echo Lens: weak wreck signal deeper-right.
@@ -153,7 +153,7 @@ Do not add a general quest system or route graph yet.
 Implement only the Wreck Signal Cache echo:
 
 - add data-backed `Echo Lens I` to the upgrade bay,
-- after ownership, repeat-scanning known `Wreck Signal Cache` produces one compact broad echo: `Echo Lens: weak wreck signal deeper-right`,
+- after ownership, repeat-scanning known `Wreck Signal Cache` produces one compact broad echo: `Echo Lens: weak wreck echo lingers below the shelf`,
 - if no unresolved echo is available, show `Echo Lens: no unresolved echo nearby`,
 - add one compact result line only when an echo fired during the expedition,
 - keep repeat scans free for the current prototype.
