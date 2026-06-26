@@ -1478,7 +1478,7 @@ func _format_ready_panel_summary() -> String:
 		"Start with %d oxygen." % ceili(dive_session.max_oxygen),
 		"Collect, scan, push deeper, then return to bank cargo.",
 		_format_condition_briefing(),
-		ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions),
+		ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id()),
 		"%s begins." % _action_label("interact"),
 	]
 	if show_debug_telemetry:

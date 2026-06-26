@@ -927,6 +927,13 @@ func _test_expedition_prep_goals() -> void:
 	progression.purchase_upgrade(DecoyPulseUpgrade.id, DecoyPulseUpgrade.resource_cost)
 	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
 	_expect(goal == "Goal: use Shell Reef to bank Shell Fragments, or push deeper if oxygen allows.", "completed upgrade goals should fall back to the Shell Reef route objective")
+	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades, "rare_signal")
+	_expect(goal.contains("East Shelf pocket ping"), "Rare Signal should give completed-upgrade players a reason to visit East Shelf")
+	_expect(goal.contains("return safely"), "East Shelf route goal should preserve extraction pressure")
+
+	var incomplete_progression := ProgressionStateScript.new()
+	var incomplete_goal := ExpeditionGoalFormatterScript.format_goal(incomplete_progression, upgrades, "rare_signal")
+	_expect(incomplete_goal.contains("Oxygen Tank I"), "Rare Signal route goal should not override upgrade progression goals")
 
 func _test_result_progress_callouts() -> void:
 	var main := MainScript.new()

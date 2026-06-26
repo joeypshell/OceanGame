@@ -3,7 +3,7 @@ extends RefCounted
 
 const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
 
-static func format_goal(progression_state: ProgressionState, upgrade_definitions: Array[UpgradeDefinition]) -> String:
+static func format_goal(progression_state: ProgressionState, upgrade_definitions: Array[UpgradeDefinition], condition_id := "") -> String:
 	for upgrade in upgrade_definitions:
 		if progression_state.has_upgrade(upgrade.id):
 			continue
@@ -31,6 +31,9 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 			missing_resources,
 			upgrade.display_name,
 		]
+
+	if condition_id == "rare_signal":
+		return "Goal: check the East Shelf pocket ping if oxygen allows, then return safely."
 
 	return "Goal: use Shell Reef to bank Shell Fragments, or push deeper if oxygen allows."
 
