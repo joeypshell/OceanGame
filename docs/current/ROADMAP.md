@@ -88,6 +88,7 @@ Detailed design rules live in:
 - `docs/planning/SAVE_PROGRESSION_PERSISTENCE_EXPECTATION_2026_06_26.md`
 - `docs/planning/SUB_IDLE_THRUST_NORMAL_SCALE_RECHECK_2026_06_26.md`
 - `docs/planning/SUB_IDLE_THRUST_SOURCE_ART_POLISH_CONSTRAINTS_2026_06_26.md`
+- `docs/planning/SURFACE_LAUNCH_RETURN_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -187,6 +188,8 @@ Lower-route recheck: `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.m
 Lower-route acceptance cleanup recheck: `docs/planning/LOWER_ROUTE_ACCEPTANCE_CLEANUP_RECHECK_2026_06_26.md` keeps the lower-route stack as pass-with-watchlist after the surface, HUD, condition, Decoy Pulse, Echo Lens, and text-guard cleanup. Future work should reduce overlap rather than add concepts.
 
 Surface moonpool/waterline review: `docs/planning/SURFACE_MOONPOOL_WATERLINE_REVIEW_2026_06_26.md` keeps the #264 source-art pass wired as pass-with-watchlist. Boat, waterline, moonpool column, safe base, launch, and result surface read as one system; translucent surface panels remain the #266 watchlist.
+
+Surface launch/return review: `docs/planning/SURFACE_LAUNCH_RETURN_READABILITY_REVIEW_2026_06_26.md` keeps ready, launch, return/extract, and result surface states as pass-with-watchlist after moonpool and panel changes. Boat, moonpool, waterline, sub, and `BaseZone` read as one surface system while gameplay ownership stays separate.
 
 First-run surface ready review: `docs/planning/FIRST_RUN_SURFACE_READY_COMPREHENSION_REVIEW_2026_06_26.md` keeps the first ready screen as pass-with-watchlist. The start prompt, condition copy, goal line, boat/moonpool read, and hidden-debug expectations are understandable without tutorial panels or quest UI.
 
