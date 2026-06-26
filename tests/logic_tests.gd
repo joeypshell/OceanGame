@@ -61,6 +61,7 @@ func _initialize() -> void:
 	_run("expedition prep goals", _test_expedition_prep_goals)
 	_run("result progress callouts", _test_result_progress_callouts)
 	_run("next expedition framing", _test_next_expedition_framing)
+	_run("region memory result callout", _test_region_memory_result_callout)
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("gulper research result callout", _test_gulper_research_result_callout)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
@@ -654,6 +655,25 @@ func _test_next_expedition_framing() -> void:
 	_expect(main._format_expedition_day_title("Ready") == "Expedition Day 4 Ready", "ready title should show expedition day number")
 	_expect(main._format_expedition_day_title("Result: Extraction") == "Expedition Day 4 Result: Extraction", "result title should show completed expedition day number")
 	_expect(main._format_completed_expedition_line("Failure") == "Expedition Day 4 complete: Failure.", "result summary should name the completed expedition day")
+	main.free()
+
+func _test_region_memory_result_callout() -> void:
+	var main := MainScript.new()
+
+	_expect(main._format_region_memory_callout().contains("Surface Base"), "region memory fallback should preserve safe return framing")
+
+	main.run_collected_resources = ["shell_fragments"]
+	_expect(main._format_region_memory_callout().contains("Shell Reef"), "shell cargo should remember Shell Reef")
+
+	main.run_completed_scans = ["thermal_vent"]
+	_expect(main._format_region_memory_callout().contains("Thermal Vent Field"), "thermal scan should remember Thermal Vent Field over shell cargo")
+
+	main.run_completed_scans = ["pressure_wreck_signal"]
+	_expect(main._format_region_memory_callout().contains("Wreck Shelf"), "pressure wreck scan should remember Wreck Shelf")
+
+	main.run_predator_contacts = 1
+	_expect(main._format_region_memory_callout().contains("Gulper Route"), "predator evidence should remember Gulper Route as the deepest contested place")
+	_expect(not main._format_region_memory_callout().contains(","), "region memory callout should stay compact and not become a checklist")
 	main.free()
 
 func _test_route_choice_result_callout() -> void:

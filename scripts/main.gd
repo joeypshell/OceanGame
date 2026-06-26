@@ -225,10 +225,11 @@ func _try_extract() -> void:
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\nBanked %d resource(s).%s\n%s%s\n%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "%s\nBanked %d resource(s).%s\n%s\n%s%s\n%s\n%s\n%s\nBest depth: %dm." % [
 		_format_completed_expedition_line("Extraction"),
 		extracted_count,
 		_format_resource_counts(extracted_cargo),
+		_format_region_memory_callout(),
 		_format_route_choice_callout(),
 		_format_gulper_research_callout(),
 		_format_upgrade_progress_callout(),
@@ -250,8 +251,9 @@ func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "%s\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s\n%s%s\n%s\n%s\nBest depth: %dm." % [
 		_format_completed_expedition_line("Failure"),
+		_format_region_memory_callout(),
 		_format_route_choice_callout(),
 		_format_gulper_research_callout(),
 		_format_scan_progress_callout("Scans kept"),
@@ -1414,6 +1416,18 @@ func _format_gulper_research_callout() -> String:
 		return "\nResearch: Gulper route timing observed."
 
 	return ""
+
+func _format_region_memory_callout() -> String:
+	if run_predator_contacts > 0 or run_completed_scans.has("gulper_eel"):
+		return "Remembered place: Gulper Route - warning-lane timing matters."
+	if run_completed_scans.has("wreck_signal_cache") or run_completed_scans.has("pressure_wreck_signal"):
+		return "Remembered place: Wreck Shelf - pressure-route signals are worth returning to."
+	if run_completed_scans.has("thermal_vent") or run_collected_resources.has("glow_plankton"):
+		return "Remembered place: Thermal Vent Field - warm clues can lead toward deeper glow."
+	if run_completed_scans.has("shell_reef_shelf") or run_collected_resources.has("shell_fragments"):
+		return "Remembered place: Shell Reef - a safer midwater bank route."
+
+	return "Remembered place: Surface Base - safe return resolves the day."
 
 func _format_scan_ids(scan_ids: Array[String]) -> String:
 	if scan_ids.is_empty():
