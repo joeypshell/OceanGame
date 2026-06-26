@@ -223,6 +223,8 @@ Mobile-like low/critical oxygen coverage: `docs/planning/MOBILE_LIKE_LOW_CRITICA
 
 Mobile-like Wreck Echo route/result review: `docs/planning/MOBILE_LIKE_WRECK_ECHO_ROUTE_RESULT_REVIEW_2026_06_26.md` adds staged Wreck Echo route/result/player-facing result captures at `960x540`. Wreck Echo stays a narrow clue and result readback; the watchlist risk is composition pressure near lower-route pressure/cache/reward/predator cues, not missing Wreck Echo behavior.
 
+Monster Research II non-combat contract: `docs/planning/MONSTER_RESEARCH_II_NON_COMBAT_BEHAVIOR_EVIDENCE_2026_06_26.md` defines the next monster step as behavior evidence from existing creature routes. The next work should choose one evidence type, keep result memory compact, and avoid weapons, harvesting, capture, health bars, field guides, checklists, minimaps, route graphs, creature inventories, or permanent predator control.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.

@@ -166,3 +166,6 @@ Acceptance sketch:
 - Add logic tests for result copy and hidden debug data.
 - Verify with Godot headless launch, logic tests, normal timed launch, and `git diff --check`.
 
+## Monster Research II Boundary
+
+`docs/planning/MONSTER_RESEARCH_II_NON_COMBAT_BEHAVIOR_EVIDENCE_2026_06_26.md` defines the next monster-research milestone as one narrow behavior-evidence contract. It should record what the player learned from existing creature behavior, preserve one compact result-memory line, and avoid weapons, damage, harvesting, capture, bestiary UI, checklists, minimaps, route graphs, monster parts, or permanent predator control.
