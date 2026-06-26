@@ -19,9 +19,15 @@ Scanner v2 should build on this, not replace it.
 
 Name: `Echo Lens I`.
 
-Unlock source: `Wreck Signal Cache`.
+Unlock source: `Wreck Signal Cache`, after `Signal Lens I` is owned.
 
 Role: detect one nearby unresolved signal category as a vague route clue after the player has enough context to care.
+
+Likely cost target: `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x3`. This should be tuned later against oxygen margin and cargo pressure, but it should cost slightly more deep-biological material than `Signal Lens I` so the player has a reason to plan another glow/deep expedition before buying it.
+
+Likely discovery gate: `wreck_signal_cache`.
+
+Likely upgrade gate: `signal_lens_1`.
 
 Player-facing effect:
 
@@ -49,6 +55,22 @@ It supports:
 - mystery: suggests unresolved signals without explaining everything,
 - one-more-expedition motivation: gives the player a reason to return with oxygen, cargo space, or pressure access,
 - hybrid-ocean structure: stable regions can hold remembered signal categories while seeded runs vary whether the route is attractive today.
+
+## Difference From Signal Lens I
+
+`Signal Lens I` is practical and material-facing:
+
+- works on known resource scans,
+- points toward another visible matching uncollected deposit,
+- helps the current cargo/banking decision.
+
+`Echo Lens I` should be curiosity-facing:
+
+- works on known non-resource route clues such as the `Wreck Signal Cache`,
+- names an unresolved signal category and broad direction/depth band,
+- helps the next-expedition planning decision rather than guaranteeing immediate loot.
+
+Do not let `Echo Lens I` replace `Signal Lens I`, reveal exact locations, or turn every scan target into a checklist entry.
 
 ## Partial Information Rule
 
@@ -116,12 +138,25 @@ Keep `Echo Lens I` lower priority than safe return and immediate danger. Echo hi
 
 The first implementation can stay small:
 
+- add an `Echo Lens I` upgrade definition with `wreck_signal_cache` and `signal_lens_1` gates,
 - define a small set of echo categories in code or authored metadata,
-- pick one target category for the first issue,
+- pick one target category for the first issue: `wreck`,
 - format a broad direction/depth phrase,
 - track whether a run generated an echo for result copy.
 
 Do not add a general quest system or route graph yet.
+
+## First Narrow Implementation Slice
+
+Implement only the Wreck Signal Cache echo:
+
+- add data-backed `Echo Lens I` to the upgrade bay,
+- after ownership, repeat-scanning known `Wreck Signal Cache` produces one compact broad echo such as `Echo Lens: weak wreck signal deeper-right`,
+- if no unresolved echo is available, show `Echo Lens: no unresolved echo nearby`,
+- optionally add one compact result line only when an echo fired during the expedition,
+- keep repeat scans free for the current prototype.
+
+This slice should not add a minimap, field guide, exact distance, route graph, multi-echo list, scanner energy, or any new hidden object reveal beyond the broad wreck-echo phrase.
 
 ## Out Of Scope
 

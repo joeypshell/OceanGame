@@ -76,6 +76,8 @@ Visual identity update: `docs/planning/ART_DIRECTION.md` and `docs/planning/VISU
 
 Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md` adds the next ordered twenty-issue queue after the current one-more-expedition motivation set. The queue keeps the focus on expedition-day identity, scan/result memory, source-art follow-through, reusable visual extraction, player-facing HUD readability, and mystery/scanner planning.
 
+Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
+
 ## Immediate Issue Order
 
 Motivation and payoff track:
@@ -140,6 +142,7 @@ The milestone succeeds only when:
 - restarting reads as another expedition day rather than a technical reset,
 - at least one creature-route encounter can produce useful research feedback,
 - the Wreck Signal Cache creates a scanner curiosity hook without map/checklist UI,
+- `Echo Lens I` has a scoped next-upgrade plan that extends scanner curiosity without replacing `Signal Lens I`,
 - one source-art asset replaces a gameplay-readable placeholder with provenance,
 - one heavy visual cluster begins moving out of `Main.tscn`,
 - region and mystery planning identify what the player should remember tomorrow,

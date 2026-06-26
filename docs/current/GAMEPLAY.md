@@ -72,6 +72,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Signal Lens I` requires the `Wreck Signal Cache` discovery plus banked `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x2`.
 - `Signal Lens I` makes repeat resource scans add a short local signal hint toward the nearest matching visible uncollected deposit in the current expedition. If no matching deposit is visible, the HUD says the signal is quiet.
 - After `Signal Lens I` is owned, repeat-scanning `Wreck Signal Cache` gives a compact unresolved `cache echo` hint toward future `Echo Lens` study and deeper wreck signals. This is only planning language for the next scanner curiosity; it does not add a minimap, field guide, exact-coordinate tracker, objective checklist, or new resource-pulse behavior.
+- Planned `Echo Lens I` direction lives in `docs/planning/SCANNER_PROGRESSION_V2.md`: it should require `Wreck Signal Cache` plus `Signal Lens I`, cost slightly more deep-biological material than `Signal Lens I`, and reveal only broad unresolved echo/category/direction hints.
 - `Cargo Rack I` costs banked `Kelp Fiber x2`, `Shell Fragments x2`, and `Glow Plankton x1`.
 - `Cargo Rack I` raises future dive cargo capacity from 3 to 4 without changing extraction banking or the rule that oxygen failure loses all carried cargo.
 - `Predator Warning I` requires the `Gulper Eel` discovery plus banked `Kelp Fiber x1`, `Shell Fragments x2`, and `Glow Plankton x1`.
