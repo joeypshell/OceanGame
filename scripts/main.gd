@@ -171,6 +171,7 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 @onready var wreck_echo_clue_core: Polygon2D = $WreckEchoDescent/ClueTrigger/ClueCore
 @onready var rare_signal_emphasis: Node2D = $RareSignalEmphasis
 @onready var shelf_glimmer_opportunity: Node2D = $EastShelfSpur/ShelfGlimmerOpportunity
+@onready var east_shelf_pocket_interact_zone: Area2D = $EastShelfSpur/PocketEntrance/InteractZone
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
 @onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
 @onready var sealed_shelf_hatch_lock_label: Label = $EastShelfSpur/SealedShelfHatch/LockLabel
@@ -180,6 +181,7 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 var dive_session := DiveSessionScript.new()
 var progression_state := ProgressionStateScript.new()
 var player_in_base := true
+var player_near_east_shelf_pocket := false
 var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
@@ -217,6 +219,8 @@ var recent_expedition_log: Array[Dictionary] = []
 func _ready() -> void:
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
 	base_zone.body_exited.connect(_on_base_zone_body_exited)
+	east_shelf_pocket_interact_zone.body_entered.connect(_on_east_shelf_pocket_body_entered)
+	east_shelf_pocket_interact_zone.body_exited.connect(_on_east_shelf_pocket_body_exited)
 	pressure_boundary.body_entered.connect(_on_pressure_boundary_body_entered)
 	wreck_echo_clue_trigger.body_entered.connect(_on_wreck_echo_clue_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
@@ -272,7 +276,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 				status_label.text = "Surface view: upgrades."
 				_update_hud()
 		else:
-			_try_extract()
+			if not _try_east_shelf_pocket_interaction():
+				_try_extract()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
 		_cycle_surface_tab(-1)
 	elif Input.is_action_just_pressed("move_right") and _surface_tabs_enabled():
@@ -371,6 +376,7 @@ func _prepare_next_run() -> void:
 	current_expedition_condition = ExpeditionConditionScript.condition_for_seed(progression_state.current_run_seed)
 	dive_session.reset(_current_max_oxygen())
 	dive_session.cargo_limit = _current_cargo_limit()
+	player_near_east_shelf_pocket = false
 	_reset_run_telemetry()
 	burst_thruster_cooldown_remaining = 0.0
 	decoy_pulse_used_this_run = false
@@ -388,6 +394,30 @@ func _on_base_zone_body_exited(body: Node2D) -> void:
 		player_in_base = false
 		dive_session.has_left_base = true
 		_update_hud()
+
+func _on_east_shelf_pocket_body_entered(body: Node2D) -> void:
+	if body == player:
+		player_near_east_shelf_pocket = true
+		if status_label != null:
+			status_label.text = "East Shelf pocket: inspect the sealed threshold."
+		if is_inside_tree():
+			_update_hud()
+
+func _on_east_shelf_pocket_body_exited(body: Node2D) -> void:
+	if body == player:
+		player_near_east_shelf_pocket = false
+		if is_inside_tree():
+			_update_hud()
+
+func _try_east_shelf_pocket_interaction() -> bool:
+	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_east_shelf_pocket:
+		return false
+
+	if status_label != null:
+		status_label.text = "East Shelf pocket hums behind the threshold. No entry yet."
+	if is_inside_tree():
+		_update_hud()
+	return true
 
 func _on_wreck_echo_clue_body_entered(body: Node2D) -> void:
 	if body != player or dive_session.result != DiveSessionScript.Result.DIVING:
@@ -605,6 +635,8 @@ func _format_hud_prompt() -> String:
 			]
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		prompt = "Expedition failed - press %s for next expedition" % _action_label("restart_dive")
+	elif player_near_east_shelf_pocket:
+		prompt = "East Shelf pocket: %s inspect threshold" % _action_label("interact")
 	elif player_in_base:
 		if dive_session.has_left_base:
 			prompt = "At base: %s extract" % _action_label("interact")

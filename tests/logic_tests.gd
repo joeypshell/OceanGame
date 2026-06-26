@@ -91,6 +91,7 @@ func _initialize() -> void:
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
 	_run("expanded region base direction", _test_expanded_region_base_direction)
 	_run("expanded region reset state ownership", _test_expanded_region_reset_state_ownership)
+	_run("East Shelf pocket prompt interaction", _test_east_shelf_pocket_prompt_interaction)
 	_run("sealed shelf hatch promise state", _test_sealed_shelf_hatch_promise_state)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
@@ -650,6 +651,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/PocketEntrance/OuterRim",
 		"EastShelfSpur/PocketEntrance/ThresholdGlow",
 		"EastShelfSpur/PocketEntrance/ExitCurrentCue",
+		"EastShelfSpur/PocketEntrance/InteractZone",
+		"EastShelfSpur/PocketEntrance/InteractZone/CollisionShape2D",
 		"EastShelfSpur/SealedShelfHatch",
 		"EastShelfSpur/SealedShelfHatch/HatchPlate",
 		"EastShelfSpur/SealedShelfHatch/SealBars",
@@ -1772,6 +1775,26 @@ func _test_expanded_region_reset_state_ownership() -> void:
 
 	var lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
 	_expect(lock_label.text == "ECHO PING", "restart should preserve persistent upgrade promise state after reset")
+	main.queue_free()
+
+func _test_east_shelf_pocket_prompt_interaction() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.start()
+	main.player_in_base = false
+	main.player_near_east_shelf_pocket = true
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("East Shelf pocket"), "East Shelf pocket proximity should own the active dive prompt")
+	_expect(prompt.contains("inspect threshold"), "East Shelf pocket prompt should explain the narrow interaction")
+
+	var handled: bool = main.call("_try_east_shelf_pocket_interaction")
+	_expect(handled, "East Shelf pocket should handle interact while the player is nearby during a dive")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("No entry yet"), "East Shelf pocket interaction should stay a prompt, not open an interior yet")
+
+	main.player_near_east_shelf_pocket = false
+	var not_handled: bool = main.call("_try_east_shelf_pocket_interaction")
+	_expect(not not_handled, "East Shelf pocket should not consume interact outside its proximity zone")
 	main.queue_free()
 
 func _test_sealed_shelf_hatch_promise_state() -> void:
