@@ -66,6 +66,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_POLISH_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLICE_READABILITY_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -146,6 +147,8 @@ Result memory review: `docs/planning/RESULT_MEMORY_READABILITY_REVIEW_2026_06_26
 
 Upgrade bay review: `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md` confirms the seven-upgrade state model reads without becoming a tech tree, and the surface upgrade panel now wraps long item, cost, state, and feedback copy inside a taller panel.
 
+Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md` creates issues #260-#279. The batch focuses on clearing the remaining acceptance blockers, clean smoke evidence, Decoy Pulse owned-state review, lower-route rechecks, surface moonpool/waterline readability, and context refreshes.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable, not yet polished accepted.
@@ -167,7 +170,6 @@ Pass with polish:
 Remaining before calling the vertical-slice gate fully accepted:
 
 - move or restyle the active `Discoveries` count so it does not sit between HUD panels,
-- fix upgrade-tab text overflow with the current seven-upgrade set,
 - run a short hands-on two-expedition smoke pass from a clean save,
 - recheck `Decoy Pulse I` HUD/status with the upgrade owned,
 - keep lower-route screenshots on the watchlist after any visual change.
@@ -176,11 +178,11 @@ Remaining before calling the vertical-slice gate fully accepted:
 
 Current playable-slice track:
 
-- Implement the compact active-dive HUD skin without restoring playfield text clutter.
-- Capture normal-scale screenshot evidence for surface ready, active dive, pressure lock/open, predator route, and result UI.
-- Reduce lower-route density where pressure wreck, cache, rare-signal shimmer, deep reward, and predator danger overlap.
-- Review sprite/fallback balance for Shell Reef, Thermal Vent, pressure wreck, Wreck Signal Cache, and Gulper route.
-- Verify the acceptance checklist through short manual smoke runs once the HUD/readability passes land.
+- Move active `Discoveries` into the compact HUD instead of the playfield gap.
+- Verify the acceptance checklist through short clean-save smoke runs.
+- Recheck `Decoy Pulse I` owned-state HUD/status and result memory.
+- Recheck lower-route screenshots after visual or HUD changes.
+- Wire and review the surface moonpool/waterline readability pass.
 
 Next planning track:
 
@@ -194,6 +196,29 @@ Deferred and out-of-scope track:
 - Keep minimap, route graph, exact scanner locator, objective checklist, weapons, predator harvesting, full procedural ocean, daily challenge calendar, inventory grid, and final production-art lock out of this milestone.
 
 Historical ordered issue batches:
+
+Next surface-readability acceptance batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`:
+
+1. #260 Move active Discoveries count into compact HUD panel.
+2. #261 Add clean-save two-expedition smoke acceptance pass.
+3. #262 Recheck Decoy Pulse HUD/status with upgrade owned.
+4. #263 Recheck lower-route readability after recent HUD and density changes.
+5. #264 Wire surface moonpool and waterline source-art pass.
+6. #265 Add surface moonpool and waterline normal-scale review.
+7. #266 Tune surface panel opacity or placement after boat/waterline pass.
+8. #267 Add active HUD Discoveries placement regression coverage.
+9. #268 Add upgrade tab normal-scale review after wrapping fix.
+10. #269 Add no-debug normal surface capture sanity review.
+11. #270 Recheck pressure wreck/cache readability after lower-route watchlist.
+12. #271 Plan pressure wreck/cache backup art-pass constraints.
+13. #272 Update playable-slice acceptance status after smoke/art reviews.
+14. #273 Add result and upgrade text-length guard coverage.
+15. #274 Review condition visuals with normal-scale screenshots.
+16. #275 Add Decoy Pulse result-memory and HUD smoke note.
+17. #276 Recheck Echo Lens pulse readability at Wreck Signal Cache.
+18. #277 Plan source/provenance requirements for moonpool asset.
+19. #278 Update MCP context after acceptance evidence batch.
+20. #279 Replenish backlog after surface-readability acceptance batch.
 
 Next vertical-slice readability batch from `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLICE_READABILITY_2026_06_26.md`:
 
