@@ -138,6 +138,7 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 @onready var pressure_label: Label = $PressureLockedWreck/Visuals/FallbackGeometry/PressureGateVisuals/PressureLabel
 @onready var echo_lens_pulse: Sprite2D = $PressureLockedWreck/WreckSignalCache/EchoPulse
 @onready var wreck_signal_hint: Node2D = $WreckSignalHint
+@onready var rare_signal_emphasis: Node2D = $RareSignalEmphasis
 @onready var predator_warning: Node2D = $Predators/PredatorWarning
 @onready var gulper_eel: Node = $Predators/GulperEel
 
@@ -891,6 +892,7 @@ func _sync_condition_visuals() -> void:
 	var condition_id := _current_condition_id()
 	var is_thermal_bloom := condition_id == "thermal_bloom"
 	var is_calm_current := condition_id == "calm_current"
+	rare_signal_emphasis.visible = _rare_signal_emphasis_visible_for_condition(condition_id)
 	base_return_column.color = Color(0.38, 1.0, 0.9, 0.18) if is_calm_current else Color(0.38, 1.0, 0.9, 0.14)
 	base_return_rib_shallow.color = Color(0.62, 1.0, 0.9, 0.22) if is_calm_current else Color(0.62, 1.0, 0.9, 0.18)
 	base_return_rib_midwater.color = Color(0.62, 1.0, 0.9, 0.2) if is_calm_current else Color(0.62, 1.0, 0.9, 0.16)
@@ -903,6 +905,9 @@ func _sync_condition_visuals() -> void:
 	thermal_bubble_string_b.color = Color(1.0, 1.0, 0.84, 0.4) if is_thermal_bloom else Color(0.96, 1.0, 0.82, 0.28)
 	thermal_vent_visual.color = Color(1.0, 0.5, 0.18, 1.0) if is_thermal_bloom else Color(0.96, 0.46, 0.16, 0.9)
 	thermal_vent_bubbles.color = Color(0.98, 1.0, 0.86, 0.46) if is_thermal_bloom else Color(0.9, 1.0, 0.86, 0.34)
+
+func _rare_signal_emphasis_visible_for_condition(condition_id: String) -> bool:
+	return condition_id == "rare_signal"
 
 func _current_condition_id() -> String:
 	return String(current_expedition_condition.get("id", ""))

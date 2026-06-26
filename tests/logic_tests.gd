@@ -415,6 +415,8 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"PressureLockedWreck/WreckSignalCache/FallbackVisual/CacheVisual",
 		"PressureLockedWreck/WreckSignalCache/ScanMarker",
 		"PressureLockedWreck/WreckSignalCache/EchoPulse",
+		"RareSignalEmphasis/SoftPingWash",
+		"RareSignalEmphasis/BrokenEchoArc",
 		"SurfaceBaseArt/SpriteAnchor/ResearchBoatSprite",
 		"SurfaceBaseArt/FallbackGeometry/LabMoonpool",
 		"Discoveries/ThermalVent/SpriteAnchor/Sprite",
@@ -1148,6 +1150,9 @@ func _test_condition_briefing_copy() -> void:
 	briefing = main._format_condition_briefing()
 	_expect(briefing.contains("Gulper route"), "predator briefing should point to the existing predator route")
 	_expect(briefing.contains("warning cues"), "predator briefing should point to existing readable cues")
+	_expect(main.call("_rare_signal_emphasis_visible_for_condition", "rare_signal"), "Rare Signal should enable the subtle signal emphasis")
+	_expect(not main.call("_rare_signal_emphasis_visible_for_condition", "wreck_shift"), "Wreck Shift should not enable Rare Signal emphasis")
+	_expect(not main.call("_rare_signal_emphasis_visible_for_condition", "thermal_bloom"), "Thermal Bloom should keep Rare Signal emphasis hidden")
 	main.free()
 
 func _test_compact_dive_hud_helpers() -> void:
