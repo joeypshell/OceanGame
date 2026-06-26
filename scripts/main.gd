@@ -1232,15 +1232,15 @@ func _format_upgrade_status() -> String:
 
 func _format_burst_thruster_prompt() -> String:
 	if burst_thruster_cooldown_remaining > 0.0:
-		return "Burst cooldown: %ds" % ceili(burst_thruster_cooldown_remaining)
+		return "Burst: %ds cooldown" % ceili(burst_thruster_cooldown_remaining)
 
-	return "Space burst: %d oxygen" % ceili(burst_thruster_oxygen_cost)
+	return "Space: burst -%d O2" % ceili(burst_thruster_oxygen_cost)
 
 func _format_decoy_pulse_prompt() -> String:
 	if progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
-		return "Decoy: spent" if decoy_pulse_used_this_run else "F on Gulper: Decoy ready"
+		return "Decoy spent" if decoy_pulse_used_this_run else "F: decoy ready"
 	if progression_state.has_discovery("gulper_eel"):
-		return "Decoy: locked in upgrades"
+		return "Decoy locked"
 
 	return ""
 

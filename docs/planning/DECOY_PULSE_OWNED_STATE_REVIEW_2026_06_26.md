@@ -23,10 +23,10 @@ No new screenshots were committed for this pass.
 | State | Current Player-Facing Read | Review |
 | --- | --- | --- |
 | Unavailable | `Predator route warning refreshed. Decoy Pulse unavailable.` | Pass. It does not imply the player has an active tool before the upgrade path exists. |
-| Locked | `Decoy: locked in upgrades` after Gulper discovery but before ownership. | Pass with polish. It is compact, but future copy could name `Predator Warning I` if players miss the dependency. |
-| Ready owned state | `F on Gulper: Decoy ready` in the active prompt and `Decoy Pulse ready on re-scan.` in scan feedback. | Pass with watchlist. It communicates owned-state readiness and ties use to re-scanning the Gulper. Watch prompt length when paired with `Burst Thruster`. |
+| Locked | `Decoy locked` after Gulper discovery but before ownership. | Pass with polish. It is compact, but future copy could name `Predator Warning I` if players miss the dependency. |
+| Ready owned state | `F: decoy ready` in the active prompt and `Decoy Pulse ready on re-scan.` in scan feedback. | Pass with watchlist. It communicates owned-state readiness and ties use to re-scanning the Gulper. Watch prompt length when paired with `Burst Thruster`. |
 | Activated | `Decoy Pulse: Gulper Eel distracted briefly.` and scan feedback reports the pulse was spent for about 3 seconds. | Pass. `distracted briefly` reads as temporary non-lethal route timing, not damage or defeat. |
-| Spent | `Decoy: spent` and `Decoy Pulse already spent this expedition.` | Pass. It clearly marks one-use-per-expedition behavior without adding ammo/inventory language. |
+| Spent | `Decoy spent` and `Decoy Pulse already spent this expedition.` | Pass. It clearly marks one-use-per-expedition behavior without adding ammo/inventory language. |
 | Result memory | `Research: Decoy timing bent the Gulper route briefly.` | Pass. It records route learning without combat rewards or field-guide scope. |
 
 ## Acceptance Decision

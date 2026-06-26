@@ -82,6 +82,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_ACCEPTANCE_EVIDENCE_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_CLOSEOUT_REVIEW_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_ACCEPTANCE_CLEANUP_RECHECK_2026_06_26.md`
+- `docs/planning/ACTIVE_PROMPT_BURST_DECOY_REVIEW_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -173,6 +174,8 @@ Clean-save smoke pass: `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_
 Decoy Pulse owned-state review: `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md` keeps `Decoy Pulse I` acceptable as one-use non-lethal route-timing counterplay. The main watchlist is active prompt length when `Burst Thruster` and Decoy text appear together.
 
 Decoy Pulse smoke note: `docs/planning/DECOY_PULSE_RESULT_MEMORY_HUD_SMOKE_2026_06_26.md` confirms active prompt, activation status, scan feedback, spent state, and result memory read as temporary route timing instead of combat, harvesting, stun/capture, or permanent predator control.
+
+Active prompt Burst/Decoy review: `docs/planning/ACTIVE_PROMPT_BURST_DECOY_REVIEW_2026_06_26.md` keeps the combined active-tool prompt understandable with shorter command-first snippets such as `Space: burst -4 O2` and `F: decoy ready`, without adding tool wheels, inventory UI, checklist UI, or combat UI.
 
 Lower-route recheck: `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.md` keeps pressure gate, outside scan, Wreck Signal Cache, deep reward, predator lane, Rare Signal, and Echo Lens pulse as pass or pass-with-watchlist after the HUD and density changes. No new lower-route content should be added from this recheck.
 

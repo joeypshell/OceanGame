@@ -22,10 +22,10 @@ No code change is required for this pass.
 
 | Moment | Player-Facing Read | Decision |
 | --- | --- | --- |
-| Owned, unused prompt | `F on Gulper: Decoy ready` | Pass with watchlist. It tells the player the action is tied to the known Gulper scan target. |
+| Owned, unused prompt | `F: decoy ready` | Pass with watchlist. It tells the player the action is tied to the known Gulper scan target. |
 | Activation status | `Decoy Pulse: Gulper Eel distracted briefly.` | Pass. `distracted briefly` is temporary and non-lethal. |
 | Scan feedback after activation | `Decoy Pulse spent: predator distracted for 3s.` | Pass. It explains duration without ammo/crafting UI. |
-| Spent prompt | `Decoy: spent` | Pass. It keeps one-use-per-expedition behavior compact. |
+| Spent prompt | `Decoy spent` | Pass. It keeps one-use-per-expedition behavior compact. |
 | Repeat spent scan | `Decoy Pulse already spent this expedition.` | Pass. It prevents re-use confusion without implying cooldown or charges. |
 | Result memory | `Research: Decoy timing bent the Gulper route briefly.` | Pass. It frames the payoff as route learning, not combat reward. |
 
