@@ -63,6 +63,7 @@ Detailed design rules live in:
 - `docs/planning/NO_DEBUG_SURFACE_CAPTURE_SANITY_REVIEW_2026_06_26.md`
 - `docs/planning/PRESSURE_WRECK_CACHE_RECHECK_AFTER_SURFACE_READABILITY_2026_06_26.md`
 - `docs/planning/PRESSURE_WRECK_CACHE_BACKUP_ART_PASS_CONSTRAINTS_2026_06_26.md`
+- `docs/planning/PRESSURE_DARK_THRESHOLD_USE_DECISION_2026_06_26.md`
 - `docs/planning/CONDITION_VISUAL_NORMAL_SCALE_REVIEW_2026_06_26.md`
 - `docs/planning/DECOY_PULSE_RESULT_MEMORY_HUD_SMOKE_2026_06_26.md`
 - `docs/planning/ECHO_LENS_CACHE_PULSE_READABILITY_RECHECK_2026_06_26.md`
@@ -224,6 +225,8 @@ Pressure wreck/cache recheck: `docs/planning/PRESSURE_WRECK_CACHE_RECHECK_AFTER_
 Echo Lens cache pulse recheck: `docs/planning/ECHO_LENS_CACHE_PULSE_READABILITY_RECHECK_2026_06_26.md` keeps the Echo Lens pulse as pass-with-watchlist. The pulse is local, temporary, hidden by default, and paired with broad no-locator copy around `Wreck Signal Cache`.
 
 Pressure wreck/cache backup art pass: `docs/planning/PRESSURE_WRECK_CACHE_BACKUP_ART_PASS_CONSTRAINTS_2026_06_26.md` defines the constraints for a later backup source-art pass. It may clarify the existing wreck shell, gate, cache alcove, pressure-dark atmosphere, and overlap balance, but must preserve current route behavior and keep `Wreck Echo Descent` planning-only.
+
+Pressure-dark threshold decision: `docs/planning/PRESSURE_DARK_THRESHOLD_USE_DECISION_2026_06_26.md` keeps `study_pressure_dark_threshold_v1` as an unused planning/reference asset for later `Wreck Echo Descent` work. It should not be scene-wired during current vertical-slice closeout because it could imply a new route, objective, pressure zone, or exact locator before that route exists.
 
 ## Vertical-Slice Acceptance Status
 
