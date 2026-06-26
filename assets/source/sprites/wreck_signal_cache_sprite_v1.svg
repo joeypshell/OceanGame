@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="72" viewBox="0 0 96 72">
+  <defs>
+    <linearGradient id="case" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#314b5b"/>
+      <stop offset="60%" stop-color="#172634"/>
+      <stop offset="100%" stop-color="#07101a"/>
+    </linearGradient>
+    <radialGradient id="ping" cx="54%" cy="48%" r="58%">
+      <stop offset="0%" stop-color="#f3ff74" stop-opacity="0.95"/>
+      <stop offset="54%" stop-color="#62fff0" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#62fff0" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-45%" y="-55%" width="190%" height="210%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <ellipse cx="50" cy="39" rx="40" ry="26" fill="url(#ping)" filter="url(#glow)"/>
+  <path d="M14 28 L32 14 L70 16 L86 32 L78 56 L24 54 Z" fill="url(#case)"/>
+  <path d="M24 31 L36 22 L66 23 L76 34 L70 48 L30 48 Z" fill="#0b1520" opacity="0.7"/>
+  <path d="M34 29 L62 29 L70 36 L62 43 L34 43 L26 36 Z" fill="#dfff4a" opacity="0.84"/>
+  <path d="M40 33 L58 33 L64 37 L58 40 L40 40 L34 37 Z" fill="#fff6a6" opacity="0.78"/>
+  <path d="M19 26 L34 15 M75 19 L87 28 M23 55 L12 65 M76 55 L86 66" stroke="#72f8ff" stroke-width="3" stroke-linecap="round" opacity="0.3"/>
+  <circle cx="24" cy="30" r="3" fill="#69faff" opacity="0.54"/>
+  <circle cx="74" cy="33" r="3" fill="#69faff" opacity="0.42"/>
+</svg>

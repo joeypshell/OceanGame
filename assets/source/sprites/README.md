@@ -10,3 +10,4 @@ Good first candidates:
 - `creature_gulper_silhouette_v1`
 - `study_pressure_wreck_cache_signal_v1`
 - `ui_scan_echo_pulse_v1`
+- `wreck_signal_cache_sprite_v1`

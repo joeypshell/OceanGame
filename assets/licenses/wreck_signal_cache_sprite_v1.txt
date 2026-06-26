@@ -1,0 +1,10 @@
+Asset path: assets/exports/sprites/wreck_signal_cache_sprite_v1.svg
+Source path: assets/source/sprites/wreck_signal_cache_sprite_v1.svg
+Creator or tool: OpenAI Codex, original vector authored for OceanGame
+License or usage basis: Project-owned prototype asset
+Source URL: none
+Date added: 2026-06-26
+Prompt summary, if generated: none; authored as SVG code
+Edited after generation: n/a
+Intended use: prototype gameplay sprite for the Wreck Signal Cache scan target and scanner-progress reward
+Restrictions: Keep provenance with the asset if reused or replaced. Do not use as an exact map marker or objective icon without a separate design issue.
