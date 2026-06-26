@@ -120,6 +120,21 @@ variable_hooks = "Authored shell candidate selection and return-current emphasis
 related_discoveries = "shell_reef_shelf"
 readability_priority = "Midwater landmark and return-current language."
 
+[node name="EastShelfArch" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "east_shelf_arch"
+display_name = "East Shelf Arch"
+stable_region_name = "East Shelf Spur"
+kind = "landmark"
+depth_band = "midwater/deep"
+role = "Persistent side-route memory anchor and return-orientation clue for the first expanded dive region."
+memory_goal = "Remember East Shelf Arch as the right-side branch landmark; returning from it means following the soft current left/up toward the base column."
+persistent_facts = "Marks the first expanded side route.
+Pocket entrance sits farther right beyond the arch.
+Safe return points left/up toward the surface base column."
+variable_hooks = "Future side-route daily opportunity can appear near or beyond this landmark."
+readability_priority = "Side-route memory and safe return orientation."
+
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
 script = ExtResource("10_landmark_metadata")
 metadata_id = "thermal_vent_field"
@@ -307,6 +322,29 @@ polygon = PackedVector2Array(1370, 1254, 1472, 1228, 1530, 1264, 1458, 1298)
 [node name="RouteRibB" type="Polygon2D" parent="EastShelfSpur"]
 color = Color(0.76, 0.96, 0.9, 0.09)
 polygon = PackedVector2Array(1630, 1366, 1744, 1344, 1818, 1390, 1710, 1424)
+
+[node name="EastShelfArch" type="Node2D" parent="EastShelfSpur"]
+position = Vector2(1518, 1248)
+
+[node name="ArchSpan" type="Polygon2D" parent="EastShelfSpur/EastShelfArch"]
+color = Color(0.24, 0.48, 0.5, 0.34)
+polygon = PackedVector2Array(-128, -58, -68, -118, 18, -132, 108, -86, 146, -20, 110, 12, 68, -44, 4, -72, -62, -54, -112, 10, -146, -18)
+
+[node name="LeftPillar" type="Polygon2D" parent="EastShelfSpur/EastShelfArch"]
+color = Color(0.12, 0.28, 0.32, 0.48)
+polygon = PackedVector2Array(-136, -20, -74, -42, -52, 92, -122, 126)
+
+[node name="RightPillar" type="Polygon2D" parent="EastShelfSpur/EastShelfArch"]
+color = Color(0.12, 0.28, 0.32, 0.46)
+polygon = PackedVector2Array(78, -28, 138, -8, 106, 118, 42, 92)
+
+[node name="ReturnCurrentLeft" type="Polygon2D" parent="EastShelfSpur/EastShelfArch"]
+color = Color(0.72, 1, 0.92, 0.1)
+polygon = PackedVector2Array(-68, 42, -204, 18, -284, 28, -224, -8, -282, -44, -202, -34, -66, -58)
+
+[node name="ReturnRib" type="Polygon2D" parent="EastShelfSpur/EastShelfArch"]
+color = Color(0.82, 1, 0.94, 0.12)
+polygon = PackedVector2Array(-192, 34, -112, 8, -64, 26, -136, 58)
 
 [node name="TerminalPocketHint" type="Polygon2D" parent="EastShelfSpur"]
 color = Color(0.26, 0.45, 0.5, 0.2)

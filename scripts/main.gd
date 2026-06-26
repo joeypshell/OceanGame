@@ -2079,14 +2079,32 @@ func _current_cargo_limit() -> int:
 	return base_cargo_limit
 
 func _format_base_direction() -> String:
-	var vertical_delta := player.global_position.y - start_position.y
-	if absf(vertical_delta) < 48.0:
+	var direction_player := player
+	if direction_player == null:
+		direction_player = get_node_or_null("Player") as CharacterBody2D
+	if direction_player == null:
 		return "Base: here"
 
-	if vertical_delta > 0.0:
-		return "Base: up %.0fm" % (vertical_delta / pixels_per_meter)
+	var delta := direction_player.global_position - start_position
+	if delta.length() < 48.0:
+		return "Base: here"
 
-	return "Base: below %.0fm" % (absf(vertical_delta) / pixels_per_meter)
+	var directions := PackedStringArray()
+	if delta.y > 48.0:
+		directions.append("up")
+	elif delta.y < -48.0:
+		directions.append("below")
+
+	if delta.x > 96.0:
+		directions.append("left")
+	elif delta.x < -96.0:
+		directions.append("right")
+
+	var direction_text := "-".join(directions)
+	if direction_text.is_empty():
+		direction_text = "nearby"
+
+	return "Base: %s %.0fm" % [direction_text, delta.length() / pixels_per_meter]
 
 func _oxygen_state(current_oxygen: float, maximum_oxygen: float) -> String:
 	if maximum_oxygen <= 0.0:

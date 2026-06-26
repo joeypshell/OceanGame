@@ -89,6 +89,7 @@ func _initialize() -> void:
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
+	_run("expanded region base direction", _test_expanded_region_base_direction)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
 	_run("player idle and thrust visual states", _test_player_idle_and_thrust_visual_states)
@@ -631,6 +632,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/RouteGapCue",
 		"EastShelfSpur/RouteRibA",
 		"EastShelfSpur/RouteRibB",
+		"EastShelfSpur/EastShelfArch",
+		"EastShelfSpur/EastShelfArch/ArchSpan",
+		"EastShelfSpur/EastShelfArch/LeftPillar",
+		"EastShelfSpur/EastShelfArch/RightPillar",
+		"EastShelfSpur/EastShelfArch/ReturnCurrentLeft",
+		"EastShelfSpur/EastShelfArch/ReturnRib",
 		"EastShelfSpur/TerminalPocketHint",
 		"EastShelfSpur/PocketEntrance",
 		"EastShelfSpur/PocketEntrance/MouthShadow",
@@ -646,9 +653,13 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var pocket_entrance := main.get_node("EastShelfSpur/PocketEntrance") as Node2D
 	var mouth_shadow := main.get_node("EastShelfSpur/PocketEntrance/MouthShadow") as Polygon2D
 	var exit_current := main.get_node("EastShelfSpur/PocketEntrance/ExitCurrentCue") as Polygon2D
+	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
+	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
 	_expect(approach_current.polygon[1].x >= 1200.0, "East Shelf Spur should branch right of the existing main column")
 	_expect(terminal_hint.polygon[terminal_hint.polygon.size() - 1].x >= 1800.0, "East Shelf Spur should reach into the expanded camera space")
 	_expect(approach_current.color.a <= 0.14, "East Shelf Spur current cue should stay subtle until full route art exists")
+	_expect(arch.position.x >= 1450.0, "East Shelf Arch should sit on the right-side branch before the pocket entrance")
+	_expect(arch_return.polygon[1].x < arch_return.polygon[0].x, "East Shelf Arch return current should point left toward the base column")
 	_expect(pocket_entrance.position.x >= 1880.0, "East Shelf pocket entrance should sit at the far end of the side route")
 	_expect(mouth_shadow.color.a >= 0.6, "East Shelf pocket entrance should read as an opening, not another translucent current")
 	_expect(exit_current.polygon[1].x < exit_current.polygon[0].x, "East Shelf pocket exit cue should point back left toward the main route")
@@ -661,6 +672,7 @@ func _test_landmark_region_identity_metadata() -> void:
 	var expected_regions := {
 		"SurfaceBase": "Surface Base",
 		"ShellReef": "Shell Reef",
+		"EastShelfArch": "East Shelf Spur",
 		"ThermalVentField": "Thermal Vent Field",
 		"WreckShelf": "Wreck Shelf",
 		"PressureLockedWreck": "Wreck Shelf",
@@ -1672,6 +1684,23 @@ func _test_expanded_region_world_bounds() -> void:
 	var clamped_left := player.clamp_position_to_world_bounds(Vector2(-80.0, 900.0))
 	_expect(is_equal_approx(clamped_left.x, player.world_bounds.position.x), "world clamp should preserve the left edge of the main column")
 	player.free()
+
+func _test_expanded_region_base_direction() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var scene_player := main.get_node("Player") as CharacterBody2D
+	main.player = scene_player
+	scene_player.global_position = main.start_position + Vector2(860.0, 640.0)
+	var side_route_direction: String = main.call("_format_base_direction")
+	_expect(side_route_direction.contains("up-left"), "base direction should point up-left from the expanded right-side route")
+
+	scene_player.global_position = main.start_position + Vector2(0.0, 500.0)
+	var vertical_direction: String = main.call("_format_base_direction")
+	_expect(vertical_direction.begins_with("Base: up "), "base direction should preserve simple upward return copy in the main column")
+
+	scene_player.global_position = main.start_position
+	_expect(main.call("_format_base_direction") == "Base: here", "base direction should still read here at the surface base")
+	main.queue_free()
 
 func _test_player_visual_facing_isolation() -> void:
 	var player := PlayerScene.instantiate()
