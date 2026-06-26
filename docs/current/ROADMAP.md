@@ -113,6 +113,7 @@ Detailed design rules live in:
 - `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md`
 - `docs/planning/PRESSURE_SHELL_PROVENANCE_CHECKLIST_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_SCAN_AFFORDANCE_REVIEW_AFTER_PRESSURE_SHELL_2026_06_26.md`
+- `docs/planning/RESOURCE_SCAN_SOURCE_ART_TARGET_DECISION_2026_06_26.md`
 - `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md`
 - `docs/planning/COMPACT_HUD_FINAL_NORMAL_SCALE_REVIEW_2026_06_26.md`
 - `docs/planning/ACTIVE_HUD_LOW_OXYGEN_REVIEW_AFTER_PROMPT_TUNE_2026_06_26.md`
@@ -251,6 +252,8 @@ Source-art provenance checklist: `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_
 Pressure shell provenance checklist review: `docs/planning/PRESSURE_SHELL_PROVENANCE_CHECKLIST_REVIEW_2026_06_26.md` confirms the pressure wreck/cache shell pass has source, export, provenance, licensing basis, scene wiring, fallback treatment, and verification evidence. No missing provenance or export-regeneration blocker was found.
 
 Resource and scan affordance review after pressure shell: `docs/planning/RESOURCE_SCAN_AFFORDANCE_REVIEW_AFTER_PRESSURE_SHELL_2026_06_26.md` keeps Kelp Fiber, Shell Fragments, Glow Plankton, non-resource scan markers, selected scan HUD, and Signal Lens pulse language as pass-with-watchlist. The pressure shell does not make cargo/resources or scan targets harder to distinguish.
+
+Resource/scan source-art target decision: `docs/planning/RESOURCE_SCAN_SOURCE_ART_TARGET_DECISION_2026_06_26.md` defers a new resource/scan source-art target because no concrete blocker remains. If future evidence reopens the area, non-resource scan marker polish is the backup target; resource sprites, Signal Lens pulse, and Echo Lens pulse remain deferred.
 
 Compact HUD final polish plan: `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md` keeps the next HUD pass focused on existing oxygen, depth, base direction, cargo slots, scan target, prompt/status, warning panel, and debug telemetry gating. It explicitly avoids minimap, inventory grid, objective checklist, field-guide UI, route graph, exact locator, and active-dive upgrade/log surfaces.
 
