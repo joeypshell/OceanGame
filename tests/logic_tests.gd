@@ -75,6 +75,7 @@ func _initialize() -> void:
 	_run("monster research non-combat guardrails", _test_monster_research_non_combat_guardrails)
 	_run("echo lens result callout", _test_echo_lens_result_callout)
 	_run("wreck echo route first pass", _test_wreck_echo_route_first_pass)
+	_run("East Shelf pocket result callout", _test_east_shelf_pocket_result_callout)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -1163,6 +1164,23 @@ func _test_wreck_echo_route_first_pass() -> void:
 	main_scene.call("_sync_wreck_echo_state")
 	_expect(not trigger.monitoring, "Wreck Echo trigger should disable after clue recovery")
 	main_scene.queue_free()
+
+func _test_east_shelf_pocket_result_callout() -> void:
+	var main := MainScript.new()
+	_expect(main._format_east_shelf_pocket_research_callout() == "", "East Shelf pocket result line should stay hidden before ping recovery")
+
+	main.run_east_shelf_pocket_ping_recovered = true
+	var callout := main._format_east_shelf_pocket_research_callout()
+	_expect(callout.contains("East Shelf pocket ping"), "East Shelf pocket ping should produce compact research memory")
+	_expect(callout.contains("sealed route below the arch"), "East Shelf pocket result line should stay broad and local")
+	_expect(not callout.to_lower().contains("map"), "East Shelf pocket result line should not imply a map marker")
+	_expect(not callout.to_lower().contains("quest"), "East Shelf pocket result line should not imply quest UI")
+	_expect(not callout.to_lower().contains("checklist"), "East Shelf pocket result line should not imply checklist UI")
+
+	var extraction_summary := main._format_extraction_result_summary(0, [])
+	_expect(extraction_summary.contains("East Shelf pocket ping"), "East Shelf pocket extraction summary should include recovered ping memory")
+	_expect(not extraction_summary.contains("%s"), "East Shelf pocket extraction summary should not leak string placeholders")
+	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:
 	var main := MainScript.new()
