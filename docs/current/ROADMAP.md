@@ -91,6 +91,7 @@ Detailed design rules live in:
 - `docs/planning/SURFACE_LAUNCH_RETURN_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/NEXT_SOURCE_ART_AFTER_MOONPOOL_DECISION_2026_06_26.md`
 - `docs/planning/SHALLOW_MIDWATER_BACKGROUND_ART_PASS_CONSTRAINTS_2026_06_26.md`
+- `docs/planning/SHALLOW_MIDWATER_BACKGROUND_STUDY_WIRING_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -170,6 +171,8 @@ Next source-art priority: `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_20
 Next source-art after moonpool: `docs/planning/NEXT_SOURCE_ART_AFTER_MOONPOOL_DECISION_2026_06_26.md` selects a constrained shallow/midwater background study as the next source-art target. It should improve first-run depth/mood readability while staying behind gameplay cues and avoiding broad art-overhaul scope.
 
 Shallow/midwater background constraints: `docs/planning/SHALLOW_MIDWATER_BACKGROUND_ART_PASS_CONSTRAINTS_2026_06_26.md` defines allowed atmosphere changes, contrast limits, preserved gameplay cues, and no-go scope for the first background source-art study.
+
+Shallow/midwater background wiring: `docs/planning/SHALLOW_MIDWATER_BACKGROUND_STUDY_WIRING_2026_06_26.md` records the first background study source/export/provenance files and confirms it is wired as subdued visual support only, behind gameplay cues, HUD, scan targets, route cues, collisions, and spawn logic.
 
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 

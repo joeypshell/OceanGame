@@ -1,0 +1,15 @@
+Asset: shallow_midwater_background_study_v1
+Files:
+- assets/source/sprites/shallow_midwater_background_study_v1.svg
+- assets/exports/sprites/shallow_midwater_background_study_v1.svg
+
+Created for OceanGame on 2026-06-26.
+
+Provenance:
+This is an in-repository prototype vector study created for OceanGame's shallow/midwater background art pass. It uses original simple SVG shapes based on the project's documented art direction and readability constraints.
+
+Usage:
+Prototype-only OceanGame source/export asset. It may be revised, replaced, or removed during later art passes.
+
+Restrictions:
+Do not treat this as final production art. The asset is background support only and should not be used as a gameplay cue, scan marker, reward marker, pressure cue, predator warning, route objective, or collision source.

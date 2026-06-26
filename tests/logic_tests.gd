@@ -418,6 +418,7 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"PressureLockedWreck/WreckSignalCache/EchoPulse",
 		"RareSignalEmphasis/SoftPingWash",
 		"RareSignalEmphasis/BrokenEchoArc",
+		"ShallowMidwaterBackgroundStudy",
 		"SurfaceBaseArt/SpriteAnchor/ResearchBoatSprite",
 		"SurfaceBaseArt/MoonpoolGuide/MoonpoolWaterlineSprite",
 		"SurfaceBaseArt/MoonpoolGuide/LaunchColumn",
@@ -436,6 +437,10 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 
 	var moonpool_sprite := main.get_node("SurfaceBaseArt/MoonpoolGuide/MoonpoolWaterlineSprite") as Sprite2D
 	_expect(moonpool_sprite.texture != null, "Surface moonpool/waterline should use the first exported source asset sprite")
+
+	var shallow_midwater_background := main.get_node("ShallowMidwaterBackgroundStudy") as Sprite2D
+	_expect(shallow_midwater_background.texture != null, "Shallow/midwater background study should use its exported source asset")
+	_expect(shallow_midwater_background.modulate.a <= 0.5, "Shallow/midwater background study should stay subdued behind gameplay cues")
 
 	var glow_sprite := main.get_node("ResourcePickups/GlowPlankton/Visuals/SpriteAnchor/Sprite") as Sprite2D
 	var glow_fallback := main.get_node("ResourcePickups/GlowPlankton/Visuals/FallbackVisual") as Node2D
