@@ -22,6 +22,7 @@ Detailed design rules live in:
 - `docs/planning/MONSTER_OBSERVATION_I.md`
 - `docs/planning/PREDATOR_WARNING_I.md`
 - `docs/planning/PREDATOR_COUNTERMEASURE_I.md`
+- `docs/planning/REGION_LANDMARK_METADATA.md`
 - `docs/planning/BIOME_POCKET_I.md`
 - `docs/planning/BIOME_POCKET_II.md`
 - `docs/planning/SHELL_REEF_ROUTE_REVIEW.md`
