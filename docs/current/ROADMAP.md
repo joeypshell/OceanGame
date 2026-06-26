@@ -93,6 +93,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_ACCEPTANCE_EVIDENCE_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_NEXT_MILESTONE_PLANNING_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLAYABLE_LOOP_CLOSEOUT_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_CLOSEOUT_REVIEW_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_ACCEPTANCE_CLEANUP_RECHECK_2026_06_26.md`
 - `docs/planning/ACTIVE_PROMPT_BURST_DECOY_REVIEW_2026_06_26.md`
@@ -217,6 +218,8 @@ Surface panel contrast after final HUD polish: `docs/planning/SURFACE_PANEL_CONT
 Debug telemetry hidden-state sanity: `docs/planning/DEBUG_TELEMETRY_HIDDEN_STATE_SANITY_REVIEW_2026_06_26.md` confirms ready, result, failure, log, and active-dive states hide raw seed, pattern, condition id, predator route, F9 hint copy, and playtest telemetry by default. F4/F5 review helpers do nothing player-facing while telemetry is hidden, and debug tooling remains available for development.
 
 MCP context refresh after playable-loop polish: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the refreshed vertical-slice evidence bundle, clean demo script, surface contrast review, debug hidden-state review, pressure shell/lower-route evidence, compact HUD final review, Decoy/Gulper reviews, Wreck Echo planning, and resource/scan review decisions.
+
+Backlog replenishment after playable-loop closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLAYABLE_LOOP_CLOSEOUT_2026_06_26.md` moves the queue into `Wreck Echo Preparation And Slice Polish`. The next batch should confirm handoff/readiness, define the first-pass Wreck Echo implementation contract, plan route ownership/readability/copy/risk/tests/demo updates, and preserve no-locator/no-combat/no-broad-system guardrails.
 
 Next milestone after closeout: `docs/planning/NEXT_MILESTONE_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines `Wreck Echo Preparation And Slice Polish`. It keeps current work focused on remaining readability watchlists, allows Wreck Echo planning and source-art selection, and keeps route implementation, broad biomes, minimap/checklist UI, combat systems, and final art lock deferred.
 
@@ -462,6 +465,29 @@ Next playable-loop polish batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_
 18. #337 Review debug telemetry hidden-state sanity after new evidence.
 19. #338 Update MCP context after playable-loop polish batch.
 20. #339 Replenish backlog after playable-loop polish batch.
+
+Next Wreck Echo preparation batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLAYABLE_LOOP_CLOSEOUT_2026_06_26.md`:
+
+1. #340 Update post-closeout slice status and Wreck Echo handoff.
+2. #341 Define first-pass Wreck Echo implementation acceptance contract.
+3. #342 Plan Wreck Echo route pocket scene and state ownership.
+4. #343 Plan Wreck Echo entry readability states.
+5. #344 Plan Wreck Echo compact research clue copy.
+6. #345 Review Wreck Echo oxygen and cargo preparation pressure.
+7. #346 Add Wreck Echo normal-scale screenshot checklist.
+8. #347 Plan pressure-dark visual constraints for Wreck Echo.
+9. #348 Review Echo Lens handoff language into Wreck Echo.
+10. #349 Plan Wreck Echo result memory and no-quest guardrails.
+11. #350 Review lower-route capacity for one Wreck Echo pocket.
+12. #351 Review active HUD and prompt impact for Wreck Echo attempt.
+13. #352 Break down first Wreck Echo route implementation issue.
+14. #353 Plan Wreck Echo return and failure language.
+15. #354 Re-evaluate next source-art priority after Wreck Echo prep.
+16. #355 Plan Wreck Echo research clue progression ownership.
+17. #356 Plan Wreck Echo test coverage before implementation.
+18. #357 Update clean demo script for the Wreck Echo prep milestone.
+19. #358 Refresh MCP context after Wreck Echo planning batch.
+20. #359 Replenish backlog after Wreck Echo prep planning.
 
 Next surface-readability acceptance batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`:
 
