@@ -118,10 +118,47 @@ Keep color categories distinct. Do not solve readability by making every importa
 
 - Prefer world shapes first and HUD/status text second.
 - Use visible world labels only for locked gates, future payoff signals, or prototype-only clarification that prevents confusion.
-- Keep labels short and action-oriented: `LOCKED ROUTE: Pressure Seal I required` works because it names the blocker and next upgrade.
+- Keep labels short and action-oriented: `LOCKED: Pressure Seal I` works because it names the blocker and next upgrade without becoming a sentence.
 - Do not put explanatory paragraphs into the playfield.
 - Do not label decorative landmarks unless the label changes a player decision.
 - HUD text may name the current scan target, result summary, or upgrade state; world assets should carry repeated meanings through color and shape.
+
+## Marker And Icon Rules
+
+These rules define the first reusable marker vocabulary. They are prototype readability rules, not final art direction.
+
+| Meaning | Marker Shape | Color | Opacity | Placement | Text Rule |
+| --- | --- | --- | --- | --- | --- |
+| Scan | small diamond, bracket, or reticle hugging target | pale yellow or soft cyan | `0.18` to `0.30` idle, stronger only while selected | centered on the scannable silhouette, not across a route | no world label; selected target name belongs in HUD |
+| Lock | firm bars, caps, shimmer plane, or sealed doorway | blue/cyan with firmer blue bias than current hints | `0.45` to `0.75` | across the blocked opening, preserving nearby return gaps | one compact blocker label allowed, such as `LOCKED: Pressure Seal I` |
+| Danger | ribs, teeth, eye mark, angular pulse, or harsh lane | red/orange | `0.18` to `0.35` for fields, stronger for small accents | before the hazard/contact zone, not on top of the pickup | no explanatory label; HUD/status explains contact or scan facts |
+| Reward | compact bloom, shard cluster, ping, or small lure | yellow-green or resource-specific accent | `0.15` to `0.35` for lures, full opacity for pickups | near the reward, smaller than lock/danger shapes | no label unless the reward is not reachable yet, then use signal language |
+| Return | vertical lane, calm ribs, beacon diamond, or upward current | seafoam/cyan-green | `0.14` to `0.35` depending on depth and distance | along the safe route back to base/surface | no label unless the player is at the extraction boundary |
+
+### Marker Priority
+
+When markers overlap, resolve in this order:
+
+1. Player visibility.
+2. Safe return.
+3. Immediate danger.
+4. Locked gate.
+5. Selected scan target.
+6. Immediate pickup.
+7. Optional reward lure.
+8. Decorative landmark wash.
+
+The lower-priority marker should become quieter, smaller, or move away from the overlap. Do not solve overlap by adding a text explanation.
+
+### Marker Text Limits
+
+- Scan: HUD-only target name.
+- Lock: one compact world label is allowed.
+- Danger: HUD/status only.
+- Reward: no world text for immediate pickups.
+- Return: extraction prompt only when at or near the safe base.
+
+If a marker needs more than four words in the world, the visual language is not doing enough yet.
 
 ### Safe / Return
 
