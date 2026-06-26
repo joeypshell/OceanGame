@@ -89,6 +89,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_ACCEPTANCE_EVIDENCE_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_NEXT_MILESTONE_PLANNING_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_CLOSEOUT_REVIEW_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_ACCEPTANCE_CLEANUP_RECHECK_2026_06_26.md`
 - `docs/planning/ACTIVE_PROMPT_BURST_DECOY_REVIEW_2026_06_26.md`
@@ -209,6 +210,8 @@ Wreck Echo oxygen/cargo preparation: `docs/planning/WRECK_ECHO_OXYGEN_CARGO_PREP
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
 Backlog replenishment after closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines the next ordered twenty-issue queue. The focus is solo first-run evidence, compact acceptance proof, final closeout status, source-art/readability rechecks, and Wreck Echo planning without implementing a new route yet.
+
+Backlog replenishment after next-milestone planning: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_NEXT_MILESTONE_PLANNING_2026_06_26.md` defines the next ordered twenty-issue queue after the post-closeout planning reviews. The batch moves from planning into pressure wreck/cache shell art, compact HUD polish, decoy-owned readability, updated vertical-slice evidence, and Wreck Echo readiness checks without adding broad new systems.
 
 Next source-art priority: `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_2026_06_26.md` selects the surface base moonpool/waterline integration as the next replacement target, with pressure wreck/cache environment treatment as backup. The priority is readability impact, not final art lock or a large visual batch.
 
@@ -395,6 +398,29 @@ Next post-closeout planning batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTE
 18. Review durable progression reset/onboarding copy with solo checklist.
 19. Update MCP context after next planning batch.
 20. Replenish backlog after next-milestone planning batch.
+
+Next playable-loop polish batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_NEXT_MILESTONE_PLANNING_2026_06_26.md`:
+
+1. #320 Wire pressure wreck/cache source-art shell pass.
+2. #321 Add normal-scale pressure wreck/cache shell review.
+3. #322 Recheck lower-route pressure/cache/predator overlap after shell pass.
+4. #323 Implement compact HUD final polish pass.
+5. #324 Add compact HUD final normal-scale review.
+6. #325 Add active HUD final polish regression coverage.
+7. #326 Review Decoy Pulse owned HUD and predator visual state.
+8. #327 Review Gulper timing result clarity across scan/contact/decoy outcomes.
+9. #328 Add Wreck Echo readiness gate review after shell and HUD polish.
+10. #329 Plan Wreck Echo implementation candidate reward choice.
+11. #330 Review source-art provenance checklist use on the pressure shell pass.
+12. #331 Review resource/scan affordance readability after pressure shell pass.
+13. #332 Plan resource/scan affordance source-art target if still needed.
+14. #333 Update compact vertical-slice evidence bundle after latest reviews.
+15. #334 Update playable vertical-slice acceptance status after watchlist reviews.
+16. #335 Add vertical-slice demo script for a clean playable pass.
+17. #336 Review surface panel contrast after final HUD polish.
+18. #337 Review debug telemetry hidden-state sanity after new evidence.
+19. #338 Update MCP context after playable-loop polish batch.
+20. #339 Replenish backlog after playable-loop polish batch.
 
 Next surface-readability acceptance batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`:
 
