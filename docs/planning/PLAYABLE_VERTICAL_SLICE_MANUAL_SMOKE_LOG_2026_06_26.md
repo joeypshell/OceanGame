@@ -1,6 +1,6 @@
 # Playable Vertical-Slice Manual Smoke Log - 2026-06-26
 
-Status: manual smoke log artifact for issue #249.
+Status: manual smoke log artifact refreshed through issue #369.
 
 ## Scope
 
@@ -33,7 +33,8 @@ Local screenshot/review evidence exists for:
 - Shell Reef balance,
 - Thermal Vent balance,
 - pressure wreck locked/open/cache/Echo Lens pulse,
-- Gulper warning/chase/decoy visual states.
+- Gulper warning/chase/decoy visual states,
+- staged Wreck Echo route and result readback.
 
 Screenshots are local review artifacts under Godot user data and are not committed source files.
 
@@ -45,7 +46,7 @@ Screenshots are local review artifacts under Godot user data and are not committ
 | One upgrade path | Pass with watchlist | Current gameplay docs, upgrade tests, upgrade bay review, and normal-scale upgrade-tab review | Upgrade bay now wraps in a taller panel and has normal-scale evidence; future longer copy still needs guard coverage. |
 | One blocked route | Pass | Pressure wreck/cache review | `LOCKED`/`OPEN` pressure states are distinct and pressure bypass is not added. |
 | One danger route | Pass with watchlist | Gulper route review | Gulper route reads as avoidable danger; decoy HUD/status should be rechecked with upgrade owned. |
-| One optional clue route | Pass with watchlist | Thermal Vent and Shell Reef reviews | Thermal Vent reads optional, Shell Reef reads as a midwater banking landmark. |
+| One optional clue route | Pass with watchlist | Thermal Vent, Shell Reef, Wreck Signal Cache, and Wreck Echo reviews | Thermal Vent reads optional, Shell Reef reads as a midwater banking landmark, and Wreck Echo reads as one later research clue rather than a full biome or objective chain. |
 | Active HUD readability | Pass with watchlist | Active HUD screenshot review, #260 HUD placement fix, and #267 placement regression coverage | Recheck after future HUD changes. |
 | Surface readability | Pass with watchlist | Surface ready/result review, #257 upgrade bay fix, #265 moonpool review, #266 panel opacity, #268 upgrade review, and #269 no-debug sanity review | Surface is acceptable for the current slice, with future visual changes still requiring recheck. |
 | No map/checklist/locator drift | Pass | Echo Lens/local mystery tests and docs | Echo Lens wording now uses local `below the shelf` language. |
@@ -63,13 +64,15 @@ Use this when doing the next actual hands-on acceptance run:
 7. Push far enough to see either pressure lock or predator warning, then return or intentionally fail.
 8. Check the result panel for route/discovery memory and upgrade progress.
 9. Visit the upgrade tab and confirm at least one upgrade path is understandable.
+10. If `Pressure Seal I` and `Echo Lens I` are already owned, optionally stage or attempt the first Wreck Echo pocket and confirm clue recovery adds only one compact extraction `Research:` line.
 
 ## Known Readability Blockers
 
 1. Surface ready/result panels are readable, but the translucent panel lets boat/sub art show behind titles and first lines.
 2. Lower-route pressure/cache/predator area is pass-with-watchlist; continue checking it after each visual change.
-3. `Decoy Pulse I` HUD/status should be rechecked with the upgrade owned.
-4. Upgrade tab wrapping should be rechecked at normal scale after #257.
+3. Wreck Echo is implemented as one optional research clue, but it lives near the lower-route pressure/cache/predator stack and should be rechecked after route or art changes.
+4. `Decoy Pulse I` HUD/status should be rechecked with the upgrade owned.
+5. Upgrade tab wrapping should be rechecked at normal scale after #257.
 
 ## Current Decision
 
@@ -80,3 +83,5 @@ The slice is structurally playable and close to polished acceptance, but it is n
 Update after #301: `docs/planning/VERTICAL_SLICE_ACCEPTANCE_EVIDENCE_BUNDLE_2026_06_26.md` records a compact internal evidence bundle across ready screen, active dive, pickup/scan, return/failure, upgrade view, blocked route, danger route, and optional clue route. It supports continued closeout but keeps the slice pass-with-watchlist until the next formal checklist/status update.
 
 Next work should finish the remaining pass-with-watchlist evidence around Decoy Pulse owned-state HUD/status, result/upgrade text-length guards, condition visuals, and Echo Lens pulse readability before declaring the vertical-slice acceptance gate fully passed.
+
+Update after #369: Playwright visual smoke passed for deterministic surface ready, active dive, extraction result, upgrade tab, lower-route pressure-gate, staged Wreck Echo route, and staged Wreck Echo result-readback views. The first Wreck Echo pocket can stay in the slice as pass-with-watchlist. It should not expand before the active HUD, lower-route pileup, source-art/fallback balance, resource/scan affordances, and result/upgrade copy are rechecked.

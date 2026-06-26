@@ -1,6 +1,6 @@
 # Playable Vertical-Slice Acceptance Checklist - 2026-06-26
 
-Status: formal acceptance checklist, refreshed through issue #340.
+Status: formal acceptance checklist, refreshed through issue #369.
 
 This defines the first playable vertical slice. It is a player-facing quality gate for the current prototype, not a final-game feature list or production-art lock.
 
@@ -57,7 +57,7 @@ The first slice is acceptable when the current prototype can demonstrate these p
 - `Cargo Rack I`: simple capacity expansion without inventory management.
 - `Predator Warning I`: safer predator reading through preparation.
 - `Decoy Pulse I`: one-use non-lethal predator counterplay.
-- Shell Reef, Thermal Vent, pressure wreck, Wreck Signal Cache, and Gulper route all remain identifiable as different kinds of places.
+- Shell Reef, Thermal Vent, pressure wreck, Wreck Signal Cache, the first Wreck Echo pocket, and Gulper route all remain identifiable as different kinds of places.
 
 ## Non-Goals For This Gate
 
@@ -87,6 +87,7 @@ Manual smoke checks for acceptance:
 - Low oxygen: confirm warning urgency rises without hiding base direction.
 - Pressure route: confirm the locked route denies before `Pressure Seal I` and reads open after ownership.
 - Predator route: confirm warning/counterplay reads before contact.
+- Wreck Echo route: with `Pressure Seal I` and `Echo Lens I` owned, confirm the first deeper-right pocket reads as one optional research clue, extraction adds one compact `Research:` line after clue recovery, and no minimap/objective/checklist language appears.
 - Result flow: confirm extracted cargo, scan memory, route choice, upgrade progress, and next-expedition prompt are scannable.
 
 ## Acceptance Summary
@@ -95,9 +96,9 @@ The vertical slice is playable when a tester can complete two short expeditions,
 
 ## Current Acceptance Status
 
-Updated after the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, Wreck Echo planning and handoff, resource/scan, low-oxygen, upgrade, scanner-distinction, durable-progression, clean demo, surface-panel contrast, debug hidden-state, Playwright visual smoke, and MCP context refresh reviews: the current slice is accepted as structurally playable and ready for `Wreck Echo Preparation And Slice Polish`, but not final production polish.
+Updated after the latest compact HUD, pressure shell, lower-route, Decoy/Gulper, first Wreck Echo implementation, Wreck Echo normal-scale review/tuning, resource/scan, low-oxygen, upgrade, scanner-distinction, durable-progression, clean demo, surface-panel contrast, debug hidden-state, Playwright visual smoke, and MCP context refresh reviews: the current slice remains structurally playable after Wreck Echo landed, but it is not final production polish.
 
-It remains pass-with-watchlist because future visual changes can reintroduce lower-route, surface-panel, or HUD confusion, so this status should remain conservative.
+It remains pass-with-watchlist because future visual changes or Wreck Echo expansion can reintroduce lower-route, surface-panel, or HUD confusion, so this status should remain conservative.
 
 This is internal development evidence, not blind validation.
 
@@ -109,10 +110,11 @@ This is internal development evidence, not blind validation.
 | Pickup/scan | Pass with watchlist | Evidence bundle, scanner/resource tests, Signal Lens/Echo Lens review, resource/scan affordance review | New resource/scan source-art is deferred unless future evidence shows concrete confusion. |
 | Return/failure | Pass with watchlist | Clean-save smoke, result memory review, solo first-run result, durable progression/reset review | Maintain the distinction between durable progress and temporary active-dive state. |
 | Upgrade view | Pass with watchlist | Upgrade bay review, Up/Down affordance tune, normal-scale affordance review, evidence bundle | Recheck if more upgrades are added or copy grows longer. |
-| Blocked route | Pass with watchlist | Pressure wreck/cache reviews, pressure shell normal-scale review, lower-route shell recheck, evidence bundle | `Wreck Echo Descent` remains deferred until a separate implementation issue proves route readiness. |
+| Blocked route | Pass with watchlist | Pressure wreck/cache reviews, pressure shell normal-scale review, lower-route shell recheck, evidence bundle | Pressure gate/cache remain readable, but lower-route density must be rechecked after route/art changes. |
 | Danger route | Pass with watchlist | Gulper route danger review, Decoy Pulse smoke, Decoy/Gulper follow-up reviews, evidence bundle | Preserve mistimed-contact risk and avoid combat/capture/loot framing. |
 | Optional clue route | Pass with watchlist | Thermal Vent, Shell Reef, Wreck Signal Cache, condition visuals, and evidence bundle | Keep condition visuals and mystery signals presentation-first. |
 | No locator/checklist drift | Pass | Echo Lens pulse recheck, Signal/Echo distinction review, no-locator tests/docs | Recheck if Wreck Echo route or scanner copy changes. |
+| Wreck Echo state | Pass with watchlist | Wreck Echo route readability review, first tuning pass, Playwright staged route/result smoke, logic tests | Keep as one optional run-scoped research clue; do not expand into map, quest, durable collection, combat, or broad biome scope without new evidence. |
 
 Accepted or cleared:
 
@@ -128,7 +130,8 @@ Accepted or cleared:
 - Echo Lens cache pulse local/no-locator recheck,
 - result and upgrade text-length guard coverage.
 - solo first-run clean-save checklist result,
-- compact acceptance evidence bundle.
+- compact acceptance evidence bundle,
+- Wreck Echo staged route/result Playwright smoke after the first implementation and tuning pass.
 
 Remaining before declaring the gate fully polished:
 
@@ -136,14 +139,14 @@ Remaining before declaring the gate fully polished:
 
 Deferred:
 
-- future `Wreck Echo Descent` implementation,
+- broad `Wreck Echo Descent` expansion beyond the first pocket,
 - larger biome set,
 - broad economy, audio, web export, base-management, and production-art polish.
 
 Handoff status:
 
-- `docs/planning/POST_CLOSEOUT_WRECK_ECHO_HANDOFF_STATUS_2026_06_26.md` confirms the handoff into Wreck Echo preparation while keeping the current slice pass-with-watchlist.
-- Future Wreck Echo work remains narrow: one deeper-right route pocket, one compact research clue, no locator/checklist/minimap/field-guide/combat/broad-biome scope, and required normal-scale evidence before runtime implementation can close.
+- `docs/planning/POST_CLOSEOUT_WRECK_ECHO_HANDOFF_STATUS_2026_06_26.md` remains the historical handoff into Wreck Echo preparation, while `docs/planning/WRECK_ECHO_ROUTE_READABILITY_REVIEW_2026_06_26.md` and the first tuning pass keep the implemented route pass-with-watchlist.
+- Future Wreck Echo work remains narrow: the current build has one deeper-right route pocket and one compact research clue; any expansion still needs no locator/checklist/minimap/field-guide/combat/broad-biome scope and required normal-scale evidence before it closes.
 
 Out of scope for this gate:
 
