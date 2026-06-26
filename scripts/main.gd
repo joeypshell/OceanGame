@@ -40,6 +40,12 @@ const SURFACE_TAB_RESULT := 0
 const SURFACE_TAB_UPGRADES := 1
 const SURFACE_TAB_LOG := 2
 const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
+const RUN_PANEL_COMPACT_RECT := Rect2(Vector2(420.0, 32.0), Vector2(452.0, 330.0))
+const RUN_PANEL_TALL_RECT := Rect2(Vector2(44.0, 32.0), Vector2(806.0, 640.0))
+const RUN_SUMMARY_COMPACT_BOTTOM := 314.0
+const RUN_SUMMARY_TALL_BOTTOM := 624.0
+const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
+const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
 const DIVE_STATUS_MAX_CHARS := 76
 const ECHO_LENS_PULSE_DURATION := 1.2
 
@@ -1041,6 +1047,8 @@ func _surface_hud_visible_for_result(result: int) -> bool:
 	return result != DiveSessionScript.Result.DIVING
 
 func _update_run_panel() -> void:
+	var use_compact_panel := dive_session.result == DiveSessionScript.Result.EXTRACTED and surface_tab_index == SURFACE_TAB_UPGRADES
+	_apply_run_panel_layout(use_compact_panel)
 	surface_tabs_label.visible = _surface_tabs_enabled()
 	surface_tabs_label.text = _format_surface_tabs() if surface_tabs_label.visible else ""
 	if dive_session.result == DiveSessionScript.Result.READY:
@@ -1071,6 +1079,19 @@ func _update_run_panel() -> void:
 			run_summary_label.text = _format_run_summary(last_result_summary, "failed")
 	else:
 		run_panel.visible = false
+
+func _apply_run_panel_layout(use_compact_panel: bool) -> void:
+	var rect := RUN_PANEL_COMPACT_RECT if use_compact_panel else RUN_PANEL_TALL_RECT
+	run_panel.offset_left = rect.position.x
+	run_panel.offset_top = rect.position.y
+	run_panel.offset_right = rect.position.x + rect.size.x
+	run_panel.offset_bottom = rect.position.y + rect.size.y
+
+	var content_right := RUN_PANEL_CONTENT_RIGHT_COMPACT if use_compact_panel else RUN_PANEL_CONTENT_RIGHT_TALL
+	surface_tabs_label.offset_right = content_right
+	run_title_label.offset_right = content_right
+	run_summary_label.offset_right = content_right
+	run_summary_label.offset_bottom = RUN_SUMMARY_COMPACT_BOTTOM if use_compact_panel else RUN_SUMMARY_TALL_BOTTOM
 
 func _update_upgrade_menu() -> void:
 	upgrade_panel.visible = dive_session.result == DiveSessionScript.Result.EXTRACTED and surface_tab_index == SURFACE_TAB_UPGRADES

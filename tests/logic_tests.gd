@@ -1090,6 +1090,7 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 	var main_scene := MainScene.instantiate()
 	root.add_child(main_scene)
 	for label_path in [
+		"HUD/RunPanel/RunSummary",
 		"HUD/UpgradePanel/UpgradeMenuItem",
 		"HUD/UpgradePanel/UpgradeMenuCost",
 		"HUD/UpgradePanel/UpgradeMenuState",
@@ -1097,6 +1098,19 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 	]:
 		var label: Label = main_scene.get_node(label_path)
 		_expect(label.autowrap_mode != TextServer.AUTOWRAP_OFF, "%s should keep wrapping enabled" % label_path)
+	var run_panel: Panel = main_scene.get_node("HUD/RunPanel")
+	var run_summary_label: Label = main_scene.get_node("HUD/RunPanel/RunSummary")
+	main_scene.run_panel = run_panel
+	main_scene.surface_tabs_label = main_scene.get_node("HUD/RunPanel/SurfaceTabs")
+	main_scene.run_title_label = main_scene.get_node("HUD/RunPanel/RunTitle")
+	main_scene.run_summary_label = run_summary_label
+	main_scene.call("_apply_run_panel_layout", false)
+	_expect(run_panel.offset_left == 44.0 and run_panel.offset_right == 850.0, "result surface panel should use the wide layout")
+	_expect(run_panel.offset_bottom >= 672.0, "result surface panel should be tall enough to contain result copy")
+	_expect(run_summary_label.offset_bottom <= run_panel.offset_bottom - run_panel.offset_top, "result summary label should stay inside the run panel")
+	_expect(run_summary_label.clip_text, "result summary label should clip instead of drawing outside the panel")
+	main_scene.call("_apply_run_panel_layout", true)
+	_expect(run_panel.offset_left == 420.0 and run_panel.offset_bottom == 362.0, "upgrade surface tab should keep compact run panel above the upgrade details")
 	main_scene.queue_free()
 	main.free()
 

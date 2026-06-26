@@ -1323,32 +1323,34 @@ offset_bottom = 508.0
 text = "Recent Expeditions\nNone yet."
 
 [node name="RunPanel" type="Panel" parent="HUD"]
-offset_left = 420.0
+offset_left = 44.0
 offset_top = 32.0
-offset_right = 872.0
-offset_bottom = 362.0
+offset_right = 850.0
+offset_bottom = 672.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_surface_panel")
 
 [node name="SurfaceTabs" type="Label" parent="HUD/RunPanel"]
 offset_left = 16.0
 offset_top = 12.0
-offset_right = 442.0
+offset_right = 790.0
 offset_bottom = 36.0
 text = "[Result]  Upgrades  Log"
 
 [node name="RunTitle" type="Label" parent="HUD/RunPanel"]
 offset_left = 16.0
 offset_top = 42.0
-offset_right = 442.0
+offset_right = 790.0
 offset_bottom = 74.0
 text = "Expedition Ready"
 
 [node name="RunSummary" type="Label" parent="HUD/RunPanel"]
 offset_left = 16.0
 offset_top = 80.0
-offset_right = 442.0
-offset_bottom = 314.0
+offset_right = 790.0
+offset_bottom = 624.0
 text = "Press E or Enter to begin."
+autowrap_mode = 2
+clip_text = true
 
 [node name="UpgradePanel" type="Panel" parent="HUD"]
 visible = false
