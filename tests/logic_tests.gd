@@ -393,6 +393,11 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	for path in required_paths:
 		_expect(main.get_node_or_null(path) != null, "main scene should keep sprite-ready slot or behavior node: %s" % path)
 
+	var glow_sprite := main.get_node("ResourcePickups/GlowPlankton/SpriteAnchor/Sprite") as Sprite2D
+	var glow_fallback := main.get_node("ResourcePickups/GlowPlankton/FallbackVisual") as Node2D
+	_expect(glow_sprite.texture != null, "Glow Plankton should use the first exported source asset sprite")
+	_expect(not glow_fallback.visible, "Glow Plankton polygon fallback should be hidden while the sprite asset is active")
+
 	main.free()
 
 func _test_predator_scan_target() -> void:

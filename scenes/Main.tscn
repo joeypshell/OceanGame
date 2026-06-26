@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=16 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://scripts/spawn_point.gd" id="9_spawn_point"]
 [ext_resource type="Script" path="res://scripts/landmark_metadata.gd" id="10_landmark_metadata"]
 [ext_resource type="Texture2D" path="res://assets/sprites/base/research_boat_clean.png" id="11_research_boat"]
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/resource_glow_plankton_sprite_v1.svg" id="12_glow_plankton_sprite"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -981,8 +982,11 @@ definition = ExtResource("6_glow_plankton")
 [node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/GlowPlankton"]
 
 [node name="Sprite" type="Sprite2D" parent="ResourcePickups/GlowPlankton/SpriteAnchor"]
+scale = Vector2(0.78, 0.78)
+texture = ExtResource("12_glow_plankton_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="ResourcePickups/GlowPlankton"]
+visible = false
 
 [node name="Visual" type="Polygon2D" parent="ResourcePickups/GlowPlankton/FallbackVisual"]
 color = Color(0.82, 1, 0.28, 0.64)
@@ -1009,8 +1013,11 @@ definition = ExtResource("6_glow_plankton")
 [node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/HiddenGlowPlankton"]
 
 [node name="Sprite" type="Sprite2D" parent="ResourcePickups/HiddenGlowPlankton/SpriteAnchor"]
+scale = Vector2(0.78, 0.78)
+texture = ExtResource("12_glow_plankton_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="ResourcePickups/HiddenGlowPlankton"]
+visible = false
 
 [node name="Visual" type="Polygon2D" parent="ResourcePickups/HiddenGlowPlankton/FallbackVisual"]
 color = Color(0.82, 1, 0.28, 0.64)
@@ -1035,8 +1042,11 @@ definition = ExtResource("6_glow_plankton")
 [node name="SpriteAnchor" type="Node2D" parent="ResourcePickups/DeepGlowPlankton"]
 
 [node name="Sprite" type="Sprite2D" parent="ResourcePickups/DeepGlowPlankton/SpriteAnchor"]
+scale = Vector2(0.78, 0.78)
+texture = ExtResource("12_glow_plankton_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="ResourcePickups/DeepGlowPlankton"]
+visible = false
 
 [node name="Visual" type="Polygon2D" parent="ResourcePickups/DeepGlowPlankton/FallbackVisual"]
 color = Color(0.82, 1, 0.28, 0.64)

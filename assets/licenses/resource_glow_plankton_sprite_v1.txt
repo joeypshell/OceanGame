@@ -1,0 +1,10 @@
+Asset path: assets/exports/sprites/resource_glow_plankton_sprite_v1.svg
+Source path: assets/source/sprites/resource_glow_plankton_sprite_v1.svg
+Creator or tool: OpenAI Codex, original vector authored for OceanGame
+License or usage basis: Project-owned prototype asset
+Source URL: none
+Date added: 2026-06-26
+Prompt summary, if generated: none; authored as SVG code
+Edited after generation: n/a
+Intended use: prototype gameplay sprite for Glow Plankton resource pickups
+Restrictions: Keep provenance with the asset if reused or replaced.
