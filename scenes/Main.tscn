@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=22 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" path="res://scenes/resources/ShellFragmentsVisual.tscn" id="15_shell_fragments_visual"]
 [ext_resource type="PackedScene" path="res://scenes/readability/ThermalVentPocketVisuals.tscn" id="16_thermal_vent_pocket_visuals"]
 [ext_resource type="PackedScene" path="res://scenes/readability/ShellReefPocketVisuals.tscn" id="17_shell_reef_pocket_visuals"]
+[ext_resource type="Texture2D" path="res://assets/exports/sprites/creature_lantern_fry_sprite_v1.svg" id="18_lantern_fry_sprite"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -861,6 +862,7 @@ move_speed = 48.0
 [node name="SpriteAnchor" type="Node2D" parent="Creatures/LanternFry"]
 
 [node name="Sprite" type="Sprite2D" parent="Creatures/LanternFry/SpriteAnchor"]
+texture = ExtResource("18_lantern_fry_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="Creatures/LanternFry"]
 
@@ -869,6 +871,7 @@ color = Color(0.95, 1, 0.7, 0.2)
 polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="Visual" type="Polygon2D" parent="Creatures/LanternFry/FallbackVisual"]
+visible = false
 color = Color(0.96, 0.95, 0.38, 1)
 polygon = PackedVector2Array(-34, 0, -10, -18, 24, -12, 42, 0, 24, 12, -10, 18)
 

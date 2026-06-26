@@ -114,6 +114,7 @@ const DIVE_STATUS_MAX_CHARS := 92
 @onready var thermal_vent_bubbles: Polygon2D = $Discoveries/ThermalVent/FallbackVisual/Bubbles
 @onready var glow_plankton_visual: Node2D = $ResourcePickups/GlowPlankton/Visuals/SpriteAnchor
 @onready var hidden_glow_plankton: Node = $ResourcePickups/HiddenGlowPlankton
+@onready var lantern_fry_sprite_anchor: Node2D = $Creatures/LanternFry/SpriteAnchor
 @onready var lantern_fry_visual_root: Node2D = $Creatures/LanternFry/FallbackVisual
 @onready var lantern_fry_glow: Polygon2D = $Creatures/LanternFry/FallbackVisual/Glow
 @onready var vent_route_hint: Node2D = $VentRouteHint
@@ -742,6 +743,8 @@ func _update_lantern_fry_idle() -> void:
 	var pulse := 0.5 + 0.5 * sin(Time.get_ticks_msec() / 360.0)
 	var bob := sin(Time.get_ticks_msec() / 520.0) * 3.0
 	var visual_scale := 1.0 + pulse * 0.08
+	lantern_fry_sprite_anchor.position.y = bob
+	lantern_fry_sprite_anchor.scale = Vector2(visual_scale, visual_scale)
 	lantern_fry_visual_root.position.y = bob
 	lantern_fry_visual_root.scale = Vector2(visual_scale, visual_scale)
 	lantern_fry_glow.color = Color(0.7, 1.0, 0.35, 0.18 + pulse * 0.18)

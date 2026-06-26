@@ -442,6 +442,13 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	_expect(shell_sprite.texture != null, "Shell Fragments should use the first exported source asset sprite")
 	_expect(not shell_fallback.visible, "Shell Fragments polygon fallback should be hidden while the sprite asset is active")
 
+	var lantern_sprite := main.get_node("Creatures/LanternFry/SpriteAnchor/Sprite") as Sprite2D
+	var lantern_body_fallback := main.get_node("Creatures/LanternFry/FallbackVisual/Visual") as Polygon2D
+	var lantern_glow_fallback := main.get_node("Creatures/LanternFry/FallbackVisual/Glow") as Polygon2D
+	_expect(lantern_sprite.texture != null, "Lantern Fry should use the first exported source asset sprite")
+	_expect(not lantern_body_fallback.visible, "Lantern Fry body polygon should be hidden while the sprite asset is active")
+	_expect(lantern_glow_fallback.visible, "Lantern Fry glow fallback should remain available for visual-only idle pulsing")
+
 	main.free()
 
 	var player := PlayerScene.instantiate()
