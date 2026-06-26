@@ -6,6 +6,8 @@ Latest slot review: `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md` audit
 
 Latest source-art priority: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_EVIDENCE_2026_06_26.md` selects a narrow Wreck Echo clue-marker/source-art separation pass after the first route implementation and evidence refresh. Compact HUD skin remains useful later, but the post-implementation HUD review found no immediate prompt/layout change needed; the current sharper risk is separating the Wreck Echo clue from lower-route reward, predator, and pressure/cache cues.
 
+Latest source-art balance review: `docs/planning/WRECK_ECHO_SOURCE_ART_FALLBACK_BALANCE_REVIEW_2026_06_26.md` keeps the Wreck Echo clue marker as pass-with-watchlist. The marker is clearer than the fallback core/ring alone, while the lower-route stack remains visually dense enough to warrant the already-open pileup and resource/scan reviews.
+
 ## Current Visual Inventory
 
 Current runtime visuals are mostly simple Godot nodes:
