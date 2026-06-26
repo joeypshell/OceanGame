@@ -1053,15 +1053,21 @@ move_start = Vector2(720, 1510)
 move_end = Vector2(940, 1510)
 move_speed = 48.0
 
+[node name="SpriteAnchor" type="Node2D" parent="Creatures/LanternFry"]
+
+[node name="Sprite" type="Sprite2D" parent="Creatures/LanternFry/SpriteAnchor"]
+
+[node name="FallbackVisual" type="Node2D" parent="Creatures/LanternFry"]
+
 [node name="ScanMarker" type="Polygon2D" parent="Creatures/LanternFry"]
 color = Color(0.95, 1, 0.7, 0.2)
 polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
-[node name="Visual" type="Polygon2D" parent="Creatures/LanternFry"]
+[node name="Visual" type="Polygon2D" parent="Creatures/LanternFry/FallbackVisual"]
 color = Color(0.96, 0.95, 0.38, 1)
 polygon = PackedVector2Array(-34, 0, -10, -18, 24, -12, 42, 0, 24, 12, -10, 18)
 
-[node name="Glow" type="Polygon2D" parent="Creatures/LanternFry"]
+[node name="Glow" type="Polygon2D" parent="Creatures/LanternFry/FallbackVisual"]
 color = Color(0.7, 1, 0.35, 0.24)
 polygon = PackedVector2Array(-46, 0, -18, -30, 30, -22, 58, 0, 30, 22, -18, 30)
 
