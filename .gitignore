@@ -4,8 +4,8 @@
 *.import
 
 # Exported builds and local release output
-builds/
-exports/
+/builds/
+/exports/
 
 # OS/editor noise
 .DS_Store

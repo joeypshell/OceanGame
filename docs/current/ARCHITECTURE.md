@@ -148,6 +148,8 @@ OceanGame should adopt a two-stage asset process:
 
 Final art should replace readable prototypes, not redefine the gameplay state model.
 
+Committed asset source conventions live under `assets/`: `assets/source/` for editable source files and prompts, `assets/exports/` for runtime-ready committed art used by the Godot project, and `assets/licenses/` for attribution/provenance notes. Godot caches, `.import` metadata, local screenshots, and platform builds stay out of source control.
+
 ## State-Management Guardrails
 
 - Do not let visual effects mutate durable progression directly.
