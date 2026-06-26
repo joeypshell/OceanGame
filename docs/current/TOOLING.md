@@ -46,6 +46,7 @@ Resources:
 - `oceangame://surface-ui-layout-pass`
 - `oceangame://visual-language-readability-assets`
 - `oceangame://resource-economy-tuning-i`
+- `oceangame://thermal-vent-route-review-2026-06-25`
 - `oceangame://backlog-replenishment-thermal-vent-decoy`
 - `oceangame://backlog-replenishment-after-shell-reef`
 - `oceangame://backlog-replenishment-2026-06-25`

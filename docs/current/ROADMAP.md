@@ -42,35 +42,31 @@ Optional local Godot editor MCP policy lives in `docs/current/GODOT_MCP.md`.
 
 Thermal Vent And Predator Countermeasure.
 
-Goal: add one more authored route pocket around the existing `Thermal Vent`, then add the first narrow non-lethal `Gulper Eel` countermeasure without broadening into procedural biomes, weapons, or a tool-wheel system.
+Status: completed by #92-#101. Replenish the backlog before continuing issue-driven implementation.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, an authored and reviewed `Shell Reef` route pocket, a selected `Thermal Vent Pocket` candidate for `Biome Pocket II`, a first economy review recommending no immediate cost changes, first-pass visual/readability assets, and a `Decoy Pulse I` candidate for the first true non-lethal predator countermeasure. The next milestone should turn those planning candidates into small, testable gameplay slices.
+Goal completed: added one more authored route pocket around the existing `Thermal Vent`, then added the first narrow non-lethal `Gulper Eel` countermeasure without broadening into procedural biomes, weapons, or a tool-wheel system.
 
-Latest route review: `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md` recommends a narrow #96 readability tuning pass for scan-revealed `VentRouteHint` language or opacity, without changing placement, resource counts, costs, or mechanics.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, surface result memory, compact surface views, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a first economy review recommending no immediate cost changes, first-pass visual/readability assets, and `Decoy Pulse I` as the first true non-lethal predator countermeasure.
+
+Latest route review: `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md` led to the completed #96 readability tuning pass for scan-revealed `VentRouteHint` language and opacity, without changing placement, resource counts, costs, or mechanics.
 
 ## Immediate Issue Order
 
 Tooling track:
 
-- #101 `Update MCP context and roadmap after vent and decoy planning batch`
+No active tooling issues are currently queued.
 
 Gameplay and validation track:
 
-- #92 `Add Thermal Vent pocket route variation`
-- #93 `Add Thermal Vent pocket scan/result clarity pass`
-- #94 `Add typed Thermal Vent pocket placement candidates`
-- #95 `Run Thermal Vent pocket five-seed route review`
-- #96 `Tune Thermal Vent pocket readability after route review`
+No active gameplay validation issues are currently queued.
 
 Technical support track:
 
-- #100 `Add Decoy Pulse I tests and docs coverage`
+No active technical support issues are currently queued.
 
 Later design and demo-readiness issues:
 
-- #97 `Add Decoy Pulse I upgrade definition and purchase gate`
-- #98 `Implement Decoy Pulse I predator distraction behavior`
-- #99 `Add Decoy Pulse I feedback, cooldown, and HUD status`
+No active design or demo-readiness issues are currently queued.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, predator harvesting, full procedural biomes, large art sets, oxygen refills, or new resource systems during this milestone.
 
@@ -101,12 +97,20 @@ Technical implementation alone is not sufficient.
 
 Choose from these candidates rather than starting all of them:
 
-1. `Thermal Vent Pocket` implementation and review (#92-#96).
-2. `Decoy Pulse I` upgrade/countermeasure implementation (#97-#100).
-3. MCP/roadmap synchronization after the batch changes (#101).
+No active progression candidates are currently queued. Replenish the backlog before continuing issue-driven work.
 
 Recently completed:
 
+- #101 updated MCP context resources and roadmap status after the Thermal Vent and Decoy Pulse batch.
+- #100 added explicit Decoy Pulse non-lethal/isolation test and docs coverage.
+- #99 added Decoy Pulse prompt/status feedback and temporary predator hint color.
+- #98 implemented one-use-per-expedition Decoy Pulse behavior through `Gulper Eel` re-scan.
+- #97 added `Decoy Pulse I` as a data-backed upgrade gated by `Gulper Eel` discovery and `Predator Warning I`.
+- #96 tuned the scan-revealed Thermal Vent route hint to read as optional rather than a hard objective arrow.
+- #95 recorded the Thermal Vent five-seed route review in `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`.
+- #94 added typed vent-adjacent `Glow Plankton` placement candidates without increasing active pickup count.
+- #93 clarified Thermal Vent scan/result language around optional glow temptation, pressure-seal knowledge, and safe return.
+- #92 added the authored Thermal Vent pocket route variation.
 - #91 documented optional local Godot AI MCP setup policy and distinguished it from the repo-local read-only OceanGame context MCP server.
 - #90 added a first depth-band and landmark readability pass with transition bands, safe-return ribs, and Shell Reef landmark wash.
 - #89 added a consistent pale diamond marker rule for non-resource scan targets while preserving resource pickup readability and scan behavior.
@@ -130,6 +134,12 @@ Recently completed:
 - #71 added compact surface summary tabs so post-extraction `Result`, `Upgrades`, and `Log` views stay readable as the surface HUD grows.
 
 ## Latest Completed Milestone
+
+Thermal Vent And Predator Countermeasure.
+
+Goal completed: the prototype now has an authored Thermal Vent pocket, vent scan/result clarity, typed vent-adjacent Glow Plankton candidates, a five-seed route review, tuned optional-current readability, and `Decoy Pulse I` as a gated one-use non-lethal predator countermeasure with HUD/status feedback and focused tests.
+
+Previous completed milestone:
 
 Scanner And Cargo Progression.
 

@@ -34,6 +34,7 @@ const resources = [
   ["oceangame://surface-ui-layout-pass", "docs/planning/SURFACE_UI_LAYOUT_PASS.md", "Surface UI layout pass"],
   ["oceangame://visual-language-readability-assets", "docs/planning/VISUAL_LANGUAGE_READABILITY_ASSETS.md", "Visual language readability assets"],
   ["oceangame://resource-economy-tuning-i", "docs/planning/RESOURCE_ECONOMY_TUNING_I.md", "Resource Economy Tuning I plan"],
+  ["oceangame://thermal-vent-route-review-2026-06-25", "docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md", "Thermal Vent five-seed review"],
   ["oceangame://backlog-replenishment-thermal-vent-decoy", "docs/planning/BACKLOG_REPLENISHMENT_THERMAL_VENT_DECOY_2026_06_25.md", "Thermal Vent and Decoy backlog replenishment"],
   ["oceangame://backlog-replenishment-after-shell-reef", "docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md", "Post-Shell-Reef backlog replenishment"],
   ["oceangame://backlog-replenishment-2026-06-25", "docs/planning/BACKLOG_REPLENISHMENT_2026_06_25.md", "Backlog replenishment"],
@@ -140,6 +141,7 @@ function selfTest() {
     "oceangame://roadmap",
     "oceangame://expedition-goal-ii",
     "oceangame://backlog-replenishment-after-shell-reef",
+    "oceangame://thermal-vent-route-review-2026-06-25",
     "oceangame://project-status",
   ];
   if (
