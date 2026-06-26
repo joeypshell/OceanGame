@@ -8,4 +8,4 @@ Good first candidates:
 - `resource_kelp_fiber_sprite_v1`
 - `resource_shell_fragments_sprite_v1`
 - `creature_gulper_silhouette_v1`
-
+- `study_pressure_wreck_cache_signal_v1`

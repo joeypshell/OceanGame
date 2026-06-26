@@ -338,6 +338,23 @@ Explicit non-goals:
 
 - No weapons.
 - No predator health, loot, harvest, stun, capture, or route removal.
+
+### Pressure Wreck / Cache Visual Study
+
+Current study asset: `assets/source/sprites/study_pressure_wreck_cache_signal_v1.svg`
+Runtime export: `assets/exports/sprites/study_pressure_wreck_cache_signal_v1.svg`
+Provenance: `assets/licenses/study_pressure_wreck_cache_signal_v1.txt`
+
+Status: prototype-only visual study, not wired into `Main.tscn`.
+
+Intent: explore a compact broken-hull plus cold signal-glow read for the Wreck Echo spine. The study should inform a future pressure-wreck or cache sprite pass without changing the current pressure gate, cache scan target, boundary denial, Echo Lens planning copy, route layout, or hidden objective behavior.
+
+Non-goals:
+
+- No new route or map marker.
+- No exact deeper-signal coordinates.
+- No replacement of the current pressure gate/cache scene nodes.
+- No production-art approval until a later visual review issue.
 - No new predator species.
 
 ### 5. Add player-facing UI skin and debug UI toggle

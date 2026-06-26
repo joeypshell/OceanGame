@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="112" viewBox="0 0 160 112">
+  <defs>
+    <linearGradient id="hull" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#21364a"/>
+      <stop offset="55%" stop-color="#0d1724"/>
+      <stop offset="100%" stop-color="#050910"/>
+    </linearGradient>
+    <radialGradient id="signal" cx="64%" cy="53%" r="48%">
+      <stop offset="0%" stop-color="#e9ff76" stop-opacity="0.9"/>
+      <stop offset="48%" stop-color="#63fff2" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#2cc8ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="signalBlur" x="-30%" y="-45%" width="160%" height="190%">
+      <feGaussianBlur stdDeviation="3.2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <path d="M14 74 L42 38 L96 28 L144 54 L124 84 L58 92 Z" fill="url(#hull)"/>
+  <path d="M28 72 L52 48 L94 43 L128 58 L116 75 L62 82 Z" fill="#15283a"/>
+  <path d="M42 38 L58 18 L91 29 Z" fill="#2d4c62" opacity="0.72"/>
+  <path d="M96 28 L132 34 L144 54 Z" fill="#1f3446" opacity="0.82"/>
+  <path d="M58 92 L71 74 L113 77 L124 84 Z" fill="#050810" opacity="0.64"/>
+  <ellipse cx="96" cy="62" rx="42" ry="30" fill="url(#signal)" filter="url(#signalBlur)"/>
+  <path d="M78 53 L105 50 L119 61 L102 73 L76 70 L66 61 Z" fill="#dfff58" opacity="0.82"/>
+  <path d="M84 58 L101 56 L111 62 L100 68 L82 66 L75 61 Z" fill="#fff6a6" opacity="0.78"/>
+  <path d="M35 60 L62 54 L58 62 L33 68 Z" fill="#62dfff" opacity="0.28"/>
+  <path d="M114 47 L142 40 L134 50 L120 55 Z" fill="#62dfff" opacity="0.2"/>
+  <path d="M82 32 L91 26 L98 31 L90 38 Z" fill="#65f7ff" opacity="0.36"/>
+  <path d="M104 82 L116 76 L126 82 L114 90 Z" fill="#65f7ff" opacity="0.3"/>
+  <path d="M18 76 L6 90 M42 88 L30 104 M132 82 L150 96" stroke="#33536a" stroke-width="4" stroke-linecap="round" opacity="0.42"/>
+</svg>
