@@ -111,6 +111,7 @@ Detailed design rules live in:
 - `docs/planning/LOWER_ROUTE_RECHECK_AFTER_PRESSURE_SHELL_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_RECHECK_AFTER_BACKGROUND_STUDY_2026_06_26.md`
 - `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md`
+- `docs/planning/PRESSURE_SHELL_PROVENANCE_CHECKLIST_REVIEW_2026_06_26.md`
 - `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md`
 - `docs/planning/COMPACT_HUD_FINAL_NORMAL_SCALE_REVIEW_2026_06_26.md`
 - `docs/planning/ACTIVE_HUD_LOW_OXYGEN_REVIEW_AFTER_PROMPT_TUNE_2026_06_26.md`
@@ -245,6 +246,8 @@ Lower-route recheck after pressure shell: `docs/planning/LOWER_ROUTE_RECHECK_AFT
 Lower-route recheck after background study: `docs/planning/LOWER_ROUTE_RECHECK_AFTER_BACKGROUND_STUDY_2026_06_26.md` keeps the lower route as pass-with-watchlist after the shallow/midwater background wiring. The background does not add new shape pileup; remaining risks stay with pressure/cache, reward lure, predator lane, and HUD-state intersections.
 
 Source-art provenance checklist: `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md` defines reusable source/export/provenance, licensing, scene-wiring, fallback, and verification checks for future sprite batches. It is documentation-only and does not add runtime assets by itself.
+
+Pressure shell provenance checklist review: `docs/planning/PRESSURE_SHELL_PROVENANCE_CHECKLIST_REVIEW_2026_06_26.md` confirms the pressure wreck/cache shell pass has source, export, provenance, licensing basis, scene wiring, fallback treatment, and verification evidence. No missing provenance or export-regeneration blocker was found.
 
 Compact HUD final polish plan: `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md` keeps the next HUD pass focused on existing oxygen, depth, base direction, cargo slots, scan target, prompt/status, warning panel, and debug telemetry gating. It explicitly avoids minimap, inventory grid, objective checklist, field-guide UI, route graph, exact locator, and active-dive upgrade/log surfaces.
 
