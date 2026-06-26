@@ -124,6 +124,7 @@ Detailed design rules live in:
 - `docs/planning/COMPACT_HUD_FINAL_NORMAL_SCALE_REVIEW_2026_06_26.md`
 - `docs/planning/ACTIVE_HUD_LOW_OXYGEN_REVIEW_AFTER_PROMPT_TUNE_2026_06_26.md`
 - `docs/planning/WRECK_ECHO_ACTIVE_HUD_COMPACTNESS_REVIEW_2026_06_26.md`
+- `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_EVIDENCE_2026_06_26.md`
 - `docs/planning/UPGRADE_BAY_NORMAL_SCALE_AFFORDANCE_REVIEW_AFTER_COPY_TUNE_2026_06_26.md`
 - `docs/planning/SCANNER_FEEDBACK_SIGNAL_VS_ECHO_REVIEW_2026_06_26.md`
 - `docs/planning/NEXT_MONSTER_RESEARCH_READABILITY_MILESTONE_2026_06_26.md`
@@ -249,7 +250,7 @@ Wreck Echo test coverage plan: `docs/planning/WRECK_ECHO_TEST_COVERAGE_PLAN_2026
 
 Wreck Echo research clue ownership: `docs/planning/WRECK_ECHO_RESEARCH_CLUE_OWNERSHIP_2026_06_26.md` is implemented for the first pocket: the clue is run-scoped result memory. Durable progression should only be added by a later explicit issue if result-only memory proves insufficient or a future feature needs persistence.
 
-Next source-art after Wreck Echo prep: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_PREP_2026_06_26.md` selects compact HUD skin and icon/frame polish as the next source-art target. Additional pressure shell art, Wreck Echo route-marker art, and resource/scan marker art are deferred unless future evidence or an authorized implementation issue reopens them.
+Next source-art after Wreck Echo prep: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_PREP_2026_06_26.md` historically selected compact HUD skin while the route was still planning-only. That decision is superseded for the immediate next pass by `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_EVIDENCE_2026_06_26.md`, which reopens only a narrow Wreck Echo clue-marker/source-art separation pass based on post-implementation evidence.
 
 Wreck Echo return/failure language: `docs/planning/WRECK_ECHO_RETURN_FAILURE_LANGUAGE_2026_06_26.md` guided the implemented extraction-only result line. Successful clue recovery adds one compact `Research:` line, no-clue returns stay normal, and oxygen failure adds no special Wreck Echo punishment beyond existing run-state loss.
 
@@ -400,6 +401,8 @@ Wreck Echo first tuning pass: issue #367 moves the one Wreck Echo pocket slightl
 Wreck Echo acceptance evidence refresh: issue #369 keeps the vertical slice structurally playable and pass-with-watchlist after the first Wreck Echo pass. Playwright visual smoke covers the deterministic ready/active/result/upgrade/lower-route views plus staged Wreck Echo route/result readback. The next risk is not whether Wreck Echo exists; it is whether active HUD compactness, source-art/fallback balance, lower-route density, resource/scan affordances, and result/upgrade copy stay readable after the new route.
 
 Wreck Echo active HUD compactness review: `docs/planning/WRECK_ECHO_ACTIVE_HUD_COMPACTNESS_REVIEW_2026_06_26.md` records #371 as pass-with-watchlist. Wreck Echo adds no prompt segment, uses one compact status line for clue recovery, leaves oxygen/base/scan surfaces intact, and moves research readback to the extraction result panel. No HUD layout or copy change is needed before source-art and lower-route follow-up reviews.
+
+Next source-art target after Wreck Echo evidence: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_EVIDENCE_2026_06_26.md` selects a narrow Wreck Echo clue-marker/source-art separation pass for #373, with non-resource scan marker polish as backup. The choice is based on post-implementation evidence: the HUD is compact enough for now, while the Wreck Echo clue still shares lower-route visual space with reward, predator, and pressure/cache cues. The pass must preserve existing gameplay and no-locator/no-checklist guardrails.
 
 ## Vertical-Slice Acceptance Status
 

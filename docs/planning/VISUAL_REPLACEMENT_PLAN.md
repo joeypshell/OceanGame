@@ -4,7 +4,7 @@ Status: integration plan for moving from placeholder visuals toward a polished O
 
 Latest slot review: `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md` audits the current player, surface base, resource, creature, landmark, pressure-wreck, and cache visual slots after recent extraction work.
 
-Latest source-art priority: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_PREP_2026_06_26.md` selects compact HUD skin and icon/frame polish as the next source-art target after Wreck Echo preparation planning. Wreck Echo route-marker art remains deferred until route implementation is explicitly authorized.
+Latest source-art priority: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_EVIDENCE_2026_06_26.md` selects a narrow Wreck Echo clue-marker/source-art separation pass after the first route implementation and evidence refresh. Compact HUD skin remains useful later, but the post-implementation HUD review found no immediate prompt/layout change needed; the current sharper risk is separating the Wreck Echo clue from lower-route reward, predator, and pressure/cache cues.
 
 ## Current Visual Inventory
 
