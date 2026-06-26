@@ -390,6 +390,8 @@ Future dive-level scale update: `docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026
 
 Latest backlog refresh: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_PLATFORM_INPUT_GUARDRAIL_2026_06_26.md` defines the next ordered twenty-issue queue. The queue starts with the first narrow `Wreck Echo Descent` runtime pass, then protects route/HUD/readability evidence, then records platform-input planning without implementing mobile or controller UI.
 
+Wreck Echo first runtime pass: issue #364 implements one deeper-right `Wreck Echo Descent` route pocket with one run-scoped compact research clue gated by `Pressure Seal I` and `Echo Lens I`. It deliberately adds no minimap, exact locator, field guide, quest checklist, combat, new economy, persistent marker, or durable Wreck Echo save data. The next follow-up should validate normal-scale Wreck Echo readability and result evidence before expanding or tuning the route.
+
 ## Vertical-Slice Acceptance Status
 
 Current status: structurally playable and close to polished acceptance, but still in closeout/watchlist verification rather than fully accepted.
@@ -427,8 +429,7 @@ Cleared acceptance follow-ups:
 
 Current playable-slice track:
 
-- Implement the first narrow `Wreck Echo Descent` route pocket with one compact research clue.
-- Add Wreck Echo visual smoke/readability evidence immediately after runtime implementation.
+- Validate Wreck Echo visual smoke/readability evidence immediately after the first runtime implementation.
 - Tune Wreck Echo visuals/copy only from evidence, not from broad content ambition.
 - Refresh vertical-slice acceptance evidence after Wreck Echo lands.
 - Select the next source-art/readability pass based on post-Wreck-Echo impact.

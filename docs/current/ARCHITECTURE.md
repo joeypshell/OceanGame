@@ -92,7 +92,7 @@ This state is reset between expeditions and should not be saved as durable progr
 
 Progression state should be updated only through explicit progression events such as extraction, scan completion, upgrade purchase, best-depth recording, and save/load migration.
 
-Future compact research clues, such as the first planned `Wreck Echo Descent` clue, should begin as run result memory rather than durable progression. Promote them into `ProgressionState` only when a later issue explicitly needs persistence after relaunch, prerequisite checks, or a stable learned-state surface.
+Compact research clues, such as the first `Wreck Echo Descent` clue, begin as run result memory rather than durable progression. Promote them into `ProgressionState` only when a later issue explicitly needs persistence after relaunch, prerequisite checks, or a stable learned-state surface.
 
 ### Authored Content Data
 
@@ -102,6 +102,7 @@ Scene-authored content owns inspectable placement and route definitions:
 - typed `SpawnPoint` candidate nodes,
 - creature route candidates,
 - pressure gate and wreck nodes,
+- the first Wreck Echo route pocket and clue trigger,
 - scannable discovery nodes,
 - biome-pocket landmarks.
 - pocket-specific placement candidates such as Shell Reef shell candidates and Thermal Vent glow-route candidates.

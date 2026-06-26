@@ -145,6 +145,11 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 @onready var pressure_label: Label = $PressureLockedWreck/Visuals/FallbackGeometry/PressureGateVisuals/PressureLabel
 @onready var echo_lens_pulse: Sprite2D = $PressureLockedWreck/WreckSignalCache/EchoPulse
 @onready var wreck_signal_hint: Node2D = $WreckSignalHint
+@onready var wreck_echo_clue_trigger: Area2D = $WreckEchoDescent/ClueTrigger
+@onready var wreck_echo_route_wash: Polygon2D = $WreckEchoDescent/RouteWash
+@onready var wreck_echo_rib_a: Polygon2D = $WreckEchoDescent/RibA
+@onready var wreck_echo_rib_b: Polygon2D = $WreckEchoDescent/RibB
+@onready var wreck_echo_clue_core: Polygon2D = $WreckEchoDescent/ClueTrigger/ClueCore
 @onready var rare_signal_emphasis: Node2D = $RareSignalEmphasis
 @onready var predator_warning: Node2D = $Predators/PredatorWarning
 @onready var gulper_eel: Node = $Predators/GulperEel
@@ -181,12 +186,14 @@ var run_completed_scans: Array[String] = []
 var run_predator_contacts := 0
 var run_failure_cause := "none"
 var run_echo_lens_echo_fired := false
+var run_wreck_echo_clue_recovered := false
 var recent_expedition_log: Array[Dictionary] = []
 
 func _ready() -> void:
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
 	base_zone.body_exited.connect(_on_base_zone_body_exited)
 	pressure_boundary.body_entered.connect(_on_pressure_boundary_body_entered)
+	wreck_echo_clue_trigger.body_entered.connect(_on_wreck_echo_clue_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
 		pickup.collected.connect(_on_resource_pickup_collected)
 	for predator in get_tree().get_nodes_in_group("predators"):
@@ -267,6 +274,7 @@ func _try_extract() -> void:
 		_format_route_choice_callout(),
 		_format_gulper_research_callout(),
 		_format_echo_lens_research_callout(),
+		_format_wreck_echo_research_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
 		roundi(progression_state.best_depth_reached),
@@ -349,6 +357,7 @@ func _prepare_next_run() -> void:
 	decoy_pulse_used_this_run = false
 	_place_starter_resources_for_run()
 	_sync_condition_visuals()
+	_sync_wreck_echo_state()
 
 func _on_base_zone_body_entered(body: Node2D) -> void:
 	if body == player:
@@ -360,6 +369,19 @@ func _on_base_zone_body_exited(body: Node2D) -> void:
 		player_in_base = false
 		dive_session.has_left_base = true
 		_update_hud()
+
+func _on_wreck_echo_clue_body_entered(body: Node2D) -> void:
+	if body != player or dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+	if not _wreck_echo_route_available():
+		return
+	if run_wreck_echo_clue_recovered:
+		return
+
+	run_wreck_echo_clue_recovered = true
+	status_label.text = "Wreck Echo clue recovered: return to base to keep the research."
+	_sync_wreck_echo_state()
+	_update_hud()
 
 func _update_depth() -> void:
 	dive_session.current_depth = maxf(0.0, (player.global_position.y - surface_y) / pixels_per_meter)
@@ -494,10 +516,11 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 			pass
 		"open_pressure_wreck":
 			_sync_pressure_lock_state()
+			_sync_wreck_echo_state()
 		"resource_signal_pulse":
 			pass
 		"echo_lens_wreck_echo":
-			pass
+			_sync_wreck_echo_state()
 		"cargo_limit_4":
 			dive_session.cargo_limit = _current_cargo_limit()
 		"predator_warning_range_1":
@@ -934,6 +957,7 @@ func _sync_discovery_reveals() -> void:
 
 	_sync_pressure_lock_state()
 	_sync_predator_warning_upgrade_state()
+	_sync_wreck_echo_state()
 
 func _reveal_thermal_vent_route() -> void:
 	var route_hint := vent_route_hint
@@ -981,6 +1005,45 @@ func _sync_pressure_lock_state() -> void:
 		pressure_gate_right_rail.color = Color(0.26, 0.48, 0.8, 0.34)
 		pressure_lock_badge.color = Color(0.74, 0.86, 1.0, 0.72)
 		pressure_label.text = "LOCKED"
+
+func _wreck_echo_route_available() -> bool:
+	return progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID) and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
+
+func _sync_wreck_echo_state() -> void:
+	var route_available := _wreck_echo_route_available()
+	var trigger := wreck_echo_clue_trigger
+	if trigger == null:
+		trigger = get_node_or_null("WreckEchoDescent/ClueTrigger") as Area2D
+
+	if trigger != null:
+		trigger.visible = route_available
+		trigger.monitoring = route_available and not run_wreck_echo_clue_recovered
+		trigger.monitorable = route_available
+
+	var wash := wreck_echo_route_wash
+	if wash == null:
+		wash = get_node_or_null("WreckEchoDescent/RouteWash") as Polygon2D
+	if wash != null:
+		wash.color = Color(0.42, 0.92, 1.0, 0.1 if route_available else 0.045)
+
+	var rib_a := wreck_echo_rib_a
+	if rib_a == null:
+		rib_a = get_node_or_null("WreckEchoDescent/RibA") as Polygon2D
+	if rib_a != null:
+		rib_a.color = Color(0.72, 1.0, 1.0, 0.16 if route_available else 0.06)
+
+	var rib_b := wreck_echo_rib_b
+	if rib_b == null:
+		rib_b = get_node_or_null("WreckEchoDescent/RibB") as Polygon2D
+	if rib_b != null:
+		rib_b.color = Color(0.72, 1.0, 1.0, 0.14 if route_available else 0.05)
+
+	var clue_core := wreck_echo_clue_core
+	if clue_core == null:
+		clue_core = get_node_or_null("WreckEchoDescent/ClueTrigger/ClueCore") as Polygon2D
+	if clue_core != null:
+		clue_core.visible = route_available
+		clue_core.color = Color(0.76, 1.0, 0.68, 0.32) if run_wreck_echo_clue_recovered else Color(0.72, 1.0, 1.0, 0.62)
 
 func _sync_predator_warning_upgrade_state() -> void:
 	var multiplier := predator_warning_1_multiplier if progression_state.has_upgrade(PREDATOR_WARNING_UPGRADE_ID) else 1.45
@@ -1523,6 +1586,7 @@ func _reset_run_telemetry() -> void:
 	run_predator_contacts = 0
 	run_failure_cause = "none"
 	run_echo_lens_echo_fired = false
+	run_wreck_echo_clue_recovered = false
 	echo_lens_pulse_timer = 0.0
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
@@ -1635,6 +1699,12 @@ func _format_gulper_research_callout() -> String:
 func _format_echo_lens_research_callout() -> String:
 	if run_echo_lens_echo_fired:
 		return "\nResearch: Echo Lens caught a weak wreck echo below the shelf."
+
+	return ""
+
+func _format_wreck_echo_research_callout() -> String:
+	if run_wreck_echo_clue_recovered:
+		return "\nResearch: Wreck Echo clue carried a deeper pressure signal below the shelf."
 
 	return ""
 

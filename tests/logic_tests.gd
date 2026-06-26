@@ -71,6 +71,7 @@ func _initialize() -> void:
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("gulper research result callout", _test_gulper_research_result_callout)
 	_run("echo lens result callout", _test_echo_lens_result_callout)
+	_run("wreck echo route first pass", _test_wreck_echo_route_first_pass)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -417,6 +418,12 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"PressureLockedWreck/WreckSignalCache/FallbackVisual/CacheVisual",
 		"PressureLockedWreck/WreckSignalCache/ScanMarker",
 		"PressureLockedWreck/WreckSignalCache/EchoPulse",
+		"WreckEchoDescent/RouteWash",
+		"WreckEchoDescent/RibA",
+		"WreckEchoDescent/RibB",
+		"WreckEchoDescent/ClueTrigger/ClueCore",
+		"WreckEchoDescent/ClueTrigger/EchoRing",
+		"WreckEchoDescent/ClueTrigger/CollisionShape2D",
 		"RareSignalEmphasis/SoftPingWash",
 		"RareSignalEmphasis/BrokenEchoArc",
 		"ShallowMidwaterBackgroundStudy",
@@ -995,6 +1002,37 @@ func _test_echo_lens_result_callout() -> void:
 	_expect(not summary.contains("Playtest data:"), "Echo Lens result line should not expose debug telemetry")
 	main.free()
 
+func _test_wreck_echo_route_first_pass() -> void:
+	var main := MainScript.new()
+	_expect(not main._wreck_echo_route_available(), "Wreck Echo route should start unavailable")
+	main.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
+	_expect(not main._wreck_echo_route_available(), "Wreck Echo route should still need Echo Lens I")
+	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	_expect(main._wreck_echo_route_available(), "Wreck Echo route should require pressure and Echo Lens context")
+	_expect(main._format_wreck_echo_research_callout() == "", "Wreck Echo result line should stay hidden before clue recovery")
+	main.run_wreck_echo_clue_recovered = true
+	var callout := main._format_wreck_echo_research_callout()
+	_expect(callout.contains("Wreck Echo clue"), "Wreck Echo clue should produce compact research callout")
+	_expect(callout.contains("deeper pressure signal below the shelf"), "Wreck Echo clue should stay broad/local")
+	_expect_no_echo_lens_locator_language(callout, "Wreck Echo result line")
+	main._reset_run_telemetry()
+	_expect(not main.run_wreck_echo_clue_recovered, "Wreck Echo clue should reset between expeditions")
+	main.free()
+
+	var main_scene := MainScene.instantiate()
+	root.add_child(main_scene)
+	var trigger: Area2D = main_scene.get_node("WreckEchoDescent/ClueTrigger")
+	_expect(not trigger.monitoring, "Wreck Echo trigger should start inactive")
+	main_scene.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
+	main_scene.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	main_scene.call("_sync_wreck_echo_state")
+	_expect(trigger.visible, "Wreck Echo trigger should appear when pressure and Echo Lens context are ready")
+	_expect(trigger.monitoring, "Wreck Echo trigger should listen when available and unrecovered")
+	main_scene.run_wreck_echo_clue_recovered = true
+	main_scene.call("_sync_wreck_echo_state")
+	_expect(not trigger.monitoring, "Wreck Echo trigger should disable after clue recovery")
+	main_scene.queue_free()
+
 func _test_upgrade_bay_readability_states() -> void:
 	var main := MainScript.new()
 	main.upgrade_definitions = [
@@ -1096,6 +1134,7 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 	main.run_completed_scans = ["thermal_vent", "wreck_signal_cache", "gulper_eel"]
 	main.run_predator_contacts = 1
 	main.run_echo_lens_echo_fired = true
+	main.run_wreck_echo_clue_recovered = true
 	main.decoy_pulse_used_this_run = true
 
 	var compact_result := "\n".join([
@@ -1106,6 +1145,7 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 		main._format_route_choice_callout(),
 		main._format_gulper_research_callout(),
 		main._format_echo_lens_research_callout(),
+		main._format_wreck_echo_research_callout(),
 		main._format_upgrade_progress_callout(),
 		main._format_scan_progress_callout("Discoveries recorded"),
 		main._format_next_expedition_prompt(),
