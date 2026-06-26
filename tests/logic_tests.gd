@@ -651,6 +651,9 @@ func _test_next_expedition_framing() -> void:
 	var ready_status := main._format_expedition_ready_status()
 	_expect(ready_status.contains("Expedition 4 ready"), "ready status should name the prepared expedition")
 	_expect(ready_status.contains("ocean changed"), "ready status should describe the changed ocean")
+	_expect(main._format_expedition_day_title("Ready") == "Expedition Day 4 Ready", "ready title should show expedition day number")
+	_expect(main._format_expedition_day_title("Result: Extraction") == "Expedition Day 4 Result: Extraction", "result title should show completed expedition day number")
+	_expect(main._format_completed_expedition_line("Failure") == "Expedition Day 4 complete: Failure.", "result summary should name the completed expedition day")
 	main.free()
 
 func _test_route_choice_result_callout() -> void:

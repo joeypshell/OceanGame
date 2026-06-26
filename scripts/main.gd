@@ -225,7 +225,8 @@ func _try_extract() -> void:
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "Extracted safely.\nBanked %d resource(s).%s\n%s%s\n%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "%s\nBanked %d resource(s).%s\n%s%s\n%s\n%s\n%s\nBest depth: %dm." % [
+		_format_completed_expedition_line("Extraction"),
 		extracted_count,
 		_format_resource_counts(extracted_cargo),
 		_format_route_choice_callout(),
@@ -249,7 +250,8 @@ func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "Dive failed: oxygen depleted.\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s%s\n%s\n%s\nBest depth: %dm." % [
+	last_result_summary = "%s\nCarried cargo lost.\nKept banked resources, upgrades, scans, and best depth.\n%s%s\n%s\n%s\nBest depth: %dm." % [
+		_format_completed_expedition_line("Failure"),
 		_format_route_choice_callout(),
 		_format_gulper_research_callout(),
 		_format_scan_progress_callout("Scans kept"),
@@ -958,7 +960,7 @@ func _update_run_panel() -> void:
 	surface_tabs_label.text = _format_surface_tabs() if surface_tabs_label.visible else ""
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
-		run_title_label.text = "Expedition %d Ready" % progression_state.current_run_number
+		run_title_label.text = _format_expedition_day_title("Ready")
 		run_summary_label.text = _format_run_summary("Move with WASD or arrow keys.\nStart with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\n%s\n%s\nPress E or Enter to begin.\nF9 resets prototype save." % [
 			ceili(dive_session.max_oxygen),
 			_format_condition_briefing(),
@@ -976,7 +978,7 @@ func _update_run_panel() -> void:
 			run_title_label.text = "Recent Expeditions"
 			run_summary_label.text = _format_recent_expedition_log()
 		else:
-			run_title_label.text = "Expedition %d Result: Extraction" % progression_state.current_run_number
+			run_title_label.text = _format_expedition_day_title("Result: Extraction")
 			run_summary_label.text = _format_run_summary(last_result_summary, "extracted")
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		run_panel.visible = true
@@ -984,7 +986,7 @@ func _update_run_panel() -> void:
 			run_title_label.text = "Recent Expeditions"
 			run_summary_label.text = _format_recent_expedition_log()
 		else:
-			run_title_label.text = "Expedition %d Result: Failure" % progression_state.current_run_number
+			run_title_label.text = _format_expedition_day_title("Result: Failure")
 			run_summary_label.text = _format_run_summary(last_result_summary, "failed")
 	else:
 		run_panel.visible = false
@@ -1343,6 +1345,18 @@ func _format_next_expedition_prompt() -> String:
 
 func _format_expedition_ready_status() -> String:
 	return "Expedition %d ready: the ocean changed overnight." % progression_state.current_run_number
+
+func _format_expedition_day_title(suffix: String) -> String:
+	return "Expedition Day %d %s" % [
+		progression_state.current_run_number,
+		suffix,
+	]
+
+func _format_completed_expedition_line(result_name: String) -> String:
+	return "Expedition Day %d complete: %s." % [
+		progression_state.current_run_number,
+		result_name,
+	]
 
 func _format_condition_briefing() -> String:
 	if current_expedition_condition.is_empty():
