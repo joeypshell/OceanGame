@@ -156,13 +156,13 @@ Current ordered batch:
 
 The next issues are defined in `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md`. Work them in order unless a blocking implementation detail forces a narrow reorder.
 
-Current queue: #163 through #174.
-
-Next ordered replenishment queue: #180 through #199 from `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`. Work the existing open issues first unless a new issue is a dependency-free visual/polish task that safely unblocks later art integration.
+Current queue: #180 through #199 from `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`. Work these in order unless an implementation dependency forces a narrow reorder.
 
 Recently completed:
 
+- #174 closed the one-more-expedition replenishment pass in `docs/planning/BACKLOG_REPLENISHMENT_ONE_MORE_EXPEDITION_CLOSEOUT_2026_06_26.md`, confirming #180 through #199 as the next ordered queue.
 - #173 planned the first Wreck Echo mystery spine in `docs/planning/MYSTERY_SPINE_V1.md`, connecting pressure-wreck memory, Wreck Signal Cache, `Signal Lens I`, and future `Echo Lens I` without adding map or quest UI.
+- #172 tuned ready-panel condition copy into a compact `Today:` briefing that points to implemented cues without exposing debug ids or implying unimplemented systems.
 - #171 added the F3/F4/F5 condition review matrix in `docs/planning/CONDITION_REVIEW_MATRIX_2026_06_26.md`.
 - #170 added stable region names and player memory goals to existing `LandmarkMetadata` nodes without adding map UI.
 - #169 planned the first remembered-region identity map in `docs/planning/REGION_IDENTITY_MAP_V1.md` and selected stable region-name copy as the first implementation step.
