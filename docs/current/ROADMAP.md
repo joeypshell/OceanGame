@@ -106,6 +106,7 @@ Detailed design rules live in:
 - `docs/planning/PRESSURE_WRECK_CACHE_SOURCE_ART_SHELL_CONSTRAINTS_V2_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_RECHECK_AFTER_BACKGROUND_STUDY_2026_06_26.md`
 - `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md`
+- `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md`
 - `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
 - `docs/planning/ECHO_LENS_NO_LOCATOR_LANGUAGE_REVIEW_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
@@ -221,6 +222,8 @@ Pressure wreck/cache shell v2 constraints: `docs/planning/PRESSURE_WRECK_CACHE_S
 Lower-route recheck after background study: `docs/planning/LOWER_ROUTE_RECHECK_AFTER_BACKGROUND_STUDY_2026_06_26.md` keeps the lower route as pass-with-watchlist after the shallow/midwater background wiring. The background does not add new shape pileup; remaining risks stay with pressure/cache, reward lure, predator lane, and HUD-state intersections.
 
 Source-art provenance checklist: `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md` defines reusable source/export/provenance, licensing, scene-wiring, fallback, and verification checks for future sprite batches. It is documentation-only and does not add runtime assets by itself.
+
+Compact HUD final polish plan: `docs/planning/COMPACT_HUD_FINAL_POLISH_PLAN_2026_06_26.md` keeps the next HUD pass focused on existing oxygen, depth, base direction, cargo slots, scan target, prompt/status, warning panel, and debug telemetry gating. It explicitly avoids minimap, inventory grid, objective checklist, field-guide UI, route graph, exact locator, and active-dive upgrade/log surfaces.
 
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 
