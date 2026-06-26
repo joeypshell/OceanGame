@@ -44,6 +44,7 @@ func _initialize() -> void:
 	_run("expedition condition selection", _test_expedition_condition_selection)
 	_run("spawn-point matching", _test_spawn_point_matching)
 	_run("spawn selection", _test_spawn_selection)
+	_run("condition-weighted spawn selection", _test_condition_weighted_spawn_selection)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("predator scan target", _test_predator_scan_target)
@@ -269,6 +270,33 @@ func _test_spawn_selection() -> void:
 	_expect(vent_positions.size() == 1, "thermal vent pocket candidates should be selectable authored points without adding extra pickups")
 	_expect(vent_positions.has(Vector2(90.0, 100.0)), "thermal vent pocket should expose inspectable glow placement")
 	_expect(vent_glow.depth_band == "deep", "thermal vent glow candidates should preserve deep resource identity")
+	root.free()
+
+func _test_condition_weighted_spawn_selection() -> void:
+	var root := Node2D.new()
+	var glow_a := _make_spawn_point("glow_a", "resource", "glow_plankton", "deep", "deep_reward", Vector2(10.0, 100.0))
+	var glow_b := _make_spawn_point("glow_b", "resource", "glow_plankton", "deep", "deep_reward", Vector2(20.0, 100.0))
+	var vent_glow := _make_spawn_point("vent_glow", "resource", "glow_plankton", "deep", "deep_reward", Vector2(30.0, 100.0), "thermal_bloom")
+	var shell := _make_spawn_point("shell", "resource", "shell_fragments", "midwater", "deep_reward", Vector2(40.0, 100.0), "thermal_bloom")
+	root.add_child(glow_a)
+	root.add_child(glow_b)
+	root.add_child(vent_glow)
+	root.add_child(shell)
+
+	var unweighted := SpawnSelectionScript.positions_for_target(root, SpawnPointScript, "resource", "glow_plankton", "deep_reward")
+	var calm_weighted := SpawnSelectionScript.positions_for_target(root, SpawnPointScript, "resource", "glow_plankton", "deep_reward", "calm_current")
+	var thermal_weighted := SpawnSelectionScript.positions_for_target(root, SpawnPointScript, "resource", "glow_plankton", "deep_reward", "thermal_bloom")
+	var thermal_weighted_repeat := SpawnSelectionScript.positions_for_target(root, SpawnPointScript, "resource", "glow_plankton", "deep_reward", "thermal_bloom")
+	var shell_weighted := SpawnSelectionScript.positions_for_target(root, SpawnPointScript, "resource", "shell_fragments", "deep_reward", "thermal_bloom")
+
+	_expect(unweighted.size() == 3, "unweighted glow selection should keep every authored matching candidate")
+	_expect(calm_weighted == unweighted, "unaffected conditions should preserve glow selection behavior")
+	_expect(thermal_weighted == thermal_weighted_repeat, "thermal bloom weighting should be deterministic for the same inputs")
+	_expect(thermal_weighted.size() == 1, "thermal bloom weighting should not add active glow candidates")
+	_expect(thermal_weighted.has(Vector2(30.0, 100.0)), "thermal bloom should prefer the authored vent glow candidate")
+	_expect(vent_glow.depth_band == "deep", "condition-preferred glow should preserve deep depth-band identity")
+	_expect(shell_weighted.size() == 1, "thermal bloom should not broaden non-glow resource selection")
+	_expect(shell_weighted.has(Vector2(40.0, 100.0)), "thermal bloom should leave non-glow target positions intact")
 	root.free()
 
 func _test_scanner_target_resolver() -> void:
@@ -775,13 +803,14 @@ func _test_decoy_pulse_feedback_text() -> void:
 	_expect(main._format_decoy_pulse_scan_feedback().contains("already spent"), "decoy scan feedback should explain repeat denial")
 	main.free()
 
-func _make_spawn_point(spawn_id: String, category: String, target_id: String, depth_band: String, cluster_pattern: String, position: Vector2) -> SpawnPoint:
+func _make_spawn_point(spawn_id: String, category: String, target_id: String, depth_band: String, cluster_pattern: String, position: Vector2, preferred_condition_id := "") -> SpawnPoint:
 	var point := SpawnPointScript.new()
 	point.spawn_id = spawn_id
 	point.category = category
 	point.target_id = target_id
 	point.depth_band = depth_band
 	point.cluster_pattern = cluster_pattern
+	point.preferred_condition_id = preferred_condition_id
 	point.global_position = position
 	return point
 
