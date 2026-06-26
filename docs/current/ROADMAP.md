@@ -10,6 +10,7 @@ Detailed design rules live in:
 - `docs/planning/DAILY_RUNS.md`
 - `docs/planning/EXPEDITION_CONDITION_BRIEFING.md`
 - `docs/planning/EXPEDITION_DAY_CONDITIONS.md`
+- `docs/planning/CONDITION_REVIEW_MATRIX_2026_06_26.md`
 - `docs/planning/HYBRID_OCEAN_MODEL.md`
 - `docs/planning/GAME_VISION.md`
 - `docs/planning/PROGRESSION_LADDER.md`
@@ -161,6 +162,7 @@ Next ordered replenishment queue: #180 through #199 from `docs/planning/BACKLOG_
 
 Recently completed:
 
+- #171 added the F3/F4/F5 condition review matrix in `docs/planning/CONDITION_REVIEW_MATRIX_2026_06_26.md`.
 - #170 added stable region names and player memory goals to existing `LandmarkMetadata` nodes without adding map UI.
 - #169 planned the first remembered-region identity map in `docs/planning/REGION_IDENTITY_MAP_V1.md` and selected stable region-name copy as the first implementation step.
 - #168 reviewed the open pressure-gate state with predator warning visible and recorded pass-with-polish findings in `docs/planning/PRESSURE_GATE_PREDATOR_WARNING_REVIEW_2026_06_26.md`.
