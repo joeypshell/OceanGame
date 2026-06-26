@@ -51,6 +51,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_POLISH_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
@@ -77,6 +78,8 @@ Latest direction update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARI
 Visual identity update: `docs/planning/ART_DIRECTION.md` and `docs/planning/VISUAL_REPLACEMENT_PLAN.md` define the desired polished direction as a cozy research expedition into a beautiful but increasingly impossible alien ocean. Polished visuals remain deferred until the gameplay loop is validated, and the current task is planning/integration only, not a full art overhaul.
 
 Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md` adds the next ordered twenty-issue queue after the current one-more-expedition motivation set. The queue keeps the focus on expedition-day identity, scan/result memory, source-art follow-through, reusable visual extraction, player-facing HUD readability, and mystery/scanner planning.
+
+Playable-loop polish update: `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_POLISH_2026_06_26.md` defines the next ordered queue after #180-#199. The focus moves to narrow `Echo Lens I` implementation, expedition-day review evidence, visual slot standardization, first creature/landmark source-art follow-through, HUD review, provenance, and another backlog refresh.
 
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
@@ -110,7 +113,7 @@ Region, condition, and mystery planning track:
 
 Later design and demo-readiness issues:
 
-Next ordered replenishment batch from `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`:
+Completed ordered replenishment batch from `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`:
 
 1. #180 Add expedition day number to result and ready panel state.
 2. #181 Add remembered-region result line from the deepest meaningful landmark reached.
@@ -134,6 +137,29 @@ Next ordered replenishment batch from `docs/planning/BACKLOG_REPLENISHMENT_EXPED
 20. #199 Replenish backlog after expedition identity and visual follow-through.
 
 Candidate backlog should stay focused on clean playtesting, readability, and narrow hybrid-ocean variation, not new systems for their own sake.
+
+Next ordered replenishment batch from `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_POLISH_2026_06_26.md`:
+
+1. #200 Add `Echo Lens I` upgrade definition.
+2. #201 Implement `Echo Lens I` Wreck Signal Cache broad echo.
+3. #202 Add Echo Lens result-memory line when an echo fires.
+4. #203 Run the expedition-day five-seed review and record findings.
+5. #204 Fix the highest-priority issue found in the five-seed expedition-day review.
+6. #205 Standardize `SurfaceBaseArt` into sprite/fallback visual groups.
+7. #206 Extract `ShellReefPocket` visuals into a reusable scene.
+8. #207 Add first source/export Lantern Fry sprite.
+9. #208 Add first source/export Gulper Eel sprite.
+10. #209 Add first source/export Thermal Vent sprite.
+11. #210 Add first source/export pressure-wreck/cache visual study.
+12. #211 Add compact scan/echo visual effect source asset.
+13. #212 Review active HUD after oxygen and cargo slot changes.
+14. #213 Add upgrade-bay affordance pass for newly planned scanner upgrade.
+15. #214 Add Wreck Shelf route review with Echo Lens planning active.
+16. #215 Add deeper-access planning note after Echo Lens I.
+17. #216 Review asset provenance coverage for all committed sprite sources.
+18. #217 Add screenshot checklist for first polished vertical-slice art kit.
+19. #218 Update MCP context resources after playable-loop polish planning.
+20. #219 Replenish backlog after playable-loop polish.
 
 Keep all issues narrow. Do not add a field guide, minimap, cargo grid, protected cargo, broad active-tool suite, weapons, predator harvesting, full procedural biomes, large art sets, oxygen refills, new resource systems, a region-select screen, or real-calendar daily challenges during this milestone.
 
@@ -167,10 +193,30 @@ Current ordered batch:
 
 The next issues are defined in `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md`. Work them in order unless a blocking implementation detail forces a narrow reorder.
 
-Current queue: #180 through #199 from `docs/planning/BACKLOG_REPLENISHMENT_EXPEDITION_IDENTITY_VISUALS_2026_06_26.md`. Work these in order unless an implementation dependency forces a narrow reorder.
+Current queue: the next GitHub issue batch created from `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_POLISH_2026_06_26.md`. Work these in order unless an implementation dependency forces a narrow reorder.
 
 Recently completed:
 
+- #199 replenished the queue as `Playable Loop Polish` with narrow follow-through around `Echo Lens I`, expedition-day review evidence, visual slot standardization, first creature/landmark source-art assets, HUD review, and provenance.
+- #198 reviewed current visual asset slots in `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md` and expanded scene-contract tests for player/surface visual slots.
+- #197 added the five-seed/F5-driven expedition-day review checklist in `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`.
+- #196 clarified the pressure-wreck/cache mystery signal in `docs/planning/MYSTERY_SPINE_V1.md`.
+- #195 planned `Echo Lens I` as the next scanner curiosity upgrade in `docs/planning/SCANNER_PROGRESSION_V2.md`.
+- #194 formalized the Wreck Signal Cache cache-echo repeat scan copy.
+- #193 tightened surface result panel hierarchy and copy.
+- #192 added compact cargo slot placeholders to the active HUD.
+- #191 added low/critical oxygen HUD warning treatment.
+- #190 added reusable scan pulse visual helper coverage.
+- #189 extracted Thermal Vent pocket visuals into a reusable scene.
+- #188 extracted resource pickup visuals into reusable child scenes.
+- #187 added Gulper Eel visual state slots.
+- #186 added Lantern Fry visual slot and idle polish.
+- #185 replaced Shell Fragments with the first source/export sprite.
+- #184 replaced Kelp Fiber with the first source/export sprite.
+- #183 added no-cargo useful-dive result copy for scan-only returns.
+- #182 added first-time discovery memory lines.
+- #181 added remembered-region result lines.
+- #180 added expedition-day number framing to ready/result states.
 - #174 closed the one-more-expedition replenishment pass in `docs/planning/BACKLOG_REPLENISHMENT_ONE_MORE_EXPEDITION_CLOSEOUT_2026_06_26.md`, confirming #180 through #199 as the next ordered queue.
 - #173 planned the first Wreck Echo mystery spine in `docs/planning/MYSTERY_SPINE_V1.md`, connecting pressure-wreck memory, Wreck Signal Cache, `Signal Lens I`, and future `Echo Lens I` without adding map or quest UI.
 - #172 tuned ready-panel condition copy into a compact `Today:` briefing that points to implemented cues without exposing debug ids or implying unimplemented systems.
