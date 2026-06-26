@@ -1244,6 +1244,7 @@ func _test_compact_dive_hud_helpers() -> void:
 	var upgraded_slot_states: Array = main.call("_cargo_slot_states", cargo, 4, 4)
 	_expect(upgraded_slot_states == ["glow_plankton", "kelp_fiber", "glow_plankton", "empty"], "cargo slots should reveal the fourth slot after capacity upgrade")
 	_expect(main.call("_cargo_slot_color", "empty").a > main.call("_cargo_slot_color", "locked").a, "empty cargo slots should read brighter than locked slots")
+	_expect(main.call("_cargo_slot_color", "locked").a >= 0.5, "locked cargo slot should remain visible as disabled capacity")
 	_expect(main.call("_cargo_slot_icon_polygon", "kelp_fiber").size() > 0, "kelp cargo slots should have a mini-icon polygon")
 	_expect(main.call("_cargo_slot_icon_polygon", "shell_fragments").size() > 0, "shell cargo slots should have a mini-icon polygon")
 	_expect(main.call("_cargo_slot_icon_polygon", "glow_plankton").size() > 0, "glow cargo slots should have a mini-icon polygon")
@@ -1258,9 +1259,18 @@ func _test_compact_dive_hud_helpers() -> void:
 	var active_panel: Panel = main_scene.get_node("HUD/ActiveStatsPanel")
 	var discoveries_label: Label = main_scene.get_node("HUD/Discoveries")
 	var dive_info_panel: Panel = main_scene.get_node("HUD/DiveInfoPanel")
+	var scan_target_label: Label = main_scene.get_node("HUD/ScanTarget")
+	var prompt_label: Label = main_scene.get_node("HUD/ExtractionPrompt")
+	var status_label: Label = main_scene.get_node("HUD/Status")
+	var cargo_slot_4: ColorRect = main_scene.get_node("HUD/CargoSlots/Slot4")
 	_expect(discoveries_label.offset_top >= active_panel.offset_top, "active Discoveries label should stay inside the compact stats panel")
 	_expect(discoveries_label.offset_bottom <= active_panel.offset_bottom, "active Discoveries label should not spill below the compact stats panel")
 	_expect(dive_info_panel.offset_top > active_panel.offset_bottom, "dive info panel should remain below compact stats content")
+	_expect(scan_target_label.offset_top >= dive_info_panel.offset_top, "scan target should stay inside the dive info panel")
+	_expect(status_label.offset_bottom <= dive_info_panel.offset_bottom, "status text should stay inside the dive info panel")
+	_expect(prompt_label.offset_bottom <= status_label.offset_top, "prompt and status should not overlap")
+	_expect(cargo_slot_4.visible, "locked fourth cargo slot should remain visible as dim capacity")
+	_expect(scan_target_label.text.begins_with("Scan:"), "scan target label should use compact active HUD copy")
 	_expect(not active_panel.visible, "surface-ready state should hide active stats clutter")
 	_expect(not dive_info_panel.visible, "surface-ready state should hide dive guidance clutter")
 	main_scene.queue_free()
@@ -1268,7 +1278,7 @@ func _test_compact_dive_hud_helpers() -> void:
 	var long_status := "Scanned Thermal Vent.\nWarm current marks optional glow; bank Pressure Seal clue. Return safely before oxygen runs out."
 	var compact_status: String = main.call("_compact_dive_status", long_status)
 	_expect(not compact_status.contains("\n"), "compact dive status should remove line breaks")
-	_expect(compact_status.length() <= 92, "compact dive status should stay within the dive HUD limit")
+	_expect(compact_status.length() <= 76, "compact dive status should stay within the dive HUD limit")
 
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks decoy.")
 	main.progression_state.purchased_upgrades[DecoyPulseUpgrade.id] = true
@@ -1293,6 +1303,7 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(main.call("_oxygen_state", 10.0, 40.0) == "low", "oxygen helper should mark 25 percent oxygen as low")
 	_expect(main.call("_oxygen_state", 4.0, 40.0) == "critical", "oxygen helper should mark 10 percent oxygen as critical")
 	_expect(main.call("_format_oxygen_label", 10.0, 40.0).contains("LOW"), "oxygen label should carry low state inline")
+	_expect(main.call("_format_oxygen_label", 40.0, 40.0).begins_with("O2:"), "oxygen label should use compact active HUD copy")
 	_expect(main.call("_oxygen_warning_text", "critical").contains("RETURN TO BASE"), "critical warning should emphasize the return route")
 	main.free()
 

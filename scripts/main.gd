@@ -40,7 +40,7 @@ const SURFACE_TAB_RESULT := 0
 const SURFACE_TAB_UPGRADES := 1
 const SURFACE_TAB_LOG := 2
 const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
-const DIVE_STATUS_MAX_CHARS := 92
+const DIVE_STATUS_MAX_CHARS := 76
 const ECHO_LENS_PULSE_DURATION := 1.2
 
 @export var max_oxygen := 30.0
@@ -1022,11 +1022,11 @@ func _update_hud() -> void:
 		prompt_label.text = "Expedition failed - press R for next expedition"
 	elif player_in_base:
 		if dive_session.has_left_base:
-			prompt_label.text = "Safe base: press E or Enter to extract"
+			prompt_label.text = "At base: E/Enter extract"
 		else:
-			prompt_label.text = "Leave the moonpool, then return to extract"
+			prompt_label.text = "Leave moonpool, then return"
 	else:
-		prompt_label.text = "Explore, then return to base"
+		prompt_label.text = "Explore, bank at base"
 
 	if dive_session.result == DiveSessionScript.Result.DIVING:
 		prompt_label.text += " | %s" % _format_burst_thruster_prompt()
@@ -1155,7 +1155,7 @@ func _cargo_slot_color(state: String) -> Color:
 		"glow_plankton":
 			return Color(0.84, 0.98, 0.28, 0.95)
 		"locked":
-			return Color(0.015, 0.035, 0.045, 0.42)
+			return Color(0.012, 0.025, 0.032, 0.5)
 		_:
 			return Color(0.035, 0.1, 0.13, 0.9)
 
@@ -1185,7 +1185,7 @@ func _update_cargo_slots() -> void:
 	var states := _cargo_slot_states(dive_session.current_cargo, dive_session.cargo_limit, cargo_slot_nodes.size())
 	for index in range(cargo_slot_nodes.size()):
 		cargo_slot_nodes[index].color = _cargo_slot_color(states[index])
-		cargo_slot_nodes[index].visible = states[index] != "locked" or dive_session.cargo_limit >= cargo_slot_nodes.size()
+		cargo_slot_nodes[index].visible = true
 		cargo_slot_icon_nodes[index].polygon = _cargo_slot_icon_polygon(states[index])
 		cargo_slot_icon_nodes[index].color = _cargo_slot_icon_color(states[index])
 		cargo_slot_icon_nodes[index].visible = cargo_slot_nodes[index].visible and cargo_slot_icon_nodes[index].polygon.size() > 0
@@ -1723,9 +1723,9 @@ func _update_scan_target_feedback() -> void:
 			current_scan_target.set_scan_selected(true)
 
 	if current_scan_target == null:
-		scan_target_label.text = "Scan target: none nearby"
+		scan_target_label.text = "Scan: none nearby"
 	else:
-		scan_target_label.text = "Scan target: %s [%s %s]" % [
+		scan_target_label.text = "Scan: %s [%s %s]" % [
 			_scan_target_display_name(current_scan_target),
 			_format_scan_target_discovery_state(current_scan_target),
 			_format_scan_target_type(current_scan_target)
@@ -1794,13 +1794,13 @@ func _format_oxygen_label(current_oxygen: float, maximum_oxygen: float) -> Strin
 	elif state == "low":
 		suffix = "  LOW"
 
-	return "Oxygen: %d / %d%s" % [ceili(current_oxygen), ceili(maximum_oxygen), suffix]
+	return "O2: %d / %d%s" % [ceili(current_oxygen), ceili(maximum_oxygen), suffix]
 
 func _oxygen_warning_text(state: String) -> String:
 	if state == "critical":
-		return "CRITICAL OXYGEN\nRETURN TO BASE"
+		return "O2 CRITICAL\nRETURN TO BASE"
 	if state == "low":
-		return "LOW OXYGEN\nPLAN RETURN"
+		return "O2 LOW\nPLAN RETURN"
 
 	return ""
 
