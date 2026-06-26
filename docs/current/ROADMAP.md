@@ -100,6 +100,8 @@ Compact HUD skin plan: `docs/planning/COMPACT_HUD_SKIN_PLAN_2026_06_26.md` defin
 
 Rare Signal condition review: `docs/planning/RARE_SIGNAL_CONDITION_READABILITY_REVIEW_2026_06_26.md` confirms the current `Rare Signal` copy is acceptable as flavor-only Wreck Echo curiosity. A future visual-emphasis prototype is warranted only if it stays subtle/local and avoids exact locators, persistent markers, quest checklists, cache guarantees, and upgrade shortcuts.
 
+Wreck Shift condition review: `docs/planning/WRECK_SHIFT_CONDITION_READABILITY_REVIEW_2026_06_26.md` keeps `Wreck Shift` flavor-only for now. Any future visual emphasis must read as wreck-angle/approach variation, not a moved/open pressure gate, alternate entrance, pressure-boundary change, cache reveal, or `Pressure Seal I` bypass.
+
 ## Immediate Issue Order
 
 Motivation and payoff track:
