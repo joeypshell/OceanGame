@@ -46,6 +46,7 @@ Detailed design rules live in:
 - `docs/planning/NEXT_VERTICAL_SLICE_MILESTONE_2026_06_26.md`
 - `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md`
 - `docs/planning/SURFACE_READY_RESULT_READABILITY_REVIEW_2026_06_26.md`
+- `docs/planning/SHELL_REEF_SPRITE_FALLBACK_BALANCE_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -118,6 +119,8 @@ Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLIC
 Active HUD screenshot review: `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md` confirms the compact active HUD skin is directionally working at normal scale. The immediate follow-up is to move or restyle the active `Discoveries` count, which currently sits between the stats and dive-info panels.
 
 Surface readability review: `docs/planning/SURFACE_READY_RESULT_READABILITY_REVIEW_2026_06_26.md` confirms ready/result/failure/log states keep active HUD clutter hidden. The upgrade tab currently misses the polish bar because long upgrade copy can overflow its panel.
+
+Shell Reef balance review: `docs/planning/SHELL_REEF_SPRITE_FALLBACK_BALANCE_REVIEW_2026_06_26.md` keeps Shell Reef as pass-with-watchlist. Fallback geometry still carries the place/readability promise; future art work should strengthen the source sprite/scan target before subduing the brightest shell-fan fallback pieces.
 
 ## Immediate Issue Order
 
