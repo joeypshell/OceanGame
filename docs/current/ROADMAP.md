@@ -63,6 +63,7 @@ Detailed design rules live in:
 - `docs/planning/NO_DEBUG_SURFACE_CAPTURE_SANITY_REVIEW_2026_06_26.md`
 - `docs/planning/PRESSURE_WRECK_CACHE_RECHECK_AFTER_SURFACE_READABILITY_2026_06_26.md`
 - `docs/planning/PRESSURE_WRECK_CACHE_BACKUP_ART_PASS_CONSTRAINTS_2026_06_26.md`
+- `docs/planning/CONDITION_VISUAL_NORMAL_SCALE_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -151,6 +152,8 @@ Next source-art priority: `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_20
 
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 
+Condition visual normal-scale review: `docs/planning/CONDITION_VISUAL_NORMAL_SCALE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, Rare Signal, and Wreck Shift as pass-with-watchlist after the recent HUD/surface changes. Wreck Shift remains flavor-only, and none of the condition cues should imply hidden mechanics.
+
 Result memory review: `docs/planning/RESULT_MEMORY_READABILITY_REVIEW_2026_06_26.md` confirms the result flow covers banked/lost cargo, remembered place, first discovery, route choice, Gulper/Echo Lens research, upgrade progress, scan progress, and next-expedition copy without exposing debug telemetry by default or becoming a checklist.
 
 Upgrade bay review: `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md` confirms the seven-upgrade state model reads without becoming a tech tree, and the surface upgrade panel now wraps long item, cost, state, and feedback copy inside a taller panel.
@@ -194,7 +197,6 @@ Pass with polish:
 Remaining before calling the vertical-slice gate fully accepted:
 
 - recheck `Decoy Pulse I` prompt length in normal-scale HUD evidence,
-- review condition visuals in fresh normal-scale captures after the surface/HUD changes,
 - recheck `Echo Lens I` pulse readability at Wreck Signal Cache,
 - add text-length guards for result and upgrade copy,
 - keep lower-route screenshots on the watchlist after any visual change, especially surface art or future Wreck Echo work.
@@ -205,6 +207,7 @@ Cleared acceptance follow-ups:
 - no-debug surface captures have a sanity review across ready, result, upgrade, and log views.
 - pressure wreck/cache has a combined recheck after the surface/HUD readability changes.
 - clean-save two-expedition smoke, active Discoveries placement, lower-route recheck, surface moonpool/waterline review, and surface panel opacity are no longer blocker-level issues.
+- condition visuals have a normal-scale review after the surface/HUD changes, with Wreck Shift kept flavor-only.
 
 ## Immediate Issue Order
 
