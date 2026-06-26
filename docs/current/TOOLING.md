@@ -69,6 +69,9 @@ Resources:
 - `oceangame://game-vision`
 - `oceangame://future-expansive-dive-levels-2026-06-26`
 - `oceangame://future-platform-input-targets-2026-06-26`
+- `oceangame://input-action-contract-review-2026-06-26`
+- `oceangame://future-controller-support-plan-2026-06-26`
+- `oceangame://future-mobile-landscape-touch-plan-2026-06-26`
 - `oceangame://compulsion-identity-2026-06-26`
 - `oceangame://progression-ladder`
 - `oceangame://predator-direction`
@@ -160,6 +163,10 @@ Resources:
 - `oceangame://wreck-shelf-echo-lens-route-review-2026-06-26`
 - `oceangame://wreck-echo-readiness-gate-after-shell-hud-2026-06-26`
 - `oceangame://wreck-echo-reward-choice-2026-06-26`
+- `oceangame://wreck-echo-source-art-fallback-balance-review-2026-06-26`
+- `oceangame://lower-route-recheck-after-wreck-echo-source-art-2026-06-26`
+- `oceangame://resource-scan-affordance-review-after-wreck-echo-2026-06-26`
+- `oceangame://result-upgrade-copy-review-after-wreck-echo-2026-06-26`
 - `oceangame://vertical-slice-art-kit-screenshot-checklist-2026-06-26`
 - `oceangame://resource-scan-affordance-review-after-pressure-shell-2026-06-26`
 - `oceangame://resource-scan-source-art-target-decision-2026-06-26`
@@ -173,6 +180,7 @@ Resources:
 - `oceangame://backlog-replenishment-after-vertical-slice-closeout-2026-06-26`
 - `oceangame://backlog-replenishment-wreck-echo-prep-review-2026-06-26`
 - `oceangame://backlog-replenishment-after-platform-input-guardrail-2026-06-26`
+- `oceangame://playwright-screenshot-workflow-gap-review-2026-06-26`
 - `oceangame://backlog-replenishment-after-visual-clarity-2026-06-26`
 - `oceangame://thermal-vent-route-review-2026-06-25`
 - `oceangame://backlog-replenishment-thermal-vent-decoy`
