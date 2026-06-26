@@ -105,6 +105,7 @@ Detailed design rules live in:
 - `docs/planning/NEXT_SOURCE_ART_AFTER_BACKGROUND_REVIEW_2026_06_26.md`
 - `docs/planning/PRESSURE_WRECK_CACHE_SOURCE_ART_SHELL_CONSTRAINTS_V2_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_RECHECK_AFTER_BACKGROUND_STUDY_2026_06_26.md`
+- `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md`
 - `docs/planning/SOLO_FIRST_RUN_READABILITY_RESULT_2026_06_26.md`
 - `docs/planning/ECHO_LENS_NO_LOCATOR_LANGUAGE_REVIEW_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
@@ -218,6 +219,8 @@ Next source-art after background review: `docs/planning/NEXT_SOURCE_ART_AFTER_BA
 Pressure wreck/cache shell v2 constraints: `docs/planning/PRESSURE_WRECK_CACHE_SOURCE_ART_SHELL_CONSTRAINTS_V2_2026_06_26.md` narrows the selected source-art pass to environment-shell readability support only. It preserves the existing pressure gate, outside scan, cache, Echo Lens pulse, predator lane, route layout, and all gameplay state while keeping `Wreck Echo Descent` unimplemented.
 
 Lower-route recheck after background study: `docs/planning/LOWER_ROUTE_RECHECK_AFTER_BACKGROUND_STUDY_2026_06_26.md` keeps the lower route as pass-with-watchlist after the shallow/midwater background wiring. The background does not add new shape pileup; remaining risks stay with pressure/cache, reward lure, predator lane, and HUD-state intersections.
+
+Source-art provenance checklist: `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md` defines reusable source/export/provenance, licensing, scene-wiring, fallback, and verification checks for future sprite batches. It is documentation-only and does not add runtime assets by itself.
 
 Condition visual acceptance review: `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md` keeps Calm Current, Thermal Bloom, and Rare Signal as presentation-first readability/mystery support, while keeping Wreck Shift flavor-only until pressure gate/cache readability is stronger.
 

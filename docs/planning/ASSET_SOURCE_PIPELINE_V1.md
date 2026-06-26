@@ -222,3 +222,4 @@ A first source-art implementation issue should:
 - verify Godot launch and `git diff --check`,
 - update current gameplay docs if the visible behavior changes.
 
+Reusable checklist: `docs/planning/SOURCE_ART_PROVENANCE_CHECKLIST_2026_06_26.md` should be used for future sprite/source-art batches before committing source, export, provenance, scene wiring, fallback treatment, and verification.
