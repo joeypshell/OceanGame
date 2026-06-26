@@ -70,6 +70,7 @@ func _initialize() -> void:
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
+	_run("player idle and thrust visual states", _test_player_idle_and_thrust_visual_states)
 	_run("predator decoy pulse helper", _test_predator_decoy_pulse_helper)
 	_run("decoy pulse feedback text", _test_decoy_pulse_feedback_text)
 
@@ -843,6 +844,34 @@ func _test_player_visual_facing_isolation() -> void:
 	_expect(visual_root.scale.x == 1.0, "facing right should restore the visual root")
 	player.set("_last_move_direction", Vector2.ZERO)
 	_expect(player.get_burst_direction() == Vector2.RIGHT, "burst fallback should use the tracked right-facing sign")
+
+	player.queue_free()
+
+func _test_player_idle_and_thrust_visual_states() -> void:
+	var player := PlayerScene.instantiate()
+	root.add_child(player)
+	var idle_bubble: Polygon2D = player.get_node("VisualRoot/IdleBubble")
+	var thrust_flare: Polygon2D = player.get_node("VisualRoot/ThrustFlare")
+	var bubble_trail: Polygon2D = player.get_node("VisualRoot/BubbleTrail")
+
+	player.call("_sync_movement_visuals", 0.1, false)
+	_expect(player.scale == Vector2.ONE, "visual motion state should not modify the physics/player root")
+	_expect(idle_bubble.visible, "idle state should show the idle bubble treatment")
+	_expect(not thrust_flare.visible, "idle state should hide the thrust flare")
+	_expect(bubble_trail.color.a < 0.3, "idle state should keep the bubble trail subtle")
+
+	player.call("_set_facing_sign", -1.0)
+	player.call("_sync_movement_visuals", 0.1, true)
+	_expect(player.scale == Vector2.ONE, "moving visual state should keep the physics/player root unmirrored")
+	_expect(player.get_node("VisualRoot").scale.x == -1.0, "moving visual state should work while facing left")
+	_expect(not idle_bubble.visible, "moving state should hide the idle bubble treatment")
+	_expect(thrust_flare.visible, "moving state should show the thrust flare")
+	_expect(bubble_trail.color.a > 0.4, "moving state should strengthen the bubble trail")
+
+	player.call("_set_facing_sign", 1.0)
+	player.call("_sync_movement_visuals", 0.1, true)
+	_expect(player.get_node("VisualRoot").scale.x == 1.0, "moving visual state should work while facing right")
+	_expect(thrust_flare.visible, "right-facing movement should keep thrust flare visible")
 
 	player.queue_free()
 

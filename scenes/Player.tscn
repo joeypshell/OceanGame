@@ -16,6 +16,15 @@ script = ExtResource("1_player_script")
 color = Color(0.72, 0.96, 1, 0.28)
 polygon = PackedVector2Array(-72, -6, -64, -16, -54, -6, -64, 4, -90, 8, -82, -2, -72, 8, -82, 18, -112, -8, -106, -16, -98, -8, -106, 0)
 
+[node name="IdleBubble" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.72, 0.96, 1, 0.2)
+polygon = PackedVector2Array(-58, -18, -48, -30, -36, -20, -46, -8, -74, 18, -64, 8, -52, 18, -64, 30)
+
+[node name="ThrustFlare" type="Polygon2D" parent="VisualRoot"]
+visible = false
+color = Color(0.42, 1, 0.92, 0.52)
+polygon = PackedVector2Array(-48, -15, -82, 0, -48, 15, -66, 0)
+
 [node name="SubSpriteAnchor" type="Node2D" parent="VisualRoot"]
 
 [node name="SubSprite" type="Sprite2D" parent="VisualRoot/SubSpriteAnchor"]
