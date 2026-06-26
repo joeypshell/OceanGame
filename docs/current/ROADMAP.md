@@ -164,7 +164,7 @@ Upgrade bay review: `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md`
 
 Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md` creates issues #260-#279. The batch focuses on clearing the remaining acceptance blockers, clean smoke evidence, Decoy Pulse owned-state review, lower-route rechecks, surface moonpool/waterline readability, and context refreshes.
 
-Clean-save smoke pass: `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md` records the two-expedition loop as structurally acceptable from a reset state. The slice is still not fully polished accepted until the queued Decoy Pulse, lower-route, surface moonpool/waterline, and upgrade-tab visual reviews land.
+Clean-save smoke pass: `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md` records the two-expedition loop as structurally acceptable from a reset state. The follow-up Decoy Pulse, lower-route, surface moonpool/waterline, and upgrade-tab reviews have landed; remaining work is closeout and fresh watchlist verification after the cleanup batch.
 
 Decoy Pulse owned-state review: `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md` keeps `Decoy Pulse I` acceptable as one-use non-lethal route-timing counterplay. The main watchlist is active prompt length when `Burst Thruster` and Decoy text appear together.
 
@@ -188,7 +188,7 @@ Pressure wreck/cache backup art pass: `docs/planning/PRESSURE_WRECK_CACHE_BACKUP
 
 ## Vertical-Slice Acceptance Status
 
-Current status: structurally playable and close to polished acceptance, but still pass-with-watchlist rather than fully accepted.
+Current status: structurally playable and close to polished acceptance, but still in closeout/watchlist verification rather than fully accepted.
 
 Implemented:
 

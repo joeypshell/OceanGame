@@ -93,7 +93,7 @@ The vertical slice is playable when a tester can complete two short expeditions,
 
 ## Current Acceptance Status
 
-Updated after the smoke, HUD, surface, upgrade, no-debug, and pressure wreck/cache follow-ups: the current slice is structurally playable and close to polished acceptance, but it remains pass-with-watchlist rather than fully accepted.
+Updated after the #260-#279 evidence cleanup: the current slice is structurally playable and close to polished acceptance, but it remains in closeout/watchlist verification rather than fully accepted.
 
 Accepted or cleared:
 
@@ -103,12 +103,16 @@ Accepted or cleared:
 - surface panel opacity over the boat/waterline pass,
 - upgrade-tab wrapping at normal scale,
 - normal no-debug surface views,
-- pressure wreck/cache recheck after surface/HUD changes.
+- pressure wreck/cache recheck after surface/HUD changes,
+- condition visual normal-scale review,
+- Decoy Pulse result-memory and HUD smoke note,
+- Echo Lens cache pulse local/no-locator recheck,
+- result and upgrade text-length guard coverage.
 
 Remaining before declaring the gate fully passed:
 
-- `Decoy Pulse I` owned-state HUD/status and result-memory smoke note,
-- result and upgrade text-length guard coverage,
-- condition visual review with normal-scale screenshots,
-- Echo Lens pulse readability at Wreck Signal Cache,
+- final vertical-slice acceptance closeout,
+- lower-route normal-scale screenshot recheck after the cleanup batch,
+- active prompt compactness review and guard coverage,
+- first-run surface and active-dive comprehension reviews,
 - continued lower-route watchlist after any future visual change.
