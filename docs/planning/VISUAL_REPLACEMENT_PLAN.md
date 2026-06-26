@@ -4,7 +4,7 @@ Status: integration plan for moving from placeholder visuals toward a polished O
 
 Latest slot review: `docs/planning/VISUAL_ASSET_SLOT_REVIEW_2026_06_26.md` audits the current player, surface base, resource, creature, landmark, pressure-wreck, and cache visual slots after recent extraction work.
 
-Latest source-art priority: `docs/planning/NEXT_SOURCE_ART_AFTER_WRECK_ECHO_EVIDENCE_2026_06_26.md` selects a narrow Wreck Echo clue-marker/source-art separation pass after the first route implementation and evidence refresh. Compact HUD skin remains useful later, but the post-implementation HUD review found no immediate prompt/layout change needed; the current sharper risk is separating the Wreck Echo clue from lower-route reward, predator, and pressure/cache cues.
+Latest source-art priority: `docs/planning/NEXT_SOURCE_ART_AFTER_EVIDENCE_HARDENING_2026_06_26.md` selects a narrow lower-route `DeepRewardLure` / reward-cue source-art separation pass after screenshot and prompt evidence hardening. The current sharper risk is bright reward/cache/route cue stacking in the same lower-right visual band; do not start a broad HUD skin, Wreck Echo expansion, biome repaint, controller/touch pass, or full lower-route overhaul.
 
 Latest source-art balance review: `docs/planning/WRECK_ECHO_SOURCE_ART_FALLBACK_BALANCE_REVIEW_2026_06_26.md` keeps the Wreck Echo clue marker as pass-with-watchlist. The marker is clearer than the fallback core/ring alone, while the lower-route stack remains visually dense enough to warrant the already-open pileup and resource/scan reviews.
 

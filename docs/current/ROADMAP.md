@@ -191,6 +191,8 @@ Vertical-slice evidence refresh after screenshot/prompt hardening: `docs/plannin
 
 Lower-route recheck after evidence hardening: `docs/planning/LOWER_ROUTE_RECHECK_AFTER_EVIDENCE_HARDENING_2026_06_26.md` keeps the lower route acceptable for the current playable slice but not polished. Oxygen/base safety, predator danger, and pressure/cache opportunity are readable; the remaining risk is bright reward/cache/route cue stacking in the same lower-right visual band.
 
+Next narrow source-art target after evidence hardening: `docs/planning/NEXT_SOURCE_ART_AFTER_EVIDENCE_HARDENING_2026_06_26.md` selects the lower-route `DeepRewardLure` / reward-cue cluster for a small source-art separation pass. The goal is to make optional material opportunity read separately from pressure/cache, Wreck Echo, and predator danger without changing gameplay or expanding scope.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
