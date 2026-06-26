@@ -56,6 +56,7 @@ func _initialize() -> void:
 	_run("surface summary tabs", _test_surface_summary_tabs)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("predator decoy pulse helper", _test_predator_decoy_pulse_helper)
+	_run("decoy pulse feedback text", _test_decoy_pulse_feedback_text)
 
 	if _failures.is_empty():
 		print("Logic tests passed: %d checks." % _passes)
@@ -634,6 +635,26 @@ func _test_predator_decoy_pulse_helper() -> void:
 	_expect(predator.decoy_target().x > predator.global_position.x, "decoy target should pull predator away from player")
 	_expect(predator.decoy_target().distance_to(predator.global_position) > 200.0, "decoy target should create a meaningful route-timing window")
 	predator.free()
+
+func _test_decoy_pulse_feedback_text() -> void:
+	var main := MainScript.new()
+	_expect(main._format_decoy_pulse_prompt() == "", "decoy prompt should stay hidden before Gulper Eel discovery")
+	_expect(main._format_decoy_pulse_scan_feedback().contains("unavailable"), "decoy scan feedback should explain unavailable state")
+
+	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
+	_expect(main._format_decoy_pulse_prompt().contains("locked"), "decoy prompt should show upgrade-locked state after discovery")
+
+	main.progression_state.purchased_upgrades[DecoyPulseUpgrade.id] = true
+	_expect(main._format_decoy_pulse_prompt().contains("ready"), "decoy prompt should show ready state when owned and unused")
+	main.decoy_pulse_activated_this_scan = true
+	_expect(main._format_decoy_pulse_scan_feedback().contains("spent"), "decoy scan feedback should report use")
+	_expect(main._format_decoy_pulse_scan_feedback().contains("3s"), "decoy scan feedback should report duration")
+
+	main.decoy_pulse_activated_this_scan = false
+	main.decoy_pulse_used_this_run = true
+	_expect(main._format_decoy_pulse_prompt().contains("spent"), "decoy prompt should show spent state")
+	_expect(main._format_decoy_pulse_scan_feedback().contains("already spent"), "decoy scan feedback should explain repeat denial")
+	main.free()
 
 func _make_spawn_point(spawn_id: String, category: String, target_id: String, depth_band: String, cluster_pattern: String, position: Vector2) -> SpawnPoint:
 	var point := SpawnPointScript.new()

@@ -103,6 +103,7 @@ var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
+var decoy_pulse_activated_this_scan := false
 var last_result_summary := ""
 var upgrade_menu_feedback := ""
 var current_resource_cluster_pattern := "cautious"
@@ -435,6 +436,7 @@ func _scan_target_gameplay_fact(target: Node) -> String:
 	return String(target.get("gameplay_fact"))
 
 func _activate_scan_effect(target: Node) -> void:
+	decoy_pulse_activated_this_scan = false
 	if target is ResourcePickup:
 		resource_scan_highlight_id = target.definition.id
 		resource_scan_highlight_timer = 8.0
@@ -457,6 +459,7 @@ func _try_trigger_decoy_pulse() -> bool:
 
 	gulper_eel.trigger_decoy_from(player.global_position, decoy_pulse_duration_seconds, decoy_pulse_pull_distance)
 	decoy_pulse_used_this_run = true
+	decoy_pulse_activated_this_scan = true
 	status_label.text = "Decoy Pulse: Gulper Eel distracted briefly."
 	return true
 
@@ -470,7 +473,7 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 	elif _scan_target_id(target) == "shell_reef_shelf":
 		return " Shell Reef route clue refreshed."
 	elif _scan_target_id(target) == "gulper_eel":
-		return " Predator route warning refreshed."
+		return " %s" % _format_decoy_pulse_scan_feedback()
 
 	return ""
 
@@ -794,6 +797,9 @@ func _update_hud() -> void:
 
 	if dive_session.result == DiveSessionScript.Result.DIVING:
 		prompt_label.text += " | %s" % _format_burst_thruster_prompt()
+		var decoy_prompt := _format_decoy_pulse_prompt()
+		if not decoy_prompt.is_empty():
+			prompt_label.text += " | %s" % decoy_prompt
 
 func _update_run_panel() -> void:
 	surface_tabs_label.visible = _surface_tabs_enabled()
@@ -902,6 +908,24 @@ func _format_burst_thruster_prompt() -> String:
 		return "Burst cooldown: %ds" % ceili(burst_thruster_cooldown_remaining)
 
 	return "Space burst: %d oxygen" % ceili(burst_thruster_oxygen_cost)
+
+func _format_decoy_pulse_prompt() -> String:
+	if progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
+		return "Decoy: spent" if decoy_pulse_used_this_run else "F on Gulper: Decoy ready"
+	if progression_state.has_discovery("gulper_eel"):
+		return "Decoy: locked in upgrades"
+
+	return ""
+
+func _format_decoy_pulse_scan_feedback() -> String:
+	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
+		return "Predator route warning refreshed. Decoy Pulse unavailable."
+	if decoy_pulse_activated_this_scan:
+		return "Decoy Pulse spent: predator distracted for %ds." % ceili(decoy_pulse_duration_seconds)
+	if decoy_pulse_used_this_run:
+		return "Predator route warning refreshed. Decoy Pulse already spent this expedition."
+
+	return "Predator route warning refreshed. Decoy Pulse ready on re-scan."
 
 func _surface_tabs_enabled() -> bool:
 	return dive_session.result == DiveSessionScript.Result.EXTRACTED

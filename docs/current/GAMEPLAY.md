@@ -23,6 +23,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - `Burst Thruster` costs 4 oxygen, has a 4-second cooldown, and cannot activate when the cost would immediately deplete oxygen.
 - The HUD prompt shows whether `Burst Thruster` is ready and its oxygen cost or current cooldown. Status text reports successful activation, cooldown denial, and low-oxygen denial.
 - `Burst Thruster` does not damage, stun, harvest, or bypass predators, resources, pressure locks, or progression gates.
+- When `Decoy Pulse I` is relevant, the HUD prompt separately reports whether the pulse is upgrade-locked, ready on `Gulper Eel` re-scan, or already spent for the expedition. Gulper Eel scan status text reports unavailable, spent, and already-spent states, and the predator hint shifts to a temporary green decoy color while distracted.
 - Current-dive state lives in `DiveSession`: oxygen, cargo, has-left-base, current depth, and dive result.
 - Dives begin from an `Expedition Ready` panel. Press E or Enter to begin oxygen drain and active dive play. The panel includes one concise goal line that points to the next useful upgrade purchase, missing banked resources, scan prerequisite such as `Thermal Vent` or `Wreck Signal Cache`, or the `Shell Reef` midwater route objective once configured upgrade goals are complete.
 - Extraction and oxygen failure show a run result panel summarizing banked cargo, carried-cargo loss, one concise route-choice callout, durable upgrade progress, discoveries recorded or kept, and best depth.

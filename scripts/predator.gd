@@ -39,6 +39,8 @@ func _physics_process(delta: float) -> void:
 	if _decoy_time > 0.0:
 		_decoy_time = maxf(0.0, _decoy_time - delta)
 		_chase_time = 0.0
+		if patrol_hint != null:
+			patrol_hint.modulate = Color(0.62, 1.0, 0.72, 0.72)
 		global_position = global_position.move_toward(_decoy_target, chase_speed * decoy_speed_multiplier * delta)
 		return
 
