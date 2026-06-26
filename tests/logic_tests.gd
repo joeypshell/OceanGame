@@ -59,6 +59,7 @@ func _initialize() -> void:
 	_run("pressure lock guidance text", _test_pressure_lock_guidance_text)
 	_run("surface summary tabs", _test_surface_summary_tabs)
 	_run("condition briefing copy", _test_condition_briefing_copy)
+	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("predator decoy pulse helper", _test_predator_decoy_pulse_helper)
 	_run("decoy pulse feedback text", _test_decoy_pulse_feedback_text)
@@ -690,6 +691,21 @@ func _test_condition_briefing_copy() -> void:
 	_expect(briefing.contains("Condition: Thermal Bloom"), "condition briefing should show the player-facing condition name")
 	_expect(briefing.contains("Warm water stirs"), "condition briefing should show one short player-facing line")
 	_expect(not briefing.contains("thermal_bloom"), "condition briefing should not expose raw condition ids")
+	main.free()
+
+func _test_compact_dive_hud_helpers() -> void:
+	var main := MainScript.new()
+	var cargo: Array[String] = ["glow_plankton", "kelp_fiber", "glow_plankton"]
+	var inline_cargo: String = main.call("_format_cargo_counts_inline", cargo)
+	_expect(inline_cargo == " - Glow x2, Kelp x1", "active cargo helper should keep carried resources on one line")
+
+	var compact_discoveries: String = main.call("_format_discoveries", true)
+	_expect(compact_discoveries == "Discoveries: 0", "compact discovery helper should show only the count")
+
+	var long_status := "Scanned Thermal Vent.\nWarm current marks optional glow; bank Pressure Seal clue. Return safely before oxygen runs out."
+	var compact_status: String = main.call("_compact_dive_status", long_status)
+	_expect(not compact_status.contains("\n"), "compact dive status should remove line breaks")
+	_expect(compact_status.length() <= 92, "compact dive status should stay within the dive HUD limit")
 	main.free()
 
 func _test_burst_thruster_movement_helper() -> void:

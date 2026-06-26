@@ -969,167 +969,169 @@ limit_bottom = 2320
 [node name="Hint" type="Label" parent="HUD"]
 offset_left = 24.0
 offset_top = 22.0
-offset_right = 620.0
+offset_right = 520.0
 offset_bottom = 54.0
 text = "OceanGame prototype - move with WASD or arrow keys"
 
 [node name="BoundsHint" type="Label" parent="HUD"]
 offset_left = 24.0
 offset_top = 54.0
-offset_right = 620.0
+offset_right = 520.0
 offset_bottom = 86.0
 text = "Dive down from the surface boat, then return to extract"
 
 [node name="Oxygen" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 86.0
-offset_right = 620.0
-offset_bottom = 118.0
+offset_top = 24.0
+offset_right = 360.0
+offset_bottom = 56.0
 text = "Oxygen: 30 / 30"
 
 [node name="Depth" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 118.0
-offset_right = 620.0
-offset_bottom = 150.0
+offset_top = 62.0
+offset_right = 360.0
+offset_bottom = 94.0
 text = "Depth: 0m | Best: 0m"
 
 [node name="BaseDirection" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 150.0
-offset_right = 620.0
-offset_bottom = 182.0
+offset_top = 100.0
+offset_right = 360.0
+offset_bottom = 132.0
 text = "Base: here"
 
 [node name="Cargo" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 182.0
-offset_right = 620.0
-offset_bottom = 268.0
+offset_top = 138.0
+offset_right = 360.0
+offset_bottom = 170.0
 text = "Cargo: 0 / 3"
 
 [node name="BankedResources" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 268.0
-offset_right = 620.0
-offset_bottom = 354.0
+offset_top = 214.0
+offset_right = 420.0
+offset_bottom = 246.0
 text = "Banked: none"
 
 [node name="Upgrade" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 354.0
-offset_right = 620.0
-offset_bottom = 386.0
+offset_top = 246.0
+offset_right = 420.0
+offset_bottom = 278.0
 text = "Upgrade: Oxygen Tank I costs Kelp x2, Shell x1, Glow x1"
 
 [node name="Discoveries" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 386.0
-offset_right = 620.0
-offset_bottom = 418.0
+offset_top = 176.0
+offset_right = 360.0
+offset_bottom = 208.0
 text = "Discoveries: 0 / 3"
 
 [node name="Status" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 418.0
-offset_right = 620.0
-offset_bottom = 450.0
+offset_top = 300.0
+offset_right = 560.0
+offset_bottom = 364.0
 text = "Dive status: active"
+autowrap_mode = 2
 
 [node name="ExtractionPrompt" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 450.0
-offset_right = 620.0
-offset_bottom = 498.0
+offset_top = 252.0
+offset_right = 560.0
+offset_bottom = 292.0
 text = "Safe base: press E or Enter to extract"
+autowrap_mode = 2
 
 [node name="ScanTarget" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 500.0
-offset_right = 620.0
-offset_bottom = 532.0
+offset_top = 214.0
+offset_right = 560.0
+offset_bottom = 248.0
 text = "Scan target: none nearby"
 
 [node name="OxygenWarning" type="Label" parent="HUD"]
 visible = false
 offset_left = 24.0
-offset_top = 532.0
-offset_right = 620.0
-offset_bottom = 564.0
+offset_top = 356.0
+offset_right = 560.0
+offset_bottom = 388.0
 text = "LOW OXYGEN - PLAN RETURN"
 
 [node name="RecentExpeditionLog" type="Label" parent="HUD"]
 offset_left = 24.0
-offset_top = 584.0
-offset_right = 620.0
-offset_bottom = 704.0
+offset_top = 388.0
+offset_right = 560.0
+offset_bottom = 508.0
 text = "Recent Expeditions\nNone yet."
 
 [node name="RunPanel" type="Panel" parent="HUD"]
-offset_left = 730.0
+offset_left = 420.0
 offset_top = 32.0
-offset_right = 1248.0
+offset_right = 872.0
 offset_bottom = 362.0
 
 [node name="SurfaceTabs" type="Label" parent="HUD/RunPanel"]
 offset_left = 16.0
 offset_top = 12.0
-offset_right = 492.0
+offset_right = 442.0
 offset_bottom = 36.0
 text = "[Result]  Upgrades  Log"
 
 [node name="RunTitle" type="Label" parent="HUD/RunPanel"]
 offset_left = 16.0
 offset_top = 42.0
-offset_right = 492.0
+offset_right = 442.0
 offset_bottom = 74.0
 text = "Expedition Ready"
 
 [node name="RunSummary" type="Label" parent="HUD/RunPanel"]
 offset_left = 16.0
 offset_top = 80.0
-offset_right = 492.0
+offset_right = 442.0
 offset_bottom = 314.0
 text = "Press E or Enter to begin."
 
 [node name="UpgradePanel" type="Panel" parent="HUD"]
 visible = false
-offset_left = 730.0
+offset_left = 420.0
 offset_top = 376.0
-offset_right = 1248.0
+offset_right = 872.0
 offset_bottom = 640.0
 
 [node name="UpgradeMenuTitle" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
 offset_top = 14.0
-offset_right = 492.0
+offset_right = 442.0
 offset_bottom = 46.0
 text = "Surface Upgrade Bay"
 
 [node name="UpgradeMenuItem" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
 offset_top = 52.0
-offset_right = 492.0
+offset_right = 442.0
 offset_bottom = 104.0
 text = "Oxygen Tank I"
 
 [node name="UpgradeMenuCost" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
 offset_top = 108.0
-offset_right = 492.0
+offset_right = 442.0
 offset_bottom = 138.0
 text = "Cost: Kelp Fiber x2, Shell Fragments x1, Glow Plankton x1"
 
 [node name="UpgradeMenuState" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
 offset_top = 142.0
-offset_right = 492.0
+offset_right = 442.0
 offset_bottom = 212.0
 text = "Unavailable: collect and bank more resources."
 
 [node name="UpgradeMenuFeedback" type="Label" parent="HUD/UpgradePanel"]
 offset_left = 16.0
 offset_top = 216.0
-offset_right = 492.0
+offset_right = 442.0
 offset_bottom = 252.0
 text = "Deposit cargo to unlock upgrades."

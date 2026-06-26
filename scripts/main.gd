@@ -38,6 +38,7 @@ const SURFACE_TAB_RESULT := 0
 const SURFACE_TAB_UPGRADES := 1
 const SURFACE_TAB_LOG := 2
 const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
+const DIVE_STATUS_MAX_CHARS := 92
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
@@ -61,6 +62,8 @@ const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
 
 @onready var player: CharacterBody2D = $Player
 @onready var base_zone: Area2D = $BaseZone
+@onready var hint_label: Label = $HUD/Hint
+@onready var bounds_hint_label: Label = $HUD/BoundsHint
 @onready var oxygen_label: Label = $HUD/Oxygen
 @onready var depth_label: Label = $HUD/Depth
 @onready var base_direction_label: Label = $HUD/BaseDirection
@@ -404,10 +407,10 @@ func _try_scan() -> void:
 	var display_name := _scan_target_display_name(target)
 	if progression_state.has_discovery(discovery_id):
 		_activate_scan_effect(target)
-		status_label.text = "%s already scanned.%s" % [
+		status_label.text = _compact_dive_status("%s known.%s" % [
 			display_name,
 			_format_repeat_scan_effect_text(target) + _format_signal_lens_pulse_text(target)
-		]
+		])
 		_update_hud()
 		return
 
@@ -425,10 +428,10 @@ func _try_scan() -> void:
 		_fail_dive()
 	else:
 		_save_progression()
-		status_label.text = "Scanned %s.%s" % [
+		status_label.text = _compact_dive_status("Scanned %s.%s" % [
 			display_name,
 			_format_repeat_scan_effect_text(target) + _format_first_scan_guidance(target)
-		]
+		])
 		_update_hud()
 
 func _nearest_scan_target() -> Node:
@@ -780,6 +783,14 @@ func _update_hud() -> void:
 	_update_scan_target_feedback()
 	_update_run_panel()
 	_update_upgrade_menu()
+	var is_diving := dive_session.result == DiveSessionScript.Result.DIVING
+	var has_surface_panel := dive_session.result != DiveSessionScript.Result.DIVING
+	hint_label.visible = not is_diving
+	bounds_hint_label.visible = not is_diving
+	oxygen_label.visible = is_diving
+	depth_label.visible = is_diving
+	base_direction_label.visible = is_diving
+	cargo_label.visible = is_diving
 	oxygen_label.text = "Oxygen: %d / %d" % [ceili(dive_session.oxygen), ceili(dive_session.max_oxygen)]
 	depth_label.text = "Depth: %dm | Best: %dm" % [
 		roundi(dive_session.current_depth),
@@ -790,13 +801,20 @@ func _update_hud() -> void:
 	cargo_label.text = "Cargo: %d / %d%s" % [
 		dive_session.current_cargo.size(),
 		dive_session.cargo_limit,
-		_format_resource_counts(dive_session.current_cargo)
+		_format_cargo_counts_inline(dive_session.current_cargo)
 	]
 	bank_label.text = "Banked:%s" % _format_banked_resources()
 	upgrade_label.text = _format_upgrade_status()
-	discoveries_label.text = _format_discoveries()
+	discoveries_label.text = _format_discoveries(true)
 	recent_expedition_log_label.text = _format_recent_expedition_log()
-	recent_expedition_log_label.visible = dive_session.result == DiveSessionScript.Result.DIVING
+	bank_label.visible = false
+	upgrade_label.visible = false
+	recent_expedition_log_label.visible = false
+	discoveries_label.visible = not has_surface_panel
+	scan_target_label.visible = is_diving
+	status_label.visible = is_diving
+	prompt_label.visible = is_diving
+	status_label.text = _compact_dive_status(status_label.text) if is_diving else status_label.text
 
 	if dive_session.result == DiveSessionScript.Result.READY:
 		prompt_label.text = "Press E or Enter to begin the dive"
@@ -815,7 +833,7 @@ func _update_hud() -> void:
 		else:
 			prompt_label.text = "Leave the moonpool, then return to extract"
 	else:
-		prompt_label.text = "Explore, then return to the safe base"
+		prompt_label.text = "Explore, then return to base"
 
 	if dive_session.result == DiveSessionScript.Result.DIVING:
 		prompt_label.text += " | %s" % _format_burst_thruster_prompt()
@@ -893,6 +911,31 @@ func _format_resource_counts(resource_ids: Array[String]) -> String:
 		parts.append(" %s x%d" % [_display_name_for_resource(resource_id), int(counts[resource_id])])
 
 	return "\n" + "\n".join(parts)
+
+func _format_cargo_counts_inline(resource_ids: Array[String]) -> String:
+	if resource_ids.is_empty():
+		return ""
+
+	var counts := {}
+	for resource_id in resource_ids:
+		counts[resource_id] = int(counts.get(resource_id, 0)) + 1
+
+	var parts: Array[String] = []
+	for resource_id in counts.keys():
+		parts.append("%s x%d" % [_short_resource_name(resource_id), int(counts[resource_id])])
+
+	return " - " + ", ".join(parts)
+
+func _short_resource_name(resource_id: String) -> String:
+	match resource_id:
+		"kelp_fiber":
+			return "Kelp"
+		"shell_fragments":
+			return "Shell"
+		"glow_plankton":
+			return "Glow"
+		_:
+			return resource_id
 
 func _format_banked_resources() -> String:
 	if progression_state.banked_resources.is_empty():
@@ -1267,9 +1310,11 @@ func _string_array_from(value: Variant) -> Array[String]:
 
 	return result
 
-func _format_discoveries() -> String:
+func _format_discoveries(compact: bool = false) -> String:
 	var discoveries := progression_state.scan_discoveries
 	var text := "Discoveries: %d" % discoveries.size()
+	if compact:
+		return text
 	if discoveries.is_empty():
 		return text + "\n???"
 
@@ -1277,6 +1322,16 @@ func _format_discoveries() -> String:
 		text += "\n%s - %s" % [discovery["display_name"], discovery["gameplay_fact"]]
 
 	return text
+
+func _compact_dive_status(text: String) -> String:
+	var cleaned := text.replace("\n", " ").strip_edges()
+	while cleaned.find("  ") != -1:
+		cleaned = cleaned.replace("  ", " ")
+
+	if cleaned.length() <= DIVE_STATUS_MAX_CHARS:
+		return cleaned
+
+	return cleaned.substr(0, DIVE_STATUS_MAX_CHARS - 3).strip_edges() + "..."
 
 func _update_scan_target_feedback() -> void:
 	var next_target := _nearest_scan_target() if dive_session.result == DiveSessionScript.Result.DIVING else null
