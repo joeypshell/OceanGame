@@ -24,7 +24,7 @@ This review does not replace any additional art. Larger visual replacements shou
 | Shell Reef pocket | `ShellReefPocket/Visuals/SpriteAnchor/Sprite` plus `FallbackGeometry` in `scenes/readability/ShellReefPocketVisuals.tscn` | Good extracted landmark-readability scene. Covered by tests. |
 | Shell Reef Shelf scan target | `Discoveries/ShellReefShelf/SpriteAnchor/Sprite` plus `FallbackVisual`, `ScanMarker`, and collision | Consistent scannable pattern. Covered by tests. |
 | Pressure-Locked Research Wreck | `PressureLockedWreck/SpriteAnchor/Sprite` plus `FallbackGeometry`; pressure gate visuals extracted as child scene | Consistent landmark/gate pattern. Covered by tests. |
-| Wreck outside scan target | `PressureLockedWreck/OuterScan/SpriteAnchor/Sprite` plus `FallbackVisual`, `ScanMarker`, and collision | Consistent scannable pattern. Covered by tests. |
+| Wreck outside scan target | `PressureLockedWreck/OuterScan/SpriteAnchor/Sprite` using `assets/exports/sprites/pressure_wreck_outer_scan_sprite_v1.svg`, plus `FallbackVisual`, `ScanMarker`, and collision | First source/export outside-wreck scan sprite is wired while preserving pressure clue behavior. Covered by tests. |
 | Wreck Signal Cache | `PressureLockedWreck/WreckSignalCache/SpriteAnchor/Sprite` using `assets/exports/sprites/wreck_signal_cache_sprite_v1.svg`, plus `FallbackVisual`, `ScanMarker`, and collision | First source/export cache sprite is wired while preserving fallback glow and scan behavior. Covered by tests. |
 
 ## Standard To Preserve
