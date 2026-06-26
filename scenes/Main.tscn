@@ -168,6 +168,14 @@ polygon = PackedVector2Array(546, 1648, 750, 1648, 724, 1688, 572, 1688)
 color = Color(0.72, 1, 0.9, 0.22)
 polygon = PackedVector2Array(454, 120, 826, 120, 764, 300, 516, 300)
 
+[node name="BaseReturnBeacon" type="Polygon2D" parent="."]
+color = Color(0.74, 1, 0.9, 0.34)
+polygon = PackedVector2Array(642, 252, 672, 288, 642, 320, 612, 288)
+
+[node name="BaseReturnBeaconRib" type="Polygon2D" parent="."]
+color = Color(0.62, 1, 0.9, 0.2)
+polygon = PackedVector2Array(590, 344, 694, 344, 676, 370, 608, 370)
+
 [node name="ShallowLightRays" type="Polygon2D" parent="."]
 color = Color(0.64, 0.91, 0.93, 0.18)
 polygon = PackedVector2Array(138, 122, 316, 122, 188, 760, 72, 760)
