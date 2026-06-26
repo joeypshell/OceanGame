@@ -1264,6 +1264,25 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(not compact_status.contains("\n"), "compact dive status should remove line breaks")
 	_expect(compact_status.length() <= 92, "compact dive status should stay within the dive HUD limit")
 
+	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks decoy.")
+	main.progression_state.purchased_upgrades[DecoyPulseUpgrade.id] = true
+	var combined_prompt := "Explore, then return to base | %s | %s" % [
+		main._format_burst_thruster_prompt(),
+		main._format_decoy_pulse_prompt(),
+	]
+	_expect(combined_prompt.length() <= 72, "combined Burst and Decoy active prompt should stay compact")
+	_expect(combined_prompt.contains("Space: burst"), "combined active prompt should keep the Space command visible")
+	_expect(combined_prompt.contains("F: decoy ready"), "combined active prompt should keep the Decoy command compact")
+	_expect(not combined_prompt.contains("Playtest data:"), "combined active prompt should not expose debug telemetry")
+
+	main.decoy_pulse_used_this_run = true
+	combined_prompt = "Explore, then return to base | %s | %s" % [
+		main._format_burst_thruster_prompt(),
+		main._format_decoy_pulse_prompt(),
+	]
+	_expect(combined_prompt.length() <= 68, "spent Decoy active prompt should stay compact")
+	_expect(combined_prompt.contains("Decoy spent"), "spent Decoy active prompt should stay compact and explicit")
+
 	_expect(main.call("_oxygen_state", 30.0, 40.0) == "normal", "oxygen helper should treat safe oxygen as normal")
 	_expect(main.call("_oxygen_state", 10.0, 40.0) == "low", "oxygen helper should mark 25 percent oxygen as low")
 	_expect(main.call("_oxygen_state", 4.0, 40.0) == "critical", "oxygen helper should mark 10 percent oxygen as critical")
