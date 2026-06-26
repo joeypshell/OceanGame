@@ -207,6 +207,8 @@ MCP context refresh after evidence/prompt/readability updates: `.mcp/oceangame-c
 
 Backlog replenishment after evidence, prompt, and readability hardening: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EVIDENCE_PROMPT_READABILITY_2026_06_26.md` creates issues #404-#423. The queue starts with upgrade-panel overflow polish, then uses the mobile-like screenshot scaffold for evidence-only reviews, plans Monster Research II as non-combat behavior evidence, rechecks lower-route/source-art risks, and ends with vertical-slice acceptance and MCP/backlog refreshes.
 
+Upgrade details overflow review after prompt/evidence hardening: `docs/planning/UPGRADE_DETAILS_OVERFLOW_REVIEW_AFTER_PROMPT_EVIDENCE_2026_06_26.md` confirms the current Playwright upgrade tab is now the correct extracted surface state, but the selected-upgrade details still clip bottom feedback text at `1280x720`. This is fail-for-polish and should be fixed narrowly without adding a tech tree, inventory grid, field guide, scroll list, or broader upgrade UI.
+
 Selected scanner curiosity plan: `docs/planning/SCANNER_PROGRESSION_V2.md` now defines `Echo Lens I` as the next scanner upgrade candidate after `Signal Lens I`. It should stay gated by `Wreck Signal Cache` plus `Signal Lens I`, use vague echo/category/direction language, and avoid minimaps, exact-coordinate tracking, field-guide UI, broad scanner economy, or checklist behavior.
 
 Mystery signal note: `docs/planning/MYSTERY_SPINE_V1.md` now frames the pressure wreck and `Wreck Signal Cache` as a remembered-place signal chain. The intended read is future deeper access and scanner curiosity, not a quest log, exact locator, or guaranteed safe route.
