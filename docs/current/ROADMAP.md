@@ -245,6 +245,8 @@ Next source-art after Wreck Echo prep: `docs/planning/NEXT_SOURCE_ART_AFTER_WREC
 
 Wreck Echo return/failure language: `docs/planning/WRECK_ECHO_RETURN_FAILURE_LANGUAGE_2026_06_26.md` plans future result states for successful clue recovery, no-clue return, failed attempts with no cargo, and failed attempts with carried cargo. It keeps Wreck Echo failure recoverable under existing oxygen/cargo rules and adds no runtime copy yet.
 
+Wreck Echo first implementation breakdown: `docs/planning/WRECK_ECHO_FIRST_IMPLEMENTATION_ISSUE_BREAKDOWN_2026_06_26.md` recommends one future route implementation issue covering one authored pocket, one prepared-route question, one run-scoped research clue, focused tests, Playwright or normal-scale evidence, and strict no-locator/no-quest/no-new-economy non-goals. No implementation issue is opened or wired yet.
+
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
 
 Backlog replenishment after closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines the next ordered twenty-issue queue. The focus is solo first-run evidence, compact acceptance proof, final closeout status, source-art/readability rechecks, and Wreck Echo planning without implementing a new route yet.
