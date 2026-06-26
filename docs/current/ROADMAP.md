@@ -79,6 +79,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_PLAYABLE_LOOP_POLISH_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLICE_READABILITY_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_ACCEPTANCE_EVIDENCE_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_CHECKLIST_2026_06_26.md`
 - `docs/planning/EXPEDITION_DAY_FIVE_SEED_REVIEW_FINDINGS_2026_06_26.md`
@@ -205,7 +206,6 @@ Pass with polish:
 
 Remaining before calling the vertical-slice gate fully accepted:
 
-- add text-length guards for result and upgrade copy,
 - keep lower-route screenshots on the watchlist after any visual change, especially surface art or future Wreck Echo work.
 
 Cleared acceptance follow-ups:
@@ -217,16 +217,17 @@ Cleared acceptance follow-ups:
 - condition visuals have a normal-scale review after the surface/HUD changes, with Wreck Shift kept flavor-only.
 - Decoy Pulse result memory and active HUD/status feedback have a focused smoke note; prompt length remains a future polish watchlist, not a blocker.
 - Echo Lens pulse readability at Wreck Signal Cache has a focused local/no-locator recheck.
+- result and upgrade text-length guards landed in #273.
 
 ## Immediate Issue Order
 
 Current playable-slice track:
 
-- Move active `Discoveries` into the compact HUD instead of the playfield gap.
-- Verify the acceptance checklist through short clean-save smoke runs.
-- Recheck `Decoy Pulse I` owned-state HUD/status and result memory.
-- Recheck lower-route screenshots after visual or HUD changes.
-- Wire and review the surface moonpool/waterline readability pass.
+- Close out the current vertical-slice acceptance status after the evidence cleanup batch.
+- Recheck lower-route screenshots after the surface/HUD/condition/Echo Lens updates.
+- Review active prompt compactness when `Burst Thruster` and `Decoy Pulse I` both appear.
+- Improve first-run readability without adding tutorial panels, quest checklists, minimaps, or field-guide UI.
+- Select the next source-art pass based on readability impact after the moonpool/waterline work.
 
 Next planning track:
 
@@ -240,6 +241,29 @@ Deferred and out-of-scope track:
 - Keep minimap, route graph, exact scanner locator, objective checklist, weapons, predator harvesting, full procedural ocean, daily challenge calendar, inventory grid, and final production-art lock out of this milestone.
 
 Historical ordered issue batches:
+
+Next acceptance-closeout batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_ACCEPTANCE_EVIDENCE_2026_06_26.md`:
+
+1. #280 Update final vertical-slice acceptance status after evidence cleanup.
+2. #281 Add final playable vertical-slice closeout review.
+3. #282 Add lower-route normal-scale screenshot recheck after acceptance cleanup.
+4. #283 Review active prompt length with Burst Thruster and Decoy Pulse together.
+5. #284 Add active prompt compactness regression coverage.
+6. #285 Add first-run surface ready comprehension review.
+7. #286 Add first-run active dive comprehension review.
+8. #287 Add save/progression persistence expectation note for owned upgrades.
+9. #288 Review sub idle/thrust readability at normal scale.
+10. #289 Plan sub idle/thrust source-art polish constraints.
+11. #290 Review surface launch/return readability after moonpool and panel changes.
+12. #291 Select next source-art replacement after moonpool acceptance evidence.
+13. #292 Plan shallow/midwater background art-pass constraints.
+14. #293 Wire first shallow/midwater background source-art study.
+15. #294 Review background source-art study against gameplay readability.
+16. #295 Plan pressure-dark threshold use/no-use decision.
+17. #296 Review upgrade bay selection affordance for Up/Down cycling.
+18. #297 Add solo first-run readability checklist to replace blind validation.
+19. #298 Update MCP context after vertical-slice closeout batch.
+20. #299 Replenish backlog after vertical-slice closeout batch.
 
 Next surface-readability acceptance batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`:
 
