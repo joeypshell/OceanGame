@@ -70,6 +70,7 @@ func _initialize() -> void:
 	_run("discovery memory result callout", _test_discovery_memory_result_callout)
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("gulper research result callout", _test_gulper_research_result_callout)
+	_run("echo lens result callout", _test_echo_lens_result_callout)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("recent expedition log", _test_recent_expedition_log)
 	_run("thermal vent scan clue text", _test_thermal_vent_scan_clue_text)
@@ -855,6 +856,21 @@ func _test_gulper_research_result_callout() -> void:
 
 	main.decoy_pulse_used_this_run = true
 	_expect(main._format_gulper_research_callout().contains("Decoy timing"), "Decoy evidence should take priority as a stronger research result")
+	main.free()
+
+func _test_echo_lens_result_callout() -> void:
+	var main := MainScript.new()
+
+	_expect(main._format_echo_lens_research_callout() == "", "Echo Lens result line should stay hidden until an echo fires")
+	main.run_echo_lens_echo_fired = true
+	var callout := main._format_echo_lens_research_callout()
+	_expect(callout.contains("Echo Lens"), "Echo Lens result line should name the scanner upgrade")
+	_expect(callout.contains("weak wreck signal deeper-right"), "Echo Lens result line should preserve the broad echo memory")
+	_expect(not callout.to_lower().contains("map"), "Echo Lens result line should not introduce map language")
+	_expect(not callout.to_lower().contains("checklist"), "Echo Lens result line should not introduce checklist language")
+	var summary := main._format_run_summary("%s%s" % [main._format_route_choice_callout(), callout], "extracted")
+	_expect(summary.contains("Research:"), "Echo Lens result line should appear as compact research memory")
+	_expect(not summary.contains("Playtest data:"), "Echo Lens result line should not expose debug telemetry")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:

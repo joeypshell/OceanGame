@@ -162,6 +162,7 @@ var run_collected_resources: Array[String] = []
 var run_completed_scans: Array[String] = []
 var run_predator_contacts := 0
 var run_failure_cause := "none"
+var run_echo_lens_echo_fired := false
 var recent_expedition_log: Array[Dictionary] = []
 
 func _ready() -> void:
@@ -239,13 +240,14 @@ func _try_extract() -> void:
 	progression_state.bank_cargo(extracted_cargo)
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\n%s\n%s%s\n%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
+	last_result_summary = "%s\n%s\n%s%s\n%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(extracted_count, extracted_cargo),
 		_format_region_memory_callout(),
 		_format_discovery_memory_callout(),
 		_format_route_choice_callout(),
 		_format_gulper_research_callout(),
+		_format_echo_lens_research_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
 		roundi(progression_state.best_depth_reached),
@@ -265,12 +267,13 @@ func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\nCargo lost. Banked resources, upgrades, scans, and best depth kept.\n%s%s\n%s%s\n%s\nBest depth: %dm.\n%s" % [
+	last_result_summary = "%s\nCargo lost. Banked resources, upgrades, scans, and best depth kept.\n%s%s\n%s%s%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Failure"),
 		_format_region_memory_callout(),
 		_format_discovery_memory_callout(),
 		_format_route_choice_callout(),
 		_format_gulper_research_callout(),
+		_format_echo_lens_research_callout(),
 		_format_scan_progress_callout("Scans kept"),
 		roundi(progression_state.best_depth_reached),
 		_format_next_expedition_prompt(),
@@ -499,6 +502,8 @@ func _try_scan() -> void:
 	var display_name := _scan_target_display_name(target)
 	if progression_state.has_discovery(discovery_id):
 		_activate_scan_effect(target)
+		if discovery_id == "wreck_signal_cache" and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
+			run_echo_lens_echo_fired = true
 		status_label.text = _compact_dive_status("%s known.%s" % [
 			display_name,
 			_format_repeat_scan_effect_text(target) + _format_signal_lens_pulse_text(target)
@@ -1385,6 +1390,7 @@ func _reset_run_telemetry() -> void:
 	run_completed_scans.clear()
 	run_predator_contacts = 0
 	run_failure_cause = "none"
+	run_echo_lens_echo_fired = false
 
 func _format_run_telemetry(result_name: String) -> String:
 	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
@@ -1488,6 +1494,12 @@ func _format_gulper_research_callout() -> String:
 		return "\nResearch: Gulper strike confirms the warning lane is dangerous."
 	if run_completed_scans.has("gulper_eel"):
 		return "\nResearch: Gulper route timing observed."
+
+	return ""
+
+func _format_echo_lens_research_callout() -> String:
+	if run_echo_lens_echo_fired:
+		return "\nResearch: Echo Lens caught a weak wreck signal deeper-right."
 
 	return ""
 

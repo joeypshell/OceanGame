@@ -1,6 +1,6 @@
 # Scanner Progression v2
 
-Status: planning recommendation for the next scanner payoff after `Signal Lens I`; the initial `Wreck Signal Cache` repeat-scan planning hint, `Echo Lens I` upgrade definition, and first broad wreck echo are implemented.
+Status: planning recommendation for the next scanner payoff after `Signal Lens I`; the initial `Wreck Signal Cache` repeat-scan planning hint, `Echo Lens I` upgrade definition, first broad wreck echo, and compact result-memory line are implemented.
 
 ## Direction
 
@@ -153,7 +153,7 @@ Implement only the Wreck Signal Cache echo:
 - add data-backed `Echo Lens I` to the upgrade bay,
 - after ownership, repeat-scanning known `Wreck Signal Cache` produces one compact broad echo: `Echo Lens: weak wreck signal deeper-right`,
 - if no unresolved echo is available, show `Echo Lens: no unresolved echo nearby`,
-- optionally add one compact result line only when an echo fired during the expedition,
+- add one compact result line only when an echo fired during the expedition,
 - keep repeat scans free for the current prototype.
 
 This slice should not add a minimap, field guide, exact distance, route graph, multi-echo list, scanner energy, or any new hidden object reveal beyond the broad wreck-echo phrase.
