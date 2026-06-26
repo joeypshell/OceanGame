@@ -44,6 +44,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 - Missing `save_version` saves are treated as legacy version `0` and migrate by loading the known progression fields. Current version `1` loads the same known fields directly. Unknown newer versions warn and load known fields only so prototype progress is not discarded.
 - The prototype save does not restore active oxygen, current cargo, active run state, temporary effects, current expedition number, current expedition seed, or whether the one-use `Decoy Pulse I` has been spent during the active expedition.
 - Pressing `F9` resets the local prototype save from inside the running game. It clears banked resources, purchased upgrades, scan discoveries, best depth, and the save file, then returns the scene to a clean Expedition 1 ready state.
+- Use `F9` before first-run playtests when the tester should experience the prototype without previously owned upgrades, banked resources, scan discoveries, or best-depth history. Relaunching the game without `F9` should keep durable progression but still start from a fresh ready expedition rather than an in-progress dive.
 - Extraction only succeeds after the player has left the base and returned.
 - The player starts with three cargo slots. Resource pickups fill cargo during a dive and cost 1 oxygen to collect.
 - Starter resources are placed from authored candidate points using the current run seed: `Kelp Fiber` stays shallow, `Shell Fragments` stays midwater, and `Glow Plankton` stays deep. The `Thermal Vent` pocket contributes vent-adjacent `Glow Plankton` candidates for existing seeded selection rather than adding extra active resource pickups.
@@ -141,9 +142,11 @@ Manual smoke:
 
 - Launch the project and confirm the first scene runs.
 - Confirm the expedition starts at the `Expedition Ready` panel and does not begin active oxygen pressure until E or Enter is pressed.
+- For clean first-run checks, press `F9` on the ready screen and confirm the ready panel returns to `Expedition 1`, oxygen is back to the base starting value, banked resources/upgrades/discoveries are cleared, and best depth is reset.
 - Confirm the ready-panel goal keeps upgrade resource and scan-prerequisite goals ahead of the `Shell Reef` route objective.
 - Confirm each restarted expedition advances the session number and seed while persistent progression remains.
 - Relaunch the project after banking resources, buying an upgrade, or recording a discovery, and confirm long-term progression reloads while active cargo and current-dive state do not.
+- Relaunch the project after pressing `F9` and confirm the clean progression state persists across launch.
 - Confirm restarted expeditions vary the starter resource positions while keeping `Kelp Fiber` shallow, `Shell Fragments` midwater, and `Glow Plankton` deep.
 - Confirm restarted expeditions alternate between `Cautious shallows` and `Deep reward route` cluster patterns, and that the deep reward pattern tempts a route near the predator patrol.
 - Confirm restarted expeditions vary the `Gulper Eel` route and move the warning current/marker with it without blocking the safe return path.

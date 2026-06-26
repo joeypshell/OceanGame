@@ -4,10 +4,23 @@ Use this template for hands-on seeded-expedition tuning passes. The result panel
 
 For blind unfamiliar-player validation, use `docs/planning/BLIND_VALIDATION_KIT.md` first. That kit keeps the pre-test explanation limited to controls and adds observation prompts for #37.
 
+## Clean-Save Setup
+
+Use this setup when the goal is to judge the first-run experience.
+
+1. Launch OceanGame.
+2. On the `Expedition Ready` panel, press `F9`.
+3. Confirm the panel returns to `Expedition 1 Ready`.
+4. Confirm the tester has no owned upgrades, no banked resources, no discoveries, and no best-depth history.
+5. Start the dive with E or Enter.
+
+Do not press `F9` for progression-continuity checks. For those checks, relaunch the game normally and confirm durable progression persists while active oxygen, carried cargo, temporary effects, and in-progress expedition state do not.
+
 ## Expedition Template
 
 - Date:
 - Tester:
+- Clean save used:
 - Expedition number:
 - Seed:
 - Cluster pattern:
