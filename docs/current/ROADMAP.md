@@ -43,6 +43,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_THERMAL_VENT_DECOY_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_DEMO_READABILITY_HYBRID_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md`
 - `docs/planning/COMPULSION_IDENTITY_2026_06_26.md`
 - `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`
 - `docs/planning/NEXT_BACKLOG_EVALUATION_2026_06_25.md`
@@ -55,40 +56,37 @@ Optional local Godot editor MCP policy lives in `docs/current/GODOT_MCP.md`.
 
 ## Active Milestone
 
-Visual Language And Playable Clarity Foundation.
+One More Expedition Motivation Slice.
 
-Status: next ordered issue batch ready to execute.
+Status: next ordered issue batch ready to execute after the visual clarity foundation.
 
-Goal: replace the most confusing placeholder visuals with a small reusable visual language so playtests can judge the core dive loop, route choices, danger, rewards, locks, and safe return without relying on large on-playfield text.
+Goal: connect the now-readable dive space to the compulsion loop: start the next expedition day, recognize remembered places, learn from creature/scanner evidence, improve one source-art object, and create a clearer reason to dive again tomorrow.
 
-Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, `Decoy Pulse I`, surface result memory, compact surface views, clean-save reset, HUD mode separation, runtime compact markers, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a documented hybrid-ocean model, expedition-day condition data, visual `Thermal Bloom`/`Calm Current` effects, and the first narrow condition-driven authored `Glow Plankton` weighting rule. The next step is to make the normal play view visually legible and appealing enough for repeated route-loop testing while sharpening the fantasy: a researcher-pilot returns to a known-but-changing alien ocean each expedition day.
+Current progression signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, `Decoy Pulse I`, surface result memory, compact surface views, clean-save reset, HUD mode separation, runtime compact markers, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, a documented hybrid-ocean model, expedition-day condition data, visual `Thermal Bloom`/`Calm Current` effects, the first narrow condition-driven authored `Glow Plankton` weighting rule, a visual clarity foundation, screenshot workflow, debug seed/condition helpers, and asset source conventions. The next step is to turn this readable prototype into a stronger one-more-expedition loop.
 
-Latest direction update: `docs/planning/COMPULSION_IDENTITY_2026_06_26.md` keeps the active visual-clarity batch but frames it around the "one more expedition day" loop: morning ocean change, risky dive, lab analysis, upgrade access, sleep, and a changed ocean tomorrow.
+Latest direction update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md` promotes the next milestone around the "one more expedition day" loop: day framing, remembered regions, creature/scanner research payoff, first source-art replacement, and mystery/access planning.
 
 ## Immediate Issue Order
 
-Visual baseline and rules track:
+Motivation and payoff track:
 
-- Capture a normal-scale visual clarity baseline screenshot set.
-- Define visual language style guide v1 around readability, alien-ocean research identity, daily-change cues, forbidden-route promise, and deeper mystery.
-- Create reusable marker scene patterns.
+- Add next-expedition day framing to restart/result flow.
+- Add Gulper route research result callout.
+- Add Wreck Signal Cache re-scan planning hint.
+- Tune ready-panel changed-ocean copy.
 
-Asset clarity track:
+Art and structure track:
 
-- Replace resource pickup placeholder visuals.
-- Improve player and surface base silhouettes.
-- Improve depth-band background readability.
-- Rework Shell Reef, Thermal Vent, pressure lock/wreck, and Gulper route visuals.
+- Replace Glow Plankton with the first source/export asset.
+- Extract pressure gate visuals into a reusable scene.
+- Review open pressure-gate screenshots with predator warning visible.
 
-Review and future-planning track:
+Region, condition, and mystery planning track:
 
-- Run a post-asset lower-route overlap review.
-- Add visual review checklist and screenshot workflow docs.
-- Add debug seed/condition selection support for repeatable visual reviews.
-- Plan Monster Research Loop v1 around learnable creature behavior.
-- Plan Scanner Progression v2 around partial information, curiosity, and route planning.
-- Plan asset source pipeline conventions.
-- In the next replenishment, consider day/sleep/ocean-change flow, first region identity map, and mystery spine before adding another large content system.
+- Plan first region identity map v1.
+- Add stable region names to landmark metadata and review copy.
+- Add condition review matrix using F3/F4/F5.
+- Plan first mystery spine v1.
 
 Later design and demo-readiness issues:
 
@@ -106,14 +104,14 @@ Do not create filler issues just to hit the number. Prefer a slightly smaller qu
 
 The milestone succeeds only when:
 
-- normal-scale screenshots clearly show the player, base, safe return, pickups, scan targets, locks, rewards, and danger,
-- first-pass assets reduce reliance on large on-playfield text,
-- route pockets have distinct silhouettes and color/opacity rules,
-- route meaning is communicated primarily through shapes, color, placement, and compact HUD/status surfaces rather than paragraphs in the ocean,
-- asset source/export conventions are documented,
-- visual reviews are repeatable by seed and condition,
-- the visual language supports stable regions, daily variation, forbidden-route promises, and mystery clues,
-- no planned variation obscures surface direction, safe return, depth-band identity, or major upgrade-gated route promises.
+- restarting reads as another expedition day rather than a technical reset,
+- at least one creature-route encounter can produce useful research feedback,
+- the Wreck Signal Cache creates a scanner curiosity hook without map/checklist UI,
+- one source-art asset replaces a gameplay-readable placeholder with provenance,
+- one heavy visual cluster begins moving out of `Main.tscn`,
+- region and mystery planning identify what the player should remember tomorrow,
+- condition/seed reviews are repeatable using the documented screenshot/debug workflow,
+- no new feature obscures surface direction, safe return, depth-band identity, or major upgrade-gated route promises.
 
 Technical implementation alone is not sufficient.
 
@@ -123,7 +121,9 @@ Choose from these candidates rather than starting all of them:
 
 Current ordered batch:
 
-The next 20 issues are defined in `docs/planning/BACKLOG_REPLENISHMENT_VISUAL_CLARITY_FOUNDATION_2026_06_26.md`. Work them in order unless a blocking implementation detail forces a narrow reorder.
+The next issues are defined in `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VISUAL_CLARITY_2026_06_26.md`. Work them in order unless a blocking implementation detail forces a narrow reorder.
+
+Current queue: #163 through #174.
 
 Recently completed:
 
