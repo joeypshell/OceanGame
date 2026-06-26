@@ -984,6 +984,12 @@ func _test_wreck_signal_cache_repeat_scan_hint() -> void:
 	_expect(repeat_hint.contains("Echo Lens"), "cache repeat scan after Signal Lens I should hint at future echo-lens study")
 	_expect(repeat_hint.contains("deeper wreck signals"), "cache repeat scan should imply unresolved wreck signals without exact coordinates")
 	_expect(not repeat_hint.to_lower().contains("map"), "cache repeat scan should not introduce map UI language")
+
+	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	repeat_hint = main._format_repeat_scan_effect_text(target)
+	_expect(repeat_hint.contains("Echo Lens: weak wreck signal deeper-right"), "Echo Lens I should turn the cache hint into a broad wreck echo")
+	_expect(not repeat_hint.to_lower().contains("coordinate"), "Echo Lens I echo should not introduce exact coordinate language")
+	_expect(not repeat_hint.to_lower().contains("checklist"), "Echo Lens I echo should not introduce checklist language")
 	_expect(main._format_signal_lens_pulse_text(target) == "", "Wreck Signal Cache repeat hint should not reuse resource pulse behavior")
 	target.free()
 	main.free()

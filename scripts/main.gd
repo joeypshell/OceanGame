@@ -597,6 +597,8 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 	return ""
 
 func _format_wreck_cache_repeat_hint() -> String:
+	if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
+		return " Echo Lens: weak wreck signal deeper-right."
 	if progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID):
 		return " Cache echo unresolved: future Echo Lens study may read deeper wreck signals."
 
