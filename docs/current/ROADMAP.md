@@ -55,6 +55,7 @@ Detailed design rules live in:
 - `docs/planning/EXPEDITION_CONDITION_VISUAL_ACCEPTANCE_REVIEW_2026_06_26.md`
 - `docs/planning/RESULT_MEMORY_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md`
+- `docs/planning/UPGRADE_BAY_SELECTION_AFFORDANCE_REVIEW_2026_06_26.md`
 - `docs/planning/CLEAN_SAVE_TWO_EXPEDITION_SMOKE_PASS_2026_06_26.md`
 - `docs/planning/DECOY_PULSE_OWNED_STATE_REVIEW_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_READABILITY_RECHECK_2026_06_26.md`
@@ -185,6 +186,8 @@ Condition visual normal-scale review: `docs/planning/CONDITION_VISUAL_NORMAL_SCA
 Result memory review: `docs/planning/RESULT_MEMORY_READABILITY_REVIEW_2026_06_26.md` confirms the result flow covers banked/lost cargo, remembered place, first discovery, route choice, Gulper/Echo Lens research, upgrade progress, scan progress, and next-expedition copy without exposing debug telemetry by default or becoming a checklist.
 
 Upgrade bay review: `docs/planning/UPGRADE_BAY_READABILITY_REVIEW_2026_06_26.md` confirms the seven-upgrade state model reads without becoming a tech tree, and the surface upgrade panel now wraps long item, cost, state, and feedback copy inside a taller panel.
+
+Upgrade bay selection affordance: `docs/planning/UPGRADE_BAY_SELECTION_AFFORDANCE_REVIEW_2026_06_26.md` keeps the one-selected-upgrade model but tunes the surface summary and selected-upgrade title so Up/Down selection and E/Enter purchase remain visible in the upgrade view without adding tech-tree, grid, inventory, or behavior scope.
 
 Backlog replenishment update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md` creates issues #260-#279. The batch focuses on clearing the remaining acceptance blockers, clean smoke evidence, Decoy Pulse owned-state review, lower-route rechecks, surface moonpool/waterline readability, and context refreshes.
 

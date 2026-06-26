@@ -1045,7 +1045,7 @@ func _update_run_panel() -> void:
 		run_panel.visible = true
 		if surface_tab_index == SURFACE_TAB_UPGRADES:
 			run_title_label.text = "Surface Upgrade Bay"
-			run_summary_label.text = _format_run_summary("Banked:%s\nChoose upgrade below; E/Enter buys.\n%s" % [
+			run_summary_label.text = _format_run_summary("Banked:%s\nUp/Down choose; E/Enter buys.\n%s" % [
 				_format_banked_resources(),
 				_format_next_expedition_prompt(),
 			], "extracted")
@@ -1073,22 +1073,25 @@ func _update_upgrade_menu() -> void:
 
 	var upgrade := _selected_upgrade_definition()
 	if upgrade == null:
-		upgrade_menu_title_label.text = "Surface Upgrade Bay"
+		upgrade_menu_title_label.text = "Upgrade Bay"
 		upgrade_menu_item_label.text = "No upgrades configured"
 		upgrade_menu_cost_label.text = ""
 		upgrade_menu_state_label.text = ""
 		upgrade_menu_feedback_label.text = upgrade_menu_feedback
 		return
 
-	upgrade_menu_title_label.text = "Surface Upgrade Bay (%d/%d)" % [
+	upgrade_menu_title_label.text = _format_upgrade_menu_title(
 		selected_upgrade_index + 1,
 		upgrade_definitions.size()
-	]
+	)
 	upgrade_menu_item_label.text = "%s\n%s" % [upgrade.display_name, upgrade.description]
 	upgrade_menu_cost_label.text = "Cost: %s" % _format_upgrade_cost(upgrade.resource_cost)
 	upgrade_menu_state_label.text = _format_upgrade_state(upgrade)
 
 	upgrade_menu_feedback_label.text = upgrade_menu_feedback
+
+func _format_upgrade_menu_title(selected_position: int, total_count: int) -> String:
+	return "Upgrade Bay (%d/%d) - Up/Down select" % [selected_position, total_count]
 
 func _format_ready_panel_summary() -> String:
 	var lines: Array[String] = [

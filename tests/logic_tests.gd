@@ -1199,6 +1199,7 @@ func _test_surface_summary_tabs() -> void:
 	_expect(main._format_surface_tabs() == "[Result]  Upgrades  Log", "surface tabs should mark the result view by default")
 	main.surface_tab_index = main.SURFACE_TAB_UPGRADES
 	_expect(main._format_surface_tabs() == "Result  [Upgrades]  Log", "surface tabs should mark the upgrade view")
+	_expect(main._format_upgrade_menu_title(1, 7) == "Upgrade Bay (1/7) - Up/Down select", "upgrade bay title should keep selection controls visible")
 	main.surface_tab_index = main.SURFACE_TAB_LOG
 	_expect(main._format_surface_tabs() == "Result  Upgrades  [Log]", "surface tabs should mark the log view")
 	main.free()
