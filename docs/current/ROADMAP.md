@@ -83,6 +83,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_VERTICAL_SLICE_READABILITY_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_ACCEPTANCE_EVIDENCE_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md`
 - `docs/planning/PLAYABLE_VERTICAL_SLICE_CLOSEOUT_REVIEW_2026_06_26.md`
 - `docs/planning/LOWER_ROUTE_ACCEPTANCE_CLEANUP_RECHECK_2026_06_26.md`
 - `docs/planning/ACTIVE_PROMPT_BURST_DECOY_REVIEW_2026_06_26.md`
@@ -173,6 +174,8 @@ Playable slice smoke log: `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LO
 Solo first-run readability: `docs/planning/SOLO_FIRST_RUN_READABILITY_CHECKLIST_2026_06_26.md` replaces unavailable blind-validation helpers with a repeatable internal checklist. It covers first ready screen, first dive, first pickup/scan, first return/failure, and first upgrade view, and must not be described as blind validation.
 
 MCP context refresh: `.mcp/oceangame-context-server.mjs` and `docs/current/TOOLING.md` now expose the recent vertical-slice closeout, first-run, persistence, source-art, shallow/midwater background, pressure-dark, upgrade-affordance, and solo-readability planning resources for future agent context.
+
+Backlog replenishment after closeout: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md` defines the next ordered twenty-issue queue. The focus is solo first-run evidence, compact acceptance proof, final closeout status, source-art/readability rechecks, and Wreck Echo planning without implementing a new route yet.
 
 Next source-art priority: `docs/planning/NEXT_SOURCE_ART_REPLACEMENT_PRIORITY_2026_06_26.md` selects the surface base moonpool/waterline integration as the next replacement target, with pressure wreck/cache environment treatment as backup. The priority is readability impact, not final art lock or a large visual batch.
 
@@ -314,6 +317,29 @@ Next acceptance-closeout batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_A
 18. #297 Add solo first-run readability checklist to replace blind validation.
 19. #298 Update MCP context after vertical-slice closeout batch.
 20. #299 Replenish backlog after vertical-slice closeout batch.
+
+Next post-closeout planning batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_CLOSEOUT_2026_06_26.md`:
+
+1. Run solo first-run readability checklist from clean save.
+2. Capture compact vertical-slice acceptance evidence bundle.
+3. Update playable vertical-slice acceptance checklist after closeout evidence.
+4. Define next milestone after playable vertical-slice closeout.
+5. Add Wreck Echo Descent no-implementation acceptance criteria.
+6. Review Echo Lens route language against no-locator rules after closeout.
+7. Plan Wreck Echo Descent route-pocket data shape without wiring it.
+8. Review oxygen/cargo preparation pressure for future Wreck Echo attempt.
+9. Select next source-art target after shallow/midwater background review.
+10. Plan pressure wreck/cache source-art shell constraints v2.
+11. Recheck lower-route readability with background study wired.
+12. Add future source-art provenance checklist for sprite batches.
+13. Plan compact HUD final polish pass.
+14. Review active HUD low-oxygen state after prompt/title changes.
+15. Review surface upgrade bay normal-scale affordance after copy tune.
+16. Review scanner feedback distinction between Signal Lens and Echo Lens.
+17. Plan next monster-research readability milestone without combat scope.
+18. Review durable progression reset/onboarding copy with solo checklist.
+19. Update MCP context after next planning batch.
+20. Replenish backlog after next-milestone planning batch.
 
 Next surface-readability acceptance batch from `docs/planning/BACKLOG_REPLENISHMENT_AFTER_VERTICAL_SLICE_READABILITY_2026_06_26.md`:
 

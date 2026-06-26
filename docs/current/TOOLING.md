@@ -109,6 +109,7 @@ Resources:
 - `oceangame://backlog-replenishment-after-playable-loop-polish-2026-06-26`
 - `oceangame://backlog-replenishment-vertical-slice-readability-2026-06-26`
 - `oceangame://backlog-replenishment-after-vertical-slice-readability-2026-06-26`
+- `oceangame://backlog-replenishment-after-vertical-slice-closeout-2026-06-26`
 - `oceangame://backlog-replenishment-after-visual-clarity-2026-06-26`
 - `oceangame://thermal-vent-route-review-2026-06-25`
 - `oceangame://backlog-replenishment-thermal-vent-decoy`
