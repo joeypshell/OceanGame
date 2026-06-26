@@ -370,8 +370,8 @@ visible = false
 
 [node name="SignalArrow" type="Polygon2D" parent="WreckSignalHint"]
 position = Vector2(1138, 1444)
-color = Color(0.64, 1, 1, 0.14)
-polygon = PackedVector2Array(-64, -12, 22, -12, 22, -30, 72, 0, 22, 30, 22, 12, -64, 12)
+color = Color(0.64, 1, 1, 0.08)
+polygon = PackedVector2Array(-70, -10, -26, -24, 28, -18, 68, -2, 30, 16, -24, 22, -70, 10, -38, 0)
 
 [node name="RareSignalEmphasis" type="Node2D" parent="."]
 visible = false

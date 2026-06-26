@@ -914,7 +914,7 @@ func _test_echo_lens_result_callout() -> void:
 	main.run_echo_lens_echo_fired = true
 	var callout := main._format_echo_lens_research_callout()
 	_expect(callout.contains("Echo Lens"), "Echo Lens result line should name the scanner upgrade")
-	_expect(callout.contains("weak wreck signal deeper-right"), "Echo Lens result line should preserve the broad echo memory")
+	_expect(callout.contains("weak wreck echo below the shelf"), "Echo Lens result line should preserve the broad local echo memory")
 	_expect(not callout.to_lower().contains("map"), "Echo Lens result line should not introduce map language")
 	_expect(not callout.to_lower().contains("checklist"), "Echo Lens result line should not introduce checklist language")
 	var summary := main._format_run_summary("%s%s" % [main._format_route_choice_callout(), callout], "extracted")
@@ -1082,7 +1082,7 @@ func _test_wreck_signal_cache_repeat_scan_hint() -> void:
 
 	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
 	repeat_hint = main._format_repeat_scan_effect_text(target)
-	_expect(repeat_hint.contains("Echo Lens: weak wreck signal deeper-right"), "Echo Lens I should turn the cache hint into a broad wreck echo")
+	_expect(repeat_hint.contains("Echo Lens: weak wreck echo lingers below the shelf"), "Echo Lens I should turn the cache hint into a broad local wreck echo")
 	_expect(not repeat_hint.to_lower().contains("coordinate"), "Echo Lens I echo should not introduce exact coordinate language")
 	_expect(not repeat_hint.to_lower().contains("checklist"), "Echo Lens I echo should not introduce checklist language")
 	_expect(main._format_signal_lens_pulse_text(target) == "", "Wreck Signal Cache repeat hint should not reuse resource pulse behavior")

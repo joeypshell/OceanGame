@@ -49,6 +49,12 @@ Implemented first effect:
 - visible enough to make the condition feel different,
 - not persistent enough to read as an objective marker.
 
+Issue #244 tuning keeps the effect local by:
+
+- softening the revealed future-cache signal shape so it reads as a broken echo rather than a directional arrow,
+- changing Echo Lens/cache wording away from `deeper-right` locator language and toward `below the shelf` local mystery language,
+- preserving broad curiosity without adding coordinates, map UI, checklist behavior, or remote objective markers.
+
 Do not turn `Rare Signal` into:
 
 - an exact locator,

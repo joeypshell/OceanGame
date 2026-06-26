@@ -636,7 +636,7 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 
 func _format_wreck_cache_repeat_hint() -> String:
 	if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
-		return " Echo Lens: weak wreck signal deeper-right."
+		return " Echo Lens: weak wreck echo lingers below the shelf."
 	if progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID):
 		return " Cache echo unresolved: future Echo Lens study may read deeper wreck signals."
 
@@ -1589,7 +1589,7 @@ func _format_gulper_research_callout() -> String:
 
 func _format_echo_lens_research_callout() -> String:
 	if run_echo_lens_echo_fired:
-		return "\nResearch: Echo Lens caught a weak wreck signal deeper-right."
+		return "\nResearch: Echo Lens caught a weak wreck echo below the shelf."
 
 	return ""
 
