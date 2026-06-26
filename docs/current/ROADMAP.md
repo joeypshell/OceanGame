@@ -47,6 +47,7 @@ Detailed design rules live in:
 - `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_REVIEW_2026_06_26.md`
 - `docs/planning/SURFACE_READY_RESULT_READABILITY_REVIEW_2026_06_26.md`
 - `docs/planning/SHELL_REEF_SPRITE_FALLBACK_BALANCE_REVIEW_2026_06_26.md`
+- `docs/planning/THERMAL_VENT_SPRITE_FALLBACK_BALANCE_REVIEW_2026_06_26.md`
 - `docs/planning/RESOURCE_ECONOMY_TUNING_I.md`
 - `docs/planning/THERMAL_VENT_ROUTE_REVIEW_2026_06_25.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_SHELL_REEF_2026_06_25.md`
@@ -121,6 +122,8 @@ Active HUD screenshot review: `docs/planning/ACTIVE_HUD_NORMAL_SCALE_SCREENSHOT_
 Surface readability review: `docs/planning/SURFACE_READY_RESULT_READABILITY_REVIEW_2026_06_26.md` confirms ready/result/failure/log states keep active HUD clutter hidden. The upgrade tab currently misses the polish bar because long upgrade copy can overflow its panel.
 
 Shell Reef balance review: `docs/planning/SHELL_REEF_SPRITE_FALLBACK_BALANCE_REVIEW_2026_06_26.md` keeps Shell Reef as pass-with-watchlist. Fallback geometry still carries the place/readability promise; future art work should strengthen the source sprite/scan target before subduing the brightest shell-fan fallback pieces.
+
+Thermal Vent balance review: `docs/planning/THERMAL_VENT_SPRITE_FALLBACK_BALANCE_REVIEW_2026_06_26.md` keeps Thermal Vent as pass-with-watchlist. The fallback shelf/mouth/chimney/plume stack still carries place identity, while the source sprite should remain the local scan-target read. Thermal Bloom should stay presentation-first.
 
 ## Immediate Issue Order
 
