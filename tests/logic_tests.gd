@@ -638,6 +638,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/EastShelfArch/RightPillar",
 		"EastShelfSpur/EastShelfArch/ReturnCurrentLeft",
 		"EastShelfSpur/EastShelfArch/ReturnRib",
+		"EastShelfSpur/ShelfGlimmerOpportunity",
+		"EastShelfSpur/ShelfGlimmerOpportunity/SignalWash",
+		"EastShelfSpur/ShelfGlimmerOpportunity/GlimmerCore",
+		"EastShelfSpur/ShelfGlimmerOpportunity/CurrentThread",
 		"EastShelfSpur/TerminalPocketHint",
 		"EastShelfSpur/PocketEntrance",
 		"EastShelfSpur/PocketEntrance/MouthShadow",
@@ -655,11 +659,15 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var exit_current := main.get_node("EastShelfSpur/PocketEntrance/ExitCurrentCue") as Polygon2D
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
+	var shelf_glimmer := main.get_node("EastShelfSpur/ShelfGlimmerOpportunity") as Node2D
+	var shelf_glimmer_core := main.get_node("EastShelfSpur/ShelfGlimmerOpportunity/GlimmerCore") as Polygon2D
 	_expect(approach_current.polygon[1].x >= 1200.0, "East Shelf Spur should branch right of the existing main column")
 	_expect(terminal_hint.polygon[terminal_hint.polygon.size() - 1].x >= 1800.0, "East Shelf Spur should reach into the expanded camera space")
 	_expect(approach_current.color.a <= 0.14, "East Shelf Spur current cue should stay subtle until full route art exists")
 	_expect(arch.position.x >= 1450.0, "East Shelf Arch should sit on the right-side branch before the pocket entrance")
 	_expect(arch_return.polygon[1].x < arch_return.polygon[0].x, "East Shelf Arch return current should point left toward the base column")
+	_expect(not shelf_glimmer.visible, "Shelf Glimmer opportunity should start hidden until its seeded condition is active")
+	_expect(shelf_glimmer_core.color.a <= 0.4, "Shelf Glimmer should read as a subtle opportunity, not a guaranteed major reward")
 	_expect(pocket_entrance.position.x >= 1880.0, "East Shelf pocket entrance should sit at the far end of the side route")
 	_expect(mouth_shadow.color.a >= 0.6, "East Shelf pocket entrance should read as an opening, not another translucent current")
 	_expect(exit_current.polygon[1].x < exit_current.polygon[0].x, "East Shelf pocket exit cue should point back left toward the main route")
@@ -1520,9 +1528,20 @@ func _test_condition_briefing_copy() -> void:
 	briefing = main._format_condition_briefing()
 	_expect(briefing.contains("Gulper route"), "predator briefing should point to the existing predator route")
 	_expect(briefing.contains("warning cues"), "predator briefing should point to existing readable cues")
+
+	main.current_expedition_condition = {
+		"id": "rare_signal",
+		"display_name": "Rare Signal",
+		"briefing": "A weak research ping is active below.",
+		"tags": ["scan", "rare"],
+	}
+	briefing = main._format_condition_briefing()
+	_expect(briefing.contains("East Shelf ping"), "rare signal briefing should point at the implemented side-route opportunity")
 	_expect(main.call("_rare_signal_emphasis_visible_for_condition", "rare_signal"), "Rare Signal should enable the subtle signal emphasis")
 	_expect(not main.call("_rare_signal_emphasis_visible_for_condition", "wreck_shift"), "Wreck Shift should not enable Rare Signal emphasis")
 	_expect(not main.call("_rare_signal_emphasis_visible_for_condition", "thermal_bloom"), "Thermal Bloom should keep Rare Signal emphasis hidden")
+	_expect(main.call("_shelf_glimmer_visible_for_condition", "rare_signal"), "Rare Signal should enable the Shelf Glimmer side-route opportunity")
+	_expect(not main.call("_shelf_glimmer_visible_for_condition", "calm_current"), "Calm Current should not enable the Shelf Glimmer opportunity")
 	main.free()
 
 func _test_compact_dive_hud_helpers() -> void:

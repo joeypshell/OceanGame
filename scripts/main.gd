@@ -170,6 +170,7 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 @onready var wreck_echo_clue_marker_arc_b: Polygon2D = $WreckEchoDescent/ClueTrigger/ClueMarkerArcB
 @onready var wreck_echo_clue_core: Polygon2D = $WreckEchoDescent/ClueTrigger/ClueCore
 @onready var rare_signal_emphasis: Node2D = $RareSignalEmphasis
+@onready var shelf_glimmer_opportunity: Node2D = $EastShelfSpur/ShelfGlimmerOpportunity
 @onready var predator_warning: Node2D = $Predators/PredatorWarning
 @onready var gulper_eel: Node = $Predators/GulperEel
 
@@ -1045,6 +1046,7 @@ func _sync_condition_visuals() -> void:
 	var is_thermal_bloom := condition_id == "thermal_bloom"
 	var is_calm_current := condition_id == "calm_current"
 	rare_signal_emphasis.visible = _rare_signal_emphasis_visible_for_condition(condition_id)
+	shelf_glimmer_opportunity.visible = _shelf_glimmer_visible_for_condition(condition_id)
 	base_return_column.color = Color(0.38, 1.0, 0.9, 0.18) if is_calm_current else Color(0.38, 1.0, 0.9, 0.14)
 	base_return_rib_shallow.color = Color(0.62, 1.0, 0.9, 0.22) if is_calm_current else Color(0.62, 1.0, 0.9, 0.18)
 	base_return_rib_midwater.color = Color(0.62, 1.0, 0.9, 0.2) if is_calm_current else Color(0.62, 1.0, 0.9, 0.16)
@@ -1059,6 +1061,9 @@ func _sync_condition_visuals() -> void:
 	thermal_vent_bubbles.color = Color(0.98, 1.0, 0.86, 0.46) if is_thermal_bloom else Color(0.9, 1.0, 0.86, 0.34)
 
 func _rare_signal_emphasis_visible_for_condition(condition_id: String) -> bool:
+	return condition_id == "rare_signal"
+
+func _shelf_glimmer_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal"
 
 func _current_condition_id() -> String:
@@ -1859,7 +1864,7 @@ func _format_condition_briefing() -> String:
 		"low_visibility":
 			return "Today: %s.\nTreat deep routes as harder to read and bank early if unsure." % display_name
 		"rare_signal":
-			return "Today: %s.\nA weak research ping is worth checking if oxygen allows." % display_name
+			return "Today: %s.\nA weak East Shelf ping is worth checking if oxygen allows." % display_name
 		"wreck_shift":
 			return "Today: %s.\nThe pressure wreck route is the notable landmark today." % display_name
 

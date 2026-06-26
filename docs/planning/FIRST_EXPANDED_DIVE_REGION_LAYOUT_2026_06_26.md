@@ -38,7 +38,7 @@ Recommended first-pass coordinate intent:
 3. One pocket entrance, either cave-like or wreck-hatch-like. Implemented in #448 as a visible far-end pocket mouth with rim, threshold glow, and leftward exit-current cue; no interior system yet.
 4. One stable landmark: `East Shelf Arch`. Implemented in #449 with scene geometry and passive landmark metadata.
 5. Safe-return cues pointing back toward the surface/base column. Implemented in #449 with left/up return-current geometry and horizontal HUD base-direction copy such as `up-left`.
-6. One seeded daily opportunity using authored candidates.
+6. One seeded daily opportunity using authored candidates. Implemented in #450 as `Shelf Glimmer`, a Rare Signal side-route visual research ping near East Shelf Arch.
 7. One visible upgrade-locked promise.
 
 ## Stable Landmark
