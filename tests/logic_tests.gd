@@ -37,6 +37,7 @@ func _initialize() -> void:
 	_run("extraction requirements", _test_extraction_requirements)
 	_run("oxygen failure", _test_oxygen_failure)
 	_run("upgrade affordability", _test_upgrade_affordability)
+	_run("progression reset", _test_progression_reset)
 	_run("save/load behavior", _test_save_load_behavior)
 	_run("deterministic seed generation", _test_deterministic_seed_generation)
 	_run("expedition condition selection", _test_expedition_condition_selection)
@@ -144,6 +145,27 @@ func _test_upgrade_affordability() -> void:
 	_expect(progression.resource_count("shell_fragments") == 0, "purchase should spend shell fragments")
 	_expect(progression.resource_count("glow_plankton") == 0, "purchase should spend glow plankton")
 	_expect(not progression.purchase_upgrade(OxygenTankUpgrade.id, OxygenTankUpgrade.resource_cost), "owned upgrade should not purchase again")
+
+func _test_progression_reset() -> void:
+	var progression := ProgressionStateScript.new()
+	progression.banked_resources = {"kelp_fiber": 3, "glow_plankton": 1}
+	progression.purchased_upgrades = {OxygenTankUpgrade.id: true}
+	progression.add_discovery("thermal_vent", "Thermal Vent", "Hot current.", "Unlocks pressure tuning.")
+	progression.record_depth(144.5)
+	progression.advance_run()
+
+	progression.reset()
+
+	_expect(progression.banked_resources.is_empty(), "reset should clear banked resources")
+	_expect(progression.purchased_upgrades.is_empty(), "reset should clear purchased upgrades")
+	_expect(progression.scan_discoveries.is_empty(), "reset should clear scan discoveries")
+	_expect(is_equal_approx(progression.best_depth_reached, 0.0), "reset should clear best depth")
+	_expect(progression.current_run_number == 0, "reset should return run counter to pre-expedition state")
+	_expect(progression.current_run_seed == 0, "reset should clear current seed")
+
+	progression.advance_run()
+	_expect(progression.current_run_number == 1, "first run after reset should be expedition 1")
+	_expect(progression.current_run_seed == 8919, "first seed after reset should match expedition 1")
 
 func _test_save_load_behavior() -> void:
 	var progression := ProgressionStateScript.new()

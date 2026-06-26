@@ -158,6 +158,8 @@ func _process(delta: float) -> void:
 func _unhandled_input(_event: InputEvent) -> void:
 	if _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F3:
 		_toggle_debug_telemetry()
+	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F9:
+		_reset_local_prototype_save()
 	elif Input.is_action_just_pressed("interact"):
 		if dive_session.result == DiveSessionScript.Result.READY:
 			_start_dive()
@@ -245,6 +247,23 @@ func _restart_dive() -> void:
 	surface_tab_index = SURFACE_TAB_RESULT
 	_reset_resource_pickups()
 	status_label.text = "Dive ready"
+	_update_hud()
+
+func _reset_local_prototype_save() -> void:
+	progression_state.reset()
+	_delete_progression_save()
+	_prepare_next_run()
+	player.global_position = start_position
+	player.velocity = Vector2.ZERO
+	player_in_base = true
+	last_result_summary = ""
+	upgrade_menu_feedback = ""
+	surface_tab_index = SURFACE_TAB_RESULT
+	selected_upgrade_index = 0
+	_reset_resource_pickups()
+	_sync_discovery_reveals()
+	_save_progression()
+	status_label.text = "Prototype save reset. Expedition 1 ready."
 	_update_hud()
 
 func _prepare_next_run() -> void:
@@ -810,7 +829,7 @@ func _update_run_panel() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		run_panel.visible = true
 		run_title_label.text = "Expedition %d Ready" % progression_state.current_run_number
-		run_summary_label.text = _format_run_summary("Start with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\n%s\n%s\nPress E or Enter to begin." % [
+		run_summary_label.text = _format_run_summary("Start with %d oxygen. Collect, scan, or push deeper, then return to bank cargo.\n%s\n%s\nPress E or Enter to begin.\nF9 resets prototype save." % [
 			ceili(dive_session.max_oxygen),
 			_format_condition_briefing(),
 			ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions),
@@ -1367,3 +1386,16 @@ func _save_progression() -> void:
 		return
 
 	file.store_string(JSON.stringify(progression_state.to_save_data(), "\t"))
+
+func _delete_progression_save() -> void:
+	if not FileAccess.file_exists(PROGRESSION_SAVE_PATH):
+		return
+
+	var save_dir := DirAccess.open("user://")
+	if save_dir == null:
+		push_warning("Could not open user save directory to reset progression.")
+		return
+
+	var error := save_dir.remove("progression_save.json")
+	if error != OK:
+		push_warning("Could not delete progression save; clean save will be overwritten.")

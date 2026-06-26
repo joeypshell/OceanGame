@@ -12,6 +12,15 @@ var loaded_save_version := CURRENT_SAVE_VERSION
 var current_run_number := 0
 var current_run_seed := 0
 
+func reset() -> void:
+	banked_resources.clear()
+	purchased_upgrades.clear()
+	scan_discoveries.clear()
+	best_depth_reached = 0.0
+	loaded_save_version = CURRENT_SAVE_VERSION
+	current_run_number = 0
+	current_run_seed = 0
+
 func advance_run() -> void:
 	current_run_number += 1
 	current_run_seed = 1000 + current_run_number * 7919
