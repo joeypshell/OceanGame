@@ -34,6 +34,8 @@ Post-Blue-Chimney backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_BLU
 
 Blue Chimney payoff contract: `docs/planning/BLUE_CHIMNEY_RESEARCH_PAYOFF_CONTRACT_2026_06_27.md` defines the first lower-pocket payoff as one run-scoped `Blue Chimney Draft Reading` interaction plus compact extraction memory. It should teach that the reverse draft hints at a deeper side-route below Shelf Drop without adding durable quest state, minimap, combat, harvesting, new resources, or broad cave systems.
 
+Blue Chimney post-payoff review: `docs/planning/BLUE_CHIMNEY_READABILITY_OXYGEN_REVIEW_2026_06_27.md` keeps current oxygen tuning after the draft-reading payoff and optional existing-resource candidate. If the lower pocket becomes confusing, prefer local visual pileup, return-cue, and optional-resource placement fixes before changing survival constants.
+
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
 
 Detailed design rules live in:
@@ -54,6 +56,7 @@ Detailed design rules live in:
 - `docs/planning/HATCH_AND_BLUE_CHIMNEY_OXYGEN_MARGIN_REVIEW_2026_06_27.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_BLUE_CHIMNEY_2026_06_27.md`
 - `docs/planning/BLUE_CHIMNEY_RESEARCH_PAYOFF_CONTRACT_2026_06_27.md`
+- `docs/planning/BLUE_CHIMNEY_READABILITY_OXYGEN_REVIEW_2026_06_27.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
