@@ -242,6 +242,12 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var tideglass_sample_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleHalo
 @onready var tideglass_sample_core: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleCore
 @onready var tideglass_sample_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleSpark
+@onready var mirror_kelp_reflective_backwater: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/ReflectiveBackwater
+@onready var mirror_kelp_curtain_a: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainA
+@onready var mirror_kelp_curtain_b: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainB
+@onready var mirror_kelp_curtain_c: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainC
+@onready var mirror_kelp_bloom_approach_wash: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/KelpBloomApproachWash
+@onready var mirror_kelp_bloom_approach_rib: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/KelpBloomApproachRib
 @onready var lantern_ray_timing_lane_upper: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneUpper
 @onready var lantern_ray_timing_lane_lower: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneLower
 @onready var lantern_ray_timing_tick_a: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingTickA
@@ -2250,6 +2256,7 @@ func _sync_condition_visuals() -> void:
 	_sync_blackwater_signal_opportunity(condition_id)
 	_sync_dusk_trench_condition_nudge(condition_id)
 	_sync_wide_chamber_condition_nudge(condition_id)
+	_sync_mirror_kelp_condition_nudge(condition_id)
 	base_return_column.color = Color(0.38, 1.0, 0.9, 0.18) if is_calm_current else Color(0.38, 1.0, 0.9, 0.14)
 	base_return_rib_shallow.color = Color(0.62, 1.0, 0.9, 0.22) if is_calm_current else Color(0.62, 1.0, 0.9, 0.18)
 	base_return_rib_midwater.color = Color(0.62, 1.0, 0.9, 0.2) if is_calm_current else Color(0.62, 1.0, 0.9, 0.16)
@@ -2329,6 +2336,38 @@ func _sync_wide_chamber_condition_nudge(condition_id: String) -> void:
 	return_far.color = Color(0.82, 1.0, 0.92, 0.22) if is_calm_current else Color(0.82, 1.0, 0.92, 0.18)
 	return_mid.color = Color(0.58, 1.0, 0.84, 0.18) if is_calm_current else Color(0.58, 1.0, 0.84, 0.14)
 	return_entry.color = Color(0.62, 1.0, 0.86, 0.2) if is_calm_current else Color(0.62, 1.0, 0.86, 0.16)
+
+func _sync_mirror_kelp_condition_nudge(condition_id: String) -> void:
+	var backwater := mirror_kelp_reflective_backwater
+	if backwater == null:
+		backwater = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/ReflectiveBackwater") as Polygon2D
+	var curtain_a := mirror_kelp_curtain_a
+	if curtain_a == null:
+		curtain_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainA") as Polygon2D
+	var curtain_b := mirror_kelp_curtain_b
+	if curtain_b == null:
+		curtain_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainB") as Polygon2D
+	var curtain_c := mirror_kelp_curtain_c
+	if curtain_c == null:
+		curtain_c = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainC") as Polygon2D
+	var wash := mirror_kelp_bloom_approach_wash
+	if wash == null:
+		wash = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/KelpBloomApproachWash") as Polygon2D
+	var rib := mirror_kelp_bloom_approach_rib
+	if rib == null:
+		rib = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/KelpBloomApproachRib") as Polygon2D
+	if backwater == null or curtain_a == null or curtain_b == null or curtain_c == null or wash == null or rib == null:
+		return
+
+	var is_kelp_bloom := condition_id == "kelp_bloom"
+	wash.visible = is_kelp_bloom
+	rib.visible = is_kelp_bloom
+	backwater.color = Color(0.08, 0.36, 0.42, 0.28) if is_kelp_bloom else Color(0.08, 0.36, 0.42, 0.2)
+	curtain_a.color = Color(0.42, 0.94, 0.82, 0.38) if is_kelp_bloom else Color(0.42, 0.94, 0.82, 0.28)
+	curtain_b.color = Color(0.72, 0.96, 1.0, 0.34) if is_kelp_bloom else Color(0.72, 0.96, 1.0, 0.24)
+	curtain_c.color = Color(0.36, 0.82, 0.72, 0.32) if is_kelp_bloom else Color(0.36, 0.82, 0.72, 0.22)
+	wash.color = Color(0.4, 0.92, 0.76, 0.13)
+	rib.color = Color(0.82, 1.0, 0.9, 0.18)
 
 func _rare_signal_emphasis_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal"
@@ -3489,6 +3528,8 @@ func _format_next_expedition_prompt() -> String:
 func _format_expedition_ready_status() -> String:
 	if _current_condition_id() == "low_visibility":
 		return "Expedition %d ready: lower-trench visibility is poor today." % progression_state.current_run_number
+	if _current_condition_id() == "kelp_bloom":
+		return "Expedition %d ready: Mirror Kelp approaches are thicker today." % progression_state.current_run_number
 
 	return "Expedition %d ready: the ocean changed overnight." % progression_state.current_run_number
 
@@ -3543,7 +3584,7 @@ func _format_condition_briefing() -> String:
 		"thermal_bloom":
 			return "Today: %s.\nVent-warmed routes may point toward extra glow." % display_name
 		"kelp_bloom":
-			return "Today: %s.\nShallow growth is thicker; scan and bank what you can see." % display_name
+			return "Today: %s.\nMirror Kelp approaches are denser; read the shimmer breaks." % display_name
 		"predator_migration":
 			return "Today: %s.\nExpect the Gulper route to feel active; watch warning cues." % display_name
 		"low_visibility":

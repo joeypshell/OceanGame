@@ -108,6 +108,7 @@ func _initialize() -> void:
 	_run("condition briefing copy", _test_condition_briefing_copy)
 	_run("Dusk Trench low-visibility condition nudge", _test_dusk_trench_low_visibility_condition_nudge)
 	_run("Wide Reef Chamber calm-current condition nudge", _test_wide_chamber_calm_current_condition_nudge)
+	_run("Mirror Kelp kelp-bloom condition nudge", _test_mirror_kelp_kelp_bloom_condition_nudge)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
@@ -4213,6 +4214,17 @@ func _test_condition_briefing_copy() -> void:
 	_expect(not briefing.to_lower().contains("procedural"), "condition briefing should not imply unimplemented generation systems")
 
 	main.current_expedition_condition = {
+		"id": "kelp_bloom",
+		"display_name": "Kelp Bloom",
+		"briefing": "Shallow growth is unusually thick.",
+		"tags": ["resource", "shallow"],
+	}
+	briefing = main._format_condition_briefing()
+	_expect(briefing.contains("Mirror Kelp"), "kelp briefing should point at the implemented Mirror Kelp route variation")
+	_expect(briefing.contains("shimmer breaks"), "kelp briefing should tell players how to read the denser route")
+	_expect(not briefing.contains("kelp_bloom"), "kelp briefing should not expose raw condition ids")
+
+	main.current_expedition_condition = {
 		"id": "predator_migration",
 		"display_name": "Predator Migration",
 		"briefing": "Deep patrols are shifting.",
@@ -4386,6 +4398,59 @@ func _test_wide_chamber_calm_current_condition_nudge() -> void:
 	var saved: Dictionary = scene.progression_state.to_save_data()
 	_expect(not saved.has("wide_chamber_condition"), "Wide chamber condition nudge should not add durable save state")
 	_expect(not saved.has("calm_current"), "Calm Current chamber variation should not save active condition state")
+	scene.queue_free()
+
+func _test_mirror_kelp_kelp_bloom_condition_nudge() -> void:
+	var scene := MainScene.instantiate()
+	root.add_child(scene)
+	var bloom_wash := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/KelpBloomApproachWash") as Polygon2D
+	var bloom_rib := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/KelpBloomApproachRib") as Polygon2D
+	var backwater := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/ReflectiveBackwater") as Polygon2D
+	var curtain_a := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainA") as Polygon2D
+	var tideglass_zone := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/InteractZone") as Area2D
+	var mirrorfin := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorfinDrift") as Area2D
+
+	scene.dive_session.reset(40.0)
+	scene.dive_session.start()
+	scene.dive_session.oxygen = 22.0
+	scene.dive_session.current_cargo.append("shell_fragments")
+	scene.dive_session.has_left_base = true
+	scene.progression_state.banked_resources["kelp_fiber"] = 3
+	scene.progression_state.purchased_upgrades[OxygenTankUpgrade.id] = true
+	scene.current_expedition_condition = {
+		"id": "rare_signal",
+		"display_name": "Rare Signal",
+		"briefing": "A weak research ping is active below.",
+		"tags": ["signal", "wreck"],
+	}
+	scene.call("_sync_mirror_kelp_condition_nudge", "rare_signal")
+	var neutral_backwater_alpha := backwater.color.a
+	var neutral_curtain_alpha := curtain_a.color.a
+	_expect(not bloom_wash.visible, "non-Kelp-Bloom expeditions should hide the Mirror Kelp bloom approach wash")
+	_expect(not bloom_rib.visible, "non-Kelp-Bloom expeditions should hide the Mirror Kelp bloom approach rib")
+
+	scene.current_expedition_condition = ExpeditionConditionScript.condition_for_seed(1)
+	scene.call("_sync_mirror_kelp_condition_nudge", "kelp_bloom")
+	_expect(scene._current_condition_id() == "kelp_bloom", "test seed should select Kelp Bloom deterministically")
+	_expect(bloom_wash.visible, "Kelp Bloom should show the Mirror Kelp approach wash")
+	_expect(bloom_rib.visible, "Kelp Bloom should show a readable Mirror Kelp approach rib")
+	_expect(backwater.color.a > neutral_backwater_alpha, "Kelp Bloom should subtly thicken the Mirror Kelp backwater")
+	_expect(curtain_a.color.a > neutral_curtain_alpha, "Kelp Bloom should subtly strengthen Mirror Kelp curtains")
+	_expect(bloom_wash.color.g > bloom_wash.color.r, "Mirror Kelp bloom nudge should keep kelp/current color language")
+	_expect(scene.call("_format_condition_briefing").contains("Mirror Kelp"), "Kelp Bloom briefing should name the broad route feel")
+	_expect(scene.call("_format_condition_briefing").contains("shimmer"), "Kelp Bloom briefing should tell players how to read the variation")
+	_expect(scene.call("_format_expedition_ready_status").contains("Mirror Kelp"), "ready status should acknowledge the Mirror Kelp approach variation")
+	_expect(is_equal_approx(scene.dive_session.oxygen, 22.0), "Mirror Kelp condition nudge should not drain oxygen")
+	_expect(scene.dive_session.current_cargo == ["shell_fragments"], "Mirror Kelp condition nudge should not change carried cargo")
+	_expect(scene.dive_session.result == DiveSessionScript.Result.DIVING, "Mirror Kelp condition nudge should not change dive state")
+	_expect(scene.dive_session.has_left_base, "Mirror Kelp condition nudge should not reset extraction eligibility")
+	_expect(scene.progression_state.resource_count("kelp_fiber") == 3, "Mirror Kelp condition nudge should not mutate banked resources")
+	_expect(scene.progression_state.has_upgrade(OxygenTankUpgrade.id), "Mirror Kelp condition nudge should not mutate upgrades")
+	_expect(tideglass_zone.collision_mask == 1, "Mirror Kelp condition nudge should not change Tideglass interaction access")
+	_expect(mirrorfin.collision_layer == 0 and mirrorfin.collision_mask == 0, "Mirror Kelp condition nudge should keep Mirrorfin non-combat")
+	var saved: Dictionary = scene.progression_state.to_save_data()
+	_expect(not saved.has("mirror_kelp_condition"), "Mirror Kelp condition nudge should not add durable route state")
+	_expect(not saved.has("kelp_bloom"), "Kelp Bloom should not save active condition state")
 	scene.queue_free()
 
 func _test_compact_dive_hud_helpers() -> void:

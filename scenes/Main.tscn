@@ -1514,6 +1514,16 @@ polygon = PackedVector2Array(-28, 48, -92, 28, -150, 22, -92, 58)
 color = Color(0.04, 0.12, 0.14, 0.24)
 polygon = PackedVector2Array(-188, -28, -292, -62, -388, -42, -346, 20, -248, 28)
 
+[node name="KelpBloomApproachWash" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+visible = false
+color = Color(0.4, 0.92, 0.76, 0.13)
+polygon = PackedVector2Array(-154, -70, -28, -102, 126, -58, 208, 28, 118, 108, -58, 82, -176, 12)
+
+[node name="KelpBloomApproachRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+visible = false
+color = Color(0.82, 1, 0.9, 0.18)
+polygon = PackedVector2Array(-92, -28, -22, -54, 58, -34, 132, 10, 96, 30, 22, -4, -48, 8)
+
 [node name="TideglassSample" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
 position = Vector2(126, 24)
 
