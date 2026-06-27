@@ -1498,6 +1498,30 @@ polygon = PackedVector2Array(-108, -76, 28, -128, 178, -58, 150, -24, 24, -70, -
 color = Color(0.66, 1, 0.88, 0.12)
 polygon = PackedVector2Array(-18, 76, -150, 42, -296, 12, -276, -18, -126, 10, 18, 42)
 
+[node name="LoopReturnCurrent" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.62, 1, 0.86, 0.17)
+polygon = PackedVector2Array(184, 112, 82, 92, -36, 58, -178, 26, -154, -8, -4, 24, 116, 56, 222, 74)
+
+[node name="LoopReturnRibA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.82, 1, 0.92, 0.18)
+polygon = PackedVector2Array(118, 86, 58, 66, 2, 56, 60, 92)
+
+[node name="LoopReturnRibB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.82, 1, 0.92, 0.16)
+polygon = PackedVector2Array(-28, 48, -92, 28, -150, 22, -92, 58)
+
+[node name="ChamberLoopSilhouette" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.04, 0.12, 0.14, 0.24)
+polygon = PackedVector2Array(-188, -28, -292, -62, -388, -42, -346, 20, -248, 28)
+
+[node name="ReturnLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+offset_left = -282.0
+offset_top = 80.0
+offset_right = -72.0
+offset_bottom = 112.0
+theme_override_font_sizes/font_size = 11
+text = "RETURN VIA WIDE REEF"
+
 [node name="PassLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
 offset_left = -96.0
 offset_top = -144.0

@@ -1724,6 +1724,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var mirror_kelp_curtain_b := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainB") as Polygon2D
 	var mirror_kelp_floor := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/PassFloorShelf") as Polygon2D
 	var mirror_kelp_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/EntryReturnRibbon") as Polygon2D
+	var mirror_kelp_loop_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/LoopReturnCurrent") as Polygon2D
+	var mirror_kelp_loop_rib_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/LoopReturnRibA") as Polygon2D
+	var mirror_kelp_loop_rib_b := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/LoopReturnRibB") as Polygon2D
+	var mirror_kelp_loop_silhouette := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/ChamberLoopSilhouette") as Polygon2D
+	var mirror_kelp_return_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/ReturnLabel") as Label
 	var mirror_kelp_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/PassLabel") as Label
 	var hollow_deeper_promise := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise") as Node2D
 	var hollow_deeper_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth") as Polygon2D
@@ -2049,6 +2054,18 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(mirror_kelp_floor.color.a <= 0.5, "Mirror Kelp Pass floor shelf should frame the branch without becoming a wall")
 	_expect(mirror_kelp_return.color.g > mirror_kelp_return.color.r, "Mirror Kelp Pass entry return ribbon should use safe-current color language")
 	_expect(mirror_kelp_return.polygon[1].x < mirror_kelp_return.polygon[0].x, "Mirror Kelp Pass entry return ribbon should point back left toward Wide Reef Chamber")
+	_expect(mirror_kelp_loop_return.color.g > mirror_kelp_loop_return.color.r, "Mirror Kelp Pass loop return should use safe-current color language")
+	_expect(mirror_kelp_loop_return.color.a >= 0.15 and mirror_kelp_loop_return.color.a <= 0.18, "Mirror Kelp Pass loop return should be readable without becoming objective-bright")
+	_expect(mirror_kelp_loop_return.polygon[1].x < mirror_kelp_loop_return.polygon[0].x, "Mirror Kelp Pass loop return should point left from the branch interior")
+	_expect(mirror_kelp_loop_return.polygon[2].x < mirror_kelp_loop_return.polygon[1].x, "Mirror Kelp Pass loop return should continue left through the branch")
+	_expect(mirror_kelp_loop_rib_a.polygon[1].x < mirror_kelp_loop_rib_a.polygon[0].x, "Mirror Kelp Pass first return rib should step left along the loop")
+	_expect(mirror_kelp_loop_rib_b.polygon[1].x < mirror_kelp_loop_rib_b.polygon[0].x, "Mirror Kelp Pass second return rib should step left toward the chamber")
+	_expect(mirror_kelp_loop_silhouette.color.a <= 0.26, "Mirror Kelp Pass chamber-loop silhouette should remain background guidance")
+	_expect(mirror_kelp_loop_silhouette.polygon[1].x < mirror_kelp_return.polygon[1].x, "Mirror Kelp Pass loop silhouette should connect visually back toward the chamber")
+	_expect(mirror_kelp_return_label.text == "RETURN VIA WIDE REEF", "Mirror Kelp Pass return label should use broad place-based return copy")
+	_expect(not mirror_kelp_return_label.text.to_lower().contains("map"), "Mirror Kelp Pass return label should not imply a minimap")
+	_expect(not mirror_kelp_return_label.text.to_lower().contains("objective"), "Mirror Kelp Pass return label should not imply checklist objectives")
+	_expect_no_echo_lens_locator_language(mirror_kelp_return_label.text, "Mirror Kelp Pass return label")
 	_expect(mirror_kelp_label.text == "MIRROR KELP PASS", "Mirror Kelp Pass should expose a stable prototype place name")
 	_expect_no_echo_lens_locator_language(mirror_kelp_label.text, "Mirror Kelp Pass label")
 	_expect(mirror_kelp_pass.get_node_or_null("InteractZone") == null, "Mirror Kelp Pass scaffold should not add an interaction hotspot yet")
