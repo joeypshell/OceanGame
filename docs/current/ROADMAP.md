@@ -40,6 +40,8 @@ Next route fork after Blue Chimney: `docs/planning/NEXT_ROUTE_FORK_AFTER_BLUE_CH
 
 Post-Blue-Chimney-payoff backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_BLUE_CHIMNEY_PAYOFF_2026_06_27.md` records that the Blue Chimney payoff batch is complete and defines the next ordered queue around `Silt Vein Fork`, `Lantern Silt Nook`, and `Blackwater Crack`.
 
+Lantern Silt payoff contract: `docs/planning/LANTERN_SILT_SAMPLE_PAYOFF_CONTRACT_2026_06_27.md` defines the first safe-branch payoff as one run-scoped `Lantern Silt Sample` interaction plus compact extraction memory. It should prove the left branch is a safer knowledge route without adding cargo, a new resource tier, durable quest state, minimap, combat, harvesting, or Blackwater Crack access.
+
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
 
 Detailed design rules live in:
@@ -63,6 +65,7 @@ Detailed design rules live in:
 - `docs/planning/BLUE_CHIMNEY_READABILITY_OXYGEN_REVIEW_2026_06_27.md`
 - `docs/planning/NEXT_ROUTE_FORK_AFTER_BLUE_CHIMNEY_2026_06_27.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_BLUE_CHIMNEY_PAYOFF_2026_06_27.md`
+- `docs/planning/LANTERN_SILT_SAMPLE_PAYOFF_CONTRACT_2026_06_27.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
