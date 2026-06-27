@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOxygenState } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -118,6 +118,18 @@ test.describe("OceanGame web visual smoke", () => {
       debug_telemetry: false,
       active_stats_visible: true,
       route_stage: "lower_connector",
+    });
+  });
+
+  test("captures the staged open hatch and Resonance Alcove view", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageOpenHatchResonanceAlcove(page);
+    await capture(page, testInfo, "open-hatch-resonance-alcove-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "open_hatch_resonance_alcove",
+      resonance_alcove_research_recovered: true,
     });
   });
 

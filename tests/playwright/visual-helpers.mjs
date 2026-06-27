@@ -123,6 +123,18 @@ export async function stageLowerConnector(page) {
   });
 }
 
+export async function stageOpenHatchResonanceAlcove(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "open_hatch_resonance_alcove";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "open_hatch_resonance_alcove",
+    resonance_alcove_research_recovered: true,
+  });
+}
+
 export async function returnToBaseAndExtract(page) {
   await holdKey(page, "ArrowUp", 1_800);
   await page.waitForTimeout(300);

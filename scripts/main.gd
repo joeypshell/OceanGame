@@ -727,6 +727,42 @@ func _stage_debug_lower_connector_visual_review() -> void:
 	_update_depth()
 	_update_hud()
 
+func _stage_debug_open_hatch_alcove_visual_review() -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var alcove := get_node_or_null("EastShelfSpur/ResonanceAlcove") as Node2D
+	if alcove == null:
+		return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	progression_state.purchased_upgrades[ECHO_LENS_UPGRADE_ID] = true
+	progression_state.purchased_upgrades[RESONANCE_KEY_UPGRADE_ID] = true
+	_sync_sealed_shelf_hatch_state()
+
+	player = staged_player
+	player.global_position = alcove.global_position + Vector2(-120.0, -40.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	player_near_resonance_alcove = true
+	_try_resonance_alcove_interaction()
+	visual_smoke_route_stage = "open_hatch_resonance_alcove"
+	status_label.text = "Debug review: open hatch and Resonance Alcove staged."
+	_update_depth()
+	_update_hud()
+
 func _consume_visual_smoke_command() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -747,6 +783,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_east_shelf_pocket_visual_review()
 		"lower_connector":
 			_stage_debug_lower_connector_visual_review()
+		"open_hatch_resonance_alcove":
+			_stage_debug_open_hatch_alcove_visual_review()
 
 func _debug_next_condition_from_id(current_id: String) -> Dictionary:
 	var conditions := ExpeditionConditionScript.all_conditions()
