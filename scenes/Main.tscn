@@ -841,6 +841,18 @@ polygon = PackedVector2Array(-124, 70, -30, 96, 88, 88, 178, 44, 188, 98, 68, 14
 color = Color(0.62, 1, 0.9, 0.14)
 polygon = PackedVector2Array(42, 40, -58, -8, -116, -4, -72, -36, -138, -58, -58, -70, 58, -24)
 
+[node name="ReturnChainCue" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill"]
+color = Color(0.72, 1, 0.9, 0.1)
+polygon = PackedVector2Array(86, 12, 24, -20, -44, -18, -112, -48, -142, -32, -86, -68, -20, -52, 54, -18)
+
+[node name="ReturnChainRibA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill"]
+color = Color(0.82, 1, 0.92, 0.18)
+polygon = PackedVector2Array(28, -6, -18, -26, -56, -20, -12, -2)
+
+[node name="ReturnChainRibB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill"]
+color = Color(0.82, 1, 0.92, 0.15)
+polygon = PackedVector2Array(-38, -30, -78, -50, -118, -44, -76, -24)
+
 [node name="PressureShutter" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill"]
 color = Color(0.2, 0.12, 0.42, 0.14)
 polygon = PackedVector2Array(-24, -64, 38, -76, 98, -34, 66, -14, 4, -28, -62, -12)

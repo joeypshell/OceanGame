@@ -654,7 +654,7 @@ func _try_blackwater_crack_interaction() -> bool:
 		run_blackwater_trace_recovered = true
 		_sync_blackwater_trace_payoff_state()
 		if status_label != null:
-			status_label.text = "Blackwater trace recorded. Return safely to keep the deep-route reading."
+			status_label.text = "Blackwater trace recorded. Return safely via Silt Vein, Blue Chimney, and Drop Arch to keep the deep-route reading."
 		if is_inside_tree():
 			_update_hud()
 		return true
@@ -1841,7 +1841,7 @@ func _blackwater_crack_gate_open() -> bool:
 
 func _format_blackwater_gate_status() -> String:
 	if _blackwater_crack_gate_open():
-		return "Blackwater Crack open. Follow the narrow sill, then return up-left."
+		return "Blackwater Crack open. Trace the narrow sill; return up-left via Silt Vein, Blue Chimney, Drop Arch."
 	if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
 		return "Blackwater Crack sealed. Resonance Key I preparation needed."
 
@@ -1850,7 +1850,7 @@ func _format_blackwater_gate_status() -> String:
 func _format_blackwater_prompt() -> String:
 	if _blackwater_crack_gate_open():
 		if run_blackwater_trace_recovered:
-			return "Blackwater Sill: trace recorded"
+			return "Blackwater Sill: trace recorded - return via Silt/Blue"
 
 		return "Blackwater Sill: %s record trace" % _action_label("interact")
 
@@ -2824,7 +2824,7 @@ func _format_lantern_silt_sample_research_callout() -> String:
 
 func _format_blackwater_trace_research_callout() -> String:
 	if run_blackwater_trace_recovered:
-		return "\nResearch: Blackwater Trace confirms the right branch carries a deeper route signal."
+		return "\nResearch: Blackwater Trace marks the right branch's deeper route signal; return via Silt Vein, Blue Chimney, Drop Arch."
 
 	return ""
 
@@ -3030,7 +3030,11 @@ func _format_base_direction() -> String:
 	if direction_text.is_empty():
 		direction_text = "nearby"
 
-	return "Base: %s %.0fm" % [direction_text, delta.length() / pixels_per_meter]
+	var route_hint := ""
+	if delta.x > 1500.0 and delta.y > 2100.0:
+		route_hint = " via Silt/Blue"
+
+	return "Base: %s %.0fm%s" % [direction_text, delta.length() / pixels_per_meter, route_hint]
 
 func _oxygen_state(current_oxygen: float, maximum_oxygen: float) -> String:
 	if maximum_oxygen <= 0.0:

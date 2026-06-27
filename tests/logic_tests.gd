@@ -829,6 +829,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillBackWater",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillFloor",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnChainCue",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnChainRibA",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnChainRibB",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureShutter",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibA",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibB",
@@ -919,6 +922,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var blackwater_sill_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillMouth") as Polygon2D
 	var blackwater_sill_floor := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillFloor") as Polygon2D
 	var blackwater_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue") as Polygon2D
+	var blackwater_return_chain := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnChainCue") as Polygon2D
+	var blackwater_return_rib_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnChainRibA") as Polygon2D
+	var blackwater_return_rib_b := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnChainRibB") as Polygon2D
 	var blackwater_pressure_shutter := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureShutter") as Polygon2D
 	var blackwater_pressure_rib_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibA") as Polygon2D
 	var blackwater_pressure_rib_b := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibB") as Polygon2D
@@ -1042,6 +1048,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blackwater_sill_floor.color.a >= 0.45, "Blackwater Sill should have a readable local floor silhouette")
 	_expect(blackwater_return.polygon[1].x < blackwater_return.polygon[0].x, "Blackwater Sill return cue should point back left toward Silt Vein")
 	_expect(blackwater_return.polygon[1].y < blackwater_return.polygon[0].y, "Blackwater Sill return cue should point upward toward Blue Chimney")
+	_expect(blackwater_return_chain.polygon[1].x < blackwater_return_chain.polygon[0].x, "Blackwater return chain should point back toward Silt Vein")
+	_expect(blackwater_return_chain.polygon[1].y < blackwater_return_chain.polygon[0].y, "Blackwater return chain should point upward toward Blue Chimney")
+	_expect(blackwater_return_chain.color.g > blackwater_return_chain.color.r, "Blackwater return chain should use safe-current color language")
+	_expect(blackwater_return_rib_a.polygon[1].x < blackwater_return_rib_a.polygon[0].x, "Blackwater first return rib should step left along the chain")
+	_expect(blackwater_return_rib_b.polygon[1].y < blackwater_return_rib_b.polygon[0].y, "Blackwater second return rib should step upward along the chain")
+	_expect(blackwater_sill.get_node_or_null("ReturnChainCue/InteractZone") == null, "Blackwater return chain should not add interaction or objective state")
 	_expect(blackwater_pressure_shutter.color.b > blackwater_pressure_shutter.color.g, "Blackwater pressure cue should use dark violet pressure language, not safe-current green")
 	_expect(blackwater_pressure_shutter.color.a >= 0.1 and blackwater_pressure_shutter.color.a <= 0.2, "Blackwater pressure shutter should stay subtle and non-combat")
 	_expect(blackwater_pressure_rib_a.color.b > blackwater_pressure_rib_a.color.g, "Blackwater pressure ribs should stay visually distinct from safe return currents")
@@ -1889,6 +1901,9 @@ func _test_blackwater_crack_gate_state() -> void:
 	var ready_status: String = main.call("_format_blackwater_gate_status")
 	_expect(ready_status.contains("narrow sill"), "Blackwater ready status should name the short route sequence")
 	_expect(ready_status.contains("return up-left"), "Blackwater ready status should preserve broad return orientation")
+	_expect(ready_status.contains("Silt Vein"), "Blackwater ready status should name the first broad return landmark")
+	_expect(ready_status.contains("Blue Chimney"), "Blackwater ready status should name the mid return landmark")
+	_expect(ready_status.contains("Drop Arch"), "Blackwater ready status should name the upper lower-route landmark")
 	_expect_no_echo_lens_locator_language(ready_status, "Blackwater ready status")
 	var ready_prompt: String = main.call("_format_hud_prompt")
 	_expect(ready_prompt.contains("record trace"), "Blackwater ready prompt should shift from gate readback to the route payoff")
@@ -1932,6 +1947,8 @@ func _test_blackwater_trace_payoff() -> void:
 	if main.status_label != null:
 		_expect(main.status_label.text.contains("Return safely"), "Blackwater Trace interaction should preserve extraction pressure")
 		_expect(main.status_label.text.contains("deep-route reading"), "Blackwater Trace status should name the knowledge payoff")
+		_expect(main.status_label.text.contains("Silt Vein"), "Blackwater Trace status should remind the broad return chain")
+		_expect_no_echo_lens_locator_language(main.status_label.text, "Blackwater Trace status")
 
 	var repeat_handled: bool = main.call("_try_blackwater_crack_interaction")
 	_expect(repeat_handled, "Blackwater Trace should keep handling repeat interact while nearby")
@@ -1946,6 +1963,9 @@ func _test_blackwater_trace_payoff() -> void:
 	_expect(callout.contains("Blackwater Trace"), "Blackwater Trace result memory should name the payoff")
 	_expect(callout.contains("right branch"), "Blackwater Trace result memory should explain the route choice")
 	_expect(callout.contains("deeper route"), "Blackwater Trace result memory should hint at future route growth")
+	_expect(callout.contains("Silt Vein"), "Blackwater Trace result memory should name the first broad return landmark")
+	_expect(callout.contains("Blue Chimney"), "Blackwater Trace result memory should name the mid return landmark")
+	_expect(callout.contains("Drop Arch"), "Blackwater Trace result memory should name the upper lower-route landmark")
 	_expect_no_echo_lens_locator_language(callout, "Blackwater Trace result line")
 	var empty_cargo: Array[String] = []
 	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
@@ -2640,6 +2660,7 @@ func _test_expanded_region_base_direction() -> void:
 	scene_player.global_position = Vector2(2440.0, 2660.0)
 	var blackwater_direction: String = main.call("_format_base_direction")
 	_expect(blackwater_direction.contains("up-left"), "base direction should point up-left from the Blackwater Sill")
+	_expect(blackwater_direction.contains("Silt/Blue"), "base direction should compactly name the Blackwater return landmark chain")
 
 	scene_player.global_position = main.start_position + Vector2(0.0, 500.0)
 	var vertical_direction: String = main.call("_format_base_direction")
@@ -2678,6 +2699,7 @@ func _test_no_minimap_orientation_guardrails() -> void:
 	scene_player.global_position = Vector2(2440.0, 2660.0)
 	var blackwater_sill_direction: String = main.call("_format_base_direction")
 	_expect(blackwater_sill_direction.contains("up-left"), "Blackwater Sill orientation should use broad return direction")
+	_expect(blackwater_sill_direction.contains("Silt/Blue"), "Blackwater Sill orientation should keep compact named return memory")
 	_expect_no_echo_lens_locator_language(blackwater_sill_direction, "Blackwater Sill base direction")
 
 	main.run_east_shelf_pocket_ping_recovered = true
