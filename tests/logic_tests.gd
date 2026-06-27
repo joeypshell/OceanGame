@@ -188,6 +188,22 @@ func _test_upgrade_affordability() -> void:
 	_expect(progression.resource_count("glow_plankton") == 0, "purchase should spend glow plankton")
 	_expect(not progression.purchase_upgrade(OxygenTankUpgrade.id, OxygenTankUpgrade.resource_cost), "owned upgrade should not purchase again")
 
+	var resonance_progression := ProgressionStateScript.new()
+	resonance_progression.banked_resources = {
+		"glow_plankton": 2,
+		"shell_fragments": 1,
+	}
+	_expect(resonance_progression.can_afford(ResonanceKeyUpgrade.resource_cost), "Resonance Key I should use currently bankable materials")
+	_expect(UpgradePurchaseScript.missing_upgrade(resonance_progression, ResonanceKeyUpgrade) == EchoLensUpgrade.id, "Resonance Key I purchase should require Echo Lens I first")
+	_expect(not UpgradePurchaseScript.purchase(resonance_progression, ResonanceKeyUpgrade), "Resonance Key I should not purchase before prerequisites")
+	resonance_progression.purchased_upgrades[EchoLensUpgrade.id] = true
+	resonance_progression.add_discovery("east_shelf_route_research", "East Shelf route research", "Route evidence.", "Plans a hatch key.")
+	_expect(UpgradePurchaseScript.purchase(resonance_progression, ResonanceKeyUpgrade), "Resonance Key I should purchase after route context, Echo Lens I, and resources")
+	_expect(resonance_progression.has_upgrade(ResonanceKeyUpgrade.id), "Resonance Key I purchase should record the upgrade id")
+	_expect(resonance_progression.resource_count("glow_plankton") == 0, "Resonance Key I purchase should spend glow plankton")
+	_expect(resonance_progression.resource_count("shell_fragments") == 0, "Resonance Key I purchase should spend shell fragments")
+	_expect(not UpgradePurchaseScript.purchase(resonance_progression, ResonanceKeyUpgrade), "Resonance Key I should not purchase twice")
+
 func _test_progression_reset() -> void:
 	var progression := ProgressionStateScript.new()
 	progression.banked_resources = {"kelp_fiber": 3, "glow_plankton": 1}
@@ -226,6 +242,20 @@ func _test_save_load_behavior() -> void:
 	_expect(loaded.has_discovery("thermal_vent"), "current save should reload scan discoveries")
 	_expect(is_equal_approx(loaded.best_depth_reached, 144.5), "current save should reload best depth")
 
+	var resonance_save_state := ProgressionStateScript.new()
+	resonance_save_state.banked_resources = {"glow_plankton": 4, "shell_fragments": 2}
+	resonance_save_state.purchased_upgrades = {
+		EchoLensUpgrade.id: true,
+		ResonanceKeyUpgrade.id: true,
+	}
+	resonance_save_state.add_discovery("east_shelf_route_research", "East Shelf route research", "Route evidence.", "Plans a hatch key.")
+	var resonance_saved := resonance_save_state.to_save_data()
+	var resonance_loaded := ProgressionStateScript.new()
+	resonance_loaded.load_save_data(resonance_saved)
+	_expect(resonance_loaded.has_upgrade(ResonanceKeyUpgrade.id), "current save should reload Resonance Key I purchase")
+	_expect(resonance_loaded.has_upgrade(EchoLensUpgrade.id), "current save should preserve Resonance Key I prerequisite upgrade")
+	_expect(resonance_loaded.has_discovery("east_shelf_route_research"), "current save should reload promoted route-research prerequisite")
+
 	var legacy_save := saved.duplicate(true)
 	legacy_save.erase("save_version")
 	var legacy_loaded := ProgressionStateScript.new()
@@ -239,6 +269,21 @@ func _test_save_load_behavior() -> void:
 	future_loaded.load_save_data(future_save)
 	_expect(future_loaded.loaded_save_version == 999, "unknown future save version should be recorded")
 	_expect(future_loaded.has_upgrade(OxygenTankUpgrade.id), "unknown future save should best-effort load known upgrade ids")
+
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.run_east_shelf_pocket_ping_recovered = true
+	main.run_lower_connector_echo_recovered = true
+	main.player_near_east_shelf_pocket = true
+	main.player_near_lower_connector_echo = true
+	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+	var main_saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not main_saved.has("run_east_shelf_pocket_ping_recovered"), "progression save should not leak East Shelf run state")
+	_expect(not main_saved.has("run_lower_connector_echo_recovered"), "progression save should not leak Drop Echo run state")
+	_expect(not main_saved.has("player_near_east_shelf_pocket"), "progression save should not leak East Shelf proximity state")
+	_expect(not main_saved.has("player_near_lower_connector_echo"), "progression save should not leak Drop Echo proximity state")
+	_expect(main_saved.get("purchased_upgrades", {}).has(ResonanceKeyUpgrade.id), "progression save should keep Resonance Key I as durable upgrade state only")
+	main.queue_free()
 
 func _test_deterministic_seed_generation() -> void:
 	var first := ProgressionStateScript.new()
