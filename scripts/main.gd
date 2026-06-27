@@ -180,6 +180,7 @@ const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 @onready var east_shelf_pocket_interact_zone: Area2D = $EastShelfSpur/PocketEntrance/InteractZone
 @onready var lower_connector_echo_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone
 @onready var resonance_alcove_interact_zone: Area2D = $EastShelfSpur/ResonanceAlcove/InteractZone
+@onready var blue_chimney_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/InteractZone
 @onready var blue_chimney_signal_opportunity: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity
 @onready var blue_chimney_reverse_draft: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ReverseDraftReturn
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
@@ -194,6 +195,7 @@ var player_in_base := true
 var player_near_east_shelf_pocket := false
 var player_near_lower_connector_echo := false
 var player_near_resonance_alcove := false
+var player_near_blue_chimney := false
 var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
@@ -230,6 +232,7 @@ var run_wreck_echo_clue_recovered := false
 var run_east_shelf_pocket_ping_recovered := false
 var run_lower_connector_echo_recovered := false
 var run_resonance_alcove_research_recovered := false
+var run_blue_chimney_draft_reading_recovered := false
 var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
 var recent_expedition_log: Array[Dictionary] = []
@@ -243,6 +246,8 @@ func _ready() -> void:
 	lower_connector_echo_interact_zone.body_exited.connect(_on_lower_connector_echo_body_exited)
 	resonance_alcove_interact_zone.body_entered.connect(_on_resonance_alcove_body_entered)
 	resonance_alcove_interact_zone.body_exited.connect(_on_resonance_alcove_body_exited)
+	blue_chimney_interact_zone.body_entered.connect(_on_blue_chimney_body_entered)
+	blue_chimney_interact_zone.body_exited.connect(_on_blue_chimney_body_exited)
 	pressure_boundary.body_entered.connect(_on_pressure_boundary_body_entered)
 	wreck_echo_clue_trigger.body_entered.connect(_on_wreck_echo_clue_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
@@ -300,7 +305,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 				status_label.text = "Surface view: upgrades."
 				_update_hud()
 		else:
-			if not _try_resonance_alcove_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
+			if not _try_resonance_alcove_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
 				_try_extract()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
 		_cycle_surface_tab(-1)
@@ -403,6 +408,7 @@ func _prepare_next_run() -> void:
 	player_near_east_shelf_pocket = false
 	player_near_lower_connector_echo = false
 	player_near_resonance_alcove = false
+	player_near_blue_chimney = false
 	_reset_run_telemetry()
 	burst_thruster_cooldown_remaining = 0.0
 	decoy_pulse_used_this_run = false
@@ -460,6 +466,20 @@ func _on_resonance_alcove_body_entered(body: Node2D) -> void:
 func _on_resonance_alcove_body_exited(body: Node2D) -> void:
 	if body == player:
 		player_near_resonance_alcove = false
+		if is_inside_tree():
+			_update_hud()
+
+func _on_blue_chimney_body_entered(body: Node2D) -> void:
+	if body == player:
+		player_near_blue_chimney = true
+		if status_label != null:
+			status_label.text = "Blue Chimney: inspect the reverse draft."
+		if is_inside_tree():
+			_update_hud()
+
+func _on_blue_chimney_body_exited(body: Node2D) -> void:
+	if body == player:
+		player_near_blue_chimney = false
 		if is_inside_tree():
 			_update_hud()
 
@@ -526,6 +546,24 @@ func _try_resonance_alcove_interaction() -> bool:
 	run_resonance_alcove_research_recovered = true
 	if status_label != null:
 		status_label.text = "Resonance Alcove echo recorded. Return safely to keep the research."
+	if is_inside_tree():
+		_update_hud()
+	return true
+
+func _try_blue_chimney_interaction() -> bool:
+	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_blue_chimney:
+		return false
+
+	if run_blue_chimney_draft_reading_recovered:
+		if status_label != null:
+			status_label.text = "Blue Chimney draft already recorded this expedition."
+		if is_inside_tree():
+			_update_hud()
+		return true
+
+	run_blue_chimney_draft_reading_recovered = true
+	if status_label != null:
+		status_label.text = "Blue Chimney draft recorded. Return safely to keep the lower-pocket reading."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -875,6 +913,8 @@ func _format_hud_prompt() -> String:
 		prompt = "Expedition failed - press %s for next expedition" % _action_label("restart_dive")
 	elif player_near_resonance_alcove:
 		prompt = "Resonance Alcove: %s record hatch echo" % _action_label("interact")
+	elif player_near_blue_chimney:
+		prompt = "Blue Chimney: %s record draft reading" % _action_label("interact")
 	elif player_near_lower_connector_echo:
 		prompt = "Drop Echo: %s record lower-route ping" % _action_label("interact")
 	elif player_near_east_shelf_pocket:
@@ -1658,6 +1698,7 @@ func _publish_visual_smoke_state() -> void:
 		"east_shelf_pocket_ping_recovered": run_east_shelf_pocket_ping_recovered,
 		"lower_connector_echo_recovered": run_lower_connector_echo_recovered,
 		"resonance_alcove_research_recovered": run_resonance_alcove_research_recovered,
+		"blue_chimney_draft_reading_recovered": run_blue_chimney_draft_reading_recovered,
 		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
@@ -2203,6 +2244,7 @@ func _reset_run_telemetry() -> void:
 	run_east_shelf_pocket_ping_recovered = false
 	run_lower_connector_echo_recovered = false
 	run_resonance_alcove_research_recovered = false
+	run_blue_chimney_draft_reading_recovered = false
 	debug_wreck_echo_review_staged = false
 	visual_smoke_route_stage = ""
 	echo_lens_pulse_timer = 0.0

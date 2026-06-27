@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=38 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -45,6 +45,9 @@ radius = 110.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_resonance_alcove"]
 radius = 92.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_blue_chimney_reading"]
+radius = 96.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_panel"]
 bg_color = Color(0.025, 0.075, 0.095, 0.74)
@@ -597,6 +600,14 @@ polygon = PackedVector2Array(0, -24, 22, -8, 26, 18, 4, 32, -20, 16, -28, -8)
 [node name="ClosedLowerCrack" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
 color = Color(0.004, 0.018, 0.036, 0.52)
 polygon = PackedVector2Array(54, 72, 126, 40, 152, 80, 110, 128, 42, 118)
+
+[node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
+position = Vector2(34, 24)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/InteractZone"]
+shape = SubResource("CircleShape2D_blue_chimney_reading")
 
 [node name="ShellReefPocket" type="Node2D" parent="."]
 

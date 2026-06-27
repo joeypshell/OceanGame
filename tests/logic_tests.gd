@@ -79,6 +79,7 @@ func _initialize() -> void:
 	_run("East Shelf pocket result callout", _test_east_shelf_pocket_result_callout)
 	_run("lower connector echo opportunity", _test_lower_connector_echo_opportunity)
 	_run("Resonance Alcove research payoff", _test_resonance_alcove_research_payoff)
+	_run("Blue Chimney draft interaction", _test_blue_chimney_draft_interaction)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -1447,6 +1448,39 @@ func _test_resonance_alcove_research_payoff() -> void:
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Resonance Alcove"), "Resonance Alcove extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
+	main.free()
+
+func _test_blue_chimney_draft_interaction() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_blue_chimney = true
+	main.dive_session.oxygen = 26.0
+	main.dive_session.current_cargo = ["shell_fragments"]
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Blue Chimney"), "Blue Chimney proximity should own the active dive prompt")
+	_expect(prompt.contains("record draft reading"), "Blue Chimney prompt should explain the narrow research action")
+
+	var handled: bool = main.call("_try_blue_chimney_interaction")
+	_expect(handled, "Blue Chimney should handle interact while nearby during a dive")
+	_expect(main.run_blue_chimney_draft_reading_recovered, "Blue Chimney interaction should record one run-scoped draft reading")
+	_expect(is_equal_approx(main.dive_session.oxygen, 26.0), "Blue Chimney draft reading should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["shell_fragments"], "Blue Chimney draft reading should not add or remove cargo")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Return safely"), "Blue Chimney interaction should preserve extraction pressure")
+
+	var repeat_handled: bool = main.call("_try_blue_chimney_interaction")
+	_expect(repeat_handled, "Blue Chimney should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recorded"), "Blue Chimney repeat interaction should not duplicate the payoff")
+
+	main.player_near_blue_chimney = false
+	var not_handled: bool = main.call("_try_blue_chimney_interaction")
+	_expect(not not_handled, "Blue Chimney should not consume interact outside its proximity zone")
+
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_blue_chimney_draft_reading_recovered, "Blue Chimney draft reading should reset between expeditions")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:
