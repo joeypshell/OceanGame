@@ -841,7 +841,7 @@ func _try_salvage_data_cache_interaction() -> bool:
 	run_reached_dusk_trench = true
 	_sync_salvage_data_cache_state()
 	if status_label != null:
-		status_label.text = "Salvage data cache recovered. Return safely through Hollow Reef to keep the wreck note."
+		status_label.text = "Salvage data cache recovered for future cutter prep. Return safely through Hollow Reef to keep the wreck note."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -3559,7 +3559,7 @@ func _format_hollow_reef_reading_callout() -> String:
 
 func _format_salvage_data_cache_research_callout() -> String:
 	if run_salvage_data_cache_recovered:
-		return "\nResearch: Salvage data cache marks a sealed wreck pocket off the wide chamber."
+		return "\nResearch: Salvage data cache gives the lab future cutter prep for the sealed wreck pocket."
 
 	return ""
 
