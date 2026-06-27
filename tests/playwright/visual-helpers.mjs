@@ -112,6 +112,17 @@ export async function stageEastShelfPocketPing(page) {
   });
 }
 
+export async function stageLowerConnector(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "lower_connector";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "lower_connector",
+  });
+}
+
 export async function returnToBaseAndExtract(page) {
   await holdKey(page, "ArrowUp", 1_800);
   await page.waitForTimeout(300);
