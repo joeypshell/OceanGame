@@ -95,6 +95,7 @@ func _initialize() -> void:
 	_run("keyboard action prompt labels", _test_keyboard_action_prompt_labels)
 	_run("prompt formatter guard coverage", _test_prompt_formatter_guard_coverage)
 	_run("condition briefing copy", _test_condition_briefing_copy)
+	_run("Dusk Trench low-visibility condition nudge", _test_dusk_trench_low_visibility_condition_nudge)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
@@ -333,6 +334,9 @@ func _test_expedition_condition_selection() -> void:
 	_expect(not String(first.get("display_name", "")).is_empty(), "condition should include a display name")
 	_expect(not String(first.get("briefing", "")).is_empty(), "condition should include a briefing line")
 	_expect(first.get("tags", []) is Array, "condition should include tag metadata")
+	var low_visibility := ExpeditionConditionScript.condition_for_seed(4)
+	_expect(low_visibility.get("id", "") == "low_visibility", "Low Visibility should remain deterministically selectable by seed")
+	_expect(low_visibility.get("tags", []).has("visibility"), "Low Visibility should keep visibility tag metadata for route presentation")
 
 	var ids := {}
 	for seed in [8919, 16838, 24757, 32676, 40595]:
@@ -2595,6 +2599,19 @@ func _test_condition_briefing_copy() -> void:
 	_expect(briefing.contains("warning cues"), "predator briefing should point to existing readable cues")
 
 	main.current_expedition_condition = {
+		"id": "low_visibility",
+		"display_name": "Low Visibility",
+		"briefing": "Deeper water is harder to read today.",
+		"tags": ["visibility", "return"],
+	}
+	briefing = main._format_condition_briefing()
+	_expect(briefing.to_lower().contains("lower-trench"), "low-visibility briefing should nudge broad lower-trench route caution")
+	_expect(briefing.contains("bank early"), "low-visibility briefing should keep the player-visible advice compact")
+	_expect(not briefing.contains("Dusk Trench"), "low-visibility briefing should not reveal the exact trench location")
+	_expect(not briefing.contains("Blackwater"), "low-visibility briefing should not reveal the gated route chain")
+	_expect_no_echo_lens_locator_language(briefing, "low-visibility briefing")
+
+	main.current_expedition_condition = {
 		"id": "rare_signal",
 		"display_name": "Rare Signal",
 		"briefing": "A weak research ping is active below.",
@@ -2659,6 +2676,41 @@ func _test_condition_briefing_copy() -> void:
 	_expect(safe_bank_lane.color.a >= 0.17, "neutral route-choice visuals should preserve the safe bank lane")
 	scene.free()
 	main.free()
+
+func _test_dusk_trench_low_visibility_condition_nudge() -> void:
+	var scene := MainScene.instantiate()
+	root.add_child(scene)
+	var veil := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/MurkVeil") as Polygon2D
+	var band := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltPulseBand") as Polygon2D
+	var rib_a := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibA") as Polygon2D
+	var return_current := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/ReturnCurrentUpLeft") as Polygon2D
+	scene.current_expedition_condition = {
+		"id": "calm_current",
+		"display_name": "Calm Current",
+		"briefing": "Safe routes are easier to read today.",
+		"tags": ["current", "return"],
+	}
+	scene.call("_sync_dusk_trench_condition_nudge", "calm_current")
+	var neutral_veil_alpha := veil.color.a
+	var neutral_band_alpha := band.color.a
+	var neutral_rib_alpha := rib_a.color.a
+
+	scene.current_expedition_condition = ExpeditionConditionScript.condition_for_seed(4)
+	scene.call("_sync_dusk_trench_condition_nudge", "low_visibility")
+	_expect(scene._current_condition_id() == "low_visibility", "test seed should select Low Visibility")
+	_expect(veil.color.a > neutral_veil_alpha, "Low Visibility should visibly strengthen Dusk Trench murk")
+	_expect(band.color.a > neutral_band_alpha, "Low Visibility should strengthen the Dusk Trench silt band")
+	_expect(rib_a.color.a > neutral_rib_alpha, "Low Visibility should strengthen Dusk Trench timing ribs")
+	_expect(veil.color.b > veil.color.g, "Low Visibility Dusk nudge should keep blue-violet pressure language")
+	_expect(return_current.color.g > veil.color.g, "Low Visibility Dusk nudge should preserve green return-current readability")
+	var ready_status: String = scene.call("_format_expedition_ready_status")
+	_expect(ready_status.contains("lower-trench"), "ready status should acknowledge the low-visibility trench nudge")
+	_expect(not ready_status.contains("Dusk Trench"), "ready status should not reveal exact Dusk location")
+	var saved: Dictionary = scene.progression_state.to_save_data()
+	_expect(not saved.has("current_expedition_condition"), "Low Visibility should not save active condition state")
+	_expect(not saved.has("low_visibility"), "Low Visibility should not add durable save state")
+	_expect(not saved.has("dusk_trench_condition"), "Dusk condition nudge should not add durable route state")
+	scene.queue_free()
 
 func _test_compact_dive_hud_helpers() -> void:
 	var main := MainScript.new()

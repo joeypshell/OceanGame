@@ -60,7 +60,7 @@ Seeded expedition variation is temporary and selected from authored candidates:
 - route/reward cluster patterns,
 - future expedition-day conditions such as currents, visibility, migrations, blooms, and rare signals.
 
-Current expedition conditions are deterministic data selected from the expedition seed. Most effects remain presentation/readability-only, but a condition may apply a narrow authored weighting rule when an issue explicitly defines the target candidate set and guardrails. The first implemented rule is `Thermal Bloom` preferring existing authored vent-pocket `Glow Plankton` candidates; it does not increase pickup count, move other resources, change predator routes, pressure locks, oxygen, cargo, movement, or upgrades.
+Current expedition conditions are deterministic data selected from the expedition seed. Most effects remain presentation/readability-only, but a condition may apply a narrow authored weighting rule when an issue explicitly defines the target candidate set and guardrails. `Low Visibility` now strengthens the authored Dusk Trench murk cue and ready/status copy only; it does not save active condition state or change route access. The first implemented weighting rule is `Thermal Bloom` preferring existing authored vent-pocket `Glow Plankton` candidates; it does not increase pickup count, move other resources, change predator routes, pressure locks, oxygen, cargo, movement, or upgrades.
 
 Conditions are active-run context, not durable progression. Do not save active condition state directly; relaunch should load durable progress and prepare a fresh expedition from the current seed/session flow.
 

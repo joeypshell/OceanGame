@@ -215,6 +215,10 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var blackwater_signal_opportunity: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity
 @onready var blackwater_signal_wash: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity/SignalWash
 @onready var blackwater_signal_fleck: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity/SignalFleck
+@onready var dusk_low_visibility_veil: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/MurkVeil
+@onready var dusk_low_visibility_band: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltPulseBand
+@onready var dusk_low_visibility_rib_a: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibA
+@onready var dusk_low_visibility_rib_b: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibB
 @onready var glass_kelp_reading_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingHalo
 @onready var glass_kelp_reading_shard: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard
 @onready var glass_kelp_reading_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark
@@ -1718,6 +1722,7 @@ func _sync_condition_visuals() -> void:
 	shelf_glimmer_opportunity.visible = _shelf_glimmer_visible_for_condition(condition_id)
 	blue_chimney_signal_opportunity.visible = _blue_chimney_signal_visible_for_condition(condition_id)
 	_sync_blackwater_signal_opportunity(condition_id)
+	_sync_dusk_trench_condition_nudge(condition_id)
 	base_return_column.color = Color(0.38, 1.0, 0.9, 0.18) if is_calm_current else Color(0.38, 1.0, 0.9, 0.14)
 	base_return_rib_shallow.color = Color(0.62, 1.0, 0.9, 0.22) if is_calm_current else Color(0.62, 1.0, 0.9, 0.18)
 	base_return_rib_midwater.color = Color(0.62, 1.0, 0.9, 0.2) if is_calm_current else Color(0.62, 1.0, 0.9, 0.16)
@@ -1753,6 +1758,28 @@ func _sync_route_choice_condition_nudge(condition_id: String) -> void:
 		decision_rib.color = Color(0.74, 0.92, 0.86, 0.18)
 		safe_bank_lane.color = Color(0.46, 0.92, 0.64, 0.18)
 		research_lane.color = Color(0.52, 0.96, 1.0, 0.2)
+
+func _sync_dusk_trench_condition_nudge(condition_id: String) -> void:
+	var veil := dusk_low_visibility_veil
+	if veil == null:
+		veil = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/MurkVeil") as Polygon2D
+	var band := dusk_low_visibility_band
+	if band == null:
+		band = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltPulseBand") as Polygon2D
+	var rib_a := dusk_low_visibility_rib_a
+	if rib_a == null:
+		rib_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibA") as Polygon2D
+	var rib_b := dusk_low_visibility_rib_b
+	if rib_b == null:
+		rib_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibB") as Polygon2D
+	if veil == null or band == null or rib_a == null or rib_b == null:
+		return
+
+	var is_low_visibility := condition_id == "low_visibility"
+	veil.color = Color(0.035, 0.055, 0.15, 0.36) if is_low_visibility else Color(0.035, 0.055, 0.15, 0.28)
+	band.color = Color(0.12, 0.16, 0.34, 0.3) if is_low_visibility else Color(0.12, 0.16, 0.34, 0.22)
+	rib_a.color = Color(0.36, 0.44, 0.78, 0.32) if is_low_visibility else Color(0.36, 0.44, 0.78, 0.24)
+	rib_b.color = Color(0.32, 0.38, 0.7, 0.28) if is_low_visibility else Color(0.32, 0.38, 0.7, 0.2)
 
 func _rare_signal_emphasis_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal"
@@ -2801,6 +2828,9 @@ func _format_next_expedition_prompt() -> String:
 	]
 
 func _format_expedition_ready_status() -> String:
+	if _current_condition_id() == "low_visibility":
+		return "Expedition %d ready: lower-trench visibility is poor today." % progression_state.current_run_number
+
 	return "Expedition %d ready: the ocean changed overnight." % progression_state.current_run_number
 
 func _format_expedition_day_title(suffix: String) -> String:
@@ -2855,7 +2885,7 @@ func _format_condition_briefing() -> String:
 		"predator_migration":
 			return "Today: %s.\nExpect the Gulper route to feel active; watch warning cues." % display_name
 		"low_visibility":
-			return "Today: %s.\nTreat deep routes as harder to read and bank early if unsure." % display_name
+			return "Today: %s.\nLower-trench routes are murkier; bank early if unsure." % display_name
 		"rare_signal":
 			if progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID):
 				return "Today: %s.\nEast Shelf, Blue Chimney, or Blackwater pings are worth checking if oxygen allows." % display_name
