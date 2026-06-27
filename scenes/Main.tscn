@@ -1348,6 +1348,30 @@ polygon = PackedVector2Array(128, 26, 60, 4, -4, -10, 58, 24)
 color = Color(0.02, 0.045, 0.062, 0.38)
 polygon = PackedVector2Array(472, -36, 620, 6, 596, 90, 444, 122, 390, 42)
 
+[node name="FarTurnbackCue" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+position = Vector2(636, 50)
+
+[node name="BoundaryWash" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue"]
+color = Color(0.18, 0.34, 0.56, 0.18)
+polygon = PackedVector2Array(-60, -72, 42, -52, 70, 24, 20, 92, -76, 72, -108, -4)
+
+[node name="ReturnRibbon" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue"]
+color = Color(0.66, 1, 0.86, 0.16)
+polygon = PackedVector2Array(-6, 28, -104, 8, -198, -20, -176, -46, -72, -18, 28, 6)
+
+[node name="ReturnRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue"]
+color = Color(0.82, 1, 0.92, 0.18)
+polygon = PackedVector2Array(-38, 22, -96, 2, -152, -8, -94, 26)
+
+[node name="CueLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue"]
+offset_left = -122.0
+offset_top = 58.0
+offset_right = 82.0
+offset_bottom = 92.0
+theme_override_font_sizes/font_size = 11
+text = "REEF CONTINUES LATER
+RETURN VIA HOLLOW"
+
 [node name="WreckSalvagePocketEntrance" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
 position = Vector2(560, -68)
 

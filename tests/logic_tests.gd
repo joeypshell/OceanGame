@@ -1524,6 +1524,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentRibA",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentRibB",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FutureChoiceShadow",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/BoundaryWash",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/ReturnRibbon",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/ReturnRib",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/CueLabel",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PressureWash",
@@ -1696,6 +1701,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hollow_wide_return_entry := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentEntryChain") as Polygon2D
 	var hollow_wide_return_rib_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentRibA") as Polygon2D
 	var hollow_wide_future_choice := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FutureChoiceShadow") as Polygon2D
+	var hollow_wide_far_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue") as Node2D
+	var hollow_wide_far_boundary := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/BoundaryWash") as Polygon2D
+	var hollow_wide_far_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/ReturnRibbon") as Polygon2D
+	var hollow_wide_far_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/ReturnRib") as Polygon2D
+	var hollow_wide_far_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/CueLabel") as Label
 	var hollow_deeper_promise := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise") as Node2D
 	var hollow_deeper_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth") as Polygon2D
 	var hollow_deeper_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PressureWash") as Polygon2D
@@ -1985,6 +1995,22 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_wide_return_entry.polygon[1].x < hollow_wide_return_entry.polygon[0].x, "Wide Reef Chamber entry return chain should point left toward Hollow Reef")
 	_expect(hollow_wide_return_mid.polygon[1].y < hollow_wide_foreground.polygon[0].y, "Wide Reef Chamber mid return chain should stay above the low foreground shelf")
 	_expect(hollow_wide_future_choice.color.a <= 0.4, "Wide Reef Chamber future-choice shadow should stay a quiet staging cue")
+	_expect(hollow_wide_far_turnback.position.x > hollow_wide_future_choice.polygon[4].x, "Wide Reef Chamber far turnback cue should sit beyond the current future-choice shadow")
+	_expect(hollow_wide_far_boundary.color.b > hollow_wide_far_boundary.color.r, "Wide Reef Chamber far boundary should use cool future-route language")
+	_expect(hollow_wide_far_boundary.color.a <= 0.2, "Wide Reef Chamber far boundary should stay atmospheric instead of becoming a hard wall")
+	_expect(hollow_wide_far_return.color.g > hollow_wide_far_return.color.r, "Wide Reef Chamber far turnback should use established safe-current color")
+	_expect(hollow_wide_far_return.polygon[1].x < hollow_wide_far_return.polygon[0].x, "Wide Reef Chamber far turnback ribbon should point left toward Hollow Reef")
+	_expect(hollow_wide_far_rib.polygon[1].x < hollow_wide_far_rib.polygon[0].x, "Wide Reef Chamber far turnback rib should step left along the route chain")
+	_expect(hollow_wide_far_label.text.contains("RETURN VIA HOLLOW"), "Wide Reef Chamber far turnback label should point broadly back through Hollow Reef")
+	_expect(hollow_wide_far_label.text.contains("LATER"), "Wide Reef Chamber far turnback label should frame the far edge as future content")
+	_expect(not hollow_wide_far_label.text.to_lower().contains("pickup"), "Wide Reef Chamber far turnback label should not read as a collectable")
+	_expect(not hollow_wide_far_label.text.to_lower().contains("locked"), "Wide Reef Chamber far turnback label should not read as an active gate")
+	_expect_no_echo_lens_locator_language(hollow_wide_far_label.text, "Wide Reef Chamber far turnback label")
+	_expect(hollow_wide_far_turnback.get_node_or_null("InteractZone") == null, "Wide Reef Chamber far turnback cue should not add an interaction hotspot")
+	_expect(hollow_wide_far_turnback.get_node_or_null("ResourcePickup") == null, "Wide Reef Chamber far turnback cue should not add cargo or loot")
+	_expect(hollow_wide_far_turnback.get_node_or_null("PressureBoundary") == null, "Wide Reef Chamber far turnback cue should not add hidden pressure behavior")
+	_expect(hollow_wide_far_turnback.find_child("CollisionShape2D", true, false) == null, "Wide Reef Chamber far turnback cue should not add collision or invisible walls")
+	_expect(hollow_wide_far_turnback.get_script() == null, "Wide Reef Chamber far turnback cue should remain visual-only")
 	_expect(hollow_wide_chamber.get_node_or_null("InteractZone") == null, "Wide Reef Chamber should not add an interaction hotspot yet")
 	_expect(hollow_wide_chamber.get_node_or_null("ResourcePickup") == null, "Wide Reef Chamber should not add cargo or loot yet")
 	_expect(hollow_wide_chamber.get_node_or_null("Predator") == null, "Wide Reef Chamber should not add combat or monster pressure yet")
