@@ -189,6 +189,20 @@ Left and right branch hints are visible, but neither branch is a full cave or qu
 variable_hooks = "Future Lantern Silt Nook and Blackwater Crack opportunities can attach to this fork."
 readability_priority = "Lower-route choice memory and broad up-left return orientation."
 
+[node name="DuskTrench" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "dusk_trench"
+display_name = "Dusk Trench"
+stable_region_name = "Dusk Trench"
+kind = "route_continuation"
+depth_band = "deep/trench"
+role = "Persistent lower-route identity beyond Blackwater Sill."
+memory_goal = "Remember Dusk Trench as the darker lower continuation beyond Blackwater; returning from it means following the safe current up-left through Blackwater, Silt Vein, Blue Chimney, and Drop Arch."
+persistent_facts = "Marks the first wider route continuation beyond the Blackwater gate.
+This is place identity and return orientation, not a minimap route, quest objective, or full cave system."
+variable_hooks = "Future Glass Kelp ledge, low-visibility, and lower-route creature cues can attach near this landmark."
+readability_priority = "Lower-trench identity and broad return language through Blackwater and Silt Vein."
+
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
 script = ExtResource("10_landmark_metadata")
 metadata_id = "thermal_vent_field"

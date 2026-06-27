@@ -309,6 +309,7 @@ func _test_save_load_behavior() -> void:
 	_expect(not main_saved.has("blackwater_crack"), "progression save should not add durable Blackwater Crack route data")
 	_expect(not main_saved.has("blackwater_trace"), "progression save should not add durable Blackwater Trace data")
 	_expect(not main_saved.has("dusk_trench"), "progression save should not add durable Dusk Trench route data")
+	_expect(not main_saved.has("dusk_trench_reached"), "progression save should not add durable Dusk Trench reach memory")
 	_expect(main_saved.get("purchased_upgrades", {}).has(ResonanceKeyUpgrade.id), "progression save should keep Resonance Key I as durable upgrade state only")
 	main.queue_free()
 
@@ -1114,6 +1115,7 @@ func _test_landmark_region_identity_metadata() -> void:
 		"DropArch": "Shelf Drop Connector",
 		"BlueChimney": "Blue Chimney Pocket",
 		"SiltVeinFork": "Silt Vein Fork",
+		"DuskTrench": "Dusk Trench",
 		"ThermalVentField": "Thermal Vent Field",
 		"WreckShelf": "Wreck Shelf",
 		"PressureLockedWreck": "Wreck Shelf",
@@ -1475,6 +1477,15 @@ func _test_region_memory_result_callout() -> void:
 	main.run_predator_contacts = 1
 	_expect(main._format_region_memory_callout().contains("Gulper Route"), "predator evidence should remember Gulper Route as the deepest contested place")
 	_expect(not main._format_region_memory_callout().contains(","), "region memory callout should stay compact and not become a checklist")
+
+	main.run_reached_dusk_trench = true
+	var dusk_memory := main._format_region_memory_callout()
+	_expect(dusk_memory.contains("Dusk Trench"), "Dusk reach evidence should remember the lower-trench place")
+	_expect(dusk_memory.contains("up-left"), "Dusk reach memory should keep broad return language")
+	_expect(dusk_memory.contains("Blackwater"), "Dusk reach memory should route back through the previous landmark")
+	_expect(not dusk_memory.contains("coordinate"), "Dusk reach memory should avoid exact-coordinate language")
+	_expect(not dusk_memory.contains("map"), "Dusk reach memory should avoid map language")
+	_expect_no_echo_lens_locator_language(dusk_memory, "Dusk Trench remembered place")
 	main.free()
 
 func _test_discovery_memory_result_callout() -> void:
@@ -2751,7 +2762,7 @@ func _test_expanded_region_base_direction() -> void:
 	scene_player.global_position = Vector2(2900.0, 3000.0)
 	var dusk_direction: String = main.call("_format_base_direction")
 	_expect(dusk_direction.contains("up-left"), "base direction should point up-left from the Dusk Trench")
-	_expect(dusk_direction.contains("Dusk/Silt/Blue"), "base direction should compactly name the Dusk return landmark chain")
+	_expect(dusk_direction.contains("Blackwater/Silt/Blue"), "base direction should compactly name the Dusk return landmark chain")
 
 	scene_player.global_position = main.start_position + Vector2(0.0, 500.0)
 	var vertical_direction: String = main.call("_format_base_direction")
@@ -2795,7 +2806,7 @@ func _test_no_minimap_orientation_guardrails() -> void:
 	scene_player.global_position = Vector2(2900.0, 3000.0)
 	var dusk_trench_direction: String = main.call("_format_base_direction")
 	_expect(dusk_trench_direction.contains("up-left"), "Dusk Trench orientation should use broad return direction")
-	_expect(dusk_trench_direction.contains("Dusk/Silt/Blue"), "Dusk Trench orientation should keep compact named return memory")
+	_expect(dusk_trench_direction.contains("Blackwater/Silt/Blue"), "Dusk Trench orientation should keep compact named return memory")
 	_expect_no_echo_lens_locator_language(dusk_trench_direction, "Dusk Trench base direction")
 
 	main.run_east_shelf_pocket_ping_recovered = true
@@ -2830,6 +2841,18 @@ func _test_no_minimap_orientation_guardrails() -> void:
 	_expect(silt_vein_memory.contains("Blue Chimney"), "Silt Vein Fork metadata should anchor return memory to Blue Chimney")
 	_expect(silt_vein_memory.contains("up-left"), "Silt Vein Fork metadata should preserve broad return orientation")
 	_expect_no_echo_lens_locator_language(silt_vein_memory, "Silt Vein Fork metadata")
+	var dusk_trench_landmark := main.get_node("LandmarkMetadata/DuskTrench")
+	var dusk_trench_memory := "%s %s %s" % [
+		String(dusk_trench_landmark.get("display_name")),
+		String(dusk_trench_landmark.get("stable_region_name")),
+		String(dusk_trench_landmark.get("memory_goal")),
+	]
+	_expect(dusk_trench_memory.contains("Dusk Trench"), "Dusk Trench metadata should provide broad place memory")
+	_expect(dusk_trench_memory.contains("Blackwater"), "Dusk Trench metadata should anchor return memory to Blackwater")
+	_expect(dusk_trench_memory.contains("up-left"), "Dusk Trench metadata should preserve broad return orientation")
+	_expect(not dusk_trench_memory.to_lower().contains("coordinate"), "Dusk Trench metadata should avoid coordinate language")
+	_expect(not dusk_trench_memory.to_lower().contains("map"), "Dusk Trench metadata should avoid map language")
+	_expect_no_echo_lens_locator_language(dusk_trench_memory, "Dusk Trench metadata")
 	main.queue_free()
 
 func _test_expanded_region_reset_state_ownership() -> void:
@@ -2909,6 +2932,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
 	main.run_blackwater_trace_recovered = true
+	main.run_reached_dusk_trench = true
 	main.blue_chimney_draft_timer = 1.7
 	main.blackwater_pressure_timer = 1.9
 	main.visual_smoke_route_stage = "lower_connector"
@@ -2918,6 +2942,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "run telemetry reset should clear Blue Chimney draft research state")
 	_expect(not main.run_lantern_silt_sample_recovered, "run telemetry reset should clear Lantern Silt sample state")
 	_expect(not main.run_blackwater_trace_recovered, "run telemetry reset should clear Blackwater Trace state")
+	_expect(not main.run_reached_dusk_trench, "run telemetry reset should clear Dusk Trench reach memory")
 	_expect(is_equal_approx(main.blue_chimney_draft_timer, 0.0), "run telemetry reset should clear Blue Chimney visual timing state")
 	_expect(is_equal_approx(main.blackwater_pressure_timer, 0.0), "run telemetry reset should clear Blackwater pressure-cue timing state")
 	_expect(main.visual_smoke_route_stage == "", "run telemetry reset should clear lower-connector visual route stage")
@@ -2930,6 +2955,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
 	main.run_blackwater_trace_recovered = true
+	main.run_reached_dusk_trench = true
 	main.call("_prepare_next_run")
 	_expect(not main.player_near_lower_connector_echo, "new expeditions should clear Drop Echo proximity state")
 	_expect(not main.player_near_resonance_alcove, "new expeditions should clear Resonance Alcove proximity state")
@@ -2941,6 +2967,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "new expeditions should not carry Blue Chimney draft research state")
 	_expect(not main.run_lantern_silt_sample_recovered, "new expeditions should not carry Lantern Silt sample state")
 	_expect(not main.run_blackwater_trace_recovered, "new expeditions should not carry Blackwater Trace state")
+	_expect(not main.run_reached_dusk_trench, "new expeditions should not carry Dusk Trench reach memory")
 	_expect(not main.progression_state.to_save_data().has("lower_connector_echo"), "Drop Echo should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("resonance_alcove_research"), "Resonance Alcove research should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("blue_chimney"), "Blue Chimney should not create durable route state")
@@ -2952,6 +2979,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.progression_state.to_save_data().has("lantern_silt_sample"), "Lantern Silt sample should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("blackwater_crack"), "Blackwater Crack should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("blackwater_trace"), "Blackwater Trace should not be stored in durable progression")
+	_expect(not main.progression_state.to_save_data().has("dusk_trench_reached"), "Dusk Trench reach memory should not be stored in durable progression")
 	main.queue_free()
 
 func _test_east_shelf_pocket_prompt_interaction() -> void:

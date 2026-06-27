@@ -67,6 +67,8 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 const BLACKWATER_PRESSURE_PERIOD_SECONDS := 3.1
+const DUSK_TRENCH_MEMORY_MIN_X := 2700.0
+const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
@@ -267,6 +269,7 @@ var run_resonance_alcove_research_recovered := false
 var run_blue_chimney_draft_reading_recovered := false
 var run_lantern_silt_sample_recovered := false
 var run_blackwater_trace_recovered := false
+var run_reached_dusk_trench := false
 var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
 var recent_expedition_log: Array[Dictionary] = []
@@ -699,6 +702,8 @@ func _on_wreck_echo_clue_body_entered(body: Node2D) -> void:
 func _update_depth() -> void:
 	dive_session.current_depth = maxf(0.0, (player.global_position.y - surface_y) / pixels_per_meter)
 	progression_state.record_depth(dive_session.current_depth)
+	if player.global_position.x >= DUSK_TRENCH_MEMORY_MIN_X and player.global_position.y >= DUSK_TRENCH_MEMORY_MIN_Y:
+		run_reached_dusk_trench = true
 
 func _select_upgrade(direction: int) -> void:
 	if upgrade_definitions.is_empty():
@@ -2673,6 +2678,7 @@ func _reset_run_telemetry() -> void:
 	run_blue_chimney_draft_reading_recovered = false
 	run_lantern_silt_sample_recovered = false
 	run_blackwater_trace_recovered = false
+	run_reached_dusk_trench = false
 	debug_wreck_echo_review_staged = false
 	visual_smoke_route_stage = ""
 	echo_lens_pulse_timer = 0.0
@@ -2908,6 +2914,8 @@ func _format_sealed_shelf_hatch_readiness_callout() -> String:
 	return "\nLab note: Echo Lens reads the Sealed Shelf Hatch; Resonance Key planning can wait."
 
 func _format_region_memory_callout() -> String:
+	if run_reached_dusk_trench:
+		return "Remembered place: Dusk Trench - return up-left through Blackwater and Silt Vein to Blue Chimney."
 	if run_predator_contacts > 0 or run_completed_scans.has("gulper_eel"):
 		return "Remembered place: Gulper Route - warning-lane timing matters."
 	if run_completed_scans.has("wreck_signal_cache") or run_completed_scans.has("pressure_wreck_signal"):
@@ -3105,7 +3113,7 @@ func _format_base_direction() -> String:
 
 	var route_hint := ""
 	if delta.x > 2100.0 and delta.y > 2400.0:
-		route_hint = " via Dusk/Silt/Blue"
+		route_hint = " via Blackwater/Silt/Blue"
 	elif delta.x > 1500.0 and delta.y > 2100.0:
 		route_hint = " via Silt/Blue"
 
