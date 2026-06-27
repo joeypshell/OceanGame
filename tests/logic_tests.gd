@@ -24,6 +24,7 @@ const ResonanceKeyUpgrade := preload("res://resources/upgrades/resonance_key_1.t
 const CargoRackUpgrade := preload("res://resources/upgrades/cargo_rack_1.tres")
 const PredatorWarningUpgrade := preload("res://resources/upgrades/predator_warning_1.tres")
 const DecoyPulseUpgrade := preload("res://resources/upgrades/decoy_pulse_1.tres")
+const SalvageCutterUpgrade := preload("res://resources/upgrades/salvage_cutter_1.tres")
 
 class DummyScanTarget:
 	extends Node2D
@@ -1133,7 +1134,7 @@ func _test_salvage_data_cache_interaction() -> void:
 	if main.status_label != null:
 		_expect(main.status_label.text.contains("Return safely"), "salvage data cache interaction should preserve extraction pressure")
 		_expect(main.status_label.text.contains("data cache"), "salvage status should name the visible payoff")
-		_expect(main.status_label.text.contains("future cutter prep"), "salvage status should frame the cache as a future tool prerequisite signal")
+		_expect(main.status_label.text.contains("Salvage Cutter I prep"), "salvage status should frame the cache as a narrow tool prerequisite signal")
 		_expect(not main.status_label.text.to_lower().contains("buy"), "salvage status should not imply a purchasable tool yet")
 
 	var repeat_handled: bool = main.call("_try_salvage_data_cache_interaction")
@@ -1148,17 +1149,22 @@ func _test_salvage_data_cache_interaction() -> void:
 	var callout: String = main.call("_format_salvage_data_cache_research_callout")
 	_expect(callout.contains("Salvage data cache"), "salvage result memory should name the recovered cache")
 	_expect(callout.contains("sealed wreck pocket"), "salvage result memory should keep the future destination broad")
-	_expect(callout.contains("future cutter prep"), "salvage result memory should connect the cache to a future narrow tool prerequisite")
-	_expect(not callout.to_lower().contains("upgrade bay"), "salvage result memory should not imply an upgrade entry exists yet")
+	_expect(callout.contains("Salvage Cutter I prep"), "salvage result memory should connect the cache to the narrow tool prerequisite")
+	_expect(not callout.to_lower().contains("upgrade bay"), "salvage result memory should not turn into menu instructions")
 	_expect(not callout.to_lower().contains("craft"), "salvage result memory should not introduce crafting")
 	_expect_no_echo_lens_locator_language(callout, "salvage data cache result line")
 	var empty_cargo: Array[String] = []
 	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
 	_expect(extraction_summary.contains("Salvage data cache"), "salvage extraction summary should include recovered cache memory")
-	_expect(extraction_summary.contains("future cutter prep"), "salvage extraction summary should make the cache useful for future tool planning")
+	_expect(extraction_summary.contains("Salvage Cutter I prep"), "salvage extraction summary should make the cache useful for tool planning")
 	_expect(not extraction_summary.to_lower().contains("buy cutter"), "salvage extraction summary should not make the future cutter purchasable")
 	_expect(not extraction_summary.to_lower().contains("loot table"), "salvage extraction summary should avoid loot-system language")
 	_expect(not extraction_summary.to_lower().contains("inventory"), "salvage extraction summary should avoid inventory language")
+	main.call("_record_salvage_data_cache_discovery_if_extracted")
+	_expect(main.progression_state.has_discovery("salvage_data_cache"), "safe extraction should convert salvage cache evidence into the normal upgrade prerequisite discovery")
+	var save_with_evidence: Dictionary = main.progression_state.to_save_data()
+	_expect(save_with_evidence.has("scan_discoveries"), "salvage cache evidence should use existing discovery save state")
+	_expect(not save_with_evidence.has("salvage_inventory"), "salvage cache evidence should not create salvage inventory state")
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_salvage_data_cache_recovered, "salvage cache should reset between expeditions")
 	_expect(cache_core.color.a >= 0.7, "salvage data cache should become visible again after expedition reset")
@@ -2497,6 +2503,15 @@ func _test_discovery_prerequisites() -> void:
 	_expect(int(DecoyPulseUpgrade.resource_cost.get("glow_plankton", 0)) == 2, "Decoy Pulse I should cost two glow plankton")
 	_expect(int(DecoyPulseUpgrade.resource_cost.get("kelp_fiber", 0)) == 1, "Decoy Pulse I should cost one kelp fiber")
 	_expect(int(DecoyPulseUpgrade.resource_cost.get("shell_fragments", 0)) == 1, "Decoy Pulse I should cost one shell fragment")
+	_expect(SalvageCutterUpgrade.id == "salvage_cutter_1", "Salvage Cutter I should have a stable upgrade id")
+	_expect(SalvageCutterUpgrade.required_discovery == "salvage_data_cache", "Salvage Cutter I should require recovered salvage-cache evidence")
+	_expect(SalvageCutterUpgrade.required_upgrade.is_empty(), "Salvage Cutter I should not create a broad prerequisite chain")
+	_expect(SalvageCutterUpgrade.effect_id == "salvage_cutter_1", "Salvage Cutter I should use a narrow scoped effect id")
+	_expect(int(SalvageCutterUpgrade.resource_cost.get("kelp_fiber", 0)) == 1, "Salvage Cutter I should cost one existing kelp fiber")
+	_expect(int(SalvageCutterUpgrade.resource_cost.get("shell_fragments", 0)) == 2, "Salvage Cutter I should cost two existing shell fragments")
+	_expect(not SalvageCutterUpgrade.resource_cost.has("glow_plankton"), "Salvage Cutter I should avoid a broad material spread")
+	_expect(SalvageCutterUpgrade.description.contains("Wide Reef"), "Salvage Cutter I should stay tied to Wide Reef")
+	_expect(not SalvageCutterUpgrade.description.to_lower().contains("all sealed"), "Salvage Cutter I should not imply opening every sealed route")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, OxygenTankUpgrade) == "", "upgrade with no prerequisite should not be locked")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "thermal_vent", "Pressure Seal I prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, SignalLensUpgrade) == "wreck_signal_cache", "Signal Lens I prerequisite should start missing")
@@ -2507,6 +2522,7 @@ func _test_discovery_prerequisites() -> void:
 	_expect(UpgradePurchaseScript.missing_discovery(progression, CargoRackUpgrade) == "", "Cargo Rack I prerequisite should be satisfied by default")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PredatorWarningUpgrade) == "gulper_eel", "Predator Warning I prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_upgrade(progression, DecoyPulseUpgrade) == PredatorWarningUpgrade.id, "Decoy Pulse I upgrade prerequisite should start missing")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, SalvageCutterUpgrade) == "salvage_data_cache", "Salvage Cutter I prerequisite should start missing")
 	progression.add_discovery("thermal_vent", "Thermal Vent", "Hot current.", "Unlocks pressure tuning.")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PressureSealUpgrade) == "", "Pressure Seal I prerequisite should be satisfied by Thermal Vent discovery")
 	progression.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks Signal Lens I.")
@@ -2524,6 +2540,8 @@ func _test_discovery_prerequisites() -> void:
 	_expect(not UpgradePurchaseScript.purchase(progression, DecoyPulseUpgrade), "Decoy Pulse I should not purchase before Predator Warning I")
 	progression.purchased_upgrades[PredatorWarningUpgrade.id] = true
 	_expect(UpgradePurchaseScript.missing_upgrade(progression, DecoyPulseUpgrade) == "", "Decoy Pulse I upgrade prerequisite should be satisfied by Predator Warning I")
+	progression.add_discovery("salvage_data_cache", "Salvage Data Cache", "Recovered cutter prep.", "Unlocks Salvage Cutter I.")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, SalvageCutterUpgrade) == "", "Salvage Cutter I prerequisite should be satisfied by recovered cache evidence")
 
 func _test_predator_warning_upgrade_metadata() -> void:
 	_expect(PredatorWarningUpgrade.id == "predator_warning_1", "Predator Warning I should have a stable upgrade id")
@@ -2703,7 +2721,20 @@ func _test_expedition_prep_goals() -> void:
 		CargoRackUpgrade,
 		PredatorWarningUpgrade,
 		DecoyPulseUpgrade,
+		SalvageCutterUpgrade,
 	]
+	var salvage_goal_progression := ProgressionStateScript.new()
+	for upgrade in full_upgrades:
+		if upgrade.id != SalvageCutterUpgrade.id:
+			salvage_goal_progression.purchased_upgrades[upgrade.id] = true
+	goal = ExpeditionGoalFormatterScript.format_goal(salvage_goal_progression, full_upgrades)
+	_expect(goal.contains("recover Salvage Data Cache"), "prepared players should get a salvage-cache recovery goal before Salvage Cutter I")
+	_expect(goal.contains("Salvage Cutter I"), "salvage-cache recovery goal should name the new cutter upgrade")
+	salvage_goal_progression.add_discovery("salvage_data_cache", "Salvage Data Cache", "Recovered cutter prep.", "Unlocks Salvage Cutter I.")
+	goal = ExpeditionGoalFormatterScript.format_goal(salvage_goal_progression, full_upgrades)
+	_expect(goal.contains("bank"), "Salvage Cutter I should ask for existing resources after evidence is recovered")
+	_expect(goal.contains("Shell Fragments"), "Salvage Cutter I resource goal should use existing Shell Fragments")
+
 	var blackwater_ready_progression := ProgressionStateScript.new()
 	for upgrade in full_upgrades:
 		blackwater_ready_progression.purchased_upgrades[upgrade.id] = true
@@ -2734,11 +2765,11 @@ func _test_expedition_prep_goals() -> void:
 	_expect_no_echo_lens_locator_language(goal, "recent Hollow Reef chamber goal")
 	goal = ExpeditionGoalFormatterScript.format_goal(blackwater_ready_progression, full_upgrades, "", "Wide Reef Chamber")
 	_expect(goal.contains("Wide Reef"), "recent Wide Reef Chamber memory should keep the ready nudge broad")
-	_expect(goal.contains("future cutter prep"), "recent Wide Reef Chamber memory should mention the narrow future-tool prerequisite signal")
-	_expect(goal.contains("bank cargo only if oxygen allows"), "recent Wide Reef Chamber ready goal should keep cargo optional")
-	_expect(goal.contains("return safely"), "recent Wide Reef Chamber ready goal should preserve extraction pressure")
-	_expect(not goal.to_lower().contains("buy"), "recent Wide Reef Chamber ready goal should not imply a purchasable cutter")
-	_expect(not goal.to_lower().contains("upgrade bay"), "recent Wide Reef Chamber ready goal should not create upgrade-bay promise copy yet")
+	_expect(goal.contains("Salvage Cutter I"), "recent Wide Reef Chamber memory should mention the owned narrow tool")
+	_expect(goal.contains("if oxygen allows"), "recent Wide Reef Chamber ready goal should keep the return payoff optional")
+	_expect(goal.contains("Hollow Reef"), "recent Wide Reef Chamber ready goal should preserve broad return-route language")
+	_expect(not goal.to_lower().contains("buy"), "recent Wide Reef Chamber ready goal should not imply another cutter purchase")
+	_expect(not goal.to_lower().contains("upgrade bay"), "recent Wide Reef Chamber ready goal should not create upgrade-bay promise copy")
 	_expect(not goal.to_lower().contains("craft"), "recent Wide Reef Chamber ready goal should not introduce crafting")
 	_expect_no_echo_lens_locator_language(goal, "recent Wide Reef Chamber ready goal")
 	goal = ExpeditionGoalFormatterScript.format_goal(blackwater_ready_progression, full_upgrades, "", "Mirror Kelp Pass")
@@ -2753,7 +2784,7 @@ func _test_expedition_prep_goals() -> void:
 	_expect(save_after_recent_goal == save_before_recent_goal, "ready route suggestions should not mutate save data")
 	_expect(not save_after_recent_goal.has("recent_route_memory"), "ready route suggestions should not add route memory to the save schema")
 	_expect(not save_after_recent_goal.has("ready_goal"), "ready route suggestions should not add goal state to the save schema")
-	_expect(not save_after_recent_goal.has("future_cutter"), "future cutter prep should not add tool state to the save schema yet")
+	_expect(not save_after_recent_goal.has("future_cutter"), "salvage cutter prep should not add obsolete tool state keys")
 
 	var incomplete_progression := ProgressionStateScript.new()
 	var incomplete_goal := ExpeditionGoalFormatterScript.format_goal(incomplete_progression, upgrades, "rare_signal")
@@ -3860,25 +3891,38 @@ func _test_upgrade_bay_readability_states() -> void:
 
 	main.run_salvage_data_cache_recovered = true
 	var cutter_promise := main._format_future_tool_upgrade_promise()
-	_expect(cutter_promise.contains("Planned: Salvage Cutter"), "future cutter promise should appear after salvage data evidence")
-	_expect(cutter_promise.contains("locked"), "future cutter promise should stay clearly locked")
-	_expect(cutter_promise.contains("Wide Reef"), "future cutter promise should keep the lower-route research context")
-	_expect(not cutter_promise.to_lower().contains("buy"), "future cutter promise should not imply a purchase path")
-	_expect(not cutter_promise.to_lower().contains("available"), "future cutter promise should not look like an available upgrade")
-	_expect(not cutter_promise.to_lower().contains("cost"), "future cutter promise should not introduce a recipe or resource tier")
+	_expect(cutter_promise == "", "future cutter promise should be removed now that Salvage Cutter I is a real upgrade entry")
 	_expect_lines_within(cutter_promise, 72, "future cutter promise")
 	_expect_no_echo_lens_locator_language(cutter_promise, "future cutter promise")
 
 	var promised_feedback := main._format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.")
 	_expect(promised_feedback.contains("Banked 3 resource(s)."), "future cutter promise should not replace normal upgrade feedback")
-	_expect(promised_feedback.contains("Planned: Salvage Cutter"), "future cutter promise should append to upgrade feedback after evidence")
+	_expect(not promised_feedback.contains("Planned: Salvage Cutter"), "upgrade feedback should not append obsolete planned cutter copy")
 	_expect_lines_within(promised_feedback, 72, "future cutter promised feedback")
-	for upgrade in main.upgrade_definitions:
-		_expect(not upgrade.id.to_lower().contains("cutter"), "future cutter promise should not add a selectable upgrade id")
-		_expect(not upgrade.display_name.to_lower().contains("cutter"), "future cutter promise should not add a selectable upgrade entry")
+	var cutter_state := main._format_upgrade_state(SalvageCutterUpgrade)
+	_expect(cutter_state.begins_with("State: Needs salvage data"), "Salvage Cutter I should be locked by recovered cache evidence before extraction")
+	_expect(cutter_state.contains("Recover: Salvage Data Cache"), "Salvage Cutter I should name the broad evidence prerequisite")
+	_expect(cutter_state.contains("Wide Reef salvage pocket"), "Salvage Cutter I should stay scoped to the sealed Wide Reef pocket")
+	main.progression_state.add_discovery("salvage_data_cache", "Salvage Data Cache", "Recovered cutter prep.", "Unlocks Salvage Cutter I.")
+	main.progression_state.banked_resources = {
+		"kelp_fiber": 1,
+		"shell_fragments": 1,
+	}
+	cutter_state = main._format_upgrade_state(SalvageCutterUpgrade)
+	_expect(cutter_state.begins_with("State: Missing resources"), "Salvage Cutter I should show missing resources after evidence is recovered")
+	_expect(cutter_state.contains("Shell Fragments x1"), "Salvage Cutter I should show only the remaining existing-resource cost")
+	main.progression_state.banked_resources = {
+		"kelp_fiber": 1,
+		"shell_fragments": 2,
+	}
+	cutter_state = main._format_upgrade_state(SalvageCutterUpgrade)
+	_expect(cutter_state.begins_with("State: Available now"), "Salvage Cutter I should become available after evidence and existing resources")
+	main.progression_state.purchase_upgrade(SalvageCutterUpgrade.id, SalvageCutterUpgrade.resource_cost)
+	cutter_state = main._format_upgrade_state(SalvageCutterUpgrade)
+	_expect(cutter_state.begins_with("State: Owned"), "Salvage Cutter I should show owned after normal upgrade purchase")
 	main.run_salvage_data_cache_recovered = false
 	main.recent_expedition_log = [{"route_memory": "Wide Reef Chamber"}]
-	_expect(main._format_future_tool_upgrade_promise().contains("Salvage Cutter"), "recent Wide Reef Chamber memory should keep the future cutter promise visible between runs")
+	_expect(main._format_future_tool_upgrade_promise() == "", "recent Wide Reef Chamber memory should not revive obsolete future cutter promise copy")
 	main.free()
 
 func _test_result_and_upgrade_copy_length_guards() -> void:

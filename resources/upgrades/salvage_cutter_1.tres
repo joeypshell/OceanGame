@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3 uid="uid://salvage_cutter_1_upgrade"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="1_upgrade_definition"]
+
+[resource]
+script = ExtResource("1_upgrade_definition")
+id = "salvage_cutter_1"
+display_name = "Salvage Cutter I"
+description = "Turns recovered Wide Reef cutter data into one sealed-pocket access tool."
+resource_cost = {
+"kelp_fiber": 1,
+"shell_fragments": 2
+}
+required_discovery = "salvage_data_cache"
+required_upgrade = ""
+effect_id = "salvage_cutter_1"
+locked_reason = "Recover the Wide Reef Salvage Data Cache and extract safely before the lab can build this cutter."
+available_text = "Available: press E or Enter to purchase."
+owned_text = "Owned: prepared to open the sealed Wide Reef salvage pocket."

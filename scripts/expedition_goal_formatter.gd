@@ -11,7 +11,8 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 
 		var missing_discovery := UpgradePurchaseScript.missing_discovery(progression_state, upgrade)
 		if missing_discovery != "":
-			return "Goal: scan %s, then bank %s for %s." % [
+			return "Goal: %s %s, then bank %s for %s." % [
+				_prerequisite_action(missing_discovery),
 				_discovery_name(missing_discovery),
 				_format_cost(upgrade.resource_cost),
 				upgrade.display_name,
@@ -37,7 +38,7 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 	if prepared_for_blackwater and recent_route_memory == "Mirror Kelp Pass":
 		return "Goal: revisit Mirror Kelp for the deep-kelp seal if oxygen allows, then exit via Wide Reef."
 	if prepared_for_blackwater and recent_route_memory == "Wide Reef Chamber":
-		return "Goal: use Wide Reef salvage data as future cutter prep; bank cargo only if oxygen allows, then return safely."
+		return "Goal: return to Wide Reef with Salvage Cutter I if oxygen allows, then exit via Hollow Reef."
 	if prepared_for_blackwater and recent_route_memory == "Hollow Reef":
 		return "Goal: follow Hollow Reef toward the wide chamber if oxygen allows, then return safely."
 	if prepared_for_blackwater and recent_route_memory == "Dusk Trench":
@@ -86,12 +87,20 @@ static func _discovery_name(discovery_id: String) -> String:
 			return "Thermal Vent"
 		"wreck_signal_cache":
 			return "Wreck Signal Cache"
+		"salvage_data_cache":
+			return "Salvage Data Cache"
 		"lantern_fry":
 			return "Lantern Fry"
 		"gulper_eel":
 			return "Gulper Eel"
 		_:
 			return discovery_id
+
+static func _prerequisite_action(discovery_id: String) -> String:
+	if discovery_id == "salvage_data_cache":
+		return "recover"
+
+	return "scan"
 
 static func _upgrade_name(upgrade_id: String, upgrade_definitions: Array[UpgradeDefinition]) -> String:
 	for upgrade in upgrade_definitions:

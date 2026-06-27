@@ -17,6 +17,7 @@ const RESONANCE_KEY_UPGRADE := preload("res://resources/upgrades/resonance_key_1
 const CARGO_RACK_UPGRADE := preload("res://resources/upgrades/cargo_rack_1.tres")
 const PREDATOR_WARNING_UPGRADE := preload("res://resources/upgrades/predator_warning_1.tres")
 const DECOY_PULSE_UPGRADE := preload("res://resources/upgrades/decoy_pulse_1.tres")
+const SALVAGE_CUTTER_UPGRADE := preload("res://resources/upgrades/salvage_cutter_1.tres")
 
 const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
 const PRESSURE_SEAL_UPGRADE_ID := "pressure_seal_1"
@@ -26,6 +27,7 @@ const RESONANCE_KEY_UPGRADE_ID := "resonance_key_1"
 const CARGO_RACK_UPGRADE_ID := "cargo_rack_1"
 const PREDATOR_WARNING_UPGRADE_ID := "predator_warning_1"
 const DECOY_PULSE_UPGRADE_ID := "decoy_pulse_1"
+const SALVAGE_CUTTER_UPGRADE_ID := "salvage_cutter_1"
 const PROGRESSION_SAVE_PATH := "user://progression_save.json"
 const LOW_OXYGEN_RATIO := 0.25
 const CRITICAL_OXYGEN_RATIO := 0.10
@@ -310,6 +312,7 @@ var upgrade_definitions: Array[UpgradeDefinition] = [
 	CARGO_RACK_UPGRADE,
 	PREDATOR_WARNING_UPGRADE,
 	DECOY_PULSE_UPGRADE,
+	SALVAGE_CUTTER_UPGRADE,
 ]
 var run_collected_resources: Array[String] = []
 var run_completed_scans: Array[String] = []
@@ -441,6 +444,7 @@ func _try_extract() -> void:
 	var extracted_count := extracted_cargo.size()
 	dive_session.extract()
 	progression_state.bank_cargo(extracted_cargo)
+	_record_salvage_data_cache_discovery_if_extracted()
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
 	last_result_summary = _format_extraction_result_summary(extracted_count, extracted_cargo)
@@ -870,7 +874,7 @@ func _try_salvage_data_cache_interaction() -> bool:
 	run_reached_dusk_trench = true
 	_sync_salvage_data_cache_state()
 	if status_label != null:
-		status_label.text = "Salvage data cache recovered for future cutter prep. Return safely through Hollow Reef to keep the wreck note."
+		status_label.text = "Salvage data cache recovered for Salvage Cutter I prep. Return safely through Hollow Reef to keep the wreck note."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -1678,6 +1682,11 @@ func _try_purchase_selected_upgrade() -> void:
 		return
 
 	if _upgrade_missing_discovery(upgrade) != "":
+		if upgrade.id == SALVAGE_CUTTER_UPGRADE_ID:
+			upgrade_menu_feedback = "Missing evidence: Salvage Data Cache. %s" % upgrade.locked_reason
+			status_label.text = "%s needs recovered salvage data." % upgrade.display_name
+			_update_hud()
+			return
 		upgrade_menu_feedback = "Missing discovery: %s. %s" % [
 			_format_discovery_name(upgrade.required_discovery),
 			upgrade.locked_reason
@@ -1751,6 +1760,8 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 		"predator_warning_range_1":
 			_sync_predator_warning_upgrade_state()
 		"decoy_pulse_1":
+			pass
+		"salvage_cutter_1":
 			pass
 		_:
 			push_warning("Unknown upgrade effect: %s" % effect_id)
@@ -3265,6 +3276,8 @@ func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 
 	if upgrade.id == RESONANCE_KEY_UPGRADE_ID:
 		return _format_resonance_key_upgrade_state(effect_summary)
+	if upgrade.id == SALVAGE_CUTTER_UPGRADE_ID:
+		return _format_salvage_cutter_upgrade_state(effect_summary)
 
 	var missing_discovery := _upgrade_missing_discovery(upgrade)
 	if missing_discovery != "":
@@ -3314,6 +3327,22 @@ func _format_resonance_key_upgrade_state(effect_summary: String) -> String:
 		effect_summary,
 	]
 
+func _format_salvage_cutter_upgrade_state(effect_summary: String) -> String:
+	var missing_discovery := _upgrade_missing_discovery(SALVAGE_CUTTER_UPGRADE)
+	if missing_discovery != "":
+		return "State: Needs salvage data\nRecover: Salvage Data Cache\n%s" % effect_summary
+
+	if progression_state.can_afford(SALVAGE_CUTTER_UPGRADE.resource_cost):
+		return "State: Available now\n%s: buy\n%s" % [
+			_action_label("interact").replace("/", " or "),
+			effect_summary,
+		]
+
+	return "State: Missing resources\nNeeds: %s\n%s" % [
+		_format_missing_resources_inline(SALVAGE_CUTTER_UPGRADE.resource_cost),
+		effect_summary,
+	]
+
 func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
 	match upgrade.id:
 		OXYGEN_TANK_UPGRADE_ID:
@@ -3332,13 +3361,14 @@ func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
 			return "Effect: earlier predator warning."
 		DECOY_PULSE_UPGRADE_ID:
 			return "Effect: one decoy window per expedition."
+		SALVAGE_CUTTER_UPGRADE_ID:
+			return "Effect: opens the sealed Wide Reef salvage pocket."
 
 	return "Effect: %s" % upgrade.owned_text
 
 func _format_upgrade_panel_feedback(feedback: String) -> String:
-	var promise := _format_future_tool_upgrade_promise()
 	if feedback.is_empty():
-		return promise
+		return ""
 
 	var compact := feedback
 	compact = compact.replace("Deposited", "Banked")
@@ -3352,18 +3382,13 @@ func _format_upgrade_panel_feedback(feedback: String) -> String:
 	if compact.length() > max_chars:
 		compact = "%s..." % compact.substr(0, max_chars - 3)
 
-	if promise != "":
-		return "%s\n%s" % [compact, promise]
 	return compact
 
 func _format_future_tool_upgrade_promise() -> String:
-	if not _has_future_tool_upgrade_context():
-		return ""
-
-	return "Planned: Salvage Cutter locked for later build.\nNeed more Wide Reef research."
+	return ""
 
 func _has_future_tool_upgrade_context() -> bool:
-	return run_salvage_data_cache_recovered or _latest_recent_route_memory() == "Wide Reef Chamber"
+	return false
 
 func _format_ready_upgrade_callout() -> String:
 	var ready: Array[String] = []
@@ -3389,7 +3414,8 @@ func _format_upgrade_progress_callout() -> String:
 
 		var missing_discovery := _upgrade_missing_discovery(upgrade)
 		if missing_discovery != "":
-			return "Upgrade progress: scan %s to unlock %s." % [
+			return "Upgrade progress: %s %s to unlock %s." % [
+				_format_upgrade_prerequisite_action(missing_discovery),
 				_format_discovery_name(missing_discovery),
 				upgrade.display_name,
 			]
@@ -3442,6 +3468,19 @@ func _format_extraction_banking_line(extracted_count: int, extracted_cargo: Arra
 
 	return "Banked 0 resources. No cargo or new scans came home."
 
+func _record_salvage_data_cache_discovery_if_extracted() -> void:
+	if not run_salvage_data_cache_recovered:
+		return
+	if progression_state.has_discovery("salvage_data_cache"):
+		return
+
+	progression_state.add_discovery(
+		"salvage_data_cache",
+		"Salvage Data Cache",
+		"Recovered Wide Reef cutter prep data.",
+		"Unlocks Salvage Cutter I for the sealed Wide Reef salvage pocket."
+	)
+
 func _upgrade_missing_discovery(upgrade: UpgradeDefinition) -> String:
 	return UpgradePurchaseScript.missing_discovery(progression_state, upgrade)
 
@@ -3460,8 +3499,16 @@ func _format_upgrade_display_name(upgrade_id: String) -> String:
 			return "Decoy Pulse I"
 		RESONANCE_KEY_UPGRADE_ID:
 			return "Resonance Key I"
+		SALVAGE_CUTTER_UPGRADE_ID:
+			return "Salvage Cutter I"
 		_:
 			return upgrade_id
+
+func _format_upgrade_prerequisite_action(discovery_id: String) -> String:
+	if discovery_id == "salvage_data_cache":
+		return "recover"
+
+	return "scan"
 
 func _format_discovery_name(discovery_id: String) -> String:
 	if discovery_id.is_empty():
@@ -3482,6 +3529,8 @@ func _format_discovery_name(discovery_id: String) -> String:
 			return "Wreck Signal Cache"
 		"east_shelf_route_research":
 			return "East Shelf or Drop Echo research"
+		"salvage_data_cache":
+			return "Salvage Data Cache"
 		"gulper_eel":
 			return "Gulper Eel"
 		"lantern_ray":
@@ -3827,7 +3876,7 @@ func _format_hollow_reef_reading_callout() -> String:
 
 func _format_salvage_data_cache_research_callout() -> String:
 	if run_salvage_data_cache_recovered:
-		return "\nResearch: Salvage data cache gives the lab future cutter prep for the sealed wreck pocket."
+		return "\nResearch: Salvage data cache gives the lab Salvage Cutter I prep for the sealed wreck pocket."
 
 	return ""
 
