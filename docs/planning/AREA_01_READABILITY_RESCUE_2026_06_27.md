@@ -40,8 +40,8 @@ This milestone temporarily takes priority over `Salvage Cutter 04` because addin
 2. Done in #625: quiet the Hollow Reef / Wide Reef / Mirror Kelp placeholder geometry so background and terrain stop competing with the sub, pickups, and payoffs.
 3. Done in #626: reduce label noise by hiding redundant normal-play return labels and shortening local promise/place labels.
 4. Done in #627: clarify pickup/payoff language so resources, knowledge payoffs, locked routes, and return/timing support use distinct color/shape/opacity bands.
-5. Add or update one deterministic visual capture for the cleaned Wide Reef / salvage / Mirror Kelp cluster.
-6. Recheck the salvage hazard issue after the readability pass; only add the hazard if it stays visually distinct and improves the local decision.
+5. Done in #628: add/update one deterministic visual capture record for the cleaned Wide Reef / salvage / Mirror Kelp cluster.
+6. Rechecked in #628: the salvage hazard issue can resume only if it stays visually distinct and improves the local decision without adding another bright reward/lock/label pile.
 
 ## Guardrails
 
