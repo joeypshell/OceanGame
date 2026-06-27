@@ -160,6 +160,7 @@ Default captures include:
 - `expanded-east-shelf-route-staged.png`
 - `east-shelf-pocket-ping-staged.png`
 - `lower-connector-staged.png`
+- `blue-chimney-pocket-staged.png`
 - `open-hatch-resonance-alcove-staged.png`
 - `active-low-oxygen.png`
 - `active-critical-oxygen.png`
@@ -167,7 +168,7 @@ Default captures include:
 - `wreck-echo-result-readback.png`
 - `wreck-echo-result-player-facing.png`
 
-The screenshots live under `test-results/playwright/` with Playwright traces/reports in ignored local artifact folders. Each `.png` has a same-name `.json` metadata sidecar recording the expected state, the exported game's reported visual state, and viewport size. Use this flow for repeated HUD/layout/route-readability checks. The expanded East Shelf, lower-connector, and open-hatch Resonance Alcove captures use the Web debug-command bridge to stage the side-route, pocket-ping, Shelf Drop Connector, and hatch/alcove views without long keyboard traversal. The Wreck Echo screenshots use the debug-gated F6 staging hook after F3 telemetry is enabled, so they are route/result visual evidence rather than gameplay-traversal proof. The `wreck-echo-result-player-facing.png` capture hides telemetry after staging so reviewers can inspect the player-facing result panel without debug text. Use Godot headless logic tests for state ownership, economy, progression, scan rules, pressure rules, predator behavior, and other deterministic gameplay assertions.
+The screenshots live under `test-results/playwright/` with Playwright traces/reports in ignored local artifact folders. Each `.png` has a same-name `.json` metadata sidecar recording the expected state, the exported game's reported visual state, and viewport size. Use this flow for repeated HUD/layout/route-readability checks. The expanded East Shelf, lower-connector, Blue Chimney lower-pocket, and open-hatch Resonance Alcove captures use the Web debug-command bridge to stage the side-route, pocket-ping, Shelf Drop Connector, Blue Chimney Pocket, and hatch/alcove views without long keyboard traversal. The Wreck Echo screenshots use the debug-gated F6 staging hook after F3 telemetry is enabled, so they are route/result visual evidence rather than gameplay-traversal proof. The `wreck-echo-result-player-facing.png` capture hides telemetry after staging so reviewers can inspect the player-facing result panel without debug text. Use Godot headless logic tests for state ownership, economy, progression, scan rules, pressure rules, predator behavior, and other deterministic gameplay assertions.
 
 Current workflow gap review: `docs/planning/PLAYWRIGHT_SCREENSHOT_WORKFLOW_GAP_REVIEW_2026_06_26.md`.
 

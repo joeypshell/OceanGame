@@ -123,6 +123,17 @@ export async function stageLowerConnector(page) {
   });
 }
 
+export async function stageBlueChimneyPocket(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "blue_chimney_pocket";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "blue_chimney_pocket",
+  });
+}
+
 export async function stageOpenHatchResonanceAlcove(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "open_hatch_resonance_alcove";

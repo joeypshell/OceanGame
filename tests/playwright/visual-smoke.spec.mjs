@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlueChimneyPocket, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -118,6 +118,17 @@ test.describe("OceanGame web visual smoke", () => {
       debug_telemetry: false,
       active_stats_visible: true,
       route_stage: "lower_connector",
+    });
+  });
+
+  test("captures the staged Blue Chimney lower pocket view", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageBlueChimneyPocket(page);
+    await capture(page, testInfo, "blue-chimney-pocket-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "blue_chimney_pocket",
     });
   });
 

@@ -732,6 +732,44 @@ func _stage_debug_lower_connector_visual_review() -> void:
 	_update_depth()
 	_update_hud()
 
+func _stage_debug_blue_chimney_pocket_visual_review() -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var pocket := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket") as Node2D
+	if pocket == null:
+		return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	current_expedition_condition = {
+		"id": "rare_signal",
+		"display_name": "Rare Signal",
+		"briefing": "A weak research ping is active below.",
+		"tags": ["signal", "wreck"],
+	}
+	_sync_condition_visuals()
+
+	player = staged_player
+	player.global_position = pocket.global_position + Vector2(-34.0, -24.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	visual_smoke_route_stage = "blue_chimney_pocket"
+	status_label.text = "Debug review: Blue Chimney Pocket staged."
+	_update_depth()
+	_update_hud()
+
 func _stage_debug_open_hatch_alcove_visual_review() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -788,6 +826,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_east_shelf_pocket_visual_review()
 		"lower_connector":
 			_stage_debug_lower_connector_visual_review()
+		"blue_chimney_pocket":
+			_stage_debug_blue_chimney_pocket_visual_review()
 		"open_hatch_resonance_alcove":
 			_stage_debug_open_hatch_alcove_visual_review()
 
