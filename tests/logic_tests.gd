@@ -3483,9 +3483,32 @@ func _test_upgrade_bay_readability_states() -> void:
 	state = main._format_upgrade_state(DecoyPulseUpgrade)
 	_expect(state.begins_with("State: Owned"), "upgrade bay should label Decoy Pulse I owned after purchase")
 	_expect(main._format_upgrade_effect_summary(EchoLensUpgrade).contains("not a locator"), "Echo Lens I compact effect summary should preserve no-locator wording")
+	_expect(main._format_future_tool_upgrade_promise() == "", "future cutter promise should stay hidden before lower-route evidence")
 	var feedback := main._format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.")
 	_expect(feedback == "Banked 3 resource(s).\nNo upgrade ready yet.", "upgrade panel feedback should compact deposit copy")
 	_expect_lines_within(feedback, 72, "compacted upgrade feedback")
+
+	main.run_salvage_data_cache_recovered = true
+	var cutter_promise := main._format_future_tool_upgrade_promise()
+	_expect(cutter_promise.contains("Planned: Salvage Cutter"), "future cutter promise should appear after salvage data evidence")
+	_expect(cutter_promise.contains("locked"), "future cutter promise should stay clearly locked")
+	_expect(cutter_promise.contains("Wide Reef"), "future cutter promise should keep the lower-route research context")
+	_expect(not cutter_promise.to_lower().contains("buy"), "future cutter promise should not imply a purchase path")
+	_expect(not cutter_promise.to_lower().contains("available"), "future cutter promise should not look like an available upgrade")
+	_expect(not cutter_promise.to_lower().contains("cost"), "future cutter promise should not introduce a recipe or resource tier")
+	_expect_lines_within(cutter_promise, 72, "future cutter promise")
+	_expect_no_echo_lens_locator_language(cutter_promise, "future cutter promise")
+
+	var promised_feedback := main._format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.")
+	_expect(promised_feedback.contains("Banked 3 resource(s)."), "future cutter promise should not replace normal upgrade feedback")
+	_expect(promised_feedback.contains("Planned: Salvage Cutter"), "future cutter promise should append to upgrade feedback after evidence")
+	_expect_lines_within(promised_feedback, 72, "future cutter promised feedback")
+	for upgrade in main.upgrade_definitions:
+		_expect(not upgrade.id.to_lower().contains("cutter"), "future cutter promise should not add a selectable upgrade id")
+		_expect(not upgrade.display_name.to_lower().contains("cutter"), "future cutter promise should not add a selectable upgrade entry")
+	main.run_salvage_data_cache_recovered = false
+	main.recent_expedition_log = [{"route_memory": "Wide Reef Chamber"}]
+	_expect(main._format_future_tool_upgrade_promise().contains("Salvage Cutter"), "recent Wide Reef Chamber memory should keep the future cutter promise visible between runs")
 	main.free()
 
 func _test_result_and_upgrade_copy_length_guards() -> void:

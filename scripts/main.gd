@@ -3093,8 +3093,9 @@ func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
 	return "Effect: %s" % upgrade.owned_text
 
 func _format_upgrade_panel_feedback(feedback: String) -> String:
+	var promise := _format_future_tool_upgrade_promise()
 	if feedback.is_empty():
-		return ""
+		return promise
 
 	var compact := feedback
 	compact = compact.replace("Deposited", "Banked")
@@ -3106,9 +3107,20 @@ func _format_upgrade_panel_feedback(feedback: String) -> String:
 
 	var max_chars := 112
 	if compact.length() > max_chars:
-		return "%s..." % compact.substr(0, max_chars - 3)
+		compact = "%s..." % compact.substr(0, max_chars - 3)
 
+	if promise != "":
+		return "%s\n%s" % [compact, promise]
 	return compact
+
+func _format_future_tool_upgrade_promise() -> String:
+	if not _has_future_tool_upgrade_context():
+		return ""
+
+	return "Planned: Salvage Cutter locked for later build.\nNeed more Wide Reef research."
+
+func _has_future_tool_upgrade_context() -> bool:
+	return run_salvage_data_cache_recovered or _latest_recent_route_memory() == "Wide Reef Chamber"
 
 func _format_ready_upgrade_callout() -> String:
 	var ready: Array[String] = []
