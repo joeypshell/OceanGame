@@ -866,6 +866,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var reverse_draft_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ReverseDraftReturn") as Polygon2D
 	var blue_chimney_signal := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity") as Node2D
 	var blue_chimney_signal_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity/SignalWash") as Polygon2D
+	var blue_chimney_survey_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore") as Node2D
+	var blue_chimney_survey_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyHalo") as Polygon2D
+	var blue_chimney_survey_gem := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyGem") as Polygon2D
+	var blue_chimney_survey_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveySpark") as Polygon2D
 	var blue_chimney_crack := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ClosedLowerCrack") as Polygon2D
 	var silt_vein_fork := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork") as Node2D
 	var silt_fork_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/ForkMouth") as Polygon2D
@@ -953,6 +957,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(reverse_draft_return.color.a <= 0.14, "Blue Chimney reverse draft should stay a soft route cue, not a map marker")
 	_expect(not blue_chimney_signal.visible, "Blue Chimney signal opportunity should start hidden until its seeded condition is active")
 	_expect(blue_chimney_signal_wash.color.a <= 0.1, "Blue Chimney signal wash should stay subtle, not a guaranteed reward marker")
+	_expect(blue_chimney_survey_core.position.x > 0.0, "Blue Chimney survey core should sit inside the lower pocket as a concrete payoff")
+	_expect(blue_chimney_survey_halo.color.a >= 0.28, "Blue Chimney survey core should have a readable halo in normal play")
+	_expect(blue_chimney_survey_gem.color.a >= 0.7, "Blue Chimney survey core should have a visible recoverable gem")
+	_expect(blue_chimney_survey_spark.visible and blue_chimney_survey_spark.color.a >= 0.8, "Blue Chimney survey core should have a bright recovery spark")
+	_expect(blue_chimney_survey_core.get_node_or_null("InteractZone") == null, "Blue Chimney survey core should reuse the pocket interaction instead of adding a second hotspot")
 	_expect(blue_chimney_crack.color.a >= 0.5, "Blue Chimney Pocket should include a visible closed lower turnback")
 	_expect(blue_chimney_pocket.get_node_or_null("Interior") == null, "Blue Chimney Pocket scaffold should not add a full interior system")
 	_expect(silt_vein_fork.position.y > blue_chimney_crack.polygon[blue_chimney_crack.polygon.size() - 1].y, "Silt Vein Fork should begin below the Blue Chimney lower crack")
@@ -1619,22 +1628,30 @@ func _test_blue_chimney_draft_interaction() -> void:
 	main.player_near_blue_chimney = true
 	main.dive_session.oxygen = 26.0
 	main.dive_session.current_cargo = ["shell_fragments"]
+	var survey_gem := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyGem") as Polygon2D
+	var survey_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveySpark") as Polygon2D
+	main.call("_sync_blue_chimney_payoff_state")
+	_expect(survey_gem.color.a >= 0.7, "Blue Chimney survey core should start visibly recoverable")
+	_expect(survey_spark.visible, "Blue Chimney survey spark should start visible before recovery")
 	var prompt: String = main.call("_format_hud_prompt")
 	_expect(prompt.contains("Blue Chimney"), "Blue Chimney proximity should own the active dive prompt")
-	_expect(prompt.contains("record draft reading"), "Blue Chimney prompt should explain the narrow research action")
+	_expect(prompt.contains("recover survey core"), "Blue Chimney prompt should explain the concrete lower-route payoff")
 
 	var handled: bool = main.call("_try_blue_chimney_interaction")
 	_expect(handled, "Blue Chimney should handle interact while nearby during a dive")
-	_expect(main.run_blue_chimney_draft_reading_recovered, "Blue Chimney interaction should record one run-scoped draft reading")
-	_expect(is_equal_approx(main.dive_session.oxygen, 26.0), "Blue Chimney draft reading should not spend oxygen directly")
-	_expect(main.dive_session.current_cargo == ["shell_fragments"], "Blue Chimney draft reading should not add or remove cargo")
+	_expect(main.run_blue_chimney_draft_reading_recovered, "Blue Chimney interaction should record one run-scoped survey core")
+	_expect(survey_gem.color.a <= 0.2, "Blue Chimney survey core should visibly dim after recovery")
+	_expect(not survey_spark.visible, "Blue Chimney survey spark should disappear after recovery")
+	_expect(is_equal_approx(main.dive_session.oxygen, 26.0), "Blue Chimney survey core should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["shell_fragments"], "Blue Chimney survey core should not add or remove cargo")
 	if main.status_label != null:
 		_expect(main.status_label.text.contains("Return safely"), "Blue Chimney interaction should preserve extraction pressure")
+		_expect(main.status_label.text.contains("survey core"), "Blue Chimney status should name the visible payoff")
 
 	var repeat_handled: bool = main.call("_try_blue_chimney_interaction")
 	_expect(repeat_handled, "Blue Chimney should keep handling repeat interact while nearby")
 	if main.status_label != null:
-		_expect(main.status_label.text.contains("already recorded"), "Blue Chimney repeat interaction should not duplicate the payoff")
+		_expect(main.status_label.text.contains("already recovered"), "Blue Chimney repeat interaction should not duplicate the payoff")
 
 	main.player_near_blue_chimney = false
 	var not_handled: bool = main.call("_try_blue_chimney_interaction")
@@ -1642,22 +1659,25 @@ func _test_blue_chimney_draft_interaction() -> void:
 
 	var callout: String = main.call("_format_blue_chimney_research_callout")
 	_expect(callout.contains("Blue Chimney"), "Blue Chimney result memory should name the lower pocket")
+	_expect(callout.contains("survey core"), "Blue Chimney result memory should name the concrete payoff")
 	_expect(callout.contains("Shelf Drop"), "Blue Chimney result memory should keep broad route context")
 	_expect(callout.contains("deeper side-route"), "Blue Chimney result memory should hint at future route growth")
 	_expect_no_echo_lens_locator_language(callout, "Blue Chimney result line")
 	var empty_cargo: Array[String] = []
 	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
-	_expect(extraction_summary.contains("Blue Chimney draft"), "Blue Chimney extraction summary should include recovered draft memory")
+	_expect(extraction_summary.contains("Blue Chimney survey core"), "Blue Chimney extraction summary should include recovered survey core memory")
 	_expect(not extraction_summary.contains("%s"), "Blue Chimney extraction summary should not leak string placeholders")
 
 	var fresh_main := MainScript.new()
 	_expect(fresh_main._format_blue_chimney_research_callout() == "", "Blue Chimney result line should stay hidden before draft recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
-	_expect(not fresh_summary.contains("Blue Chimney draft"), "Blue Chimney extraction summary should stay hidden before draft recovery")
+	_expect(not fresh_summary.contains("Blue Chimney survey core"), "Blue Chimney extraction summary should stay hidden before survey core recovery")
 	fresh_main.free()
 
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "Blue Chimney draft reading should reset between expeditions")
+	_expect(survey_gem.color.a >= 0.7, "Blue Chimney survey core should become visible again on expedition reset")
+	_expect(survey_spark.visible, "Blue Chimney survey spark should reset between expeditions")
 	main.free()
 
 func _test_lantern_silt_sample_interaction() -> void:

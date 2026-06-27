@@ -187,6 +187,9 @@ const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 @onready var lantern_silt_nook_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/InteractZone
 @onready var blue_chimney_signal_opportunity: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity
 @onready var blue_chimney_reverse_draft: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ReverseDraftReturn
+@onready var blue_chimney_survey_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyHalo
+@onready var blue_chimney_survey_gem: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyGem
+@onready var blue_chimney_survey_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveySpark
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
 @onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
 @onready var sealed_shelf_hatch_lock_label: Label = $EastShelfSpur/SealedShelfHatch/LockLabel
@@ -580,14 +583,15 @@ func _try_blue_chimney_interaction() -> bool:
 
 	if run_blue_chimney_draft_reading_recovered:
 		if status_label != null:
-			status_label.text = "Blue Chimney draft already recorded this expedition."
+			status_label.text = "Blue Chimney survey core already recovered this expedition."
 		if is_inside_tree():
 			_update_hud()
 		return true
 
 	run_blue_chimney_draft_reading_recovered = true
+	_sync_blue_chimney_payoff_state()
 	if status_label != null:
-		status_label.text = "Blue Chimney draft recorded. Return safely to keep the lower-pocket reading."
+		status_label.text = "Blue Chimney survey core recovered. Return safely to keep the lower-route reading."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -1003,7 +1007,7 @@ func _format_hud_prompt() -> String:
 	elif player_near_lantern_silt_nook:
 		prompt = "Lantern Silt Nook: %s collect silt sample" % _action_label("interact")
 	elif player_near_blue_chimney:
-		prompt = "Blue Chimney: %s record draft reading" % _action_label("interact")
+		prompt = "Blue Chimney: %s recover survey core" % _action_label("interact")
 	elif player_near_lower_connector_echo:
 		prompt = "Drop Echo: %s record lower-route ping" % _action_label("interact")
 	elif player_near_east_shelf_pocket:
@@ -1570,6 +1574,7 @@ func _sync_discovery_reveals() -> void:
 	_sync_wreck_echo_state()
 	_sync_sealed_shelf_hatch_state()
 	_sync_east_shelf_pocket_payoff_state()
+	_sync_blue_chimney_payoff_state()
 
 func _sync_east_shelf_pocket_payoff_state() -> void:
 	var halo := east_shelf_signal_core_halo
@@ -1592,6 +1597,29 @@ func _sync_east_shelf_pocket_payoff_state() -> void:
 		halo.color = Color(0.52, 1.0, 0.84, 0.34)
 		gem.color = Color(0.92, 1.0, 0.56, 0.82)
 		spark.color = Color(1.0, 1.0, 0.82, 0.92)
+		spark.visible = true
+
+func _sync_blue_chimney_payoff_state() -> void:
+	var halo := blue_chimney_survey_halo
+	if halo == null:
+		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyHalo") as Polygon2D
+	var gem := blue_chimney_survey_gem
+	if gem == null:
+		gem = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyGem") as Polygon2D
+	var spark := blue_chimney_survey_spark
+	if spark == null:
+		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveySpark") as Polygon2D
+	if halo == null or gem == null or spark == null:
+		return
+
+	if run_blue_chimney_draft_reading_recovered:
+		halo.color = Color(0.46, 0.92, 1.0, 0.08)
+		gem.color = Color(0.74, 1.0, 0.96, 0.18)
+		spark.visible = false
+	else:
+		halo.color = Color(0.46, 0.92, 1.0, 0.32)
+		gem.color = Color(0.74, 1.0, 0.96, 0.78)
+		spark.color = Color(1.0, 1.0, 0.82, 0.88)
 		spark.visible = true
 
 func _reveal_thermal_vent_route() -> void:
@@ -2367,6 +2395,7 @@ func _reset_run_telemetry() -> void:
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
 	_sync_east_shelf_pocket_payoff_state()
+	_sync_blue_chimney_payoff_state()
 
 func _format_run_telemetry(result_name: String) -> String:
 	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
@@ -2530,7 +2559,7 @@ func _format_resonance_alcove_research_callout() -> String:
 
 func _format_blue_chimney_research_callout() -> String:
 	if run_blue_chimney_draft_reading_recovered:
-		return "\nResearch: Blue Chimney draft hints at a deeper side-route below Shelf Drop."
+		return "\nResearch: Blue Chimney survey core points toward a deeper side-route below Shelf Drop."
 
 	return ""
 
