@@ -2,6 +2,7 @@ class_name ExpeditionGoalFormatter
 extends RefCounted
 
 const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
+const RESONANCE_KEY_UPGRADE_ID := "resonance_key_1"
 
 static func format_goal(progression_state: ProgressionState, upgrade_definitions: Array[UpgradeDefinition], condition_id := "") -> String:
 	for upgrade in upgrade_definitions:
@@ -32,6 +33,8 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 			upgrade.display_name,
 		]
 
+	if condition_id == "rare_signal" and progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID):
+		return "Goal: check the Blackwater edge signal if oxygen allows, then return safely."
 	if condition_id == "rare_signal":
 		return "Goal: check the East Shelf or Blue Chimney signal if oxygen allows, then return safely."
 

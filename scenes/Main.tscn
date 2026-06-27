@@ -876,6 +876,18 @@ polygon = PackedVector2Array(0, -18, 16, -6, 12, 14, -8, 18, -18, 2, -10, -14)
 color = Color(1, 1, 0.82, 0.9)
 polygon = PackedVector2Array(0, -10, 6, -2, 14, 0, 6, 4, 0, 12, -6, 4, -14, 0, -6, -2)
 
+[node name="BlackwaterSignalOpportunity" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill"]
+visible = false
+position = Vector2(48, -18)
+
+[node name="SignalWash" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity"]
+color = Color(0.54, 0.72, 1, 0.08)
+polygon = PackedVector2Array(-76, -38, 12, -58, 94, -24, 124, 42, 34, 58, -68, 24)
+
+[node name="SignalFleck" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity"]
+color = Color(0.82, 0.94, 1, 0.32)
+polygon = PackedVector2Array(0, -8, 7, -2, 12, 5, 3, 10, -6, 4, -10, -4)
+
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
 position = Vector2(34, 24)
 collision_layer = 0

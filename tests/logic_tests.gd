@@ -838,6 +838,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceHalo",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceGem",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceSpark",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity/SignalWash",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity/SignalFleck",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -924,6 +927,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var blackwater_trace_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceHalo") as Polygon2D
 	var blackwater_trace_gem := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceGem") as Polygon2D
 	var blackwater_trace_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceSpark") as Polygon2D
+	var blackwater_signal := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity") as Node2D
+	var blackwater_signal_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity/SignalWash") as Polygon2D
+	var blackwater_signal_fleck := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity/SignalFleck") as Polygon2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -1046,6 +1052,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blackwater_trace_halo.color.a >= 0.28, "Blackwater Trace should have a readable halo in normal play")
 	_expect(blackwater_trace_gem.color.a >= 0.7, "Blackwater Trace should have a visible recoverable core")
 	_expect(blackwater_trace_spark.visible and blackwater_trace_spark.color.a >= 0.8, "Blackwater Trace should have a bright recovery spark")
+	_expect(not blackwater_signal.visible, "Blackwater signal opportunity should start hidden until Rare Signal and route preparation are ready")
+	_expect(blackwater_signal_wash.color.a <= 0.1, "Blackwater signal wash should stay atmospheric, not a guaranteed reward marker")
+	_expect(blackwater_signal_fleck.color.a <= 0.36, "Blackwater signal fleck should stay subtle and optional")
+	_expect(blackwater_signal.get_node_or_null("InteractZone") == null, "Blackwater signal nudge should not add a second interaction hotspot")
 	_expect(blackwater_crack.get_node_or_null("Interior") == null, "Blackwater Crack should not add a cave interior system")
 	_expect(blackwater_sill.get_node_or_null("Interior") == null, "Blackwater Sill should not add a cave interior system")
 	_expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
@@ -1322,6 +1332,26 @@ func _test_expedition_prep_goals() -> void:
 	_expect(goal.contains("Blue Chimney"), "Rare Signal should sometimes point completed-upgrade players toward the lower pocket")
 	_expect(goal.contains("if oxygen allows"), "Rare Signal route goal should remain optional rather than a checklist")
 	_expect(goal.contains("return safely"), "Rare Signal route goal should preserve extraction pressure")
+	_expect(not goal.contains("Blackwater"), "Rare Signal should not point at Blackwater before the scoped key is owned")
+
+	var full_upgrades: Array[UpgradeDefinition] = [
+		OxygenTankUpgrade,
+		PressureSealUpgrade,
+		SignalLensUpgrade,
+		EchoLensUpgrade,
+		ResonanceKeyUpgrade,
+		CargoRackUpgrade,
+		PredatorWarningUpgrade,
+		DecoyPulseUpgrade,
+	]
+	var blackwater_ready_progression := ProgressionStateScript.new()
+	for upgrade in full_upgrades:
+		blackwater_ready_progression.purchased_upgrades[upgrade.id] = true
+	goal = ExpeditionGoalFormatterScript.format_goal(blackwater_ready_progression, full_upgrades, "rare_signal")
+	_expect(goal.contains("Blackwater"), "Rare Signal should nudge Blackwater once the scoped key path is ready")
+	_expect(goal.contains("if oxygen allows"), "Blackwater Rare Signal goal should stay optional")
+	_expect(goal.contains("return safely"), "Blackwater Rare Signal goal should preserve extraction pressure")
+	_expect_no_echo_lens_locator_language(goal, "Blackwater Rare Signal goal")
 
 	var incomplete_progression := ProgressionStateScript.new()
 	var incomplete_goal := ExpeditionGoalFormatterScript.format_goal(incomplete_progression, upgrades, "rare_signal")
@@ -2357,6 +2387,7 @@ func _test_condition_briefing_copy() -> void:
 	briefing = main._format_condition_briefing()
 	_expect(briefing.contains("East Shelf"), "rare signal briefing should point at the implemented side-route opportunity")
 	_expect(briefing.contains("Blue Chimney"), "rare signal briefing should point at the lower-pocket opportunity")
+	_expect(not briefing.contains("Blackwater"), "rare signal briefing should not point at Blackwater before Resonance Key I ownership")
 	_expect(briefing.contains("if oxygen allows"), "rare signal briefing should keep route pings optional")
 	_expect_no_echo_lens_locator_language(briefing, "rare signal briefing")
 	_expect(main.call("_rare_signal_emphasis_visible_for_condition", "rare_signal"), "Rare Signal should enable the subtle signal emphasis")
@@ -2366,6 +2397,39 @@ func _test_condition_briefing_copy() -> void:
 	_expect(not main.call("_shelf_glimmer_visible_for_condition", "calm_current"), "Calm Current should not enable the Shelf Glimmer opportunity")
 	_expect(main.call("_blue_chimney_signal_visible_for_condition", "rare_signal"), "Rare Signal should enable the Blue Chimney lower-pocket opportunity")
 	_expect(not main.call("_blue_chimney_signal_visible_for_condition", "calm_current"), "Calm Current should not enable the Blue Chimney signal")
+	_expect(not main.call("_blackwater_signal_visible_for_condition", "rare_signal"), "Rare Signal should not enable Blackwater signal before the scoped key path is ready")
+	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+	briefing = main._format_condition_briefing()
+	_expect(briefing.contains("Blackwater"), "rare signal briefing should nudge Blackwater once Resonance Key I is owned")
+	_expect(briefing.contains("if oxygen allows"), "Blackwater rare signal briefing should remain optional")
+	_expect_no_echo_lens_locator_language(briefing, "Blackwater rare signal briefing")
+	_expect(main.call("_blackwater_signal_visible_for_condition", "rare_signal"), "Rare Signal should enable Blackwater signal when the route gate is ready")
+	_expect(not main.call("_blackwater_signal_visible_for_condition", "calm_current"), "Calm Current should not enable Blackwater signal")
+	var blackwater_scene := MainScene.instantiate()
+	blackwater_scene.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+	blackwater_scene.progression_state.banked_resources["glow_plankton"] = 2
+	blackwater_scene.dive_session.reset(30.0)
+	blackwater_scene.dive_session.start()
+	blackwater_scene.dive_session.oxygen = 23.0
+	blackwater_scene.dive_session.current_cargo = ["kelp_fiber"]
+	blackwater_scene.dive_session.has_left_base = true
+	blackwater_scene.player_in_base = false
+	blackwater_scene.run_predator_contacts = 1
+	blackwater_scene.call("_sync_blackwater_crack_gate_state")
+	var blackwater_signal := blackwater_scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity") as Node2D
+	blackwater_scene.call("_sync_blackwater_signal_opportunity", "rare_signal")
+	_expect(blackwater_signal.visible, "Rare Signal should show a subtle Blackwater signal nudge when the route is ready")
+	_expect(is_equal_approx(blackwater_scene.dive_session.oxygen, 23.0), "Blackwater condition nudge should not drain oxygen")
+	_expect(blackwater_scene.dive_session.current_cargo == ["kelp_fiber"], "Blackwater condition nudge should not change carried cargo")
+	_expect(blackwater_scene.dive_session.result == DiveSessionScript.Result.DIVING, "Blackwater condition nudge should not change dive state")
+	_expect(blackwater_scene.dive_session.has_left_base, "Blackwater condition nudge should not reset extraction eligibility")
+	_expect(not blackwater_scene.player_in_base, "Blackwater condition nudge should not move the player into base")
+	_expect(blackwater_scene.run_predator_contacts == 1, "Blackwater condition nudge should not create predator contacts")
+	_expect(blackwater_scene.progression_state.resource_count("glow_plankton") == 2, "Blackwater condition nudge should not mutate banked resources")
+	_expect(blackwater_scene.progression_state.has_upgrade(ResonanceKeyUpgrade.id), "Blackwater condition nudge should not mutate key ownership")
+	blackwater_scene.call("_sync_blackwater_signal_opportunity", "calm_current")
+	_expect(not blackwater_signal.visible, "non-Rare-Signal conditions should hide the Blackwater signal nudge")
+	blackwater_scene.free()
 	var scene := MainScene.instantiate()
 	var safe_bank_lane := scene.get_node("RouteChoiceBand/SafeBankLane") as Polygon2D
 	var research_lane := scene.get_node("RouteChoiceBand/ResearchLane") as Polygon2D
