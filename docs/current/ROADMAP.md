@@ -14,6 +14,8 @@ First lower connector plan: `docs/planning/LOWER_CONNECTOR_PLAN_2026_06_26.md` d
 
 Sealed Shelf Hatch promise: `docs/planning/SEALED_SHELF_HATCH_UPGRADE_PROMISE_2026_06_26.md` defines `Resonance Key I` as a future narrow hatch-specific access module, not a broad upgrade tier. The current hatch remains closed; `Echo Lens I` makes it readable, and East Shelf or Drop Echo research can now produce compact lab-planning result copy for a future key without adding a minimap, quest checklist, field guide, interior system, upgrade entry, or new economy.
 
+Expanded-route oxygen margin review: `docs/planning/EXPANDED_ROUTE_OXYGEN_MARGIN_REVIEW_2026_06_26.md` keeps current oxygen tuning after the East Shelf and Shelf Drop payoffs. The branch should create optional return pressure, not immediate numeric retuning. Reopen only with evidence that clean East Shelf/Shelf Drop routes fail unfairly or that low/critical feedback arrives too late.
+
 Expanded-region status review: `docs/planning/EXPANDED_REGION_PROTOTYPE_STATUS_2026_06_26.md` records what landed, what is still only a spatial promise, and what should come next. The next batch should prioritize a minimal pocket interaction, route payoff, branch risk/timing choice, and result memory.
 
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
