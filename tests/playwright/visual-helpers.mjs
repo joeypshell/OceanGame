@@ -146,6 +146,18 @@ export async function stageBlueChimneyPayoff(page) {
   });
 }
 
+export async function stageSiltVeinFork(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "silt_vein_fork";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "silt_vein_fork",
+    lantern_silt_sample_recovered: false,
+  });
+}
+
 export async function stageOpenHatchResonanceAlcove(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "open_hatch_resonance_alcove";

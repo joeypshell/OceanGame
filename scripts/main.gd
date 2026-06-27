@@ -857,6 +857,36 @@ func _stage_debug_blue_chimney_payoff_visual_review() -> void:
 	status_label.text = "Debug review: Blue Chimney draft payoff staged."
 	_update_hud()
 
+func _stage_debug_silt_vein_fork_visual_review() -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var fork := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork") as Node2D
+	if fork == null:
+		return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	player = staged_player
+	player.global_position = fork.global_position + Vector2(-16.0, 32.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	visual_smoke_route_stage = "silt_vein_fork"
+	status_label.text = "Debug review: Silt Vein Fork staged."
+	_update_depth()
+	_update_hud()
+
 func _stage_debug_open_hatch_alcove_visual_review() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -917,6 +947,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_blue_chimney_pocket_visual_review()
 		"blue_chimney_payoff":
 			_stage_debug_blue_chimney_payoff_visual_review()
+		"silt_vein_fork":
+			_stage_debug_silt_vein_fork_visual_review()
 		"open_hatch_resonance_alcove":
 			_stage_debug_open_hatch_alcove_visual_review()
 
@@ -1752,6 +1784,7 @@ func _publish_visual_smoke_state() -> void:
 		"lower_connector_echo_recovered": run_lower_connector_echo_recovered,
 		"resonance_alcove_research_recovered": run_resonance_alcove_research_recovered,
 		"blue_chimney_draft_reading_recovered": run_blue_chimney_draft_reading_recovered,
+		"lantern_silt_sample_recovered": run_lantern_silt_sample_recovered,
 		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
