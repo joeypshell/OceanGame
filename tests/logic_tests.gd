@@ -59,6 +59,7 @@ func _initialize() -> void:
 	_run("Lantern Ray scan behavior", _test_lantern_ray_scan_behavior)
 	_run("Hollow Reef passive creature scan behavior", _test_hollow_reef_passive_creature_scan_behavior)
 	_run("Glassfin Swarm scan behavior", _test_glassfin_swarm_scan_behavior)
+	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("Glassfin Swarm spacing cue visual only", _test_glassfin_swarm_spacing_cue_visual_only)
 	_run("Lantern Ray timing lane is visual only", _test_lantern_ray_timing_lane_is_visual_only)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
@@ -815,6 +816,52 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	_expect(not saved.has("monster_parts"), "Glassfin Swarm scan should not add monster-part economy state")
 	_expect(not saved.has("creature_inventory"), "Glassfin Swarm scan should not add creature inventory state")
 	main.queue_free()
+
+func _test_wide_chamber_salvage_pocket_entrance() -> void:
+	var root := Node.new()
+	get_root().add_child(root)
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var chamber := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber") as Node2D
+	var salvage := chamber.get_node("WreckSalvagePocketEntrance") as Node2D
+	var pocket_shadow := salvage.get_node("PocketShadow") as Polygon2D
+	var hull_rim := salvage.get_node("WreckHullRim") as Polygon2D
+	var hatch_panel := salvage.get_node("SealedHatchPanel") as Polygon2D
+	var lock_bars := salvage.get_node("LockBars") as Polygon2D
+	var salvage_glint := salvage.get_node("SalvageGlint") as Polygon2D
+	var promise_label := salvage.get_node("PromiseLabel") as Label
+	var future_choice_shadow := chamber.get_node("FutureChoiceShadow") as Polygon2D
+	var return_current := chamber.get_node("ReturnCurrentBackToHollow") as Polygon2D
+	var swarm := chamber.get_node("GlassfinSwarm") as Area2D
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var oxygen_before: float = main.dive_session.oxygen
+	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+
+	_expect(salvage.get_parent() == chamber, "salvage pocket entrance should be authored inside the wide chamber")
+	_expect(salvage.position.x >= 520.0, "salvage pocket entrance should sit on the far side of the wide chamber")
+	_expect(salvage.position.y < return_current.polygon[0].y - 120.0, "salvage pocket entrance should stay above the lower return-current route")
+	_expect(salvage.position.x > swarm.position.x, "salvage pocket entrance should not overlap the current Glassfin Swarm lane")
+	_expect(future_choice_shadow.color.a >= 0.3, "future-choice shadow should still frame the far chamber promise")
+	_expect(pocket_shadow.color.a >= 0.6, "salvage pocket should read as a deliberate sealed opening")
+	_expect(hull_rim.color.r > hull_rim.color.g and hull_rim.color.g > hull_rim.color.b, "salvage rim should use muted wreck/rust language")
+	_expect(hatch_panel.color.b >= hatch_panel.color.g, "sealed hatch panel should read as cold wreck metal, not a resource")
+	_expect(lock_bars.color.b > lock_bars.color.r and lock_bars.color.a >= 0.3, "salvage lock bars should read as sealed promise language")
+	_expect(salvage_glint.color.a <= 0.5, "salvage glint should stay a subtle promise, not a collectable reward")
+	_expect(promise_label.text == "SALVAGE SEALED", "salvage promise label should be compact and honest about current implementation")
+	_expect(not promise_label.text.to_lower().contains("objective"), "salvage promise label should not imply objective checklist language")
+	_expect(not promise_label.text.to_lower().contains("map"), "salvage promise label should not imply exact locator UI")
+	_expect(salvage.get_node_or_null("InteractZone") == null, "salvage promise should not add an active interaction yet")
+	_expect(salvage.get_node_or_null("ResourcePickup") == null, "salvage promise should not add loot pickup behavior")
+	_expect(salvage.find_child("CollisionShape2D", true, false) == null, "salvage promise should not add collision or block the route")
+	_expect(salvage.find_child("LootTable", true, false) == null, "salvage promise should not add a loot table")
+	_expect(salvage.find_child("HarvestArea", true, false) == null, "salvage promise should not add harvesting")
+	_expect(salvage.find_child("HealthBar", true, false) == null, "salvage promise should not add combat UI")
+	_expect(salvage.find_child("Interior", true, false) == null, "salvage promise should not add a full interior system")
+	_expect(main.progression_state.to_save_data() == save_before, "salvage promise should not mutate progression")
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "salvage promise should not drain oxygen")
+	_expect(main.dive_session.current_cargo == cargo_before, "salvage promise should not mutate cargo")
+	main.queue_free()
+	root.queue_free()
 
 func _test_glassfin_swarm_spacing_cue_visual_only() -> void:
 	var main := MainScript.new()

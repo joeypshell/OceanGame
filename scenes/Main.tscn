@@ -1348,6 +1348,37 @@ polygon = PackedVector2Array(128, 26, 60, 4, -4, -10, 58, 24)
 color = Color(0.02, 0.045, 0.062, 0.38)
 polygon = PackedVector2Array(472, -36, 620, 6, 596, 90, 444, 122, 390, 42)
 
+[node name="WreckSalvagePocketEntrance" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+position = Vector2(560, -68)
+
+[node name="PocketShadow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
+color = Color(0.014, 0.028, 0.036, 0.66)
+polygon = PackedVector2Array(-84, -40, 18, -72, 112, -22, 100, 64, -12, 78, -104, 28)
+
+[node name="WreckHullRim" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
+color = Color(0.48, 0.28, 0.17, 0.42)
+polygon = PackedVector2Array(-74, -20, 10, -44, 90, -4, 78, 26, 8, -10, -66, 14)
+
+[node name="SealedHatchPanel" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
+color = Color(0.12, 0.22, 0.25, 0.58)
+polygon = PackedVector2Array(-18, -36, 54, -24, 72, 20, 16, 42, -42, 14)
+
+[node name="LockBars" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
+color = Color(0.42, 0.82, 0.95, 0.34)
+polygon = PackedVector2Array(-22, -18, 54, -8, 50, 0, -26, -10, -30, 8, 46, 18, 42, 28, -34, 18)
+
+[node name="SalvageGlint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
+color = Color(0.95, 0.86, 0.58, 0.48)
+polygon = PackedVector2Array(28, -24, 38, -8, 56, -4, 38, 2, 28, 18, 18, 2, 0, -4, 18, -8)
+
+[node name="PromiseLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
+offset_left = -66.0
+offset_top = 58.0
+offset_right = 112.0
+offset_bottom = 84.0
+theme_override_font_sizes/font_size = 12
+text = "SALVAGE SEALED"
+
 [node name="DeeperReefPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 position = Vector2(218, 96)
 
