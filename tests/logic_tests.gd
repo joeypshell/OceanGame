@@ -745,6 +745,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimney/ChimneyColumn",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimney/ChimneyCrown",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ReverseDraftReturn",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity/SignalWash",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity/SignalCore",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ClosedLowerCrack",
 	]
 	for path in branch_paths:
@@ -775,6 +778,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var blue_chimney_rim := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketRim") as Polygon2D
 	var blue_chimney_column := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimney/ChimneyColumn") as Polygon2D
 	var reverse_draft_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ReverseDraftReturn") as Polygon2D
+	var blue_chimney_signal := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity") as Node2D
+	var blue_chimney_signal_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity/SignalWash") as Polygon2D
 	var blue_chimney_crack := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ClosedLowerCrack") as Polygon2D
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -818,6 +823,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(reverse_draft_return.polygon[1].x < reverse_draft_return.polygon[0].x, "Blue Chimney reverse draft should point left toward Drop Arch")
 	_expect(reverse_draft_return.polygon[1].y < reverse_draft_return.polygon[0].y, "Blue Chimney reverse draft should point upward toward the return route")
 	_expect(reverse_draft_return.color.a <= 0.14, "Blue Chimney reverse draft should stay a soft route cue, not a map marker")
+	_expect(not blue_chimney_signal.visible, "Blue Chimney signal opportunity should start hidden until its seeded condition is active")
+	_expect(blue_chimney_signal_wash.color.a <= 0.1, "Blue Chimney signal wash should stay subtle, not a guaranteed reward marker")
 	_expect(blue_chimney_crack.color.a >= 0.5, "Blue Chimney Pocket should include a visible closed lower turnback")
 	_expect(blue_chimney_pocket.get_node_or_null("Interior") == null, "Blue Chimney Pocket scaffold should not add a full interior system")
 
@@ -1079,8 +1086,10 @@ func _test_expedition_prep_goals() -> void:
 	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
 	_expect(goal == "Goal: use Shell Reef to bank Shell Fragments, or push deeper if oxygen allows.", "completed upgrade goals should fall back to the Shell Reef route objective")
 	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades, "rare_signal")
-	_expect(goal.contains("East Shelf pocket ping"), "Rare Signal should give completed-upgrade players a reason to visit East Shelf")
-	_expect(goal.contains("return safely"), "East Shelf route goal should preserve extraction pressure")
+	_expect(goal.contains("East Shelf"), "Rare Signal should still give completed-upgrade players a reason to visit East Shelf")
+	_expect(goal.contains("Blue Chimney"), "Rare Signal should sometimes point completed-upgrade players toward the lower pocket")
+	_expect(goal.contains("if oxygen allows"), "Rare Signal route goal should remain optional rather than a checklist")
+	_expect(goal.contains("return safely"), "Rare Signal route goal should preserve extraction pressure")
 
 	var incomplete_progression := ProgressionStateScript.new()
 	var incomplete_goal := ExpeditionGoalFormatterScript.format_goal(incomplete_progression, upgrades, "rare_signal")
@@ -1862,6 +1871,8 @@ func _test_condition_briefing_copy() -> void:
 	_expect(not main.call("_rare_signal_emphasis_visible_for_condition", "thermal_bloom"), "Thermal Bloom should keep Rare Signal emphasis hidden")
 	_expect(main.call("_shelf_glimmer_visible_for_condition", "rare_signal"), "Rare Signal should enable the Shelf Glimmer side-route opportunity")
 	_expect(not main.call("_shelf_glimmer_visible_for_condition", "calm_current"), "Calm Current should not enable the Shelf Glimmer opportunity")
+	_expect(main.call("_blue_chimney_signal_visible_for_condition", "rare_signal"), "Rare Signal should enable the Blue Chimney lower-pocket opportunity")
+	_expect(not main.call("_blue_chimney_signal_visible_for_condition", "calm_current"), "Calm Current should not enable the Blue Chimney signal")
 	main.free()
 
 func _test_compact_dive_hud_helpers() -> void:

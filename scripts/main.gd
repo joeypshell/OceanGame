@@ -179,6 +179,7 @@ const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 @onready var east_shelf_pocket_interact_zone: Area2D = $EastShelfSpur/PocketEntrance/InteractZone
 @onready var lower_connector_echo_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone
 @onready var resonance_alcove_interact_zone: Area2D = $EastShelfSpur/ResonanceAlcove/InteractZone
+@onready var blue_chimney_signal_opportunity: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
 @onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
 @onready var sealed_shelf_hatch_lock_label: Label = $EastShelfSpur/SealedShelfHatch/LockLabel
@@ -1343,6 +1344,7 @@ func _sync_condition_visuals() -> void:
 	var is_calm_current := condition_id == "calm_current"
 	rare_signal_emphasis.visible = _rare_signal_emphasis_visible_for_condition(condition_id)
 	shelf_glimmer_opportunity.visible = _shelf_glimmer_visible_for_condition(condition_id)
+	blue_chimney_signal_opportunity.visible = _blue_chimney_signal_visible_for_condition(condition_id)
 	base_return_column.color = Color(0.38, 1.0, 0.9, 0.18) if is_calm_current else Color(0.38, 1.0, 0.9, 0.14)
 	base_return_rib_shallow.color = Color(0.62, 1.0, 0.9, 0.22) if is_calm_current else Color(0.62, 1.0, 0.9, 0.18)
 	base_return_rib_midwater.color = Color(0.62, 1.0, 0.9, 0.2) if is_calm_current else Color(0.62, 1.0, 0.9, 0.16)
@@ -1360,6 +1362,9 @@ func _rare_signal_emphasis_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal"
 
 func _shelf_glimmer_visible_for_condition(condition_id: String) -> bool:
+	return condition_id == "rare_signal"
+
+func _blue_chimney_signal_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal"
 
 func _current_condition_id() -> String:

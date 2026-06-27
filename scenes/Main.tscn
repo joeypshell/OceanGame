@@ -583,6 +583,17 @@ polygon = PackedVector2Array(-44, -72, -6, -110, 42, -94, 66, -48, 22, -30, -28,
 color = Color(0.72, 1, 0.94, 0.12)
 polygon = PackedVector2Array(-4, 50, -122, -20, -198, -30, -138, -62, -188, -106, -108, -78, 4, -10)
 
+[node name="BlueChimneySignalOpportunity" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
+visible = false
+
+[node name="SignalWash" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity"]
+color = Color(0.48, 0.88, 1, 0.08)
+polygon = PackedVector2Array(-72, -54, -16, -92, 62, -70, 98, -12, 58, 42, -34, 54, -96, 6)
+
+[node name="SignalCore" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity"]
+color = Color(0.8, 1, 0.86, 0.34)
+polygon = PackedVector2Array(0, -24, 22, -8, 26, 18, 4, 32, -20, 16, -28, -8)
+
 [node name="ClosedLowerCrack" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
 color = Color(0.004, 0.018, 0.036, 0.52)
 polygon = PackedVector2Array(54, 72, 126, 40, 152, 80, 110, 128, 42, 118)

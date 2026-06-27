@@ -33,7 +33,7 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 		]
 
 	if condition_id == "rare_signal":
-		return "Goal: check the East Shelf pocket ping if oxygen allows, then return safely."
+		return "Goal: check the East Shelf or Blue Chimney signal if oxygen allows, then return safely."
 
 	return "Goal: use Shell Reef to bank Shell Fragments, or push deeper if oxygen allows."
 
