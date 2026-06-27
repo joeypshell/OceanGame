@@ -22,6 +22,8 @@ Roadmap refresh after East Shelf playable: `docs/planning/ROADMAP_REFRESH_AFTER_
 
 Expanded-region status review: `docs/planning/EXPANDED_REGION_PROTOTYPE_STATUS_2026_06_26.md` records what landed, what is now playable, and what should come next. The next batch should prioritize a second reason to choose East Shelf/Shelf Drop, a narrow sealed-hatch access step, one more connected pocket or branch, and targeted readability checks only where new content needs them.
 
+Post-lower-connector backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_LOWER_CONNECTOR_2026_06_26.md` defines the next ordered route-growth queue after Shelf Drop. It starts with narrow `Resonance Key I` and hatch-opening work, then adds one small `Resonance Alcove` and one more connected lower pocket before another oxygen/readability/backlog refresh.
+
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
 
 Detailed design rules live in:
@@ -36,6 +38,7 @@ Detailed design rules live in:
 - `docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026_06_26.md`
 - `docs/planning/NO_MINIMAP_ORIENTATION_GUARDRAILS_2026_06_26.md`
 - `docs/planning/ROADMAP_REFRESH_AFTER_EAST_SHELF_PLAYABLE_2026_06_26.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_LOWER_CONNECTOR_2026_06_26.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
@@ -185,7 +188,7 @@ Future larger side-view map direction lives in `docs/planning/FUTURE_EXPANSIVE_D
 
 Expanded Dive Region Prototype.
 
-Status: the first East Shelf Spur route sequence is implemented and covered by focused logic plus Playwright visual capture. The next issue queue should come from the post-East-Shelf-playable roadmap refresh and lower-connector backlog replenishment, not the older polish-heavy vertical-slice queue.
+Status: the first East Shelf Spur route sequence is implemented and covered by focused logic plus Playwright visual capture. The next issue queue comes from the post-lower-connector backlog replenishment, not the older polish-heavy vertical-slice queue.
 
 Goal: turn the wider side-view ocean into a playable route sequence. The focus is breadth with discipline: route choices, branch traversal, one pocket interaction, daily variation, return readability, and upgrade promises that make the player want another expedition.
 
