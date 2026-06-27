@@ -1393,6 +1393,20 @@ func _test_resonance_alcove_research_payoff() -> void:
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(not saved.has("resonance_alcove"), "Resonance Alcove note should not become durable save data")
 	_expect(not saved.has("resonance_alcove_research"), "Resonance Alcove research should not create durable route state")
+
+	var callout: String = main.call("_format_resonance_alcove_research_callout")
+	_expect(callout.contains("Resonance Alcove"), "Resonance Alcove result memory should name the small pocket")
+	_expect(callout.contains("small tuned pocket"), "Resonance Alcove result memory should stay broad and local")
+	_expect_no_echo_lens_locator_language(callout, "Resonance Alcove result line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Resonance Alcove"), "Resonance Alcove extraction summary should include recovered research memory")
+
+	var fresh_main := MainScript.new()
+	_expect(fresh_main._format_resonance_alcove_research_callout() == "", "Resonance Alcove result line should stay hidden before payoff recovery")
+	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not fresh_summary.contains("Resonance Alcove"), "Resonance Alcove extraction summary should stay hidden before payoff recovery")
+	fresh_main.free()
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:

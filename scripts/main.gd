@@ -2165,7 +2165,7 @@ func _format_completed_expedition_line(result_name: String) -> String:
 	]
 
 func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Array[String]) -> String:
-	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
+	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(extracted_count, extracted_cargo),
 		_format_region_memory_callout(),
@@ -2176,6 +2176,7 @@ func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Ar
 		_format_wreck_echo_research_callout(),
 		_format_east_shelf_pocket_research_callout(),
 		_format_lower_connector_echo_research_callout(),
+		_format_resonance_alcove_research_callout(),
 		_format_sealed_shelf_hatch_readiness_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
@@ -2261,6 +2262,12 @@ func _format_east_shelf_pocket_research_callout() -> String:
 func _format_lower_connector_echo_research_callout() -> String:
 	if run_lower_connector_echo_recovered:
 		return "\nResearch: Drop Echo confirms the Shelf Drop Connector continues below East Shelf."
+
+	return ""
+
+func _format_resonance_alcove_research_callout() -> String:
+	if run_resonance_alcove_research_recovered:
+		return "\nResearch: Resonance Alcove echo suggests the hatch opens into a small tuned pocket."
 
 	return ""
 
