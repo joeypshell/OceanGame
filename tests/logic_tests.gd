@@ -1601,6 +1601,21 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not blackwater_callout.contains("predator route"), "Blackwater route evidence should not be crowded out by predator pressure")
 	_expect(blackwater_callout.find("Route choice:") == blackwater_callout.rfind("Route choice:"), "Blackwater route memory should stay one compact route-choice line")
 	_expect_no_echo_lens_locator_language(blackwater_callout, "Blackwater route choice")
+	var empty_cargo: Array[String] = []
+	var blackwater_summary := main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not blackwater_summary.contains("Dusk Trench"), "Dusk result memory should stay hidden before reach evidence")
+
+	main.run_reached_dusk_trench = true
+	var dusk_callout := main._format_route_choice_callout()
+	_expect(dusk_callout.contains("Dusk Trench"), "Dusk reach evidence should produce the deepest route-choice callout")
+	_expect(not dusk_callout.contains("Blackwater"), "Dusk route choice should take priority over Blackwater route evidence")
+	_expect(dusk_callout.find("Route choice:") == dusk_callout.rfind("Route choice:"), "Dusk route memory should stay one compact route-choice line")
+	_expect_no_echo_lens_locator_language(dusk_callout, "Dusk route choice")
+	var dusk_summary := main._format_extraction_result_summary(0, empty_cargo)
+	_expect(dusk_summary.contains("Remembered place: Dusk Trench"), "Dusk extraction summary should include supported remembered-place evidence")
+	_expect(dusk_summary.contains("Route choice: lower-route research push reached Dusk Trench."), "Dusk extraction summary should include supported route-choice evidence")
+	_expect(not dusk_summary.contains("map"), "Dusk extraction summary should avoid map language")
+	main.run_reached_dusk_trench = false
 
 	main.run_blackwater_trace_recovered = false
 	main.run_predator_contacts = 0
@@ -2422,6 +2437,25 @@ func _test_recent_expedition_log() -> void:
 	_expect(log_text.find("route Blackwater") == log_text.rfind("route Blackwater"), "recent expedition log should not duplicate Blackwater route memory")
 	_expect(not log_text.contains("seed"), "Blackwater recent log should hide raw seed without debug telemetry")
 	_expect_no_echo_lens_locator_language(log_text, "Blackwater recent expedition log")
+
+	main.recent_expedition_log.clear()
+	main.progression_state.current_run_number = 10
+	main.progression_state.current_run_seed = 2010
+	main.progression_state.best_depth_reached = 302.0
+	main.run_completed_scans = ["thermal_vent"]
+	main.run_collected_resources = ["shell_fragments"]
+	main.run_predator_contacts = 2
+	main.run_blue_chimney_draft_reading_recovered = true
+	main.run_blackwater_trace_recovered = true
+	main.run_reached_dusk_trench = true
+	main._record_recent_expedition("Extracted", 1)
+	log_text = main._format_recent_expedition_log()
+	_expect(log_text.contains("#10 Extracted"), "recent expedition log should include Dusk route attempts")
+	_expect(log_text.contains("route Dusk Trench"), "recent expedition log should prioritize Dusk reach evidence")
+	_expect(not log_text.contains("route Blackwater"), "Dusk recent route memory should take priority over Blackwater")
+	_expect(log_text.find("route Dusk Trench") == log_text.rfind("route Dusk Trench"), "recent expedition log should not duplicate Dusk route memory")
+	_expect(not log_text.contains("seed"), "Dusk recent log should hide raw seed without debug telemetry")
+	_expect_no_echo_lens_locator_language(log_text, "Dusk recent expedition log")
 	main.free()
 
 func _test_thermal_vent_scan_clue_text() -> void:

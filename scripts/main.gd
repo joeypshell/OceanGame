@@ -2899,6 +2899,8 @@ func _format_condition_briefing() -> String:
 	]
 
 func _format_route_choice_callout() -> String:
+	if run_reached_dusk_trench:
+		return "Route choice: lower-route research push reached Dusk Trench."
 	if run_blackwater_trace_recovered:
 		return "Route choice: lower-route research push reached Blackwater."
 	if run_blue_chimney_draft_reading_recovered:
@@ -2929,6 +2931,8 @@ func _format_route_choice_callout() -> String:
 	return "Route choice: banked a cautious resource run."
 
 func _format_recent_route_memory() -> String:
+	if run_reached_dusk_trench:
+		return "Dusk Trench"
 	if run_blackwater_trace_recovered:
 		return "Blackwater"
 	if run_blue_chimney_draft_reading_recovered:
