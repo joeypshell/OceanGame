@@ -24,6 +24,8 @@ Expanded-region status review: `docs/planning/EXPANDED_REGION_PROTOTYPE_STATUS_2
 
 Post-lower-connector backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_LOWER_CONNECTOR_2026_06_26.md` defines the next ordered route-growth queue after Shelf Drop. It starts with narrow `Resonance Key I` and hatch-opening work, then adds one small `Resonance Alcove` and one more connected lower pocket before another oxygen/readability/backlog refresh.
 
+Resonance Key implementation contract: `docs/planning/RESONANCE_KEY_I_IMPLEMENTATION_CONTRACT_2026_06_27.md` defines `Resonance Key I` as one hatch-specific access module for the current `Sealed Shelf Hatch`. It should require `Echo Lens I`, East Shelf or Drop Echo research context, and existing materials only, then open one small `Resonance Alcove` without adding a quest chain, minimap, broad key family, full cave system, or new economy layer.
+
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
 
 Detailed design rules live in:
@@ -39,6 +41,7 @@ Detailed design rules live in:
 - `docs/planning/NO_MINIMAP_ORIENTATION_GUARDRAILS_2026_06_26.md`
 - `docs/planning/ROADMAP_REFRESH_AFTER_EAST_SHELF_PLAYABLE_2026_06_26.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_LOWER_CONNECTOR_2026_06_26.md`
+- `docs/planning/RESONANCE_KEY_I_IMPLEMENTATION_CONTRACT_2026_06_27.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
