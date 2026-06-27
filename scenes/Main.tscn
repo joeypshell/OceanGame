@@ -353,29 +353,41 @@ polygon = PackedVector2Array(850, 1060, 1160, 1120, 1118, 1210, 782, 1168)
 
 [node name="EastShelfSpur" type="Node2D" parent="."]
 
+[node name="BranchMouthShadow" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.004, 0.032, 0.06, 0.56)
+polygon = PackedVector2Array(920, 1014, 1118, 910, 1398, 910, 1608, 1018, 1536, 1134, 1268, 1082, 1038, 1166, 892, 1108)
+
+[node name="BranchRimFrame" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.2, 0.56, 0.58, 0.36)
+polygon = PackedVector2Array(904, 998, 1102, 866, 1408, 868, 1628, 1000, 1570, 1060, 1380, 964, 1144, 960, 952, 1070)
+
+[node name="BranchRouteOpening" type="Polygon2D" parent="EastShelfSpur"]
+color = Color(0.68, 1, 0.94, 0.2)
+polygon = PackedVector2Array(1038, 1066, 1172, 1004, 1326, 1012, 1440, 1088, 1324, 1140, 1160, 1124)
+
 [node name="ApproachCurrent" type="Polygon2D" parent="EastShelfSpur"]
-color = Color(0.58, 0.92, 0.88, 0.08)
-polygon = PackedVector2Array(1010, 1008, 1270, 936, 1578, 986, 1896, 1136, 1840, 1218, 1544, 1098, 1266, 1054, 1032, 1118)
+color = Color(0.58, 0.92, 0.88, 0.16)
+polygon = PackedVector2Array(742, 1040, 1028, 940, 1352, 960, 1660, 1032, 1922, 1160, 1838, 1258, 1538, 1134, 1260, 1086, 978, 1162, 764, 1134)
 
 [node name="UpperShelfSilhouette" type="Polygon2D" parent="EastShelfSpur"]
-color = Color(0.035, 0.105, 0.145, 0.44)
-polygon = PackedVector2Array(1108, 1128, 1324, 1076, 1548, 1110, 1854, 1238, 1996, 1348, 1972, 1438, 1666, 1332, 1392, 1264, 1122, 1306)
+color = Color(0.035, 0.105, 0.145, 0.56)
+polygon = PackedVector2Array(858, 1164, 1088, 1050, 1324, 1030, 1578, 1096, 1854, 1238, 1996, 1348, 1972, 1438, 1666, 1332, 1392, 1264, 1122, 1306, 872, 1296)
 
 [node name="LowerShelfSilhouette" type="Polygon2D" parent="EastShelfSpur"]
-color = Color(0.02, 0.075, 0.11, 0.38)
-polygon = PackedVector2Array(1260, 1428, 1510, 1358, 1778, 1428, 2038, 1570, 2018, 1668, 1742, 1588, 1488, 1532, 1232, 1586)
+color = Color(0.02, 0.075, 0.11, 0.48)
+polygon = PackedVector2Array(934, 1396, 1194, 1330, 1510, 1358, 1778, 1428, 2038, 1570, 2018, 1668, 1742, 1588, 1488, 1532, 1232, 1586, 934, 1518)
 
 [node name="RouteGapCue" type="Polygon2D" parent="EastShelfSpur"]
-color = Color(0.66, 0.98, 0.9, 0.13)
-polygon = PackedVector2Array(1198, 1188, 1268, 1154, 1336, 1188, 1268, 1224)
+color = Color(0.66, 0.98, 0.9, 0.28)
+polygon = PackedVector2Array(968, 1178, 1086, 1120, 1216, 1180, 1092, 1244)
 
 [node name="RouteRibA" type="Polygon2D" parent="EastShelfSpur"]
-color = Color(0.76, 0.96, 0.9, 0.1)
-polygon = PackedVector2Array(1370, 1254, 1472, 1228, 1530, 1264, 1458, 1298)
+color = Color(0.76, 0.96, 0.9, 0.18)
+polygon = PackedVector2Array(1118, 1280, 1248, 1238, 1338, 1282, 1228, 1330)
 
 [node name="RouteRibB" type="Polygon2D" parent="EastShelfSpur"]
-color = Color(0.76, 0.96, 0.9, 0.09)
-polygon = PackedVector2Array(1630, 1366, 1744, 1344, 1818, 1390, 1710, 1424)
+color = Color(0.76, 0.96, 0.9, 0.15)
+polygon = PackedVector2Array(1370, 1346, 1500, 1314, 1594, 1370, 1468, 1414)
 
 [node name="CurrentSurgeLane" type="Polygon2D" parent="EastShelfSpur"]
 color = Color(0.66, 0.96, 1, 0.09)

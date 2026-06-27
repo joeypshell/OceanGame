@@ -702,6 +702,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var main := MainScene.instantiate()
 	var branch_paths := [
 		"EastShelfSpur",
+		"EastShelfSpur/BranchMouthShadow",
+		"EastShelfSpur/BranchRimFrame",
+		"EastShelfSpur/BranchRouteOpening",
 		"EastShelfSpur/ApproachCurrent",
 		"EastShelfSpur/UpperShelfSilhouette",
 		"EastShelfSpur/LowerShelfSilhouette",
@@ -792,6 +795,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
 
+	var branch_mouth := main.get_node("EastShelfSpur/BranchMouthShadow") as Polygon2D
+	var branch_rim := main.get_node("EastShelfSpur/BranchRimFrame") as Polygon2D
+	var branch_opening := main.get_node("EastShelfSpur/BranchRouteOpening") as Polygon2D
 	var approach_current := main.get_node("EastShelfSpur/ApproachCurrent") as Polygon2D
 	var current_surge_lane := main.get_node("EastShelfSpur/CurrentSurgeLane") as Polygon2D
 	var current_surge_rib := main.get_node("EastShelfSpur/CurrentSurgeRib") as Polygon2D
@@ -838,9 +844,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
 	var shelf_glimmer := main.get_node("EastShelfSpur/ShelfGlimmerOpportunity") as Node2D
 	var shelf_glimmer_core := main.get_node("EastShelfSpur/ShelfGlimmerOpportunity/GlimmerCore") as Polygon2D
-	_expect(approach_current.polygon[1].x >= 1200.0, "East Shelf Spur should branch right of the existing main column")
+	_expect(branch_mouth.color.a >= 0.5, "East Shelf branch mouth should be dark enough to read as a route opening")
+	_expect(branch_rim.color.a >= 0.3, "East Shelf branch rim should visibly frame the route entrance")
+	_expect(branch_opening.color.a >= 0.18, "East Shelf branch opening should be more visible than a subtle current hint")
+	_expect(approach_current.polygon[1].x >= 1000.0, "East Shelf Spur should branch right of the existing main column while becoming visible earlier")
 	_expect(terminal_hint.polygon[terminal_hint.polygon.size() - 1].x >= 1800.0, "East Shelf Spur should reach into the expanded camera space")
-	_expect(approach_current.color.a <= 0.14, "East Shelf Spur current cue should stay subtle until full route art exists")
+	_expect(approach_current.color.a <= 0.18, "East Shelf Spur current cue should stay readable without becoming a hard objective arrow")
 	_expect(current_surge_lane.color.a <= 0.18, "East Shelf current-surge lane should read as timing guidance, not a damage wall")
 	_expect(current_surge_rib.polygon.size() >= 4, "East Shelf current-surge rib should provide a readable timing tick")
 	_expect(arch.position.x >= 1450.0, "East Shelf Arch should sit on the right-side branch before the pocket entrance")
