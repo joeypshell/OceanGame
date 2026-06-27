@@ -18,12 +18,13 @@ Primary planning docs:
 
 - `docs/planning/AREA_01_READABILITY_RESCUE_2026_06_27.md`
 - `docs/planning/AREA_01_READABILITY_EVIDENCE_2026_06_27.md`
+- `docs/planning/AREA_01_READABILITY_DECISION_REPORT_2026_06_27.md`
 - `docs/planning/AREA_01_BLUE_HOLE_ATLAS_2026_06_27.md`
 
 ## Immediate Issue Order
 
 1. Current user-directed pass: reconcile source-of-truth docs, compact this roadmap, and move historical issue-batch material out of the active roadmap.
-2. Continue Area 01 readability-only review or fixes if the current route is still uncomfortable to playtest.
+2. Complete the tiny readability-only fix list from `docs/planning/AREA_01_READABILITY_DECISION_REPORT_2026_06_27.md`, then repeat the same four-state capture check.
 3. Keep #622 paused while content expansion is paused. Resume it only after readability is explicitly accepted, and keep any salvage-pocket timing/hazard read light, sparse, and visually distinct.
 4. Run #623 only after #622 is either completed, rewritten, or intentionally skipped, because #623 validates the Salvage Cutter Return Payoff milestone.
 

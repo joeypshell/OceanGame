@@ -42,8 +42,9 @@ This milestone takes priority over `Salvage Cutter 04` because adding another ha
 4. Done in #627: clarify pickup/payoff language so resources, knowledge payoffs, locked routes, and return/timing support use distinct color/shape/opacity bands.
 5. Done in #628: add/update one deterministic visual capture record for the cleaned Wide Reef / salvage / Mirror Kelp cluster.
 6. Current source-of-truth cleanup: reconcile README, ROADMAP, GAMEPLAY, and current planning docs so they all name this milestone and the same next-work order.
-7. After cleanup, continue readability-only review or fixes if needed.
-8. Keep #622 paused until readability is explicitly accepted. If resumed, the salvage hazard issue can add only one light, visually distinct read that improves the local decision without adding another bright reward/lock/label pile.
+7. Done in `docs/planning/AREA_01_READABILITY_DECISION_REPORT_2026_06_27.md`: four staged captures reviewed as `Needs readability fixes`.
+8. Complete the decision report's tiny readability-only fix list, then repeat the four-state capture check.
+9. Keep #622 paused until readability is explicitly accepted. If resumed, the salvage hazard issue can add only one light, visually distinct read that improves the local decision without adding another bright reward/lock/label pile.
 
 ## Guardrails
 
