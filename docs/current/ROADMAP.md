@@ -10,9 +10,11 @@ North-star filter: current work should help the player see something tempting, r
 
 ## Active Milestone
 
-Area 01 Readability Rescue.
+Area 01 Readability Rescue / Salvage Cutter Return Payoff close-out.
 
 Recent playtesting said the Hollow Reef / Wide Reef / Mirror Kelp / salvage-pocket cluster was too visually messy to test comfortably. The bounded readability review now accepts Area 01 readability with a watchlist, so content expansion may resume carefully through #622.
+
+The Salvage Cutter return payoff validation accepts the opened-pocket loop with a watchlist. The next batch should move away from local readability rescue and back toward player-visible route growth.
 
 Primary planning docs:
 
@@ -20,12 +22,13 @@ Primary planning docs:
 - `docs/planning/AREA_01_READABILITY_EVIDENCE_2026_06_27.md`
 - `docs/planning/AREA_01_READABILITY_DECISION_REPORT_2026_06_27.md`
 - `docs/planning/AREA_01_BLUE_HOLE_ATLAS_2026_06_27.md`
+- `docs/planning/SALVAGE_CUTTER_RETURN_PAYOFF_VALIDATION_2026_06_27.md`
 
 ## Immediate Issue Order
 
-1. Resume #622: add one light salvage-pocket timing/read addition that is sparse, visually distinct, and does not introduce a new route branch, resource, upgrade, or bright label pile.
-2. Run #623 only after #622 is either completed, rewritten, or intentionally skipped, because #623 validates the Salvage Cutter Return Payoff milestone.
-3. Recalibrate after #623 before creating another issue batch; the next batch should move back toward player-visible progress rather than further readability rescue.
+1. Done in #622: add one light salvage-pocket timing/read addition that is sparse, visually distinct, and does not introduce a new route branch, resource, upgrade, or bright label pile.
+2. Done in #623: validate the Salvage Cutter Return Payoff milestone, preserve staging/guard coverage, and choose the next player-visible direction.
+3. After #623, create a larger-route progress batch. Prioritize a bigger authored side-view region, a memorable branch, a pressure/timing choice, a creature/read behavior, and a result-memory payoff that gives the player a reason to try another expedition.
 
 ## Completed In This Readability Rescue
 
@@ -35,6 +38,7 @@ Primary planning docs:
 - #627 separated resources, knowledge payoffs, locked promises, and return/timing support into clearer color/opacity bands.
 - #628 recorded deterministic `wide_reef_salvage_open` evidence in `docs/planning/AREA_01_READABILITY_EVIDENCE_2026_06_27.md`.
 - The bounded decision review accepted Area 01 readability with watchlist after a tiny HUD/current-cue pass and four refreshed staged captures.
+- #622 added one subtle salvage-pocket timing read after the Area 01 readability pass.
 
 ## Current Readability Rules
 
@@ -47,7 +51,7 @@ Primary planning docs:
 
 ## Deferred Until Readability Is Accepted
 
-- New route branches, caves, creatures, resources, upgrades, locked promises, or additional payoff nodes.
+- Local clutter or readability work that does not unblock a specific next playable route.
 - Broader mobile/controller work beyond preserving semantic input guardrails.
 - Final art overhaul, large UI reskin, broad visual regression suite, or golden-image infrastructure.
 

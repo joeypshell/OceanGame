@@ -55,6 +55,7 @@ func _initialize() -> void:
 	_run("Lantern Ray route variation", _test_lantern_ray_route_variation)
 	_run("debug review seed and condition helpers", _test_debug_review_helpers)
 	_run("debug Wreck Echo visual staging", _test_debug_wreck_echo_visual_staging)
+	_run("debug Wide Reef salvage staging guardrails", _test_debug_wide_reef_salvage_staging_guardrails)
 	_run("debug Mirror Kelp evidence staging", _test_debug_mirror_kelp_evidence_staging)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
@@ -553,6 +554,66 @@ func _test_debug_wreck_echo_visual_staging() -> void:
 	main.call("_stage_debug_wreck_echo_visual_review")
 	_expect(main.dive_session.result == DiveSessionScript.Result.EXTRACTED, "second Wreck Echo visual staging press should produce the result view")
 	_expect(main.last_result_summary.contains("Wreck Echo clue carried"), "staged Wreck Echo result should include the compact clue readback")
+	main.queue_free()
+
+func _test_debug_wide_reef_salvage_staging_guardrails() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.reset(main.max_oxygen)
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+
+	main.show_debug_telemetry = false
+	main.call("_stage_debug_wide_chamber_visual_review", true)
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wide Reef salvage staging should be inaccessible outside web/debug review")
+	_expect(main.visual_smoke_route_stage == "", "hidden Wide Reef salvage staging should not set visual route state")
+	_expect(main.progression_state.to_save_data() == save_before, "hidden Wide Reef salvage staging should not mutate durable progression")
+
+	main.show_debug_telemetry = true
+	main.call("_stage_debug_wide_chamber_visual_review", true)
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wide Reef salvage staging should remain web-only even when debug telemetry is visible headlessly")
+	_expect(main.visual_smoke_route_stage == "", "headless Wide Reef salvage staging should not set visual route state")
+	_expect(main.progression_state.to_save_data() == save_before, "headless Wide Reef salvage staging should not mutate durable progression")
+
+	main.progression_state.purchased_upgrades[SalvageCutterUpgrade.id] = true
+	main.call("_sync_salvage_pocket_open_state")
+	var opened_lane := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane") as Node2D
+	var lock_bars := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/LockBars") as Polygon2D
+	var manifest_core := opened_lane.get_node("SalvageManifest/ManifestCore") as Polygon2D
+	_expect(opened_lane.visible, "owned Salvage Cutter I should reveal the opened pocket lane")
+	_expect(not lock_bars.visible, "owned Salvage Cutter I should remove sealed lock bars")
+	_expect(manifest_core.color.a >= 0.7, "owned Salvage Cutter I should leave the manifest visibly recoverable")
+	_expect(not main.run_salvage_manifest_recovered, "opened pocket should not auto-complete the manifest payoff")
+	_expect(not main.run_salvage_data_cache_recovered, "opened pocket should not auto-complete the earlier cache payoff")
+	_expect(main._format_recent_route_memory() != "Salvage Pocket", "opened pocket alone should not claim Salvage Pocket route memory")
+	var staged_save: Dictionary = main.progression_state.to_save_data()
+	_expect(not staged_save.has("salvage_pocket_route"), "opened pocket should not create durable salvage route state")
+	_expect(not staged_save.has("salvage_manifest"), "opened pocket should not create durable manifest state")
+	_expect(not staged_save.has("salvage_inventory"), "opened pocket should not create salvage inventory state")
+
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_salvage_manifest = true
+	var handled: bool = main.call("_try_salvage_manifest_interaction")
+	_expect(handled, "staged Wide Reef salvage payoff should remain interactable through the normal manifest path")
+	_expect(main.run_salvage_manifest_recovered, "staged manifest interaction should set only run-scoped payoff evidence")
+	_expect(main._format_recent_route_memory() == "Salvage Pocket", "manifest payoff should upgrade the current run memory to Salvage Pocket")
+	var empty_cargo: Array[String] = []
+	var summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(summary.contains("Salvage Manifest"), "staged manifest payoff should support extraction result memory")
+	main.progression_state.current_run_number = 42
+	main.progression_state.current_run_seed = 9042
+	main.call("_record_recent_expedition", "Extracted", 0)
+	var log_text: String = main.call("_format_recent_expedition_log")
+	_expect(log_text.contains("route Salvage Pocket"), "staged manifest payoff should support compact recent-route memory")
+	var payoff_save: Dictionary = main.progression_state.to_save_data()
+	_expect(not payoff_save.has("salvage_pocket_route"), "Salvage Pocket route memory should remain session-only after payoff")
+	_expect(not payoff_save.has("salvage_inventory"), "Salvage Manifest payoff should not create durable salvage inventory")
+
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_salvage_manifest_recovered, "Salvage Manifest payoff should reset between expeditions")
+	_expect(opened_lane.visible, "owned cutter should keep the opened lane visible after run reset")
+	_expect(manifest_core.color.a >= 0.7, "Salvage Manifest should become recoverable again after run reset")
+	_expect(main._format_recent_route_memory() != "Salvage Pocket", "run reset should clear active Salvage Pocket route memory")
 	main.queue_free()
 
 func _test_debug_mirror_kelp_evidence_staging() -> void:
