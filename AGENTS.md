@@ -35,6 +35,7 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 - Read the issue, linked docs, and nearby code before editing.
 - Prefer existing project patterns over new abstractions.
 - Keep changes scoped to the issue.
+- For gameplay/backlog work, apply the roadmap north-star filter: the change should create curiosity, pressure, payoff, remembered-place progress, meaningful route choice, or a reason to try another expedition; otherwise treat it as tooling/polish and keep it proportional.
 - If new work appears, create or request a follow-up issue instead of expanding the ticket.
 - Do not revert unrelated user changes.
 - Do not commit generated files, local caches, secrets, or build output.

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Hollow Reef and Wide Reef Chamber review map</title>
+  <desc id="desc">Side-view planning map for the current lower-route area from Dusk Trench through Hollow Reef into the new Wide Reef Chamber.</desc>
+  <defs>
+    <style>
+      .bg { fill: #06101a; }
+      .water { fill: #09283a; }
+      .deep { fill: #041424; }
+      .reef { fill: #8fcfd0; opacity: 0.82; }
+      .reef-dark { fill: #4f8290; opacity: 0.72; }
+      .reef-edge { fill: #bfe8e0; opacity: 0.86; }
+      .cave { fill: #01070d; opacity: 0.78; }
+      .open { fill: #113d4d; opacity: 0.78; }
+      .future { fill: #244059; opacity: 0.55; stroke: #88b7d5; stroke-width: 3; stroke-dasharray: 10 9; }
+      .return { fill: none; stroke: #8ff7d8; stroke-width: 10; opacity: 0.68; stroke-linecap: round; stroke-linejoin: round; }
+      .mainpath { fill: none; stroke: #72d7ff; stroke-width: 8; opacity: 0.72; stroke-linecap: round; stroke-linejoin: round; }
+      .choice { fill: none; stroke: #f5d56f; stroke-width: 7; opacity: 0.72; stroke-linecap: round; stroke-linejoin: round; }
+      .danger { fill: none; stroke: #ff6b6b; stroke-width: 7; opacity: 0.68; stroke-linecap: round; stroke-linejoin: round; }
+      .payoff { fill: #e9ff6e; stroke: #fbffbc; stroke-width: 4; }
+      .scan { fill: #71f3ff; stroke: #d8fdff; stroke-width: 4; }
+      .creature { fill: #92ffe7; stroke: #e4fff8; stroke-width: 4; }
+      .label { font-family: "Segoe UI", Arial, sans-serif; fill: #eefbff; font-size: 24px; font-weight: 700; }
+      .small { font-family: "Segoe UI", Arial, sans-serif; fill: #c5dbe5; font-size: 18px; font-weight: 600; }
+      .tiny { font-family: "Segoe UI", Arial, sans-serif; fill: #a9c6d4; font-size: 15px; font-weight: 600; }
+      .depth { stroke: #6c8794; stroke-width: 2; stroke-dasharray: 8 10; opacity: 0.55; }
+      .panel { fill: #071b28; stroke: #4a9db4; stroke-width: 3; opacity: 0.94; }
+    </style>
+    <marker id="arrow-return" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto">
+      <path d="M1,1 L13,7 L1,13 Z" fill="#8ff7d8" opacity="0.82"/>
+    </marker>
+    <marker id="arrow-main" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto">
+      <path d="M1,1 L13,7 L1,13 Z" fill="#72d7ff" opacity="0.82"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="1000"/>
+  <rect class="water" x="0" y="0" width="1600" height="410"/>
+  <rect class="deep" x="0" y="410" width="1600" height="590"/>
+
+  <line class="depth" x1="70" y1="210" x2="1530" y2="210"/>
+  <line class="depth" x1="70" y1="430" x2="1530" y2="430"/>
+  <line class="depth" x1="70" y1="650" x2="1530" y2="650"/>
+  <line class="depth" x1="70" y1="850" x2="1530" y2="850"/>
+  <text class="tiny" x="85" y="198">Dusk approach</text>
+  <text class="tiny" x="85" y="418">Hollow Reef mouth</text>
+  <text class="tiny" x="85" y="638">Interior lane</text>
+  <text class="tiny" x="85" y="838">Wide chamber</text>
+
+  <text class="label" x="72" y="68">Current Review Map: Hollow Reef to Wide Reef Chamber</text>
+  <text class="small" x="72" y="100">Planning map, not an in-game minimap. Blue = forward route, green = return route, yellow/cyan = future payoff/scan hooks.</text>
+
+  <!-- Dusk trench approach -->
+  <path class="reef-dark" d="M120 300 C260 238 430 230 570 288 L540 392 C380 344 258 380 136 450 Z"/>
+  <path class="open" d="M210 312 C326 278 470 286 530 330 C446 356 304 364 210 344 Z"/>
+  <text class="label" x="180" y="268">Dusk Trench</text>
+  <text class="tiny" x="186" y="292">existing lower route approach</text>
+
+  <!-- Glass Kelp side pocket -->
+  <path class="reef" d="M300 478 C402 424 520 426 596 494 L552 584 C430 542 356 562 292 630 Z"/>
+  <path class="open" d="M370 486 C450 458 536 474 560 512 C500 528 420 526 354 518 Z"/>
+  <text class="small" x="322" y="460">Glass Kelp Ledge</text>
+  <circle class="scan" cx="493" cy="512" r="17"/>
+  <text class="tiny" x="514" y="520">current payoff</text>
+
+  <!-- Hollow Reef cave mouth -->
+  <path class="cave" d="M618 368 C742 290 902 308 990 418 C914 512 730 522 604 452 Z"/>
+  <path class="reef" d="M584 386 C724 294 918 302 1028 424 L986 474 C858 394 720 404 612 484 Z"/>
+  <path class="reef-edge" d="M634 422 C720 374 848 376 936 432 C850 454 724 456 628 450 Z"/>
+  <text class="label" x="654" y="352">Hollow Reef</text>
+  <text class="tiny" x="657" y="376">current side-cave branch</text>
+  <circle class="scan" cx="794" cy="440" r="16"/>
+  <text class="tiny" x="816" y="448">reading</text>
+
+  <!-- Hollow interior lane and upper shelf -->
+  <path class="reef-dark" d="M832 510 C952 456 1092 472 1180 552 L1128 642 C1002 596 920 604 824 682 Z"/>
+  <path class="open" d="M894 524 C978 492 1086 514 1136 558 C1042 586 944 584 872 560 Z"/>
+  <text class="small" x="888" y="494">Interior Lane</text>
+  <path class="choice" d="M974 526 C1010 480 1078 464 1138 494" marker-end="url(#arrow-main)"/>
+  <text class="tiny" x="1014" y="456">upper shelf choice</text>
+  <circle class="creature" cx="1118" cy="520" r="14"/>
+  <text class="tiny" x="1137" y="526">skitter</text>
+
+  <!-- Wide Reef Chamber -->
+  <path class="cave" d="M990 666 C1158 538 1410 548 1532 716 C1454 894 1186 948 958 832 Z"/>
+  <path class="reef-dark" d="M984 686 C1128 574 1396 590 1518 724 L1462 782 C1312 708 1142 712 1000 824 Z"/>
+  <path class="reef" d="M1024 728 C1176 668 1358 682 1468 746 C1326 784 1172 792 1018 770 Z"/>
+  <path class="open" d="M1068 690 C1190 642 1380 660 1454 724 C1334 748 1188 748 1048 722 Z"/>
+  <path class="reef-edge" d="M1000 816 C1168 884 1364 850 1500 770 L1522 812 C1372 920 1148 952 972 858 Z"/>
+  <text class="label" x="1070" y="638">Wide Reef Chamber</text>
+  <text class="tiny" x="1074" y="663">#574-#575 current build: large readable traversal space</text>
+
+  <path class="mainpath" d="M190 340 C390 332 556 386 684 426 C820 470 914 526 1034 584 C1124 628 1240 676 1416 718" marker-end="url(#arrow-main)"/>
+  <path class="return" d="M1416 802 C1250 808 1102 764 988 694 C872 620 760 534 628 472" marker-end="url(#arrow-return)"/>
+
+  <!-- Current and future anchors -->
+  <circle class="payoff" cx="1286" cy="748" r="18"/>
+  <text class="tiny" x="1309" y="756">future chamber payoff</text>
+  <circle class="creature" cx="1378" cy="702" r="17"/>
+  <text class="tiny" x="1401" y="710">future creature route</text>
+  <path class="future" d="M1430 808 C1504 832 1558 878 1570 944 L1458 944 C1434 894 1396 864 1346 840 Z"/>
+  <text class="small" x="1318" y="930">future lower promise</text>
+
+  <!-- Local labels -->
+  <text class="small" x="1048" y="812">clear traversal band</text>
+  <text class="tiny" x="1048" y="836">keep player, return cue, and payoff readable here</text>
+  <text class="small" x="120" y="922">Review questions</text>
+  <text class="tiny" x="120" y="950">1. Does the wide chamber read as a place, not just extra water?  2. Where should the payoff go?  3. Should the creature route be upper, middle, or lower?</text>
+
+  <rect class="panel" x="1168" y="92" width="354" height="190" rx="8"/>
+  <text class="small" x="1192" y="128">Legend</text>
+  <path class="mainpath" d="M1194 158 L1260 158" marker-end="url(#arrow-main)"/>
+  <text class="tiny" x="1276" y="164">forward route</text>
+  <path class="return" d="M1194 198 L1260 198" marker-end="url(#arrow-return)"/>
+  <text class="tiny" x="1276" y="204">return route</text>
+  <circle class="scan" cx="1218" cy="238" r="12"/>
+  <text class="tiny" x="1276" y="244">current scan/research</text>
+  <circle class="payoff" cx="1218" cy="268" r="12"/>
+  <text class="tiny" x="1276" y="274">future payoff slot</text>
+</svg>

@@ -1,0 +1,225 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1250" viewBox="0 0 1800 1250">
+  <defs>
+    <linearGradient id="rockFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fb4c2"/>
+      <stop offset="0.45" stop-color="#5d8290"/>
+      <stop offset="1" stop-color="#345466"/>
+    </linearGradient>
+    <linearGradient id="rockShadow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#244051"/>
+      <stop offset="1" stop-color="#132332"/>
+    </linearGradient>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .bg { fill: #020708; }
+      .depth { stroke: #9fb8c1; stroke-width: 2; stroke-dasharray: 8 12; opacity: 0.55; }
+      .depthText { fill: #e9f5f8; font-family: Arial, sans-serif; font-size: 24px; font-weight: 700; }
+      .title { fill: #ffffff; font-family: Arial, sans-serif; font-size: 54px; font-weight: 800; }
+      .subtitle { fill: #bde7ef; font-family: Arial, sans-serif; font-size: 22px; font-weight: 700; }
+      .label { fill: #f5fbfd; font-family: Arial, sans-serif; font-size: 21px; font-weight: 700; paint-order: stroke; stroke: #020708; stroke-width: 5px; stroke-linejoin: round; }
+      .smallLabel { fill: #e2f4f7; font-family: Arial, sans-serif; font-size: 17px; font-weight: 700; paint-order: stroke; stroke: #020708; stroke-width: 4px; stroke-linejoin: round; }
+      .note { fill: #c8e5ec; font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+      .rock { fill: url(#rockFace); stroke: #6aa1a9; stroke-width: 2; }
+      .rockDark { fill: url(#rockShadow); stroke: #274554; stroke-width: 2; }
+      .reefDetail { fill: none; stroke: #71b177; stroke-width: 2; opacity: 0.45; }
+      .routeLive { fill: none; stroke: #43e3ff; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; opacity: 0.9; }
+      .routePlanned { fill: none; stroke: #8cf7d4; stroke-width: 6; stroke-dasharray: 18 14; stroke-linecap: round; stroke-linejoin: round; opacity: 0.75; }
+      .routeLocked { fill: none; stroke: #ff695e; stroke-width: 6; stroke-dasharray: 8 10; stroke-linecap: round; stroke-linejoin: round; opacity: 0.85; }
+      .sliceBox { fill: rgba(35, 226, 255, 0.06); stroke: #38e7ff; stroke-width: 5; stroke-dasharray: 18 12; }
+      .futureBox { fill: rgba(180, 170, 255, 0.04); stroke: #9d86ff; stroke-width: 3; stroke-dasharray: 10 12; opacity: 0.8; }
+      .iconCircle { stroke: #071016; stroke-width: 5; }
+      .legendText { fill: #ffffff; font-family: Arial, sans-serif; font-size: 24px; font-weight: 800; }
+      .legendSmall { fill: #d6eef2; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1800" height="1250"/>
+  <rect x="0" y="0" width="1800" height="88" fill="#64c7de"/>
+  <rect x="0" y="88" width="1800" height="34" fill="#d9fbff"/>
+  <rect x="0" y="122" width="1800" height="44" fill="#095c73"/>
+
+  <g id="depthLines">
+    <line class="depth" x1="60" y1="210" x2="1740" y2="210"/>
+    <line class="depth" x1="60" y1="350" x2="1740" y2="350"/>
+    <line class="depth" x1="60" y1="490" x2="1740" y2="490"/>
+    <line class="depth" x1="60" y1="630" x2="1740" y2="630"/>
+    <line class="depth" x1="60" y1="770" x2="1740" y2="770"/>
+    <line class="depth" x1="60" y1="910" x2="1740" y2="910"/>
+    <text class="depthText" x="58" y="204">25m</text>
+    <text class="depthText" x="58" y="344">50m</text>
+    <text class="depthText" x="58" y="484">75m</text>
+    <text class="depthText" x="58" y="624">100m</text>
+    <text class="depthText" x="58" y="764">125m</text>
+    <text class="depthText" x="58" y="904">150m</text>
+    <text class="depthText" x="1690" y="204">25m</text>
+    <text class="depthText" x="1690" y="344">50m</text>
+    <text class="depthText" x="1690" y="484">75m</text>
+    <text class="depthText" x="1678" y="624">100m</text>
+    <text class="depthText" x="1678" y="764">125m</text>
+    <text class="depthText" x="1678" y="904">150m</text>
+  </g>
+
+  <g id="surfaceBase">
+    <path d="M760 55 L1035 55 L1085 83 L1048 113 L720 113 L690 82 Z" fill="#b66c2a" stroke="#071016" stroke-width="4"/>
+    <rect x="792" y="22" width="220" height="48" rx="8" fill="#d8c9ab" stroke="#071016" stroke-width="4"/>
+    <rect x="930" y="8" width="70" height="38" rx="8" fill="#a9cad0" stroke="#071016" stroke-width="4"/>
+    <circle cx="840" cy="87" r="7" fill="#fff0ad"/>
+    <circle cx="1008" cy="87" r="7" fill="#fff0ad"/>
+    <path d="M878 112 L938 112 L930 170 L888 170 Z" fill="#1ca6b3" opacity="0.45"/>
+    <text class="label" x="770" y="150">SURFACE BASE</text>
+    <text class="smallLabel" x="758" y="176">boat, moonpool, extraction</text>
+  </g>
+
+  <g id="rockMasses">
+    <path class="rock" d="M92 180 L204 154 L337 180 L390 246 L360 315 L235 334 L118 292 L70 232 Z"/>
+    <path class="rock" d="M92 318 L230 288 L372 330 L430 405 L386 498 L230 526 L84 475 L42 390 Z"/>
+    <path class="rock" d="M78 540 L255 510 L436 560 L510 644 L478 744 L276 776 L92 715 L42 628 Z"/>
+    <path class="rock" d="M60 785 L300 748 L545 805 L615 922 L542 1025 L246 1024 L60 950 Z"/>
+
+    <path class="rock" d="M1320 145 L1488 125 L1665 182 L1735 276 L1692 365 L1515 392 L1342 330 L1275 240 Z"/>
+    <path class="rock" d="M1205 370 L1428 332 L1655 390 L1742 500 L1690 617 L1412 650 L1192 578 L1118 470 Z"/>
+    <path class="rock" d="M1275 665 L1506 632 L1736 702 L1775 820 L1660 920 L1398 910 L1218 820 Z"/>
+    <path class="rock" d="M1190 935 L1470 895 L1715 952 L1764 1050 L1650 1116 L1322 1120 L1138 1048 Z"/>
+
+    <path class="rock" d="M525 230 L660 198 L782 235 L812 305 L748 365 L592 356 L500 296 Z"/>
+    <path class="rock" d="M832 226 L1002 188 L1160 230 L1210 310 L1142 392 L940 395 L810 322 Z"/>
+    <path class="rock" d="M558 420 L720 388 L865 430 L910 515 L835 584 L635 575 L510 505 Z"/>
+    <path class="rock" d="M940 455 L1115 410 L1295 465 L1350 565 L1272 650 L1025 642 L890 558 Z"/>
+    <path class="rock" d="M675 660 L872 612 L1058 668 L1125 770 L1050 870 L782 866 L630 776 Z"/>
+    <path class="rock" d="M450 925 L720 878 L950 940 L990 1040 L828 1108 L552 1080 Z"/>
+    <path class="rock" d="M870 890 L1110 845 L1320 910 L1355 1012 L1202 1095 L945 1088 Z"/>
+  </g>
+
+  <g id="rockDetails">
+    <path class="reefDetail" d="M132 210 C190 180, 260 188, 324 218"/>
+    <path class="reefDetail" d="M115 410 C200 360, 292 365, 380 420"/>
+    <path class="reefDetail" d="M132 634 C245 584, 360 598, 472 654"/>
+    <path class="reefDetail" d="M168 910 C300 850, 440 865, 560 930"/>
+    <path class="reefDetail" d="M1340 238 C1455 188, 1580 210, 1680 270"/>
+    <path class="reefDetail" d="M1228 510 C1360 440, 1510 455, 1668 542"/>
+    <path class="reefDetail" d="M1260 795 C1400 732, 1575 748, 1705 826"/>
+    <path class="reefDetail" d="M1250 1035 C1405 970, 1565 988, 1688 1040"/>
+    <path class="reefDetail" d="M548 285 C610 255, 700 255, 772 294"/>
+    <path class="reefDetail" d="M842 302 C935 254, 1050 260, 1170 322"/>
+    <path class="reefDetail" d="M544 502 C648 452, 770 460, 878 520"/>
+    <path class="reefDetail" d="M918 560 C1035 500, 1188 510, 1310 585"/>
+    <path class="reefDetail" d="M655 760 C790 705, 940 720, 1088 792"/>
+    <path class="reefDetail" d="M470 1015 C618 950, 792 970, 942 1030"/>
+    <path class="reefDetail" d="M900 1005 C1040 940, 1200 955, 1328 1022"/>
+  </g>
+
+  <g id="routes">
+    <path class="routeLive" d="M912 165 C890 225, 830 278, 735 322 C650 360, 590 415, 600 484 C612 568, 745 606, 840 650 C948 700, 1006 755, 1068 818 C1118 870, 1200 910, 1298 958"/>
+    <path class="routeLive" d="M650 368 C540 358, 430 382, 330 445"/>
+    <path class="routeLive" d="M792 328 C925 330, 1048 342, 1190 380"/>
+    <path class="routeLive" d="M1068 818 C980 842, 878 868, 776 920"/>
+    <path class="routeLive" d="M1298 958 C1370 990, 1445 1018, 1532 1015"/>
+    <path class="routePlanned" d="M1532 1015 C1598 955, 1650 880, 1638 790 C1625 700, 1518 660, 1438 612"/>
+    <path class="routePlanned" d="M1190 380 C1300 338, 1418 340, 1535 382"/>
+    <path class="routePlanned" d="M735 322 C674 270, 600 250, 505 258"/>
+    <path class="routeLocked" d="M1438 612 C1535 570, 1615 518, 1688 452"/>
+    <path class="routeLocked" d="M776 920 C690 965, 610 1012, 528 1080"/>
+  </g>
+
+  <g id="implementedSlice">
+    <path class="sliceBox" d="M1118 720 L1670 720 L1728 1090 L1215 1125 L1028 890 Z"/>
+    <text class="smallLabel" x="1144" y="750">CURRENT HOLLOW REEF / WIDE CHAMBER SLICE</text>
+  </g>
+
+  <g id="futureRegions">
+    <path class="futureBox" d="M1220 250 L1710 250 L1746 640 L1260 660 L1118 455 Z"/>
+    <text class="smallLabel" x="1300" y="280">FUTURE EAST WALL ROUTES</text>
+    <path class="futureBox" d="M330 750 L1040 750 L1020 1132 L350 1120 Z"/>
+    <text class="smallLabel" x="430" y="786">FUTURE DEEP CAVES / HUNTING GROUNDS</text>
+  </g>
+
+  <g id="icons">
+    <circle class="iconCircle" cx="330" cy="445" r="24" fill="#ffee62"/>
+    <text class="smallLabel" x="286" y="492">Shell Reef</text>
+    <text class="smallLabel" x="287" y="516">bank route</text>
+
+    <circle class="iconCircle" cx="505" cy="258" r="23" fill="#ff9a44"/>
+    <text class="smallLabel" x="454" y="238">Thermal Vent</text>
+    <text class="smallLabel" x="420" y="264">warm-current clue</text>
+
+    <circle class="iconCircle" cx="1190" cy="380" r="23" fill="#67e8ff"/>
+    <text class="smallLabel" x="1135" y="350">East Shelf</text>
+    <text class="smallLabel" x="1120" y="376">side route</text>
+
+    <circle class="iconCircle" cx="1535" cy="382" r="23" fill="#a4ff8f"/>
+    <text class="smallLabel" x="1488" y="426">Shelf Glimmer</text>
+
+    <circle class="iconCircle" cx="1438" cy="612" r="23" fill="#a5d7ff"/>
+    <text class="smallLabel" x="1374" y="650">Pressure Wreck</text>
+    <text class="smallLabel" x="1378" y="674">Signal Cache</text>
+
+    <circle class="iconCircle" cx="1068" cy="818" r="23" fill="#80e9ff"/>
+    <text class="smallLabel" x="1002" y="790">Blue Chimney</text>
+    <text class="smallLabel" x="1008" y="816">reverse draft</text>
+
+    <circle class="iconCircle" cx="776" cy="920" r="23" fill="#d5a2ff"/>
+    <text class="smallLabel" x="695" y="900">Silt Vein Fork</text>
+    <text class="smallLabel" x="660" y="924">safe left / locked right</text>
+
+    <circle class="iconCircle" cx="1298" cy="958" r="24" fill="#60d7ff"/>
+    <text class="smallLabel" x="1235" y="930">Dusk Trench</text>
+    <text class="smallLabel" x="1245" y="956">murk route</text>
+
+    <circle class="iconCircle" cx="1532" cy="1015" r="24" fill="#6fffbb"/>
+    <text class="smallLabel" x="1460" y="1058">Hollow Reef</text>
+    <text class="smallLabel" x="1435" y="1082">current side cave</text>
+
+    <circle class="iconCircle" cx="1638" cy="790" r="24" fill="#f5ff78"/>
+    <text class="smallLabel" x="1564" y="758">Wide Chamber</text>
+    <text class="smallLabel" x="1542" y="784">open-water room</text>
+
+    <circle class="iconCircle" cx="1688" cy="452" r="22" fill="#ff5e5e"/>
+    <text class="smallLabel" x="1598" y="474">Locked Deep Route</text>
+
+    <circle class="iconCircle" cx="528" cy="1080" r="22" fill="#ff5e5e"/>
+    <text class="smallLabel" x="430" y="1108">Future Hunt Caves</text>
+
+    <g filter="url(#softGlow)">
+      <path d="M594 650 C640 620, 710 620, 756 655 C704 682, 642 680, 594 650 Z" fill="#ff544d" opacity="0.92"/>
+      <text class="smallLabel" x="610" y="705">Gulper Route</text>
+    </g>
+
+    <path d="M1348 860 C1408 842, 1454 852, 1494 888 C1430 902, 1380 896, 1348 860 Z" fill="#c8e7ff" opacity="0.86"/>
+    <text class="smallLabel" x="1340" y="840">Lantern Ray</text>
+  </g>
+
+  <g id="resourceIcons">
+    <circle cx="398" cy="365" r="16" fill="#ffe45b" stroke="#000" stroke-width="4"/>
+    <circle cx="970" cy="695" r="16" fill="#7dff86" stroke="#000" stroke-width="4"/>
+    <circle cx="1510" cy="936" r="16" fill="#8dffdc" stroke="#000" stroke-width="4"/>
+    <circle cx="1012" cy="950" r="16" fill="#7dc5ff" stroke="#000" stroke-width="4"/>
+    <circle cx="640" cy="492" r="16" fill="#ffe45b" stroke="#000" stroke-width="4"/>
+    <text class="smallLabel" x="858" y="616">open descent lane</text>
+    <text class="smallLabel" x="915" y="642">use upgrades, oxygen, and learned routes</text>
+  </g>
+
+  <g id="legend">
+    <rect x="1215" y="1070" width="520" height="138" rx="14" fill="#031216" opacity="0.92" stroke="#315461" stroke-width="3"/>
+    <text class="legendText" x="1240" y="1110">Legend</text>
+    <line class="routeLive" x1="1245" y1="1140" x2="1318" y2="1140"/>
+    <text class="legendSmall" x="1335" y="1147">implemented playable route chain</text>
+    <line class="routePlanned" x1="1245" y1="1172" x2="1318" y2="1172"/>
+    <text class="legendSmall" x="1335" y="1179">planned Area 01 expansion</text>
+    <line class="routeLocked" x1="1538" y1="1140" x2="1610" y2="1140"/>
+    <text class="legendSmall" x="1625" y="1147">locked promise</text>
+    <circle cx="1556" cy="1172" r="13" fill="#ffee62" stroke="#000" stroke-width="3"/>
+    <text class="legendSmall" x="1580" y="1179">resource / scan / creature marker</text>
+  </g>
+
+  <g id="titleBlock">
+    <text class="title" x="55" y="1120">OceanGame Area 01</text>
+    <text class="title" x="55" y="1182">Blue Hole Exploration Atlas</text>
+    <text class="subtitle" x="60" y="1214">Draft region target: current slice is one branch, not the full map.</text>
+  </g>
+</svg>
