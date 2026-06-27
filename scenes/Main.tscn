@@ -1087,23 +1087,23 @@ color = Color(0.004, 0.02, 0.034, 0.7)
 polygon = PackedVector2Array(-124, -58, 12, -100, 156, -52, 206, 34, 144, 112, -22, 102, -152, 38)
 
 [node name="ReefRim" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.12, 0.46, 0.44, 0.36)
+color = Color(0.12, 0.46, 0.44, 0.24)
 polygon = PackedVector2Array(-156, -44, -36, -104, 106, -96, 220, -22, 192, 36, 82, -24, -64, -10, -176, 32)
 
 [node name="ThresholdWater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.1, 0.36, 0.42, 0.26)
+color = Color(0.1, 0.36, 0.42, 0.16)
 polygon = PackedVector2Array(-72, -26, 42, -58, 142, -18, 154, 46, 48, 70, -86, 30)
 
 [node name="EntranceLip" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.46, 0.94, 0.9, 0.26)
+color = Color(0.46, 0.94, 0.9, 0.16)
 polygon = PackedVector2Array(-142, -18, -74, -58, 34, -52, 92, -22, 20, -8, -82, 2)
 
 [node name="EntranceRibA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.72, 1, 0.94, 0.28)
+color = Color(0.72, 1, 0.94, 0.16)
 polygon = PackedVector2Array(-108, -8, -48, -34, 8, -22, -58, 4)
 
 [node name="EntranceRibB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.72, 1, 0.94, 0.24)
+color = Color(0.72, 1, 0.94, 0.14)
 polygon = PackedVector2Array(-34, -22, 28, -38, 84, -14, 18, 8)
 
 [node name="ReefToothA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
@@ -1123,27 +1123,27 @@ color = Color(0.58, 1, 0.86, 0.18)
 polygon = PackedVector2Array(142, 86, 40, 72, -50, 28, -132, -8, -108, -42, 10, -10, 110, 34)
 
 [node name="ReturnChainToDusk" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.66, 1, 0.88, 0.2)
+color = Color(0.66, 1, 0.88, 0.13)
 polygon = PackedVector2Array(186, 98, 78, 70, -28, 20, -154, -36, -126, -68, 16, -22, 124, 30)
 
 [node name="ReturnChainRibA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.82, 1, 0.92, 0.24)
+color = Color(0.82, 1, 0.92, 0.14)
 polygon = PackedVector2Array(80, 64, 22, 32, -34, 12, 28, 56)
 
 [node name="ReturnChainRibB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.82, 1, 0.92, 0.22)
+color = Color(0.82, 1, 0.92, 0.12)
 polygon = PackedVector2Array(-22, 14, -78, -16, -132, -34, -72, 12)
 
 [node name="DuskReturnFleck" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.74, 1, 0.92, 0.28)
+color = Color(0.74, 1, 0.92, 0.16)
 polygon = PackedVector2Array(-142, -48, -126, -58, -108, -44, -124, -30)
 
 [node name="ReturnRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.82, 1, 0.92, 0.24)
+color = Color(0.82, 1, 0.92, 0.14)
 polygon = PackedVector2Array(-78, 42, -18, 12, 42, 30, -24, 60)
 
 [node name="ExitRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
-color = Color(0.82, 1, 0.92, 0.22)
+color = Color(0.82, 1, 0.92, 0.12)
 polygon = PackedVector2Array(86, 72, 22, 44, -32, 14, 32, 60)
 
 [node name="ExitBackWall" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
@@ -1158,15 +1158,15 @@ color = Color(0.006, 0.028, 0.048, 0.5)
 polygon = PackedVector2Array(-38, -28, 52, -58, 152, -20, 166, 44, 68, 78, -50, 28)
 
 [node name="UpperLaneShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
-color = Color(0.075, 0.18, 0.2, 0.42)
+color = Color(0.075, 0.18, 0.2, 0.3)
 polygon = PackedVector2Array(-58, -46, 40, -82, 150, -48, 184, 0, 132, 20, 48, -22, -68, -2)
 
 [node name="LowerLaneShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
-color = Color(0.028, 0.075, 0.078, 0.5)
+color = Color(0.028, 0.075, 0.078, 0.36)
 polygon = PackedVector2Array(-46, 56, 58, 90, 164, 62, 182, 104, 76, 128, -62, 98)
 
 [node name="InteriorDirectionRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
-color = Color(0.62, 1, 0.9, 0.2)
+color = Color(0.62, 1, 0.9, 0.12)
 polygon = PackedVector2Array(18, -4, 88, -22, 142, 6, 70, 28)
 
 [node name="TimingCurrentCue" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
@@ -1188,30 +1188,30 @@ color = Color(0.98, 0.94, 1, 0.13)
 polygon = PackedVector2Array(108, -8, 136, 4, 124, 28, 92, 16)
 
 [node name="LaneReturnCurrent" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
-color = Color(0.66, 1, 0.88, 0.19)
+color = Color(0.66, 1, 0.88, 0.13)
 polygon = PackedVector2Array(164, 70, 82, 48, 0, 8, -84, -18, -58, -48, 36, -8, 118, 20)
 
 [node name="LaneReturnRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
-color = Color(0.82, 1, 0.92, 0.22)
+color = Color(0.82, 1, 0.92, 0.13)
 polygon = PackedVector2Array(92, 44, 36, 18, -20, 8, 32, 40)
 
 [node name="UpperShelfChoice" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
 position = Vector2(64, -52)
 
 [node name="ShelfPocketWater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice"]
-color = Color(0.08, 0.24, 0.3, 0.34)
+color = Color(0.08, 0.24, 0.3, 0.2)
 polygon = PackedVector2Array(-42, -18, 26, -44, 96, -16, 112, 30, 42, 54, -52, 26)
 
 [node name="ShelfLip" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice"]
-color = Color(0.16, 0.42, 0.4, 0.38)
+color = Color(0.16, 0.42, 0.4, 0.24)
 polygon = PackedVector2Array(-56, 20, 32, 48, 118, 24, 102, 62, 24, 82, -70, 52)
 
 [node name="ChoiceCueRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice"]
-color = Color(0.72, 0.9, 1, 0.2)
+color = Color(0.72, 0.9, 1, 0.12)
 polygon = PackedVector2Array(-18, -4, 44, -26, 86, 0, 24, 22)
 
 [node name="DropBackCue" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice"]
-color = Color(0.62, 1, 0.88, 0.15)
+color = Color(0.62, 1, 0.88, 0.1)
 polygon = PackedVector2Array(82, 44, 38, 68, -18, 60, 28, 88, -34, 104, 42, 106, 102, 76)
 
 [node name="ShelteredResourcePocket" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice"]
@@ -1222,11 +1222,11 @@ color = Color(0.014, 0.05, 0.052, 0.5)
 polygon = PackedVector2Array(-40, -24, 18, -42, 68, -16, 54, 34, -14, 48, -58, 10)
 
 [node name="PocketHalo" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket"]
-color = Color(0.52, 1, 0.8, 0.13)
+color = Color(0.52, 1, 0.8, 0.09)
 polygon = PackedVector2Array(-62, -36, 14, -70, 92, -24, 82, 50, 6, 82, -78, 28)
 
 [node name="PocketGlimmer" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket"]
-color = Color(0.78, 1, 0.46, 0.34)
+color = Color(0.78, 1, 0.46, 0.28)
 polygon = PackedVector2Array(0, -18, 14, -6, 18, 10, 2, 20, -14, 8, -18, -6)
 
 [node name="LaneTurnbackLip" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
@@ -1237,39 +1237,39 @@ polygon = PackedVector2Array(126, 22, 182, 44, 166, 82, 106, 70)
 position = Vector2(330, 52)
 
 [node name="EntranceThroat" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.1, 0.36, 0.42, 0.22)
+color = Color(0.1, 0.36, 0.42, 0.13)
 polygon = PackedVector2Array(-188, -28, -52, -84, 86, -46, 118, 18, -18, 48, -210, 16)
 
 [node name="ChamberBackwater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.005, 0.022, 0.04, 0.58)
+color = Color(0.005, 0.022, 0.04, 0.4)
 polygon = PackedVector2Array(-96, -136, 154, -198, 422, -154, 596, -44, 574, 102, 356, 198, 56, 166, -132, 70)
 
 [node name="FarWallSilhouette" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.016, 0.06, 0.075, 0.34)
+color = Color(0.016, 0.06, 0.075, 0.22)
 polygon = PackedVector2Array(-66, -94, 96, -156, 308, -126, 506, -54, 462, -8, 250, -48, 68, -32, -100, 4)
 
 [node name="TraversalClearBand" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.12, 0.44, 0.5, 0.085)
+color = Color(0.12, 0.44, 0.5, 0.05)
 polygon = PackedVector2Array(-42, -22, 118, -54, 342, -30, 530, 28, 448, 82, 208, 66, -74, 36)
 
 [node name="UpperChamberShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.055, 0.13, 0.17, 0.46)
+color = Color(0.055, 0.13, 0.17, 0.32)
 polygon = PackedVector2Array(-70, -112, 116, -174, 360, -146, 560, -66, 488, -24, 276, -70, 82, -64, -118, -34)
 
 [node name="LowerChamberShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.024, 0.07, 0.074, 0.54)
+color = Color(0.024, 0.07, 0.074, 0.36)
 polygon = PackedVector2Array(-118, 82, 136, 138, 426, 118, 612, 48, 654, 100, 418, 188, 96, 204, -146, 124)
 
 [node name="ForegroundShelfEdge" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.01, 0.035, 0.05, 0.3)
+color = Color(0.01, 0.035, 0.05, 0.2)
 polygon = PackedVector2Array(-124, 122, 104, 172, 348, 154, 602, 78, 648, 116, 410, 210, 88, 226, -152, 152)
 
 [node name="GlassRibSpan" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.42, 0.84, 0.92, 0.24)
+color = Color(0.42, 0.84, 0.92, 0.15)
 polygon = PackedVector2Array(76, -124, 120, -176, 150, -118, 206, -168, 220, -104, 284, -144, 276, -78, 210, -92, 160, -80, 112, -96)
 
 [node name="LowCrownShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.18, 0.42, 0.39, 0.3)
+color = Color(0.18, 0.42, 0.39, 0.2)
 polygon = PackedVector2Array(214, 132, 274, 92, 332, 128, 392, 94, 452, 136, 390, 168, 304, 170)
 
 [node name="OpenWaterWindow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
@@ -1335,27 +1335,27 @@ color = Color(0.95, 1, 0.7, 0.12)
 polygon = PackedVector2Array(0, -54, 42, -30, 54, 0, 42, 30, 0, 54, -42, 30, -54, 0, -42, -30)
 
 [node name="ReturnCurrentBackToHollow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.66, 1, 0.88, 0.18)
+color = Color(0.66, 1, 0.88, 0.13)
 polygon = PackedVector2Array(520, 118, 354, 92, 170, 36, -26, -6, 4, -42, 206, 0, 390, 46, 562, 70)
 
 [node name="ReturnCurrentFarRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.82, 1, 0.92, 0.18)
+color = Color(0.82, 1, 0.92, 0.13)
 polygon = PackedVector2Array(482, 84, 420, 62, 358, 54, 418, 92)
 
 [node name="ReturnCurrentMidChain" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.58, 1, 0.84, 0.14)
+color = Color(0.58, 1, 0.84, 0.1)
 polygon = PackedVector2Array(372, 74, 264, 44, 136, 4, 12, -22, 34, -48, 176, -12, 292, 20, 404, 42)
 
 [node name="ReturnCurrentEntryChain" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.62, 1, 0.86, 0.16)
+color = Color(0.62, 1, 0.86, 0.12)
 polygon = PackedVector2Array(78, 24, -34, -6, -154, -14, -126, -46, -6, -34, 112, -2)
 
 [node name="ReturnCurrentRibA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.82, 1, 0.92, 0.22)
+color = Color(0.82, 1, 0.92, 0.13)
 polygon = PackedVector2Array(334, 80, 268, 50, 202, 30, 268, 72)
 
 [node name="ReturnCurrentRibB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
-color = Color(0.82, 1, 0.92, 0.2)
+color = Color(0.82, 1, 0.92, 0.12)
 polygon = PackedVector2Array(128, 26, 60, 4, -4, -10, 58, 24)
 
 [node name="FutureChoiceShadow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
@@ -1366,15 +1366,15 @@ polygon = PackedVector2Array(472, -36, 620, 6, 596, 90, 444, 122, 390, 42)
 position = Vector2(636, 50)
 
 [node name="BoundaryWash" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue"]
-color = Color(0.18, 0.34, 0.56, 0.18)
+color = Color(0.18, 0.34, 0.56, 0.12)
 polygon = PackedVector2Array(-60, -72, 42, -52, 70, 24, 20, 92, -76, 72, -108, -4)
 
 [node name="ReturnRibbon" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue"]
-color = Color(0.66, 1, 0.86, 0.16)
+color = Color(0.66, 1, 0.86, 0.11)
 polygon = PackedVector2Array(-6, 28, -104, 8, -198, -20, -176, -46, -72, -18, 28, 6)
 
 [node name="ReturnRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue"]
-color = Color(0.82, 1, 0.92, 0.18)
+color = Color(0.82, 1, 0.92, 0.12)
 polygon = PackedVector2Array(-38, 22, -96, 2, -152, -8, -94, 26)
 
 [node name="CueLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue"]
@@ -1468,19 +1468,19 @@ visible = false
 position = Vector2(82, -6)
 
 [node name="EntryWater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
-color = Color(0.14, 0.58, 0.62, 0.2)
+color = Color(0.14, 0.58, 0.62, 0.14)
 polygon = PackedVector2Array(-74, -22, 18, -44, 112, -18, 130, 34, 40, 56, -60, 30)
 
 [node name="InnerHullPocket" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
-color = Color(0.02, 0.045, 0.052, 0.54)
+color = Color(0.02, 0.045, 0.052, 0.42)
 polygon = PackedVector2Array(-44, -12, 42, -30, 104, -6, 92, 30, 18, 42, -50, 18)
 
 [node name="CutEdgeGlow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
-color = Color(1, 0.78, 0.34, 0.44)
+color = Color(1, 0.78, 0.34, 0.34)
 polygon = PackedVector2Array(-56, -18, 18, -34, 26, -24, -44, -8, -48, 18, 28, 4, 34, 14, -54, 32)
 
 [node name="ReturnCurrentCue" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
-color = Color(0.66, 1, 0.86, 0.18)
+color = Color(0.66, 1, 0.86, 0.12)
 polygon = PackedVector2Array(58, 44, -24, 34, -106, 10, -92, -8, -4, 14, 76, 24)
 
 [node name="OpenLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
@@ -1521,27 +1521,27 @@ color = Color(0.006, 0.028, 0.04, 0.62)
 polygon = PackedVector2Array(-112, -76, 28, -126, 178, -56, 210, 74, 56, 132, -132, 54)
 
 [node name="ReflectiveBackwater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
-color = Color(0.08, 0.36, 0.42, 0.2)
+color = Color(0.08, 0.36, 0.42, 0.12)
 polygon = PackedVector2Array(-84, -42, 66, -92, 184, -36, 176, 50, 42, 86, -98, 32)
 
 [node name="MirrorKelpCurtainA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
-color = Color(0.42, 0.94, 0.82, 0.28)
+color = Color(0.42, 0.94, 0.82, 0.17)
 polygon = PackedVector2Array(-42, -84, -22, -96, -8, -28, -20, 42, -44, 82, -56, 8)
 
 [node name="MirrorKelpCurtainB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
-color = Color(0.72, 0.96, 1, 0.24)
+color = Color(0.72, 0.96, 1, 0.15)
 polygon = PackedVector2Array(54, -104, 78, -86, 82, -18, 70, 58, 44, 104, 38, 22)
 
 [node name="MirrorKelpCurtainC" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
-color = Color(0.36, 0.82, 0.72, 0.22)
+color = Color(0.36, 0.82, 0.72, 0.13)
 polygon = PackedVector2Array(132, -62, 152, -48, 148, 18, 128, 80, 104, 106, 112, 36)
 
 [node name="PassFloorShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
-color = Color(0.018, 0.07, 0.064, 0.48)
+color = Color(0.018, 0.07, 0.064, 0.32)
 polygon = PackedVector2Array(-132, 62, 18, 104, 184, 74, 226, 116, 48, 170, -166, 104)
 
 [node name="PassCeilingRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
-color = Color(0.24, 0.52, 0.62, 0.28)
+color = Color(0.24, 0.52, 0.62, 0.16)
 polygon = PackedVector2Array(-108, -76, 28, -128, 178, -58, 150, -24, 24, -70, -98, -34)
 
 [node name="EntryReturnRibbon" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
@@ -1549,29 +1549,29 @@ color = Color(0.66, 1, 0.88, 0.12)
 polygon = PackedVector2Array(-18, 76, -150, 42, -296, 12, -276, -18, -126, 10, 18, 42)
 
 [node name="LoopReturnCurrent" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
-color = Color(0.62, 1, 0.86, 0.17)
+color = Color(0.62, 1, 0.86, 0.11)
 polygon = PackedVector2Array(184, 112, 82, 92, -36, 58, -178, 26, -154, -8, -4, 24, 116, 56, 222, 74)
 
 [node name="LoopReturnRibA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
-color = Color(0.82, 1, 0.92, 0.18)
+color = Color(0.82, 1, 0.92, 0.11)
 polygon = PackedVector2Array(118, 86, 58, 66, 2, 56, 60, 92)
 
 [node name="LoopReturnRibB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
-color = Color(0.82, 1, 0.92, 0.16)
+color = Color(0.82, 1, 0.92, 0.1)
 polygon = PackedVector2Array(-28, 48, -92, 28, -150, 22, -92, 58)
 
 [node name="ChamberLoopSilhouette" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
-color = Color(0.04, 0.12, 0.14, 0.24)
+color = Color(0.04, 0.12, 0.14, 0.16)
 polygon = PackedVector2Array(-188, -28, -292, -62, -388, -42, -346, 20, -248, 28)
 
 [node name="KelpBloomApproachWash" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
 visible = false
-color = Color(0.4, 0.92, 0.76, 0.13)
+color = Color(0.4, 0.92, 0.76, 0.09)
 polygon = PackedVector2Array(-154, -70, -28, -102, 126, -58, 208, 28, 118, 108, -58, 82, -176, 12)
 
 [node name="KelpBloomApproachRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
 visible = false
-color = Color(0.82, 1, 0.9, 0.18)
+color = Color(0.82, 1, 0.9, 0.12)
 polygon = PackedVector2Array(-92, -28, -22, -54, 58, -34, 132, 10, 96, 30, 22, -4, -48, 8)
 
 [node name="TideglassSample" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]

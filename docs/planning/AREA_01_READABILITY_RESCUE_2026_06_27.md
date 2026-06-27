@@ -36,8 +36,8 @@ This milestone temporarily takes priority over `Salvage Cutter 04` because addin
 
 ## Ordered Implementation Queue
 
-1. Establish a visual hierarchy contract for Area 01 and make the docs honest about the new blocker.
-2. Quiet the Hollow Reef / Wide Reef / Mirror Kelp placeholder geometry so background and terrain stop competing with the sub, pickups, and payoffs.
+1. Done in #624: establish a visual hierarchy contract for Area 01 and make the docs honest about the new blocker.
+2. Done in #625: quiet the Hollow Reef / Wide Reef / Mirror Kelp placeholder geometry so background and terrain stop competing with the sub, pickups, and payoffs.
 3. Reduce label noise by keeping only necessary local labels and making future-promise labels smaller/quieter.
 4. Clarify pickup/payoff language so resources, knowledge payoffs, and locked routes use distinct color/shape/opacity bands.
 5. Add or update one deterministic visual capture for the cleaned Wide Reef / salvage / Mirror Kelp cluster.

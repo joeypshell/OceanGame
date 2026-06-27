@@ -1052,6 +1052,10 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var manifest_spark := salvage.get_node("OpenedPocketLane/SalvageManifest/ManifestSpark") as Polygon2D
 	var manifest_interact := salvage.get_node("OpenedPocketLane/SalvageManifest/InteractZone") as Area2D
 	var salvage_shell_candidate := main.get_node("StarterResourceCandidates/ShellFragments/SalvagePocketA") as SpawnPoint
+	var chamber_backwater := chamber.get_node("ChamberBackwater") as Polygon2D
+	var upper_chamber_shelf := chamber.get_node("UpperChamberShelf") as Polygon2D
+	var lower_chamber_shelf := chamber.get_node("LowerChamberShelf") as Polygon2D
+	var glass_rib_span := chamber.get_node("GlassRibSpan") as Polygon2D
 	var future_choice_shadow := chamber.get_node("FutureChoiceShadow") as Polygon2D
 	var return_current := chamber.get_node("ReturnCurrentBackToHollow") as Polygon2D
 	var swarm := chamber.get_node("GlassfinSwarm") as Area2D
@@ -1079,6 +1083,10 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(not cutter_port_label.text.to_lower().contains("key"), "future salvage tool copy should not conflict with Resonance Key language")
 	_expect(data_cache.position.x >= -10.0 and data_cache.position.x <= 40.0, "salvage data cache should sit inside the sealed pocket mouth")
 	_expect(data_cache_core.color.a >= 0.7, "salvage data cache should start visibly recoverable")
+	_expect(chamber_backwater.color.a <= 0.42, "Wide Reef Chamber backwater should stay below payoff brightness")
+	_expect(upper_chamber_shelf.color.a <= 0.34 and lower_chamber_shelf.color.a <= 0.38, "Wide Reef Chamber shelf framing should stay quiet enough for normal play")
+	_expect(glass_rib_span.color.a <= 0.16, "Wide Reef Chamber rib landmark should not compete with cache or pickup reads")
+	_expect(return_current.color.a < data_cache_core.color.a, "safe-return current should be quieter than the salvage data cache payoff")
 	_expect(salvage_shell_candidate.target_id == "shell_fragments", "salvage pocket cargo choice should use existing Shell Fragments")
 	_expect(salvage_shell_candidate.depth_band == "midwater", "salvage pocket cargo choice should preserve existing shell depth identity")
 	_expect(salvage_shell_candidate.cluster_pattern == "deep_reward", "salvage pocket cargo choice should stay optional in the deep-reward resource pool")
@@ -1118,6 +1126,7 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(open_label.text.contains("RETURN VIA HOLLOW"), "opened salvage pocket should preserve broad safe-return language")
 	_expect(open_entry_water.color.a <= 0.22, "opened salvage pocket water should be readable but quieter than pickups")
 	_expect(open_return_cue.color.g > open_return_cue.color.r, "opened salvage return cue should use safe-current color language")
+	_expect(open_entry_water.color.a < manifest_core.color.a and open_return_cue.color.a < manifest_core.color.a, "opened salvage lane support should stay quieter than the manifest payoff")
 	_expect(salvage_manifest.get_parent() == opened_lane, "Salvage Manifest should live inside the opened pocket lane")
 	_expect(manifest_core.color.a >= 0.7, "Salvage Manifest should start visibly recoverable when the pocket is open")
 	_expect(manifest_spark.visible, "Salvage Manifest should have a bright recovery spark before interaction")
@@ -2342,7 +2351,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_reef_exit_ribbon.color.a <= hollow_reef_return.color.a, "Hollow Reef exit ribbon should support the return current without becoming a second objective arrow")
 	_expect(hollow_reef_exit_ribbon.polygon[1].x < hollow_reef_exit_ribbon.polygon[0].x, "Hollow Reef exit ribbon should point back left toward the entrance")
 	_expect(hollow_reef_return_chain.color.g > hollow_reef_return_chain.color.r and hollow_reef_return_chain.color.b > hollow_reef_return_chain.color.r, "Hollow Reef return chain should use safe-current color language")
-	_expect(hollow_reef_return_chain.color.a >= 0.18 and hollow_reef_return_chain.color.a <= 0.22, "Hollow Reef return chain should stay readable without becoming a route graph")
+	_expect(hollow_reef_return_chain.color.a >= 0.12 and hollow_reef_return_chain.color.a <= 0.15, "Hollow Reef return chain should stay readable without becoming a route graph")
 	_expect(hollow_reef_return_chain.polygon[1].x < hollow_reef_return_chain.polygon[0].x, "Hollow Reef return chain should point left toward Dusk Trench")
 	_expect(hollow_reef_return_chain.polygon[1].y < hollow_reef_return_chain.polygon[0].y, "Hollow Reef return chain should point upward toward Blackwater and Silt Vein")
 	_expect(hollow_reef_return_rib_a.polygon[1].x < hollow_reef_return_rib_a.polygon[0].x, "Hollow Reef first return rib should step left along the chain")
@@ -2356,9 +2365,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_reef_interior_lane.position.x > hollow_reef_reading_core.position.x, "Hollow Reef interior lane should extend beyond the first cave reading payoff")
 	_expect(hollow_reef_interior_lane.position.x < hollow_deeper_promise.position.x, "Hollow Reef interior lane should stay before the closed deeper promise")
 	_expect(hollow_lane_water.color.a >= 0.45 and hollow_lane_water.color.a <= 0.55, "Hollow Reef interior lane should read as cave water without hiding route cues")
-	_expect(hollow_lane_upper.color.a <= 0.45 and hollow_lane_lower.color.a <= 0.52, "Hollow Reef lane shelves should frame the path without becoming walls")
+	_expect(hollow_lane_upper.color.a <= 0.32 and hollow_lane_lower.color.a <= 0.38, "Hollow Reef lane shelves should frame the path without becoming walls")
 	_expect(hollow_lane_direction.color.g > hollow_lane_direction.color.r, "Hollow Reef interior direction rib should use safe/cave route color language")
-	_expect(hollow_lane_return.color.a >= 0.18 and hollow_lane_return.color.a <= 0.2, "Hollow Reef lane return current should be readable but not objective-bright")
+	_expect(hollow_lane_return.color.a >= 0.12 and hollow_lane_return.color.a <= 0.14, "Hollow Reef lane return current should be readable but not objective-bright")
 	_expect(hollow_lane_return.polygon[1].x < hollow_lane_return.polygon[0].x, "Hollow Reef lane return current should point left toward the cave mouth")
 	_expect(hollow_lane_return.polygon[1].y < hollow_lane_return.polygon[0].y, "Hollow Reef lane return current should point up toward the exit route")
 	_expect(hollow_lane_return_rib.polygon[1].x < hollow_lane_return_rib.polygon[0].x, "Hollow Reef lane return rib should step left along the return chain")
@@ -2399,7 +2408,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_wide_clear_band.polygon[3].x - hollow_wide_clear_band.polygon[0].x >= 560.0, "Wide Reef Chamber traversal band should span the horizontal playable lane")
 	_expect(hollow_wide_clear_band.polygon[5].y < hollow_wide_foreground.polygon[0].y, "Wide Reef Chamber clear lane should sit above the foreground edge")
 	_expect(hollow_wide_open_water.color.a <= 0.16, "Wide Reef Chamber open water should read as negative traversable space, not a blocking field")
-	_expect(hollow_wide_upper.color.a >= 0.4 and hollow_wide_lower.color.a >= 0.5, "Wide Reef Chamber should frame the top and bottom shelves around the playable gap")
+	_expect(hollow_wide_upper.color.a >= 0.3 and hollow_wide_upper.color.a <= 0.34 and hollow_wide_lower.color.a >= 0.34 and hollow_wide_lower.color.a <= 0.38, "Wide Reef Chamber should frame the playable gap without becoming the loudest shapes")
 	_expect(hollow_wide_foreground.color.a <= 0.32, "Wide Reef Chamber foreground edge should not obscure the sub or chamber cues")
 	_expect(hollow_wide_foreground.polygon[0].y > hollow_wide_clear_band.polygon[0].y, "Wide Reef Chamber foreground edge should stay below the main traversal band")
 	_expect(hollow_wide_glass_rib_span.color.b > hollow_wide_glass_rib_span.color.r, "Glass Rib Span should use cool chamber landmark language")
@@ -2411,7 +2420,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_wide_return.color.g > hollow_wide_return.color.r and hollow_wide_return_rib_a.color.g > hollow_wide_return_rib_a.color.r, "Wide Reef Chamber return cue should use the established safe-current language")
 	_expect(hollow_wide_return.polygon[1].x < hollow_wide_return.polygon[0].x, "Wide Reef Chamber return cue should point back left toward Hollow Reef")
 	_expect(hollow_wide_return_far.color.g > hollow_wide_return_far.color.r and hollow_wide_return_mid.color.g > hollow_wide_return_mid.color.r, "Wide Reef Chamber return chain should keep safe-current color language")
-	_expect(hollow_wide_return_far.color.a <= 0.2 and hollow_wide_return_mid.color.a <= 0.16 and hollow_wide_return_entry.color.a <= 0.18, "Wide Reef Chamber return chain should stay broad and not objective-bright")
+	_expect(hollow_wide_return_far.color.a <= 0.14 and hollow_wide_return_mid.color.a <= 0.11 and hollow_wide_return_entry.color.a <= 0.13, "Wide Reef Chamber return chain should stay broad and not objective-bright")
 	_expect(hollow_wide_return_far.polygon[1].x < hollow_wide_return_far.polygon[0].x, "Wide Reef Chamber far return rib should point left from the far chamber")
 	_expect(hollow_wide_return_mid.polygon[1].x < hollow_wide_return_mid.polygon[0].x, "Wide Reef Chamber mid return chain should point left through the chamber")
 	_expect(hollow_wide_return_entry.polygon[1].x < hollow_wide_return_entry.polygon[0].x, "Wide Reef Chamber entry return chain should point left toward Hollow Reef")
@@ -2448,12 +2457,13 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(mirror_kelp_water.color.b >= mirror_kelp_water.color.r, "Mirror Kelp Pass water should use cool reflective branch language")
 	_expect(mirror_kelp_water.color.a <= 0.22, "Mirror Kelp Pass water should stay quieter than pickups and scan targets")
 	_expect(mirror_kelp_curtain_a.color.g > mirror_kelp_curtain_a.color.r and mirror_kelp_curtain_b.color.b > mirror_kelp_curtain_b.color.r, "Mirror Kelp Pass curtains should establish reflective kelp identity")
-	_expect(mirror_kelp_curtain_a.color.a <= 0.3 and mirror_kelp_curtain_b.color.a <= 0.26, "Mirror Kelp Pass curtains should not overpower the route")
-	_expect(mirror_kelp_floor.color.a <= 0.5, "Mirror Kelp Pass floor shelf should frame the branch without becoming a wall")
+	_expect(mirror_kelp_curtain_a.color.a <= 0.18 and mirror_kelp_curtain_b.color.a <= 0.16, "Mirror Kelp Pass curtains should not overpower the route")
+	_expect(mirror_kelp_floor.color.a <= 0.34, "Mirror Kelp Pass floor shelf should frame the branch without becoming a wall")
+	_expect(mirror_kelp_water.color.a < tideglass_core.color.a and mirror_kelp_curtain_a.color.a < tideglass_core.color.a, "Mirror Kelp placeholder scenery should stay quieter than the Tideglass payoff")
 	_expect(mirror_kelp_return.color.g > mirror_kelp_return.color.r, "Mirror Kelp Pass entry return ribbon should use safe-current color language")
 	_expect(mirror_kelp_return.polygon[1].x < mirror_kelp_return.polygon[0].x, "Mirror Kelp Pass entry return ribbon should point back left toward Wide Reef Chamber")
 	_expect(mirror_kelp_loop_return.color.g > mirror_kelp_loop_return.color.r, "Mirror Kelp Pass loop return should use safe-current color language")
-	_expect(mirror_kelp_loop_return.color.a >= 0.15 and mirror_kelp_loop_return.color.a <= 0.18, "Mirror Kelp Pass loop return should be readable without becoming objective-bright")
+	_expect(mirror_kelp_loop_return.color.a >= 0.1 and mirror_kelp_loop_return.color.a <= 0.12, "Mirror Kelp Pass loop return should be readable without becoming objective-bright")
 	_expect(mirror_kelp_loop_return.polygon[1].x < mirror_kelp_loop_return.polygon[0].x, "Mirror Kelp Pass loop return should point left from the branch interior")
 	_expect(mirror_kelp_loop_return.polygon[2].x < mirror_kelp_loop_return.polygon[1].x, "Mirror Kelp Pass loop return should continue left through the branch")
 	_expect(mirror_kelp_loop_rib_a.polygon[1].x < mirror_kelp_loop_rib_a.polygon[0].x, "Mirror Kelp Pass first return rib should step left along the loop")
@@ -4697,10 +4707,10 @@ func _test_wide_chamber_calm_current_condition_nudge() -> void:
 	var calm_far_alpha := return_far.color.a
 	var calm_mid_alpha := return_mid.color.a
 	var calm_entry_alpha := return_entry.color.a
-	_expect(calm_main_alpha > 0.2, "Calm Current should subtly strengthen the Wide Reef Chamber main return current")
-	_expect(calm_far_alpha > 0.2, "Calm Current should strengthen the far chamber return rib")
-	_expect(calm_mid_alpha > 0.16, "Calm Current should strengthen the mid chamber return chain")
-	_expect(calm_entry_alpha > 0.18, "Calm Current should strengthen the entry return chain")
+	_expect(calm_main_alpha >= 0.16 and calm_main_alpha <= 0.18, "Calm Current should subtly strengthen the Wide Reef Chamber main return current")
+	_expect(calm_far_alpha >= 0.16 and calm_far_alpha <= 0.18, "Calm Current should strengthen the far chamber return rib without becoming objective-bright")
+	_expect(calm_mid_alpha >= 0.13 and calm_mid_alpha <= 0.15, "Calm Current should strengthen the mid chamber return chain without adding clutter")
+	_expect(calm_entry_alpha >= 0.15 and calm_entry_alpha <= 0.17, "Calm Current should strengthen the entry return chain without adding clutter")
 	_expect(return_main.color.g > return_main.color.r and return_mid.color.g > return_mid.color.r, "Wide chamber condition nudge should preserve safe-current color language")
 
 	scene.call("_sync_wide_chamber_condition_nudge", "rare_signal")
@@ -4757,6 +4767,7 @@ func _test_mirror_kelp_kelp_bloom_condition_nudge() -> void:
 	_expect(bloom_rib.visible, "Kelp Bloom should show a readable Mirror Kelp approach rib")
 	_expect(backwater.color.a > neutral_backwater_alpha, "Kelp Bloom should subtly thicken the Mirror Kelp backwater")
 	_expect(curtain_a.color.a > neutral_curtain_alpha, "Kelp Bloom should subtly strengthen Mirror Kelp curtains")
+	_expect(backwater.color.a <= 0.2 and curtain_a.color.a <= 0.25, "Kelp Bloom should stay readable without overpowering payoffs")
 	_expect(bloom_wash.color.g > bloom_wash.color.r, "Mirror Kelp bloom nudge should keep kelp/current color language")
 	_expect(scene.call("_format_condition_briefing").contains("Mirror Kelp"), "Kelp Bloom briefing should name the broad route feel")
 	_expect(scene.call("_format_condition_briefing").contains("shimmer"), "Kelp Bloom briefing should tell players how to read the variation")

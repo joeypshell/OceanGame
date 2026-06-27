@@ -2483,10 +2483,10 @@ func _sync_wide_chamber_condition_nudge(condition_id: String) -> void:
 		return
 
 	var is_calm_current := condition_id == "calm_current"
-	return_main.color = Color(0.66, 1.0, 0.88, 0.22) if is_calm_current else Color(0.66, 1.0, 0.88, 0.18)
-	return_far.color = Color(0.82, 1.0, 0.92, 0.22) if is_calm_current else Color(0.82, 1.0, 0.92, 0.18)
-	return_mid.color = Color(0.58, 1.0, 0.84, 0.18) if is_calm_current else Color(0.58, 1.0, 0.84, 0.14)
-	return_entry.color = Color(0.62, 1.0, 0.86, 0.2) if is_calm_current else Color(0.62, 1.0, 0.86, 0.16)
+	return_main.color = Color(0.66, 1.0, 0.88, 0.17) if is_calm_current else Color(0.66, 1.0, 0.88, 0.13)
+	return_far.color = Color(0.82, 1.0, 0.92, 0.17) if is_calm_current else Color(0.82, 1.0, 0.92, 0.13)
+	return_mid.color = Color(0.58, 1.0, 0.84, 0.14) if is_calm_current else Color(0.58, 1.0, 0.84, 0.1)
+	return_entry.color = Color(0.62, 1.0, 0.86, 0.16) if is_calm_current else Color(0.62, 1.0, 0.86, 0.12)
 
 func _sync_mirror_kelp_condition_nudge(condition_id: String) -> void:
 	var backwater := mirror_kelp_reflective_backwater
@@ -2513,12 +2513,12 @@ func _sync_mirror_kelp_condition_nudge(condition_id: String) -> void:
 	var is_kelp_bloom := condition_id == "kelp_bloom"
 	wash.visible = is_kelp_bloom
 	rib.visible = is_kelp_bloom
-	backwater.color = Color(0.08, 0.36, 0.42, 0.28) if is_kelp_bloom else Color(0.08, 0.36, 0.42, 0.2)
-	curtain_a.color = Color(0.42, 0.94, 0.82, 0.38) if is_kelp_bloom else Color(0.42, 0.94, 0.82, 0.28)
-	curtain_b.color = Color(0.72, 0.96, 1.0, 0.34) if is_kelp_bloom else Color(0.72, 0.96, 1.0, 0.24)
-	curtain_c.color = Color(0.36, 0.82, 0.72, 0.32) if is_kelp_bloom else Color(0.36, 0.82, 0.72, 0.22)
-	wash.color = Color(0.4, 0.92, 0.76, 0.13)
-	rib.color = Color(0.82, 1.0, 0.9, 0.18)
+	backwater.color = Color(0.08, 0.36, 0.42, 0.18) if is_kelp_bloom else Color(0.08, 0.36, 0.42, 0.12)
+	curtain_a.color = Color(0.42, 0.94, 0.82, 0.24) if is_kelp_bloom else Color(0.42, 0.94, 0.82, 0.17)
+	curtain_b.color = Color(0.72, 0.96, 1.0, 0.21) if is_kelp_bloom else Color(0.72, 0.96, 1.0, 0.15)
+	curtain_c.color = Color(0.36, 0.82, 0.72, 0.19) if is_kelp_bloom else Color(0.36, 0.82, 0.72, 0.13)
+	wash.color = Color(0.4, 0.92, 0.76, 0.09)
+	rib.color = Color(0.82, 1.0, 0.9, 0.12)
 
 func _rare_signal_emphasis_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal"
