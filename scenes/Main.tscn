@@ -1683,6 +1683,74 @@ depth_band = "deep"
 cluster_pattern = "deep_reward"
 route_id = "deep_reward_lower_gate"
 
+[node name="LanternRayCautiousGlide" type="Node2D" parent="CreatureRouteCandidates"]
+
+[node name="Start" type="Marker2D" parent="CreatureRouteCandidates/LanternRayCautiousGlide"]
+position = Vector2(2600, 2585)
+script = ExtResource("9_spawn_point")
+spawn_id = "start"
+category = "creature"
+target_id = "lantern_ray"
+depth_band = "deep"
+cluster_pattern = "cautious"
+route_id = "lantern_ray_cautious_glide"
+
+[node name="End" type="Marker2D" parent="CreatureRouteCandidates/LanternRayCautiousGlide"]
+position = Vector2(2790, 2650)
+script = ExtResource("9_spawn_point")
+spawn_id = "end"
+category = "creature"
+target_id = "lantern_ray"
+depth_band = "deep"
+cluster_pattern = "cautious"
+route_id = "lantern_ray_cautious_glide"
+
+[node name="LanternRayLowVisibilityGlide" type="Node2D" parent="CreatureRouteCandidates"]
+
+[node name="Start" type="Marker2D" parent="CreatureRouteCandidates/LanternRayLowVisibilityGlide"]
+position = Vector2(2560, 2520)
+script = ExtResource("9_spawn_point")
+spawn_id = "start"
+category = "creature"
+target_id = "lantern_ray"
+depth_band = "deep"
+cluster_pattern = "cautious"
+preferred_condition_id = "low_visibility"
+route_id = "lantern_ray_low_visibility_glide"
+
+[node name="End" type="Marker2D" parent="CreatureRouteCandidates/LanternRayLowVisibilityGlide"]
+position = Vector2(2730, 2580)
+script = ExtResource("9_spawn_point")
+spawn_id = "end"
+category = "creature"
+target_id = "lantern_ray"
+depth_band = "deep"
+cluster_pattern = "cautious"
+preferred_condition_id = "low_visibility"
+route_id = "lantern_ray_low_visibility_glide"
+
+[node name="LanternRayDeepRewardGlide" type="Node2D" parent="CreatureRouteCandidates"]
+
+[node name="Start" type="Marker2D" parent="CreatureRouteCandidates/LanternRayDeepRewardGlide"]
+position = Vector2(2660, 2625)
+script = ExtResource("9_spawn_point")
+spawn_id = "start"
+category = "creature"
+target_id = "lantern_ray"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+route_id = "lantern_ray_deep_reward_glide"
+
+[node name="End" type="Marker2D" parent="CreatureRouteCandidates/LanternRayDeepRewardGlide"]
+position = Vector2(2920, 2710)
+script = ExtResource("9_spawn_point")
+spawn_id = "end"
+category = "creature"
+target_id = "lantern_ray"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+route_id = "lantern_ray_deep_reward_glide"
+
 [node name="ResourcePickups" type="Node2D" parent="."]
 
 [node name="KelpFiber" type="Area2D" parent="ResourcePickups"]

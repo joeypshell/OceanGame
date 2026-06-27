@@ -224,6 +224,7 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var lantern_ray_timing_lane_lower: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneLower
 @onready var lantern_ray_timing_tick_a: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingTickA
 @onready var lantern_ray_timing_tick_b: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingTickB
+@onready var lantern_ray_route: Node = $Creatures/LanternRayRoute
 @onready var glass_kelp_reading_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingHalo
 @onready var glass_kelp_reading_shard: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard
 @onready var glass_kelp_reading_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark
@@ -259,6 +260,7 @@ var upgrade_menu_feedback := ""
 var current_resource_cluster_pattern := "cautious"
 var current_expedition_condition: Dictionary = {}
 var current_predator_route_id := "none"
+var current_lantern_ray_route_id := "none"
 var current_scan_target: Node = null
 var selected_upgrade_index := 0
 var surface_tab_index := SURFACE_TAB_RESULT
@@ -1810,6 +1812,7 @@ func _place_starter_resources_for_run() -> void:
 		pickup.global_position = candidates[rng.randi_range(0, candidates.size() - 1)]
 
 	_place_predator_route_for_run(rng)
+	_place_lantern_ray_route_for_run(rng)
 
 func _place_predator_route_for_run(rng: RandomNumberGenerator) -> void:
 	var routes := _spawn_routes_for_target("creature", "gulper_eel", current_resource_cluster_pattern)
@@ -1830,6 +1833,27 @@ func _place_predator_route_for_run(rng: RandomNumberGenerator) -> void:
 
 	predator_warning.global_position = route.get("warning", (route["start"] + route["end"]) * 0.5)
 
+func _place_lantern_ray_route_for_run(rng: RandomNumberGenerator) -> void:
+	var routes := _spawn_routes_for_target("creature", "lantern_ray", current_resource_cluster_pattern)
+	if routes.is_empty():
+		current_lantern_ray_route_id = "fixed"
+		return
+
+	var route_ids := routes.keys()
+	route_ids.sort()
+	current_lantern_ray_route_id = String(route_ids[rng.randi_range(0, route_ids.size() - 1)])
+	var route: Dictionary = routes[current_lantern_ray_route_id]
+	if not route.has("start") or not route.has("end"):
+		push_warning("Lantern Ray route %s is missing start or end point." % current_lantern_ray_route_id)
+		return
+
+	var ray := lantern_ray_route
+	if ray == null:
+		ray = get_node_or_null("Creatures/LanternRayRoute")
+		lantern_ray_route = ray
+	if ray != null and ray.has_method("configure_patrol"):
+		ray.configure_patrol(route["start"], route["end"])
+
 func _resource_cluster_pattern_for_seed(seed: int) -> String:
 	return SpawnSelectionScript.cluster_pattern_for_seed(seed, RESOURCE_CLUSTER_PATTERNS)
 
@@ -1837,7 +1861,7 @@ func _spawn_positions_for_target(category: String, target_id: String, cluster_pa
 	return SpawnSelectionScript.positions_for_target(starter_resource_candidates, SpawnPointScript, category, target_id, cluster_pattern, _current_condition_id())
 
 func _spawn_routes_for_target(category: String, target_id: String, cluster_pattern: String) -> Dictionary:
-	return SpawnSelectionScript.routes_for_target(creature_route_candidates, SpawnPointScript, category, target_id, cluster_pattern)
+	return SpawnSelectionScript.routes_for_target(creature_route_candidates, SpawnPointScript, category, target_id, cluster_pattern, _current_condition_id())
 
 func _sync_condition_visuals() -> void:
 	var condition_id := _current_condition_id()
@@ -2909,6 +2933,7 @@ func _reset_run_telemetry() -> void:
 	run_glass_kelp_reading_recovered = false
 	debug_wreck_echo_review_staged = false
 	visual_smoke_route_stage = ""
+	current_lantern_ray_route_id = "none"
 	echo_lens_pulse_timer = 0.0
 	blue_chimney_draft_timer = 0.0
 	blackwater_pressure_timer = 0.0
@@ -2921,12 +2946,13 @@ func _reset_run_telemetry() -> void:
 	_sync_glass_kelp_reading_state()
 
 func _format_run_telemetry(result_name: String) -> String:
-	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
+	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nLantern Ray route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
 		result_name,
 		progression_state.current_run_seed,
 		_format_cluster_pattern(current_resource_cluster_pattern),
 		_format_condition_telemetry(),
 		current_predator_route_id,
+		current_lantern_ray_route_id,
 		_format_resource_counts(run_collected_resources),
 		_format_scan_ids(run_completed_scans),
 		run_predator_contacts,

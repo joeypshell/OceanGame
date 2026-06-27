@@ -17,9 +17,10 @@ static func positions_for_target(root: Node, spawn_point_script: Script, categor
 		positions.append(point.global_position)
 	return positions
 
-static func routes_for_target(root: Node, spawn_point_script: Script, category: String, target_id: String, cluster_pattern: String) -> Dictionary:
+static func routes_for_target(root: Node, spawn_point_script: Script, category: String, target_id: String, cluster_pattern: String, condition_id := "") -> Dictionary:
 	var points: Array[SpawnPoint] = []
 	_collect_points(root, spawn_point_script, category, target_id, cluster_pattern, points)
+	points = _condition_weighted_route_points(points, condition_id)
 	var routes := {}
 	for point in points:
 		if point.route_id.is_empty():
@@ -29,6 +30,23 @@ static func routes_for_target(root: Node, spawn_point_script: Script, category: 
 		routes[point.route_id][point.spawn_id] = point.global_position
 
 	return routes
+
+static func _condition_weighted_route_points(points: Array[SpawnPoint], condition_id: String) -> Array[SpawnPoint]:
+	if condition_id.is_empty():
+		return points
+
+	var preferred_route_ids := {}
+	for point in points:
+		if not point.route_id.is_empty() and point.preferred_condition_id == condition_id:
+			preferred_route_ids[point.route_id] = true
+	if preferred_route_ids.is_empty():
+		return points
+
+	var preferred_points: Array[SpawnPoint] = []
+	for point in points:
+		if preferred_route_ids.has(point.route_id):
+			preferred_points.append(point)
+	return preferred_points
 
 static func _collect_points(root: Node, spawn_point_script: Script, category: String, target_id: String, cluster_pattern: String, points: Array[SpawnPoint]) -> void:
 	for child in root.get_children():

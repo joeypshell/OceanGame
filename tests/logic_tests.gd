@@ -51,6 +51,7 @@ func _initialize() -> void:
 	_run("spawn-point matching", _test_spawn_point_matching)
 	_run("spawn selection", _test_spawn_selection)
 	_run("condition-weighted spawn selection", _test_condition_weighted_spawn_selection)
+	_run("Lantern Ray route variation", _test_lantern_ray_route_variation)
 	_run("debug review seed and condition helpers", _test_debug_review_helpers)
 	_run("debug Wreck Echo visual staging", _test_debug_wreck_echo_visual_staging)
 	_run("scanner target resolver", _test_scanner_target_resolver)
@@ -420,7 +421,81 @@ func _test_condition_weighted_spawn_selection() -> void:
 	_expect(vent_glow.depth_band == "deep", "condition-preferred glow should preserve deep depth-band identity")
 	_expect(shell_weighted.size() == 1, "thermal bloom should not broaden non-glow resource selection")
 	_expect(shell_weighted.has(Vector2(40.0, 100.0)), "thermal bloom should leave non-glow target positions intact")
+
+	var default_route_start := _make_spawn_point("start", "creature", "lantern_ray", "deep", "cautious", Vector2(100.0, 200.0))
+	default_route_start.route_id = "default_glide"
+	var default_route_end := _make_spawn_point("end", "creature", "lantern_ray", "deep", "cautious", Vector2(180.0, 220.0))
+	default_route_end.route_id = "default_glide"
+	var low_visibility_start := _make_spawn_point("start", "creature", "lantern_ray", "deep", "cautious", Vector2(120.0, 180.0), "low_visibility")
+	low_visibility_start.route_id = "low_visibility_glide"
+	var low_visibility_end := _make_spawn_point("end", "creature", "lantern_ray", "deep", "cautious", Vector2(190.0, 190.0), "low_visibility")
+	low_visibility_end.route_id = "low_visibility_glide"
+	root.add_child(default_route_start)
+	root.add_child(default_route_end)
+	root.add_child(low_visibility_start)
+	root.add_child(low_visibility_end)
+	var calm_routes := SpawnSelectionScript.routes_for_target(root, SpawnPointScript, "creature", "lantern_ray", "cautious", "calm_current")
+	var low_visibility_routes := SpawnSelectionScript.routes_for_target(root, SpawnPointScript, "creature", "lantern_ray", "cautious", "low_visibility")
+	_expect(calm_routes.size() == 2, "nonmatching conditions should keep every authored Lantern Ray route candidate")
+	_expect(low_visibility_routes.size() == 1 and low_visibility_routes.has("low_visibility_glide"), "matching conditions should prefer authored Lantern Ray route variants")
 	root.free()
+
+func _test_lantern_ray_route_variation() -> void:
+	var main := MainScene.instantiate()
+	var candidates := main.get_node("CreatureRouteCandidates") as Node2D
+	var lantern_ray := main.get_node("Creatures/LanternRayRoute") as Area2D
+	main.creature_route_candidates = candidates
+	main.lantern_ray_route = lantern_ray
+
+	for pattern in ["cautious", "deep_reward"]:
+		var routes: Dictionary = SpawnSelectionScript.routes_for_target(candidates, SpawnPointScript, "creature", "lantern_ray", pattern)
+		_expect(not routes.is_empty(), "Lantern Ray should have authored route candidates for %s runs" % pattern)
+		for route_value in routes.values():
+			var route: Dictionary = route_value
+			var start: Vector2 = route["start"]
+			var end: Vector2 = route["end"]
+			_expect(start.x >= 2480.0 and end.x >= 2480.0, "Lantern Ray authored route should stay inside the lower-route creature area")
+			_expect(start.x <= 2960.0 and end.x <= 2960.0, "Lantern Ray authored route should not bypass the current Dusk route bounds")
+			_expect(start.y >= 2480.0 and end.y >= 2480.0, "Lantern Ray authored route should stay in the lower-route band")
+			_expect(start.y <= 2740.0 and end.y <= 2740.0, "Lantern Ray authored route should leave the Blackwater/Dusk return gap readable")
+
+	main.current_resource_cluster_pattern = "cautious"
+	main.current_expedition_condition = {
+		"id": "low_visibility",
+		"display_name": "Low Visibility",
+	}
+	var low_visibility_routes: Dictionary = main._spawn_routes_for_target("creature", "lantern_ray", "cautious")
+	_expect(low_visibility_routes.size() == 1 and low_visibility_routes.has("lantern_ray_low_visibility_glide"), "Low Visibility should prefer the authored Lantern Ray high-safe route")
+	var low_route: Dictionary = low_visibility_routes["lantern_ray_low_visibility_glide"]
+	var low_rng := RandomNumberGenerator.new()
+	low_rng.seed = 550
+	main._place_lantern_ray_route_for_run(low_rng)
+	_expect(main.current_lantern_ray_route_id == "lantern_ray_low_visibility_glide", "Lantern Ray route placement should use the condition-preferred route")
+	_expect(lantern_ray.global_position == low_route["start"], "Lantern Ray should start at the selected authored route start")
+	_expect(lantern_ray.get("move_start") == low_route["start"], "Lantern Ray move_start should follow the selected route")
+	_expect(lantern_ray.get("move_end") == low_route["end"], "Lantern Ray move_end should follow the selected route")
+
+	main.current_expedition_condition = {
+		"id": "calm_current",
+		"display_name": "Calm Current",
+	}
+	var first_rng := RandomNumberGenerator.new()
+	first_rng.seed = 2026
+	main._place_lantern_ray_route_for_run(first_rng)
+	var first_route_id: String = main.current_lantern_ray_route_id
+	var first_start: Vector2 = lantern_ray.global_position
+	var second_rng := RandomNumberGenerator.new()
+	second_rng.seed = 2026
+	main._place_lantern_ray_route_for_run(second_rng)
+	_expect(main.current_lantern_ray_route_id == first_route_id, "same seed and condition should select the same Lantern Ray route")
+	_expect(lantern_ray.global_position == first_start, "same seed and condition should place the Lantern Ray at the same start")
+
+	var telemetry: String = main._format_run_telemetry("Extracted")
+	_expect(telemetry.contains("Lantern Ray route:"), "debug run telemetry should expose the runtime Lantern Ray route id")
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("current_lantern_ray_route_id"), "Lantern Ray route variation should not save active-run route state")
+	_expect(not saved.has("lantern_ray_route"), "Lantern Ray route variation should not add durable route state")
+	main.queue_free()
 
 func _test_debug_review_helpers() -> void:
 	var main := MainScript.new()

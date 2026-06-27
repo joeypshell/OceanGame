@@ -35,6 +35,12 @@ func _physics_process(delta: float) -> void:
 	if global_position.distance_to(_target) < 4.0:
 		_target = move_start if _target == move_end else move_end
 
+func configure_patrol(start: Vector2, end: Vector2) -> void:
+	move_start = start
+	move_end = end
+	global_position = move_start
+	_target = move_end
+
 func set_scan_selected(selected: bool) -> void:
 	is_scan_selected = selected
 	modulate = Color(1.35, 1.25, 0.58, 1.0) if is_scan_selected else Color.WHITE
