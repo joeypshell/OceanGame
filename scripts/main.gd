@@ -2342,7 +2342,7 @@ func _format_condition_briefing() -> String:
 		"low_visibility":
 			return "Today: %s.\nTreat deep routes as harder to read and bank early if unsure." % display_name
 		"rare_signal":
-			return "Today: %s.\nA weak East Shelf ping is worth checking if oxygen allows." % display_name
+			return "Today: %s.\nEast Shelf or Blue Chimney pings are worth checking if oxygen allows." % display_name
 		"wreck_shift":
 			return "Today: %s.\nThe pressure wreck route is the notable landmark today." % display_name
 

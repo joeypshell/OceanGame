@@ -35,7 +35,7 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 	if condition_id == "rare_signal":
 		return "Goal: check the East Shelf or Blue Chimney signal if oxygen allows, then return safely."
 
-	return "Goal: use Shell Reef to bank Shell Fragments, or push deeper if oxygen allows."
+	return "Goal: bank Shell Reef, or try Shelf Drop and Blue Chimney if oxygen allows; return safely."
 
 static func _format_missing_resources(progression_state: ProgressionState, cost: Dictionary) -> String:
 	var parts: Array[String] = []

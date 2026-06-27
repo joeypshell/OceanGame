@@ -1101,7 +1101,12 @@ func _test_expedition_prep_goals() -> void:
 	}
 	progression.purchase_upgrade(DecoyPulseUpgrade.id, DecoyPulseUpgrade.resource_cost)
 	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades)
-	_expect(goal == "Goal: use Shell Reef to bank Shell Fragments, or push deeper if oxygen allows.", "completed upgrade goals should fall back to the Shell Reef route objective")
+	_expect(goal.contains("Shell Reef"), "completed upgrade goals should preserve a safer bank route")
+	_expect(goal.contains("Shelf Drop"), "completed upgrade goals should mention the lower connector broadly")
+	_expect(goal.contains("Blue Chimney"), "completed upgrade goals should mention the lower-pocket payoff broadly")
+	_expect(goal.contains("if oxygen allows"), "completed upgrade lower-pocket goal should remain optional")
+	_expect(goal.contains("return safely"), "completed upgrade lower-pocket goal should preserve extraction pressure")
+	_expect_no_echo_lens_locator_language(goal, "completed upgrade lower-pocket goal")
 	goal = ExpeditionGoalFormatterScript.format_goal(progression, upgrades, "rare_signal")
 	_expect(goal.contains("East Shelf"), "Rare Signal should still give completed-upgrade players a reason to visit East Shelf")
 	_expect(goal.contains("Blue Chimney"), "Rare Signal should sometimes point completed-upgrade players toward the lower pocket")
@@ -1931,7 +1936,10 @@ func _test_condition_briefing_copy() -> void:
 		"tags": ["scan", "rare"],
 	}
 	briefing = main._format_condition_briefing()
-	_expect(briefing.contains("East Shelf ping"), "rare signal briefing should point at the implemented side-route opportunity")
+	_expect(briefing.contains("East Shelf"), "rare signal briefing should point at the implemented side-route opportunity")
+	_expect(briefing.contains("Blue Chimney"), "rare signal briefing should point at the lower-pocket opportunity")
+	_expect(briefing.contains("if oxygen allows"), "rare signal briefing should keep route pings optional")
+	_expect_no_echo_lens_locator_language(briefing, "rare signal briefing")
 	_expect(main.call("_rare_signal_emphasis_visible_for_condition", "rare_signal"), "Rare Signal should enable the subtle signal emphasis")
 	_expect(not main.call("_rare_signal_emphasis_visible_for_condition", "wreck_shift"), "Wreck Shift should not enable Rare Signal emphasis")
 	_expect(not main.call("_rare_signal_emphasis_visible_for_condition", "thermal_bloom"), "Thermal Bloom should keep Rare Signal emphasis hidden")
