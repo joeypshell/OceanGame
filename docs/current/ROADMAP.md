@@ -28,6 +28,8 @@ Resonance Key implementation contract: `docs/planning/RESONANCE_KEY_I_IMPLEMENTA
 
 Lower pocket implementation contract: `docs/planning/LOWER_POCKET_PLAN_2026_06_27.md` defines `Blue Chimney Pocket` as the next small connected route after `Shelf Drop Connector`. It should start from `Drop Arch`, add one compact lower-right pocket with a `Blue Chimney` landmark, a `Reverse Draft` return cue, one small knowledge-first payoff, and a visible turnback without adding a minimap, exact locator, full cave system, combat, harvesting, or broad economy work.
 
+Hatch and Blue Chimney oxygen review: `docs/planning/HATCH_AND_BLUE_CHIMNEY_OXYGEN_MARGIN_REVIEW_2026_06_27.md` keeps current oxygen tuning after `Resonance Alcove` and `Blue Chimney Pocket`. The new content remains optional and knowledge/readability-focused, so future tuning should require route evidence and should prefer local return-cue/placement fixes before oxygen-number changes.
+
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
 
 Detailed design rules live in:
@@ -45,6 +47,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_LOWER_CONNECTOR_2026_06_26.md`
 - `docs/planning/RESONANCE_KEY_I_IMPLEMENTATION_CONTRACT_2026_06_27.md`
 - `docs/planning/LOWER_POCKET_PLAN_2026_06_27.md`
+- `docs/planning/HATCH_AND_BLUE_CHIMNEY_OXYGEN_MARGIN_REVIEW_2026_06_27.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
