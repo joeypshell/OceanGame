@@ -66,6 +66,7 @@ func _initialize() -> void:
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
 	_run("Salvage Manifest interaction", _test_salvage_manifest_interaction)
+	_run("Salvage pocket silt timing cue visual only", _test_salvage_pocket_silt_timing_cue_visual_only)
 	_run("Tideglass Sample interaction", _test_tideglass_sample_interaction)
 	_run("Glassfin Swarm spacing cue visual only", _test_glassfin_swarm_spacing_cue_visual_only)
 	_run("Lantern Ray timing lane is visual only", _test_lantern_ray_timing_lane_is_visual_only)
@@ -1050,6 +1051,9 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var opened_lane := salvage.get_node("OpenedPocketLane") as Node2D
 	var open_entry_water := salvage.get_node("OpenedPocketLane/EntryWater") as Polygon2D
 	var open_return_cue := salvage.get_node("OpenedPocketLane/ReturnCurrentCue") as Polygon2D
+	var silt_wake := salvage.get_node("OpenedPocketLane/SiltTimingWake") as Polygon2D
+	var silt_window := salvage.get_node("OpenedPocketLane/SiltTimingWindow") as Polygon2D
+	var silt_tick := salvage.get_node("OpenedPocketLane/SiltTimingTickA") as Polygon2D
 	var open_label := salvage.get_node("OpenedPocketLane/OpenLabel") as Label
 	var salvage_manifest := salvage.get_node("OpenedPocketLane/SalvageManifest") as Node2D
 	var manifest_halo := salvage.get_node("OpenedPocketLane/SalvageManifest/ManifestHalo") as Polygon2D
@@ -1137,6 +1141,10 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(open_entry_water.color.a <= 0.22, "opened salvage pocket water should be readable but quieter than pickups")
 	_expect(open_return_cue.color.g > open_return_cue.color.r, "opened salvage return cue should use safe-current color language")
 	_expect(open_entry_water.color.a < manifest_core.color.a and open_return_cue.color.a < manifest_core.color.a, "opened salvage lane support should stay quieter than the manifest payoff")
+	_expect(silt_wake.color.b > silt_wake.color.g and silt_window.color.b > silt_window.color.r, "opened salvage silt cue should use pale timing language instead of safe-current green")
+	_expect(silt_wake.color.a <= 0.13 and silt_window.color.a <= 0.17 and silt_tick.color.a <= 0.23, "opened salvage silt timing should stay subtle beside the payoff")
+	_expect(silt_window.color.a < manifest_core.color.a, "opened salvage silt timing should not read brighter than the manifest payoff")
+	_expect(opened_lane.find_child("CollisionShape2D", true, false) == manifest_interact.get_node("CollisionShape2D"), "opened salvage silt timing should not add hidden collision or pressure behavior")
 	_expect(salvage_manifest.get_parent() == opened_lane, "Salvage Manifest should live inside the opened pocket lane")
 	_expect(manifest_core.color.a >= 0.7, "Salvage Manifest should start visibly recoverable when the pocket is open")
 	_expect(manifest_core.color.r > manifest_core.color.b, "Salvage Manifest should use amber document language distinct from cyan data shards")
@@ -1239,7 +1247,7 @@ func _test_salvage_manifest_interaction() -> void:
 	main.dive_session.has_left_base = true
 	main.player_near_salvage_manifest = true
 	main.dive_session.oxygen = 19.0
-	main.dive_session.current_cargo = ["shell_fragments"]
+	main.dive_session.current_cargo.append("shell_fragments")
 	main.progression_state.purchased_upgrades[SalvageCutterUpgrade.id] = true
 	main.call("_sync_salvage_pocket_open_state")
 	var manifest_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestHalo") as Polygon2D
@@ -1250,8 +1258,8 @@ func _test_salvage_manifest_interaction() -> void:
 	_expect(manifest_core.color.a >= 0.7, "Salvage Manifest should start visibly recoverable")
 	_expect(manifest_spark.visible, "Salvage Manifest spark should start visible before recovery")
 	var prompt: String = main.call("_format_hud_prompt")
-	_expect(prompt.contains("Salvage Pocket"), "Salvage Manifest proximity should own the active dive prompt")
-	_expect(prompt.contains("recover wreck manifest"), "Salvage Manifest prompt should explain the concrete knowledge payoff")
+	_expect(prompt.contains("Salvage manifest"), "Salvage Manifest proximity should own the active dive prompt")
+	_expect(prompt.contains("E/Enter"), "Salvage Manifest prompt should keep the compact interaction command")
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 
 	var handled: bool = main.call("_try_salvage_manifest_interaction")
@@ -1315,6 +1323,44 @@ func _test_salvage_manifest_interaction() -> void:
 	_expect(not fresh_summary.contains("Salvage Manifest"), "Salvage Manifest extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
 	main.free()
+
+func _test_salvage_pocket_silt_timing_cue_visual_only() -> void:
+	var main := MainScript.new()
+	var low_alpha: float = main.call("_salvage_silt_timing_alpha", 0.0)
+	var high_alpha: float = main.call("_salvage_silt_timing_alpha", MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS * 0.25)
+	var repeat_alpha: float = main.call("_salvage_silt_timing_alpha", MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS * 0.5)
+	_expect(high_alpha > low_alpha, "Salvage silt timing cue alpha should pulse upward to suggest a safe read window")
+	_expect(is_equal_approx(low_alpha, repeat_alpha), "Salvage silt timing cue pulse should repeat smoothly")
+	main.free()
+
+	var scene_main := MainScene.instantiate()
+	root.add_child(scene_main)
+	scene_main.progression_state.purchased_upgrades[SalvageCutterUpgrade.id] = true
+	scene_main.call("_sync_salvage_pocket_open_state")
+	var opened_lane := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane") as Node2D
+	var wake := opened_lane.get_node("SiltTimingWake") as Polygon2D
+	var window := opened_lane.get_node("SiltTimingWindow") as Polygon2D
+	var tick := opened_lane.get_node("SiltTimingTickA") as Polygon2D
+	var manifest_core := opened_lane.get_node("SalvageManifest/ManifestCore") as Polygon2D
+	var return_cue := opened_lane.get_node("ReturnCurrentCue") as Polygon2D
+	scene_main.dive_session.reset(26.0)
+	scene_main.dive_session.start()
+	scene_main.dive_session.current_cargo.append("shell_fragments")
+	var save_before: Dictionary = scene_main.progression_state.to_save_data().duplicate(true)
+
+	scene_main.call("_update_salvage_silt_timing_cue", MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS * 0.25)
+	_expect(opened_lane.visible, "Salvage silt timing cue should live in the opened pocket lane")
+	_expect(window.color.b > window.color.g and window.color.b > window.color.r, "Salvage silt timing window should use pale silt timing color instead of safe-current green")
+	_expect(return_cue.color.g > window.color.g, "Salvage safe-return cue should stay visually distinct from the timing window")
+	_expect(wake.color.a <= 0.15 and window.color.a <= 0.17 and tick.color.a <= 0.23, "Salvage silt timing cue should stay subtle and non-blocking")
+	_expect(window.color.a < manifest_core.color.a, "Salvage silt timing cue should not read as the main salvage payoff")
+	_expect(is_equal_approx(scene_main.dive_session.oxygen, 26.0), "Salvage silt timing cue should not drain oxygen")
+	_expect(scene_main.dive_session.current_cargo == ["shell_fragments"], "Salvage silt timing cue should not mutate cargo")
+	_expect(scene_main.dive_session.result == DiveSessionScript.Result.DIVING, "Salvage silt timing cue should not change dive result")
+	_expect(scene_main.progression_state.to_save_data() == save_before, "Salvage silt timing cue should not mutate durable progression")
+	_expect(opened_lane.find_child("PressureBoundary", true, false) == null, "Salvage silt timing cue should not add hidden pressure behavior")
+	_expect(opened_lane.find_child("Predator", true, false) == null, "Salvage silt timing cue should not add combat pressure")
+	scene_main.queue_free()
 
 func _test_tideglass_sample_interaction() -> void:
 	var main := MainScene.instantiate()
