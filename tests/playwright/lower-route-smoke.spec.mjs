@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { assertVisualState, bootGame, stageBlackwaterRoute, stageDuskTrenchRoute, stageHollowReefReturn, stageHollowReefRoute } from "./visual-helpers.mjs";
+import { assertVisualState, bootGame, stageBlackwaterRoute, stageDuskTrenchRoute, stageHollowReefReturn, stageHollowReefRoute, stageWideReefChamber } from "./visual-helpers.mjs";
 
 test.describe("OceanGame lower-route scripted smoke", () => {
   test("stages the long lower route without screenshots or visible debug telemetry", async ({ page }) => {
@@ -53,6 +53,16 @@ test.describe("OceanGame lower-route scripted smoke", () => {
       debug_telemetry: false,
       active_stats_visible: true,
       route_stage: "hollow_reef_return",
+      dusk_trench_reached: true,
+      hollow_reef_reading_recovered: true
+    });
+
+    await stageWideReefChamber(page);
+    await assertVisualState(page, {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "wide_reef_chamber",
       dusk_trench_reached: true,
       hollow_reef_reading_recovered: true
     });

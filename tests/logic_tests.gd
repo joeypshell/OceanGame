@@ -528,6 +528,10 @@ func _test_debug_wreck_echo_visual_staging() -> void:
 	main.dive_session.reset(main.max_oxygen)
 
 	main.show_debug_telemetry = false
+	main.call("_stage_debug_wide_chamber_visual_review")
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wide Reef Chamber web staging should be inaccessible outside the web debug bridge")
+	_expect(main.visual_smoke_route_stage == "", "Wide Reef Chamber web staging should not set route state outside web visual smoke")
+
 	main.call("_stage_debug_wreck_echo_visual_review")
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wreck Echo visual staging should be ignored while debug telemetry is hidden")
 
