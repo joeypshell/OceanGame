@@ -54,6 +54,7 @@ func _initialize() -> void:
 	_run("Lantern Ray route variation", _test_lantern_ray_route_variation)
 	_run("debug review seed and condition helpers", _test_debug_review_helpers)
 	_run("debug Wreck Echo visual staging", _test_debug_wreck_echo_visual_staging)
+	_run("debug Mirror Kelp evidence staging", _test_debug_mirror_kelp_evidence_staging)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("Lantern Ray scan behavior", _test_lantern_ray_scan_behavior)
@@ -549,6 +550,46 @@ func _test_debug_wreck_echo_visual_staging() -> void:
 	main.call("_stage_debug_wreck_echo_visual_review")
 	_expect(main.dive_session.result == DiveSessionScript.Result.EXTRACTED, "second Wreck Echo visual staging press should produce the result view")
 	_expect(main.last_result_summary.contains("Wreck Echo clue carried"), "staged Wreck Echo result should include the compact clue readback")
+	main.queue_free()
+
+func _test_debug_mirror_kelp_evidence_staging() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.reset(main.max_oxygen)
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+
+	main.show_debug_telemetry = false
+	main.call("_stage_debug_mirror_kelp_visual_review")
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Mirror Kelp staging should be ignored while debug telemetry is hidden outside web visual smoke")
+	_expect(main.visual_smoke_route_stage == "", "hidden Mirror Kelp staging should not set visual route state")
+	_expect(main.progression_state.to_save_data() == save_before, "hidden Mirror Kelp staging should not mutate durable progression")
+
+	main.show_debug_telemetry = true
+	main.call("_stage_debug_mirror_kelp_visual_review")
+	var mirror_kelp := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass") as Node2D
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Mirror Kelp staging should start or keep a dive active")
+	_expect(main.visual_smoke_route_stage == "mirror_kelp_pass", "Mirror Kelp route staging should expose a deterministic route stage")
+	_expect(main.player.global_position.distance_to(mirror_kelp.global_position) < 180.0, "Mirror Kelp staging should place the player near the branch")
+	_expect(main.dive_session.has_left_base, "Mirror Kelp staging should make extraction eligibility match an active route attempt")
+	_expect(not main.run_tideglass_sample_recovered, "plain Mirror Kelp staging should not auto-complete the payoff")
+	_expect(not main.run_completed_scans.has("mirrorfin_drift"), "plain Mirror Kelp staging should not auto-add Mirrorfin evidence")
+	_expect(main.progression_state.to_save_data() == save_before, "plain Mirror Kelp staging should not mutate durable progression")
+
+	main.call("_stage_debug_mirror_kelp_visual_review", true)
+	_expect(main.visual_smoke_route_stage == "mirror_kelp_tideglass", "Tideglass staging should expose a deterministic payoff stage")
+	_expect(main.run_tideglass_sample_recovered, "Tideglass staging should set only the run-scoped payoff evidence")
+	_expect(main._format_route_choice_callout().contains("Mirror Kelp Pass"), "Tideglass staging should support Mirror Kelp result memory")
+	_expect(main._format_recent_route_memory() == "Mirror Kelp Pass", "Tideglass staging should support recent route memory")
+	_expect(main.progression_state.to_save_data() == save_before, "Tideglass staging should not mutate durable progression")
+
+	main.call("_stage_debug_mirror_kelp_visual_review", false, true)
+	_expect(main.visual_smoke_route_stage == "mirror_kelp_mirrorfin", "Mirrorfin staging should expose a deterministic observation stage")
+	_expect(not main.run_tideglass_sample_recovered, "Mirrorfin staging should reset Tideglass payoff state for deterministic captures")
+	_expect(main.run_completed_scans.has("mirrorfin_drift"), "Mirrorfin staging should set only current-run observation evidence")
+	_expect(main._format_route_choice_callout().contains("reflection timing"), "Mirrorfin staging should support observation result memory")
+	_expect(main._format_recent_route_memory() == "Mirror Kelp Pass", "Mirrorfin staging should support recent route memory")
+	_expect(main.progression_state.to_save_data() == save_before, "Mirrorfin staging should not mutate durable progression")
+	_expect(not main.progression_state.to_save_data().has("mirror_kelp_pass_route"), "Mirror Kelp staging should not add durable route state")
 	main.queue_free()
 
 func _test_scanner_target_resolver() -> void:

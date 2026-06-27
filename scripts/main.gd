@@ -1424,6 +1424,71 @@ func _stage_debug_wide_chamber_visual_review() -> void:
 	_update_depth()
 	_update_hud()
 
+func _stage_debug_mirror_kelp_visual_review(recovered := false, observed := false) -> void:
+	if not OS.has_feature("web") and not show_debug_telemetry:
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var mirror_kelp := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass") as Node2D
+	if mirror_kelp == null:
+		return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	player = staged_player
+	player.global_position = mirror_kelp.global_position + Vector2(118.0, 22.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	player_near_blackwater_crack = false
+	player_near_glass_kelp_ledge = false
+	player_near_hollow_reef = false
+	player_near_salvage_data_cache = false
+	player_near_tideglass_sample = false
+	run_reached_dusk_trench = true
+	run_salvage_data_cache_recovered = false
+	run_tideglass_sample_recovered = false
+	while run_completed_scans.has("mirrorfin_drift"):
+		run_completed_scans.erase("mirrorfin_drift")
+	_sync_salvage_data_cache_state()
+	_sync_tideglass_sample_state()
+	visual_smoke_route_stage = "mirror_kelp_pass"
+	if status_label != null:
+		status_label.text = "Debug review: Mirror Kelp Pass staged."
+
+	if recovered:
+		var sample_zone := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/InteractZone") as Area2D
+		if sample_zone != null:
+			player.global_position = sample_zone.global_position
+			player_near_tideglass_sample = true
+			run_tideglass_sample_recovered = true
+			run_reached_dusk_trench = true
+			_sync_tideglass_sample_state()
+			visual_smoke_route_stage = "mirror_kelp_tideglass"
+			if status_label != null:
+				status_label.text = "Debug review: Mirror Kelp Tideglass payoff staged."
+	elif observed:
+		var mirrorfin := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorfinDrift") as Node2D
+		if mirrorfin != null:
+			player.global_position = mirrorfin.global_position + Vector2(-42.0, 0.0)
+		run_completed_scans.append("mirrorfin_drift")
+		visual_smoke_route_stage = "mirror_kelp_mirrorfin"
+		if status_label != null:
+			status_label.text = "Debug review: Mirror Kelp Mirrorfin observation staged."
+
+	dive_session.current_depth = maxf(0.0, (player.global_position.y - surface_y) / pixels_per_meter)
+	if is_inside_tree() and active_stats_panel != null:
+		_update_hud()
+
 func _stage_debug_open_hatch_alcove_visual_review() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -1502,6 +1567,12 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_hollow_reef_payoff_visual_review(true)
 		"wide_reef_chamber":
 			_stage_debug_wide_chamber_visual_review()
+		"mirror_kelp_pass":
+			_stage_debug_mirror_kelp_visual_review()
+		"mirror_kelp_tideglass":
+			_stage_debug_mirror_kelp_visual_review(true)
+		"mirror_kelp_mirrorfin":
+			_stage_debug_mirror_kelp_visual_review(false, true)
 		"open_hatch_resonance_alcove":
 			_stage_debug_open_hatch_alcove_visual_review()
 
@@ -2889,6 +2960,7 @@ func _publish_visual_smoke_state() -> void:
 		"glass_kelp_reading_recovered": run_glass_kelp_reading_recovered,
 		"hollow_reef_reading_recovered": run_hollow_reef_reading_recovered,
 		"tideglass_sample_recovered": run_tideglass_sample_recovered,
+		"mirrorfin_drift_observed": run_completed_scans.has("mirrorfin_drift"),
 		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
