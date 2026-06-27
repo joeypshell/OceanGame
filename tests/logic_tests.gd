@@ -83,6 +83,7 @@ func _initialize() -> void:
 	_run("Lantern Silt Sample interaction", _test_lantern_silt_sample_interaction)
 	_run("Blackwater Crack gate state", _test_blackwater_crack_gate_state)
 	_run("Blackwater Trace payoff", _test_blackwater_trace_payoff)
+	_run("Glass Kelp reading payoff", _test_glass_kelp_reading_payoff)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -310,6 +311,7 @@ func _test_save_load_behavior() -> void:
 	_expect(not main_saved.has("blackwater_trace"), "progression save should not add durable Blackwater Trace data")
 	_expect(not main_saved.has("dusk_trench"), "progression save should not add durable Dusk Trench route data")
 	_expect(not main_saved.has("dusk_trench_reached"), "progression save should not add durable Dusk Trench reach memory")
+	_expect(not main_saved.has("glass_kelp_reading"), "progression save should not add durable Glass Kelp reading data")
 	_expect(main_saved.get("purchased_upgrades", {}).has(ResonanceKeyUpgrade.id), "progression save should keep Resonance Key I as durable upgrade state only")
 	main.queue_free()
 
@@ -860,6 +862,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/GlassKelpFrondA",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/GlassKelpFrondB",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReturnCurrentToTrench",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingHalo",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone/CollisionShape2D",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -963,6 +971,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var glass_kelp_shelf := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/LedgeShelf") as Polygon2D
 	var glass_kelp_frond_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/GlassKelpFrondA") as Polygon2D
 	var glass_kelp_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReturnCurrentToTrench") as Polygon2D
+	var glass_kelp_reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard") as Polygon2D
+	var glass_kelp_reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark") as Polygon2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -1116,7 +1126,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(glass_kelp_frond_a.color.g > glass_kelp_frond_a.color.r, "Glass Kelp fronds should visually distinguish the pocket from Blackwater pressure")
 	_expect(glass_kelp_return.polygon[1].x < glass_kelp_return.polygon[0].x, "Glass Kelp Ledge return current should point back left toward the trench")
 	_expect(glass_kelp_return.polygon[1].y < glass_kelp_return.polygon[0].y, "Glass Kelp Ledge return current should point upward toward Blackwater and Silt Vein")
-	_expect(glass_kelp_ledge.get_node_or_null("InteractZone") == null, "Glass Kelp Ledge scaffold should not add a payoff hotspot before the payoff issue")
+	_expect(glass_kelp_reading_shard.color.a >= 0.7, "Glass Kelp reading shard should start visibly recoverable")
+	_expect(glass_kelp_reading_spark.visible, "Glass Kelp reading spark should start visible before recovery")
+	_expect(glass_kelp_ledge.get_node_or_null("InteractZone") != null, "Glass Kelp Ledge should expose one payoff hotspot")
 	_expect(glass_kelp_ledge.get_node_or_null("ResourcePickup") == null, "Glass Kelp Ledge should not add a resource pickup")
 	_expect(glass_kelp_ledge.get_node_or_null("Predator") == null, "Glass Kelp Ledge should not add a predator encounter")
 	_expect(glass_kelp_ledge.get_node_or_null("PressureBoundary") == null, "Glass Kelp Ledge should not add a hidden pressure or oxygen boundary")
@@ -2065,6 +2077,74 @@ func _test_blackwater_trace_payoff() -> void:
 	_expect(trace_spark.visible, "Blackwater Trace spark should reset between expeditions")
 	main.free()
 
+func _test_glass_kelp_reading_payoff() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_glass_kelp_ledge = true
+	main.dive_session.oxygen = 17.0
+	main.dive_session.current_cargo = ["kelp_fiber"]
+	main.progression_state.banked_resources = {"glow_plankton": 2}
+	var reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard") as Polygon2D
+	var reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark") as Polygon2D
+	main.call("_sync_glass_kelp_reading_state")
+	_expect(reading_shard.color.a >= 0.7, "Glass Kelp reading should start visibly recoverable")
+	_expect(reading_spark.visible, "Glass Kelp reading spark should start visible before recovery")
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Glass Kelp Ledge"), "Glass Kelp proximity should own the active dive prompt")
+	_expect(prompt.contains("record kelp reading"), "Glass Kelp prompt should explain the concrete payoff")
+
+	var handled: bool = main.call("_try_glass_kelp_ledge_interaction")
+	_expect(handled, "Glass Kelp Ledge should handle interact while nearby during a dive")
+	_expect(main.run_glass_kelp_reading_recovered, "Glass Kelp interaction should record one run-scoped reading")
+	_expect(main.run_reached_dusk_trench, "Glass Kelp interaction should count as reaching Dusk Trench for place memory")
+	_expect(reading_shard.color.a <= 0.2, "Glass Kelp reading should visibly dim after recovery")
+	_expect(not reading_spark.visible, "Glass Kelp reading spark should disappear after recovery")
+	_expect(is_equal_approx(main.dive_session.oxygen, 17.0), "Glass Kelp reading should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["kelp_fiber"], "Glass Kelp reading should not add or remove cargo")
+	_expect(main.progression_state.resource_count("glow_plankton") == 2, "Glass Kelp reading should not mutate banked resources")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Return safely"), "Glass Kelp interaction should preserve extraction pressure")
+		_expect(main.status_label.text.contains("Blackwater"), "Glass Kelp status should keep broad return language")
+		_expect_no_echo_lens_locator_language(main.status_label.text, "Glass Kelp status")
+
+	var repeat_handled: bool = main.call("_try_glass_kelp_ledge_interaction")
+	_expect(repeat_handled, "Glass Kelp Ledge should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recorded"), "Glass Kelp repeat interaction should not duplicate the payoff")
+
+	main.player_near_glass_kelp_ledge = false
+	var not_handled: bool = main.call("_try_glass_kelp_ledge_interaction")
+	_expect(not not_handled, "Glass Kelp Ledge should not consume interact outside its proximity zone")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("glass_kelp_reading"), "Glass Kelp reading should not become durable save data")
+	_expect(not saved.has("glass_kelp"), "Glass Kelp should not create durable route state")
+	_expect(not saved.has("dusk_trench"), "Glass Kelp should not create durable Dusk Trench state")
+
+	var callout: String = main.call("_format_glass_kelp_reading_callout")
+	_expect(callout.contains("Glass Kelp"), "Glass Kelp result memory should name the payoff")
+	_expect(callout.contains("Dusk Trench"), "Glass Kelp result memory should name the broad route context")
+	_expect(callout.contains("safer ledge"), "Glass Kelp result memory should explain why the pocket mattered")
+	_expect_no_echo_lens_locator_language(callout, "Glass Kelp result line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Glass Kelp reading"), "Glass Kelp extraction summary should include recovered reading memory")
+	_expect(not extraction_summary.contains("%s"), "Glass Kelp extraction summary should not leak string placeholders")
+
+	var fresh_main := MainScript.new()
+	_expect(fresh_main._format_glass_kelp_reading_callout() == "", "Glass Kelp result line should stay hidden before reading recovery")
+	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not fresh_summary.contains("Glass Kelp reading"), "Glass Kelp extraction summary should stay hidden before reading recovery")
+	fresh_main.free()
+
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_glass_kelp_reading_recovered, "Glass Kelp reading should reset between expeditions")
+	_expect(reading_shard.color.a >= 0.7, "Glass Kelp reading should become visible again on expedition reset")
+	_expect(reading_spark.visible, "Glass Kelp reading spark should reset between expeditions")
+	main.free()
+
 func _test_upgrade_bay_readability_states() -> void:
 	var main := MainScript.new()
 	main.upgrade_definitions = [
@@ -2893,9 +2973,11 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	main.run_resonance_alcove_research_recovered = true
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
+	main.run_glass_kelp_reading_recovered = true
 	main.player_near_resonance_alcove = true
 	main.player_near_blue_chimney = true
 	main.player_near_lantern_silt_nook = true
+	main.player_near_glass_kelp_ledge = true
 	main.run_collected_resources.append("kelp_fiber")
 	main.run_completed_scans.append("east_shelf_arch")
 	main.run_predator_contacts = 1
@@ -2919,9 +3001,11 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	_expect(not main.run_resonance_alcove_research_recovered, "restart should clear run-scoped Resonance Alcove research state")
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "restart should clear run-scoped Blue Chimney draft state")
 	_expect(not main.run_lantern_silt_sample_recovered, "restart should clear run-scoped Lantern Silt sample state")
+	_expect(not main.run_glass_kelp_reading_recovered, "restart should clear run-scoped Glass Kelp reading state")
 	_expect(not main.player_near_resonance_alcove, "restart should clear Resonance Alcove proximity state")
 	_expect(not main.player_near_blue_chimney, "restart should clear Blue Chimney proximity state")
 	_expect(not main.player_near_lantern_silt_nook, "restart should clear Lantern Silt proximity state")
+	_expect(not main.player_near_glass_kelp_ledge, "restart should clear Glass Kelp proximity state")
 	_expect(main.run_collected_resources.is_empty(), "restart should clear run-scoped collected-resource telemetry")
 	_expect(main.run_completed_scans.is_empty(), "restart should clear run-scoped scan telemetry")
 	_expect(main.run_predator_contacts == 0, "restart should clear run-scoped predator contact telemetry")
@@ -2975,6 +3059,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_lantern_silt_sample_recovered = true
 	main.run_blackwater_trace_recovered = true
 	main.run_reached_dusk_trench = true
+	main.run_glass_kelp_reading_recovered = true
 	main.blue_chimney_draft_timer = 1.7
 	main.blackwater_pressure_timer = 1.9
 	main.visual_smoke_route_stage = "lower_connector"
@@ -2985,6 +3070,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_lantern_silt_sample_recovered, "run telemetry reset should clear Lantern Silt sample state")
 	_expect(not main.run_blackwater_trace_recovered, "run telemetry reset should clear Blackwater Trace state")
 	_expect(not main.run_reached_dusk_trench, "run telemetry reset should clear Dusk Trench reach memory")
+	_expect(not main.run_glass_kelp_reading_recovered, "run telemetry reset should clear Glass Kelp reading state")
 	_expect(is_equal_approx(main.blue_chimney_draft_timer, 0.0), "run telemetry reset should clear Blue Chimney visual timing state")
 	_expect(is_equal_approx(main.blackwater_pressure_timer, 0.0), "run telemetry reset should clear Blackwater pressure-cue timing state")
 	_expect(main.visual_smoke_route_stage == "", "run telemetry reset should clear lower-connector visual route stage")
@@ -2998,6 +3084,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_lantern_silt_sample_recovered = true
 	main.run_blackwater_trace_recovered = true
 	main.run_reached_dusk_trench = true
+	main.run_glass_kelp_reading_recovered = true
 	main.call("_prepare_next_run")
 	_expect(not main.player_near_lower_connector_echo, "new expeditions should clear Drop Echo proximity state")
 	_expect(not main.player_near_resonance_alcove, "new expeditions should clear Resonance Alcove proximity state")
@@ -3010,6 +3097,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_lantern_silt_sample_recovered, "new expeditions should not carry Lantern Silt sample state")
 	_expect(not main.run_blackwater_trace_recovered, "new expeditions should not carry Blackwater Trace state")
 	_expect(not main.run_reached_dusk_trench, "new expeditions should not carry Dusk Trench reach memory")
+	_expect(not main.run_glass_kelp_reading_recovered, "new expeditions should not carry Glass Kelp reading state")
 	_expect(not main.progression_state.to_save_data().has("lower_connector_echo"), "Drop Echo should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("resonance_alcove_research"), "Resonance Alcove research should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("blue_chimney"), "Blue Chimney should not create durable route state")
@@ -3022,6 +3110,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.progression_state.to_save_data().has("blackwater_crack"), "Blackwater Crack should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("blackwater_trace"), "Blackwater Trace should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("dusk_trench_reached"), "Dusk Trench reach memory should not be stored in durable progression")
+	_expect(not main.progression_state.to_save_data().has("glass_kelp_reading"), "Glass Kelp reading should not be stored in durable progression")
 	main.queue_free()
 
 func _test_east_shelf_pocket_prompt_interaction() -> void:

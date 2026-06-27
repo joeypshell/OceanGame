@@ -192,6 +192,7 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var blue_chimney_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/InteractZone
 @onready var lantern_silt_nook_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/InteractZone
 @onready var blackwater_crack_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/InteractZone
+@onready var glass_kelp_ledge_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone
 @onready var blue_chimney_signal_opportunity: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity
 @onready var blue_chimney_reverse_draft: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ReverseDraftReturn
 @onready var blue_chimney_survey_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyHalo
@@ -214,6 +215,9 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var blackwater_signal_opportunity: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity
 @onready var blackwater_signal_wash: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity/SignalWash
 @onready var blackwater_signal_fleck: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity/SignalFleck
+@onready var glass_kelp_reading_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingHalo
+@onready var glass_kelp_reading_shard: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard
+@onready var glass_kelp_reading_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
 @onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
 @onready var sealed_shelf_hatch_lock_label: Label = $EastShelfSpur/SealedShelfHatch/LockLabel
@@ -229,6 +233,7 @@ var player_near_resonance_alcove := false
 var player_near_blue_chimney := false
 var player_near_lantern_silt_nook := false
 var player_near_blackwater_crack := false
+var player_near_glass_kelp_ledge := false
 var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
@@ -270,6 +275,7 @@ var run_blue_chimney_draft_reading_recovered := false
 var run_lantern_silt_sample_recovered := false
 var run_blackwater_trace_recovered := false
 var run_reached_dusk_trench := false
+var run_glass_kelp_reading_recovered := false
 var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
 var recent_expedition_log: Array[Dictionary] = []
@@ -289,6 +295,8 @@ func _ready() -> void:
 	lantern_silt_nook_interact_zone.body_exited.connect(_on_lantern_silt_nook_body_exited)
 	blackwater_crack_interact_zone.body_entered.connect(_on_blackwater_crack_body_entered)
 	blackwater_crack_interact_zone.body_exited.connect(_on_blackwater_crack_body_exited)
+	glass_kelp_ledge_interact_zone.body_entered.connect(_on_glass_kelp_ledge_body_entered)
+	glass_kelp_ledge_interact_zone.body_exited.connect(_on_glass_kelp_ledge_body_exited)
 	pressure_boundary.body_entered.connect(_on_pressure_boundary_body_entered)
 	wreck_echo_clue_trigger.body_entered.connect(_on_wreck_echo_clue_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
@@ -347,7 +355,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 				status_label.text = "Surface view: upgrades."
 				_update_hud()
 		else:
-			if not _try_resonance_alcove_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
+			if not _try_resonance_alcove_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
 				_try_extract()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
 		_cycle_surface_tab(-1)
@@ -453,6 +461,7 @@ func _prepare_next_run() -> void:
 	player_near_blue_chimney = false
 	player_near_lantern_silt_nook = false
 	player_near_blackwater_crack = false
+	player_near_glass_kelp_ledge = false
 	_reset_run_telemetry()
 	burst_thruster_cooldown_remaining = 0.0
 	decoy_pulse_used_this_run = false
@@ -552,6 +561,20 @@ func _on_blackwater_crack_body_entered(body: Node2D) -> void:
 func _on_blackwater_crack_body_exited(body: Node2D) -> void:
 	if body == player:
 		player_near_blackwater_crack = false
+		if is_inside_tree():
+			_update_hud()
+
+func _on_glass_kelp_ledge_body_entered(body: Node2D) -> void:
+	if body == player:
+		player_near_glass_kelp_ledge = true
+		if status_label != null:
+			status_label.text = "Glass Kelp Ledge: record the kelp reading."
+		if is_inside_tree():
+			_update_hud()
+
+func _on_glass_kelp_ledge_body_exited(body: Node2D) -> void:
+	if body == player:
+		player_near_glass_kelp_ledge = false
 		if is_inside_tree():
 			_update_hud()
 
@@ -664,6 +687,26 @@ func _try_blackwater_crack_interaction() -> bool:
 
 	if status_label != null:
 		status_label.text = _format_blackwater_gate_status()
+	if is_inside_tree():
+		_update_hud()
+	return true
+
+func _try_glass_kelp_ledge_interaction() -> bool:
+	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_glass_kelp_ledge:
+		return false
+
+	if run_glass_kelp_reading_recovered:
+		if status_label != null:
+			status_label.text = "Glass Kelp reading already recorded this expedition."
+		if is_inside_tree():
+			_update_hud()
+		return true
+
+	run_glass_kelp_reading_recovered = true
+	run_reached_dusk_trench = true
+	_sync_glass_kelp_reading_state()
+	if status_label != null:
+		status_label.text = "Glass Kelp reading recorded. Return safely through Blackwater and Silt Vein to keep the ledge note."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -1124,6 +1167,11 @@ func _format_hud_prompt() -> String:
 		prompt = "Expedition failed - press %s for next expedition" % _action_label("restart_dive")
 	elif player_near_resonance_alcove:
 		prompt = "Resonance Alcove: %s record hatch echo" % _action_label("interact")
+	elif player_near_glass_kelp_ledge:
+		if run_glass_kelp_reading_recovered:
+			prompt = "Glass Kelp Ledge: reading recorded - return via Blackwater"
+		else:
+			prompt = "Glass Kelp Ledge: %s record kelp reading" % _action_label("interact")
 	elif player_near_blackwater_crack:
 		prompt = _format_blackwater_prompt()
 	elif player_near_lantern_silt_nook:
@@ -1930,6 +1978,29 @@ func _sync_blackwater_trace_payoff_state() -> void:
 		spark.color = Color(1.0, 1.0, 0.82, 0.9)
 		spark.visible = true
 
+func _sync_glass_kelp_reading_state() -> void:
+	var halo := glass_kelp_reading_halo
+	if halo == null:
+		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingHalo") as Polygon2D
+	var shard := glass_kelp_reading_shard
+	if shard == null:
+		shard = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard") as Polygon2D
+	var spark := glass_kelp_reading_spark
+	if spark == null:
+		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark") as Polygon2D
+	if halo == null or shard == null or spark == null:
+		return
+
+	if run_glass_kelp_reading_recovered:
+		halo.color = Color(0.58, 1.0, 0.84, 0.07)
+		shard.color = Color(0.9, 1.0, 0.68, 0.16)
+		spark.visible = false
+	else:
+		halo.color = Color(0.58, 1.0, 0.84, 0.3)
+		shard.color = Color(0.9, 1.0, 0.68, 0.8)
+		spark.color = Color(1.0, 1.0, 0.82, 0.9)
+		spark.visible = true
+
 func _sync_blackwater_crack_gate_state() -> void:
 	var mouth := blackwater_crack_mouth
 	if mouth == null:
@@ -2130,6 +2201,7 @@ func _publish_visual_smoke_state() -> void:
 		"blue_chimney_draft_reading_recovered": run_blue_chimney_draft_reading_recovered,
 		"lantern_silt_sample_recovered": run_lantern_silt_sample_recovered,
 		"blackwater_trace_recovered": run_blackwater_trace_recovered,
+		"glass_kelp_reading_recovered": run_glass_kelp_reading_recovered,
 		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
@@ -2679,6 +2751,7 @@ func _reset_run_telemetry() -> void:
 	run_lantern_silt_sample_recovered = false
 	run_blackwater_trace_recovered = false
 	run_reached_dusk_trench = false
+	run_glass_kelp_reading_recovered = false
 	debug_wreck_echo_review_staged = false
 	visual_smoke_route_stage = ""
 	echo_lens_pulse_timer = 0.0
@@ -2689,6 +2762,7 @@ func _reset_run_telemetry() -> void:
 	_sync_east_shelf_pocket_payoff_state()
 	_sync_blue_chimney_payoff_state()
 	_sync_blackwater_trace_payoff_state()
+	_sync_glass_kelp_reading_state()
 
 func _format_run_telemetry(result_name: String) -> String:
 	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
@@ -2742,7 +2816,7 @@ func _format_completed_expedition_line(result_name: String) -> String:
 	]
 
 func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Array[String]) -> String:
-	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
+	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(extracted_count, extracted_cargo),
 		_format_region_memory_callout(),
@@ -2757,6 +2831,7 @@ func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Ar
 		_format_blue_chimney_research_callout(),
 		_format_lantern_silt_sample_research_callout(),
 		_format_blackwater_trace_research_callout(),
+		_format_glass_kelp_reading_callout(),
 		_format_sealed_shelf_hatch_readiness_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
@@ -2902,6 +2977,12 @@ func _format_lantern_silt_sample_research_callout() -> String:
 func _format_blackwater_trace_research_callout() -> String:
 	if run_blackwater_trace_recovered:
 		return "\nResearch: Blackwater Trace marks the right branch's deeper route signal; return via Silt Vein, Blue Chimney, Drop Arch."
+
+	return ""
+
+func _format_glass_kelp_reading_callout() -> String:
+	if run_glass_kelp_reading_recovered:
+		return "\nResearch: Glass Kelp reading confirms the Dusk Trench has a safer ledge route off the main dark water."
 
 	return ""
 
