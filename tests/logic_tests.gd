@@ -93,6 +93,7 @@ func _initialize() -> void:
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
 	_run("expanded region base direction", _test_expanded_region_base_direction)
 	_run("expanded region reset state ownership", _test_expanded_region_reset_state_ownership)
+	_run("lower connector reset and bounds coverage", _test_lower_connector_reset_and_bounds_coverage)
 	_run("East Shelf pocket prompt interaction", _test_east_shelf_pocket_prompt_interaction)
 	_run("East Shelf current surge visual timing", _test_east_shelf_current_surge_visual_timing)
 	_run("sealed shelf hatch promise state", _test_sealed_shelf_hatch_promise_state)
@@ -1888,6 +1889,36 @@ func _test_expanded_region_reset_state_ownership() -> void:
 
 	var lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
 	_expect(lock_label.text == "ECHO PING", "restart should preserve persistent upgrade promise state after reset")
+	main.queue_free()
+
+func _test_lower_connector_reset_and_bounds_coverage() -> void:
+	var player_bounds := PlayerScript.new()
+	var clamped_lower_connector := player_bounds.clamp_position_to_world_bounds(Vector2(2124.0, 2450.0))
+	_expect(is_equal_approx(clamped_lower_connector.x, 2124.0), "lower connector bounds should keep the staged route horizontally playable")
+	_expect(is_equal_approx(clamped_lower_connector.y, player_bounds.world_bounds.end.y), "lower connector bounds should stop below the first connector turnback")
+	_expect(player_bounds.world_bounds.end.y <= 2400.0, "lower connector bounds should stay tight until a larger level is explicitly implemented")
+	player_bounds.free()
+
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var scene_player := main.get_node("Player") as CharacterBody2D
+	main.player = scene_player
+	scene_player.global_position = Vector2(2124.0, 2024.0)
+	var lower_connector_direction: String = main.call("_format_base_direction")
+	_expect(lower_connector_direction.contains("up-left"), "base direction should point up-left from the Shelf Drop Connector")
+
+	main.player_near_lower_connector_echo = true
+	main.run_lower_connector_echo_recovered = true
+	main.visual_smoke_route_stage = "lower_connector"
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_lower_connector_echo_recovered, "run telemetry reset should clear Drop Echo research state")
+	_expect(main.visual_smoke_route_stage == "", "run telemetry reset should clear lower-connector visual route stage")
+
+	main.player_near_lower_connector_echo = true
+	main.call("_prepare_next_run")
+	_expect(not main.player_near_lower_connector_echo, "new expeditions should clear Drop Echo proximity state")
+	_expect(not main.run_lower_connector_echo_recovered, "new expeditions should not carry Drop Echo research state")
+	_expect(not main.progression_state.to_save_data().has("lower_connector_echo"), "Drop Echo should not be stored in durable progression")
 	main.queue_free()
 
 func _test_east_shelf_pocket_prompt_interaction() -> void:
