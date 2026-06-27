@@ -1,6 +1,6 @@
 # Player-Visible Milestone Pivot - 2026-06-27
 
-Status: active planning control. This supersedes micro-issue backlog replenishment until the next normal-play milestone is visibly different to the player.
+Status: completed as pass with watchlist by `docs/planning/FIRST_NOTICEABLY_LARGER_DIVE_MAP_VALIDATION_2026_06_27.md`. Keep these rules as process guidance for future player-visible milestones.
 
 ## Why This Pivot Exists
 

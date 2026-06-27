@@ -4,9 +4,9 @@ This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remai
 
 Current direction: build a 2D alien-ocean expedition game where every morning the ocean changes, the player dives for cargo and knowledge, and persistent discoveries plus upgrades unlock deeper remembered places.
 
-Active priority reset: `docs/planning/PLAYER_VISIBLE_MILESTONE_PIVOT_2026_06_27.md` supersedes micro-issue backlog replenishment for the next phase. The first expanded dive-region route sequence has landed structurally, but normal play still does not feel different enough. The next work must be organized around a small number of larger, player-visible milestone issues rather than separate metadata, guard, screenshot, and review tasks.
+Latest milestone closeout: `docs/planning/FIRST_NOTICEABLY_LARGER_DIVE_MAP_VALIDATION_2026_06_27.md` closes the player-visible milestone pivot as pass with watchlist. East Shelf now has an obvious branch mouth, cave-like pocket, visible SignalCore payoff, return cues, and a sealed deeper-route promise. The next work should move to the next player-visible gameplay milestone rather than repeatedly polishing or revalidating this same early branch.
 
-Current active milestone: First Noticeably Larger Dive Map. Success means a normal five-minute play session visibly feels wider/deeper than the old column, includes a clear branch or cave-like destination, contains one worthwhile payoff, preserves return readability, and shows one deeper promise without needing debug tools.
+Current active milestone: choose the next player-visible milestone. Good candidates are a second ordinary-play route decision, a stronger reason to revisit lower pockets, or the next narrow access/payoff step that makes the ocean feel more explorable. Keep the same rule from the pivot: a normal five-minute play session should notice the change without reading roadmap notes.
 
 First expanded region layout: `docs/planning/FIRST_EXPANDED_DIVE_REGION_LAYOUT_2026_06_26.md` defines `East Shelf Spur` as the first wider side-route prototype. It should add a right-side midwater branch, `East Shelf Arch` landmark, cave/wreck-pocket entrance, one seeded daily opportunity, one upgrade-locked promise, and safe-return cues while preserving the current base column and existing loop.
 
