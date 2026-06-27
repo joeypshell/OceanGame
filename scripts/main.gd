@@ -3104,7 +3104,9 @@ func _format_base_direction() -> String:
 		direction_text = "nearby"
 
 	var route_hint := ""
-	if delta.x > 1500.0 and delta.y > 2100.0:
+	if delta.x > 2100.0 and delta.y > 2400.0:
+		route_hint = " via Dusk/Silt/Blue"
+	elif delta.x > 1500.0 and delta.y > 2100.0:
 		route_hint = " via Silt/Blue"
 
 	return "Base: %s %.0fm%s" % [direction_text, delta.length() / pixels_per_meter, route_hint]
