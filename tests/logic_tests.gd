@@ -726,7 +726,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/TerminalPocketHint",
 		"EastShelfSpur/PocketEntrance",
 		"EastShelfSpur/PocketEntrance/MouthShadow",
+		"EastShelfSpur/PocketEntrance/CaveBackWall",
 		"EastShelfSpur/PocketEntrance/OuterRim",
+		"EastShelfSpur/PocketEntrance/ForegroundShelfLip",
+		"EastShelfSpur/PocketEntrance/LandmarkSpireA",
+		"EastShelfSpur/PocketEntrance/LandmarkSpireB",
+		"EastShelfSpur/PocketEntrance/InteriorGlowPool",
 		"EastShelfSpur/PocketEntrance/ThresholdGlow",
 		"EastShelfSpur/PocketEntrance/ExitCurrentCue",
 		"EastShelfSpur/PocketEntrance/InteractZone",
@@ -804,6 +809,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var terminal_hint := main.get_node("EastShelfSpur/TerminalPocketHint") as Polygon2D
 	var pocket_entrance := main.get_node("EastShelfSpur/PocketEntrance") as Node2D
 	var mouth_shadow := main.get_node("EastShelfSpur/PocketEntrance/MouthShadow") as Polygon2D
+	var cave_back_wall := main.get_node("EastShelfSpur/PocketEntrance/CaveBackWall") as Polygon2D
+	var foreground_shelf_lip := main.get_node("EastShelfSpur/PocketEntrance/ForegroundShelfLip") as Polygon2D
+	var landmark_spire_a := main.get_node("EastShelfSpur/PocketEntrance/LandmarkSpireA") as Polygon2D
+	var landmark_spire_b := main.get_node("EastShelfSpur/PocketEntrance/LandmarkSpireB") as Polygon2D
+	var interior_glow_pool := main.get_node("EastShelfSpur/PocketEntrance/InteriorGlowPool") as Polygon2D
 	var exit_current := main.get_node("EastShelfSpur/PocketEntrance/ExitCurrentCue") as Polygon2D
 	var sealed_hatch := main.get_node("EastShelfSpur/SealedShelfHatch") as Node2D
 	var hatch_lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
@@ -858,6 +868,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(shelf_glimmer_core.color.a <= 0.4, "Shelf Glimmer should read as a subtle opportunity, not a guaranteed major reward")
 	_expect(pocket_entrance.position.x >= 1880.0, "East Shelf pocket entrance should sit at the far end of the side route")
 	_expect(mouth_shadow.color.a >= 0.6, "East Shelf pocket entrance should read as an opening, not another translucent current")
+	_expect(cave_back_wall.color.a >= 0.68, "East Shelf pocket should have a readable cave back wall")
+	_expect(foreground_shelf_lip.color.a >= 0.7, "East Shelf pocket should have a foreground shelf lip for destination depth")
+	_expect(landmark_spire_a.color.a >= 0.4 and landmark_spire_b.color.a >= 0.3, "East Shelf pocket should include distinct landmark spires")
+	_expect(interior_glow_pool.color.a >= 0.2, "East Shelf pocket should include a soft interior glow pool")
 	_expect(exit_current.polygon[1].x < exit_current.polygon[0].x, "East Shelf pocket exit cue should point back left toward the main route")
 	_expect(sealed_hatch.position.x >= pocket_entrance.position.x, "Sealed Shelf Hatch should sit at or beyond the pocket entrance as a future promise")
 	_expect(hatch_lock_label.text == "ECHO LOCK", "Sealed Shelf Hatch should start as an Echo Lens locked promise")
