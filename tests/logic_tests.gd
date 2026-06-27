@@ -1084,10 +1084,16 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveMouthShadow",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefRim",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ThresholdWater",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/EntranceLip",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/EntranceRibA",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/EntranceRibB",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefToothA",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefToothB",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnCurrentToTrench",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitReturnRibbon",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnRib",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitRib",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitBackWall",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/TurnbackLip",
 	]
 	for path in branch_paths:
@@ -1204,7 +1210,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hollow_reef_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveMouthShadow") as Polygon2D
 	var hollow_reef_rim := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefRim") as Polygon2D
 	var hollow_reef_threshold := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ThresholdWater") as Polygon2D
+	var hollow_reef_entrance := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/EntranceLip") as Polygon2D
+	var hollow_reef_entrance_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/EntranceRibA") as Polygon2D
 	var hollow_reef_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnCurrentToTrench") as Polygon2D
+	var hollow_reef_exit_ribbon := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitReturnRibbon") as Polygon2D
+	var hollow_reef_exit_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitRib") as Polygon2D
+	var hollow_reef_exit_back := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitBackWall") as Polygon2D
 	var hollow_reef_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/TurnbackLip") as Polygon2D
 	var lantern_ray_route := main.get_node("Creatures/LanternRayRoute") as Area2D
 	var lantern_ray_lane := main.get_node("Creatures/LanternRayRoute/RouteLane") as Polygon2D
@@ -1396,14 +1407,23 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_reef_mouth.color.a >= 0.65, "Hollow Reef cave mouth should read as explorable dark space")
 	_expect(hollow_reef_rim.color.g > hollow_reef_rim.color.r, "Hollow Reef rim should use cool reef/cave color language")
 	_expect(hollow_reef_threshold.color.a <= 0.3, "Hollow Reef threshold water should be visible without becoming a hard objective marker")
+	_expect(hollow_reef_entrance.color.g > hollow_reef_entrance.color.r and hollow_reef_entrance.color.b > hollow_reef_entrance.color.r, "Hollow Reef entrance lip should read as cool threshold language, not predator or resource color")
+	_expect(hollow_reef_entrance.color.a <= 0.3, "Hollow Reef entrance lip should stay quieter than scan targets and pickups")
+	_expect(hollow_reef_entrance_rib.color.g > hollow_reef_entrance_rib.color.r, "Hollow Reef entrance rib should stay in safe/cave readability language")
 	_expect(hollow_reef_return.color.a >= 0.18 and hollow_reef_return.color.a <= 0.24, "Hollow Reef return current should be readable without becoming checklist guidance")
 	_expect(hollow_reef_return.polygon[1].x < hollow_reef_return.polygon[0].x, "Hollow Reef return current should point left back toward Dusk Trench")
 	_expect(hollow_reef_return.polygon[1].y < hollow_reef_return.polygon[0].y, "Hollow Reef return current should point upward toward Blackwater and Silt Vein")
+	_expect(hollow_reef_exit_ribbon.color.g > hollow_reef_exit_ribbon.color.r, "Hollow Reef exit ribbon should use safe-return color language")
+	_expect(hollow_reef_exit_ribbon.color.a <= hollow_reef_return.color.a, "Hollow Reef exit ribbon should support the return current without becoming a second objective arrow")
+	_expect(hollow_reef_exit_ribbon.polygon[1].x < hollow_reef_exit_ribbon.polygon[0].x, "Hollow Reef exit ribbon should point back left toward the entrance")
+	_expect(hollow_reef_exit_rib.polygon[1].x < hollow_reef_exit_rib.polygon[0].x, "Hollow Reef exit rib should step left toward the exit route")
+	_expect(hollow_reef_exit_back.color.a >= 0.45, "Hollow Reef exit back wall should make the current side-cave end readable")
 	_expect(hollow_reef_turnback.color.a >= 0.4, "Hollow Reef should include a visible turnback lip until the interior lane exists")
 	_expect(hollow_reef.get_node_or_null("InteractZone") == null, "Hollow Reef scaffold should not add payoff interaction yet")
 	_expect(hollow_reef.get_node_or_null("Interior") == null, "Hollow Reef scaffold should not add a full cave interior system")
 	_expect(hollow_reef.get_node_or_null("ResourcePickup") == null, "Hollow Reef scaffold should not add a resource pickup yet")
 	_expect(hollow_reef.get_node_or_null("Predator") == null, "Hollow Reef scaffold should not add a predator encounter")
+	_expect(hollow_reef.get_script() == null, "Hollow Reef readability cues should not own oxygen, cargo, or progression state")
 	_expect(hollow_reef.find_child("CollisionShape2D", true, false) == null, "Hollow Reef scaffold should not add hidden collision or pressure")
 	_expect(lantern_ray_route.position.distance_to(dusk_trench.global_position) <= 240.0, "Lantern Ray Route should sit near Dusk Trench as lower-route creature presence")
 	_expect(lantern_ray_route.position.y < dusk_trench.global_position.y, "Lantern Ray Route should drift above the main trench return lane")
