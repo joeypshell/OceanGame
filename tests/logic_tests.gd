@@ -1997,6 +1997,23 @@ func _test_sealed_shelf_hatch_promise_state() -> void:
 	_expect(lock_badge.color != locked_badge_color, "Sealed Shelf Hatch badge should visually react to Echo Lens I ownership")
 	main.queue_free()
 
+	var copy_main := MainScript.new()
+	_expect(copy_main._format_sealed_shelf_hatch_readiness_callout() == "", "sealed hatch readiness copy should stay hidden before Echo Lens I")
+	copy_main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	_expect(copy_main._format_sealed_shelf_hatch_readiness_callout() == "", "sealed hatch readiness copy should need recovered route research")
+	copy_main.run_east_shelf_pocket_ping_recovered = true
+	var readiness_copy := copy_main._format_sealed_shelf_hatch_readiness_callout()
+	_expect(readiness_copy.contains("Sealed Shelf Hatch"), "sealed hatch readiness copy should name the hatch promise")
+	_expect(readiness_copy.contains("Resonance Key"), "sealed hatch readiness copy should point to the future key promise")
+	_expect(not readiness_copy.to_lower().contains("map"), "sealed hatch readiness copy should not imply map UI")
+	_expect(not readiness_copy.to_lower().contains("quest"), "sealed hatch readiness copy should not imply quest UI")
+	_expect(not readiness_copy.to_lower().contains("checklist"), "sealed hatch readiness copy should not imply checklist UI")
+
+	var empty_cargo: Array[String] = []
+	var extraction_summary := copy_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Resonance Key"), "sealed hatch readiness copy should appear in extraction result after relevant research")
+	copy_main.free()
+
 func _test_player_visual_facing_isolation() -> void:
 	var player := PlayerScene.instantiate()
 	root.add_child(player)

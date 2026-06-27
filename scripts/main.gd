@@ -448,7 +448,10 @@ func _try_east_shelf_pocket_interaction() -> bool:
 
 	run_east_shelf_pocket_ping_recovered = true
 	if status_label != null:
-		status_label.text = "East Shelf pocket research ping recorded. Return safely to keep the note."
+		if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
+			status_label.text = "East Shelf ping recorded. Echo Lens reads the seal; return to plan a key."
+		else:
+			status_label.text = "East Shelf pocket research ping recorded. Return safely to keep the note."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -466,7 +469,10 @@ func _try_lower_connector_echo_interaction() -> bool:
 
 	run_lower_connector_echo_recovered = true
 	if status_label != null:
-		status_label.text = "Drop Echo recorded. Return safely to keep the lower-route note."
+		if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
+			status_label.text = "Drop Echo recorded. Return safely; lab can compare hatch resonance."
+		else:
+			status_label.text = "Drop Echo recorded. Return safely to keep the lower-route note."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -2061,7 +2067,7 @@ func _format_completed_expedition_line(result_name: String) -> String:
 	]
 
 func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Array[String]) -> String:
-	return "%s\n%s\n%s%s\n%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
+	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(extracted_count, extracted_cargo),
 		_format_region_memory_callout(),
@@ -2072,6 +2078,7 @@ func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Ar
 		_format_wreck_echo_research_callout(),
 		_format_east_shelf_pocket_research_callout(),
 		_format_lower_connector_echo_research_callout(),
+		_format_sealed_shelf_hatch_readiness_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
 		roundi(progression_state.best_depth_reached),
@@ -2158,6 +2165,14 @@ func _format_lower_connector_echo_research_callout() -> String:
 		return "\nResearch: Drop Echo confirms the Shelf Drop Connector continues below East Shelf."
 
 	return ""
+
+func _format_sealed_shelf_hatch_readiness_callout() -> String:
+	if not progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
+		return ""
+	if not run_east_shelf_pocket_ping_recovered and not run_lower_connector_echo_recovered:
+		return ""
+
+	return "\nLab note: Echo Lens reads the Sealed Shelf Hatch; Resonance Key planning can wait."
 
 func _format_region_memory_callout() -> String:
 	if run_predator_contacts > 0 or run_completed_scans.has("gulper_eel"):
