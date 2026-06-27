@@ -80,6 +80,7 @@ func _initialize() -> void:
 	_run("lower connector echo opportunity", _test_lower_connector_echo_opportunity)
 	_run("Resonance Alcove research payoff", _test_resonance_alcove_research_payoff)
 	_run("Blue Chimney draft interaction", _test_blue_chimney_draft_interaction)
+	_run("Lantern Silt Sample interaction", _test_lantern_silt_sample_interaction)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -771,6 +772,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/LanternGlow",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/SiltShelf",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/ReturnCurrentCue",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/InteractZone",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/InteractZone/CollisionShape2D",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/CrackMouth",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/PressureDarkWash",
@@ -883,7 +886,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(lantern_glow.color.a <= 0.2, "Lantern Silt Nook glow should stay subtle until payoff exists")
 	_expect(lantern_return.polygon[1].x > lantern_return.polygon[0].x, "Lantern Silt Nook return cue should point back toward the fork")
 	_expect(lantern_return.polygon[1].y < lantern_return.polygon[0].y, "Lantern Silt Nook return cue should point upward toward the fork")
-	_expect(lantern_silt_nook.get_node_or_null("InteractZone") == null, "Lantern Silt Nook scaffold should not add payoff interaction yet")
+	_expect(lantern_silt_nook.get_node_or_null("InteractZone") != null, "Lantern Silt Nook should expose the first safe-branch sample interaction")
 	_expect(lantern_silt_nook.get_node_or_null("Interior") == null, "Lantern Silt Nook scaffold should not add a multi-room cave")
 	_expect(blackwater_crack.position.x > silt_vein_fork.position.x, "Blackwater Crack should sit on the right deferred branch")
 	_expect(blackwater_crack.position.y > 120.0, "Blackwater Crack should sit below the fork mouth")
@@ -1571,6 +1574,46 @@ func _test_blue_chimney_draft_interaction() -> void:
 
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "Blue Chimney draft reading should reset between expeditions")
+	main.free()
+
+func _test_lantern_silt_sample_interaction() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_lantern_silt_nook = true
+	main.dive_session.oxygen = 24.0
+	main.dive_session.current_cargo = ["kelp_fiber"]
+	main.progression_state.banked_resources = {"glow_plankton": 2}
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Lantern Silt Nook"), "Lantern Silt Nook proximity should own the active dive prompt")
+	_expect(prompt.contains("collect silt sample"), "Lantern Silt prompt should explain the narrow research action")
+
+	var handled: bool = main.call("_try_lantern_silt_nook_interaction")
+	_expect(handled, "Lantern Silt Nook should handle interact while nearby during a dive")
+	_expect(main.run_lantern_silt_sample_recovered, "Lantern Silt interaction should record one run-scoped sample")
+	_expect(is_equal_approx(main.dive_session.oxygen, 24.0), "Lantern Silt sample should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["kelp_fiber"], "Lantern Silt sample should not add or remove cargo")
+	_expect(main.progression_state.resource_count("glow_plankton") == 2, "Lantern Silt sample should not mutate banked resources")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Return safely"), "Lantern Silt interaction should preserve extraction pressure")
+
+	var repeat_handled: bool = main.call("_try_lantern_silt_nook_interaction")
+	_expect(repeat_handled, "Lantern Silt Nook should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already stored"), "Lantern Silt repeat interaction should not duplicate the payoff")
+
+	main.player_near_lantern_silt_nook = false
+	var not_handled: bool = main.call("_try_lantern_silt_nook_interaction")
+	_expect(not not_handled, "Lantern Silt Nook should not consume interact outside its proximity zone")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("lantern_silt_sample"), "Lantern Silt sample should not become durable save data")
+	_expect(not saved.has("lantern_silt"), "Lantern Silt sample should not create durable route state")
+	_expect(not saved.has("silt_vein_fork"), "Silt Vein Fork should not create durable route state")
+
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_lantern_silt_sample_recovered, "Lantern Silt sample should reset between expeditions")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:

@@ -657,6 +657,13 @@ polygon = PackedVector2Array(-108, 48, -28, 72, 76, 58, 118, 20, 138, 56, 54, 10
 color = Color(0.7, 1, 0.9, 0.13)
 polygon = PackedVector2Array(60, 18, 140, -24, 184, -16, 144, -52, 190, -82, 116, -72, 36, -28)
 
+[node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook"]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/InteractZone"]
+shape = SubResource("CircleShape2D_blue_chimney_reading")
+
 [node name="BlackwaterCrack" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork"]
 position = Vector2(148, 154)
 
