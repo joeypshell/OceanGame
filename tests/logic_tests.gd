@@ -853,6 +853,13 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowerTrenchShelf",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/ReturnCurrentUpLeft",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/FarTurnbackShadow",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/LedgeMouth",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/CalmPocketWater",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/LedgeShelf",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/GlassKelpFrondA",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/GlassKelpFrondB",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReturnCurrentToTrench",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -950,6 +957,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var dusk_open_water := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/OpenWaterWindow") as Polygon2D
 	var dusk_lower_shelf := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowerTrenchShelf") as Polygon2D
 	var dusk_return_current := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/ReturnCurrentUpLeft") as Polygon2D
+	var glass_kelp_ledge := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge") as Node2D
+	var glass_kelp_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/LedgeMouth") as Polygon2D
+	var glass_kelp_water := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/CalmPocketWater") as Polygon2D
+	var glass_kelp_shelf := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/LedgeShelf") as Polygon2D
+	var glass_kelp_frond_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/GlassKelpFrondA") as Polygon2D
+	var glass_kelp_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReturnCurrentToTrench") as Polygon2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -1095,6 +1108,18 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(dusk_return_current.polygon[1].y < dusk_return_current.polygon[0].y, "Dusk Trench return current should point upward toward Silt and Blue")
 	_expect(dusk_trench.get_node_or_null("InteractZone") == null, "Dusk Trench scaffold should not add an interaction hotspot yet")
 	_expect(dusk_trench.get_node_or_null("Interior") == null, "Dusk Trench scaffold should not add a cave interior system")
+	_expect(glass_kelp_ledge.get_parent() == dusk_trench, "Glass Kelp Ledge should branch from the Dusk Trench route")
+	_expect(glass_kelp_ledge.position.x > 0.0 and glass_kelp_ledge.position.y > 0.0, "Glass Kelp Ledge should sit off the lower trench, not inside Blackwater")
+	_expect(glass_kelp_mouth.color.g > glass_kelp_mouth.color.r, "Glass Kelp Ledge should use cooler calm-pocket color language")
+	_expect(glass_kelp_water.color.a <= 0.3, "Glass Kelp calm water should read as a pause pocket, not a pressure hazard")
+	_expect(glass_kelp_shelf.color.a >= 0.55, "Glass Kelp Ledge should have a readable safe shelf silhouette")
+	_expect(glass_kelp_frond_a.color.g > glass_kelp_frond_a.color.r, "Glass Kelp fronds should visually distinguish the pocket from Blackwater pressure")
+	_expect(glass_kelp_return.polygon[1].x < glass_kelp_return.polygon[0].x, "Glass Kelp Ledge return current should point back left toward the trench")
+	_expect(glass_kelp_return.polygon[1].y < glass_kelp_return.polygon[0].y, "Glass Kelp Ledge return current should point upward toward Blackwater and Silt Vein")
+	_expect(glass_kelp_ledge.get_node_or_null("InteractZone") == null, "Glass Kelp Ledge scaffold should not add a payoff hotspot before the payoff issue")
+	_expect(glass_kelp_ledge.get_node_or_null("ResourcePickup") == null, "Glass Kelp Ledge should not add a resource pickup")
+	_expect(glass_kelp_ledge.get_node_or_null("Predator") == null, "Glass Kelp Ledge should not add a predator encounter")
+	_expect(glass_kelp_ledge.get_node_or_null("PressureBoundary") == null, "Glass Kelp Ledge should not add a hidden pressure or oxygen boundary")
 	_expect(blackwater_crack.get_node_or_null("Interior") == null, "Blackwater Crack should not add a cave interior system")
 	_expect(blackwater_sill.get_node_or_null("Interior") == null, "Blackwater Sill should not add a cave interior system")
 	_expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
@@ -2923,6 +2948,23 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	scene_player.global_position = Vector2(2124.0, 2024.0)
 	var lower_connector_direction: String = main.call("_format_base_direction")
 	_expect(lower_connector_direction.contains("up-left"), "base direction should point up-left from the Shelf Drop Connector")
+
+	var glass_kelp_ledge := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge") as Node2D
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.dive_session.oxygen = 18.0
+	main.dive_session.current_cargo = ["kelp_fiber"]
+	main.run_predator_contacts = 1
+	main.player_in_base = false
+	scene_player.global_position = glass_kelp_ledge.global_position
+	main.call("_update_depth")
+	main.call("_update_hud")
+	_expect(is_equal_approx(main.dive_session.oxygen, 18.0), "Glass Kelp Ledge should not add a hidden oxygen tax")
+	_expect(main.dive_session.current_cargo == ["kelp_fiber"], "Glass Kelp Ledge should not mutate cargo")
+	_expect(main.run_predator_contacts == 1, "Glass Kelp Ledge should not mutate predator pressure")
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Glass Kelp Ledge should not change the dive result")
+	_expect(main.dive_session.has_left_base, "Glass Kelp Ledge should not reset extraction eligibility")
+	_expect(not main.player_in_base, "Glass Kelp Ledge should not move the player into the base")
 
 	main.player_near_lower_connector_echo = true
 	main.player_near_resonance_alcove = true

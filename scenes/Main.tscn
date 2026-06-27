@@ -949,6 +949,41 @@ polygon = PackedVector2Array(-130, 30, -78, -4, -28, 8, -84, 44)
 color = Color(0.18, 0.26, 0.38, 0.22)
 polygon = PackedVector2Array(224, -28, 320, 20, 292, 116, 196, 146, 164, 60)
 
+[node name="GlassKelpLedge" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench"]
+position = Vector2(92, 78)
+
+[node name="LedgeMouth" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge"]
+color = Color(0.04, 0.18, 0.2, 0.5)
+polygon = PackedVector2Array(-84, -46, 18, -74, 126, -34, 142, 42, 40, 80, -96, 42)
+
+[node name="CalmPocketWater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge"]
+color = Color(0.16, 0.46, 0.5, 0.24)
+polygon = PackedVector2Array(-54, -18, 34, -42, 100, -6, 88, 38, 22, 54, -66, 28)
+
+[node name="LedgeShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge"]
+color = Color(0.09, 0.2, 0.16, 0.62)
+polygon = PackedVector2Array(-112, 44, 18, 70, 136, 44, 168, 86, 74, 128, -92, 106, -142, 70)
+
+[node name="GlassKelpFrondA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge"]
+color = Color(0.62, 1, 0.86, 0.42)
+polygon = PackedVector2Array(-34, 48, -18, -34, -2, 48, -16, 68)
+
+[node name="GlassKelpFrondB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge"]
+color = Color(0.78, 1, 0.9, 0.36)
+polygon = PackedVector2Array(22, 54, 42, -20, 62, 56, 42, 78)
+
+[node name="GlassKelpGlimmer" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge"]
+color = Color(0.9, 1, 0.72, 0.44)
+polygon = PackedVector2Array(36, -12, 46, 4, 62, 14, 46, 24, 32, 16, 24, 2)
+
+[node name="ReturnCurrentToTrench" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge"]
+color = Color(0.7, 1, 0.9, 0.15)
+polygon = PackedVector2Array(16, 86, -72, 34, -132, 36, -88, 2, -140, -30, -72, -20, 28, 34)
+
+[node name="ReturnRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge"]
+color = Color(0.82, 1, 0.92, 0.16)
+polygon = PackedVector2Array(-58, 36, -10, 12, 34, 24, -18, 50)
+
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
 position = Vector2(34, 24)
 collision_layer = 0
