@@ -99,6 +99,7 @@ func _initialize() -> void:
 	_run("lower connector reset and bounds coverage", _test_lower_connector_reset_and_bounds_coverage)
 	_run("East Shelf pocket prompt interaction", _test_east_shelf_pocket_prompt_interaction)
 	_run("East Shelf current surge visual timing", _test_east_shelf_current_surge_visual_timing)
+	_run("Blue Chimney reverse draft visual timing", _test_blue_chimney_reverse_draft_visual_timing)
 	_run("sealed shelf hatch promise state", _test_sealed_shelf_hatch_promise_state)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
@@ -2221,6 +2222,37 @@ func _test_east_shelf_current_surge_visual_timing() -> void:
 	_expect(not main.player_in_base, "East Shelf current surge should not move the player into the base")
 	_expect(main.run_predator_contacts == 1, "East Shelf current surge should not create predator contacts")
 	_expect(main.progression_state.has_upgrade(PressureSealUpgrade.id), "East Shelf current surge should not mutate pressure upgrade state")
+	main.free()
+
+func _test_blue_chimney_reverse_draft_visual_timing() -> void:
+	var main := MainScript.new()
+	var low_alpha: float = main.call("_blue_chimney_reverse_draft_alpha", 0.0)
+	var high_alpha: float = main.call("_blue_chimney_reverse_draft_alpha", MainScript.BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS * 0.25)
+	var return_alpha: float = main.call("_blue_chimney_reverse_draft_alpha", MainScript.BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS * 0.5)
+
+	_expect(high_alpha > low_alpha, "Blue Chimney reverse draft alpha should pulse upward to suggest timing")
+	_expect(is_equal_approx(low_alpha, return_alpha), "Blue Chimney reverse draft pulse should repeat smoothly")
+	_expect(low_alpha >= 0.07 and high_alpha <= 0.14, "Blue Chimney reverse draft pulse should stay subtle and non-combat")
+
+	main.dive_session.reset(30.0)
+	main.dive_session.start()
+	main.dive_session.oxygen = 22.0
+	main.dive_session.current_cargo = ["shell_fragments"]
+	main.dive_session.has_left_base = true
+	main.player_in_base = false
+	main.run_predator_contacts = 1
+	main.progression_state.banked_resources["glow_plankton"] = 2
+	main.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
+
+	main.call("_update_blue_chimney_reverse_draft", 0.7)
+	_expect(is_equal_approx(main.dive_session.oxygen, 22.0), "Blue Chimney reverse draft should not drain oxygen")
+	_expect(main.dive_session.current_cargo == ["shell_fragments"], "Blue Chimney reverse draft should not change carried cargo")
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Blue Chimney reverse draft should not change dive result")
+	_expect(main.dive_session.has_left_base, "Blue Chimney reverse draft should not reset extraction eligibility")
+	_expect(not main.player_in_base, "Blue Chimney reverse draft should not move the player into the base")
+	_expect(main.run_predator_contacts == 1, "Blue Chimney reverse draft should not create predator contacts")
+	_expect(main.progression_state.resource_count("glow_plankton") == 2, "Blue Chimney reverse draft should not mutate banked resources")
+	_expect(main.progression_state.has_upgrade(PressureSealUpgrade.id), "Blue Chimney reverse draft should not mutate pressure upgrade state")
 	main.free()
 
 func _test_sealed_shelf_hatch_promise_state() -> void:

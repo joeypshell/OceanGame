@@ -65,6 +65,7 @@ const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
 const DIVE_STATUS_MAX_CHARS := 76
 const ECHO_LENS_PULSE_DURATION := 1.2
 const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
+const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
@@ -180,6 +181,7 @@ const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 @onready var lower_connector_echo_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone
 @onready var resonance_alcove_interact_zone: Area2D = $EastShelfSpur/ResonanceAlcove/InteractZone
 @onready var blue_chimney_signal_opportunity: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity
+@onready var blue_chimney_reverse_draft: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ReverseDraftReturn
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
 @onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
 @onready var sealed_shelf_hatch_lock_label: Label = $EastShelfSpur/SealedShelfHatch/LockLabel
@@ -197,6 +199,7 @@ var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
 var echo_lens_pulse_timer := 0.0
 var east_shelf_current_surge_timer := 0.0
+var blue_chimney_draft_timer := 0.0
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -258,6 +261,7 @@ func _process(delta: float) -> void:
 	_update_resource_scan_highlight(delta)
 	_update_echo_lens_pulse(delta)
 	_update_east_shelf_current_surge(delta)
+	_update_blue_chimney_reverse_draft(delta)
 	_update_lantern_fry_idle()
 	_update_burst_thruster_cooldown(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -1052,6 +1056,15 @@ func _update_east_shelf_current_surge(delta: float) -> void:
 func _east_shelf_current_surge_alpha(timer_seconds: float) -> float:
 	var phase := sin((timer_seconds / EAST_SHELF_SURGE_PERIOD_SECONDS) * TAU)
 	return 0.08 + (phase + 1.0) * 0.045
+
+func _update_blue_chimney_reverse_draft(delta: float) -> void:
+	blue_chimney_draft_timer = fposmod(blue_chimney_draft_timer + delta, BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS)
+	if blue_chimney_reverse_draft != null:
+		blue_chimney_reverse_draft.color = Color(0.72, 1.0, 0.94, _blue_chimney_reverse_draft_alpha(blue_chimney_draft_timer))
+
+func _blue_chimney_reverse_draft_alpha(timer_seconds: float) -> float:
+	var phase := sin((timer_seconds / BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS) * TAU)
+	return 0.07 + (phase + 1.0) * 0.035
 
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
