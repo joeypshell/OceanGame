@@ -178,6 +178,9 @@ const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 @onready var east_shelf_current_surge_lane: Polygon2D = $EastShelfSpur/CurrentSurgeLane
 @onready var east_shelf_current_surge_rib: Polygon2D = $EastShelfSpur/CurrentSurgeRib
 @onready var east_shelf_pocket_interact_zone: Area2D = $EastShelfSpur/PocketEntrance/InteractZone
+@onready var east_shelf_signal_core_halo: Polygon2D = $EastShelfSpur/PocketEntrance/SignalCore/CoreHalo
+@onready var east_shelf_signal_core_gem: Polygon2D = $EastShelfSpur/PocketEntrance/SignalCore/CoreGem
+@onready var east_shelf_signal_core_spark: Polygon2D = $EastShelfSpur/PocketEntrance/SignalCore/CoreSpark
 @onready var lower_connector_echo_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone
 @onready var resonance_alcove_interact_zone: Area2D = $EastShelfSpur/ResonanceAlcove/InteractZone
 @onready var blue_chimney_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/InteractZone
@@ -437,7 +440,7 @@ func _on_east_shelf_pocket_body_entered(body: Node2D) -> void:
 	if body == player:
 		player_near_east_shelf_pocket = true
 		if status_label != null:
-			status_label.text = "East Shelf pocket: inspect the sealed threshold."
+			status_label.text = "East Shelf Pocket: recover the signal core."
 		if is_inside_tree():
 			_update_hud()
 
@@ -509,17 +512,18 @@ func _try_east_shelf_pocket_interaction() -> bool:
 
 	if run_east_shelf_pocket_ping_recovered:
 		if status_label != null:
-			status_label.text = "East Shelf pocket ping already recorded for this expedition."
+			status_label.text = "East Shelf signal core already recovered for this expedition."
 		if is_inside_tree():
 			_update_hud()
 		return true
 
 	run_east_shelf_pocket_ping_recovered = true
+	_sync_east_shelf_pocket_payoff_state()
 	if status_label != null:
 		if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
-			status_label.text = "East Shelf ping recorded. Echo Lens reads the seal; return to plan a key."
+			status_label.text = "East Shelf signal core recovered. Echo Lens reads the seal; return to plan a key."
 		else:
-			status_label.text = "East Shelf pocket research ping recorded. Return safely to keep the note."
+			status_label.text = "East Shelf signal core recovered. Return safely to keep the route note."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -1003,7 +1007,7 @@ func _format_hud_prompt() -> String:
 	elif player_near_lower_connector_echo:
 		prompt = "Drop Echo: %s record lower-route ping" % _action_label("interact")
 	elif player_near_east_shelf_pocket:
-		prompt = "East Shelf pocket: %s inspect threshold" % _action_label("interact")
+		prompt = "East Shelf Pocket: %s recover signal core" % _action_label("interact")
 	elif player_in_base:
 		if dive_session.has_left_base:
 			prompt = "At base: %s extract" % _action_label("interact")
@@ -1565,6 +1569,30 @@ func _sync_discovery_reveals() -> void:
 	_sync_predator_warning_upgrade_state()
 	_sync_wreck_echo_state()
 	_sync_sealed_shelf_hatch_state()
+	_sync_east_shelf_pocket_payoff_state()
+
+func _sync_east_shelf_pocket_payoff_state() -> void:
+	var halo := east_shelf_signal_core_halo
+	if halo == null:
+		halo = get_node_or_null("EastShelfSpur/PocketEntrance/SignalCore/CoreHalo") as Polygon2D
+	var gem := east_shelf_signal_core_gem
+	if gem == null:
+		gem = get_node_or_null("EastShelfSpur/PocketEntrance/SignalCore/CoreGem") as Polygon2D
+	var spark := east_shelf_signal_core_spark
+	if spark == null:
+		spark = get_node_or_null("EastShelfSpur/PocketEntrance/SignalCore/CoreSpark") as Polygon2D
+	if halo == null or gem == null or spark == null:
+		return
+
+	if run_east_shelf_pocket_ping_recovered:
+		halo.color = Color(0.52, 1.0, 0.84, 0.08)
+		gem.color = Color(0.92, 1.0, 0.56, 0.18)
+		spark.visible = false
+	else:
+		halo.color = Color(0.52, 1.0, 0.84, 0.34)
+		gem.color = Color(0.92, 1.0, 0.56, 0.82)
+		spark.color = Color(1.0, 1.0, 0.82, 0.92)
+		spark.visible = true
 
 func _reveal_thermal_vent_route() -> void:
 	var route_hint := vent_route_hint
@@ -2338,6 +2366,7 @@ func _reset_run_telemetry() -> void:
 	blue_chimney_draft_timer = 0.0
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
+	_sync_east_shelf_pocket_payoff_state()
 
 func _format_run_telemetry(result_name: String) -> String:
 	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
@@ -2483,7 +2512,7 @@ func _format_wreck_echo_research_callout() -> String:
 
 func _format_east_shelf_pocket_research_callout() -> String:
 	if run_east_shelf_pocket_ping_recovered:
-		return "\nResearch: East Shelf pocket ping suggests a sealed route below the arch."
+		return "\nResearch: East Shelf signal core points to a sealed route below the arch."
 
 	return ""
 

@@ -732,6 +732,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/PocketEntrance/LandmarkSpireA",
 		"EastShelfSpur/PocketEntrance/LandmarkSpireB",
 		"EastShelfSpur/PocketEntrance/InteriorGlowPool",
+		"EastShelfSpur/PocketEntrance/SignalCore",
+		"EastShelfSpur/PocketEntrance/SignalCore/CoreHalo",
+		"EastShelfSpur/PocketEntrance/SignalCore/CoreGem",
+		"EastShelfSpur/PocketEntrance/SignalCore/CoreSpark",
 		"EastShelfSpur/PocketEntrance/ThresholdGlow",
 		"EastShelfSpur/PocketEntrance/ExitCurrentCue",
 		"EastShelfSpur/PocketEntrance/InteractZone",
@@ -814,6 +818,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var landmark_spire_a := main.get_node("EastShelfSpur/PocketEntrance/LandmarkSpireA") as Polygon2D
 	var landmark_spire_b := main.get_node("EastShelfSpur/PocketEntrance/LandmarkSpireB") as Polygon2D
 	var interior_glow_pool := main.get_node("EastShelfSpur/PocketEntrance/InteriorGlowPool") as Polygon2D
+	var signal_core_halo := main.get_node("EastShelfSpur/PocketEntrance/SignalCore/CoreHalo") as Polygon2D
+	var signal_core_gem := main.get_node("EastShelfSpur/PocketEntrance/SignalCore/CoreGem") as Polygon2D
+	var signal_core_spark := main.get_node("EastShelfSpur/PocketEntrance/SignalCore/CoreSpark") as Polygon2D
 	var exit_current := main.get_node("EastShelfSpur/PocketEntrance/ExitCurrentCue") as Polygon2D
 	var sealed_hatch := main.get_node("EastShelfSpur/SealedShelfHatch") as Node2D
 	var hatch_lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
@@ -872,6 +879,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(foreground_shelf_lip.color.a >= 0.7, "East Shelf pocket should have a foreground shelf lip for destination depth")
 	_expect(landmark_spire_a.color.a >= 0.4 and landmark_spire_b.color.a >= 0.3, "East Shelf pocket should include distinct landmark spires")
 	_expect(interior_glow_pool.color.a >= 0.2, "East Shelf pocket should include a soft interior glow pool")
+	_expect(signal_core_halo.color.a >= 0.3 and signal_core_gem.color.a >= 0.8, "East Shelf pocket should contain a clear visible payoff core")
+	_expect(signal_core_spark.visible and signal_core_spark.color.a >= 0.9, "East Shelf pocket payoff should have a bright recoverable spark")
 	_expect(exit_current.polygon[1].x < exit_current.polygon[0].x, "East Shelf pocket exit cue should point back left toward the main route")
 	_expect(sealed_hatch.position.x >= pocket_entrance.position.x, "Sealed Shelf Hatch should sit at or beyond the pocket entrance as a future promise")
 	_expect(hatch_lock_label.text == "ECHO LOCK", "Sealed Shelf Hatch should start as an Echo Lens locked promise")
@@ -1445,22 +1454,22 @@ func _test_wreck_echo_route_first_pass() -> void:
 
 func _test_east_shelf_pocket_result_callout() -> void:
 	var main := MainScript.new()
-	_expect(main._format_east_shelf_pocket_research_callout() == "", "East Shelf pocket result line should stay hidden before ping recovery")
+	_expect(main._format_east_shelf_pocket_research_callout() == "", "East Shelf pocket result line should stay hidden before signal-core recovery")
 
 	main.run_east_shelf_pocket_ping_recovered = true
 	var callout := main._format_east_shelf_pocket_research_callout()
-	_expect(callout.contains("East Shelf pocket ping"), "East Shelf pocket ping should produce compact research memory")
+	_expect(callout.contains("East Shelf signal core"), "East Shelf signal core should produce compact research memory")
 	_expect(callout.contains("sealed route below the arch"), "East Shelf pocket result line should stay broad and local")
 	_expect(not callout.to_lower().contains("map"), "East Shelf pocket result line should not imply a map marker")
 	_expect(not callout.to_lower().contains("quest"), "East Shelf pocket result line should not imply quest UI")
 	_expect(not callout.to_lower().contains("checklist"), "East Shelf pocket result line should not imply checklist UI")
 
 	var extraction_summary := main._format_extraction_result_summary(0, [])
-	_expect(extraction_summary.contains("East Shelf pocket ping"), "East Shelf pocket extraction summary should include recovered ping memory")
+	_expect(extraction_summary.contains("East Shelf signal core"), "East Shelf pocket extraction summary should include recovered signal-core memory")
 	_expect(not extraction_summary.contains("%s"), "East Shelf pocket extraction summary should not leak string placeholders")
 	var saved: Dictionary = main.progression_state.to_save_data()
-	_expect(not saved.has("east_shelf_pocket_ping"), "East Shelf pocket ping should not become durable save data")
-	_expect(not saved.has("east_shelf_routes"), "East Shelf pocket ping should not create durable route state")
+	_expect(not saved.has("east_shelf_pocket_signal_core"), "East Shelf signal core should not become durable save data")
+	_expect(not saved.has("east_shelf_routes"), "East Shelf signal core should not create durable route state")
 	main.free()
 
 func _test_lower_connector_echo_opportunity() -> void:
@@ -2461,15 +2470,20 @@ func _test_east_shelf_pocket_prompt_interaction() -> void:
 	main.dive_session.start()
 	main.player_in_base = false
 	main.player_near_east_shelf_pocket = true
+	var signal_core_gem := main.get_node("EastShelfSpur/PocketEntrance/SignalCore/CoreGem") as Polygon2D
+	var signal_core_spark := main.get_node("EastShelfSpur/PocketEntrance/SignalCore/CoreSpark") as Polygon2D
+	main.call("_sync_east_shelf_pocket_payoff_state")
+	_expect(signal_core_gem.color.a >= 0.8 and signal_core_spark.visible, "East Shelf signal core should start as an obvious visible payoff")
 	var prompt: String = main.call("_format_hud_prompt")
-	_expect(prompt.contains("East Shelf pocket"), "East Shelf pocket proximity should own the active dive prompt")
-	_expect(prompt.contains("inspect threshold"), "East Shelf pocket prompt should explain the narrow interaction")
+	_expect(prompt.contains("East Shelf Pocket"), "East Shelf pocket proximity should own the active dive prompt")
+	_expect(prompt.contains("recover signal core"), "East Shelf pocket prompt should name the visible payoff")
 
 	var handled: bool = main.call("_try_east_shelf_pocket_interaction")
 	_expect(handled, "East Shelf pocket should handle interact while the player is nearby during a dive")
 	_expect(main.run_east_shelf_pocket_ping_recovered, "East Shelf pocket interaction should record one run-scoped research ping")
+	_expect(signal_core_gem.color.a <= 0.2 and not signal_core_spark.visible, "East Shelf signal core should visibly dim after recovery")
 	if main.status_label != null:
-		_expect(main.status_label.text.contains("research ping recorded"), "East Shelf pocket interaction should acknowledge the run-scoped payoff")
+		_expect(main.status_label.text.contains("signal core recovered"), "East Shelf pocket interaction should acknowledge the visible payoff")
 
 	var repeat_handled: bool = main.call("_try_east_shelf_pocket_interaction")
 	_expect(repeat_handled, "East Shelf pocket should keep handling repeat interact while nearby")
@@ -2482,6 +2496,7 @@ func _test_east_shelf_pocket_prompt_interaction() -> void:
 
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_east_shelf_pocket_ping_recovered, "East Shelf pocket research ping should reset between expeditions")
+	_expect(signal_core_gem.color.a >= 0.8 and signal_core_spark.visible, "East Shelf signal core should be visible again after expedition reset")
 	main.queue_free()
 
 func _test_east_shelf_current_surge_visual_timing() -> void:

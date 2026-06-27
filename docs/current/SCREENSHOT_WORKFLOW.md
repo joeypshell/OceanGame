@@ -177,7 +177,7 @@ Current workflow gap review: `docs/planning/PLAYWRIGHT_SCREENSHOT_WORKFLOW_GAP_R
 Current hardening status:
 
 - `extraction-result.png` and `upgrade-tab.png` now follow a leave-base, return, extract, then open-upgrade-tab flow. Reviewers should still confirm the image actually shows the named surface state before relying on it.
-- Playwright now fails before capture if the exported game reports the wrong visual state for the screenshot name, such as an active dive under `extraction-result.png`, a non-critical state under `active-critical-oxygen.png`, the wrong route stage under `expanded-east-shelf-route-staged.png` or `lower-connector-staged.png`, or a missing pocket ping under `east-shelf-pocket-ping-staged.png`.
+- Playwright now fails before capture if the exported game reports the wrong visual state for the screenshot name, such as an active dive under `extraction-result.png`, a non-critical state under `active-critical-oxygen.png`, the wrong route stage under `expanded-east-shelf-route-staged.png` or `lower-connector-staged.png`, or a missing signal-core recovery state under `east-shelf-pocket-ping-staged.png`.
 - Wreck Echo route/result screenshots still use the F6 review hook. Treat them as route/result layout evidence, not normal gameplay-traversal proof.
 - The no-debug Wreck Echo result panel is automated as `wreck-echo-result-player-facing.png`, but it is still staged before telemetry is hidden.
 - Future controller/touch prompt states are not fully automated yet.
