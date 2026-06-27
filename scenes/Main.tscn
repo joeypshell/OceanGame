@@ -1028,6 +1028,18 @@ shape = SubResource("CircleShape2D_blue_chimney_reading")
 [node name="HollowReefCave" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench"]
 position = Vector2(248, 154)
 
+[node name="SpriteAnchor" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+z_index = -1
+
+[node name="Sprite" type="Sprite2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/SpriteAnchor"]
+position = Vector2(-186, -116)
+scale = Vector2(0.88, 0.88)
+centered = false
+modulate = Color(1, 1, 1, 0.48)
+metadata/source_art_path = "res://assets/source/sprites/landmark_hollow_reef_cave_sprite_v1.svg"
+metadata/export_art_path = "res://assets/exports/sprites/landmark_hollow_reef_cave_sprite_v1.svg"
+metadata/provenance_path = "res://assets/licenses/landmark_hollow_reef_cave_sprite_v1.txt"
+
 [node name="CaveMouthShadow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 color = Color(0.004, 0.02, 0.034, 0.7)
 polygon = PackedVector2Array(-124, -58, 12, -100, 156, -52, 206, 34, 144, 112, -22, 102, -152, 38)

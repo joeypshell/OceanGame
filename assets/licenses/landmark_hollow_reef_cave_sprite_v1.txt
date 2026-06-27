@@ -1,0 +1,10 @@
+Asset path: assets/exports/sprites/landmark_hollow_reef_cave_sprite_v1.svg
+Source path: assets/source/sprites/landmark_hollow_reef_cave_sprite_v1.svg
+Creator or tool: Codex-authored SVG source art.
+License or usage basis: Original project asset for OceanGame.
+Source URL: n/a
+Date added: 2026-06-27
+Prompt summary, if generated: none; authored as editable SVG code
+Edited after generation: n/a
+Intended use: prototype readability source/export asset for the Hollow Reef cave landmark slot
+Restrictions: Keep fallback geometry and gameplay ownership separate. Do not use this asset as a minimap marker, checklist objective, exact locator, combat arena, harvest node, cargo reward, or procedural cave system without a separate design issue.

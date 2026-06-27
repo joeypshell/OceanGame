@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="260" viewBox="0 0 420 260">
+  <title>Hollow Reef cave landmark v1</title>
+  <defs>
+    <linearGradient id="hollow-reef-water" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b8c8f" stop-opacity="0.44"/>
+      <stop offset="1" stop-color="#072334" stop-opacity="0.56"/>
+    </linearGradient>
+    <linearGradient id="hollow-reef-rim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7af3dd" stop-opacity="0.54"/>
+      <stop offset="0.55" stop-color="#4fc7c4" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#173f52" stop-opacity="0.48"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M38 152 C68 58 168 23 276 48 C354 66 402 122 386 178 C330 160 280 150 222 162 C154 176 92 180 38 152 Z" fill="#03141d" fill-opacity="0.72"/>
+    <path d="M22 154 C66 70 152 20 272 38 C350 50 404 110 398 164 C338 132 278 116 214 128 C146 140 82 160 22 154 Z" fill="url(#hollow-reef-rim)" stroke="#b7fff2" stroke-opacity="0.2" stroke-width="5"/>
+    <path d="M82 136 C118 96 172 76 244 84 C300 90 338 116 350 150 C300 138 254 136 210 148 C164 160 120 160 82 136 Z" fill="url(#hollow-reef-water)" stroke="#9affee" stroke-opacity="0.18" stroke-width="3"/>
+    <path d="M94 184 C158 166 244 162 354 178 L322 210 C236 196 158 202 80 218 Z" fill="#113a34" fill-opacity="0.54"/>
+    <path d="M86 174 C154 150 244 146 350 166" stroke="#95ffe9" stroke-opacity="0.32" stroke-width="6"/>
+    <path d="M126 188 C132 152 144 122 160 96 C176 126 186 160 188 200 Z" fill="#7ff2d5" fill-opacity="0.32"/>
+    <path d="M232 178 C238 134 254 104 276 84 C288 126 294 162 292 206 Z" fill="#9dffe3" fill-opacity="0.26"/>
+    <path d="M300 176 C310 142 326 118 348 104 C356 132 356 160 350 190 Z" fill="#60d7cf" fill-opacity="0.22"/>
+    <path d="M50 134 C94 116 142 108 194 112" stroke="#d6fff7" stroke-opacity="0.2" stroke-width="4"/>
+    <path d="M230 114 C288 112 336 126 378 154" stroke="#d6fff7" stroke-opacity="0.16" stroke-width="4"/>
+    <path d="M180 62 C212 52 250 52 292 64" stroke="#bffaf0" stroke-opacity="0.22" stroke-width="3"/>
+  </g>
+</svg>

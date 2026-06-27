@@ -748,6 +748,9 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"PressureLockedWreck/WreckSignalCache/FallbackVisual/CacheVisual",
 		"PressureLockedWreck/WreckSignalCache/ScanMarker",
 		"PressureLockedWreck/WreckSignalCache/EchoPulse",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/SpriteAnchor/Sprite",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveMouthShadow",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefRim",
 		"WreckEchoDescent/RouteWash",
 		"WreckEchoDescent/RibA",
 		"WreckEchoDescent/RibB",
@@ -855,6 +858,17 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	var pressure_wreck_scan_fallback := main.get_node("PressureLockedWreck/OuterScan/FallbackVisual/ScanVisual") as Polygon2D
 	_expect(pressure_wreck_scan_sprite.texture != null, "Pressure-Locked Research Wreck outside scan should use the first exported source asset sprite")
 	_expect(pressure_wreck_scan_fallback.visible, "Pressure-Locked Research Wreck outside scan fallback should remain available for pressure clue readability")
+
+	var hollow_reef_sprite := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/SpriteAnchor/Sprite") as Sprite2D
+	var hollow_reef_mouth_fallback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveMouthShadow") as Polygon2D
+	var hollow_reef_rim_fallback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefRim") as Polygon2D
+	_expect(hollow_reef_sprite.texture == null, "Hollow Reef cave source-art slot should not require imported texture metadata yet")
+	_expect(hollow_reef_sprite.get_meta("source_art_path", "") == "res://assets/source/sprites/landmark_hollow_reef_cave_sprite_v1.svg", "Hollow Reef cave slot should document its editable source path")
+	_expect(hollow_reef_sprite.get_meta("export_art_path", "") == "res://assets/exports/sprites/landmark_hollow_reef_cave_sprite_v1.svg", "Hollow Reef cave slot should document its runtime export path")
+	_expect(hollow_reef_sprite.get_meta("provenance_path", "") == "res://assets/licenses/landmark_hollow_reef_cave_sprite_v1.txt", "Hollow Reef cave slot should document its provenance path")
+	_expect(hollow_reef_sprite.modulate.a <= 0.55, "Hollow Reef cave sprite slot should be ready to support readability without overpowering fallback geometry")
+	_expect(hollow_reef_mouth_fallback.visible and hollow_reef_mouth_fallback.color.a >= 0.65, "Hollow Reef cave mouth fallback should remain available and readable")
+	_expect(hollow_reef_rim_fallback.visible, "Hollow Reef rim fallback should remain available for current route readability")
 
 	var midwater_shelf := main.get_node("MidwaterShelf") as Polygon2D
 	var midwater_wreck := main.get_node("MidwaterWreckSilhouette") as Polygon2D
