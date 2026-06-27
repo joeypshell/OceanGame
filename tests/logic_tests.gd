@@ -914,9 +914,10 @@ func _test_mirrorfin_route_read_behavior() -> void:
 	_expect(repeat_scan_status.contains("observation refreshed"), "repeat Mirrorfin scan should refresh behavior text compactly")
 	_expect(main._format_discovery_memory_callout().contains("Mirrorfin Drift"), "Mirrorfin first scan should produce compact discovery memory")
 	_expect(main._format_discovery_memory_callout().contains("without fighting"), "Mirrorfin discovery memory should frame observation as non-combat")
-	_expect(main._format_route_choice_callout() == "", "Mirrorfin scan alone should not override stronger route-choice memory")
+	_expect(main._format_route_choice_callout().contains("Mirror Kelp"), "Mirrorfin scan should now support compact Mirror Kelp route memory")
+	_expect(main._format_route_choice_callout().contains("reflection timing"), "Mirrorfin route memory should explain what the observation taught")
 	main.run_reached_dusk_trench = true
-	_expect(main._format_route_choice_callout().contains("Dusk Trench"), "Dusk reach evidence should keep priority over Mirrorfin observation")
+	_expect(main._format_route_choice_callout().contains("Mirror Kelp"), "Mirrorfin branch evidence should stay more specific than upstream route reach memory")
 
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(saved.get("scan_discoveries", {}).has("mirrorfin_drift"), "Mirrorfin discovery should persist through normal scan discovery storage")
@@ -2699,6 +2700,14 @@ func _test_expedition_prep_goals() -> void:
 	_expect(not goal.to_lower().contains("upgrade bay"), "recent Wide Reef Chamber ready goal should not create upgrade-bay promise copy yet")
 	_expect(not goal.to_lower().contains("craft"), "recent Wide Reef Chamber ready goal should not introduce crafting")
 	_expect_no_echo_lens_locator_language(goal, "recent Wide Reef Chamber ready goal")
+	goal = ExpeditionGoalFormatterScript.format_goal(blackwater_ready_progression, full_upgrades, "", "Mirror Kelp Pass")
+	_expect(goal.contains("Mirror Kelp"), "recent Mirror Kelp memory should keep the ready nudge on the new branch")
+	_expect(goal.contains("deep-kelp seal"), "recent Mirror Kelp memory should point toward the branch promise")
+	_expect(goal.contains("if oxygen allows"), "recent Mirror Kelp ready goal should stay optional")
+	_expect(goal.contains("Wide Reef"), "recent Mirror Kelp ready goal should keep broad return-route language")
+	_expect(not goal.to_lower().contains("checklist"), "recent Mirror Kelp ready goal should not imply a checklist")
+	_expect(not goal.to_lower().contains("map"), "recent Mirror Kelp ready goal should not imply map UI")
+	_expect_no_echo_lens_locator_language(goal, "recent Mirror Kelp ready goal")
 	var save_after_recent_goal: Dictionary = blackwater_ready_progression.to_save_data()
 	_expect(save_after_recent_goal == save_before_recent_goal, "ready route suggestions should not mutate save data")
 	_expect(not save_after_recent_goal.has("recent_route_memory"), "ready route suggestions should not add route memory to the save schema")
@@ -2713,6 +2722,9 @@ func _test_expedition_prep_goals() -> void:
 	incomplete_goal = ExpeditionGoalFormatterScript.format_goal(incomplete_progression, upgrades, "", "Hollow Reef")
 	_expect(incomplete_goal.contains("Oxygen Tank I"), "Hollow Reef chamber memory should not override incomplete upgrade progression goals")
 	_expect(not incomplete_goal.contains("wide chamber"), "wide chamber ready goal should wait until prep goals are complete")
+	incomplete_goal = ExpeditionGoalFormatterScript.format_goal(incomplete_progression, upgrades, "", "Mirror Kelp Pass")
+	_expect(incomplete_goal.contains("Oxygen Tank I"), "Mirror Kelp ready goal should not override incomplete upgrade progression goals")
+	_expect(not incomplete_goal.contains("deep-kelp seal"), "Mirror Kelp route memory should wait until prep goals are complete")
 
 func _test_result_progress_callouts() -> void:
 	var main := MainScript.new()
@@ -2857,6 +2869,14 @@ func _test_region_memory_result_callout() -> void:
 	var hollow_over_glassfin := main._format_region_memory_callout()
 	_expect(hollow_over_glassfin.contains("Hollow Reef"), "Hollow Reef route evidence should take priority over Glassfin observation")
 	_expect(not hollow_over_glassfin.contains("Glassfin Swarm"), "Glassfin observation should not crowd out Hollow Reef route evidence")
+	main.run_tideglass_sample_recovered = true
+	var mirror_kelp_memory := main._format_region_memory_callout()
+	_expect(mirror_kelp_memory.contains("Mirror Kelp Pass"), "Mirror Kelp payoff should remember the branch place")
+	_expect(mirror_kelp_memory.contains("Wide Reef"), "Mirror Kelp memory should preserve broad return-route language")
+	_expect(mirror_kelp_memory.contains("Hollow Reef"), "Mirror Kelp memory should preserve the lower-route return chain")
+	_expect(not mirror_kelp_memory.to_lower().contains("checklist"), "Mirror Kelp memory should not imply checklist UI")
+	_expect(not mirror_kelp_memory.to_lower().contains("map"), "Mirror Kelp memory should not imply map UI")
+	_expect_no_echo_lens_locator_language(mirror_kelp_memory, "Mirror Kelp remembered place")
 	main.free()
 
 func _test_discovery_memory_result_callout() -> void:
@@ -2969,9 +2989,24 @@ func _test_route_choice_result_callout() -> void:
 	_expect(main.progression_state.to_save_data() == save_before_wide_chamber_memory, "wide chamber route memory formatting should not mutate durable progression")
 	_expect(not main.progression_state.to_save_data().has("wide_reef_chamber_route"), "wide chamber route memory should not create durable route state")
 	_expect(not main.progression_state.to_save_data().has("recent_route_memory"), "wide chamber route memory should not create durable recent-route state")
+	main.run_tideglass_sample_recovered = true
+	var tideglass_route_callout := main._format_route_choice_callout()
+	_expect(tideglass_route_callout.contains("Mirror Kelp Pass"), "Tideglass payoff should produce Mirror Kelp route-choice memory")
+	_expect(tideglass_route_callout.contains("deeper kelp seal"), "Tideglass route memory should name the compact branch promise")
+	_expect(not tideglass_route_callout.contains("wide chamber"), "Mirror Kelp payoff should take priority over the upstream wide chamber route")
+	_expect_no_echo_lens_locator_language(tideglass_route_callout, "Tideglass route choice")
+	main.run_tideglass_sample_recovered = false
+	main.run_completed_scans = ["mirrorfin_drift"]
+	var mirrorfin_route_callout := main._format_route_choice_callout()
+	_expect(mirrorfin_route_callout.contains("Mirror Kelp"), "Mirrorfin observation should produce Mirror Kelp route-choice memory")
+	_expect(mirrorfin_route_callout.contains("reflection timing"), "Mirrorfin route memory should name the observation lesson")
+	_expect(not mirrorfin_route_callout.contains("wide chamber"), "Mirrorfin route memory should take priority over the upstream wide chamber route")
+	_expect(not mirrorfin_route_callout.to_lower().contains("checklist"), "Mirrorfin route memory should not imply checklist UI")
+	_expect_no_echo_lens_locator_language(mirrorfin_route_callout, "Mirrorfin route choice")
 	main.run_salvage_data_cache_recovered = false
 	main.run_hollow_reef_reading_recovered = false
 	main.run_reached_dusk_trench = false
+	main.run_completed_scans = []
 
 	main.run_completed_scans = ["hollow_reef_skitter"]
 	var save_before_hollow_observation: Dictionary = main.progression_state.to_save_data().duplicate(true)
@@ -4076,6 +4111,36 @@ func _test_recent_expedition_log() -> void:
 	_expect(not main.progression_state.to_save_data().has("wide_reef_chamber_route"), "recent wide chamber memory should not create durable route state")
 
 	main.recent_expedition_log.clear()
+	main.progression_state.current_run_number = 14
+	main.progression_state.current_run_seed = 2014
+	main.progression_state.best_depth_reached = 352.0
+	main.run_completed_scans = ["mirrorfin_drift"]
+	main.run_collected_resources = []
+	main.run_predator_contacts = 0
+	main.run_blue_chimney_draft_reading_recovered = true
+	main.run_blackwater_trace_recovered = true
+	main.run_reached_dusk_trench = true
+	main.run_hollow_reef_reading_recovered = true
+	main.run_salvage_data_cache_recovered = true
+	main.run_tideglass_sample_recovered = true
+	var save_before_recent_mirror_kelp: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	main._record_recent_expedition("Extracted", 0)
+	log_text = main._format_recent_expedition_log()
+	_expect(log_text.contains("#14 Extracted"), "recent expedition log should include Mirror Kelp branch runs")
+	_expect(log_text.contains("route Mirror Kelp Pass"), "Mirror Kelp evidence should produce compact recent route memory")
+	_expect(log_text.contains("scans Mirrorfin Drift"), "Mirrorfin scan should appear with readable scan name")
+	_expect(not log_text.contains("route Wide Reef Chamber"), "Mirror Kelp recent route memory should take priority over upstream wide chamber memory")
+	_expect(not log_text.contains("route Hollow Reef"), "Mirror Kelp recent route memory should take priority over upstream Hollow Reef memory")
+	_expect(not log_text.contains("seed"), "Mirror Kelp recent log should hide raw seed without debug telemetry")
+	_expect(not log_text.to_lower().contains("checklist"), "Mirror Kelp recent log should not imply checklist UI")
+	_expect(not log_text.to_lower().contains("field guide"), "Mirror Kelp recent log should not imply field-guide UI")
+	_expect_no_echo_lens_locator_language(log_text, "Mirror Kelp recent expedition log")
+	_expect(main._latest_recent_route_memory() == "Mirror Kelp Pass", "latest route helper should expose Mirror Kelp Pass after branch evidence")
+	_expect(main.progression_state.to_save_data() == save_before_recent_mirror_kelp, "Mirror Kelp recent route memory should remain session-only")
+	_expect(not main.progression_state.to_save_data().has("mirror_kelp_pass_route"), "recent Mirror Kelp memory should not create durable route state")
+
+	main.recent_expedition_log.clear()
+	main.run_tideglass_sample_recovered = false
 	main.progression_state.current_run_number = 12
 	main.progression_state.current_run_seed = 2012
 	main.progression_state.best_depth_reached = 316.0

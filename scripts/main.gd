@@ -3602,6 +3602,10 @@ func _format_condition_briefing() -> String:
 	]
 
 func _format_route_choice_callout() -> String:
+	if run_tideglass_sample_recovered:
+		return "Route choice: Mirror Kelp Pass reading marked a deeper kelp seal."
+	if run_completed_scans.has("mirrorfin_drift"):
+		return "Route choice: observed Mirror Kelp reflection timing."
 	if run_salvage_data_cache_recovered:
 		return "Route choice: wide chamber salvage cache marked a sealed pocket."
 	if run_hollow_reef_reading_recovered:
@@ -3644,6 +3648,8 @@ func _format_route_choice_callout() -> String:
 	return "Route choice: banked a cautious resource run."
 
 func _format_recent_route_memory() -> String:
+	if _run_has_mirror_kelp_evidence():
+		return "Mirror Kelp Pass"
 	if run_salvage_data_cache_recovered:
 		return "Wide Reef Chamber"
 	if run_hollow_reef_reading_recovered or _run_has_hollow_reef_observation():
@@ -3768,6 +3774,8 @@ func _format_sealed_shelf_hatch_readiness_callout() -> String:
 	return "\nLab note: Echo Lens reads the Sealed Shelf Hatch; Resonance Key planning can wait."
 
 func _format_region_memory_callout() -> String:
+	if _run_has_mirror_kelp_evidence():
+		return "Remembered place: Mirror Kelp Pass - reflective branch beyond Wide Reef; return through Hollow Reef."
 	if run_salvage_data_cache_recovered:
 		return "Remembered place: Wide Reef Chamber - salvage pocket off Hollow Reef; return through Dusk."
 	if run_hollow_reef_reading_recovered:
@@ -3790,6 +3798,9 @@ func _format_region_memory_callout() -> String:
 		return "Remembered place: Shell Reef - a safer midwater bank route."
 
 	return "Remembered place: Surface Base - safe return resolves the day."
+
+func _run_has_mirror_kelp_evidence() -> bool:
+	return run_tideglass_sample_recovered or run_completed_scans.has("mirrorfin_drift")
 
 func _format_discovery_memory_callout() -> String:
 	if run_completed_scans.has("wreck_signal_cache"):
