@@ -1830,6 +1830,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var lantern_ray_collision := main.get_node("Creatures/LanternRayRoute/CollisionShape2D") as CollisionShape2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var hollow_reef_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/HollowReefA") as SpawnPoint
+	var mirror_kelp_cargo_candidate := main.get_node("StarterResourceCandidates/KelpFiber/MirrorKelpA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
 	var shelf_glimmer := main.get_node("EastShelfSpur/ShelfGlimmerOpportunity") as Node2D
@@ -2210,8 +2211,14 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_reef_glow_candidate.depth_band == "deep", "Hollow Reef material candidate should preserve deep resource identity")
 	_expect(hollow_reef_glow_candidate.cluster_pattern == "deep_reward", "Hollow Reef material candidate should stay optional in the deep-reward resource pool")
 	_expect(hollow_reef_glow_candidate.position.distance_to(hollow_resource_pocket.global_position) <= 48.0, "Hollow Reef material candidate should sit inside the sheltered pocket")
+	_expect(mirror_kelp_cargo_candidate.target_id == "kelp_fiber", "Mirror Kelp cargo split should use existing Kelp Fiber")
+	_expect(mirror_kelp_cargo_candidate.depth_band == "deep", "Mirror Kelp cargo split should stay in the deep branch context")
+	_expect(mirror_kelp_cargo_candidate.cluster_pattern == "deep_reward", "Mirror Kelp cargo split should remain optional deep-reward route pressure")
+	_expect(mirror_kelp_cargo_candidate.global_position.distance_to(tideglass_sample.global_position) >= 90.0, "Mirror Kelp cargo and Tideglass knowledge should not stack on each other")
+	_expect(mirror_kelp_cargo_candidate.global_position.y > tideglass_sample.global_position.y, "Mirror Kelp cargo should sit below the Tideglass payoff so the choice reads as two local commitments")
 	_expect(main.get_node_or_null("ResourcePickups/BlueChimneyGlowPlankton") == null, "Blue Chimney candidate should not add an extra active resource pickup")
 	_expect(main.get_node_or_null("ResourcePickups/HollowReefGlowPlankton") == null, "Hollow Reef candidate should not add an extra active resource pickup")
+	_expect(main.get_node_or_null("ResourcePickups/MirrorKelpFiber") == null, "Mirror Kelp cargo split should not add an extra active resource pickup")
 
 	main.free()
 

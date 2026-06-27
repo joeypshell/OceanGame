@@ -1990,6 +1990,14 @@ target_id = "kelp_fiber"
 depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
+[node name="MirrorKelpA" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
+position = Vector2(4084, 3096)
+script = ExtResource("9_spawn_point")
+spawn_id = "kelp_mirror_kelp_pass_a"
+target_id = "kelp_fiber"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+
 [node name="ShellFragments" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
