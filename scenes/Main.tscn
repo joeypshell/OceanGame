@@ -601,6 +601,29 @@ polygon = PackedVector2Array(0, -24, 22, -8, 26, 18, 4, 32, -20, 16, -28, -8)
 color = Color(0.004, 0.018, 0.036, 0.52)
 polygon = PackedVector2Array(54, 72, 126, 40, 152, 80, 110, 128, 42, 118)
 
+[node name="SiltVeinFork" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
+position = Vector2(48, 156)
+
+[node name="ForkMouth" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork"]
+color = Color(0.024, 0.084, 0.1, 0.38)
+polygon = PackedVector2Array(-92, -42, -26, -82, 66, -66, 112, -6, 86, 58, -6, 76, -98, 28)
+
+[node name="SiltVeinRibs" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork"]
+color = Color(0.66, 0.84, 0.74, 0.14)
+polygon = PackedVector2Array(-118, -24, -52, -44, 8, -28, 70, -48, 126, -22, 64, -6, 8, -18, -58, -2)
+
+[node name="LeftBranchHint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork"]
+color = Color(0.48, 0.82, 0.72, 0.16)
+polygon = PackedVector2Array(-22, 26, -126, 70, -178, 138, -102, 160, -42, 98, 34, 62)
+
+[node name="RightBranchHint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork"]
+color = Color(0.14, 0.24, 0.34, 0.22)
+polygon = PackedVector2Array(34, 38, 124, 72, 184, 144, 132, 184, 62, 116, -2, 72)
+
+[node name="ForkTurnbackLip" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork"]
+color = Color(0.006, 0.024, 0.044, 0.48)
+polygon = PackedVector2Array(-134, 154, -54, 178, 72, 172, 156, 140, 190, 180, 92, 222, -62, 218, -166, 186)
+
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
 position = Vector2(34, 24)
 collision_layer = 0

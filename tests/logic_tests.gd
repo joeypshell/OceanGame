@@ -760,6 +760,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity/SignalWash",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity/SignalCore",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ClosedLowerCrack",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/ForkMouth",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/SiltVeinRibs",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LeftBranchHint",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/RightBranchHint",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/ForkTurnbackLip",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -792,6 +798,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var blue_chimney_signal := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity") as Node2D
 	var blue_chimney_signal_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity/SignalWash") as Polygon2D
 	var blue_chimney_crack := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ClosedLowerCrack") as Polygon2D
+	var silt_vein_fork := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork") as Node2D
+	var silt_fork_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/ForkMouth") as Polygon2D
+	var silt_left_hint := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LeftBranchHint") as Polygon2D
+	var silt_right_hint := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/RightBranchHint") as Polygon2D
+	var silt_turnback_lip := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/ForkTurnbackLip") as Polygon2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -839,6 +850,15 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blue_chimney_signal_wash.color.a <= 0.1, "Blue Chimney signal wash should stay subtle, not a guaranteed reward marker")
 	_expect(blue_chimney_crack.color.a >= 0.5, "Blue Chimney Pocket should include a visible closed lower turnback")
 	_expect(blue_chimney_pocket.get_node_or_null("Interior") == null, "Blue Chimney Pocket scaffold should not add a full interior system")
+	_expect(silt_vein_fork.position.y > blue_chimney_crack.polygon[blue_chimney_crack.polygon.size() - 1].y, "Silt Vein Fork should begin below the Blue Chimney lower crack")
+	_expect(silt_vein_fork.position.y <= 190.0, "Silt Vein Fork scaffold should stay compact under Blue Chimney")
+	_expect(silt_fork_mouth.color.a <= 0.42, "Silt Vein Fork mouth should stay subtle until branch content exists")
+	_expect(silt_left_hint.polygon[2].x < silt_left_hint.polygon[0].x, "Silt Vein Fork left hint should show a readable left branch")
+	_expect(silt_right_hint.polygon[2].x > silt_right_hint.polygon[0].x, "Silt Vein Fork right hint should show a readable right branch")
+	_expect(silt_right_hint.color.a <= 0.24, "Silt Vein Fork right branch should read as deferred pressure-dark promise")
+	_expect(silt_turnback_lip.color.a >= 0.45, "Silt Vein Fork should include a visible lower turnback lip")
+	_expect(silt_vein_fork.get_node_or_null("InteractZone") == null, "Silt Vein Fork scaffold should not add payoff interaction yet")
+	_expect(silt_vein_fork.get_node_or_null("Interior") == null, "Silt Vein Fork scaffold should not add a cave interior system")
 	_expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
 	_expect(blue_chimney_glow_candidate.depth_band == "deep", "Blue Chimney material candidate should preserve deep resource identity")
 	_expect(blue_chimney_glow_candidate.cluster_pattern == "deep_reward", "Blue Chimney material candidate should remain optional deep-reward route pressure")
@@ -2099,6 +2119,8 @@ func _test_expanded_region_world_bounds() -> void:
 	_expect(player.world_bounds.position.y >= 240.0, "expanded bounds should keep the sub below the boat hull")
 	_expect(player.world_bounds.end.y >= 2350.0, "expanded bounds should allow the first lower connector beyond East Shelf")
 	_expect(player.world_bounds.end.x <= 2300.0, "expanded bounds should stay narrow until a larger side-view level is explicitly planned")
+	_expect(player.world_bounds.end.y >= 2500.0, "expanded bounds should allow the first Silt Vein Fork scaffold below Blue Chimney")
+	_expect(player.world_bounds.end.y <= 2525.0, "expanded bounds should stay tight until a larger lower region is explicitly implemented")
 
 	var clamped_high := player.clamp_position_to_world_bounds(Vector2(640.0, 0.0))
 	_expect(clamped_high.y >= player.world_bounds.position.y, "world clamp should prevent surfacing through the boat sprite")
@@ -2109,6 +2131,10 @@ func _test_expanded_region_world_bounds() -> void:
 	var clamped_blue_chimney := player.clamp_position_to_world_bounds(Vector2(2112.0, 2190.0))
 	_expect(is_equal_approx(clamped_blue_chimney.x, 2112.0), "world clamp should keep Blue Chimney Pocket horizontally playable")
 	_expect(is_equal_approx(clamped_blue_chimney.y, 2190.0), "world clamp should keep Blue Chimney Pocket vertically playable")
+
+	var clamped_silt_vein_fork := player.clamp_position_to_world_bounds(Vector2(2160.0, 2490.0))
+	_expect(is_equal_approx(clamped_silt_vein_fork.x, 2160.0), "world clamp should keep Silt Vein Fork horizontally playable")
+	_expect(is_equal_approx(clamped_silt_vein_fork.y, 2490.0), "world clamp should keep Silt Vein Fork vertically playable")
 
 	var clamped_left := player.clamp_position_to_world_bounds(Vector2(-80.0, 900.0))
 	_expect(is_equal_approx(clamped_left.x, player.world_bounds.position.x), "world clamp should preserve the left edge of the main column")
@@ -2229,8 +2255,8 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	var player_bounds := PlayerScript.new()
 	var clamped_lower_connector := player_bounds.clamp_position_to_world_bounds(Vector2(2124.0, 2450.0))
 	_expect(is_equal_approx(clamped_lower_connector.x, 2124.0), "lower connector bounds should keep the staged route horizontally playable")
-	_expect(is_equal_approx(clamped_lower_connector.y, player_bounds.world_bounds.end.y), "lower connector bounds should stop below the first connector turnback")
-	_expect(player_bounds.world_bounds.end.y <= 2400.0, "lower connector bounds should stay tight until a larger level is explicitly implemented")
+	_expect(is_equal_approx(clamped_lower_connector.y, 2450.0), "lower connector bounds should keep the Silt Vein Fork approach playable")
+	_expect(player_bounds.world_bounds.end.y <= 2525.0, "lower connector bounds should stay tight until a larger level is explicitly implemented")
 	player_bounds.free()
 
 	var main := MainScene.instantiate()
