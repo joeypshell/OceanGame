@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -198,6 +198,39 @@ test.describe("OceanGame web visual smoke", () => {
       route_stage: "dusk_trench_payoff_recovered",
       dusk_trench_reached: true,
       glass_kelp_reading_recovered: true,
+    });
+  });
+
+  test("captures the staged Hollow Reef side-cave branch views", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageHollowReefRoute(page);
+    await capture(page, testInfo, "hollow-reef-entrance-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "hollow_reef_route",
+      dusk_trench_reached: true,
+      hollow_reef_reading_recovered: false,
+    });
+
+    await stageHollowReefPayoff(page);
+    await capture(page, testInfo, "hollow-reef-payoff-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "hollow_reef_payoff",
+      dusk_trench_reached: true,
+      hollow_reef_reading_recovered: false,
+    });
+
+    await stageHollowReefReturn(page);
+    await capture(page, testInfo, "hollow-reef-return-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "hollow_reef_return",
+      dusk_trench_reached: true,
+      hollow_reef_reading_recovered: true,
     });
   });
 

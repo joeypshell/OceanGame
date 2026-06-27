@@ -209,6 +209,45 @@ export async function stageDuskTrenchPayoffRecovered(page) {
   });
 }
 
+export async function stageHollowReefRoute(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "hollow_reef_route";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "hollow_reef_route",
+    dusk_trench_reached: true,
+    hollow_reef_reading_recovered: false,
+  });
+}
+
+export async function stageHollowReefPayoff(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "hollow_reef_payoff";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "hollow_reef_payoff",
+    dusk_trench_reached: true,
+    hollow_reef_reading_recovered: false,
+  });
+}
+
+export async function stageHollowReefReturn(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "hollow_reef_return";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "hollow_reef_return",
+    dusk_trench_reached: true,
+    hollow_reef_reading_recovered: true,
+  });
+}
+
 export async function stageOpenHatchResonanceAlcove(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "open_hatch_resonance_alcove";

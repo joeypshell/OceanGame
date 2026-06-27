@@ -1185,6 +1185,81 @@ func _stage_debug_dusk_trench_payoff_visual_review(recovered := false) -> void:
 	_update_depth()
 	_update_hud()
 
+func _stage_debug_hollow_reef_route_visual_review() -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var hollow_reef := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave") as Node2D
+	if hollow_reef == null:
+		return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	progression_state.purchased_upgrades[ECHO_LENS_UPGRADE_ID] = true
+	progression_state.purchased_upgrades[RESONANCE_KEY_UPGRADE_ID] = true
+	current_expedition_condition = {
+		"id": "calm_current",
+		"display_name": "Calm Current",
+		"briefing": "Safe routes are easier to read today.",
+		"tags": ["current", "return"],
+	}
+	_sync_sealed_shelf_hatch_state()
+	_sync_blackwater_crack_gate_state()
+	_sync_condition_visuals()
+	_update_blackwater_pressure_cue(BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
+
+	player = staged_player
+	player.global_position = hollow_reef.global_position + Vector2(-132.0, -28.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	player_near_blackwater_crack = false
+	player_near_glass_kelp_ledge = false
+	player_near_hollow_reef = false
+	run_reached_dusk_trench = true
+	run_glass_kelp_reading_recovered = false
+	run_hollow_reef_reading_recovered = false
+	_sync_glass_kelp_reading_state()
+	_sync_hollow_reef_reading_state()
+	visual_smoke_route_stage = "hollow_reef_route"
+	status_label.text = "Debug review: Hollow Reef entrance staged."
+	_update_depth()
+	_update_hud()
+
+func _stage_debug_hollow_reef_payoff_visual_review(recovered := false) -> void:
+	_stage_debug_hollow_reef_route_visual_review()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	var hollow_interact := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteractZone") as Area2D
+	if hollow_interact == null:
+		return
+
+	player.global_position = hollow_interact.global_position
+	player.velocity = Vector2.ZERO
+	player_near_hollow_reef = true
+	run_reached_dusk_trench = true
+	if recovered:
+		_try_hollow_reef_interaction()
+		visual_smoke_route_stage = "hollow_reef_return"
+	else:
+		run_hollow_reef_reading_recovered = false
+		_sync_hollow_reef_reading_state()
+		visual_smoke_route_stage = "hollow_reef_payoff"
+		status_label.text = "Debug review: Hollow Reef payoff staged."
+	_update_depth()
+	_update_hud()
+
 func _stage_debug_open_hatch_alcove_visual_review() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -1255,6 +1330,12 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_dusk_trench_payoff_visual_review(false)
 		"dusk_trench_payoff_recovered":
 			_stage_debug_dusk_trench_payoff_visual_review(true)
+		"hollow_reef_route":
+			_stage_debug_hollow_reef_route_visual_review()
+		"hollow_reef_payoff":
+			_stage_debug_hollow_reef_payoff_visual_review(false)
+		"hollow_reef_return":
+			_stage_debug_hollow_reef_payoff_visual_review(true)
 		"open_hatch_resonance_alcove":
 			_stage_debug_open_hatch_alcove_visual_review()
 
@@ -2450,6 +2531,7 @@ func _publish_visual_smoke_state() -> void:
 		"blackwater_trace_recovered": run_blackwater_trace_recovered,
 		"dusk_trench_reached": run_reached_dusk_trench,
 		"glass_kelp_reading_recovered": run_glass_kelp_reading_recovered,
+		"hollow_reef_reading_recovered": run_hollow_reef_reading_recovered,
 		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
