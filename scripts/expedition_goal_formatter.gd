@@ -4,7 +4,7 @@ extends RefCounted
 const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
 const RESONANCE_KEY_UPGRADE_ID := "resonance_key_1"
 
-static func format_goal(progression_state: ProgressionState, upgrade_definitions: Array[UpgradeDefinition], condition_id := "") -> String:
+static func format_goal(progression_state: ProgressionState, upgrade_definitions: Array[UpgradeDefinition], condition_id := "", recent_route_memory := "") -> String:
 	for upgrade in upgrade_definitions:
 		if progression_state.has_upgrade(upgrade.id):
 			continue
@@ -33,8 +33,15 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 			upgrade.display_name,
 		]
 
+	var prepared_for_blackwater := progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)
+	if prepared_for_blackwater and recent_route_memory == "Dusk Trench":
+		return "Goal: follow Dusk toward Hollow Reef if oxygen allows, then return safely."
+	if prepared_for_blackwater and recent_route_memory == "Blackwater":
+		return "Goal: try Blackwater toward Dusk if oxygen allows, then return safely."
 	if condition_id == "rare_signal" and progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID):
 		return "Goal: check the Blackwater edge signal if oxygen allows, then return safely."
+	if prepared_for_blackwater:
+		return "Goal: try the Blackwater lower route if oxygen allows, then return safely."
 	if condition_id == "rare_signal":
 		return "Goal: check the East Shelf or Blue Chimney signal if oxygen allows, then return safely."
 

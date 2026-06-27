@@ -2627,13 +2627,20 @@ func _format_ready_panel_summary() -> String:
 		"Start with %d oxygen." % ceili(dive_session.max_oxygen),
 		"Collect, scan, push deeper, then return to bank cargo.",
 		_format_condition_briefing(),
-		ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id()),
+		ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory()),
 		"%s begins." % _action_label("interact"),
 	]
 	if show_debug_telemetry:
 		lines.append("Debug: F9 resets prototype save.")
 
 	return "\n".join(lines)
+
+func _latest_recent_route_memory() -> String:
+	if recent_expedition_log.is_empty():
+		return ""
+
+	var latest_entry := recent_expedition_log[recent_expedition_log.size() - 1]
+	return String(latest_entry.get("route_memory", ""))
 
 func _format_resource_counts(resource_ids: Array[String]) -> String:
 	if resource_ids.is_empty():

@@ -1807,10 +1807,30 @@ func _test_expedition_prep_goals() -> void:
 	_expect(goal.contains("if oxygen allows"), "Blackwater Rare Signal goal should stay optional")
 	_expect(goal.contains("return safely"), "Blackwater Rare Signal goal should preserve extraction pressure")
 	_expect_no_echo_lens_locator_language(goal, "Blackwater Rare Signal goal")
+	goal = ExpeditionGoalFormatterScript.format_goal(blackwater_ready_progression, full_upgrades)
+	_expect(goal.contains("Blackwater"), "prepared completed-upgrade goal should suggest the lower route outside Rare Signal")
+	_expect(goal.contains("if oxygen allows"), "prepared completed-upgrade lower-route goal should stay optional")
+	_expect(goal.contains("return safely"), "prepared completed-upgrade lower-route goal should preserve extraction pressure")
+	_expect_no_echo_lens_locator_language(goal, "prepared completed-upgrade lower-route goal")
+	goal = ExpeditionGoalFormatterScript.format_goal(blackwater_ready_progression, full_upgrades, "", "Blackwater")
+	_expect(goal.contains("Blackwater"), "recent Blackwater memory should keep the ready nudge on the same broad route")
+	_expect(goal.contains("Dusk"), "recent Blackwater memory should point the next dive toward Dusk")
+	_expect_no_echo_lens_locator_language(goal, "recent Blackwater ready goal")
+	var save_before_recent_goal: Dictionary = blackwater_ready_progression.to_save_data().duplicate(true)
+	goal = ExpeditionGoalFormatterScript.format_goal(blackwater_ready_progression, full_upgrades, "", "Dusk Trench")
+	_expect(goal.contains("Dusk"), "recent Dusk memory should keep the ready nudge broad")
+	_expect(goal.contains("Hollow Reef"), "recent Dusk memory should point toward the side-cave branch")
+	_expect_no_echo_lens_locator_language(goal, "recent Dusk ready goal")
+	var save_after_recent_goal: Dictionary = blackwater_ready_progression.to_save_data()
+	_expect(save_after_recent_goal == save_before_recent_goal, "ready route suggestions should not mutate save data")
+	_expect(not save_after_recent_goal.has("recent_route_memory"), "ready route suggestions should not add route memory to the save schema")
+	_expect(not save_after_recent_goal.has("ready_goal"), "ready route suggestions should not add goal state to the save schema")
 
 	var incomplete_progression := ProgressionStateScript.new()
 	var incomplete_goal := ExpeditionGoalFormatterScript.format_goal(incomplete_progression, upgrades, "rare_signal")
 	_expect(incomplete_goal.contains("Oxygen Tank I"), "Rare Signal route goal should not override upgrade progression goals")
+	incomplete_goal = ExpeditionGoalFormatterScript.format_goal(incomplete_progression, upgrades, "", "Blackwater")
+	_expect(incomplete_goal.contains("Oxygen Tank I"), "recent route memory should not override incomplete upgrade progression goals")
 
 func _test_result_progress_callouts() -> void:
 	var main := MainScript.new()
@@ -2840,6 +2860,7 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 func _test_recent_expedition_log() -> void:
 	var main := MainScript.new()
 	main.current_resource_cluster_pattern = "cautious"
+	_expect(main._latest_recent_route_memory() == "", "empty recent expedition log should not provide ready-route memory")
 
 	for run_number in range(1, 5):
 		main.progression_state.current_run_number = run_number
@@ -2903,6 +2924,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(log_text.find("route Blackwater") == log_text.rfind("route Blackwater"), "recent expedition log should not duplicate Blackwater route memory")
 	_expect(not log_text.contains("seed"), "Blackwater recent log should hide raw seed without debug telemetry")
 	_expect_no_echo_lens_locator_language(log_text, "Blackwater recent expedition log")
+	_expect(main._latest_recent_route_memory() == "Blackwater", "latest route helper should expose Blackwater for the next ready panel")
 
 	main.recent_expedition_log.clear()
 	main.progression_state.current_run_number = 10
@@ -2924,6 +2946,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(log_text.find("route Dusk Trench") == log_text.rfind("route Dusk Trench"), "recent expedition log should not duplicate Dusk route memory")
 	_expect(not log_text.contains("seed"), "Dusk recent log should hide raw seed without debug telemetry")
 	_expect_no_echo_lens_locator_language(log_text, "Dusk recent expedition log")
+	_expect(main._latest_recent_route_memory() == "Dusk Trench", "latest route helper should expose Dusk for the next ready panel")
 	main.free()
 
 func _test_thermal_vent_scan_clue_text() -> void:
