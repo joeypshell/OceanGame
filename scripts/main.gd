@@ -13,6 +13,7 @@ const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tre
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
 const ECHO_LENS_UPGRADE := preload("res://resources/upgrades/echo_lens_1.tres")
+const RESONANCE_KEY_UPGRADE := preload("res://resources/upgrades/resonance_key_1.tres")
 const CARGO_RACK_UPGRADE := preload("res://resources/upgrades/cargo_rack_1.tres")
 const PREDATOR_WARNING_UPGRADE := preload("res://resources/upgrades/predator_warning_1.tres")
 const DECOY_PULSE_UPGRADE := preload("res://resources/upgrades/decoy_pulse_1.tres")
@@ -21,6 +22,7 @@ const OXYGEN_TANK_UPGRADE_ID := "oxygen_tank_1"
 const PRESSURE_SEAL_UPGRADE_ID := "pressure_seal_1"
 const SIGNAL_LENS_UPGRADE_ID := "signal_lens_1"
 const ECHO_LENS_UPGRADE_ID := "echo_lens_1"
+const RESONANCE_KEY_UPGRADE_ID := "resonance_key_1"
 const CARGO_RACK_UPGRADE_ID := "cargo_rack_1"
 const PREDATOR_WARNING_UPGRADE_ID := "predator_warning_1"
 const DECOY_PULSE_UPGRADE_ID := "decoy_pulse_1"
@@ -208,6 +210,7 @@ var upgrade_definitions: Array[UpgradeDefinition] = [
 	PRESSURE_SEAL_UPGRADE,
 	SIGNAL_LENS_UPGRADE,
 	ECHO_LENS_UPGRADE,
+	RESONANCE_KEY_UPGRADE,
 	CARGO_RACK_UPGRADE,
 	PREDATOR_WARNING_UPGRADE,
 	DECOY_PULSE_UPGRADE,
@@ -837,6 +840,8 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 			pass
 		"echo_lens_wreck_echo":
 			_sync_wreck_echo_state()
+			_sync_sealed_shelf_hatch_state()
+		"resonance_key_1":
 			_sync_sealed_shelf_hatch_state()
 		"cargo_limit_4":
 			dive_session.cargo_limit = _current_cargo_limit()
@@ -1827,6 +1832,8 @@ func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
 			return "Effect: material scan pulse."
 		ECHO_LENS_UPGRADE_ID:
 			return "Role: broad wreck echoes, not a locator."
+		RESONANCE_KEY_UPGRADE_ID:
+			return "Effect: opens this hatch only."
 		CARGO_RACK_UPGRADE_ID:
 			return "Effect: +1 cargo slot."
 		PREDATOR_WARNING_UPGRADE_ID:
@@ -1947,6 +1954,8 @@ func _format_upgrade_display_name(upgrade_id: String) -> String:
 			return "Predator Warning I"
 		DECOY_PULSE_UPGRADE_ID:
 			return "Decoy Pulse I"
+		RESONANCE_KEY_UPGRADE_ID:
+			return "Resonance Key I"
 		_:
 			return upgrade_id
 
@@ -1967,6 +1976,8 @@ func _format_discovery_name(discovery_id: String) -> String:
 			return "Pressure-Locked Research Wreck"
 		"wreck_signal_cache":
 			return "Wreck Signal Cache"
+		"east_shelf_route_research":
+			return "East Shelf or Drop Echo research"
 		"gulper_eel":
 			return "Gulper Eel"
 		"lantern_fry":

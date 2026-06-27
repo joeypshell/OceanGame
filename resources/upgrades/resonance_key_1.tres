@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3 uid="uid://resonance_key_1_upgrade"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="1_upgrade_definition"]
+
+[resource]
+script = ExtResource("1_upgrade_definition")
+id = "resonance_key_1"
+display_name = "Resonance Key I"
+description = "Tunes recovered East Shelf echoes into one hatch-specific access module."
+resource_cost = {
+"glow_plankton": 2,
+"shell_fragments": 1
+}
+required_discovery = "east_shelf_route_research"
+required_upgrade = "echo_lens_1"
+effect_id = "resonance_key_1"
+locked_reason = "Echo Lens I plus recovered East Shelf or Drop Echo research are needed before the lab can tune this hatch key."
+available_text = "Available: press E or Enter to purchase."
+owned_text = "Owned: opens the current East Shelf hatch only."
