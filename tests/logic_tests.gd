@@ -1131,6 +1131,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelfLip",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ChoiceCueRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/DropBackCue",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket/PocketCleft",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket/PocketHalo",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket/PocketGlimmer",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneTurnbackLip",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth",
@@ -1282,6 +1286,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hollow_upper_lip := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelfLip") as Polygon2D
 	var hollow_upper_choice_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ChoiceCueRib") as Polygon2D
 	var hollow_upper_drop_back := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/DropBackCue") as Polygon2D
+	var hollow_resource_pocket := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket") as Node2D
+	var hollow_resource_cleft := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket/PocketCleft") as Polygon2D
+	var hollow_resource_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket/PocketHalo") as Polygon2D
+	var hollow_resource_glimmer := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket/PocketGlimmer") as Polygon2D
 	var hollow_lane_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneTurnbackLip") as Polygon2D
 	var hollow_deeper_promise := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise") as Node2D
 	var hollow_deeper_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth") as Polygon2D
@@ -1307,6 +1315,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var lantern_ray_scan_marker := main.get_node("Creatures/LanternRayRoute/ScanMarker") as Polygon2D
 	var lantern_ray_collision := main.get_node("Creatures/LanternRayRoute/CollisionShape2D") as CollisionShape2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
+	var hollow_reef_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/HollowReefA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
 	var shelf_glimmer := main.get_node("EastShelfSpur/ShelfGlimmerOpportunity") as Node2D
@@ -1524,6 +1533,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_upper_lip.color.a <= 0.4, "Hollow Reef upper shelf lip should frame optional space without becoming a wall")
 	_expect(hollow_upper_drop_back.color.a < hollow_lane_return.color.a, "Hollow Reef upper shelf drop-back cue should stay softer than the main return lane")
 	_expect(hollow_upper_drop_back.polygon[1].y > hollow_upper_drop_back.polygon[0].y, "Hollow Reef upper shelf drop-back cue should point down toward the main lane")
+	_expect(hollow_resource_pocket.position.x > 0.0 and hollow_resource_pocket.position.y > 0.0, "Hollow Reef sheltered resource pocket should sit inside the optional upper shelf")
+	_expect(hollow_resource_cleft.color.a >= 0.45, "Hollow Reef sheltered pocket should read as a protected cleft")
+	_expect(hollow_resource_halo.color.a <= 0.15, "Hollow Reef sheltered pocket halo should stay subtle enough not to crowd return cues")
+	_expect(hollow_resource_glimmer.color.g >= hollow_resource_glimmer.color.r, "Hollow Reef sheltered pocket glimmer should use familiar glow resource language")
+	_expect(hollow_resource_glimmer.color.a <= 0.36, "Hollow Reef sheltered pocket glimmer should suggest opportunity without guaranteeing a jackpot")
+	_expect(hollow_resource_pocket.get_node_or_null("ResourcePickup") == null, "Hollow Reef sheltered pocket should use existing spawn candidates instead of adding a new pickup node")
 	_expect(hollow_upper_shelf.get_node_or_null("InteractZone") == null, "Hollow Reef upper shelf should not add a new interaction hotspot")
 	_expect(hollow_upper_shelf.get_node_or_null("ResourcePickup") == null, "Hollow Reef upper shelf should not add cargo or loot")
 	_expect(hollow_upper_shelf.get_node_or_null("Predator") == null, "Hollow Reef upper shelf should not add combat pressure")
@@ -1585,7 +1600,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blue_chimney_glow_candidate.depth_band == "deep", "Blue Chimney material candidate should preserve deep resource identity")
 	_expect(blue_chimney_glow_candidate.cluster_pattern == "deep_reward", "Blue Chimney material candidate should remain optional deep-reward route pressure")
 	_expect(blue_chimney_glow_candidate.position.distance_to(blue_chimney_pocket.position) <= 72.0, "Blue Chimney material candidate should sit near the lower pocket")
+	_expect(hollow_reef_glow_candidate.target_id == "glow_plankton", "Hollow Reef sheltered pocket should use existing Glow Plankton")
+	_expect(hollow_reef_glow_candidate.depth_band == "deep", "Hollow Reef material candidate should preserve deep resource identity")
+	_expect(hollow_reef_glow_candidate.cluster_pattern == "deep_reward", "Hollow Reef material candidate should stay optional in the deep-reward resource pool")
+	_expect(hollow_reef_glow_candidate.position.distance_to(hollow_resource_pocket.global_position) <= 48.0, "Hollow Reef material candidate should sit inside the sheltered pocket")
 	_expect(main.get_node_or_null("ResourcePickups/BlueChimneyGlowPlankton") == null, "Blue Chimney candidate should not add an extra active resource pickup")
+	_expect(main.get_node_or_null("ResourcePickups/HollowReefGlowPlankton") == null, "Hollow Reef candidate should not add an extra active resource pickup")
 
 	main.free()
 

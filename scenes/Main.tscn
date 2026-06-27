@@ -1154,6 +1154,21 @@ polygon = PackedVector2Array(-18, -4, 44, -26, 86, 0, 24, 22)
 color = Color(0.62, 1, 0.88, 0.15)
 polygon = PackedVector2Array(82, 44, 38, 68, -18, 60, 28, 88, -34, 104, 42, 106, 102, 76)
 
+[node name="ShelteredResourcePocket" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice"]
+position = Vector2(54, 8)
+
+[node name="PocketCleft" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket"]
+color = Color(0.014, 0.05, 0.052, 0.5)
+polygon = PackedVector2Array(-40, -24, 18, -42, 68, -16, 54, 34, -14, 48, -58, 10)
+
+[node name="PocketHalo" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket"]
+color = Color(0.52, 1, 0.8, 0.13)
+polygon = PackedVector2Array(-62, -36, 14, -70, 92, -24, 82, 50, 6, 82, -78, 28)
+
+[node name="PocketGlimmer" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket"]
+color = Color(0.78, 1, 0.46, 0.34)
+polygon = PackedVector2Array(0, -18, 14, -6, 18, 10, 2, 20, -14, 8, -18, -6)
+
 [node name="LaneTurnbackLip" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
 color = Color(0.14, 0.22, 0.24, 0.44)
 polygon = PackedVector2Array(126, 22, 182, 44, 166, 82, 106, 70)
@@ -1735,6 +1750,14 @@ preferred_condition_id = "thermal_bloom"
 position = Vector2(2078, 2172)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_blue_chimney_a"
+target_id = "glow_plankton"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+
+[node name="HollowReefA" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
+position = Vector2(3116, 2884)
+script = ExtResource("9_spawn_point")
+spawn_id = "glow_hollow_reef_shelter_a"
 target_id = "glow_plankton"
 depth_band = "deep"
 cluster_pattern = "deep_reward"
