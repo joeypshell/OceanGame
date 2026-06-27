@@ -3790,7 +3790,11 @@ func _format_base_direction() -> String:
 		direction_text = "nearby"
 
 	var route_hint := ""
-	if delta.x > 2100.0 and delta.y > 2400.0:
+	if delta.x > 3000.0 and delta.y > 2500.0:
+		route_hint = " via Hollow/Dusk/Blackwater"
+	elif delta.x > 2200.0 and delta.y > 2400.0:
+		route_hint = " via Dusk/Blackwater"
+	elif delta.x > 2100.0 and delta.y > 2400.0:
 		route_hint = " via Blackwater/Silt/Blue"
 	elif delta.x > 1500.0 and delta.y > 2100.0:
 		route_hint = " via Silt/Blue"

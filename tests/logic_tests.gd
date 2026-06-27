@@ -4274,7 +4274,14 @@ func _test_expanded_region_base_direction() -> void:
 	scene_player.global_position = Vector2(2900.0, 3000.0)
 	var dusk_direction: String = main.call("_format_base_direction")
 	_expect(dusk_direction.contains("up-left"), "base direction should point up-left from the Dusk Trench")
-	_expect(dusk_direction.contains("Blackwater/Silt/Blue"), "base direction should compactly name the Dusk return landmark chain")
+	_expect(dusk_direction.contains("Dusk/Blackwater"), "base direction should compactly name the Dusk return landmark chain")
+	_expect(not dusk_direction.contains("Hollow"), "base direction should not name Hollow Reef before the player reaches the side-cave/wide chamber band")
+
+	scene_player.global_position = Vector2(3700.0, 2964.0)
+	var wide_chamber_direction: String = main.call("_format_base_direction")
+	_expect(wide_chamber_direction.contains("up-left"), "base direction should point up-left from the wide chamber")
+	_expect(wide_chamber_direction.contains("Hollow/Dusk/Blackwater"), "base direction should compactly name the wide chamber return route chain")
+	_expect(not wide_chamber_direction.contains("Silt/Blue"), "wide chamber base direction should avoid crowding the HUD with the full lower-route chain")
 
 	scene_player.global_position = main.start_position + Vector2(0.0, 500.0)
 	var vertical_direction: String = main.call("_format_base_direction")
@@ -4318,8 +4325,16 @@ func _test_no_minimap_orientation_guardrails() -> void:
 	scene_player.global_position = Vector2(2900.0, 3000.0)
 	var dusk_trench_direction: String = main.call("_format_base_direction")
 	_expect(dusk_trench_direction.contains("up-left"), "Dusk Trench orientation should use broad return direction")
-	_expect(dusk_trench_direction.contains("Blackwater/Silt/Blue"), "Dusk Trench orientation should keep compact named return memory")
+	_expect(dusk_trench_direction.contains("Dusk/Blackwater"), "Dusk Trench orientation should keep compact named return memory")
+	_expect(not dusk_trench_direction.contains("Hollow"), "Dusk Trench orientation should not claim the player is inside Hollow Reef")
 	_expect_no_echo_lens_locator_language(dusk_trench_direction, "Dusk Trench base direction")
+
+	scene_player.global_position = Vector2(3700.0, 2964.0)
+	var wide_chamber_direction: String = main.call("_format_base_direction")
+	_expect(wide_chamber_direction.contains("up-left"), "Wide chamber orientation should use broad return direction")
+	_expect(wide_chamber_direction.contains("Hollow/Dusk/Blackwater"), "Wide chamber orientation should keep a compact named return chain")
+	_expect(not wide_chamber_direction.contains("Silt/Blue"), "Wide chamber orientation should stay short enough for the active HUD")
+	_expect_no_echo_lens_locator_language(wide_chamber_direction, "Wide chamber base direction")
 
 	main.run_east_shelf_pocket_ping_recovered = true
 	main.run_lower_connector_echo_recovered = true
