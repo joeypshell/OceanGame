@@ -3072,6 +3072,8 @@ func _format_recent_route_memory() -> String:
 		return "Shelf Drop"
 	if run_east_shelf_pocket_ping_recovered:
 		return "East Shelf"
+	if run_completed_scans.has("lantern_ray"):
+		return "Lantern Ray"
 	if run_predator_contacts > 0:
 		return "Gulper Route"
 	if run_completed_scans.has("wreck_signal_cache") or run_completed_scans.has("pressure_wreck_signal"):
@@ -3160,6 +3162,8 @@ func _format_sealed_shelf_hatch_readiness_callout() -> String:
 func _format_region_memory_callout() -> String:
 	if run_reached_dusk_trench:
 		return "Remembered place: Dusk Trench - return up-left through Blackwater and Silt Vein to Blue Chimney."
+	if run_completed_scans.has("lantern_ray"):
+		return "Remembered place: Lantern Ray Route - watch the timing lane and return through Blackwater."
 	if run_predator_contacts > 0 or run_completed_scans.has("gulper_eel"):
 		return "Remembered place: Gulper Route - warning-lane timing matters."
 	if run_completed_scans.has("wreck_signal_cache") or run_completed_scans.has("pressure_wreck_signal"):

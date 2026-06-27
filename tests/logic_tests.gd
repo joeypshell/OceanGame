@@ -1696,13 +1696,25 @@ func _test_region_memory_result_callout() -> void:
 	main.run_completed_scans = ["pressure_wreck_signal"]
 	_expect(main._format_region_memory_callout().contains("Wreck Shelf"), "pressure wreck scan should remember Wreck Shelf")
 
+	main.run_completed_scans = ["lantern_ray"]
+	var lantern_ray_memory := main._format_region_memory_callout()
+	_expect(lantern_ray_memory.contains("Lantern Ray Route"), "Lantern Ray scan should remember the lower-route creature place")
+	_expect(lantern_ray_memory.contains("timing lane"), "Lantern Ray memory should point to observation timing rather than combat")
+	_expect(lantern_ray_memory.contains("Blackwater"), "Lantern Ray memory should preserve broad return-route language")
+	_expect_no_monster_combat_language(lantern_ray_memory, "Lantern Ray remembered place")
+	_expect(not lantern_ray_memory.to_lower().contains("field guide"), "Lantern Ray memory should not imply a field-guide UI")
+	_expect(not lantern_ray_memory.to_lower().contains("checklist"), "Lantern Ray memory should not imply checklist UI")
+
+	main.run_completed_scans.clear()
 	main.run_predator_contacts = 1
 	_expect(main._format_region_memory_callout().contains("Gulper Route"), "predator evidence should remember Gulper Route as the deepest contested place")
 	_expect(not main._format_region_memory_callout().contains(","), "region memory callout should stay compact and not become a checklist")
 
+	main.run_completed_scans = ["lantern_ray"]
 	main.run_reached_dusk_trench = true
 	var dusk_memory := main._format_region_memory_callout()
 	_expect(dusk_memory.contains("Dusk Trench"), "Dusk reach evidence should remember the lower-trench place")
+	_expect(not dusk_memory.contains("Lantern Ray Route"), "Dusk reach evidence should not be crowded out by Lantern Ray observation")
 	_expect(dusk_memory.contains("up-left"), "Dusk reach memory should keep broad return language")
 	_expect(dusk_memory.contains("Blackwater"), "Dusk reach memory should route back through the previous landmark")
 	_expect(not dusk_memory.contains("coordinate"), "Dusk reach memory should avoid exact-coordinate language")
@@ -1723,6 +1735,14 @@ func _test_discovery_memory_result_callout() -> void:
 
 	main.run_completed_scans = ["thermal_vent", "gulper_eel"]
 	_expect(main._format_discovery_memory_callout().contains("Gulper Eel"), "gulper first scan should produce creature research memory")
+
+	main.run_completed_scans = ["lantern_ray"]
+	var lantern_ray_discovery_memory := main._format_discovery_memory_callout()
+	_expect(lantern_ray_discovery_memory.contains("Lantern Ray"), "Lantern Ray first scan should produce creature observation memory")
+	_expect(lantern_ray_discovery_memory.contains("without fighting"), "Lantern Ray discovery memory should frame observation as non-combat")
+	_expect_no_monster_combat_language(lantern_ray_discovery_memory, "Lantern Ray discovery memory")
+	_expect(not lantern_ray_discovery_memory.to_lower().contains("field guide"), "Lantern Ray discovery memory should not imply a field-guide UI")
+	_expect(not lantern_ray_discovery_memory.to_lower().contains("checklist"), "Lantern Ray discovery memory should not imply checklist UI")
 
 	main.run_completed_scans = ["pressure_wreck_signal", "wreck_signal_cache", "wreck_signal_cache"]
 	var memory := main._format_discovery_memory_callout()
@@ -2584,6 +2604,26 @@ func _test_recent_expedition_log() -> void:
 	main.show_debug_telemetry = false
 
 	main.recent_expedition_log.clear()
+	main.progression_state.current_run_number = 8
+	main.progression_state.current_run_seed = 2008
+	main.progression_state.best_depth_reached = 280.0
+	main.run_completed_scans = ["lantern_ray"]
+	main.run_collected_resources = []
+	main.run_predator_contacts = 0
+	main.run_blue_chimney_draft_reading_recovered = false
+	main.run_blackwater_trace_recovered = false
+	main.run_reached_dusk_trench = false
+	main._record_recent_expedition("Extracted", 0)
+	log_text = main._format_recent_expedition_log()
+	_expect(log_text.contains("#8 Extracted"), "recent expedition log should include Lantern Ray observation runs")
+	_expect(log_text.contains("route Lantern Ray"), "Lantern Ray observation should produce compact recent route memory")
+	_expect(log_text.contains("scans Lantern Ray"), "Lantern Ray scan should appear with readable scan names")
+	_expect(not log_text.contains("seed"), "Lantern Ray recent log should hide raw seed without debug telemetry")
+	_expect(not log_text.to_lower().contains("field guide"), "Lantern Ray recent log should not imply field-guide UI")
+	_expect(not log_text.to_lower().contains("checklist"), "Lantern Ray recent log should not imply checklist UI")
+	_expect_no_monster_combat_language(log_text, "Lantern Ray recent expedition log")
+
+	main.recent_expedition_log.clear()
 	main.progression_state.current_run_number = 9
 	main.progression_state.current_run_seed = 2009
 	main.progression_state.best_depth_reached = 208.0
@@ -2604,7 +2644,7 @@ func _test_recent_expedition_log() -> void:
 	main.progression_state.current_run_number = 10
 	main.progression_state.current_run_seed = 2010
 	main.progression_state.best_depth_reached = 302.0
-	main.run_completed_scans = ["thermal_vent"]
+	main.run_completed_scans = ["thermal_vent", "lantern_ray"]
 	main.run_collected_resources = ["shell_fragments"]
 	main.run_predator_contacts = 2
 	main.run_blue_chimney_draft_reading_recovered = true
@@ -2615,6 +2655,8 @@ func _test_recent_expedition_log() -> void:
 	_expect(log_text.contains("#10 Extracted"), "recent expedition log should include Dusk route attempts")
 	_expect(log_text.contains("route Dusk Trench"), "recent expedition log should prioritize Dusk reach evidence")
 	_expect(not log_text.contains("route Blackwater"), "Dusk recent route memory should take priority over Blackwater")
+	_expect(not log_text.contains("route Lantern Ray"), "Dusk recent route memory should take priority over Lantern Ray observation")
+	_expect(log_text.contains("scans Thermal Vent/Lantern Ray"), "Dusk recent log should still keep compact scan names when Lantern Ray was scanned")
 	_expect(log_text.find("route Dusk Trench") == log_text.rfind("route Dusk Trench"), "recent expedition log should not duplicate Dusk route memory")
 	_expect(not log_text.contains("seed"), "Dusk recent log should hide raw seed without debug telemetry")
 	_expect_no_echo_lens_locator_language(log_text, "Dusk recent expedition log")
