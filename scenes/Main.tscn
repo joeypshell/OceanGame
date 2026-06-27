@@ -158,6 +158,20 @@ This is a turnback/route-continuation landmark, not a full biome or quest destin
 variable_hooks = "Future lower-connector opportunities can appear near or below this landmark."
 readability_priority = "Lower connector memory and up-left safe return orientation."
 
+[node name="BlueChimney" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "blue_chimney"
+display_name = "Blue Chimney"
+stable_region_name = "Blue Chimney Pocket"
+kind = "landmark"
+depth_band = "deep"
+role = "Persistent lower-pocket memory anchor below Shelf Drop."
+memory_goal = "Remember Blue Chimney as the compact lower pocket beyond Drop Arch; returning from it means following the reverse draft up-left toward Drop Arch, East Shelf, and the base column."
+persistent_facts = "Marks the first connected lower pocket after Shelf Drop.
+The closed lower crack is a future-depth promise, not an active route."
+variable_hooks = "Future lower-pocket expedition signals can appear near this landmark."
+readability_priority = "Lower-pocket memory and broad up-left return orientation."
+
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
 script = ExtResource("10_landmark_metadata")
 metadata_id = "thermal_vent_field"
@@ -553,6 +567,21 @@ polygon = PackedVector2Array(-150, -88, -20, -146, 112, -96, 158, -4, 98, 92, -5
 [node name="PocketFloor" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
 color = Color(0.018, 0.078, 0.108, 0.46)
 polygon = PackedVector2Array(-150, 70, -42, 94, 82, 82, 150, 38, 132, 96, 34, 140, -86, 130, -174, 94)
+
+[node name="BlueChimney" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
+position = Vector2(-12, -14)
+
+[node name="ChimneyColumn" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimney"]
+color = Color(0.18, 0.62, 0.72, 0.32)
+polygon = PackedVector2Array(-32, 56, -12, -82, 24, -92, 46, 48, 20, 72, -18, 72)
+
+[node name="ChimneyCrown" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimney"]
+color = Color(0.44, 0.86, 0.94, 0.26)
+polygon = PackedVector2Array(-44, -72, -6, -110, 42, -94, 66, -48, 22, -30, -28, -40)
+
+[node name="ReverseDraftReturn" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
+color = Color(0.72, 1, 0.94, 0.12)
+polygon = PackedVector2Array(-4, 50, -122, -20, -198, -30, -138, -62, -188, -106, -108, -78, 4, -10)
 
 [node name="ClosedLowerCrack" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
 color = Color(0.004, 0.018, 0.036, 0.52)

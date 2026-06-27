@@ -741,6 +741,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketMouth",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketRim",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketFloor",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimney",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimney/ChimneyColumn",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimney/ChimneyCrown",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ReverseDraftReturn",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ClosedLowerCrack",
 	]
 	for path in branch_paths:
@@ -769,6 +773,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var blue_chimney_pocket := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket") as Node2D
 	var blue_chimney_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketMouth") as Polygon2D
 	var blue_chimney_rim := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketRim") as Polygon2D
+	var blue_chimney_column := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimney/ChimneyColumn") as Polygon2D
+	var reverse_draft_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ReverseDraftReturn") as Polygon2D
 	var blue_chimney_crack := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ClosedLowerCrack") as Polygon2D
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -808,6 +814,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blue_chimney_pocket.position.y <= 2260.0, "Blue Chimney Pocket scaffold should stay small until larger route growth is planned")
 	_expect(blue_chimney_mouth.color.a <= 0.62, "Blue Chimney Pocket mouth should read as a small pocket, not a full cave network")
 	_expect(blue_chimney_rim.polygon.size() <= 14, "Blue Chimney Pocket rim should stay compact and authored")
+	_expect(blue_chimney_column.color.b >= blue_chimney_column.color.r, "Blue Chimney landmark should read as a blue local memory anchor")
+	_expect(reverse_draft_return.polygon[1].x < reverse_draft_return.polygon[0].x, "Blue Chimney reverse draft should point left toward Drop Arch")
+	_expect(reverse_draft_return.polygon[1].y < reverse_draft_return.polygon[0].y, "Blue Chimney reverse draft should point upward toward the return route")
+	_expect(reverse_draft_return.color.a <= 0.14, "Blue Chimney reverse draft should stay a soft route cue, not a map marker")
 	_expect(blue_chimney_crack.color.a >= 0.5, "Blue Chimney Pocket should include a visible closed lower turnback")
 	_expect(blue_chimney_pocket.get_node_or_null("Interior") == null, "Blue Chimney Pocket scaffold should not add a full interior system")
 
@@ -821,6 +831,7 @@ func _test_landmark_region_identity_metadata() -> void:
 		"ShellReef": "Shell Reef",
 		"EastShelfArch": "East Shelf Spur",
 		"DropArch": "Shelf Drop Connector",
+		"BlueChimney": "Blue Chimney Pocket",
 		"ThermalVentField": "Thermal Vent Field",
 		"WreckShelf": "Wreck Shelf",
 		"PressureLockedWreck": "Wreck Shelf",
@@ -831,6 +842,8 @@ func _test_landmark_region_identity_metadata() -> void:
 		var landmark := metadata_root.get_node(node_name)
 		_expect(String(landmark.get("stable_region_name")) == expected_regions[node_name], "landmark should expose stable region name: %s" % node_name)
 		_expect(not String(landmark.get("memory_goal")).is_empty(), "landmark should describe its player memory goal: %s" % node_name)
+		_expect(not String(landmark.get("memory_goal")).to_lower().contains("coordinate"), "landmark should avoid exact-coordinate memory language: %s" % node_name)
+		_expect(not String(landmark.get("memory_goal")).to_lower().contains("marker"), "landmark should avoid map-marker memory language: %s" % node_name)
 
 	main.free()
 
