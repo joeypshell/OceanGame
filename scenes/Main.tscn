@@ -218,6 +218,34 @@ It is not a full cave network, minimap objective, combat route, harvest route, o
 variable_hooks = "Future Hollow Reef upper shelf, creature, pocket, safe-return, and deeper-promise cues can attach here."
 readability_priority = "Side-cave mouth identity and broad up-left return orientation."
 
+[node name="GlassRibSpan" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "glass_rib_span"
+display_name = "Glass Rib Span"
+stable_region_name = "Wide Reef Chamber"
+kind = "chamber_landmark"
+depth_band = "deep/chamber"
+role = "Upper far-wall landmark inside the first wider Hollow Reef chamber."
+memory_goal = "Remember Glass Rib Span as the high cool ribs inside the Wide Reef Chamber; returning from it means following the open chamber back left through Hollow Reef, Dusk Trench, and Blackwater."
+persistent_facts = "Passive place identity only.
+It is not a resource, scan target, minimap marker, route objective, collision wall, or durable quest state."
+variable_hooks = "Future chamber route goals or creature behavior can reference this upper chamber landmark."
+readability_priority = "Upper chamber memory without competing with return-current or resource language."
+
+[node name="LowCrownShelf" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "low_crown_shelf"
+display_name = "Low Crown Shelf"
+stable_region_name = "Wide Reef Chamber"
+kind = "chamber_landmark"
+depth_band = "deep/chamber"
+role = "Lower foreground landmark inside the first wider Hollow Reef chamber."
+memory_goal = "Remember Low Crown Shelf as the lower shelf edge inside the Wide Reef Chamber; returning from it means rising left through Hollow Reef toward the Blackwater route chain."
+persistent_facts = "Passive place identity only.
+It is not a pickup, scan target, pressure boundary, objective label, map marker, or hidden movement rule."
+variable_hooks = "Future salvage, chamber payoff, or low-route creature placement can anchor near this lower chamber landmark."
+readability_priority = "Lower chamber memory while preserving the clear traversal band above it."
+
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
 script = ExtResource("10_landmark_metadata")
 metadata_id = "thermal_vent_field"
@@ -1221,6 +1249,14 @@ polygon = PackedVector2Array(-118, 82, 136, 138, 426, 118, 612, 48, 654, 100, 41
 [node name="ForegroundShelfEdge" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
 color = Color(0.01, 0.035, 0.05, 0.3)
 polygon = PackedVector2Array(-124, 122, 104, 172, 348, 154, 602, 78, 648, 116, 410, 210, 88, 226, -152, 152)
+
+[node name="GlassRibSpan" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.42, 0.84, 0.92, 0.24)
+polygon = PackedVector2Array(76, -124, 120, -176, 150, -118, 206, -168, 220, -104, 284, -144, 276, -78, 210, -92, 160, -80, 112, -96)
+
+[node name="LowCrownShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.18, 0.42, 0.39, 0.3)
+polygon = PackedVector2Array(214, 132, 274, 92, 332, 128, 392, 94, 452, 136, 390, 168, 304, 170)
 
 [node name="OpenWaterWindow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
 color = Color(0.14, 0.48, 0.54, 0.13)

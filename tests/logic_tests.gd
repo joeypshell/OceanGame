@@ -1221,6 +1221,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/UpperChamberShelf",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/LowerChamberShelf",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ForegroundShelfEdge",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassRibSpan",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/LowCrownShelf",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/OpenWaterWindow",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentBackToHollow",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentRibA",
@@ -1389,6 +1391,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hollow_wide_upper := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/UpperChamberShelf") as Polygon2D
 	var hollow_wide_lower := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/LowerChamberShelf") as Polygon2D
 	var hollow_wide_foreground := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ForegroundShelfEdge") as Polygon2D
+	var hollow_wide_glass_rib_span := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassRibSpan") as Polygon2D
+	var hollow_wide_low_crown_shelf := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/LowCrownShelf") as Polygon2D
 	var hollow_wide_open_water := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/OpenWaterWindow") as Polygon2D
 	var hollow_wide_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentBackToHollow") as Polygon2D
 	var hollow_wide_return_rib_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentRibA") as Polygon2D
@@ -1667,6 +1671,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_wide_upper.color.a >= 0.4 and hollow_wide_lower.color.a >= 0.5, "Wide Reef Chamber should frame the top and bottom shelves around the playable gap")
 	_expect(hollow_wide_foreground.color.a <= 0.32, "Wide Reef Chamber foreground edge should not obscure the sub or chamber cues")
 	_expect(hollow_wide_foreground.polygon[0].y > hollow_wide_clear_band.polygon[0].y, "Wide Reef Chamber foreground edge should stay below the main traversal band")
+	_expect(hollow_wide_glass_rib_span.color.b > hollow_wide_glass_rib_span.color.r, "Glass Rib Span should use cool chamber landmark language")
+	_expect(hollow_wide_glass_rib_span.color.a <= 0.26, "Glass Rib Span should remain passive and quieter than scan/resource targets")
+	_expect(hollow_wide_glass_rib_span.polygon[1].y < hollow_wide_clear_band.polygon[1].y, "Glass Rib Span should sit above the traversal band as an upper chamber landmark")
+	_expect(hollow_wide_low_crown_shelf.color.g > hollow_wide_low_crown_shelf.color.r, "Low Crown Shelf should use reef/cave landmark color rather than resource or predator color")
+	_expect(hollow_wide_low_crown_shelf.color.a <= 0.32, "Low Crown Shelf should stay passive and not read as a pickup")
+	_expect(hollow_wide_low_crown_shelf.polygon[0].y > hollow_wide_clear_band.polygon[0].y, "Low Crown Shelf should sit below the traversal band as a lower chamber landmark")
 	_expect(hollow_wide_return.color.g > hollow_wide_return.color.r and hollow_wide_return_rib_a.color.g > hollow_wide_return_rib_a.color.r, "Wide Reef Chamber return cue should use the established safe-current language")
 	_expect(hollow_wide_return.polygon[1].x < hollow_wide_return.polygon[0].x, "Wide Reef Chamber return cue should point back left toward Hollow Reef")
 	_expect(hollow_wide_future_choice.color.a <= 0.4, "Wide Reef Chamber future-choice shadow should stay a quiet staging cue")
@@ -1676,6 +1686,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_wide_chamber.get_node_or_null("PressureBoundary") == null, "Wide Reef Chamber should not add pressure gating yet")
 	_expect(hollow_wide_chamber.find_child("CollisionShape2D", true, false) == null, "Wide Reef Chamber should remain movement-readable visual staging")
 	_expect(hollow_wide_chamber.get_script() == null, "Wide Reef Chamber should remain authored scene presentation for this pass")
+	_expect(hollow_wide_glass_rib_span.get_node_or_null("InteractZone") == null, "Glass Rib Span should not add an interaction hotspot")
+	_expect(hollow_wide_low_crown_shelf.get_node_or_null("InteractZone") == null, "Low Crown Shelf should not add an interaction hotspot")
 	_expect(hollow_deeper_promise.position.x > hollow_reef_reading_core.position.x, "Hollow Reef deeper promise should sit beyond the current cave reading payoff")
 	_expect(hollow_deeper_promise.position.y > hollow_reef_reading_core.position.y, "Hollow Reef deeper promise should imply lower future route growth")
 	_expect(hollow_deeper_mouth.color.a >= 0.62, "Hollow Reef deeper promise mouth should read as an intentional closed opening")
@@ -1746,6 +1758,8 @@ func _test_landmark_region_identity_metadata() -> void:
 		"SiltVeinFork": "Silt Vein Fork",
 		"DuskTrench": "Dusk Trench",
 		"HollowReef": "Hollow Reef",
+		"GlassRibSpan": "Wide Reef Chamber",
+		"LowCrownShelf": "Wide Reef Chamber",
 		"ThermalVentField": "Thermal Vent Field",
 		"WreckShelf": "Wreck Shelf",
 		"PressureLockedWreck": "Wreck Shelf",
@@ -1758,6 +1772,7 @@ func _test_landmark_region_identity_metadata() -> void:
 		_expect(not String(landmark.get("memory_goal")).is_empty(), "landmark should describe its player memory goal: %s" % node_name)
 		_expect(not String(landmark.get("memory_goal")).to_lower().contains("coordinate"), "landmark should avoid exact-coordinate memory language: %s" % node_name)
 		_expect(not String(landmark.get("memory_goal")).to_lower().contains("marker"), "landmark should avoid map-marker memory language: %s" % node_name)
+		_expect(not String(landmark.get("memory_goal")).to_lower().contains("objective"), "landmark should avoid objective/checklist language: %s" % node_name)
 
 	main.free()
 
