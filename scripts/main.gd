@@ -964,6 +964,50 @@ func _stage_debug_silt_vein_fork_visual_review() -> void:
 	_update_depth()
 	_update_hud()
 
+func _stage_debug_blackwater_route_visual_review() -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var sill := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill") as Node2D
+	if sill == null:
+		return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	progression_state.purchased_upgrades[ECHO_LENS_UPGRADE_ID] = true
+	progression_state.purchased_upgrades[RESONANCE_KEY_UPGRADE_ID] = true
+	current_expedition_condition = {
+		"id": "rare_signal",
+		"display_name": "Rare Signal",
+		"briefing": "A weak research ping is active below.",
+		"tags": ["signal", "wreck"],
+	}
+	_sync_sealed_shelf_hatch_state()
+	_sync_blackwater_crack_gate_state()
+	_sync_condition_visuals()
+	_update_blackwater_pressure_cue(BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
+
+	player = staged_player
+	player.global_position = sill.global_position + Vector2(-20.0, -20.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	player_near_blackwater_crack = true
+	visual_smoke_route_stage = "blackwater_route"
+	status_label.text = _format_blackwater_gate_status()
+	_update_depth()
+	_update_hud()
+
 func _stage_debug_open_hatch_alcove_visual_review() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -1026,6 +1070,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_blue_chimney_payoff_visual_review()
 		"silt_vein_fork":
 			_stage_debug_silt_vein_fork_visual_review()
+		"blackwater_route":
+			_stage_debug_blackwater_route_visual_review()
 		"open_hatch_resonance_alcove":
 			_stage_debug_open_hatch_alcove_visual_review()
 
@@ -2078,6 +2124,7 @@ func _publish_visual_smoke_state() -> void:
 		"resonance_alcove_research_recovered": run_resonance_alcove_research_recovered,
 		"blue_chimney_draft_reading_recovered": run_blue_chimney_draft_reading_recovered,
 		"lantern_silt_sample_recovered": run_lantern_silt_sample_recovered,
+		"blackwater_trace_recovered": run_blackwater_trace_recovered,
 		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)

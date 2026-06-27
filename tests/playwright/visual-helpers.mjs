@@ -158,6 +158,18 @@ export async function stageSiltVeinFork(page) {
   });
 }
 
+export async function stageBlackwaterRoute(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "blackwater_route";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "blackwater_route",
+    blackwater_trace_recovered: false,
+  });
+}
+
 export async function stageOpenHatchResonanceAlcove(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "open_hatch_resonance_alcove";

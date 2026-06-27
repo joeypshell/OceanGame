@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -153,6 +153,18 @@ test.describe("OceanGame web visual smoke", () => {
       active_stats_visible: true,
       route_stage: "silt_vein_fork",
       lantern_silt_sample_recovered: false,
+    });
+  });
+
+  test("captures the staged Blackwater route sequence view", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageBlackwaterRoute(page);
+    await capture(page, testInfo, "blackwater-route-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "blackwater_route",
+      blackwater_trace_recovered: false,
     });
   });
 
