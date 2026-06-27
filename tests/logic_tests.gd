@@ -1126,6 +1126,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/InteriorDirectionRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneReturnCurrent",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneReturnRib",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelfPocketWater",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelfLip",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ChoiceCueRib",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/DropBackCue",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneTurnbackLip",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth",
@@ -1272,6 +1277,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hollow_lane_direction := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/InteriorDirectionRib") as Polygon2D
 	var hollow_lane_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneReturnCurrent") as Polygon2D
 	var hollow_lane_return_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneReturnRib") as Polygon2D
+	var hollow_upper_shelf := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice") as Node2D
+	var hollow_upper_water := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelfPocketWater") as Polygon2D
+	var hollow_upper_lip := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelfLip") as Polygon2D
+	var hollow_upper_choice_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ChoiceCueRib") as Polygon2D
+	var hollow_upper_drop_back := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/DropBackCue") as Polygon2D
 	var hollow_lane_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneTurnbackLip") as Polygon2D
 	var hollow_deeper_promise := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise") as Node2D
 	var hollow_deeper_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth") as Polygon2D
@@ -1506,6 +1516,19 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_lane_return.polygon[1].x < hollow_lane_return.polygon[0].x, "Hollow Reef lane return current should point left toward the cave mouth")
 	_expect(hollow_lane_return.polygon[1].y < hollow_lane_return.polygon[0].y, "Hollow Reef lane return current should point up toward the exit route")
 	_expect(hollow_lane_return_rib.polygon[1].x < hollow_lane_return_rib.polygon[0].x, "Hollow Reef lane return rib should step left along the return chain")
+	_expect(hollow_upper_shelf.position.y < hollow_reef_interior_lane.position.y, "Hollow Reef upper shelf choice should sit above the main interior lane")
+	_expect(hollow_upper_shelf.position.x > 0.0 and hollow_upper_shelf.position.x < hollow_lane_turnback.polygon[1].x, "Hollow Reef upper shelf choice should be a local option before the lane turnback")
+	_expect(hollow_upper_water.color.b > hollow_upper_water.color.r, "Hollow Reef upper shelf water should use cool cave exploration color")
+	_expect(hollow_upper_choice_rib.color.b > hollow_lane_return.color.b and hollow_upper_choice_rib.color.g < hollow_lane_return.color.g, "Hollow Reef upper shelf cue should be visually distinct from the green return lane")
+	_expect(hollow_upper_choice_rib.color.a <= 0.22, "Hollow Reef upper shelf cue should stay exploratory instead of objective-bright")
+	_expect(hollow_upper_lip.color.a <= 0.4, "Hollow Reef upper shelf lip should frame optional space without becoming a wall")
+	_expect(hollow_upper_drop_back.color.a < hollow_lane_return.color.a, "Hollow Reef upper shelf drop-back cue should stay softer than the main return lane")
+	_expect(hollow_upper_drop_back.polygon[1].y > hollow_upper_drop_back.polygon[0].y, "Hollow Reef upper shelf drop-back cue should point down toward the main lane")
+	_expect(hollow_upper_shelf.get_node_or_null("InteractZone") == null, "Hollow Reef upper shelf should not add a new interaction hotspot")
+	_expect(hollow_upper_shelf.get_node_or_null("ResourcePickup") == null, "Hollow Reef upper shelf should not add cargo or loot")
+	_expect(hollow_upper_shelf.get_node_or_null("Predator") == null, "Hollow Reef upper shelf should not add combat pressure")
+	_expect(hollow_upper_shelf.get_node_or_null("PressureBoundary") == null, "Hollow Reef upper shelf should not add hidden pressure behavior")
+	_expect(hollow_upper_shelf.find_child("CollisionShape2D", true, false) == null, "Hollow Reef upper shelf should not block the safe return lane")
 	_expect(hollow_lane_turnback.color.a <= 0.46, "Hollow Reef lane turnback lip should signal the current authored end without implying a full cave network")
 	_expect(hollow_reef_interior_lane.get_node_or_null("InteractZone") == null, "Hollow Reef interior lane should not add a second interaction hotspot")
 	_expect(hollow_reef_interior_lane.get_node_or_null("ResourcePickup") == null, "Hollow Reef interior lane should not add cargo or loot")
