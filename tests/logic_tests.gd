@@ -984,6 +984,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var glass_kelp_shelf := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/LedgeShelf") as Polygon2D
 	var glass_kelp_frond_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/GlassKelpFrondA") as Polygon2D
 	var glass_kelp_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReturnCurrentToTrench") as Polygon2D
+	var glass_kelp_reading_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore") as Node2D
+	var glass_kelp_interact := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone") as Area2D
 	var glass_kelp_reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard") as Polygon2D
 	var glass_kelp_reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark") as Polygon2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
@@ -1127,6 +1129,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(dusk_trench_mouth.color.a >= 0.6, "Dusk Trench mouth should read as a deliberate route continuation")
 	_expect(dusk_open_water.color.a <= 0.5, "Dusk Trench should include negative open-water space instead of another dense cue pile")
 	_expect(dusk_lower_shelf.color.a >= 0.5, "Dusk Trench should have a readable lower shelf silhouette")
+	_expect(dusk_return_current.color.a >= 0.18 and dusk_return_current.color.a <= 0.24, "Dusk Trench return current should be stronger after visual evidence without becoming a route arrow")
 	_expect(dusk_return_current.polygon[1].x < dusk_return_current.polygon[0].x, "Dusk Trench return current should point back left toward Blackwater")
 	_expect(dusk_return_current.polygon[1].y < dusk_return_current.polygon[0].y, "Dusk Trench return current should point upward toward Silt and Blue")
 	_expect(low_visibility_cue.get_parent() == dusk_trench, "Dusk Trench low-visibility cue should inherit the existing route gate")
@@ -1144,12 +1147,15 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(glass_kelp_ledge.get_parent() == dusk_trench, "Glass Kelp Ledge should branch from the Dusk Trench route")
 	_expect(glass_kelp_ledge.position.x > 0.0 and glass_kelp_ledge.position.y > 0.0, "Glass Kelp Ledge should sit off the lower trench, not inside Blackwater")
 	_expect(glass_kelp_mouth.color.g > glass_kelp_mouth.color.r, "Glass Kelp Ledge should use cooler calm-pocket color language")
+	_expect(glass_kelp_mouth.color.a >= 0.6, "Glass Kelp Ledge mouth should read clearly in the staged Dusk evidence")
 	_expect(glass_kelp_water.color.a <= 0.3, "Glass Kelp calm water should read as a pause pocket, not a pressure hazard")
 	_expect(glass_kelp_shelf.color.a >= 0.55, "Glass Kelp Ledge should have a readable safe shelf silhouette")
 	_expect(glass_kelp_frond_a.color.g > glass_kelp_frond_a.color.r, "Glass Kelp fronds should visually distinguish the pocket from Blackwater pressure")
+	_expect(glass_kelp_return.color.a >= 0.18 and glass_kelp_return.color.a <= 0.24, "Glass Kelp return current should be readable without becoming a checklist marker")
 	_expect(glass_kelp_return.polygon[1].x < glass_kelp_return.polygon[0].x, "Glass Kelp Ledge return current should point back left toward the trench")
 	_expect(glass_kelp_return.polygon[1].y < glass_kelp_return.polygon[0].y, "Glass Kelp Ledge return current should point upward toward Blackwater and Silt Vein")
-	_expect(glass_kelp_reading_shard.color.a >= 0.7, "Glass Kelp reading shard should start visibly recoverable")
+	_expect(glass_kelp_reading_core.position.distance_to(glass_kelp_interact.position) >= 64.0, "Glass Kelp payoff marker should be offset from the hotspot so the sub does not cover it")
+	_expect(glass_kelp_reading_shard.color.a >= 0.85, "Glass Kelp reading shard should start visibly recoverable in normal-scale evidence")
 	_expect(glass_kelp_reading_spark.visible, "Glass Kelp reading spark should start visible before recovery")
 	_expect(glass_kelp_ledge.get_node_or_null("InteractZone") != null, "Glass Kelp Ledge should expose one payoff hotspot")
 	_expect(glass_kelp_ledge.get_node_or_null("ResourcePickup") == null, "Glass Kelp Ledge should not add a resource pickup")

@@ -2102,8 +2102,8 @@ func _sync_glass_kelp_reading_state() -> void:
 		shard.color = Color(0.9, 1.0, 0.68, 0.16)
 		spark.visible = false
 	else:
-		halo.color = Color(0.58, 1.0, 0.84, 0.3)
-		shard.color = Color(0.9, 1.0, 0.68, 0.8)
+		halo.color = Color(0.58, 1.0, 0.84, 0.42)
+		shard.color = Color(0.9, 1.0, 0.68, 0.88)
 		spark.color = Color(1.0, 1.0, 0.82, 0.9)
 		spark.visible = true
 
