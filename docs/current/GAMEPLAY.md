@@ -4,9 +4,9 @@ This file describes implemented behavior. If gameplay, controls, runtime, deploy
 
 Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 
-Current planning posture: Wide Reef Chamber is complete as pass with watchlist. The next active milestone is Area 01 Breadth - Second Branch And Return Loop: add one more playable branch, pocket, route decision, payoff, remembered place, or narrow upgrade promise using the Area 01 atlas, rather than polishing the same chamber again. See `docs/planning/WIDE_REEF_CHAMBER_MILESTONE_VALIDATION_2026_06_27.md` and `docs/planning/AREA_01_BLUE_HOLE_ATLAS_2026_06_27.md`.
+Current planning posture: Area 01 readability is the active blocker. The Hollow Reef / Wide Reef / Mirror Kelp / salvage-pocket cluster is structurally playable, but playtesting feedback says the placeholder geometry is too messy to read comfortably. The next active milestone is `Area 01 Readability Rescue`, which should make current play clearer before adding more hazard or route clutter. See `docs/planning/AREA_01_READABILITY_RESCUE_2026_06_27.md`.
 
-Current vertical-slice status: the prototype is structurally playable and most earlier readability blockers have been cleared with review evidence. It is close to polished acceptance; the remaining pass-with-watchlist risk is future visual-change regression rather than a known closeout blocker. The detailed gate lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`, the current evidence log lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md`, and the concise clean demo script lives in `docs/planning/VERTICAL_SLICE_CLEAN_DEMO_SCRIPT_2026_06_26.md`.
+Current vertical-slice status: the prototype is structurally playable, but visual readability has regressed as the route grew. Treat current Area 01 visual pileup as a known closeout blocker until the player can distinguish background, terrain, return cues, hazards/timing cues, pickups, knowledge payoffs, and locked-route promises at normal play scale.
 
 ## Product Behavior
 
