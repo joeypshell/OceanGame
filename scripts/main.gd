@@ -242,6 +242,10 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var salvage_tool_label: Label = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort/ToolLabel
 @onready var salvage_promise_label: Label = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/PromiseLabel
 @onready var salvage_opened_pocket_lane: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane
+@onready var salvage_manifest_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/InteractZone
+@onready var salvage_manifest_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestHalo
+@onready var salvage_manifest_core: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestCore
+@onready var salvage_manifest_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestSpark
 @onready var salvage_data_cache_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/InteractZone
 @onready var salvage_data_cache_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheHalo
 @onready var salvage_data_cache_core: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheCore
@@ -285,6 +289,7 @@ var player_near_lantern_silt_nook := false
 var player_near_blackwater_crack := false
 var player_near_glass_kelp_ledge := false
 var player_near_hollow_reef := false
+var player_near_salvage_manifest := false
 var player_near_salvage_data_cache := false
 var player_near_tideglass_sample := false
 var glow_plankton_highlight_timer := 0.0
@@ -335,6 +340,7 @@ var run_blackwater_trace_recovered := false
 var run_reached_dusk_trench := false
 var run_glass_kelp_reading_recovered := false
 var run_hollow_reef_reading_recovered := false
+var run_salvage_manifest_recovered := false
 var run_salvage_data_cache_recovered := false
 var run_tideglass_sample_recovered := false
 var debug_wreck_echo_review_staged := false
@@ -360,6 +366,8 @@ func _ready() -> void:
 	glass_kelp_ledge_interact_zone.body_exited.connect(_on_glass_kelp_ledge_body_exited)
 	hollow_reef_interact_zone.body_entered.connect(_on_hollow_reef_body_entered)
 	hollow_reef_interact_zone.body_exited.connect(_on_hollow_reef_body_exited)
+	salvage_manifest_interact_zone.body_entered.connect(_on_salvage_manifest_body_entered)
+	salvage_manifest_interact_zone.body_exited.connect(_on_salvage_manifest_body_exited)
 	salvage_data_cache_interact_zone.body_entered.connect(_on_salvage_data_cache_body_entered)
 	salvage_data_cache_interact_zone.body_exited.connect(_on_salvage_data_cache_body_exited)
 	tideglass_sample_interact_zone.body_entered.connect(_on_tideglass_sample_body_entered)
@@ -426,7 +434,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 				status_label.text = "Surface view: upgrades."
 				_update_hud()
 		else:
-			if not _try_tideglass_sample_interaction() and not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
+			if not _try_tideglass_sample_interaction() and not _try_salvage_manifest_interaction() and not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
 				_try_extract()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
 		_cycle_surface_tab(-1)
@@ -535,6 +543,7 @@ func _prepare_next_run() -> void:
 	player_near_blackwater_crack = false
 	player_near_glass_kelp_ledge = false
 	player_near_hollow_reef = false
+	player_near_salvage_manifest = false
 	player_near_salvage_data_cache = false
 	player_near_tideglass_sample = false
 	_reset_run_telemetry()
@@ -665,6 +674,20 @@ func _on_hollow_reef_body_entered(body: Node2D) -> void:
 func _on_hollow_reef_body_exited(body: Node2D) -> void:
 	if body == player:
 		player_near_hollow_reef = false
+		if is_inside_tree():
+			_update_hud()
+
+func _on_salvage_manifest_body_entered(body: Node2D) -> void:
+	if body == player:
+		player_near_salvage_manifest = true
+		if status_label != null and progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID):
+			status_label.text = "Salvage pocket: recover the wreck manifest."
+		if is_inside_tree():
+			_update_hud()
+
+func _on_salvage_manifest_body_exited(body: Node2D) -> void:
+	if body == player:
+		player_near_salvage_manifest = false
 		if is_inside_tree():
 			_update_hud()
 
@@ -883,6 +906,28 @@ func _try_salvage_data_cache_interaction() -> bool:
 	_sync_salvage_data_cache_state()
 	if status_label != null:
 		status_label.text = "Salvage data cache recovered for Salvage Cutter I prep. Return safely through Hollow Reef to keep the wreck note."
+	if is_inside_tree():
+		_update_hud()
+	return true
+
+func _try_salvage_manifest_interaction() -> bool:
+	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_salvage_manifest:
+		return false
+	if not progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID):
+		return false
+
+	if run_salvage_manifest_recovered:
+		if status_label != null:
+			status_label.text = "Salvage manifest already recovered this expedition."
+		if is_inside_tree():
+			_update_hud()
+		return true
+
+	run_salvage_manifest_recovered = true
+	run_reached_dusk_trench = true
+	_sync_salvage_manifest_state()
+	if status_label != null:
+		status_label.text = "Salvage manifest recovered. Return safely or risk cargo space on nearby shell fragments."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -1426,13 +1471,16 @@ func _stage_debug_wide_chamber_visual_review(cutter_owned := false) -> void:
 	player_near_blackwater_crack = false
 	player_near_glass_kelp_ledge = false
 	player_near_hollow_reef = false
+	player_near_salvage_manifest = false
 	player_near_salvage_data_cache = false
 	run_reached_dusk_trench = true
 	run_glass_kelp_reading_recovered = false
 	run_hollow_reef_reading_recovered = true
+	run_salvage_manifest_recovered = false
 	run_salvage_data_cache_recovered = false
 	_sync_glass_kelp_reading_state()
 	_sync_hollow_reef_reading_state()
+	_sync_salvage_manifest_state()
 	_sync_salvage_data_cache_state()
 	visual_smoke_route_stage = "wide_reef_salvage_open" if cutter_owned else "wide_reef_chamber"
 	status_label.text = "Debug review: Wide Reef salvage pocket opened." if cutter_owned else "Debug review: Wide Reef Chamber staged."
@@ -1467,13 +1515,16 @@ func _stage_debug_mirror_kelp_visual_review(recovered := false, observed := fals
 	player_near_blackwater_crack = false
 	player_near_glass_kelp_ledge = false
 	player_near_hollow_reef = false
+	player_near_salvage_manifest = false
 	player_near_salvage_data_cache = false
 	player_near_tideglass_sample = false
 	run_reached_dusk_trench = true
+	run_salvage_manifest_recovered = false
 	run_salvage_data_cache_recovered = false
 	run_tideglass_sample_recovered = false
 	while run_completed_scans.has("mirrorfin_drift"):
 		run_completed_scans.erase("mirrorfin_drift")
+	_sync_salvage_manifest_state()
 	_sync_salvage_data_cache_state()
 	_sync_tideglass_sample_state()
 	visual_smoke_route_stage = "mirror_kelp_pass"
@@ -1647,6 +1698,11 @@ func _format_hud_prompt() -> String:
 			prompt = "Hollow Reef: reading recorded - return via Dusk"
 		else:
 			prompt = "Hollow Reef: %s record cave reading" % _action_label("interact")
+	elif player_near_salvage_manifest and progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID):
+		if run_salvage_manifest_recovered:
+			prompt = "Salvage Pocket: manifest recovered - return via Hollow Reef"
+		else:
+			prompt = "Salvage Pocket: %s recover wreck manifest" % _action_label("interact")
 	elif player_near_salvage_data_cache:
 		if run_salvage_data_cache_recovered:
 			prompt = "Salvage Pocket: cache recovered - return via Hollow Reef"
@@ -2757,6 +2813,29 @@ func _sync_salvage_data_cache_state() -> void:
 		spark.color = Color(1.0, 0.96, 0.74, 0.92)
 		spark.visible = true
 
+func _sync_salvage_manifest_state() -> void:
+	var halo := salvage_manifest_halo
+	if halo == null:
+		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestHalo") as Polygon2D
+	var core := salvage_manifest_core
+	if core == null:
+		core = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestCore") as Polygon2D
+	var spark := salvage_manifest_spark
+	if spark == null:
+		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestSpark") as Polygon2D
+	if halo == null or core == null or spark == null:
+		return
+
+	if run_salvage_manifest_recovered:
+		halo.color = Color(1.0, 0.78, 0.36, 0.08)
+		core.color = Color(1.0, 0.9, 0.52, 0.18)
+		spark.visible = false
+	else:
+		halo.color = Color(1.0, 0.78, 0.36, 0.34)
+		core.color = Color(1.0, 0.9, 0.52, 0.82)
+		spark.color = Color(1.0, 0.98, 0.68, 0.88)
+		spark.visible = true
+
 func _sync_salvage_pocket_open_state() -> void:
 	var hatch := salvage_hatch_panel
 	if hatch == null:
@@ -2790,6 +2869,7 @@ func _sync_salvage_pocket_open_state() -> void:
 		tool_label.text = "CUTTER READY" if cutter_owned else "CUTTER NEEDED"
 	if promise_label != null:
 		promise_label.text = "SALVAGE OPEN" if cutter_owned else "SALVAGE CLOSED"
+	_sync_salvage_manifest_state()
 
 func _sync_tideglass_sample_state() -> void:
 	var halo := tideglass_sample_halo
@@ -3017,6 +3097,7 @@ func _publish_visual_smoke_state() -> void:
 		"dusk_trench_reached": run_reached_dusk_trench,
 		"glass_kelp_reading_recovered": run_glass_kelp_reading_recovered,
 		"hollow_reef_reading_recovered": run_hollow_reef_reading_recovered,
+		"salvage_manifest_recovered": run_salvage_manifest_recovered,
 		"tideglass_sample_recovered": run_tideglass_sample_recovered,
 		"mirrorfin_drift_observed": run_completed_scans.has("mirrorfin_drift"),
 		"salvage_pocket_open": progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID),
@@ -3636,6 +3717,7 @@ func _reset_run_telemetry() -> void:
 	run_reached_dusk_trench = false
 	run_glass_kelp_reading_recovered = false
 	run_hollow_reef_reading_recovered = false
+	run_salvage_manifest_recovered = false
 	run_salvage_data_cache_recovered = false
 	run_tideglass_sample_recovered = false
 	debug_wreck_echo_review_staged = false
@@ -3654,6 +3736,7 @@ func _reset_run_telemetry() -> void:
 	_sync_blackwater_trace_payoff_state()
 	_sync_glass_kelp_reading_state()
 	_sync_hollow_reef_reading_state()
+	_sync_salvage_manifest_state()
 	_sync_salvage_data_cache_state()
 	_sync_tideglass_sample_state()
 
@@ -3715,7 +3798,7 @@ func _format_completed_expedition_line(result_name: String) -> String:
 	]
 
 func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Array[String]) -> String:
-	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
+	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(extracted_count, extracted_cargo),
 		_format_region_memory_callout(),
@@ -3733,6 +3816,7 @@ func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Ar
 		_format_glass_kelp_reading_callout(),
 		_format_hollow_reef_reading_callout(),
 		_format_salvage_data_cache_research_callout(),
+		_format_salvage_manifest_research_callout(),
 		_format_tideglass_sample_research_callout(),
 		_format_sealed_shelf_hatch_readiness_callout(),
 		_format_upgrade_progress_callout(),
@@ -3775,6 +3859,8 @@ func _format_route_choice_callout() -> String:
 		return "Route choice: Mirror Kelp Pass reading marked a deeper kelp seal."
 	if run_completed_scans.has("mirrorfin_drift"):
 		return "Route choice: observed Mirror Kelp reflection timing."
+	if run_salvage_manifest_recovered:
+		return "Route choice: opened salvage pocket manifest instead of only cargo."
 	if run_salvage_data_cache_recovered:
 		return "Route choice: wide chamber salvage cache marked a sealed pocket."
 	if run_hollow_reef_reading_recovered:
@@ -3819,6 +3905,8 @@ func _format_route_choice_callout() -> String:
 func _format_recent_route_memory() -> String:
 	if _run_has_mirror_kelp_evidence():
 		return "Mirror Kelp Pass"
+	if run_salvage_manifest_recovered:
+		return "Salvage Pocket"
 	if run_salvage_data_cache_recovered:
 		return "Wide Reef Chamber"
 	if run_hollow_reef_reading_recovered or _run_has_hollow_reef_observation():
@@ -3928,6 +4016,12 @@ func _format_salvage_data_cache_research_callout() -> String:
 
 	return ""
 
+func _format_salvage_manifest_research_callout() -> String:
+	if run_salvage_manifest_recovered:
+		return "\nResearch: Salvage Manifest identifies a cut-open wreck pocket; shell cargo is optional if oxygen allows."
+
+	return ""
+
 func _format_tideglass_sample_research_callout() -> String:
 	if run_tideglass_sample_recovered:
 		return "\nResearch: Tideglass Sample gives the lab a Mirror Kelp return-current reading."
@@ -3945,6 +4039,8 @@ func _format_sealed_shelf_hatch_readiness_callout() -> String:
 func _format_region_memory_callout() -> String:
 	if _run_has_mirror_kelp_evidence():
 		return "Remembered place: Mirror Kelp Pass - reflective branch beyond Wide Reef; return through Hollow Reef."
+	if run_salvage_manifest_recovered:
+		return "Remembered place: Salvage Pocket - cut-open wreck pocket off Wide Reef; return through Hollow Reef."
 	if run_salvage_data_cache_recovered:
 		return "Remembered place: Wide Reef Chamber - salvage pocket off Hollow Reef; return through Dusk."
 	if run_hollow_reef_reading_recovered:

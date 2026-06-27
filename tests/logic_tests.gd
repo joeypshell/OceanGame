@@ -65,6 +65,7 @@ func _initialize() -> void:
 	_run("Mirror Kelp deep promise", _test_mirror_kelp_deep_promise)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
+	_run("Salvage Manifest interaction", _test_salvage_manifest_interaction)
 	_run("Tideglass Sample interaction", _test_tideglass_sample_interaction)
 	_run("Glassfin Swarm spacing cue visual only", _test_glassfin_swarm_spacing_cue_visual_only)
 	_run("Lantern Ray timing lane is visual only", _test_lantern_ray_timing_lane_is_visual_only)
@@ -1046,6 +1047,10 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var open_entry_water := salvage.get_node("OpenedPocketLane/EntryWater") as Polygon2D
 	var open_return_cue := salvage.get_node("OpenedPocketLane/ReturnCurrentCue") as Polygon2D
 	var open_label := salvage.get_node("OpenedPocketLane/OpenLabel") as Label
+	var salvage_manifest := salvage.get_node("OpenedPocketLane/SalvageManifest") as Node2D
+	var manifest_core := salvage.get_node("OpenedPocketLane/SalvageManifest/ManifestCore") as Polygon2D
+	var manifest_spark := salvage.get_node("OpenedPocketLane/SalvageManifest/ManifestSpark") as Polygon2D
+	var manifest_interact := salvage.get_node("OpenedPocketLane/SalvageManifest/InteractZone") as Area2D
 	var salvage_shell_candidate := main.get_node("StarterResourceCandidates/ShellFragments/SalvagePocketA") as SpawnPoint
 	var future_choice_shadow := chamber.get_node("FutureChoiceShadow") as Polygon2D
 	var return_current := chamber.get_node("ReturnCurrentBackToHollow") as Polygon2D
@@ -1113,6 +1118,15 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(open_label.text.contains("RETURN VIA HOLLOW"), "opened salvage pocket should preserve broad safe-return language")
 	_expect(open_entry_water.color.a <= 0.22, "opened salvage pocket water should be readable but quieter than pickups")
 	_expect(open_return_cue.color.g > open_return_cue.color.r, "opened salvage return cue should use safe-current color language")
+	_expect(salvage_manifest.get_parent() == opened_lane, "Salvage Manifest should live inside the opened pocket lane")
+	_expect(manifest_core.color.a >= 0.7, "Salvage Manifest should start visibly recoverable when the pocket is open")
+	_expect(manifest_spark.visible, "Salvage Manifest should have a bright recovery spark before interaction")
+	_expect(manifest_interact.collision_layer == 0 and manifest_interact.collision_mask == 1, "Salvage Manifest hotspot should detect the player without becoming route collision")
+	_expect(salvage_shell_candidate.global_position.distance_to(salvage_manifest.global_position) >= 90.0, "Salvage Manifest and shell cargo should ask for a local choice instead of stacking")
+	_expect(salvage_manifest.get_node_or_null("ResourcePickup") == null, "Salvage Manifest should not be cargo or loot behavior")
+	_expect(salvage_manifest.find_child("LootTable", true, false) == null, "Salvage Manifest should not add a salvage loot table")
+	_expect(salvage_manifest.find_child("HarvestArea", true, false) == null, "Salvage Manifest should not add harvesting")
+	_expect(salvage_manifest.get_script() == null, "Salvage Manifest scene node should stay presentation/trigger only")
 	_expect(main.progression_state.to_save_data() == save_before_open_sync, "opening presentation should not mutate save state beyond owned cutter")
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "opening presentation should not drain oxygen")
 	_expect(main.dive_session.current_cargo == cargo_before, "opening presentation should not mutate cargo")
@@ -1194,6 +1208,90 @@ func _test_salvage_data_cache_interaction() -> void:
 	_expect(fresh_main._format_salvage_data_cache_research_callout() == "", "salvage result line should stay hidden before payoff recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Salvage data cache"), "salvage extraction summary should stay hidden before payoff recovery")
+	fresh_main.free()
+	main.free()
+
+func _test_salvage_manifest_interaction() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_salvage_manifest = true
+	main.dive_session.oxygen = 19.0
+	main.dive_session.current_cargo = ["shell_fragments"]
+	main.progression_state.purchased_upgrades[SalvageCutterUpgrade.id] = true
+	main.call("_sync_salvage_pocket_open_state")
+	var manifest_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestHalo") as Polygon2D
+	var manifest_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestCore") as Polygon2D
+	var manifest_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestSpark") as Polygon2D
+	var opened_lane := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane") as Node2D
+	_expect(opened_lane.visible, "owned Salvage Cutter I should make the manifest lane visible")
+	_expect(manifest_core.color.a >= 0.7, "Salvage Manifest should start visibly recoverable")
+	_expect(manifest_spark.visible, "Salvage Manifest spark should start visible before recovery")
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Salvage Pocket"), "Salvage Manifest proximity should own the active dive prompt")
+	_expect(prompt.contains("recover wreck manifest"), "Salvage Manifest prompt should explain the concrete knowledge payoff")
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+
+	var handled: bool = main.call("_try_salvage_manifest_interaction")
+	_expect(handled, "Salvage Manifest should handle interact while nearby during a dive with the cutter")
+	_expect(main.run_salvage_manifest_recovered, "Salvage Manifest interaction should record one run-scoped manifest")
+	_expect(main.run_reached_dusk_trench, "Salvage Manifest recovery should count as meaningful lower-route reach evidence")
+	_expect(manifest_halo.color.a <= 0.09, "Salvage Manifest halo should visibly dim after recovery")
+	_expect(manifest_core.color.a <= 0.2, "Salvage Manifest core should visibly dim after recovery")
+	_expect(not manifest_spark.visible, "Salvage Manifest spark should disappear after recovery")
+	_expect(is_equal_approx(main.dive_session.oxygen, 19.0), "Salvage Manifest should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["shell_fragments"], "Salvage Manifest should not add or remove cargo")
+	var save_after: Dictionary = main.progression_state.to_save_data()
+	_expect(save_after == save_before, "Salvage Manifest should not mutate durable progression")
+	_expect(not save_after.has("salvage_manifest"), "Salvage Manifest should not create durable manifest state")
+	_expect(not save_after.has("salvage_inventory"), "Salvage Manifest should not create salvage inventory state")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Return safely"), "Salvage Manifest interaction should preserve extraction pressure")
+		_expect(main.status_label.text.contains("shell fragments"), "Salvage Manifest status should frame the nearby cargo-vs-knowledge choice")
+		_expect_no_echo_lens_locator_language(main.status_label.text, "Salvage Manifest status")
+
+	var repeat_handled: bool = main.call("_try_salvage_manifest_interaction")
+	_expect(repeat_handled, "Salvage Manifest should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recovered"), "Salvage Manifest repeat interaction should not duplicate the payoff")
+
+	main.player_near_salvage_manifest = false
+	var not_handled: bool = main.call("_try_salvage_manifest_interaction")
+	_expect(not not_handled, "Salvage Manifest should not consume interact outside its proximity zone")
+
+	var callout: String = main.call("_format_salvage_manifest_research_callout")
+	_expect(callout.contains("Salvage Manifest"), "Salvage Manifest result memory should name the recovered payoff")
+	_expect(callout.contains("cut-open wreck pocket"), "Salvage Manifest result memory should name the opened-pocket context")
+	_expect(callout.contains("shell cargo is optional"), "Salvage Manifest result memory should preserve the cargo-vs-knowledge decision")
+	_expect(not callout.to_lower().contains("craft"), "Salvage Manifest result memory should not introduce crafting")
+	_expect(not callout.to_lower().contains("loot table"), "Salvage Manifest result memory should avoid loot-system language")
+	_expect_no_echo_lens_locator_language(callout, "Salvage Manifest result line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Salvage Manifest"), "Salvage Manifest extraction summary should include recovered manifest memory")
+	_expect(extraction_summary.contains("Salvage Pocket"), "Salvage Manifest extraction summary should remember the opened pocket place")
+	_expect(not extraction_summary.to_lower().contains("inventory"), "Salvage Manifest extraction summary should avoid inventory language")
+	var save_before_recent: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	main.progression_state.current_run_number = 21
+	main.progression_state.current_run_seed = 3021
+	main._record_recent_expedition("Extracted", 1)
+	var log_text: String = main._format_recent_expedition_log()
+	_expect(log_text.contains("#21 Extracted"), "recent expedition log should include Salvage Manifest runs")
+	_expect(log_text.contains("route Salvage Pocket"), "Salvage Manifest should produce compact salvage-pocket route memory")
+	_expect(not log_text.contains("route Wide Reef Chamber"), "Salvage Pocket memory should take priority over upstream wide chamber memory")
+	_expect(main._latest_recent_route_memory() == "Salvage Pocket", "latest route helper should expose Salvage Pocket after manifest evidence")
+	_expect(main.progression_state.to_save_data() == save_before_recent, "Salvage Pocket recent route memory should remain session-only")
+	_expect(not main.progression_state.to_save_data().has("salvage_pocket_route"), "recent Salvage Pocket memory should not create durable route state")
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_salvage_manifest_recovered, "Salvage Manifest should reset between expeditions")
+	_expect(manifest_core.color.a >= 0.7, "Salvage Manifest should become visible again after expedition reset")
+	_expect(manifest_spark.visible, "Salvage Manifest spark should reset after expedition reset")
+
+	var fresh_main := MainScript.new()
+	_expect(fresh_main._format_salvage_manifest_research_callout() == "", "Salvage Manifest result line should stay hidden before payoff recovery")
+	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not fresh_summary.contains("Salvage Manifest"), "Salvage Manifest extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
 	main.free()
 
@@ -5048,11 +5146,13 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	main.run_lantern_silt_sample_recovered = true
 	main.run_glass_kelp_reading_recovered = true
 	main.run_tideglass_sample_recovered = true
+	main.run_salvage_manifest_recovered = true
 	main.player_near_resonance_alcove = true
 	main.player_near_blue_chimney = true
 	main.player_near_lantern_silt_nook = true
 	main.player_near_glass_kelp_ledge = true
 	main.player_near_tideglass_sample = true
+	main.player_near_salvage_manifest = true
 	main.run_collected_resources.append("kelp_fiber")
 	main.run_completed_scans.append("east_shelf_arch")
 	main.run_predator_contacts = 1
@@ -5149,6 +5249,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_reached_dusk_trench = true
 	main.run_glass_kelp_reading_recovered = true
 	main.run_tideglass_sample_recovered = true
+	main.run_salvage_manifest_recovered = true
 	main.blue_chimney_draft_timer = 1.7
 	main.blackwater_pressure_timer = 1.9
 	main.visual_smoke_route_stage = "lower_connector"
@@ -5161,6 +5262,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_reached_dusk_trench, "run telemetry reset should clear Dusk Trench reach memory")
 	_expect(not main.run_glass_kelp_reading_recovered, "run telemetry reset should clear Glass Kelp reading state")
 	_expect(not main.run_tideglass_sample_recovered, "run telemetry reset should clear Tideglass Sample state")
+	_expect(not main.run_salvage_manifest_recovered, "run telemetry reset should clear Salvage Manifest state")
 	_expect(is_equal_approx(main.blue_chimney_draft_timer, 0.0), "run telemetry reset should clear Blue Chimney visual timing state")
 	_expect(is_equal_approx(main.blackwater_pressure_timer, 0.0), "run telemetry reset should clear Blackwater pressure-cue timing state")
 	_expect(main.visual_smoke_route_stage == "", "run telemetry reset should clear lower-connector visual route stage")
@@ -5171,12 +5273,14 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.player_near_lantern_silt_nook = true
 	main.player_near_blackwater_crack = true
 	main.player_near_tideglass_sample = true
+	main.player_near_salvage_manifest = true
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
 	main.run_blackwater_trace_recovered = true
 	main.run_reached_dusk_trench = true
 	main.run_glass_kelp_reading_recovered = true
 	main.run_tideglass_sample_recovered = true
+	main.run_salvage_manifest_recovered = true
 	main.call("_prepare_next_run")
 	_expect(not main.player_near_lower_connector_echo, "new expeditions should clear Drop Echo proximity state")
 	_expect(not main.player_near_resonance_alcove, "new expeditions should clear Resonance Alcove proximity state")
@@ -5184,6 +5288,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.player_near_lantern_silt_nook, "new expeditions should clear Lantern Silt proximity state")
 	_expect(not main.player_near_blackwater_crack, "new expeditions should clear Blackwater Crack proximity state")
 	_expect(not main.player_near_tideglass_sample, "new expeditions should clear Tideglass Sample proximity state")
+	_expect(not main.player_near_salvage_manifest, "new expeditions should clear Salvage Manifest proximity state")
 	_expect(not main.run_lower_connector_echo_recovered, "new expeditions should not carry Drop Echo research state")
 	_expect(not main.run_resonance_alcove_research_recovered, "new expeditions should not carry Resonance Alcove research state")
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "new expeditions should not carry Blue Chimney draft research state")
@@ -5192,6 +5297,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_reached_dusk_trench, "new expeditions should not carry Dusk Trench reach memory")
 	_expect(not main.run_glass_kelp_reading_recovered, "new expeditions should not carry Glass Kelp reading state")
 	_expect(not main.run_tideglass_sample_recovered, "new expeditions should not carry Tideglass Sample state")
+	_expect(not main.run_salvage_manifest_recovered, "new expeditions should not carry Salvage Manifest state")
 	_expect(not main.progression_state.to_save_data().has("lower_connector_echo"), "Drop Echo should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("resonance_alcove_research"), "Resonance Alcove research should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("blue_chimney"), "Blue Chimney should not create durable route state")
@@ -5206,6 +5312,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.progression_state.to_save_data().has("dusk_trench_reached"), "Dusk Trench reach memory should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("glass_kelp_reading"), "Glass Kelp reading should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("tideglass_sample"), "Tideglass Sample should not be stored in durable progression")
+	_expect(not main.progression_state.to_save_data().has("salvage_manifest"), "Salvage Manifest should not be stored in durable progression")
 	main.queue_free()
 
 func _test_east_shelf_pocket_prompt_interaction() -> void:
