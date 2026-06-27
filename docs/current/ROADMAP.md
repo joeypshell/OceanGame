@@ -36,6 +36,8 @@ Blue Chimney payoff contract: `docs/planning/BLUE_CHIMNEY_RESEARCH_PAYOFF_CONTRA
 
 Blue Chimney post-payoff review: `docs/planning/BLUE_CHIMNEY_READABILITY_OXYGEN_REVIEW_2026_06_27.md` keeps current oxygen tuning after the draft-reading payoff and optional existing-resource candidate. If the lower pocket becomes confusing, prefer local visual pileup, return-cue, and optional-resource placement fixes before changing survival constants.
 
+Next route fork after Blue Chimney: `docs/planning/NEXT_ROUTE_FORK_AFTER_BLUE_CHIMNEY_2026_06_27.md` selects `Silt Vein Fork` as the next small map-growth step. It should branch from `Blue Chimney` into a readable `Lantern Silt Nook` and a sealed `Blackwater Crack` promise, proving lower-route choice without a minimap, full cave network, procedural generation, combat, harvesting, or broad upgrade tiers.
+
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
 
 Detailed design rules live in:
@@ -57,6 +59,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_BLUE_CHIMNEY_2026_06_27.md`
 - `docs/planning/BLUE_CHIMNEY_RESEARCH_PAYOFF_CONTRACT_2026_06_27.md`
 - `docs/planning/BLUE_CHIMNEY_READABILITY_OXYGEN_REVIEW_2026_06_27.md`
+- `docs/planning/NEXT_ROUTE_FORK_AFTER_BLUE_CHIMNEY_2026_06_27.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
