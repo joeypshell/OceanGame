@@ -104,6 +104,7 @@ func _initialize() -> void:
 	_run("East Shelf pocket prompt interaction", _test_east_shelf_pocket_prompt_interaction)
 	_run("East Shelf current surge visual timing", _test_east_shelf_current_surge_visual_timing)
 	_run("Blue Chimney reverse draft visual timing", _test_blue_chimney_reverse_draft_visual_timing)
+	_run("Blackwater pressure cue visual timing", _test_blackwater_pressure_cue_visual_timing)
 	_run("sealed shelf hatch promise state", _test_sealed_shelf_hatch_promise_state)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
@@ -828,6 +829,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillBackWater",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillFloor",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureShutter",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibA",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibB",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TurnbackRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillEndSeal",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore",
@@ -912,6 +916,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var blackwater_sill_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillMouth") as Polygon2D
 	var blackwater_sill_floor := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillFloor") as Polygon2D
 	var blackwater_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue") as Polygon2D
+	var blackwater_pressure_shutter := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureShutter") as Polygon2D
+	var blackwater_pressure_rib_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibA") as Polygon2D
+	var blackwater_pressure_rib_b := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibB") as Polygon2D
 	var blackwater_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillEndSeal") as Polygon2D
 	var blackwater_trace_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore") as Node2D
 	var blackwater_trace_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceHalo") as Polygon2D
@@ -1029,6 +1036,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blackwater_sill_floor.color.a >= 0.45, "Blackwater Sill should have a readable local floor silhouette")
 	_expect(blackwater_return.polygon[1].x < blackwater_return.polygon[0].x, "Blackwater Sill return cue should point back left toward Silt Vein")
 	_expect(blackwater_return.polygon[1].y < blackwater_return.polygon[0].y, "Blackwater Sill return cue should point upward toward Blue Chimney")
+	_expect(blackwater_pressure_shutter.color.b > blackwater_pressure_shutter.color.g, "Blackwater pressure cue should use dark violet pressure language, not safe-current green")
+	_expect(blackwater_pressure_shutter.color.a >= 0.1 and blackwater_pressure_shutter.color.a <= 0.2, "Blackwater pressure shutter should stay subtle and non-combat")
+	_expect(blackwater_pressure_rib_a.color.b > blackwater_pressure_rib_a.color.g, "Blackwater pressure ribs should stay visually distinct from safe return currents")
+	_expect(blackwater_pressure_rib_b.color.b > blackwater_pressure_rib_b.color.g, "Blackwater pressure ribs should reinforce local route pressure")
+	_expect(blackwater_sill.get_node_or_null("PressureBoundary") == null, "Blackwater pressure cue should not add a hidden pressure collision boundary")
 	_expect(blackwater_turnback.color.a <= 0.3, "Blackwater Sill end should read as a turnback, not a full cave network")
 	_expect(blackwater_trace_core.position.x > 0.0, "Blackwater Trace should sit inside the opened short sill route")
 	_expect(blackwater_trace_halo.color.a >= 0.28, "Blackwater Trace should have a readable halo in normal play")
@@ -2716,6 +2728,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_lantern_silt_sample_recovered = true
 	main.run_blackwater_trace_recovered = true
 	main.blue_chimney_draft_timer = 1.7
+	main.blackwater_pressure_timer = 1.9
 	main.visual_smoke_route_stage = "lower_connector"
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_lower_connector_echo_recovered, "run telemetry reset should clear Drop Echo research state")
@@ -2724,6 +2737,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_lantern_silt_sample_recovered, "run telemetry reset should clear Lantern Silt sample state")
 	_expect(not main.run_blackwater_trace_recovered, "run telemetry reset should clear Blackwater Trace state")
 	_expect(is_equal_approx(main.blue_chimney_draft_timer, 0.0), "run telemetry reset should clear Blue Chimney visual timing state")
+	_expect(is_equal_approx(main.blackwater_pressure_timer, 0.0), "run telemetry reset should clear Blackwater pressure-cue timing state")
 	_expect(main.visual_smoke_route_stage == "", "run telemetry reset should clear lower-connector visual route stage")
 
 	main.player_near_lower_connector_echo = true
@@ -2852,6 +2866,49 @@ func _test_blue_chimney_reverse_draft_visual_timing() -> void:
 	_expect(main.progression_state.resource_count("glow_plankton") == 2, "Blue Chimney reverse draft should not mutate banked resources")
 	_expect(main.progression_state.has_upgrade(PressureSealUpgrade.id), "Blue Chimney reverse draft should not mutate pressure upgrade state")
 	main.free()
+
+func _test_blackwater_pressure_cue_visual_timing() -> void:
+	var main := MainScript.new()
+	var low_alpha: float = main.call("_blackwater_pressure_cue_alpha", 0.0)
+	var high_alpha: float = main.call("_blackwater_pressure_cue_alpha", MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
+	var return_alpha: float = main.call("_blackwater_pressure_cue_alpha", MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.5)
+
+	_expect(high_alpha > low_alpha, "Blackwater pressure cue alpha should pulse upward to suggest timing")
+	_expect(is_equal_approx(low_alpha, return_alpha), "Blackwater pressure cue pulse should repeat smoothly")
+	_expect(low_alpha >= 0.1 and high_alpha <= 0.2, "Blackwater pressure cue pulse should stay subtle and non-combat")
+	main.free()
+
+	var scene_main := MainScene.instantiate()
+	root.add_child(scene_main)
+	scene_main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+	scene_main.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
+	scene_main.progression_state.banked_resources["glow_plankton"] = 2
+	scene_main.dive_session.reset(30.0)
+	scene_main.dive_session.start()
+	scene_main.dive_session.oxygen = 21.0
+	scene_main.dive_session.current_cargo = ["shell_fragments"]
+	scene_main.dive_session.has_left_base = true
+	scene_main.player_in_base = false
+	scene_main.run_predator_contacts = 1
+	scene_main.call("_sync_blackwater_crack_gate_state")
+	var pressure_shutter := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureShutter") as Polygon2D
+	var pressure_rib_a := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibA") as Polygon2D
+	var return_current := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue") as Polygon2D
+
+	scene_main.call("_update_blackwater_pressure_cue", MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
+	_expect(pressure_shutter.color.b > pressure_shutter.color.g, "Blackwater pressure cue should remain violet-blue after pulsing")
+	_expect(pressure_rib_a.color.b > pressure_rib_a.color.g, "Blackwater pressure rib should remain distinct from safe current green")
+	_expect(return_current.color.g > pressure_shutter.color.g, "Blackwater return current should stay visually distinct from pressure cue")
+	_expect(is_equal_approx(scene_main.dive_session.oxygen, 21.0), "Blackwater pressure cue should not drain oxygen")
+	_expect(scene_main.dive_session.current_cargo == ["shell_fragments"], "Blackwater pressure cue should not change carried cargo")
+	_expect(scene_main.dive_session.result == DiveSessionScript.Result.DIVING, "Blackwater pressure cue should not change dive result")
+	_expect(scene_main.dive_session.has_left_base, "Blackwater pressure cue should not reset extraction eligibility")
+	_expect(not scene_main.player_in_base, "Blackwater pressure cue should not move the player into the base")
+	_expect(scene_main.run_predator_contacts == 1, "Blackwater pressure cue should not create predator contacts")
+	_expect(scene_main.progression_state.resource_count("glow_plankton") == 2, "Blackwater pressure cue should not mutate banked resources")
+	_expect(scene_main.progression_state.has_upgrade(ResonanceKeyUpgrade.id), "Blackwater pressure cue should not mutate Resonance Key ownership")
+	_expect(scene_main.progression_state.has_upgrade(PressureSealUpgrade.id), "Blackwater pressure cue should not mutate Pressure Seal ownership")
+	scene_main.queue_free()
 
 func _test_sealed_shelf_hatch_promise_state() -> void:
 	var main := MainScene.instantiate()

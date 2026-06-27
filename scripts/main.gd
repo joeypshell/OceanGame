@@ -66,6 +66,7 @@ const DIVE_STATUS_MAX_CHARS := 76
 const ECHO_LENS_PULSE_DURATION := 1.2
 const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
+const BLACKWATER_PRESSURE_PERIOD_SECONDS := 3.1
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
@@ -202,6 +203,9 @@ const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 @onready var blackwater_closed_shard: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/ClosedShard
 @onready var blackwater_sill: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill
 @onready var blackwater_sill_return_current: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue
+@onready var blackwater_pressure_shutter: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureShutter
+@onready var blackwater_pressure_rib_a: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibA
+@onready var blackwater_pressure_rib_b: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibB
 @onready var blackwater_trace_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceHalo
 @onready var blackwater_trace_gem: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceGem
 @onready var blackwater_trace_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceSpark
@@ -226,6 +230,7 @@ var resource_scan_highlight_timer := 0.0
 var echo_lens_pulse_timer := 0.0
 var east_shelf_current_surge_timer := 0.0
 var blue_chimney_draft_timer := 0.0
+var blackwater_pressure_timer := 0.0
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -297,6 +302,7 @@ func _process(delta: float) -> void:
 	_update_echo_lens_pulse(delta)
 	_update_east_shelf_current_surge(delta)
 	_update_blue_chimney_reverse_draft(delta)
+	_update_blackwater_pressure_cue(delta)
 	_update_lantern_fry_idle()
 	_update_burst_thruster_cooldown(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -1302,6 +1308,20 @@ func _update_blue_chimney_reverse_draft(delta: float) -> void:
 func _blue_chimney_reverse_draft_alpha(timer_seconds: float) -> float:
 	var phase := sin((timer_seconds / BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS) * TAU)
 	return 0.07 + (phase + 1.0) * 0.035
+
+func _update_blackwater_pressure_cue(delta: float) -> void:
+	blackwater_pressure_timer = fposmod(blackwater_pressure_timer + delta, BLACKWATER_PRESSURE_PERIOD_SECONDS)
+	var shutter_alpha := _blackwater_pressure_cue_alpha(blackwater_pressure_timer)
+	if blackwater_pressure_shutter != null:
+		blackwater_pressure_shutter.color = Color(0.2, 0.12, 0.42, shutter_alpha)
+	if blackwater_pressure_rib_a != null:
+		blackwater_pressure_rib_a.color = Color(0.72, 0.52, 1.0, shutter_alpha + 0.04)
+	if blackwater_pressure_rib_b != null:
+		blackwater_pressure_rib_b.color = Color(0.72, 0.52, 1.0, shutter_alpha + 0.02)
+
+func _blackwater_pressure_cue_alpha(timer_seconds: float) -> float:
+	var phase := sin((timer_seconds / BLACKWATER_PRESSURE_PERIOD_SECONDS) * TAU)
+	return 0.1 + (phase + 1.0) * 0.04
 
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
@@ -2585,6 +2605,7 @@ func _reset_run_telemetry() -> void:
 	visual_smoke_route_stage = ""
 	echo_lens_pulse_timer = 0.0
 	blue_chimney_draft_timer = 0.0
+	blackwater_pressure_timer = 0.0
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
 	_sync_east_shelf_pocket_payoff_state()
