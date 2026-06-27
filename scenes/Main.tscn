@@ -1111,6 +1111,33 @@ polygon = PackedVector2Array(86, 72, 22, 44, -32, 14, 32, 60)
 color = Color(0.018, 0.052, 0.064, 0.52)
 polygon = PackedVector2Array(132, -24, 218, 18, 214, 92, 146, 118, 106, 52)
 
+[node name="DeeperReefPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+position = Vector2(218, 96)
+
+[node name="PromiseMouth" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise"]
+color = Color(0.004, 0.018, 0.036, 0.66)
+polygon = PackedVector2Array(-60, -34, 22, -58, 96, -14, 82, 62, -16, 86, -88, 30)
+
+[node name="PressureWash" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise"]
+color = Color(0.18, 0.34, 0.62, 0.16)
+polygon = PackedVector2Array(-96, -56, 34, -94, 126, -12, 110, 104, -22, 128, -126, 46)
+
+[node name="SealLip" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise"]
+color = Color(0.56, 0.82, 1, 0.32)
+polygon = PackedVector2Array(-68, -10, 20, -36, 92, 2, 78, 28, 18, -10, -58, 16)
+
+[node name="PromiseGlint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise"]
+color = Color(0.82, 0.96, 1, 0.46)
+polygon = PackedVector2Array(10, -18, 20, -4, 38, 0, 20, 6, 10, 22, 0, 6, -18, 0, 0, -4)
+
+[node name="PromiseLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise"]
+offset_left = -70.0
+offset_top = 70.0
+offset_right = 92.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 12
+text = "DEEP REEF CLOSED"
+
 [node name="CaveReadingCore" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 position = Vector2(74, -18)
 

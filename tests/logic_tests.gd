@@ -1105,6 +1105,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitBackWall",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PressureWash",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/SealLip",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseGlint",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseLabel",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingHalo",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingShard",
@@ -1237,6 +1243,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hollow_reef_return_fleck := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DuskReturnFleck") as Polygon2D
 	var hollow_reef_exit_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitRib") as Polygon2D
 	var hollow_reef_exit_back := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitBackWall") as Polygon2D
+	var hollow_deeper_promise := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise") as Node2D
+	var hollow_deeper_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth") as Polygon2D
+	var hollow_deeper_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PressureWash") as Polygon2D
+	var hollow_deeper_seal := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/SealLip") as Polygon2D
+	var hollow_deeper_glint := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseGlint") as Polygon2D
+	var hollow_deeper_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseLabel") as Label
 	var hollow_reef_reading_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore") as Node2D
 	var hollow_reef_reading_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingHalo") as Polygon2D
 	var hollow_reef_reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingShard") as Polygon2D
@@ -1454,6 +1466,21 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_reef_return_chain.find_child("CollisionShape2D", true, false) == null, "Hollow Reef return chain should not add collision, movement, or hidden pressure behavior")
 	_expect(hollow_reef_exit_rib.polygon[1].x < hollow_reef_exit_rib.polygon[0].x, "Hollow Reef exit rib should step left toward the exit route")
 	_expect(hollow_reef_exit_back.color.a >= 0.45, "Hollow Reef exit back wall should make the current side-cave end readable")
+	_expect(hollow_deeper_promise.position.x > hollow_reef_reading_core.position.x, "Hollow Reef deeper promise should sit beyond the current cave reading payoff")
+	_expect(hollow_deeper_promise.position.y > hollow_reef_reading_core.position.y, "Hollow Reef deeper promise should imply lower future route growth")
+	_expect(hollow_deeper_mouth.color.a >= 0.62, "Hollow Reef deeper promise mouth should read as an intentional closed opening")
+	_expect(hollow_deeper_wash.color.a <= 0.18, "Hollow Reef deeper promise wash should stay atmospheric, not a damage field")
+	_expect(hollow_deeper_seal.color.a >= 0.28, "Hollow Reef deeper promise should have a readable seal lip")
+	_expect(hollow_deeper_glint.color.a >= 0.4, "Hollow Reef deeper promise should include a small curiosity glint")
+	_expect(hollow_deeper_label.text == "DEEP REEF CLOSED", "Hollow Reef deeper promise should clearly say the route is closed")
+	_expect(not hollow_deeper_label.text.to_lower().contains("objective"), "Hollow Reef deeper promise label should not become checklist copy")
+	_expect(not hollow_deeper_label.text.to_lower().contains("map"), "Hollow Reef deeper promise label should not imply a minimap or exact locator")
+	_expect(hollow_deeper_promise.get_node_or_null("InteractZone") == null, "Hollow Reef deeper promise should not add a readback hotspot yet")
+	_expect(hollow_deeper_promise.get_node_or_null("Interior") == null, "Hollow Reef deeper promise should not open another cave network")
+	_expect(hollow_deeper_promise.get_node_or_null("ResourcePickup") == null, "Hollow Reef deeper promise should not add cargo or loot")
+	_expect(hollow_deeper_promise.get_node_or_null("PressureBoundary") == null, "Hollow Reef deeper promise should not add hidden pressure behavior")
+	_expect(hollow_deeper_promise.find_child("CollisionShape2D", true, false) == null, "Hollow Reef deeper promise should not add collision or movement behavior")
+	_expect(hollow_deeper_promise.get_script() == null, "Hollow Reef deeper promise should remain visual-only")
 	_expect(hollow_reef_reading_core.position.distance_to(hollow_reef_interact.position) >= 64.0, "Hollow Reef cave reading marker should be offset from the hotspot so the sub does not cover it")
 	_expect(hollow_reef_reading_halo.color.a >= 0.3, "Hollow Reef cave reading should have a visible halo before recovery")
 	_expect(hollow_reef_reading_shard.color.a >= 0.8, "Hollow Reef cave reading should start visibly recoverable")
@@ -2576,6 +2603,8 @@ func _test_hollow_reef_cave_reading_payoff() -> void:
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(not saved.has("hollow_reef_reading"), "Hollow Reef reading should not become durable save data")
 	_expect(not saved.has("hollow_reef"), "Hollow Reef should not create durable route state")
+	_expect(not saved.has("hollow_deeper_reef"), "Hollow Reef deeper promise should not become durable route state")
+	_expect(not saved.has("deep_reef_closed"), "Hollow Reef closed promise should not create durable gate state yet")
 	_expect(not saved.has("dusk_trench"), "Hollow Reef should not create durable Dusk Trench state")
 
 	var callout: String = main.call("_format_hollow_reef_reading_callout")
