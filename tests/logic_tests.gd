@@ -56,6 +56,7 @@ func _initialize() -> void:
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("Lantern Ray scan behavior", _test_lantern_ray_scan_behavior)
+	_run("Lantern Ray timing lane is visual only", _test_lantern_ray_timing_lane_is_visual_only)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
 	_run("east shelf spur branch scene contract", _test_east_shelf_spur_branch_scene_contract)
@@ -493,43 +494,116 @@ func _test_lantern_ray_scan_behavior() -> void:
 	var main := MainScene.instantiate()
 	root.add_child(main)
 	var lantern_ray := main.get_node("Creatures/LanternRayRoute") as Area2D
+	var scene_player := main.get_node("Player") as CharacterBody2D
+	main.player = scene_player
+	lantern_ray.call("_ready")
 	main.dive_session.reset(main.max_oxygen)
 	main.dive_session.start()
 	main.dive_session.has_left_base = true
 	main.player_in_base = false
-	main.player.global_position = lantern_ray.global_position
+	scene_player.global_position = lantern_ray.global_position
 
 	_expect(lantern_ray.is_in_group("scan_targets"), "Lantern Ray should register as a scan target once the scene is ready")
-	_expect(main.call("_nearest_scan_target") == lantern_ray, "scanner target selection should find Lantern Ray reliably at close range")
+	var scan_candidates: Array[Node] = [lantern_ray]
+	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == lantern_ray, "scanner target selection should find Lantern Ray reliably at close range")
 	_expect(main.call("_format_scan_target_type", lantern_ray) == "creature", "Lantern Ray scan target should read as a creature")
 	_expect(main.call("_scan_target_id", lantern_ray) == "lantern_ray", "Lantern Ray should expose a stable discovery id")
 
 	var starting_oxygen: float = main.dive_session.oxygen
-	main.call("_try_scan")
+	var discovery_id: String = main.call("_scan_target_id", lantern_ray)
+	var display_name: String = main.call("_scan_target_display_name", lantern_ray)
+	main.dive_session.drain_oxygen(main.scan_oxygen_cost)
+	main.progression_state.add_discovery(
+		discovery_id,
+		display_name,
+		main.call("_scan_target_description", lantern_ray),
+		main.call("_scan_target_gameplay_fact", lantern_ray)
+	)
+	main.run_completed_scans.append(discovery_id)
+	var first_scan_status: String = main.call("_compact_dive_status", "Scanned %s.%s" % [
+		display_name,
+		main.call("_format_repeat_scan_effect_text", lantern_ray) + main.call("_format_first_scan_guidance", lantern_ray)
+	])
+	var first_scan_guidance: String = main.call("_format_first_scan_guidance", lantern_ray)
 	_expect(main.progression_state.has_discovery("lantern_ray"), "first Lantern Ray scan should record a durable discovery")
 	_expect(main.run_completed_scans == ["lantern_ray"], "first Lantern Ray scan should count as current-run scan evidence")
 	_expect(is_equal_approx(main.dive_session.oxygen, starting_oxygen - main.scan_oxygen_cost), "first Lantern Ray scan should use the normal scan oxygen cost")
-	_expect(main.status_label.text.contains("Scanned Lantern Ray"), "first Lantern Ray scan status should name the creature")
-	_expect(main.status_label.text.contains("Observe its calm pass"), "first Lantern Ray scan guidance should stay route-observation focused")
+	_expect(first_scan_status.contains("Scanned Lantern Ray"), "first Lantern Ray scan status should name the creature")
+	_expect(first_scan_guidance.contains("Observe its calm pass"), "first Lantern Ray scan guidance should stay route-observation focused")
 
-	var summary: String = main.call("_format_extraction_result_summary", 0, [])
+	var no_cargo: Array[String] = []
+	var summary: String = main.call("_format_extraction_result_summary", 0, no_cargo)
 	_expect(summary.contains("Lantern Ray"), "Lantern Ray scan should appear in scan/discovery result copy")
 	_expect_no_monster_combat_language(summary, "Lantern Ray scan result copy")
 	_expect(not summary.to_lower().contains("field guide"), "Lantern Ray scan result should not imply field-guide UI")
 	_expect(not summary.to_lower().contains("checklist"), "Lantern Ray scan result should not imply checklist UI")
 
 	var oxygen_after_first: float = main.dive_session.oxygen
-	main.call("_try_scan")
+	var repeat_scan_status: String = main.call("_compact_dive_status", "%s known.%s" % [
+		display_name,
+		main.call("_format_repeat_scan_effect_text", lantern_ray) + main.call("_format_signal_lens_pulse_text", lantern_ray)
+	])
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_after_first), "repeat Lantern Ray scan should stay free like existing known scans")
 	_expect(main.run_completed_scans == ["lantern_ray"], "repeat Lantern Ray scan should not duplicate current-run scan evidence")
-	_expect(main.status_label.text.contains("Lantern Ray known"), "repeat Lantern Ray scan should use compact known-target copy")
-	_expect(main.status_label.text.contains("observation refreshed"), "repeat Lantern Ray scan should refresh behavior text compactly")
+	_expect(repeat_scan_status.contains("Lantern Ray known"), "repeat Lantern Ray scan should use compact known-target copy")
+	_expect(repeat_scan_status.contains("observation refreshed"), "repeat Lantern Ray scan should refresh behavior text compactly")
 
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(saved.get("scan_discoveries", {}).has("lantern_ray"), "Lantern Ray discovery should persist through normal scan discovery storage")
 	_expect(not saved.has("lantern_ray_objective"), "Lantern Ray scan should not create durable objective-chain state")
 	_expect(not saved.has("monster_parts"), "Lantern Ray scan should not add monster-part economy state")
 	_expect(not saved.has("creature_inventory"), "Lantern Ray scan should not add creature inventory state")
+	main.queue_free()
+
+func _test_lantern_ray_timing_lane_is_visual_only() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var timing_lane := main.get_node("Creatures/LanternRayRoute/TimingLane") as Node2D
+	var timing_upper := main.get_node("Creatures/LanternRayRoute/TimingLane/TimingLaneUpper") as Polygon2D
+	var timing_lower := main.get_node("Creatures/LanternRayRoute/TimingLane/TimingLaneLower") as Polygon2D
+	var timing_tick := main.get_node("Creatures/LanternRayRoute/TimingLane/TimingTickA") as Polygon2D
+	var route_lane := main.get_node("Creatures/LanternRayRoute/RouteLane") as Polygon2D
+	var blackwater_pressure := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureShutter") as Polygon2D
+	var dusk_low_visibility := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/MurkVeil") as Polygon2D
+
+	_expect(timing_lane.find_child("CollisionShape2D", true, false) == null, "Lantern Ray timing lane should not add collision or contact punishment")
+	_expect(timing_lane.get_node_or_null("InteractZone") == null, "Lantern Ray timing lane should not add an interaction hotspot")
+	_expect(timing_lane.get_node_or_null("ResourcePickup") == null, "Lantern Ray timing lane should not add harvest or cargo behavior")
+	_expect(timing_lane.get_node_or_null("Predator") == null, "Lantern Ray timing lane should not reuse predator behavior")
+	_expect(timing_lane.get_node_or_null("PressureBoundary") == null, "Lantern Ray timing lane should not add a pressure gate")
+	_expect(timing_upper.color.b >= timing_upper.color.r and timing_upper.color.r > timing_upper.color.g, "Lantern Ray timing lane should use pale timing color instead of safe-current green")
+	_expect(timing_upper.color.g < route_lane.color.g, "Lantern Ray timing lane should stay distinct from the creature route-current lane")
+	_expect(timing_upper.color.r > blackwater_pressure.color.r and timing_upper.color.g > blackwater_pressure.color.g, "Lantern Ray timing lane should be brighter than Blackwater pressure language")
+	_expect(timing_upper.color.r > dusk_low_visibility.color.r and timing_upper.color.g > dusk_low_visibility.color.g, "Lantern Ray timing lane should be brighter than Dusk low-visibility pressure language")
+	_expect(timing_upper.color.a <= 0.18 and timing_lower.color.a <= 0.14 and timing_tick.color.a <= 0.24, "Lantern Ray timing lane should remain readable without becoming a hard hazard wall")
+
+	main.dive_session.reset(main.max_oxygen)
+	main.dive_session.start()
+	main.dive_session.oxygen = 24.0
+	main.dive_session.add_cargo("kelp_fiber")
+	main.progression_state.banked_resources["glow_plankton"] = 2
+	main.progression_state.purchased_upgrades["pressure_seal_1"] = true
+	main.progression_state.add_discovery("lantern_ray", "Lantern Ray", "Passive route creature.", "Watch the timing lane.")
+	main.run_completed_scans.append("lantern_ray")
+	main.current_predator_route_id = "test_route"
+	var oxygen_before: float = main.dive_session.oxygen
+	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var bank_before: Dictionary = main.progression_state.banked_resources.duplicate(true)
+	var upgrades_before: Dictionary = main.progression_state.purchased_upgrades.duplicate(true)
+	var discoveries_before: Dictionary = main.progression_state.scan_discoveries.duplicate(true)
+	var scans_before: Array[String] = main.run_completed_scans.duplicate()
+	var route_before: String = main.current_predator_route_id
+	var upper_alpha_before: float = timing_upper.color.a
+
+	main.call("_update_lantern_ray_timing_lane", 0.9)
+	_expect(not is_equal_approx(timing_upper.color.a, upper_alpha_before), "Lantern Ray timing lane should visibly pulse as a timing cue")
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "Lantern Ray timing lane should not secretly drain oxygen")
+	_expect(main.dive_session.current_cargo == cargo_before, "Lantern Ray timing lane should not mutate carried cargo")
+	_expect(main.progression_state.banked_resources == bank_before, "Lantern Ray timing lane should not mutate banked resources")
+	_expect(main.progression_state.purchased_upgrades == upgrades_before, "Lantern Ray timing lane should not mutate upgrades")
+	_expect(main.progression_state.scan_discoveries == discoveries_before, "Lantern Ray timing lane should not mutate durable discoveries")
+	_expect(main.run_completed_scans == scans_before, "Lantern Ray timing lane should not mutate run scan evidence")
+	_expect(main.current_predator_route_id == route_before, "Lantern Ray timing lane should not change seeded creature route state")
 	main.queue_free()
 
 func _test_scan_pulse_visual_helper() -> void:
@@ -562,6 +636,10 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"Creatures/LanternFry/ScanMarker",
 		"Creatures/LanternFry/CollisionShape2D",
 		"Creatures/LanternRayRoute/RouteLane",
+		"Creatures/LanternRayRoute/TimingLane/TimingLaneUpper",
+		"Creatures/LanternRayRoute/TimingLane/TimingLaneLower",
+		"Creatures/LanternRayRoute/TimingLane/TimingTickA",
+		"Creatures/LanternRayRoute/TimingLane/TimingTickB",
 		"Creatures/LanternRayRoute/RayBody",
 		"Creatures/LanternRayRoute/RayWingLeft",
 		"Creatures/LanternRayRoute/EyeFleck",
@@ -1040,6 +1118,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var glass_kelp_reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark") as Polygon2D
 	var lantern_ray_route := main.get_node("Creatures/LanternRayRoute") as Area2D
 	var lantern_ray_lane := main.get_node("Creatures/LanternRayRoute/RouteLane") as Polygon2D
+	var lantern_ray_timing_lane := main.get_node("Creatures/LanternRayRoute/TimingLane") as Node2D
+	var lantern_ray_timing_upper := main.get_node("Creatures/LanternRayRoute/TimingLane/TimingLaneUpper") as Polygon2D
+	var lantern_ray_timing_lower := main.get_node("Creatures/LanternRayRoute/TimingLane/TimingLaneLower") as Polygon2D
+	var lantern_ray_timing_tick := main.get_node("Creatures/LanternRayRoute/TimingLane/TimingTickA") as Polygon2D
 	var lantern_ray_body := main.get_node("Creatures/LanternRayRoute/RayBody") as Polygon2D
 	var lantern_ray_wing := main.get_node("Creatures/LanternRayRoute/RayWingLeft") as Polygon2D
 	var lantern_ray_eye := main.get_node("Creatures/LanternRayRoute/EyeFleck") as Polygon2D
@@ -1221,6 +1303,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(lantern_ray_route.position.distance_to(dusk_trench.global_position) <= 240.0, "Lantern Ray Route should sit near Dusk Trench as lower-route creature presence")
 	_expect(lantern_ray_route.position.y < dusk_trench.global_position.y, "Lantern Ray Route should drift above the main trench return lane")
 	_expect(lantern_ray_lane.color.a <= 0.16, "Lantern Ray ambient lane should stay softer than predator warning lanes")
+	_expect(lantern_ray_timing_upper.color.b >= lantern_ray_timing_upper.color.r and lantern_ray_timing_upper.color.r > lantern_ray_timing_upper.color.g, "Lantern Ray timing lane should read as pale timing guidance, not safe-current green")
+	_expect(lantern_ray_timing_upper.color.a <= 0.18 and lantern_ray_timing_lower.color.a <= 0.14 and lantern_ray_timing_tick.color.a <= 0.24, "Lantern Ray timing lane should stay readable without becoming a hard wall")
+	_expect(lantern_ray_timing_lane.find_child("CollisionShape2D", true, false) == null, "Lantern Ray timing lane should not add hidden collision")
+	_expect(lantern_ray_timing_lane.get_node_or_null("PressureBoundary") == null, "Lantern Ray timing lane should not add hidden pressure behavior")
 	_expect(lantern_ray_body.color.b > lantern_ray_body.color.r and lantern_ray_body.color.g > lantern_ray_body.color.r, "Lantern Ray should use cool creature color language instead of predator red or resource yellow")
 	_expect(lantern_ray_wing.color.a <= 0.5, "Lantern Ray wing silhouette should read as ambient life without becoming a hard obstacle")
 	_expect(lantern_ray_eye.color.a >= 0.65, "Lantern Ray should have a small distinct creature focal point")

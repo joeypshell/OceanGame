@@ -1790,6 +1790,24 @@ move_speed = 30.0
 color = Color(0.3, 0.86, 0.98, 0.14)
 polygon = PackedVector2Array(-178, -28, -86, -58, 82, -46, 196, -8, 150, 28, -12, 42, -158, 22)
 
+[node name="TimingLane" type="Node2D" parent="Creatures/LanternRayRoute"]
+
+[node name="TimingLaneUpper" type="Polygon2D" parent="Creatures/LanternRayRoute/TimingLane"]
+color = Color(0.9, 0.82, 1, 0.12)
+polygon = PackedVector2Array(-218, -96, -116, -126, 12, -108, 126, -80, 214, -34, 176, -4, 82, -38, -20, -54, -128, -64, -222, -30)
+
+[node name="TimingLaneLower" type="Polygon2D" parent="Creatures/LanternRayRoute/TimingLane"]
+color = Color(0.9, 0.82, 1, 0.08)
+polygon = PackedVector2Array(-204, 52, -96, 72, 18, 66, 128, 48, 194, 72, 116, 100, -16, 104, -138, 88)
+
+[node name="TimingTickA" type="Polygon2D" parent="Creatures/LanternRayRoute/TimingLane"]
+color = Color(0.98, 0.94, 1, 0.18)
+polygon = PackedVector2Array(-174, -86, -144, -98, -126, -72, -158, -58)
+
+[node name="TimingTickB" type="Polygon2D" parent="Creatures/LanternRayRoute/TimingLane"]
+color = Color(0.98, 0.94, 1, 0.14)
+polygon = PackedVector2Array(132, -56, 166, -40, 148, -14, 114, -30)
+
 [node name="WakeRibA" type="Polygon2D" parent="Creatures/LanternRayRoute"]
 color = Color(0.72, 1, 0.96, 0.2)
 polygon = PackedVector2Array(-146, -14, -72, -34, -10, -18, -84, 6)

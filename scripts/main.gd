@@ -67,6 +67,7 @@ const ECHO_LENS_PULSE_DURATION := 1.2
 const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 const BLACKWATER_PRESSURE_PERIOD_SECONDS := 3.1
+const LANTERN_RAY_TIMING_PERIOD_SECONDS := 2.6
 const DUSK_TRENCH_MEMORY_MIN_X := 2700.0
 const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 
@@ -219,6 +220,10 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var dusk_low_visibility_band: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltPulseBand
 @onready var dusk_low_visibility_rib_a: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibA
 @onready var dusk_low_visibility_rib_b: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibB
+@onready var lantern_ray_timing_lane_upper: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneUpper
+@onready var lantern_ray_timing_lane_lower: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneLower
+@onready var lantern_ray_timing_tick_a: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingTickA
+@onready var lantern_ray_timing_tick_b: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingTickB
 @onready var glass_kelp_reading_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingHalo
 @onready var glass_kelp_reading_shard: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard
 @onready var glass_kelp_reading_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark
@@ -245,6 +250,7 @@ var echo_lens_pulse_timer := 0.0
 var east_shelf_current_surge_timer := 0.0
 var blue_chimney_draft_timer := 0.0
 var blackwater_pressure_timer := 0.0
+var lantern_ray_timing_timer := 0.0
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -321,6 +327,7 @@ func _process(delta: float) -> void:
 	_update_east_shelf_current_surge(delta)
 	_update_blue_chimney_reverse_draft(delta)
 	_update_blackwater_pressure_cue(delta)
+	_update_lantern_ray_timing_lane(delta)
 	_update_lantern_fry_idle()
 	_update_burst_thruster_cooldown(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -1507,6 +1514,41 @@ func _update_blackwater_pressure_cue(delta: float) -> void:
 func _blackwater_pressure_cue_alpha(timer_seconds: float) -> float:
 	var phase := sin((timer_seconds / BLACKWATER_PRESSURE_PERIOD_SECONDS) * TAU)
 	return 0.1 + (phase + 1.0) * 0.04
+
+func _update_lantern_ray_timing_lane(delta: float) -> void:
+	var upper := lantern_ray_timing_lane_upper
+	if upper == null:
+		upper = get_node_or_null("Creatures/LanternRayRoute/TimingLane/TimingLaneUpper") as Polygon2D
+		lantern_ray_timing_lane_upper = upper
+	var lower := lantern_ray_timing_lane_lower
+	if lower == null:
+		lower = get_node_or_null("Creatures/LanternRayRoute/TimingLane/TimingLaneLower") as Polygon2D
+		lantern_ray_timing_lane_lower = lower
+	var tick_a := lantern_ray_timing_tick_a
+	if tick_a == null:
+		tick_a = get_node_or_null("Creatures/LanternRayRoute/TimingLane/TimingTickA") as Polygon2D
+		lantern_ray_timing_tick_a = tick_a
+	var tick_b := lantern_ray_timing_tick_b
+	if tick_b == null:
+		tick_b = get_node_or_null("Creatures/LanternRayRoute/TimingLane/TimingTickB") as Polygon2D
+		lantern_ray_timing_tick_b = tick_b
+
+	lantern_ray_timing_timer = fposmod(lantern_ray_timing_timer + delta, LANTERN_RAY_TIMING_PERIOD_SECONDS)
+	var lane_alpha := _lantern_ray_timing_lane_alpha(lantern_ray_timing_timer)
+	var lower_alpha := maxf(0.06, lane_alpha - 0.04)
+	var tick_alpha := lane_alpha + 0.06
+	if upper != null:
+		upper.color = Color(0.9, 0.82, 1.0, lane_alpha)
+	if lower != null:
+		lower.color = Color(0.9, 0.82, 1.0, lower_alpha)
+	if tick_a != null:
+		tick_a.color = Color(0.98, 0.94, 1.0, tick_alpha)
+	if tick_b != null:
+		tick_b.color = Color(0.98, 0.94, 1.0, maxf(0.1, tick_alpha - 0.04))
+
+func _lantern_ray_timing_lane_alpha(timer_seconds: float) -> float:
+	var phase := sin((timer_seconds / LANTERN_RAY_TIMING_PERIOD_SECONDS) * TAU)
+	return 0.09 + (phase + 1.0) * 0.035
 
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
@@ -2870,6 +2912,7 @@ func _reset_run_telemetry() -> void:
 	echo_lens_pulse_timer = 0.0
 	blue_chimney_draft_timer = 0.0
 	blackwater_pressure_timer = 0.0
+	lantern_ray_timing_timer = 0.0
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
 	_sync_east_shelf_pocket_payoff_state()
