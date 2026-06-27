@@ -6,7 +6,7 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 
 Current planning posture: Area 01 readability is the active blocker. The Hollow Reef / Wide Reef / Mirror Kelp / salvage-pocket cluster is structurally playable, but playtesting feedback says the placeholder geometry is too messy to read comfortably. The next active milestone is `Area 01 Readability Rescue`, which should make current play clearer before adding more hazard or route clutter. See `docs/planning/AREA_01_READABILITY_RESCUE_2026_06_27.md`.
 
-Current vertical-slice status: the prototype is structurally playable, but visual readability has regressed as the route grew. Treat current Area 01 visual pileup as a known closeout blocker until the player can distinguish background, terrain, return cues, hazards/timing cues, pickups, knowledge payoffs, and locked-route promises at normal play scale.
+Current vertical-slice status: the prototype is structurally playable, but visual readability has regressed as the route grew. Treat current Area 01 visual pileup as a known closeout blocker until the player can distinguish background, terrain, return cues, hazards/timing cues, pickups, knowledge payoffs, and locked-route promises at normal play scale. The current Area 01 readability pass separates cue families by intent: resource pickups keep the clearest cargo silhouettes, knowledge payoffs use compact cyan or amber cores with subdued halos, locked/future route promises use darker mouths plus quiet seal/glint treatment, and return/timing support stays lower-opacity than recoverable objects.
 
 ## Product Behavior
 

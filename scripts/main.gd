@@ -2804,13 +2804,13 @@ func _sync_salvage_data_cache_state() -> void:
 		return
 
 	if run_salvage_data_cache_recovered:
-		halo.color = Color(0.58, 0.9, 1.0, 0.07)
-		core.color = Color(0.84, 0.98, 1.0, 0.18)
+		halo.color = Color(0.42, 0.82, 1.0, 0.07)
+		core.color = Color(0.72, 0.95, 1.0, 0.18)
 		spark.visible = false
 	else:
-		halo.color = Color(0.58, 0.9, 1.0, 0.34)
-		core.color = Color(0.84, 0.98, 1.0, 0.86)
-		spark.color = Color(1.0, 0.96, 0.74, 0.92)
+		halo.color = Color(0.42, 0.82, 1.0, 0.22)
+		core.color = Color(0.72, 0.95, 1.0, 0.88)
+		spark.color = Color(0.9, 1.0, 1.0, 0.86)
 		spark.visible = true
 
 func _sync_salvage_manifest_state() -> void:
@@ -2827,13 +2827,13 @@ func _sync_salvage_manifest_state() -> void:
 		return
 
 	if run_salvage_manifest_recovered:
-		halo.color = Color(1.0, 0.78, 0.36, 0.08)
-		core.color = Color(1.0, 0.9, 0.52, 0.18)
+		halo.color = Color(1.0, 0.68, 0.28, 0.08)
+		core.color = Color(1.0, 0.76, 0.34, 0.18)
 		spark.visible = false
 	else:
-		halo.color = Color(1.0, 0.78, 0.36, 0.34)
-		core.color = Color(1.0, 0.9, 0.52, 0.82)
-		spark.color = Color(1.0, 0.98, 0.68, 0.88)
+		halo.color = Color(1.0, 0.68, 0.28, 0.22)
+		core.color = Color(1.0, 0.76, 0.34, 0.86)
+		spark.color = Color(1.0, 0.9, 0.5, 0.84)
 		spark.visible = true
 
 func _sync_salvage_pocket_open_state() -> void:
@@ -2864,7 +2864,7 @@ func _sync_salvage_pocket_open_state() -> void:
 	if hatch != null:
 		hatch.color = Color(0.04, 0.09, 0.095, 0.22) if cutter_owned else Color(0.12, 0.22, 0.25, 0.58)
 	if glint != null:
-		glint.color = Color(1.0, 0.84, 0.46, 0.64) if cutter_owned else Color(0.95, 0.86, 0.58, 0.48)
+		glint.color = Color(1.0, 0.78, 0.38, 0.48) if cutter_owned else Color(0.86, 0.78, 0.58, 0.28)
 	if tool_label != null:
 		tool_label.text = "CUTTER READY" if cutter_owned else "CUTTER NEEDED"
 		tool_label.visible = not cutter_owned
@@ -2886,13 +2886,13 @@ func _sync_tideglass_sample_state() -> void:
 		return
 
 	if run_tideglass_sample_recovered:
-		halo.color = Color(0.58, 1.0, 0.92, 0.07)
-		core.color = Color(0.9, 1.0, 0.76, 0.18)
+		halo.color = Color(0.38, 0.88, 1.0, 0.07)
+		core.color = Color(0.72, 0.96, 1.0, 0.18)
 		spark.visible = false
 	else:
-		halo.color = Color(0.58, 1.0, 0.92, 0.36)
-		core.color = Color(0.9, 1.0, 0.76, 0.86)
-		spark.color = Color(1.0, 1.0, 0.82, 0.9)
+		halo.color = Color(0.38, 0.88, 1.0, 0.22)
+		core.color = Color(0.72, 0.96, 1.0, 0.88)
+		spark.color = Color(0.9, 1.0, 1.0, 0.86)
 		spark.visible = true
 
 func _sync_blackwater_crack_gate_state() -> void:

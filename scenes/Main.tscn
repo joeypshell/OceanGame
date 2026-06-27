@@ -1403,18 +1403,18 @@ color = Color(0.12, 0.22, 0.25, 0.58)
 polygon = PackedVector2Array(-18, -36, 54, -24, 72, 20, 16, 42, -42, 14)
 
 [node name="LockBars" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
-color = Color(0.42, 0.82, 0.95, 0.34)
+color = Color(0.38, 0.72, 0.86, 0.26)
 polygon = PackedVector2Array(-22, -18, 54, -8, 50, 0, -26, -10, -30, 8, 46, 18, 42, 28, -34, 18)
 
 [node name="SalvageGlint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
-color = Color(0.95, 0.86, 0.58, 0.48)
+color = Color(0.86, 0.78, 0.58, 0.28)
 polygon = PackedVector2Array(28, -24, 38, -8, 56, -4, 38, 2, 28, 18, 18, 2, 0, -4, 18, -8)
 
 [node name="FutureCutterPort" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
 position = Vector2(74, 40)
 
 [node name="PortPlate" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort"]
-color = Color(0.72, 0.42, 0.2, 0.5)
+color = Color(0.66, 0.38, 0.18, 0.38)
 polygon = PackedVector2Array(-34, -18, 18, -26, 40, -4, 28, 24, -22, 30, -46, 4)
 
 [node name="PortSocket" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort"]
@@ -1422,7 +1422,7 @@ color = Color(0.1, 0.055, 0.035, 0.72)
 polygon = PackedVector2Array(-14, -10, 16, -14, 26, 2, 12, 16, -18, 18, -28, 2)
 
 [node name="ToolLatch" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort"]
-color = Color(1, 0.78, 0.38, 0.58)
+color = Color(0.95, 0.66, 0.3, 0.42)
 polygon = PackedVector2Array(-24, -4, 20, -10, 24, -2, -20, 6, -18, 16, 26, 8, 30, 16, -14, 24)
 
 [node name="ToolLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort"]
@@ -1437,15 +1437,15 @@ text = "CUTTER NEEDED"
 position = Vector2(20, 6)
 
 [node name="CacheHalo" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache"]
-color = Color(0.58, 0.9, 1, 0.34)
+color = Color(0.42, 0.82, 1, 0.22)
 polygon = PackedVector2Array(0, -30, 28, -14, 34, 14, 0, 34, -28, 14, -34, -14)
 
 [node name="CacheCore" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache"]
-color = Color(0.84, 0.98, 1, 0.86)
+color = Color(0.72, 0.95, 1, 0.88)
 polygon = PackedVector2Array(-10, -20, 16, -10, 20, 14, -6, 24, -22, 4)
 
 [node name="CacheSpark" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache"]
-color = Color(1, 0.96, 0.74, 0.92)
+color = Color(0.9, 1, 1, 0.86)
 polygon = PackedVector2Array(0, -28, 8, -6, 30, 0, 8, 6, 0, 30, -8, 6, -30, 0, -8, -6)
 
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
@@ -1497,15 +1497,15 @@ text = "RETURN VIA HOLLOW"
 position = Vector2(72, 4)
 
 [node name="ManifestHalo" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest"]
-color = Color(1, 0.78, 0.36, 0.34)
+color = Color(1, 0.68, 0.28, 0.22)
 polygon = PackedVector2Array(0, -28, 24, -12, 30, 14, 4, 32, -24, 16, -30, -12)
 
 [node name="ManifestCore" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest"]
-color = Color(1, 0.9, 0.52, 0.82)
+color = Color(1, 0.76, 0.34, 0.86)
 polygon = PackedVector2Array(-20, -12, 12, -22, 24, 6, -8, 24, -28, 4)
 
 [node name="ManifestSpark" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest"]
-color = Color(1, 0.98, 0.68, 0.88)
+color = Color(1, 0.9, 0.5, 0.84)
 polygon = PackedVector2Array(0, -24, 8, -4, 28, 0, 8, 6, 0, 26, -8, 6, -28, 0, -8, -4)
 
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest"]
@@ -1580,15 +1580,15 @@ polygon = PackedVector2Array(-92, -28, -22, -54, 58, -34, 132, 10, 96, 30, 22, -
 position = Vector2(126, 24)
 
 [node name="SampleHalo" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample"]
-color = Color(0.58, 1, 0.92, 0.36)
+color = Color(0.38, 0.88, 1, 0.22)
 polygon = PackedVector2Array(0, -42, 34, -18, 42, 18, 10, 46, -34, 28, -44, -10)
 
 [node name="SampleCore" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample"]
-color = Color(0.9, 1, 0.76, 0.86)
+color = Color(0.72, 0.96, 1, 0.88)
 polygon = PackedVector2Array(0, -24, 21, -8, 17, 18, -8, 25, -26, 2, -16, -18)
 
 [node name="SampleSpark" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample"]
-color = Color(1, 1, 0.82, 0.9)
+color = Color(0.9, 1, 1, 0.86)
 polygon = PackedVector2Array(0, -12, 6, -2, 17, 0, 7, 6, 4, 17, -4, 7, -16, 5, -7, -2)
 
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample"]
@@ -1659,11 +1659,11 @@ color = Color(0.14, 0.28, 0.58, 0.17)
 polygon = PackedVector2Array(-112, -62, 40, -112, 148, -14, 124, 118, -26, 142, -144, 48)
 
 [node name="KelpSealBars" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/DeepKelpSealPromise"]
-color = Color(0.5, 0.92, 0.78, 0.32)
+color = Color(0.34, 0.76, 0.66, 0.24)
 polygon = PackedVector2Array(-54, -14, -28, -42, -12, 28, -34, 56, 18, -48, 38, -18, 18, 42, 56, -22, 78, 8, 42, 60)
 
 [node name="FutureGlint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/DeepKelpSealPromise"]
-color = Color(0.84, 1, 0.92, 0.42)
+color = Color(0.72, 0.92, 0.9, 0.28)
 polygon = PackedVector2Array(12, -24, 26, -4, 52, 0, 26, 8, 12, 30, -2, 8, -28, 0, -2, -4)
 
 [node name="PromiseLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/DeepKelpSealPromise"]
@@ -1686,11 +1686,11 @@ color = Color(0.18, 0.34, 0.62, 0.16)
 polygon = PackedVector2Array(-96, -56, 34, -94, 126, -12, 110, 104, -22, 128, -126, 46)
 
 [node name="SealLip" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise"]
-color = Color(0.56, 0.82, 1, 0.32)
+color = Color(0.44, 0.72, 0.92, 0.24)
 polygon = PackedVector2Array(-68, -10, 20, -36, 92, 2, 78, 28, 18, -10, -58, 16)
 
 [node name="PromiseGlint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise"]
-color = Color(0.82, 0.96, 1, 0.46)
+color = Color(0.7, 0.9, 1, 0.3)
 polygon = PackedVector2Array(10, -18, 20, -4, 38, 0, 20, 6, 10, 22, 0, 6, -18, 0, 0, -4)
 
 [node name="PromiseLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise"]

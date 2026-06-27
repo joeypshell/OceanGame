@@ -982,6 +982,7 @@ func _test_mirror_kelp_deep_promise() -> void:
 	var future_glint := promise.get_node("FutureGlint") as Polygon2D
 	var promise_label := promise.get_node("PromiseLabel") as Label
 	var tideglass := mirror_kelp.get_node("TideglassSample") as Node2D
+	var tideglass_core := mirror_kelp.get_node("TideglassSample/SampleCore") as Polygon2D
 	var mirrorfin := mirror_kelp.get_node("MirrorfinDrift") as Area2D
 	var return_label := mirror_kelp.get_node("ReturnLabel") as Label
 	var landmark := main.get_node("LandmarkMetadata/MirrorKelpPass")
@@ -996,8 +997,9 @@ func _test_mirror_kelp_deep_promise() -> void:
 	_expect(return_label.text.contains("WIDE REEF"), "Mirror Kelp return label should stay readable beside the future promise")
 	_expect(seal_mouth.color.a >= 0.6, "deep kelp promise should read as a closed route mouth")
 	_expect(pressure_veil.color.b > pressure_veil.color.r and pressure_veil.color.a <= 0.2, "deep kelp pressure veil should stay subtle and cool")
-	_expect(kelp_bars.color.g > kelp_bars.color.r and kelp_bars.color.a <= 0.36, "deep kelp seal bars should use kelp/route language instead of resource glow")
-	_expect(future_glint.color.a <= 0.45, "deep kelp promise glint should stay a future hint, not a collectible")
+	_expect(kelp_bars.color.g > kelp_bars.color.r and kelp_bars.color.a <= 0.28, "deep kelp seal bars should use quiet route language instead of resource glow")
+	_expect(future_glint.color.a <= 0.32 and future_glint.color.a < tideglass_core.color.a, "deep kelp promise glint should stay a future hint, not a collectible")
+	_expect(tideglass_core.color.b >= tideglass_core.color.r and tideglass_core.color.a >= 0.8, "Tideglass should stay brighter than sealed-route promise language")
 	_expect(promise_label.text == "KELP SEALED", "deep kelp promise label should be compact and honest")
 	_expect(not promise_label.text.to_lower().contains("objective"), "deep kelp promise should not imply objective checklist language")
 	_expect(not promise_label.text.to_lower().contains("map"), "deep kelp promise should not imply exact locator UI")
@@ -1040,7 +1042,9 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var cutter_port_socket := salvage.get_node("FutureCutterPort/PortSocket") as Polygon2D
 	var cutter_port_label := salvage.get_node("FutureCutterPort/ToolLabel") as Label
 	var data_cache := salvage.get_node("DataCache") as Node2D
+	var data_cache_halo := salvage.get_node("DataCache/CacheHalo") as Polygon2D
 	var data_cache_core := salvage.get_node("DataCache/CacheCore") as Polygon2D
+	var data_cache_spark := salvage.get_node("DataCache/CacheSpark") as Polygon2D
 	var interact_zone := salvage.get_node("InteractZone") as Area2D
 	var promise_label := salvage.get_node("PromiseLabel") as Label
 	var opened_lane := salvage.get_node("OpenedPocketLane") as Node2D
@@ -1048,6 +1052,7 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var open_return_cue := salvage.get_node("OpenedPocketLane/ReturnCurrentCue") as Polygon2D
 	var open_label := salvage.get_node("OpenedPocketLane/OpenLabel") as Label
 	var salvage_manifest := salvage.get_node("OpenedPocketLane/SalvageManifest") as Node2D
+	var manifest_halo := salvage.get_node("OpenedPocketLane/SalvageManifest/ManifestHalo") as Polygon2D
 	var manifest_core := salvage.get_node("OpenedPocketLane/SalvageManifest/ManifestCore") as Polygon2D
 	var manifest_spark := salvage.get_node("OpenedPocketLane/SalvageManifest/ManifestSpark") as Polygon2D
 	var manifest_interact := salvage.get_node("OpenedPocketLane/SalvageManifest/InteractZone") as Area2D
@@ -1071,7 +1076,7 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(pocket_shadow.color.a >= 0.6, "salvage pocket should read as a deliberate sealed opening")
 	_expect(hull_rim.color.r > hull_rim.color.g and hull_rim.color.g > hull_rim.color.b, "salvage rim should use muted wreck/rust language")
 	_expect(hatch_panel.color.b >= hatch_panel.color.g, "sealed hatch panel should read as cold wreck metal, not a resource")
-	_expect(lock_bars.color.b > lock_bars.color.r and lock_bars.color.a >= 0.3, "salvage lock bars should read as sealed promise language")
+	_expect(lock_bars.color.b > lock_bars.color.r and lock_bars.color.a <= 0.28, "salvage lock bars should read as sealed promise language without becoming a reward")
 	_expect(salvage_glint.color.a <= 0.5, "salvage glint should stay a subtle promise, not a collectable reward")
 	_expect(future_cutter_port.position.x > data_cache.position.x, "future cutter port should sit beside the cache rather than on top of the knowledge payoff")
 	_expect(cutter_port_plate.color.r > cutter_port_plate.color.b and cutter_port_plate.color.g > cutter_port_plate.color.b, "future cutter port should use warm salvage-tool language, not pressure/echo blue")
@@ -1083,6 +1088,9 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(not cutter_port_label.text.to_lower().contains("key"), "future salvage tool copy should not conflict with Resonance Key language")
 	_expect(data_cache.position.x >= -10.0 and data_cache.position.x <= 40.0, "salvage data cache should sit inside the sealed pocket mouth")
 	_expect(data_cache_core.color.a >= 0.7, "salvage data cache should start visibly recoverable")
+	_expect(data_cache_core.color.b >= data_cache_core.color.r, "salvage data cache should use cool knowledge-payoff color language")
+	_expect(data_cache_halo.color.a < data_cache_core.color.a, "salvage data cache halo should stay subordinate to the payoff core")
+	_expect(data_cache_spark.visible and data_cache_spark.color.b >= data_cache_spark.color.r, "salvage data cache spark should read as data, not shell or cargo")
 	_expect(chamber_backwater.color.a <= 0.42, "Wide Reef Chamber backwater should stay below payoff brightness")
 	_expect(upper_chamber_shelf.color.a <= 0.34 and lower_chamber_shelf.color.a <= 0.38, "Wide Reef Chamber shelf framing should stay quiet enough for normal play")
 	_expect(glass_rib_span.color.a <= 0.16, "Wide Reef Chamber rib landmark should not compete with cache or pickup reads")
@@ -1131,6 +1139,8 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(open_entry_water.color.a < manifest_core.color.a and open_return_cue.color.a < manifest_core.color.a, "opened salvage lane support should stay quieter than the manifest payoff")
 	_expect(salvage_manifest.get_parent() == opened_lane, "Salvage Manifest should live inside the opened pocket lane")
 	_expect(manifest_core.color.a >= 0.7, "Salvage Manifest should start visibly recoverable when the pocket is open")
+	_expect(manifest_core.color.r > manifest_core.color.b, "Salvage Manifest should use amber document language distinct from cyan data shards")
+	_expect(manifest_halo.color.a < manifest_core.color.a, "Salvage Manifest halo should stay subordinate to the payoff core")
 	_expect(manifest_spark.visible, "Salvage Manifest should have a bright recovery spark before interaction")
 	_expect(manifest_interact.collision_layer == 0 and manifest_interact.collision_mask == 1, "Salvage Manifest hotspot should detect the player without becoming route collision")
 	_expect(salvage_shell_candidate.global_position.distance_to(salvage_manifest.global_position) >= 90.0, "Salvage Manifest and shell cargo should ask for a local choice instead of stacking")
@@ -2499,8 +2509,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_deeper_promise.position.y > hollow_reef_reading_core.position.y, "Hollow Reef deeper promise should imply lower future route growth")
 	_expect(hollow_deeper_mouth.color.a >= 0.62, "Hollow Reef deeper promise mouth should read as an intentional closed opening")
 	_expect(hollow_deeper_wash.color.a <= 0.18, "Hollow Reef deeper promise wash should stay atmospheric, not a damage field")
-	_expect(hollow_deeper_seal.color.a >= 0.28, "Hollow Reef deeper promise should have a readable seal lip")
-	_expect(hollow_deeper_glint.color.a >= 0.4, "Hollow Reef deeper promise should include a small curiosity glint")
+	_expect(hollow_deeper_seal.color.a >= 0.22 and hollow_deeper_seal.color.a < tideglass_core.color.a, "Hollow Reef deeper promise should have a readable but quiet seal lip")
+	_expect(hollow_deeper_glint.color.a >= 0.28 and hollow_deeper_glint.color.a <= 0.34, "Hollow Reef deeper promise should include a small curiosity glint without becoming a payoff")
 	_expect(hollow_deeper_label.text == "DEEP CLOSED", "Hollow Reef deeper promise should clearly say the route is closed with compact copy")
 	_expect(hollow_deeper_label.get_theme_font_size("font_size") <= 9, "Hollow Reef deeper promise label should be smaller than current interaction copy")
 	_expect(not hollow_deeper_label.text.to_lower().contains("objective"), "Hollow Reef deeper promise label should not become checklist copy")
