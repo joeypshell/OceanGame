@@ -67,6 +67,7 @@ func _initialize() -> void:
 	_run("Outer Shelf route footprint", _test_outer_shelf_route_footprint)
 	_run("Outer Shelf Glass Rim branch", _test_outer_shelf_glass_rim_branch)
 	_run("Outer Shelf slackwater timing cue visual only", _test_outer_shelf_slackwater_timing_cue_visual_only)
+	_run("Glass Ray Drifter passive route read", _test_glass_ray_drifter_passive_route_read)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
 	_run("Salvage Manifest interaction", _test_salvage_manifest_interaction)
@@ -1240,6 +1241,51 @@ func _test_outer_shelf_slackwater_timing_cue_visual_only() -> void:
 	_expect(branch.find_child("Predator", true, false) == null, "Outer Shelf slackwater timing cue should not add combat pressure")
 	_expect(branch.find_child("ResourcePickup", true, false) == null, "Outer Shelf slackwater timing cue should not create cargo")
 	scene_main.queue_free()
+
+func _test_glass_ray_drifter_passive_route_read() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var ray := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRayDrifter") as Area2D
+	var wake := ray.get_node("RouteWake") as Polygon2D
+	var body := ray.get_node("RayBody") as Polygon2D
+	var scan_marker := ray.get_node("ScanMarker") as Polygon2D
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var oxygen_before: float = main.dive_session.oxygen
+	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+
+	_expect(ray.get("discovery_id") == "glass_ray_drifter", "Glass Ray should expose a stable scan id")
+	_expect(ray.get("display_name") == "Glass Ray Drifter", "Glass Ray should expose a compact display name")
+	var description: String = String(ray.get("description"))
+	var gameplay_fact: String = String(ray.get("gameplay_fact"))
+	_expect(description.contains("Glass Rim Cut"), "Glass Ray description should anchor to the remembered branch")
+	_expect(gameplay_fact.contains("slackwater window"), "Glass Ray gameplay fact should teach the timing read")
+	_expect(gameplay_fact.contains("wait"), "Glass Ray gameplay fact should encourage observation over forcing the route")
+	_expect_no_monster_combat_language(description, "Glass Ray description")
+	_expect_no_monster_combat_language(gameplay_fact, "Glass Ray gameplay fact")
+	_expect(wake.color.a <= 0.14, "Glass Ray route wake should stay subtle and not read as a reward")
+	_expect(body.color.a <= 0.55, "Glass Ray should read as a passive translucent creature")
+	_expect(scan_marker.color.a < 0.3, "Glass Ray scan marker should stay quiet while idle")
+	_expect(ray.find_child("HealthBar", true, false) == null, "Glass Ray should not add combat health UI")
+	_expect(ray.find_child("LootTable", true, false) == null, "Glass Ray should not add loot tables")
+	_expect(ray.find_child("HarvestArea", true, false) == null, "Glass Ray should not add harvesting")
+	_expect(ray.find_child("CaptureArea", true, false) == null, "Glass Ray should not add capture behavior")
+	_expect(ray.find_child("Predator", true, false) == null, "Glass Ray should not use predator behavior")
+	_expect(ray.get_node_or_null("ResourcePickup") == null, "Glass Ray should not be a resource pickup")
+
+	var start_position := ray.global_position
+	ray.call("_physics_process", 1.0)
+	_expect(ray.global_position != start_position, "Glass Ray should drift instead of reading as static scenery")
+
+	var scene_player := main.get_node("Player") as CharacterBody2D
+	main.player = scene_player
+	scene_player.global_position = ray.global_position
+	var scan_candidates: Array[Node] = [ray]
+	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == ray, "scanner target selection should find Glass Ray reliably at close range")
+	_expect(main.call("_scan_target_gameplay_fact", ray).contains("slackwater"), "scanner read should expose the route-timing lesson")
+	_expect(main.progression_state.to_save_data() == save_before, "unscanned Glass Ray should not mutate progression")
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "unscanned Glass Ray should not drain oxygen")
+	_expect(main.dive_session.current_cargo == cargo_before, "unscanned Glass Ray should not mutate cargo")
+	main.queue_free()
 
 func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var root := Node.new()

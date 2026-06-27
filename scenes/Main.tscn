@@ -1785,6 +1785,39 @@ offset_bottom = -94.0
 theme_override_font_sizes/font_size = 10
 text = "GLASS RIM CUT"
 
+[node name="GlassRayDrifter" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+position = Vector2(646, 24)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("7_scannable")
+discovery_id = "glass_ray_drifter"
+display_name = "Glass Ray Drifter"
+description = "A slow, translucent ray circling the Glass Rim Cut before slipping back into calmer water."
+gameplay_fact = "Its turn marks the slackwater window through Glass Rim Cut; wait for the loop instead of forcing the current."
+move_start = Vector2(4728, 3042)
+move_end = Vector2(4948, 3112)
+move_speed = 18.0
+
+[node name="RouteWake" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRayDrifter"]
+color = Color(0.48, 0.84, 1, 0.12)
+polygon = PackedVector2Array(-86, -18, -28, -34, 54, -20, 112, 10, 42, 28, -52, 12)
+
+[node name="RayBody" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRayDrifter"]
+color = Color(0.62, 0.9, 1, 0.5)
+polygon = PackedVector2Array(-52, -8, -8, -30, 48, -18, 82, 4, 40, 28, -18, 22)
+
+[node name="RayWingSoftA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRayDrifter"]
+color = Color(0.84, 0.98, 1, 0.32)
+polygon = PackedVector2Array(-4, -28, 48, -54, 82, -8, 34, -12)
+
+[node name="RayWingSoftB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRayDrifter"]
+color = Color(0.84, 0.98, 1, 0.28)
+polygon = PackedVector2Array(-14, 18, 34, 18, 72, 44, 12, 48)
+
+[node name="ScanMarker" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRayDrifter"]
+color = Color(0.95, 1, 0.7, 0.12)
+polygon = PackedVector2Array(0, -54, 42, -30, 54, 0, 42, 30, 0, 54, -42, 30, -54, 0, -42, -30)
+
 [node name="DeepKelpSealPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
 position = Vector2(238, 116)
 
