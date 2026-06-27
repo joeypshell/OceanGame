@@ -2179,6 +2179,18 @@ func _test_condition_briefing_copy() -> void:
 	_expect(not main.call("_shelf_glimmer_visible_for_condition", "calm_current"), "Calm Current should not enable the Shelf Glimmer opportunity")
 	_expect(main.call("_blue_chimney_signal_visible_for_condition", "rare_signal"), "Rare Signal should enable the Blue Chimney lower-pocket opportunity")
 	_expect(not main.call("_blue_chimney_signal_visible_for_condition", "calm_current"), "Calm Current should not enable the Blue Chimney signal")
+	var scene := MainScene.instantiate()
+	var safe_bank_lane := scene.get_node("RouteChoiceBand/SafeBankLane") as Polygon2D
+	var research_lane := scene.get_node("RouteChoiceBand/ResearchLane") as Polygon2D
+	var decision_rib := scene.get_node("RouteChoiceBand/DecisionRib") as Polygon2D
+	scene.call("_sync_route_choice_condition_nudge", "rare_signal")
+	_expect(research_lane.color.a > 0.24, "Rare Signal should visibly nudge the research route lane")
+	_expect(safe_bank_lane.color.a >= 0.14, "Rare Signal should keep the safe bank route visible")
+	_expect(decision_rib.color.a <= 0.26, "Rare Signal route-choice rib should stay a soft suggestion")
+	scene.call("_sync_route_choice_condition_nudge", "calm_current")
+	_expect(research_lane.color.a <= 0.21, "non-Rare-Signal conditions should restore the neutral route choice lane")
+	_expect(safe_bank_lane.color.a >= 0.17, "neutral route-choice visuals should preserve the safe bank lane")
+	scene.free()
 	main.free()
 
 func _test_compact_dive_hud_helpers() -> void:

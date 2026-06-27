@@ -174,6 +174,9 @@ const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 @onready var wreck_echo_clue_marker_arc_b: Polygon2D = $WreckEchoDescent/ClueTrigger/ClueMarkerArcB
 @onready var wreck_echo_clue_core: Polygon2D = $WreckEchoDescent/ClueTrigger/ClueCore
 @onready var rare_signal_emphasis: Node2D = $RareSignalEmphasis
+@onready var route_choice_decision_rib: Polygon2D = $RouteChoiceBand/DecisionRib
+@onready var route_choice_safe_bank_lane: Polygon2D = $RouteChoiceBand/SafeBankLane
+@onready var route_choice_research_lane: Polygon2D = $RouteChoiceBand/ResearchLane
 @onready var shelf_glimmer_opportunity: Node2D = $EastShelfSpur/ShelfGlimmerOpportunity
 @onready var east_shelf_current_surge_lane: Polygon2D = $EastShelfSpur/CurrentSurgeLane
 @onready var east_shelf_current_surge_rib: Polygon2D = $EastShelfSpur/CurrentSurgeRib
@@ -1543,6 +1546,29 @@ func _sync_condition_visuals() -> void:
 	thermal_bubble_string_b.color = Color(1.0, 1.0, 0.84, 0.4) if is_thermal_bloom else Color(0.96, 1.0, 0.82, 0.28)
 	thermal_vent_visual.color = Color(1.0, 0.5, 0.18, 1.0) if is_thermal_bloom else Color(0.96, 0.46, 0.16, 0.9)
 	thermal_vent_bubbles.color = Color(0.98, 1.0, 0.86, 0.46) if is_thermal_bloom else Color(0.9, 1.0, 0.86, 0.34)
+	_sync_route_choice_condition_nudge(condition_id)
+
+func _sync_route_choice_condition_nudge(condition_id: String) -> void:
+	var decision_rib := route_choice_decision_rib
+	if decision_rib == null:
+		decision_rib = get_node_or_null("RouteChoiceBand/DecisionRib") as Polygon2D
+	var safe_bank_lane := route_choice_safe_bank_lane
+	if safe_bank_lane == null:
+		safe_bank_lane = get_node_or_null("RouteChoiceBand/SafeBankLane") as Polygon2D
+	var research_lane := route_choice_research_lane
+	if research_lane == null:
+		research_lane = get_node_or_null("RouteChoiceBand/ResearchLane") as Polygon2D
+	if decision_rib == null or safe_bank_lane == null or research_lane == null:
+		return
+
+	if condition_id == "rare_signal":
+		decision_rib.color = Color(0.74, 0.92, 0.86, 0.24)
+		safe_bank_lane.color = Color(0.46, 0.92, 0.64, 0.16)
+		research_lane.color = Color(0.52, 0.96, 1.0, 0.28)
+	else:
+		decision_rib.color = Color(0.74, 0.92, 0.86, 0.18)
+		safe_bank_lane.color = Color(0.46, 0.92, 0.64, 0.18)
+		research_lane.color = Color(0.52, 0.96, 1.0, 0.2)
 
 func _rare_signal_emphasis_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal"
