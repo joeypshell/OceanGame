@@ -60,6 +60,7 @@ func _initialize() -> void:
 	_run("Hollow Reef passive creature scan behavior", _test_hollow_reef_passive_creature_scan_behavior)
 	_run("Glassfin Swarm scan behavior", _test_glassfin_swarm_scan_behavior)
 	_run("Mirrorfin route-read behavior", _test_mirrorfin_route_read_behavior)
+	_run("Mirror Kelp deep promise", _test_mirror_kelp_deep_promise)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
 	_run("Tideglass Sample interaction", _test_tideglass_sample_interaction)
@@ -924,6 +925,58 @@ func _test_mirrorfin_route_read_behavior() -> void:
 	_expect(not saved.has("mirrorfin_objective"), "Mirrorfin scan should not create durable objective-chain state")
 	_expect(not saved.has("monster_parts"), "Mirrorfin scan should not add monster-part economy state")
 	_expect(not saved.has("creature_inventory"), "Mirrorfin scan should not add creature inventory state")
+	main.queue_free()
+
+func _test_mirror_kelp_deep_promise() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var mirror_kelp := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass") as Node2D
+	var promise := mirror_kelp.get_node("DeepKelpSealPromise") as Node2D
+	var seal_mouth := promise.get_node("SealMouth") as Polygon2D
+	var pressure_veil := promise.get_node("PressureVeil") as Polygon2D
+	var kelp_bars := promise.get_node("KelpSealBars") as Polygon2D
+	var future_glint := promise.get_node("FutureGlint") as Polygon2D
+	var promise_label := promise.get_node("PromiseLabel") as Label
+	var tideglass := mirror_kelp.get_node("TideglassSample") as Node2D
+	var mirrorfin := mirror_kelp.get_node("MirrorfinDrift") as Area2D
+	var return_label := mirror_kelp.get_node("ReturnLabel") as Label
+	var landmark := main.get_node("LandmarkMetadata/MirrorKelpPass")
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var oxygen_before: float = main.dive_session.oxygen
+	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+
+	_expect(promise.get_parent() == mirror_kelp, "deep kelp promise should be authored inside Mirror Kelp Pass")
+	_expect(promise.position.x > tideglass.position.x, "deep kelp promise should sit beyond the Tideglass payoff")
+	_expect(promise.position.x > mirrorfin.position.x, "deep kelp promise should sit beyond the Mirrorfin route-read lane")
+	_expect(promise.position.y > tideglass.position.y, "deep kelp promise should point toward deeper branch growth")
+	_expect(return_label.text.contains("WIDE REEF"), "Mirror Kelp return label should stay readable beside the future promise")
+	_expect(seal_mouth.color.a >= 0.6, "deep kelp promise should read as a closed route mouth")
+	_expect(pressure_veil.color.b > pressure_veil.color.r and pressure_veil.color.a <= 0.2, "deep kelp pressure veil should stay subtle and cool")
+	_expect(kelp_bars.color.g > kelp_bars.color.r and kelp_bars.color.a <= 0.36, "deep kelp seal bars should use kelp/route language instead of resource glow")
+	_expect(future_glint.color.a <= 0.45, "deep kelp promise glint should stay a future hint, not a collectible")
+	_expect(promise_label.text == "DEEP KELP SEALED", "deep kelp promise label should be compact and honest")
+	_expect(not promise_label.text.to_lower().contains("objective"), "deep kelp promise should not imply objective checklist language")
+	_expect(not promise_label.text.to_lower().contains("map"), "deep kelp promise should not imply exact locator UI")
+	_expect(not promise_label.text.to_lower().contains("open"), "deep kelp promise should not imply current access")
+	_expect(promise.get_node_or_null("InteractZone") == null, "deep kelp promise should not add interaction yet")
+	_expect(promise.find_child("CollisionShape2D", true, false) == null, "deep kelp promise should not add collision")
+	_expect(promise.find_child("ResourcePickup", true, false) == null, "deep kelp promise should not add a pickup")
+	_expect(promise.find_child("LootTable", true, false) == null, "deep kelp promise should not add loot tables")
+	_expect(promise.find_child("HarvestArea", true, false) == null, "deep kelp promise should not add harvesting")
+	_expect(promise.find_child("HealthBar", true, false) == null, "deep kelp promise should not add combat UI")
+	_expect(promise.get_script() == null, "deep kelp promise should stay visual/readback only")
+	var landmark_memory := "%s %s %s" % [
+		String(landmark.get("display_name")),
+		String(landmark.get("memory_goal")),
+		String(landmark.get("persistent_facts")),
+	]
+	_expect(landmark_memory.contains("Mirror Kelp Pass"), "deep kelp promise should point back to the remembered Mirror Kelp place")
+	_expect(landmark_memory.contains("closed deep-kelp route promise"), "Mirror Kelp metadata should record the promise as future route memory")
+	_expect(not landmark_memory.to_lower().contains("coordinates"), "Mirror Kelp metadata should avoid exact locator framing")
+	_expect(main.get_node_or_null("ResourcePickups/DeepKelp") == null, "deep kelp promise should not create a resource pickup")
+	_expect(main.progression_state.to_save_data() == save_before, "deep kelp promise should not mutate progression")
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "deep kelp promise should not drain oxygen")
+	_expect(main.dive_session.current_cargo == cargo_before, "deep kelp promise should not mutate cargo")
 	main.queue_free()
 
 func _test_wide_chamber_salvage_pocket_entrance() -> void:

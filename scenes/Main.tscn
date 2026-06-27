@@ -255,9 +255,9 @@ kind = "side_branch"
 depth_band = "deep/chamber"
 role = "Second Area 01 branch off Wide Reef Chamber and the next route-breadth target."
 memory_goal = "Remember Mirror Kelp Pass as the reflective kelp branch beyond Wide Reef Chamber; returning from it means turning back through the chamber toward Hollow Reef and Dusk."
-persistent_facts = "Visible authored branch with one run-scoped Tideglass Sample payoff.
+persistent_facts = "Visible authored branch with one run-scoped Tideglass Sample payoff and a closed deep-kelp route promise.
 It is not a resource route, scan target, combat route, minimap marker, quest objective, procedural cave, or durable route state."
-variable_hooks = "Mirrorfin route read, daily approach variation, cargo-vs-knowledge split, and deep-kelp promise can attach here."
+variable_hooks = "Mirrorfin route read, daily approach variation, cargo-vs-knowledge split, and future deep-kelp promise tuning can attach here."
 readability_priority = "New branch identity while keeping the Wide Reef Chamber return language readable."
 
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
@@ -1593,6 +1593,33 @@ offset_right = 166.0
 offset_bottom = -112.0
 theme_override_font_sizes/font_size = 12
 text = "MIRROR KELP PASS"
+
+[node name="DeepKelpSealPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+position = Vector2(238, 116)
+
+[node name="SealMouth" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/DeepKelpSealPromise"]
+color = Color(0.004, 0.018, 0.032, 0.68)
+polygon = PackedVector2Array(-72, -42, 30, -72, 116, -16, 98, 72, -10, 96, -106, 26)
+
+[node name="PressureVeil" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/DeepKelpSealPromise"]
+color = Color(0.14, 0.28, 0.58, 0.17)
+polygon = PackedVector2Array(-112, -62, 40, -112, 148, -14, 124, 118, -26, 142, -144, 48)
+
+[node name="KelpSealBars" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/DeepKelpSealPromise"]
+color = Color(0.5, 0.92, 0.78, 0.32)
+polygon = PackedVector2Array(-54, -14, -28, -42, -12, 28, -34, 56, 18, -48, 38, -18, 18, 42, 56, -22, 78, 8, 42, 60)
+
+[node name="FutureGlint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/DeepKelpSealPromise"]
+color = Color(0.84, 1, 0.92, 0.42)
+polygon = PackedVector2Array(12, -24, 26, -4, 52, 0, 26, 8, 12, 30, -2, 8, -28, 0, -2, -4)
+
+[node name="PromiseLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/DeepKelpSealPromise"]
+offset_left = -84.0
+offset_top = 74.0
+offset_right = 128.0
+offset_bottom = 104.0
+theme_override_font_sizes/font_size = 11
+text = "DEEP KELP SEALED"
 
 [node name="DeeperReefPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 position = Vector2(218, 96)
