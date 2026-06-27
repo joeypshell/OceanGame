@@ -2741,8 +2741,6 @@ func _format_condition_briefing() -> String:
 	]
 
 func _format_route_choice_callout() -> String:
-	if run_predator_contacts > 0:
-		return "Route choice: predator route contested the dive."
 	if run_blackwater_trace_recovered:
 		return "Route choice: lower-route research push reached Blackwater."
 	if run_blue_chimney_draft_reading_recovered:
@@ -2753,6 +2751,8 @@ func _format_route_choice_callout() -> String:
 		return "Route choice: lower-route research push reached Shelf Drop."
 	if run_east_shelf_pocket_ping_recovered:
 		return "Route choice: East Shelf research push paid off."
+	if run_predator_contacts > 0:
+		return "Route choice: predator route contested the dive."
 	if run_completed_scans.has("wreck_signal_cache"):
 		return "Route choice: pressure-wreck progress secured."
 	if run_completed_scans.has("pressure_wreck_signal"):
@@ -2769,6 +2769,30 @@ func _format_route_choice_callout() -> String:
 		return ""
 
 	return "Route choice: banked a cautious resource run."
+
+func _format_recent_route_memory() -> String:
+	if run_blackwater_trace_recovered:
+		return "Blackwater"
+	if run_blue_chimney_draft_reading_recovered:
+		return "Blue Chimney"
+	if run_lantern_silt_sample_recovered:
+		return "Silt Vein"
+	if run_lower_connector_echo_recovered:
+		return "Shelf Drop"
+	if run_east_shelf_pocket_ping_recovered:
+		return "East Shelf"
+	if run_predator_contacts > 0:
+		return "Gulper Route"
+	if run_completed_scans.has("wreck_signal_cache") or run_completed_scans.has("pressure_wreck_signal"):
+		return "Wreck Shelf"
+	if run_completed_scans.has("thermal_vent") or run_collected_resources.has("glow_plankton"):
+		return "Thermal Vent"
+	if run_completed_scans.has("shell_reef_shelf") or run_collected_resources.has("shell_fragments"):
+		return "Shell Reef"
+	if run_collected_resources.is_empty():
+		return "none"
+
+	return "Resource Run"
 
 func _format_gulper_research_callout() -> String:
 	if decoy_pulse_used_this_run:
@@ -2878,6 +2902,7 @@ func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> 
 		"result": result_name,
 		"banked_cargo_count": banked_cargo_count,
 		"scans": run_completed_scans.duplicate(),
+		"route_memory": _format_recent_route_memory(),
 		"predator_contacts": run_predator_contacts,
 		"best_depth": roundi(progression_state.best_depth_reached),
 		"seed": progression_state.current_run_seed,
@@ -2893,10 +2918,11 @@ func _format_recent_expedition_log() -> String:
 
 	var lines: Array[String] = ["Recent Expeditions"]
 	for entry in recent_expedition_log:
-		var line := "#%d %s: banked %d, scans %s, contacts %d, best %dm" % [
+		var line := "#%d %s: banked %d, route %s, scans %s, contacts %d, best %dm" % [
 			int(entry.get("run_number", 0)),
 			String(entry.get("result", "Unknown")),
 			int(entry.get("banked_cargo_count", 0)),
+			String(entry.get("route_memory", "none")),
 			_format_scan_names_short(_string_array_from(entry.get("scans", []))),
 			int(entry.get("predator_contacts", 0)),
 			int(entry.get("best_depth", 0)),

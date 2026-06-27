@@ -1493,6 +1493,20 @@ func _test_route_choice_result_callout() -> void:
 	main.run_east_shelf_pocket_ping_recovered = false
 	main.run_lower_connector_echo_recovered = false
 	main.run_blue_chimney_draft_reading_recovered = false
+	main.run_lantern_silt_sample_recovered = true
+	_expect(main._format_route_choice_callout().contains("Silt Vein"), "Lantern Silt payoff should produce a lower-route route callout")
+
+	main.run_lantern_silt_sample_recovered = false
+	main.run_blackwater_trace_recovered = true
+	main.run_predator_contacts = 1
+	var blackwater_callout := main._format_route_choice_callout()
+	_expect(blackwater_callout.contains("Blackwater"), "Blackwater Trace should produce the deepest-route route callout")
+	_expect(not blackwater_callout.contains("predator route"), "Blackwater route evidence should not be crowded out by predator pressure")
+	_expect(blackwater_callout.find("Route choice:") == blackwater_callout.rfind("Route choice:"), "Blackwater route memory should stay one compact route-choice line")
+	_expect_no_echo_lens_locator_language(blackwater_callout, "Blackwater route choice")
+
+	main.run_blackwater_trace_recovered = false
+	main.run_predator_contacts = 0
 	main.current_resource_cluster_pattern = "deep_reward"
 	main.run_collected_resources = ["glow_plankton"]
 	_expect(main._format_route_choice_callout().contains("deep glow"), "deep reward glow cargo should produce a deep push callout")
@@ -1518,6 +1532,7 @@ func _test_route_choice_result_callout() -> void:
 
 	var summary := main._format_run_summary("%s\nCompact result line." % main._format_route_choice_callout(), "extracted")
 	_expect(summary.contains("Route choice:"), "player-facing result summary should include the route callout")
+	_expect(summary.find("Route choice:") == summary.rfind("Route choice:"), "player-facing result summary should not duplicate route-choice lines")
 	_expect(not summary.contains("Playtest data:"), "result summary should not include debug telemetry unless F3 is enabled")
 	_expect(not summary.contains("Predator route:"), "predator route telemetry should stay hidden unless F3 is enabled")
 	_expect(not summary.contains("thermal_bloom"), "condition id should stay hidden unless debug telemetry is enabled")
@@ -2214,14 +2229,34 @@ func _test_recent_expedition_log() -> void:
 	var log_text := main._format_recent_expedition_log()
 	_expect(not log_text.contains("#1"), "recent expedition log should drop the oldest entry")
 	_expect(log_text.contains("#2 Extracted"), "recent expedition log should include the oldest retained entry")
+	_expect(log_text.contains("route Gulper Route"), "recent expedition log should preserve one compact route memory")
 	_expect(log_text.contains("scans Thermal Vent"), "recent expedition log should show readable scan names")
 	_expect(log_text.contains("contacts 3"), "recent expedition log should show predator contacts")
 	_expect(not log_text.contains("seed"), "recent expedition log should hide seed by default")
+	_expect_lines_within(log_text, 120, "recent expedition log")
 
 	main.show_debug_telemetry = true
 	log_text = main._format_recent_expedition_log()
 	_expect(log_text.contains("seed 1004"), "recent expedition log should show seed only with debug telemetry")
 	_expect(log_text.contains("Cautious shallows"), "recent expedition log should show pattern only with debug telemetry")
+	main.show_debug_telemetry = false
+
+	main.recent_expedition_log.clear()
+	main.progression_state.current_run_number = 9
+	main.progression_state.current_run_seed = 2009
+	main.progression_state.best_depth_reached = 208.0
+	main.run_completed_scans = ["thermal_vent"]
+	main.run_collected_resources = ["shell_fragments"]
+	main.run_predator_contacts = 2
+	main.run_blue_chimney_draft_reading_recovered = true
+	main.run_blackwater_trace_recovered = true
+	main._record_recent_expedition("Failed", 0)
+	log_text = main._format_recent_expedition_log()
+	_expect(log_text.contains("#9 Failed"), "recent expedition log should include failed Blackwater attempts")
+	_expect(log_text.contains("route Blackwater"), "recent expedition log should prioritize the deepest reached route")
+	_expect(log_text.find("route Blackwater") == log_text.rfind("route Blackwater"), "recent expedition log should not duplicate Blackwater route memory")
+	_expect(not log_text.contains("seed"), "Blackwater recent log should hide raw seed without debug telemetry")
+	_expect_no_echo_lens_locator_language(log_text, "Blackwater recent expedition log")
 	main.free()
 
 func _test_thermal_vent_scan_clue_text() -> void:
