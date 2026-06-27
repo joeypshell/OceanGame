@@ -73,6 +73,7 @@ const LANTERN_RAY_TIMING_PERIOD_SECONDS := 2.6
 const HOLLOW_REEF_TIMING_PERIOD_SECONDS := 3.4
 const GLASSFIN_SWARM_SPACING_PERIOD_SECONDS := 3.0
 const SALVAGE_SILT_TIMING_PERIOD_SECONDS := 2.8
+const OUTER_SHELF_SLACKWATER_PERIOD_SECONDS := 3.2
 const DUSK_TRENCH_MEMORY_MIN_X := 2700.0
 const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 
@@ -255,6 +256,10 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var salvage_silt_window: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SiltTimingWindow
 @onready var salvage_silt_tick_a: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SiltTimingTickA
 @onready var salvage_silt_tick_b: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SiltTimingTickB
+@onready var outer_shelf_slackwater_wake: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterTimingWake
+@onready var outer_shelf_slackwater_window: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterWindow
+@onready var outer_shelf_slackwater_tick_a: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterTickA
+@onready var outer_shelf_slackwater_tick_b: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterTickB
 @onready var tideglass_sample_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/InteractZone
 @onready var tideglass_sample_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleHalo
 @onready var tideglass_sample_core: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleCore
@@ -308,6 +313,7 @@ var lantern_ray_timing_timer := 0.0
 var hollow_reef_timing_timer := 0.0
 var glassfin_swarm_spacing_timer := 0.0
 var salvage_silt_timing_timer := 0.0
+var outer_shelf_slackwater_timer := 0.0
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -403,6 +409,7 @@ func _process(delta: float) -> void:
 	_update_hollow_reef_timing_current(delta)
 	_update_glassfin_swarm_spacing_cue(delta)
 	_update_salvage_silt_timing_cue(delta)
+	_update_outer_shelf_slackwater_timing_cue(delta)
 	_update_lantern_fry_idle()
 	_update_burst_thruster_cooldown(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -2114,6 +2121,39 @@ func _salvage_silt_timing_alpha(timer_seconds: float) -> float:
 	var phase := sin((timer_seconds / SALVAGE_SILT_TIMING_PERIOD_SECONDS) * TAU)
 	return 0.07 + (phase + 1.0) * 0.035
 
+func _update_outer_shelf_slackwater_timing_cue(delta: float) -> void:
+	var wake := outer_shelf_slackwater_wake
+	if wake == null:
+		wake = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterTimingWake") as Polygon2D
+		outer_shelf_slackwater_wake = wake
+	var window := outer_shelf_slackwater_window
+	if window == null:
+		window = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterWindow") as Polygon2D
+		outer_shelf_slackwater_window = window
+	var tick_a := outer_shelf_slackwater_tick_a
+	if tick_a == null:
+		tick_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterTickA") as Polygon2D
+		outer_shelf_slackwater_tick_a = tick_a
+	var tick_b := outer_shelf_slackwater_tick_b
+	if tick_b == null:
+		tick_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterTickB") as Polygon2D
+		outer_shelf_slackwater_tick_b = tick_b
+
+	outer_shelf_slackwater_timer = fposmod(outer_shelf_slackwater_timer + delta, OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
+	var cue_alpha := _outer_shelf_slackwater_alpha(outer_shelf_slackwater_timer)
+	if wake != null:
+		wake.color = Color(0.72, 0.66, 1.0, cue_alpha)
+	if window != null:
+		window.color = Color(0.96, 0.72, 1.0, minf(0.16, cue_alpha + 0.03))
+	if tick_a != null:
+		tick_a.color = Color(1.0, 0.84, 0.98, minf(0.22, cue_alpha + 0.07))
+	if tick_b != null:
+		tick_b.color = Color(0.9, 0.78, 1.0, minf(0.19, cue_alpha + 0.045))
+
+func _outer_shelf_slackwater_alpha(timer_seconds: float) -> float:
+	var phase := sin((timer_seconds / OUTER_SHELF_SLACKWATER_PERIOD_SECONDS) * TAU)
+	return 0.065 + (phase + 1.0) * 0.04
+
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
 		return false
@@ -3771,6 +3811,7 @@ func _reset_run_telemetry() -> void:
 	hollow_reef_timing_timer = 0.0
 	glassfin_swarm_spacing_timer = 0.0
 	salvage_silt_timing_timer = 0.0
+	outer_shelf_slackwater_timer = 0.0
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
 	_sync_east_shelf_pocket_payoff_state()

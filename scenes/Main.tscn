@@ -1761,6 +1761,22 @@ polygon = PackedVector2Array(-80, 34, 70, 62, 214, 22, 238, 58, 84, 110, -106, 6
 color = Color(0.62, 1, 0.86, 0.09)
 polygon = PackedVector2Array(-32, 46, -164, 64, -314, 34, -296, 2, -126, 24, 18, 10)
 
+[node name="SlackwaterTimingWake" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
+color = Color(0.72, 0.66, 1, 0.105)
+polygon = PackedVector2Array(-74, -8, 18, -34, 138, -18, 204, 22, 132, 48, 6, 34, -88, 18)
+
+[node name="SlackwaterWindow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
+color = Color(0.96, 0.72, 1, 0.14)
+polygon = PackedVector2Array(-20, -26, 54, -42, 144, -18, 168, 12, 72, 24, -36, 4)
+
+[node name="SlackwaterTickA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
+color = Color(1, 0.84, 0.98, 0.18)
+polygon = PackedVector2Array(-12, -12, 18, -22, 32, 0, -2, 8)
+
+[node name="SlackwaterTickB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
+color = Color(0.9, 0.78, 1, 0.16)
+polygon = PackedVector2Array(118, -8, 152, 0, 138, 22, 102, 12)
+
 [node name="BranchLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
 offset_left = -42.0
 offset_top = -118.0

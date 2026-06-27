@@ -66,6 +66,7 @@ func _initialize() -> void:
 	_run("Mirror Kelp deep promise", _test_mirror_kelp_deep_promise)
 	_run("Outer Shelf route footprint", _test_outer_shelf_route_footprint)
 	_run("Outer Shelf Glass Rim branch", _test_outer_shelf_glass_rim_branch)
+	_run("Outer Shelf slackwater timing cue visual only", _test_outer_shelf_slackwater_timing_cue_visual_only)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
 	_run("Salvage Manifest interaction", _test_salvage_manifest_interaction)
@@ -1202,6 +1203,43 @@ func _test_outer_shelf_glass_rim_branch() -> void:
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "Glass Rim Cut branch should not drain oxygen")
 	_expect(main.dive_session.current_cargo == cargo_before, "Glass Rim Cut branch should not mutate cargo")
 	main.queue_free()
+
+func _test_outer_shelf_slackwater_timing_cue_visual_only() -> void:
+	var main := MainScript.new()
+	var low_alpha: float = main.call("_outer_shelf_slackwater_alpha", 0.0)
+	var high_alpha: float = main.call("_outer_shelf_slackwater_alpha", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
+	var repeat_alpha: float = main.call("_outer_shelf_slackwater_alpha", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.5)
+	_expect(high_alpha > low_alpha, "Outer Shelf slackwater timing cue alpha should pulse upward to suggest a crossing window")
+	_expect(is_equal_approx(low_alpha, repeat_alpha), "Outer Shelf slackwater timing cue should repeat smoothly")
+	main.free()
+
+	var scene_main := MainScene.instantiate()
+	root.add_child(scene_main)
+	var branch := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch") as Node2D
+	var wake := branch.get_node("SlackwaterTimingWake") as Polygon2D
+	var window := branch.get_node("SlackwaterWindow") as Polygon2D
+	var tick := branch.get_node("SlackwaterTickA") as Polygon2D
+	var return_wash := branch.get_node("BranchReturnWash") as Polygon2D
+	var branch_mouth := branch.get_node("BranchMouthShadow") as Polygon2D
+	scene_main.dive_session.reset(24.0)
+	scene_main.dive_session.start()
+	scene_main.dive_session.has_left_base = true
+	scene_main.dive_session.current_cargo.append("kelp_fiber")
+	var save_before: Dictionary = scene_main.progression_state.to_save_data().duplicate(true)
+
+	scene_main.call("_update_outer_shelf_slackwater_timing_cue", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
+	_expect(window.color.b > window.color.g and window.color.r > return_wash.color.r, "Outer Shelf slackwater timing should use pale violet timing language instead of safe-current green")
+	_expect(return_wash.color.g > window.color.g, "Glass Rim return wash should stay visually distinct from the timing window")
+	_expect(wake.color.a <= 0.15 and window.color.a <= 0.17 and tick.color.a <= 0.23, "Outer Shelf slackwater timing cue should stay subtle and non-blocking")
+	_expect(window.color.a < branch_mouth.color.a, "Outer Shelf slackwater timing cue should not overpower the branch mouth")
+	_expect(is_equal_approx(scene_main.dive_session.oxygen, 24.0), "Outer Shelf slackwater timing cue should not drain oxygen")
+	_expect(scene_main.dive_session.current_cargo == ["kelp_fiber"], "Outer Shelf slackwater timing cue should not mutate cargo")
+	_expect(scene_main.dive_session.result == DiveSessionScript.Result.DIVING, "Outer Shelf slackwater timing cue should not change dive result")
+	_expect(scene_main.progression_state.to_save_data() == save_before, "Outer Shelf slackwater timing cue should not mutate durable progression")
+	_expect(branch.find_child("PressureBoundary", true, false) == null, "Outer Shelf slackwater timing cue should not add hidden pressure behavior")
+	_expect(branch.find_child("Predator", true, false) == null, "Outer Shelf slackwater timing cue should not add combat pressure")
+	_expect(branch.find_child("ResourcePickup", true, false) == null, "Outer Shelf slackwater timing cue should not create cargo")
+	scene_main.queue_free()
 
 func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var root := Node.new()
