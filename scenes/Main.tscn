@@ -175,6 +175,20 @@ The closed lower crack is a future-depth promise, not an active route."
 variable_hooks = "Future lower-pocket expedition signals can appear near this landmark."
 readability_priority = "Lower-pocket memory and broad up-left return orientation."
 
+[node name="SiltVeinFork" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "silt_vein_fork"
+display_name = "Silt Vein Fork"
+stable_region_name = "Silt Vein Fork"
+kind = "route_fork"
+depth_band = "deep"
+role = "First lower-route choice point beyond Blue Chimney."
+memory_goal = "Remember Silt Vein Fork as the first small split below Blue Chimney; returning from it means following the fork back up-left through Blue Chimney, Drop Arch, East Shelf, and the base column."
+persistent_facts = "Marks the first lower-route fork scaffold.
+Left and right branch hints are visible, but neither branch is a full cave or quest objective yet."
+variable_hooks = "Future Lantern Silt Nook and Blackwater Crack opportunities can attach to this fork."
+readability_priority = "Lower-route choice memory and broad up-left return orientation."
+
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
 script = ExtResource("10_landmark_metadata")
 metadata_id = "thermal_vent_field"

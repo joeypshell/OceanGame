@@ -876,6 +876,7 @@ func _test_landmark_region_identity_metadata() -> void:
 		"EastShelfArch": "East Shelf Spur",
 		"DropArch": "Shelf Drop Connector",
 		"BlueChimney": "Blue Chimney Pocket",
+		"SiltVeinFork": "Silt Vein Fork",
 		"ThermalVentField": "Thermal Vent Field",
 		"WreckShelf": "Wreck Shelf",
 		"PressureLockedWreck": "Wreck Shelf",
@@ -2178,6 +2179,11 @@ func _test_no_minimap_orientation_guardrails() -> void:
 	_expect(blue_chimney_direction.contains("up-left"), "Blue Chimney orientation should use broad return direction")
 	_expect_no_echo_lens_locator_language(blue_chimney_direction, "Blue Chimney base direction")
 
+	scene_player.global_position = Vector2(2160.0, 2346.0)
+	var silt_vein_direction: String = main.call("_format_base_direction")
+	_expect(silt_vein_direction.contains("up-left"), "Silt Vein Fork orientation should use broad return direction")
+	_expect_no_echo_lens_locator_language(silt_vein_direction, "Silt Vein Fork base direction")
+
 	main.run_east_shelf_pocket_ping_recovered = true
 	main.run_lower_connector_echo_recovered = true
 	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
@@ -2200,6 +2206,16 @@ func _test_no_minimap_orientation_guardrails() -> void:
 	_expect(blue_chimney_memory.contains("Blue Chimney"), "Blue Chimney metadata should provide broad place memory")
 	_expect(blue_chimney_memory.contains("up-left"), "Blue Chimney metadata should preserve broad return orientation")
 	_expect_no_echo_lens_locator_language(blue_chimney_memory, "Blue Chimney metadata")
+	var silt_vein_landmark := main.get_node("LandmarkMetadata/SiltVeinFork")
+	var silt_vein_memory := "%s %s %s" % [
+		String(silt_vein_landmark.get("display_name")),
+		String(silt_vein_landmark.get("stable_region_name")),
+		String(silt_vein_landmark.get("memory_goal")),
+	]
+	_expect(silt_vein_memory.contains("Silt Vein Fork"), "Silt Vein Fork metadata should provide broad place memory")
+	_expect(silt_vein_memory.contains("Blue Chimney"), "Silt Vein Fork metadata should anchor return memory to Blue Chimney")
+	_expect(silt_vein_memory.contains("up-left"), "Silt Vein Fork metadata should preserve broad return orientation")
+	_expect_no_echo_lens_locator_language(silt_vein_memory, "Silt Vein Fork metadata")
 	main.queue_free()
 
 func _test_expanded_region_reset_state_ownership() -> void:
