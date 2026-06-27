@@ -30,6 +30,8 @@ Lower pocket implementation contract: `docs/planning/LOWER_POCKET_PLAN_2026_06_2
 
 Hatch and Blue Chimney oxygen review: `docs/planning/HATCH_AND_BLUE_CHIMNEY_OXYGEN_MARGIN_REVIEW_2026_06_27.md` keeps current oxygen tuning after `Resonance Alcove` and `Blue Chimney Pocket`. The new content remains optional and knowledge/readability-focused, so future tuning should require route evidence and should prefer local return-cue/placement fixes before oxygen-number changes.
 
+Post-Blue-Chimney backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_BLUE_CHIMNEY_2026_06_27.md` records that the hatch, alcove, lower connector, and Blue Chimney pocket batch is implemented. The next ordered queue should give Blue Chimney one narrow research payoff, optional existing-resource route value, deterministic payoff evidence, readability/oxygen review, and next route-fork planning before broader systems or polish.
+
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
 
 Detailed design rules live in:
@@ -48,6 +50,7 @@ Detailed design rules live in:
 - `docs/planning/RESONANCE_KEY_I_IMPLEMENTATION_CONTRACT_2026_06_27.md`
 - `docs/planning/LOWER_POCKET_PLAN_2026_06_27.md`
 - `docs/planning/HATCH_AND_BLUE_CHIMNEY_OXYGEN_MARGIN_REVIEW_2026_06_27.md`
+- `docs/planning/BACKLOG_REPLENISHMENT_AFTER_BLUE_CHIMNEY_2026_06_27.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
@@ -197,13 +200,13 @@ Future larger side-view map direction lives in `docs/planning/FUTURE_EXPANSIVE_D
 
 Expanded Dive Region Prototype.
 
-Status: the first East Shelf Spur route sequence is implemented and covered by focused logic plus Playwright visual capture. The next issue queue comes from the post-lower-connector backlog replenishment, not the older polish-heavy vertical-slice queue.
+Status: the first East Shelf Spur route sequence, Shelf Drop Connector, Resonance Key/Alcove step, and Blue Chimney lower pocket are implemented and covered by focused logic plus targeted Playwright visual capture. The next issue queue comes from the post-Blue-Chimney backlog replenishment, not the older polish-heavy vertical-slice queue.
 
 Goal: turn the wider side-view ocean into a playable route sequence. The focus is breadth with discipline: route choices, branch traversal, one pocket interaction, daily variation, return readability, and upgrade promises that make the player want another expedition.
 
-Current implemented signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, `Decoy Pulse I`, `Echo Lens I`, surface result memory, compact surface views, clean-save reset, HUD mode separation, runtime compact markers, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, pressure wreck/cache follow-through, the first narrow `Wreck Echo Descent` pocket with one run-scoped research clue, a documented hybrid-ocean model, expedition-day condition data, first source/export sprites for the player, boat, resources, creatures, and major landmarks, reusable readability scenes, screenshot workflow, debug seed/condition helpers, asset source conventions, a playable vertical-slice acceptance checklist, and the first right-side `East Shelf Spur` route sequence with stable landmark, return-current cues, seeded rare-signal opportunity, locked hatch promise, pocket interaction, result memory, current-surge timing cue, first lower connector, reset coverage, and deterministic Playwright captures. The next implementation target should extend route decisions beyond Shelf Drop or begin a narrow sealed-hatch access step rather than returning to another opening-slice polish pass.
+Current implemented signal: the prototype now has practical scan/cargo upgrades, `Gulper Eel` observation, `Predator Warning I`, `Decoy Pulse I`, `Echo Lens I`, surface result memory, compact surface views, clean-save reset, HUD mode separation, runtime compact markers, authored and reviewed `Shell Reef` and `Thermal Vent` route pockets, pressure wreck/cache follow-through, the first narrow `Wreck Echo Descent` pocket with one run-scoped research clue, a documented hybrid-ocean model, expedition-day condition data, first source/export sprites for the player, boat, resources, creatures, and major landmarks, reusable readability scenes, screenshot workflow, debug seed/condition helpers, asset source conventions, a playable vertical-slice acceptance checklist, and the first right-side `East Shelf Spur` route sequence with stable landmark, return-current cues, seeded rare-signal opportunity, locked hatch promise, pocket interaction, result memory, current-surge timing cue, first lower connector, `Resonance Key I`, `Resonance Alcove`, `Blue Chimney Pocket`, reset coverage, oxygen-margin review, and deterministic Playwright captures. The next implementation target should give Blue Chimney a narrow reason to exist in ordinary play, then plan the next route fork rather than returning to another opening-slice polish pass.
 
-Latest direction update: the completed East Shelf route sequence should be followed by a larger-route gameplay batch: add another reason to choose East Shelf or Shelf Drop on a given expedition, start the narrow sealed-hatch access path, prototype one more connected pocket or branch, and keep testing cheap through targeted state assertions plus named Playwright captures only when visuals or camera behavior change.
+Latest direction update: the completed East Shelf/Shelf Drop/hatch/Blue Chimney sequence should be followed by a lower-pocket payoff batch: add one run-scoped Blue Chimney research interaction, result memory, state guards, one optional existing-resource route reason if evidence supports it, payoff capture, and a readability/oxygen review. Keep testing cheap through targeted state assertions plus named Playwright captures only when visuals or camera behavior change.
 
 Visual identity update: `docs/planning/ART_DIRECTION.md` and `docs/planning/VISUAL_REPLACEMENT_PLAN.md` define the desired polished direction as a cozy research expedition into a beautiful but increasingly impossible alien ocean. Polished visuals remain deferred until the gameplay loop is validated, and the current task is planning/integration only, not a full art overhaul.
 
