@@ -277,14 +277,19 @@ func _test_save_load_behavior() -> void:
 	root.add_child(main)
 	main.run_east_shelf_pocket_ping_recovered = true
 	main.run_lower_connector_echo_recovered = true
+	main.run_blue_chimney_draft_reading_recovered = true
 	main.player_near_east_shelf_pocket = true
 	main.player_near_lower_connector_echo = true
+	main.player_near_blue_chimney = true
 	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
 	var main_saved: Dictionary = main.progression_state.to_save_data()
 	_expect(not main_saved.has("run_east_shelf_pocket_ping_recovered"), "progression save should not leak East Shelf run state")
 	_expect(not main_saved.has("run_lower_connector_echo_recovered"), "progression save should not leak Drop Echo run state")
+	_expect(not main_saved.has("run_blue_chimney_draft_reading_recovered"), "progression save should not leak Blue Chimney draft state")
 	_expect(not main_saved.has("player_near_east_shelf_pocket"), "progression save should not leak East Shelf proximity state")
 	_expect(not main_saved.has("player_near_lower_connector_echo"), "progression save should not leak Drop Echo proximity state")
+	_expect(not main_saved.has("player_near_blue_chimney"), "progression save should not leak Blue Chimney proximity state")
+	_expect(not main_saved.has("blue_chimney_draft"), "progression save should not add durable Blue Chimney draft data")
 	_expect(main_saved.get("purchased_upgrades", {}).has(ResonanceKeyUpgrade.id), "progression save should keep Resonance Key I as durable upgrade state only")
 	main.queue_free()
 
@@ -2164,7 +2169,9 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
 	main.run_wreck_echo_clue_recovered = true
 	main.run_resonance_alcove_research_recovered = true
+	main.run_blue_chimney_draft_reading_recovered = true
 	main.player_near_resonance_alcove = true
+	main.player_near_blue_chimney = true
 	main.run_collected_resources.append("kelp_fiber")
 	main.run_completed_scans.append("east_shelf_arch")
 	main.run_predator_contacts = 1
@@ -2186,7 +2193,9 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	_expect(main.dive_session.cargo.is_empty(), "restart should clear carried cargo from the previous expedition")
 	_expect(not main.run_wreck_echo_clue_recovered, "restart should clear run-scoped Wreck Echo clue state")
 	_expect(not main.run_resonance_alcove_research_recovered, "restart should clear run-scoped Resonance Alcove research state")
+	_expect(not main.run_blue_chimney_draft_reading_recovered, "restart should clear run-scoped Blue Chimney draft state")
 	_expect(not main.player_near_resonance_alcove, "restart should clear Resonance Alcove proximity state")
+	_expect(not main.player_near_blue_chimney, "restart should clear Blue Chimney proximity state")
 	_expect(main.run_collected_resources.is_empty(), "restart should clear run-scoped collected-resource telemetry")
 	_expect(main.run_completed_scans.is_empty(), "restart should clear run-scoped scan telemetry")
 	_expect(main.run_predator_contacts == 0, "restart should clear run-scoped predator contact telemetry")
@@ -2216,27 +2225,35 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 
 	main.player_near_lower_connector_echo = true
 	main.player_near_resonance_alcove = true
+	main.player_near_blue_chimney = true
 	main.run_lower_connector_echo_recovered = true
 	main.run_resonance_alcove_research_recovered = true
+	main.run_blue_chimney_draft_reading_recovered = true
 	main.blue_chimney_draft_timer = 1.7
 	main.visual_smoke_route_stage = "lower_connector"
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_lower_connector_echo_recovered, "run telemetry reset should clear Drop Echo research state")
 	_expect(not main.run_resonance_alcove_research_recovered, "run telemetry reset should clear Resonance Alcove research state")
+	_expect(not main.run_blue_chimney_draft_reading_recovered, "run telemetry reset should clear Blue Chimney draft research state")
 	_expect(is_equal_approx(main.blue_chimney_draft_timer, 0.0), "run telemetry reset should clear Blue Chimney visual timing state")
 	_expect(main.visual_smoke_route_stage == "", "run telemetry reset should clear lower-connector visual route stage")
 
 	main.player_near_lower_connector_echo = true
 	main.player_near_resonance_alcove = true
+	main.player_near_blue_chimney = true
+	main.run_blue_chimney_draft_reading_recovered = true
 	main.call("_prepare_next_run")
 	_expect(not main.player_near_lower_connector_echo, "new expeditions should clear Drop Echo proximity state")
 	_expect(not main.player_near_resonance_alcove, "new expeditions should clear Resonance Alcove proximity state")
+	_expect(not main.player_near_blue_chimney, "new expeditions should clear Blue Chimney proximity state")
 	_expect(not main.run_lower_connector_echo_recovered, "new expeditions should not carry Drop Echo research state")
 	_expect(not main.run_resonance_alcove_research_recovered, "new expeditions should not carry Resonance Alcove research state")
+	_expect(not main.run_blue_chimney_draft_reading_recovered, "new expeditions should not carry Blue Chimney draft research state")
 	_expect(not main.progression_state.to_save_data().has("lower_connector_echo"), "Drop Echo should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("resonance_alcove_research"), "Resonance Alcove research should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("blue_chimney"), "Blue Chimney should not create durable route state")
 	_expect(not main.progression_state.to_save_data().has("blue_chimney_signal"), "Blue Chimney signal should not be stored in durable progression")
+	_expect(not main.progression_state.to_save_data().has("blue_chimney_draft"), "Blue Chimney draft should not be stored in durable progression")
 	main.queue_free()
 
 func _test_east_shelf_pocket_prompt_interaction() -> void:
