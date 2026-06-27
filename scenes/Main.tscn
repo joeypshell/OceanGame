@@ -283,25 +283,25 @@ related_upgrades = "predator_warning_1,decoy_pulse_1"
 readability_priority = "Danger before contact and route timing."
 
 [node name="Sky" type="ColorRect" parent="."]
-offset_right = 3260.0
+offset_right = 3900.0
 offset_bottom = 120.0
 color = Color(0.47, 0.78, 0.88, 1)
 
 [node name="OceanShallows" type="ColorRect" parent="."]
 offset_top = 120.0
-offset_right = 3260.0
+offset_right = 3900.0
 offset_bottom = 760.0
 color = Color(0.014, 0.31, 0.4, 1)
 
 [node name="OceanMidwater" type="ColorRect" parent="."]
 offset_top = 760.0
-offset_right = 3260.0
+offset_right = 3900.0
 offset_bottom = 1460.0
 color = Color(0.01, 0.16, 0.28, 1)
 
 [node name="OceanDeep" type="ColorRect" parent="."]
 offset_top = 1460.0
-offset_right = 3260.0
+offset_right = 3900.0
 offset_bottom = 3300.0
 color = Color(0.005, 0.048, 0.115, 1)
 
@@ -313,19 +313,19 @@ modulate = Color(1, 1, 1, 0.48)
 
 [node name="ShallowMidwaterTransition" type="ColorRect" parent="."]
 offset_top = 736.0
-offset_right = 3260.0
+offset_right = 3900.0
 offset_bottom = 790.0
 color = Color(0.58, 0.9, 0.92, 0.11)
 
 [node name="MidwaterDeepTransition" type="ColorRect" parent="."]
 offset_top = 1430.0
-offset_right = 3260.0
+offset_right = 3900.0
 offset_bottom = 1494.0
 color = Color(0.24, 0.42, 0.74, 0.14)
 
 [node name="SurfaceLine" type="ColorRect" parent="."]
 offset_top = 118.0
-offset_right = 3260.0
+offset_right = 3900.0
 offset_bottom = 124.0
 color = Color(0.74, 0.96, 1, 1)
 
@@ -1191,6 +1191,45 @@ polygon = PackedVector2Array(0, -18, 14, -6, 18, 10, 2, 20, -14, 8, -18, -6)
 color = Color(0.14, 0.22, 0.24, 0.44)
 polygon = PackedVector2Array(126, 22, 182, 44, 166, 82, 106, 70)
 
+[node name="WideReefChamber" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+position = Vector2(330, 52)
+
+[node name="EntranceThroat" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.1, 0.36, 0.42, 0.22)
+polygon = PackedVector2Array(-188, -28, -52, -84, 86, -46, 118, 18, -18, 48, -210, 16)
+
+[node name="ChamberBackwater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.005, 0.022, 0.04, 0.58)
+polygon = PackedVector2Array(-96, -136, 154, -198, 422, -154, 596, -44, 574, 102, 356, 198, 56, 166, -132, 70)
+
+[node name="UpperChamberShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.055, 0.13, 0.17, 0.46)
+polygon = PackedVector2Array(-70, -112, 116, -174, 360, -146, 560, -66, 488, -24, 276, -70, 82, -64, -118, -34)
+
+[node name="LowerChamberShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.024, 0.07, 0.074, 0.54)
+polygon = PackedVector2Array(-118, 82, 136, 138, 426, 118, 612, 48, 654, 100, 418, 188, 96, 204, -146, 124)
+
+[node name="OpenWaterWindow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.14, 0.48, 0.54, 0.13)
+polygon = PackedVector2Array(10, -74, 206, -116, 404, -80, 470, 16, 318, 82, 94, 60)
+
+[node name="ReturnCurrentBackToHollow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.66, 1, 0.88, 0.18)
+polygon = PackedVector2Array(520, 118, 354, 92, 170, 36, -26, -6, 4, -42, 206, 0, 390, 46, 562, 70)
+
+[node name="ReturnCurrentRibA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.82, 1, 0.92, 0.22)
+polygon = PackedVector2Array(334, 80, 268, 50, 202, 30, 268, 72)
+
+[node name="ReturnCurrentRibB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.82, 1, 0.92, 0.2)
+polygon = PackedVector2Array(128, 26, 60, 4, -4, -10, 58, 24)
+
+[node name="FutureChoiceShadow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+color = Color(0.02, 0.045, 0.062, 0.38)
+polygon = PackedVector2Array(472, -36, 620, 6, 596, 90, 444, 122, 390, 42)
+
 [node name="DeeperReefPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 position = Vector2(218, 96)
 
@@ -1263,7 +1302,7 @@ polygon = PackedVector2Array(806, 1420, 974, 1420, 1038, 1760, 744, 1760)
 
 [node name="DeepPressureHaze" type="Polygon2D" parent="."]
 color = Color(0.28, 0.42, 0.8, 0.055)
-polygon = PackedVector2Array(0, 1460, 3260, 1460, 3260, 3300, 0, 3300)
+polygon = PackedVector2Array(0, 1460, 3900, 1460, 3900, 3300, 0, 3300)
 
 [node name="DeepRewardLure" type="Node2D" parent="."]
 visible = false
@@ -2330,8 +2369,8 @@ zoom = Vector2(0.9, 0.9)
 enabled = true
 limit_left = 0
 limit_top = 0
-limit_right = 3260
-limit_bottom = 3160
+limit_right = 3900
+limit_bottom = 3260
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
