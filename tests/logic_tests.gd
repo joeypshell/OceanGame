@@ -812,7 +812,18 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/CrackMouth",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/PressureDarkWash",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/SealLip",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateBadge",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateLabel",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/ClosedShard",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/InteractZone",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/InteractZone/CollisionShape2D",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillMouth",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillBackWater",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillFloor",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TurnbackRib",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillEndSeal",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -887,6 +898,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var blackwater_seal_lip := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/SealLip") as Polygon2D
 	var blackwater_gate_badge := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateBadge") as Polygon2D
 	var blackwater_gate_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateLabel") as Label
+	var blackwater_sill := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill") as Node2D
+	var blackwater_sill_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillMouth") as Polygon2D
+	var blackwater_sill_floor := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillFloor") as Polygon2D
+	var blackwater_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue") as Polygon2D
+	var blackwater_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillEndSeal") as Polygon2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -992,7 +1008,16 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blackwater_gate_badge.color.a >= 0.48, "Blackwater Crack should visibly present a deliberate route gate")
 	_expect(blackwater_gate_label.text == "RESONANCE SEAL", "Blackwater Crack should start with broad preparation gate copy")
 	_expect(blackwater_crack.get_node_or_null("InteractZone") != null, "Blackwater Crack should expose a readback hotspot for its gate state")
+	_expect(not blackwater_sill.visible, "Blackwater Sill should stay hidden until the scoped gate preparation is ready")
+	_expect(blackwater_sill.position.x > blackwater_crack.position.x * 0.5, "Blackwater Sill should extend to the right of the crack as a short route step")
+	_expect(blackwater_sill.position.y > 80.0, "Blackwater Sill should sit deeper than the crack mouth")
+	_expect(blackwater_sill_mouth.color.a >= 0.6, "Blackwater Sill mouth should read as a deliberate short route when opened")
+	_expect(blackwater_sill_floor.color.a >= 0.45, "Blackwater Sill should have a readable local floor silhouette")
+	_expect(blackwater_return.polygon[1].x < blackwater_return.polygon[0].x, "Blackwater Sill return cue should point back left toward Silt Vein")
+	_expect(blackwater_return.polygon[1].y < blackwater_return.polygon[0].y, "Blackwater Sill return cue should point upward toward Blue Chimney")
+	_expect(blackwater_turnback.color.a <= 0.3, "Blackwater Sill end should read as a turnback, not a full cave network")
 	_expect(blackwater_crack.get_node_or_null("Interior") == null, "Blackwater Crack should not add a cave interior system")
+	_expect(blackwater_sill.get_node_or_null("Interior") == null, "Blackwater Sill should not add a cave interior system")
 	_expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
 	_expect(blue_chimney_glow_candidate.depth_band == "deep", "Blue Chimney material candidate should preserve deep resource identity")
 	_expect(blue_chimney_glow_candidate.cluster_pattern == "deep_reward", "Blue Chimney material candidate should remain optional deep-reward route pressure")
@@ -1768,9 +1793,11 @@ func _test_blackwater_crack_gate_state() -> void:
 	var gate_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateLabel") as Label
 	var gate_badge := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateBadge") as Polygon2D
 	var closed_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/ClosedShard") as Polygon2D
+	var blackwater_sill := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill") as Node2D
 
 	main.call("_sync_blackwater_crack_gate_state")
 	_expect(gate_label.text == "RESONANCE SEAL", "Blackwater Crack should start as a deliberate resonance-sealed route gate")
+	_expect(not blackwater_sill.visible, "Blackwater Sill should be hidden before route preparation is ready")
 	var sealed_status: String = main.call("_format_blackwater_gate_status")
 	_expect(sealed_status.contains("Echo Lens"), "Blackwater sealed status should name existing scanner preparation")
 	_expect(sealed_status.contains("Resonance Key I"), "Blackwater sealed status should name existing key preparation")
@@ -1798,9 +1825,13 @@ func _test_blackwater_crack_gate_state() -> void:
 	_expect(gate_label.text == "KEY READY", "Blackwater gate should show ready after Resonance Key I ownership")
 	_expect(gate_badge.color.g >= gate_badge.color.r, "Blackwater ready badge should visually differ from the sealed dark route")
 	_expect(closed_shard.color.a <= 0.14, "Blackwater ready state should soften the closed shard without opening an interior yet")
+	_expect(blackwater_sill.visible, "Blackwater Sill should become visible after Resonance Key I ownership")
 	var ready_status: String = main.call("_format_blackwater_gate_status")
-	_expect(ready_status.contains("narrow sill"), "Blackwater ready status should promise a short route sequence")
+	_expect(ready_status.contains("narrow sill"), "Blackwater ready status should name the short route sequence")
+	_expect(ready_status.contains("return up-left"), "Blackwater ready status should preserve broad return orientation")
 	_expect_no_echo_lens_locator_language(ready_status, "Blackwater ready status")
+	var ready_prompt: String = main.call("_format_hud_prompt")
+	_expect(ready_prompt.contains("trace open sill"), "Blackwater ready prompt should shift from gate readback to route entry")
 
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(not saved.has("blackwater_crack"), "Blackwater gate should not add durable route state")
@@ -2402,9 +2433,11 @@ func _test_expanded_region_world_bounds() -> void:
 	_expect(player.world_bounds.end.x >= 2000.0, "expanded bounds should allow roughly one extra screen of right-side exploration")
 	_expect(player.world_bounds.position.y >= 240.0, "expanded bounds should keep the sub below the boat hull")
 	_expect(player.world_bounds.end.y >= 2350.0, "expanded bounds should allow the first lower connector beyond East Shelf")
-	_expect(player.world_bounds.end.x <= 2300.0, "expanded bounds should stay narrow until a larger side-view level is explicitly planned")
+	_expect(player.world_bounds.end.x >= 2520.0, "expanded bounds should allow the short Blackwater Sill route")
+	_expect(player.world_bounds.end.x <= 2560.0, "expanded bounds should stay narrow until a larger side-view level is explicitly planned")
 	_expect(player.world_bounds.end.y >= 2500.0, "expanded bounds should allow the first Silt Vein Fork scaffold below Blue Chimney")
-	_expect(player.world_bounds.end.y <= 2525.0, "expanded bounds should stay tight until a larger lower region is explicitly implemented")
+	_expect(player.world_bounds.end.y >= 2700.0, "expanded bounds should allow the short Blackwater Sill route")
+	_expect(player.world_bounds.end.y <= 2735.0, "expanded bounds should stay tight until a larger lower region is explicitly implemented")
 
 	var clamped_high := player.clamp_position_to_world_bounds(Vector2(640.0, 0.0))
 	_expect(clamped_high.y >= player.world_bounds.position.y, "world clamp should prevent surfacing through the boat sprite")
@@ -2419,10 +2452,21 @@ func _test_expanded_region_world_bounds() -> void:
 	var clamped_silt_vein_fork := player.clamp_position_to_world_bounds(Vector2(2160.0, 2490.0))
 	_expect(is_equal_approx(clamped_silt_vein_fork.x, 2160.0), "world clamp should keep Silt Vein Fork horizontally playable")
 	_expect(is_equal_approx(clamped_silt_vein_fork.y, 2490.0), "world clamp should keep Silt Vein Fork vertically playable")
+	var clamped_blackwater_sill := player.clamp_position_to_world_bounds(Vector2(2440.0, 2660.0))
+	_expect(is_equal_approx(clamped_blackwater_sill.x, 2440.0), "world clamp should keep the Blackwater Sill horizontally playable")
+	_expect(is_equal_approx(clamped_blackwater_sill.y, 2660.0), "world clamp should keep the Blackwater Sill vertically playable")
 
 	var clamped_left := player.clamp_position_to_world_bounds(Vector2(-80.0, 900.0))
 	_expect(is_equal_approx(clamped_left.x, player.world_bounds.position.x), "world clamp should preserve the left edge of the main column")
 	player.free()
+
+	var main_scene := MainScene.instantiate()
+	var camera := main_scene.get_node("Player/Camera2D") as Camera2D
+	_expect(camera.limit_right >= 2540, "camera limit should include the short Blackwater Sill route")
+	_expect(camera.limit_bottom >= 2720, "camera limit should include the lower Blackwater Sill turnback")
+	_expect(camera.limit_right <= 2580, "camera limit should stay tight around the short Blackwater route")
+	_expect(camera.limit_bottom <= 2760, "camera limit should avoid implying a full lower biome")
+	main_scene.free()
 
 func _test_expanded_region_base_direction() -> void:
 	var main := MainScene.instantiate()
@@ -2432,6 +2476,10 @@ func _test_expanded_region_base_direction() -> void:
 	scene_player.global_position = main.start_position + Vector2(860.0, 640.0)
 	var side_route_direction: String = main.call("_format_base_direction")
 	_expect(side_route_direction.contains("up-left"), "base direction should point up-left from the expanded right-side route")
+
+	scene_player.global_position = Vector2(2440.0, 2660.0)
+	var blackwater_direction: String = main.call("_format_base_direction")
+	_expect(blackwater_direction.contains("up-left"), "base direction should point up-left from the Blackwater Sill")
 
 	scene_player.global_position = main.start_position + Vector2(0.0, 500.0)
 	var vertical_direction: String = main.call("_format_base_direction")
@@ -2466,6 +2514,11 @@ func _test_no_minimap_orientation_guardrails() -> void:
 	var silt_vein_direction: String = main.call("_format_base_direction")
 	_expect(silt_vein_direction.contains("up-left"), "Silt Vein Fork orientation should use broad return direction")
 	_expect_no_echo_lens_locator_language(silt_vein_direction, "Silt Vein Fork base direction")
+
+	scene_player.global_position = Vector2(2440.0, 2660.0)
+	var blackwater_sill_direction: String = main.call("_format_base_direction")
+	_expect(blackwater_sill_direction.contains("up-left"), "Blackwater Sill orientation should use broad return direction")
+	_expect_no_echo_lens_locator_language(blackwater_sill_direction, "Blackwater Sill base direction")
 
 	main.run_east_shelf_pocket_ping_recovered = true
 	main.run_lower_connector_echo_recovered = true
@@ -2559,7 +2612,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	var clamped_lower_connector := player_bounds.clamp_position_to_world_bounds(Vector2(2124.0, 2450.0))
 	_expect(is_equal_approx(clamped_lower_connector.x, 2124.0), "lower connector bounds should keep the staged route horizontally playable")
 	_expect(is_equal_approx(clamped_lower_connector.y, 2450.0), "lower connector bounds should keep the Silt Vein Fork approach playable")
-	_expect(player_bounds.world_bounds.end.y <= 2525.0, "lower connector bounds should stay tight until a larger level is explicitly implemented")
+	_expect(player_bounds.world_bounds.end.y <= 2735.0, "lower connector bounds should stay tight around the short Blackwater Sill route")
 	player_bounds.free()
 
 	var main := MainScene.instantiate()

@@ -200,6 +200,8 @@ const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 @onready var blackwater_gate_badge: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateBadge
 @onready var blackwater_gate_label: Label = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateLabel
 @onready var blackwater_closed_shard: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/ClosedShard
+@onready var blackwater_sill: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill
+@onready var blackwater_sill_return_current: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
 @onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
 @onready var sealed_shelf_hatch_lock_label: Label = $EastShelfSpur/SealedShelfHatch/LockLabel
@@ -1043,7 +1045,7 @@ func _format_hud_prompt() -> String:
 	elif player_near_resonance_alcove:
 		prompt = "Resonance Alcove: %s record hatch echo" % _action_label("interact")
 	elif player_near_blackwater_crack:
-		prompt = "Blackwater Crack: %s read Resonance seal" % _action_label("interact")
+		prompt = _format_blackwater_prompt()
 	elif player_near_lantern_silt_nook:
 		prompt = "Lantern Silt Nook: %s collect silt sample" % _action_label("interact")
 	elif player_near_blue_chimney:
@@ -1775,11 +1777,17 @@ func _blackwater_crack_gate_open() -> bool:
 
 func _format_blackwater_gate_status() -> String:
 	if _blackwater_crack_gate_open():
-		return "Blackwater Crack: Resonance Key I reads a narrow sill beyond."
+		return "Blackwater Crack open. Follow the narrow sill, then return up-left."
 	if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
 		return "Blackwater Crack sealed. Resonance Key I preparation needed."
 
 	return "Blackwater Crack sealed. Echo Lens study and Resonance Key I preparation needed."
+
+func _format_blackwater_prompt() -> String:
+	if _blackwater_crack_gate_open():
+		return "Blackwater Crack: %s trace open sill" % _action_label("interact")
+
+	return "Blackwater Crack: %s read Resonance seal" % _action_label("interact")
 
 func _sync_blackwater_crack_gate_state() -> void:
 	var mouth := blackwater_crack_mouth
@@ -1800,6 +1808,12 @@ func _sync_blackwater_crack_gate_state() -> void:
 	var closed_shard := blackwater_closed_shard
 	if closed_shard == null:
 		closed_shard = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/ClosedShard") as Polygon2D
+	var sill := blackwater_sill
+	if sill == null:
+		sill = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill") as Node2D
+	var sill_return := blackwater_sill_return_current
+	if sill_return == null:
+		sill_return = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue") as Polygon2D
 	if mouth == null or wash == null or seal_lip == null or gate_badge == null or gate_label == null or closed_shard == null:
 		return
 
@@ -1810,6 +1824,10 @@ func _sync_blackwater_crack_gate_state() -> void:
 		gate_badge.color = Color(0.62, 1.0, 0.82, 0.62)
 		gate_label.text = "KEY READY"
 		closed_shard.color = Color(0.54, 0.78, 0.92, 0.12)
+		if sill != null:
+			sill.visible = true
+		if sill_return != null:
+			sill_return.color = Color(0.62, 1.0, 0.9, 0.14)
 	elif progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
 		mouth.color = Color(0.002, 0.01, 0.026, 0.62)
 		wash.color = Color(0.08, 0.16, 0.32, 0.2)
@@ -1817,6 +1835,8 @@ func _sync_blackwater_crack_gate_state() -> void:
 		gate_badge.color = Color(0.62, 0.86, 1.0, 0.58)
 		gate_label.text = "KEY NEEDED"
 		closed_shard.color = Color(0.54, 0.78, 0.92, 0.3)
+		if sill != null:
+			sill.visible = false
 	else:
 		mouth.color = Color(0.002, 0.01, 0.026, 0.64)
 		wash.color = Color(0.08, 0.16, 0.32, 0.2)
@@ -1824,6 +1844,8 @@ func _sync_blackwater_crack_gate_state() -> void:
 		gate_badge.color = Color(0.38, 0.58, 0.74, 0.5)
 		gate_label.text = "RESONANCE SEAL"
 		closed_shard.color = Color(0.54, 0.78, 0.92, 0.28)
+		if sill != null:
+			sill.visible = false
 
 func _wreck_echo_route_available() -> bool:
 	return progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID) and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
