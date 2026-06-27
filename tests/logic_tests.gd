@@ -1411,6 +1411,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(dusk_return_current.polygon[1].x < dusk_return_current.polygon[0].x, "Dusk Trench return current should point back left toward Blackwater")
 	_expect(dusk_return_current.polygon[1].y < dusk_return_current.polygon[0].y, "Dusk Trench return current should point upward toward Silt and Blue")
 	_expect(low_visibility_cue.get_parent() == dusk_trench, "Dusk Trench low-visibility cue should inherit the existing route gate")
+	_expect(low_visibility_cue.scene_file_path.ends_with("DuskLowVisibilityCue.tscn"), "Dusk Trench low-visibility cue should be a reusable readability scene")
 	_expect(low_visibility_cue.position.x > 120.0, "Dusk Trench low-visibility cue should sit deeper in the trench instead of covering the return current")
 	_expect(low_visibility_veil.color.a >= 0.2 and low_visibility_veil.color.a <= 0.3, "Dusk Trench low-visibility veil should be visible but not a hard hazard wall")
 	_expect(low_visibility_veil.color.b > low_visibility_veil.color.g, "Dusk Trench low-visibility cue should use blue-violet pressure language")

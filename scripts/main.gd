@@ -2054,10 +2054,10 @@ func _sync_dusk_trench_condition_nudge(condition_id: String) -> void:
 		return
 
 	var is_low_visibility := condition_id == "low_visibility"
-	veil.color = Color(0.035, 0.055, 0.15, 0.36) if is_low_visibility else Color(0.035, 0.055, 0.15, 0.28)
-	band.color = Color(0.12, 0.16, 0.34, 0.3) if is_low_visibility else Color(0.12, 0.16, 0.34, 0.22)
-	rib_a.color = Color(0.36, 0.44, 0.78, 0.32) if is_low_visibility else Color(0.36, 0.44, 0.78, 0.24)
-	rib_b.color = Color(0.32, 0.38, 0.7, 0.28) if is_low_visibility else Color(0.32, 0.38, 0.7, 0.2)
+	veil.color = Color(0.035, 0.055, 0.15, 0.32) if is_low_visibility else Color(0.035, 0.055, 0.15, 0.24)
+	band.color = Color(0.12, 0.16, 0.34, 0.24) if is_low_visibility else Color(0.12, 0.16, 0.34, 0.17)
+	rib_a.color = Color(0.36, 0.44, 0.78, 0.28) if is_low_visibility else Color(0.36, 0.44, 0.78, 0.2)
+	rib_b.color = Color(0.32, 0.38, 0.7, 0.24) if is_low_visibility else Color(0.32, 0.38, 0.7, 0.16)
 
 func _rare_signal_emphasis_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal"

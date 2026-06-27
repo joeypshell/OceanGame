@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=39 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -27,6 +27,7 @@
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/surface_moonpool_waterline_v1.svg" id="25_surface_moonpool_waterline"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/shallow_midwater_background_study_v1.svg" id="26_shallow_midwater_background"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/deep_reward_lure_sprite_v1.svg" id="27_deep_reward_lure_sprite"]
+[ext_resource type="PackedScene" path="res://scenes/readability/DuskLowVisibilityCue.tscn" id="28_dusk_low_visibility_cue"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -963,24 +964,8 @@ polygon = PackedVector2Array(-148, 34, -82, -8, -24, 8, -90, 52)
 color = Color(0.18, 0.26, 0.38, 0.22)
 polygon = PackedVector2Array(224, -28, 320, 20, 292, 116, 196, 146, 164, 60)
 
-[node name="LowVisibilityCue" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench"]
+[node name="LowVisibilityCue" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench" instance=ExtResource("28_dusk_low_visibility_cue")]
 position = Vector2(168, 24)
-
-[node name="MurkVeil" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue"]
-color = Color(0.035, 0.055, 0.15, 0.28)
-polygon = PackedVector2Array(-92, -52, 76, -82, 184, -30, 154, 62, -38, 96, -146, 26)
-
-[node name="SiltPulseBand" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue"]
-color = Color(0.12, 0.16, 0.34, 0.22)
-polygon = PackedVector2Array(-122, 4, -10, -28, 134, -10, 186, 30, 64, 44, -88, 36)
-
-[node name="SiltRibA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue"]
-color = Color(0.36, 0.44, 0.78, 0.24)
-polygon = PackedVector2Array(-54, -18, -12, -34, 28, -18, -18, -4)
-
-[node name="SiltRibB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue"]
-color = Color(0.32, 0.38, 0.7, 0.2)
-polygon = PackedVector2Array(58, 18, 108, 2, 154, 20, 92, 36)
 
 [node name="GlassKelpLedge" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench"]
 position = Vector2(92, 78)
