@@ -737,6 +737,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone",
 		"EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone/CollisionShape2D",
 		"EastShelfSpur/ShelfDropConnector/TurnbackPocketHint",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketMouth",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketRim",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketFloor",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ClosedLowerCrack",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -761,6 +766,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var drop_echo := main.get_node("EastShelfSpur/ShelfDropConnector/DropEchoOpportunity") as Node2D
 	var drop_echo_core := main.get_node("EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/EchoCore") as Polygon2D
 	var connector_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/TurnbackPocketHint") as Polygon2D
+	var blue_chimney_pocket := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket") as Node2D
+	var blue_chimney_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketMouth") as Polygon2D
+	var blue_chimney_rim := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/PocketRim") as Polygon2D
+	var blue_chimney_crack := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ClosedLowerCrack") as Polygon2D
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
 	var shelf_glimmer := main.get_node("EastShelfSpur/ShelfGlimmerOpportunity") as Node2D
@@ -793,6 +802,14 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(drop_arch_return.polygon[1].y < drop_arch_return.polygon[0].y, "Drop Arch return current should show upward return direction")
 	_expect(drop_echo.position.y >= drop_arch.position.y, "Drop Echo should sit near the lower connector turnback point")
 	_expect(drop_echo_core.color.a <= 0.4, "Drop Echo should read as a subtle research ping, not a guaranteed major reward")
+	_expect(blue_chimney_pocket.position.x >= drop_arch.position.x, "Blue Chimney Pocket should extend slightly right after Drop Arch")
+	_expect(blue_chimney_pocket.position.y > connector_turnback.polygon[connector_turnback.polygon.size() - 1].y, "Blue Chimney Pocket should sit just below the Shelf Drop turnback")
+	_expect(blue_chimney_pocket.position.x <= 2180.0, "Blue Chimney Pocket scaffold should stay inside the current bounded route space")
+	_expect(blue_chimney_pocket.position.y <= 2260.0, "Blue Chimney Pocket scaffold should stay small until larger route growth is planned")
+	_expect(blue_chimney_mouth.color.a <= 0.62, "Blue Chimney Pocket mouth should read as a small pocket, not a full cave network")
+	_expect(blue_chimney_rim.polygon.size() <= 14, "Blue Chimney Pocket rim should stay compact and authored")
+	_expect(blue_chimney_crack.color.a >= 0.5, "Blue Chimney Pocket should include a visible closed lower turnback")
+	_expect(blue_chimney_pocket.get_node_or_null("Interior") == null, "Blue Chimney Pocket scaffold should not add a full interior system")
 
 	main.free()
 

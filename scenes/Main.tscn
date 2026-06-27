@@ -539,6 +539,25 @@ shape = SubResource("CircleShape2D_lower_connector_echo")
 color = Color(0.28, 0.5, 0.56, 0.18)
 polygon = PackedVector2Array(2014, 1988, 2108, 1950, 2180, 2014, 2160, 2090, 2052, 2114, 1982, 2050)
 
+[node name="BlueChimneyPocket" type="Node2D" parent="EastShelfSpur/ShelfDropConnector"]
+position = Vector2(2112, 2190)
+
+[node name="PocketMouth" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
+color = Color(0.006, 0.034, 0.066, 0.58)
+polygon = PackedVector2Array(-112, -72, -18, -118, 86, -78, 122, -4, 72, 66, -46, 82, -138, 24)
+
+[node name="PocketRim" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
+color = Color(0.12, 0.3, 0.38, 0.3)
+polygon = PackedVector2Array(-150, -88, -20, -146, 112, -96, 158, -4, 98, 92, -54, 116, -176, 34, -138, 8, -44, 44, 58, 38, 88, -4, 46, -42, -56, -38)
+
+[node name="PocketFloor" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
+color = Color(0.018, 0.078, 0.108, 0.46)
+polygon = PackedVector2Array(-150, 70, -42, 94, 82, 82, 150, 38, 132, 96, 34, 140, -86, 130, -174, 94)
+
+[node name="ClosedLowerCrack" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
+color = Color(0.004, 0.018, 0.036, 0.52)
+polygon = PackedVector2Array(54, 72, 126, 40, 152, 80, 110, 128, 42, 118)
+
 [node name="ShellReefPocket" type="Node2D" parent="."]
 
 [node name="Visuals" parent="ShellReefPocket" instance=ExtResource("17_shell_reef_pocket_visuals")]
