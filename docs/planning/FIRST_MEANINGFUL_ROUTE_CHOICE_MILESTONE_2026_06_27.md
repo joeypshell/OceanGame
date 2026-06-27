@@ -1,6 +1,8 @@
 # First Meaningful Route Choice Milestone - 2026-06-27
 
-Status: active planning control.
+Status: complete - pass with watchlist.
+
+Closeout: `docs/planning/FIRST_MEANINGFUL_ROUTE_CHOICE_VALIDATION_2026_06_27.md`.
 
 ## Why This Milestone
 

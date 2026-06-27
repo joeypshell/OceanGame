@@ -4,7 +4,7 @@ This file describes implemented behavior. If gameplay, controls, runtime, deploy
 
 Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 
-Current planning posture: the next milestone is player-visible route choice, not micro-issue churn. New work should make ordinary play contrast safer Shell Reef / midwater banking against East Shelf / lower-route research pushes before adding more review-only polish. See `docs/planning/FIRST_MEANINGFUL_ROUTE_CHOICE_MILESTONE_2026_06_27.md`.
+Current planning posture: First Meaningful Route Choice is complete as pass with watchlist. New work should build the next player-visible route-growth sequence from that baseline rather than repeatedly polishing the first Shell Reef / East Shelf decision. See `docs/planning/FIRST_MEANINGFUL_ROUTE_CHOICE_VALIDATION_2026_06_27.md`.
 
 Current vertical-slice status: the prototype is structurally playable and most earlier readability blockers have been cleared with review evidence. It is close to polished acceptance; the remaining pass-with-watchlist risk is future visual-change regression rather than a known closeout blocker. The detailed gate lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`, the current evidence log lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md`, and the concise clean demo script lives in `docs/planning/VERTICAL_SLICE_CLEAN_DEMO_SCRIPT_2026_06_26.md`.
 
