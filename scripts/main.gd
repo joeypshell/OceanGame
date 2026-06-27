@@ -775,7 +775,7 @@ func _stage_debug_east_shelf_pocket_visual_review() -> void:
 	player_near_east_shelf_pocket = true
 	_try_east_shelf_pocket_interaction()
 	visual_smoke_route_stage = "east_shelf_pocket"
-	status_label.text = "Debug review: East Shelf pocket ping staged."
+	status_label.text = "Debug review: East Shelf signal core payoff staged."
 	_update_hud()
 
 func _stage_debug_lower_connector_visual_review() -> void:

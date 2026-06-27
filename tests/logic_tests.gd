@@ -746,6 +746,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/SealedShelfHatch/EchoShimmer",
 		"EastShelfSpur/SealedShelfHatch/LockBadge",
 		"EastShelfSpur/SealedShelfHatch/LockLabel",
+		"EastShelfSpur/DeepRoutePromise",
+		"EastShelfSpur/DeepRoutePromise/PromiseMouth",
+		"EastShelfSpur/DeepRoutePromise/PressureWash",
+		"EastShelfSpur/DeepRoutePromise/SealLip",
+		"EastShelfSpur/DeepRoutePromise/DepthGlint",
+		"EastShelfSpur/DeepRoutePromise/PromiseLabel",
 		"EastShelfSpur/ResonanceAlcove",
 		"EastShelfSpur/ResonanceAlcove/AlcoveMouth",
 		"EastShelfSpur/ResonanceAlcove/AlcoveRim",
@@ -824,6 +830,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var exit_current := main.get_node("EastShelfSpur/PocketEntrance/ExitCurrentCue") as Polygon2D
 	var sealed_hatch := main.get_node("EastShelfSpur/SealedShelfHatch") as Node2D
 	var hatch_lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
+	var deep_route_promise := main.get_node("EastShelfSpur/DeepRoutePromise") as Node2D
+	var deep_route_mouth := main.get_node("EastShelfSpur/DeepRoutePromise/PromiseMouth") as Polygon2D
+	var deep_route_wash := main.get_node("EastShelfSpur/DeepRoutePromise/PressureWash") as Polygon2D
+	var deep_route_seal := main.get_node("EastShelfSpur/DeepRoutePromise/SealLip") as Polygon2D
+	var deep_route_glint := main.get_node("EastShelfSpur/DeepRoutePromise/DepthGlint") as Polygon2D
+	var deep_route_label := main.get_node("EastShelfSpur/DeepRoutePromise/PromiseLabel") as Label
 	var resonance_alcove := main.get_node("EastShelfSpur/ResonanceAlcove") as Node2D
 	var resonance_mouth := main.get_node("EastShelfSpur/ResonanceAlcove/AlcoveMouth") as Polygon2D
 	var resonance_glow := main.get_node("EastShelfSpur/ResonanceAlcove/AlcoveGlow") as Polygon2D
@@ -884,6 +896,15 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(exit_current.polygon[1].x < exit_current.polygon[0].x, "East Shelf pocket exit cue should point back left toward the main route")
 	_expect(sealed_hatch.position.x >= pocket_entrance.position.x, "Sealed Shelf Hatch should sit at or beyond the pocket entrance as a future promise")
 	_expect(hatch_lock_label.text == "ECHO LOCK", "Sealed Shelf Hatch should start as an Echo Lens locked promise")
+	_expect(deep_route_promise.position.x > sealed_hatch.position.x, "Deep Route Promise should sit beyond the East Shelf destination")
+	_expect(deep_route_promise.position.y > sealed_hatch.position.y, "Deep Route Promise should sit lower than the hatch to imply future depth")
+	_expect(deep_route_mouth.color.a >= 0.62, "Deep Route Promise mouth should read as a visible sealed opening")
+	_expect(deep_route_wash.color.a <= 0.18, "Deep Route Promise wash should stay atmospheric, not a damage field")
+	_expect(deep_route_seal.color.a >= 0.28, "Deep Route Promise should have a readable seal lip")
+	_expect(deep_route_glint.color.a >= 0.42, "Deep Route Promise should include a small curiosity glint")
+	_expect(deep_route_label.text == "DEEP ROUTE SEALED", "Deep Route Promise label should communicate future route state without objective copy")
+	_expect(deep_route_promise.get_node_or_null("InteractZone") == null, "Deep Route Promise should not add active interaction yet")
+	_expect(deep_route_promise.get_node_or_null("Interior") == null, "Deep Route Promise should not add a cave interior system")
 	_expect(resonance_alcove.position.x > sealed_hatch.position.x, "Resonance Alcove should sit just beyond the sealed hatch")
 	_expect(resonance_alcove.position.y <= sealed_hatch.position.y + 80.0, "Resonance Alcove should stay near the hatch rather than becoming a new deep route")
 	_expect(resonance_mouth.color.a <= 0.62, "Resonance Alcove mouth should read as a small pocket, not a full biome")

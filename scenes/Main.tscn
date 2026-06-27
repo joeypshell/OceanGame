@@ -528,6 +528,33 @@ offset_bottom = 58.0
 theme_override_font_sizes/font_size = 14
 text = "ECHO LOCK"
 
+[node name="DeepRoutePromise" type="Node2D" parent="EastShelfSpur"]
+position = Vector2(2118, 1658)
+
+[node name="PromiseMouth" type="Polygon2D" parent="EastShelfSpur/DeepRoutePromise"]
+color = Color(0.006, 0.02, 0.04, 0.68)
+polygon = PackedVector2Array(-78, -36, 32, -66, 116, -8, 96, 76, -18, 104, -118, 44)
+
+[node name="PressureWash" type="Polygon2D" parent="EastShelfSpur/DeepRoutePromise"]
+color = Color(0.18, 0.34, 0.62, 0.16)
+polygon = PackedVector2Array(-118, -58, 36, -108, 158, -16, 130, 118, -28, 152, -154, 64)
+
+[node name="SealLip" type="Polygon2D" parent="EastShelfSpur/DeepRoutePromise"]
+color = Color(0.62, 0.88, 1, 0.32)
+polygon = PackedVector2Array(-92, -14, 26, -48, 118, 2, 102, 28, 22, -12, -78, 18)
+
+[node name="DepthGlint" type="Polygon2D" parent="EastShelfSpur/DeepRoutePromise"]
+color = Color(0.84, 1, 1, 0.48)
+polygon = PackedVector2Array(18, -24, 30, -4, 54, 0, 30, 8, 18, 30, 6, 8, -18, 0, 6, -4)
+
+[node name="PromiseLabel" type="Label" parent="EastShelfSpur/DeepRoutePromise"]
+offset_left = -68.0
+offset_top = 72.0
+offset_right = 92.0
+offset_bottom = 102.0
+theme_override_font_sizes/font_size = 13
+text = "DEEP ROUTE SEALED"
+
 [node name="ResonanceAlcove" type="Node2D" parent="EastShelfSpur"]
 position = Vector2(2146, 1574)
 
