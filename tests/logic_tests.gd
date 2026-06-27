@@ -1479,6 +1479,22 @@ func _test_blue_chimney_draft_interaction() -> void:
 	var not_handled: bool = main.call("_try_blue_chimney_interaction")
 	_expect(not not_handled, "Blue Chimney should not consume interact outside its proximity zone")
 
+	var callout: String = main.call("_format_blue_chimney_research_callout")
+	_expect(callout.contains("Blue Chimney"), "Blue Chimney result memory should name the lower pocket")
+	_expect(callout.contains("Shelf Drop"), "Blue Chimney result memory should keep broad route context")
+	_expect(callout.contains("deeper side-route"), "Blue Chimney result memory should hint at future route growth")
+	_expect_no_echo_lens_locator_language(callout, "Blue Chimney result line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Blue Chimney draft"), "Blue Chimney extraction summary should include recovered draft memory")
+	_expect(not extraction_summary.contains("%s"), "Blue Chimney extraction summary should not leak string placeholders")
+
+	var fresh_main := MainScript.new()
+	_expect(fresh_main._format_blue_chimney_research_callout() == "", "Blue Chimney result line should stay hidden before draft recovery")
+	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not fresh_summary.contains("Blue Chimney draft"), "Blue Chimney extraction summary should stay hidden before draft recovery")
+	fresh_main.free()
+
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "Blue Chimney draft reading should reset between expeditions")
 	main.free()
