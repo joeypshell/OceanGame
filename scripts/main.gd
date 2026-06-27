@@ -68,6 +68,7 @@ const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 const BLACKWATER_PRESSURE_PERIOD_SECONDS := 3.1
 const LANTERN_RAY_TIMING_PERIOD_SECONDS := 2.6
+const HOLLOW_REEF_TIMING_PERIOD_SECONDS := 3.4
 const DUSK_TRENCH_MEMORY_MIN_X := 2700.0
 const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 
@@ -224,6 +225,10 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var hollow_reef_reading_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingHalo
 @onready var hollow_reef_reading_shard: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingShard
 @onready var hollow_reef_reading_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingSpark
+@onready var hollow_reef_timing_ribbon_upper: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingRibbonUpper
+@onready var hollow_reef_timing_ribbon_lower: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingRibbonLower
+@onready var hollow_reef_timing_tick_a: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingTickA
+@onready var hollow_reef_timing_tick_b: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingTickB
 @onready var lantern_ray_timing_lane_upper: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneUpper
 @onready var lantern_ray_timing_lane_lower: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneLower
 @onready var lantern_ray_timing_tick_a: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingTickA
@@ -257,6 +262,7 @@ var east_shelf_current_surge_timer := 0.0
 var blue_chimney_draft_timer := 0.0
 var blackwater_pressure_timer := 0.0
 var lantern_ray_timing_timer := 0.0
+var hollow_reef_timing_timer := 0.0
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -338,6 +344,7 @@ func _process(delta: float) -> void:
 	_update_blue_chimney_reverse_draft(delta)
 	_update_blackwater_pressure_cue(delta)
 	_update_lantern_ray_timing_lane(delta)
+	_update_hollow_reef_timing_current(delta)
 	_update_lantern_fry_idle()
 	_update_burst_thruster_cooldown(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -1680,6 +1687,39 @@ func _update_lantern_ray_timing_lane(delta: float) -> void:
 func _lantern_ray_timing_lane_alpha(timer_seconds: float) -> float:
 	var phase := sin((timer_seconds / LANTERN_RAY_TIMING_PERIOD_SECONDS) * TAU)
 	return 0.09 + (phase + 1.0) * 0.035
+
+func _update_hollow_reef_timing_current(delta: float) -> void:
+	var upper := hollow_reef_timing_ribbon_upper
+	if upper == null:
+		upper = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingRibbonUpper") as Polygon2D
+		hollow_reef_timing_ribbon_upper = upper
+	var lower := hollow_reef_timing_ribbon_lower
+	if lower == null:
+		lower = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingRibbonLower") as Polygon2D
+		hollow_reef_timing_ribbon_lower = lower
+	var tick_a := hollow_reef_timing_tick_a
+	if tick_a == null:
+		tick_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingTickA") as Polygon2D
+		hollow_reef_timing_tick_a = tick_a
+	var tick_b := hollow_reef_timing_tick_b
+	if tick_b == null:
+		tick_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingTickB") as Polygon2D
+		hollow_reef_timing_tick_b = tick_b
+
+	hollow_reef_timing_timer = fposmod(hollow_reef_timing_timer + delta, HOLLOW_REEF_TIMING_PERIOD_SECONDS)
+	var cue_alpha := _hollow_reef_timing_current_alpha(hollow_reef_timing_timer)
+	if upper != null:
+		upper.color = Color(0.86, 0.78, 1.0, cue_alpha)
+	if lower != null:
+		lower.color = Color(0.86, 0.78, 1.0, maxf(0.06, cue_alpha - 0.035))
+	if tick_a != null:
+		tick_a.color = Color(0.98, 0.94, 1.0, cue_alpha + 0.05)
+	if tick_b != null:
+		tick_b.color = Color(0.98, 0.94, 1.0, maxf(0.1, cue_alpha + 0.02))
+
+func _hollow_reef_timing_current_alpha(timer_seconds: float) -> float:
+	var phase := sin((timer_seconds / HOLLOW_REEF_TIMING_PERIOD_SECONDS) * TAU)
+	return 0.08 + (phase + 1.0) * 0.035
 
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
@@ -3105,6 +3145,7 @@ func _reset_run_telemetry() -> void:
 	blue_chimney_draft_timer = 0.0
 	blackwater_pressure_timer = 0.0
 	lantern_ray_timing_timer = 0.0
+	hollow_reef_timing_timer = 0.0
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
 	_sync_east_shelf_pocket_payoff_state()

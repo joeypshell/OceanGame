@@ -112,6 +112,7 @@ func _initialize() -> void:
 	_run("East Shelf current surge visual timing", _test_east_shelf_current_surge_visual_timing)
 	_run("Blue Chimney reverse draft visual timing", _test_blue_chimney_reverse_draft_visual_timing)
 	_run("Blackwater pressure cue visual timing", _test_blackwater_pressure_cue_visual_timing)
+	_run("Hollow Reef timing current visual only", _test_hollow_reef_timing_current_visual_only)
 	_run("sealed shelf hatch promise state", _test_sealed_shelf_hatch_promise_state)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
@@ -4088,6 +4089,76 @@ func _test_blackwater_pressure_cue_visual_timing() -> void:
 	_expect(scene_main.progression_state.resource_count("glow_plankton") == 2, "Blackwater pressure cue should not mutate banked resources")
 	_expect(scene_main.progression_state.has_upgrade(ResonanceKeyUpgrade.id), "Blackwater pressure cue should not mutate Resonance Key ownership")
 	_expect(scene_main.progression_state.has_upgrade(PressureSealUpgrade.id), "Blackwater pressure cue should not mutate Pressure Seal ownership")
+	scene_main.queue_free()
+
+func _test_hollow_reef_timing_current_visual_only() -> void:
+	var main := MainScript.new()
+	var low_alpha: float = main.call("_hollow_reef_timing_current_alpha", 0.0)
+	var high_alpha: float = main.call("_hollow_reef_timing_current_alpha", MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS * 0.25)
+	var return_alpha: float = main.call("_hollow_reef_timing_current_alpha", MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS * 0.5)
+
+	_expect(high_alpha > low_alpha, "Hollow Reef timing current alpha should pulse upward to suggest wait/pass timing")
+	_expect(is_equal_approx(low_alpha, return_alpha), "Hollow Reef timing current pulse should repeat smoothly")
+	_expect(low_alpha >= 0.08 and high_alpha <= 0.16, "Hollow Reef timing current pulse should stay subtle and non-combat")
+
+	main.dive_session.reset(30.0)
+	main.dive_session.start()
+	main.dive_session.oxygen = 20.0
+	main.dive_session.current_cargo.append("glow_plankton")
+	main.dive_session.has_left_base = true
+	main.player_in_base = false
+	main.run_predator_contacts = 1
+	main.progression_state.banked_resources["shell_fragments"] = 2
+	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+
+	main.call("_update_hollow_reef_timing_current", 0.7)
+	_expect(is_equal_approx(main.dive_session.oxygen, 20.0), "Hollow Reef timing current should not drain oxygen")
+	_expect(main.dive_session.current_cargo == ["glow_plankton"], "Hollow Reef timing current should not change carried cargo")
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Hollow Reef timing current should not change dive result")
+	_expect(main.dive_session.has_left_base, "Hollow Reef timing current should not reset extraction eligibility")
+	_expect(not main.player_in_base, "Hollow Reef timing current should not move the player into the base")
+	_expect(main.run_predator_contacts == 1, "Hollow Reef timing current should not create predator contacts")
+	_expect(main.progression_state.resource_count("shell_fragments") == 2, "Hollow Reef timing current should not mutate banked resources")
+	_expect(main.progression_state.has_upgrade(ResonanceKeyUpgrade.id), "Hollow Reef timing current should not mutate upgrade ownership")
+	main.free()
+
+	var scene_main := MainScene.instantiate()
+	root.add_child(scene_main)
+	scene_main.dive_session.reset(30.0)
+	scene_main.dive_session.start()
+	scene_main.dive_session.oxygen = 19.0
+	scene_main.dive_session.current_cargo.append("kelp_fiber")
+	scene_main.dive_session.has_left_base = true
+	scene_main.player_in_base = false
+	scene_main.run_predator_contacts = 1
+	scene_main.progression_state.banked_resources["glow_plankton"] = 2
+
+	var timing_cue := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue") as Node2D
+	var upper := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingRibbonUpper") as Polygon2D
+	var tick := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingTickA") as Polygon2D
+	var return_current := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneReturnCurrent") as Polygon2D
+	var reading_halo := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingHalo") as Polygon2D
+	var pocket_glimmer := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket/PocketGlimmer") as Polygon2D
+	var predator_warning := scene_main.get_node("Predators/PredatorWarning/WarningRibs") as Polygon2D
+	var pressure_shutter := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureShutter") as Polygon2D
+
+	_expect(timing_cue.find_child("CollisionShape2D", true, false) == null, "Hollow Reef timing current should not add collision")
+	_expect(timing_cue.find_child("InteractZone", true, false) == null, "Hollow Reef timing current should not add an interaction hotspot")
+	_expect(timing_cue.find_child("ResourcePickup", true, false) == null, "Hollow Reef timing current should not add resource behavior")
+	_expect(timing_cue.find_child("Predator", true, false) == null, "Hollow Reef timing current should not reuse predator behavior")
+	_expect(timing_cue.find_child("PressureBoundary", true, false) == null, "Hollow Reef timing current should not add pressure behavior")
+	scene_main.call("_update_hollow_reef_timing_current", MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS * 0.25)
+	_expect(upper.color.b > upper.color.g and upper.color.r > upper.color.g, "Hollow Reef timing current should use pale timing color instead of safe-current green")
+	_expect(return_current.color.g > upper.color.g, "Hollow Reef safe-return current should stay greener than the timing cue")
+	_expect(upper.color.r > pressure_shutter.color.r and upper.color.g > pressure_shutter.color.g, "Hollow Reef timing current should stay brighter than pressure-lock language")
+	_expect(predator_warning.color.r > upper.color.r, "Hollow Reef timing current should stay distinct from red predator warning language")
+	_expect(pocket_glimmer.color.g > upper.color.g, "Hollow Reef timing current should not read like the green-yellow resource pocket glimmer")
+	_expect(upper.color.a <= 0.16 and tick.color.a <= 0.21, "Hollow Reef timing current should remain subtle enough not to obscure cave content")
+	_expect(reading_halo.color.a >= upper.color.a, "Hollow Reef reading payoff should remain as visible as the timing cue")
+	_expect(is_equal_approx(scene_main.dive_session.oxygen, 19.0), "scene Hollow Reef timing current should not drain oxygen")
+	_expect(scene_main.dive_session.current_cargo == ["kelp_fiber"], "scene Hollow Reef timing current should not mutate cargo")
+	_expect(scene_main.run_predator_contacts == 1, "scene Hollow Reef timing current should not create predator contacts")
+	_expect(scene_main.progression_state.resource_count("glow_plankton") == 2, "scene Hollow Reef timing current should not mutate resources")
 	scene_main.queue_free()
 
 func _test_sealed_shelf_hatch_promise_state() -> void:

@@ -1127,6 +1127,24 @@ polygon = PackedVector2Array(-46, 56, 58, 90, 164, 62, 182, 104, 76, 128, -62, 9
 color = Color(0.62, 1, 0.9, 0.2)
 polygon = PackedVector2Array(18, -4, 88, -22, 142, 6, 70, 28)
 
+[node name="TimingCurrentCue" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
+
+[node name="TimingRibbonUpper" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue"]
+color = Color(0.86, 0.78, 1, 0.11)
+polygon = PackedVector2Array(-24, -36, 42, -54, 116, -28, 162, 0, 108, 16, 36, -6, -38, 8)
+
+[node name="TimingRibbonLower" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue"]
+color = Color(0.86, 0.78, 1, 0.075)
+polygon = PackedVector2Array(-18, 30, 48, 44, 126, 26, 176, 46, 110, 68, 30, 62, -46, 38)
+
+[node name="TimingTickA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue"]
+color = Color(0.98, 0.94, 1, 0.16)
+polygon = PackedVector2Array(20, -28, 46, -38, 62, -16, 34, -6)
+
+[node name="TimingTickB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue"]
+color = Color(0.98, 0.94, 1, 0.13)
+polygon = PackedVector2Array(108, -8, 136, 4, 124, 28, 92, 16)
+
 [node name="LaneReturnCurrent" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
 color = Color(0.66, 1, 0.88, 0.19)
 polygon = PackedVector2Array(164, 70, 82, 48, 0, 8, -84, -18, -58, -48, 36, -8, 118, 20)
