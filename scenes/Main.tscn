@@ -949,6 +949,25 @@ polygon = PackedVector2Array(-130, 30, -78, -4, -28, 8, -84, 44)
 color = Color(0.18, 0.26, 0.38, 0.22)
 polygon = PackedVector2Array(224, -28, 320, 20, 292, 116, 196, 146, 164, 60)
 
+[node name="LowVisibilityCue" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench"]
+position = Vector2(168, 24)
+
+[node name="MurkVeil" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue"]
+color = Color(0.035, 0.055, 0.15, 0.28)
+polygon = PackedVector2Array(-92, -52, 76, -82, 184, -30, 154, 62, -38, 96, -146, 26)
+
+[node name="SiltPulseBand" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue"]
+color = Color(0.12, 0.16, 0.34, 0.22)
+polygon = PackedVector2Array(-122, 4, -10, -28, 134, -10, 186, 30, 64, 44, -88, 36)
+
+[node name="SiltRibA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue"]
+color = Color(0.36, 0.44, 0.78, 0.24)
+polygon = PackedVector2Array(-54, -18, -12, -34, 28, -18, -18, -4)
+
+[node name="SiltRibB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue"]
+color = Color(0.32, 0.38, 0.7, 0.2)
+polygon = PackedVector2Array(58, 18, 108, 2, 154, 20, 92, 36)
+
 [node name="GlassKelpLedge" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench"]
 position = Vector2(92, 78)
 

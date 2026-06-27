@@ -855,6 +855,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowerTrenchShelf",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/ReturnCurrentUpLeft",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/FarTurnbackShadow",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/MurkVeil",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltPulseBand",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibA",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibB",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/LedgeMouth",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/CalmPocketWater",
@@ -965,6 +970,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var dusk_open_water := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/OpenWaterWindow") as Polygon2D
 	var dusk_lower_shelf := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowerTrenchShelf") as Polygon2D
 	var dusk_return_current := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/ReturnCurrentUpLeft") as Polygon2D
+	var low_visibility_cue := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue") as Node2D
+	var low_visibility_veil := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/MurkVeil") as Polygon2D
+	var low_visibility_band := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltPulseBand") as Polygon2D
+	var low_visibility_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibA") as Polygon2D
 	var glass_kelp_ledge := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge") as Node2D
 	var glass_kelp_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/LedgeMouth") as Polygon2D
 	var glass_kelp_water := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/CalmPocketWater") as Polygon2D
@@ -1116,6 +1125,16 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(dusk_lower_shelf.color.a >= 0.5, "Dusk Trench should have a readable lower shelf silhouette")
 	_expect(dusk_return_current.polygon[1].x < dusk_return_current.polygon[0].x, "Dusk Trench return current should point back left toward Blackwater")
 	_expect(dusk_return_current.polygon[1].y < dusk_return_current.polygon[0].y, "Dusk Trench return current should point upward toward Silt and Blue")
+	_expect(low_visibility_cue.get_parent() == dusk_trench, "Dusk Trench low-visibility cue should inherit the existing route gate")
+	_expect(low_visibility_cue.position.x > 120.0, "Dusk Trench low-visibility cue should sit deeper in the trench instead of covering the return current")
+	_expect(low_visibility_veil.color.a >= 0.2 and low_visibility_veil.color.a <= 0.3, "Dusk Trench low-visibility veil should be visible but not a hard hazard wall")
+	_expect(low_visibility_veil.color.b > low_visibility_veil.color.g, "Dusk Trench low-visibility cue should use blue-violet pressure language")
+	_expect(low_visibility_veil.color.g < dusk_return_current.color.g, "Dusk Trench low-visibility cue should stay distinct from safe-current green")
+	_expect(low_visibility_band.color.b > low_visibility_band.color.g, "Dusk Trench silt band should reinforce dark low-visibility language")
+	_expect(low_visibility_rib.color.b > low_visibility_rib.color.r, "Dusk Trench silt rib should not read as predator warning red or resource yellow")
+	_expect(low_visibility_cue.get_node_or_null("InteractZone") == null, "Dusk Trench low-visibility cue should not add an interaction hotspot")
+	_expect(low_visibility_cue.get_node_or_null("PressureBoundary") == null, "Dusk Trench low-visibility cue should not add a hidden pressure or oxygen boundary")
+	_expect(low_visibility_cue.find_child("CollisionShape2D", true, false) == null, "Dusk Trench low-visibility cue should not add collision or knockback")
 	_expect(dusk_trench.get_node_or_null("InteractZone") == null, "Dusk Trench scaffold should not add an interaction hotspot yet")
 	_expect(dusk_trench.get_node_or_null("Interior") == null, "Dusk Trench scaffold should not add a cave interior system")
 	_expect(glass_kelp_ledge.get_parent() == dusk_trench, "Glass Kelp Ledge should branch from the Dusk Trench route")
@@ -3034,6 +3053,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(lower_connector_direction.contains("up-left"), "base direction should point up-left from the Shelf Drop Connector")
 
 	var glass_kelp_ledge := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge") as Node2D
+	var low_visibility_cue := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue") as Node2D
 	main.dive_session.start()
 	main.dive_session.has_left_base = true
 	main.dive_session.oxygen = 18.0
@@ -3049,6 +3069,16 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Glass Kelp Ledge should not change the dive result")
 	_expect(main.dive_session.has_left_base, "Glass Kelp Ledge should not reset extraction eligibility")
 	_expect(not main.player_in_base, "Glass Kelp Ledge should not move the player into the base")
+
+	scene_player.global_position = low_visibility_cue.global_position
+	main.call("_update_depth")
+	main.call("_update_hud")
+	_expect(is_equal_approx(main.dive_session.oxygen, 18.0), "Dusk Trench low-visibility cue should not drain oxygen")
+	_expect(main.dive_session.current_cargo == ["kelp_fiber"], "Dusk Trench low-visibility cue should not alter cargo")
+	_expect(main.run_predator_contacts == 1, "Dusk Trench low-visibility cue should not mutate predator state")
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Dusk Trench low-visibility cue should not damage or end the dive")
+	_expect(main.dive_session.has_left_base, "Dusk Trench low-visibility cue should not reset extraction eligibility")
+	_expect(not main.player_in_base, "Dusk Trench low-visibility cue should not move the player into the base")
 
 	main.player_near_lower_connector_echo = true
 	main.player_near_resonance_alcove = true
