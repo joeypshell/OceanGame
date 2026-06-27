@@ -101,6 +101,7 @@ func _initialize() -> void:
 	_run("prompt formatter guard coverage", _test_prompt_formatter_guard_coverage)
 	_run("condition briefing copy", _test_condition_briefing_copy)
 	_run("Dusk Trench low-visibility condition nudge", _test_dusk_trench_low_visibility_condition_nudge)
+	_run("Wide Reef Chamber calm-current condition nudge", _test_wide_chamber_calm_current_condition_nudge)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
@@ -3597,6 +3598,58 @@ func _test_dusk_trench_low_visibility_condition_nudge() -> void:
 	_expect(not saved.has("current_expedition_condition"), "Low Visibility should not save active condition state")
 	_expect(not saved.has("low_visibility"), "Low Visibility should not add durable save state")
 	_expect(not saved.has("dusk_trench_condition"), "Dusk condition nudge should not add durable route state")
+	scene.queue_free()
+
+func _test_wide_chamber_calm_current_condition_nudge() -> void:
+	var scene := MainScene.instantiate()
+	root.add_child(scene)
+	var return_main := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentBackToHollow") as Polygon2D
+	var return_far := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentFarRib") as Polygon2D
+	var return_mid := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentMidChain") as Polygon2D
+	var return_entry := scene.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentEntryChain") as Polygon2D
+	scene.dive_session.reset(30.0)
+	scene.dive_session.start()
+	scene.dive_session.oxygen = 19.0
+	scene.dive_session.current_cargo = ["shell_fragments"]
+	scene.dive_session.has_left_base = true
+	scene.player_in_base = false
+	scene.run_predator_contacts = 1
+	scene.progression_state.banked_resources["glow_plankton"] = 2
+	scene.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+
+	scene.current_expedition_condition = {
+		"id": "calm_current",
+		"display_name": "Calm Current",
+		"briefing": "Safe routes are easier to read today.",
+		"tags": ["current", "return"],
+	}
+	scene.call("_sync_wide_chamber_condition_nudge", "calm_current")
+	var calm_main_alpha := return_main.color.a
+	var calm_far_alpha := return_far.color.a
+	var calm_mid_alpha := return_mid.color.a
+	var calm_entry_alpha := return_entry.color.a
+	_expect(calm_main_alpha > 0.2, "Calm Current should subtly strengthen the Wide Reef Chamber main return current")
+	_expect(calm_far_alpha > 0.2, "Calm Current should strengthen the far chamber return rib")
+	_expect(calm_mid_alpha > 0.16, "Calm Current should strengthen the mid chamber return chain")
+	_expect(calm_entry_alpha > 0.18, "Calm Current should strengthen the entry return chain")
+	_expect(return_main.color.g > return_main.color.r and return_mid.color.g > return_mid.color.r, "Wide chamber condition nudge should preserve safe-current color language")
+
+	scene.call("_sync_wide_chamber_condition_nudge", "rare_signal")
+	_expect(return_main.color.a < calm_main_alpha, "non-Calm-Current conditions should restore neutral Wide Reef Chamber main return current")
+	_expect(return_far.color.a < calm_far_alpha, "non-Calm-Current conditions should restore neutral far return rib")
+	_expect(return_mid.color.a < calm_mid_alpha, "non-Calm-Current conditions should restore neutral mid return chain")
+	_expect(return_entry.color.a < calm_entry_alpha, "non-Calm-Current conditions should restore neutral entry return chain")
+	_expect(is_equal_approx(scene.dive_session.oxygen, 19.0), "Wide chamber condition nudge should not drain oxygen")
+	_expect(scene.dive_session.current_cargo == ["shell_fragments"], "Wide chamber condition nudge should not change carried cargo")
+	_expect(scene.dive_session.result == DiveSessionScript.Result.DIVING, "Wide chamber condition nudge should not change dive state")
+	_expect(scene.dive_session.has_left_base, "Wide chamber condition nudge should not reset extraction eligibility")
+	_expect(not scene.player_in_base, "Wide chamber condition nudge should not move the player into base")
+	_expect(scene.run_predator_contacts == 1, "Wide chamber condition nudge should not create predator contacts")
+	_expect(scene.progression_state.resource_count("glow_plankton") == 2, "Wide chamber condition nudge should not mutate banked resources")
+	_expect(scene.progression_state.has_upgrade(ResonanceKeyUpgrade.id), "Wide chamber condition nudge should not mutate upgrade ownership")
+	var saved: Dictionary = scene.progression_state.to_save_data()
+	_expect(not saved.has("wide_chamber_condition"), "Wide chamber condition nudge should not add durable save state")
+	_expect(not saved.has("calm_current"), "Calm Current chamber variation should not save active condition state")
 	scene.queue_free()
 
 func _test_compact_dive_hud_helpers() -> void:

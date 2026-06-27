@@ -229,6 +229,10 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var hollow_reef_timing_ribbon_lower: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingRibbonLower
 @onready var hollow_reef_timing_tick_a: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingTickA
 @onready var hollow_reef_timing_tick_b: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingTickB
+@onready var wide_chamber_return_main: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentBackToHollow
+@onready var wide_chamber_return_far: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentFarRib
+@onready var wide_chamber_return_mid: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentMidChain
+@onready var wide_chamber_return_entry: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentEntryChain
 @onready var lantern_ray_timing_lane_upper: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneUpper
 @onready var lantern_ray_timing_lane_lower: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneLower
 @onready var lantern_ray_timing_tick_a: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingTickA
@@ -2045,6 +2049,7 @@ func _sync_condition_visuals() -> void:
 	blue_chimney_signal_opportunity.visible = _blue_chimney_signal_visible_for_condition(condition_id)
 	_sync_blackwater_signal_opportunity(condition_id)
 	_sync_dusk_trench_condition_nudge(condition_id)
+	_sync_wide_chamber_condition_nudge(condition_id)
 	base_return_column.color = Color(0.38, 1.0, 0.9, 0.18) if is_calm_current else Color(0.38, 1.0, 0.9, 0.14)
 	base_return_rib_shallow.color = Color(0.62, 1.0, 0.9, 0.22) if is_calm_current else Color(0.62, 1.0, 0.9, 0.18)
 	base_return_rib_midwater.color = Color(0.62, 1.0, 0.9, 0.2) if is_calm_current else Color(0.62, 1.0, 0.9, 0.16)
@@ -2102,6 +2107,28 @@ func _sync_dusk_trench_condition_nudge(condition_id: String) -> void:
 	band.color = Color(0.12, 0.16, 0.34, 0.24) if is_low_visibility else Color(0.12, 0.16, 0.34, 0.17)
 	rib_a.color = Color(0.36, 0.44, 0.78, 0.28) if is_low_visibility else Color(0.36, 0.44, 0.78, 0.2)
 	rib_b.color = Color(0.32, 0.38, 0.7, 0.24) if is_low_visibility else Color(0.32, 0.38, 0.7, 0.16)
+
+func _sync_wide_chamber_condition_nudge(condition_id: String) -> void:
+	var return_main := wide_chamber_return_main
+	if return_main == null:
+		return_main = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentBackToHollow") as Polygon2D
+	var return_far := wide_chamber_return_far
+	if return_far == null:
+		return_far = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentFarRib") as Polygon2D
+	var return_mid := wide_chamber_return_mid
+	if return_mid == null:
+		return_mid = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentMidChain") as Polygon2D
+	var return_entry := wide_chamber_return_entry
+	if return_entry == null:
+		return_entry = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentEntryChain") as Polygon2D
+	if return_main == null or return_far == null or return_mid == null or return_entry == null:
+		return
+
+	var is_calm_current := condition_id == "calm_current"
+	return_main.color = Color(0.66, 1.0, 0.88, 0.22) if is_calm_current else Color(0.66, 1.0, 0.88, 0.18)
+	return_far.color = Color(0.82, 1.0, 0.92, 0.22) if is_calm_current else Color(0.82, 1.0, 0.92, 0.18)
+	return_mid.color = Color(0.58, 1.0, 0.84, 0.18) if is_calm_current else Color(0.58, 1.0, 0.84, 0.14)
+	return_entry.color = Color(0.62, 1.0, 0.86, 0.2) if is_calm_current else Color(0.62, 1.0, 0.86, 0.16)
 
 func _rare_signal_emphasis_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal"
