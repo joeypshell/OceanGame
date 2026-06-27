@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -165,6 +165,39 @@ test.describe("OceanGame web visual smoke", () => {
       active_stats_visible: true,
       route_stage: "blackwater_route",
       blackwater_trace_recovered: false,
+    });
+  });
+
+  test("captures the staged Dusk Trench route and Glass Kelp payoff views", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageDuskTrenchRoute(page);
+    await capture(page, testInfo, "dusk-trench-route-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "dusk_trench_route",
+      dusk_trench_reached: true,
+      glass_kelp_reading_recovered: false,
+    });
+
+    await stageDuskTrenchPayoff(page);
+    await capture(page, testInfo, "dusk-trench-payoff-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "dusk_trench_payoff",
+      dusk_trench_reached: true,
+      glass_kelp_reading_recovered: false,
+    });
+
+    await stageDuskTrenchPayoffRecovered(page);
+    await capture(page, testInfo, "dusk-trench-payoff-recovered-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "dusk_trench_payoff_recovered",
+      dusk_trench_reached: true,
+      glass_kelp_reading_recovered: true,
     });
   });
 

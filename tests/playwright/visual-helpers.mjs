@@ -170,6 +170,45 @@ export async function stageBlackwaterRoute(page) {
   });
 }
 
+export async function stageDuskTrenchRoute(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "dusk_trench_route";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "dusk_trench_route",
+    dusk_trench_reached: true,
+    glass_kelp_reading_recovered: false,
+  });
+}
+
+export async function stageDuskTrenchPayoff(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "dusk_trench_payoff";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "dusk_trench_payoff",
+    dusk_trench_reached: true,
+    glass_kelp_reading_recovered: false,
+  });
+}
+
+export async function stageDuskTrenchPayoffRecovered(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "dusk_trench_payoff_recovered";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "dusk_trench_payoff_recovered",
+    dusk_trench_reached: true,
+    glass_kelp_reading_recovered: true,
+  });
+}
+
 export async function stageOpenHatchResonanceAlcove(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "open_hatch_resonance_alcove";

@@ -1060,6 +1060,79 @@ func _stage_debug_blackwater_route_visual_review() -> void:
 	_update_depth()
 	_update_hud()
 
+func _stage_debug_dusk_trench_route_visual_review() -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var dusk_trench := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench") as Node2D
+	if dusk_trench == null:
+		return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	progression_state.purchased_upgrades[ECHO_LENS_UPGRADE_ID] = true
+	progression_state.purchased_upgrades[RESONANCE_KEY_UPGRADE_ID] = true
+	current_expedition_condition = {
+		"id": "low_visibility",
+		"display_name": "Low Visibility",
+		"briefing": "Deeper water is harder to read today.",
+		"tags": ["visibility", "return"],
+	}
+	_sync_sealed_shelf_hatch_state()
+	_sync_blackwater_crack_gate_state()
+	_sync_condition_visuals()
+	_update_blackwater_pressure_cue(BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
+
+	player = staged_player
+	player.global_position = dusk_trench.global_position + Vector2(92.0, 32.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	player_near_blackwater_crack = false
+	player_near_glass_kelp_ledge = false
+	run_reached_dusk_trench = true
+	run_glass_kelp_reading_recovered = false
+	_sync_glass_kelp_reading_state()
+	visual_smoke_route_stage = "dusk_trench_route"
+	status_label.text = "Debug review: Dusk Trench route staged."
+	_update_depth()
+	_update_hud()
+
+func _stage_debug_dusk_trench_payoff_visual_review(recovered := false) -> void:
+	_stage_debug_dusk_trench_route_visual_review()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	var ledge_interact := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone") as Area2D
+	if ledge_interact == null:
+		return
+
+	player.global_position = ledge_interact.global_position
+	player.velocity = Vector2.ZERO
+	player_near_glass_kelp_ledge = true
+	run_reached_dusk_trench = true
+	if recovered:
+		_try_glass_kelp_ledge_interaction()
+		visual_smoke_route_stage = "dusk_trench_payoff_recovered"
+		status_label.text = "Debug review: Dusk Trench payoff recovered."
+	else:
+		run_glass_kelp_reading_recovered = false
+		_sync_glass_kelp_reading_state()
+		visual_smoke_route_stage = "dusk_trench_payoff"
+		status_label.text = "Debug review: Dusk Trench payoff staged."
+	_update_depth()
+	_update_hud()
+
 func _stage_debug_open_hatch_alcove_visual_review() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -1124,6 +1197,12 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_silt_vein_fork_visual_review()
 		"blackwater_route":
 			_stage_debug_blackwater_route_visual_review()
+		"dusk_trench_route":
+			_stage_debug_dusk_trench_route_visual_review()
+		"dusk_trench_payoff":
+			_stage_debug_dusk_trench_payoff_visual_review(false)
+		"dusk_trench_payoff_recovered":
+			_stage_debug_dusk_trench_payoff_visual_review(true)
 		"open_hatch_resonance_alcove":
 			_stage_debug_open_hatch_alcove_visual_review()
 
@@ -2228,6 +2307,7 @@ func _publish_visual_smoke_state() -> void:
 		"blue_chimney_draft_reading_recovered": run_blue_chimney_draft_reading_recovered,
 		"lantern_silt_sample_recovered": run_lantern_silt_sample_recovered,
 		"blackwater_trace_recovered": run_blackwater_trace_recovered,
+		"dusk_trench_reached": run_reached_dusk_trench,
 		"glass_kelp_reading_recovered": run_glass_kelp_reading_recovered,
 		"route_stage": visual_smoke_route_stage,
 	}
