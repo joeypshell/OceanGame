@@ -81,6 +81,7 @@ func _initialize() -> void:
 	_run("Resonance Alcove research payoff", _test_resonance_alcove_research_payoff)
 	_run("Blue Chimney draft interaction", _test_blue_chimney_draft_interaction)
 	_run("Lantern Silt Sample interaction", _test_lantern_silt_sample_interaction)
+	_run("Blackwater Crack gate state", _test_blackwater_crack_gate_state)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -884,6 +885,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var blackwater_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/CrackMouth") as Polygon2D
 	var blackwater_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/PressureDarkWash") as Polygon2D
 	var blackwater_seal_lip := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/SealLip") as Polygon2D
+	var blackwater_gate_badge := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateBadge") as Polygon2D
+	var blackwater_gate_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateLabel") as Label
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -986,7 +989,9 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blackwater_mouth.color.a >= 0.58, "Blackwater Crack mouth should read as closed deep water")
 	_expect(blackwater_wash.color.a <= 0.22, "Blackwater Crack pressure-dark wash should stay atmospheric, not a damage field")
 	_expect(blackwater_seal_lip.color.a <= 0.28, "Blackwater Crack seal lip should read as a quiet deferred promise")
-	_expect(blackwater_crack.get_node_or_null("InteractZone") == null, "Blackwater Crack should not add active interaction yet")
+	_expect(blackwater_gate_badge.color.a >= 0.48, "Blackwater Crack should visibly present a deliberate route gate")
+	_expect(blackwater_gate_label.text == "RESONANCE SEAL", "Blackwater Crack should start with broad preparation gate copy")
+	_expect(blackwater_crack.get_node_or_null("InteractZone") != null, "Blackwater Crack should expose a readback hotspot for its gate state")
 	_expect(blackwater_crack.get_node_or_null("Interior") == null, "Blackwater Crack should not add a cave interior system")
 	_expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
 	_expect(blue_chimney_glow_candidate.depth_band == "deep", "Blue Chimney material candidate should preserve deep resource identity")
@@ -1749,6 +1754,61 @@ func _test_lantern_silt_sample_interaction() -> void:
 
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_lantern_silt_sample_recovered, "Lantern Silt sample should reset between expeditions")
+	main.free()
+
+func _test_blackwater_crack_gate_state() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_blackwater_crack = true
+	main.dive_session.oxygen = 19.0
+	main.dive_session.current_cargo = ["shell_fragments"]
+	main.progression_state.banked_resources = {"glow_plankton": 2, "shell_fragments": 1}
+	var gate_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateLabel") as Label
+	var gate_badge := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateBadge") as Polygon2D
+	var closed_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/ClosedShard") as Polygon2D
+
+	main.call("_sync_blackwater_crack_gate_state")
+	_expect(gate_label.text == "RESONANCE SEAL", "Blackwater Crack should start as a deliberate resonance-sealed route gate")
+	var sealed_status: String = main.call("_format_blackwater_gate_status")
+	_expect(sealed_status.contains("Echo Lens"), "Blackwater sealed status should name existing scanner preparation")
+	_expect(sealed_status.contains("Resonance Key I"), "Blackwater sealed status should name existing key preparation")
+	_expect_no_echo_lens_locator_language(sealed_status, "Blackwater sealed status")
+
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Blackwater Crack"), "Blackwater proximity should own the active dive prompt")
+	_expect(prompt.contains("read Resonance seal"), "Blackwater prompt should explain the narrow gate readback")
+	var handled: bool = main.call("_try_blackwater_crack_interaction")
+	_expect(handled, "Blackwater Crack should handle interact while nearby during a dive")
+	_expect(main.status_label.text.contains("Resonance Key I"), "Blackwater interaction should explain broad preparation")
+	_expect(is_equal_approx(main.dive_session.oxygen, 19.0), "Blackwater gate readback should not spend oxygen")
+	_expect(main.dive_session.current_cargo == ["shell_fragments"], "Blackwater gate readback should not change cargo")
+	_expect(main.progression_state.resource_count("glow_plankton") == 2, "Blackwater gate readback should not mutate banked resources")
+
+	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	main.call("_sync_blackwater_crack_gate_state")
+	_expect(gate_label.text == "KEY NEEDED", "Blackwater gate should ask for Resonance Key I after Echo Lens I is owned")
+	var key_needed_status: String = main.call("_format_blackwater_gate_status")
+	_expect(key_needed_status.contains("Resonance Key I"), "Blackwater key-needed status should stay tied to existing preparation")
+	_expect(not key_needed_status.contains("Echo Lens and"), "Blackwater key-needed status should stop asking for Echo Lens after ownership")
+
+	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+	main.call("_sync_blackwater_crack_gate_state")
+	_expect(gate_label.text == "KEY READY", "Blackwater gate should show ready after Resonance Key I ownership")
+	_expect(gate_badge.color.g >= gate_badge.color.r, "Blackwater ready badge should visually differ from the sealed dark route")
+	_expect(closed_shard.color.a <= 0.14, "Blackwater ready state should soften the closed shard without opening an interior yet")
+	var ready_status: String = main.call("_format_blackwater_gate_status")
+	_expect(ready_status.contains("narrow sill"), "Blackwater ready status should promise a short route sequence")
+	_expect_no_echo_lens_locator_language(ready_status, "Blackwater ready status")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("blackwater_crack"), "Blackwater gate should not add durable route state")
+	_expect(not saved.has("blackwater_sill"), "Blackwater gate should not add durable sill state")
+	_expect(not saved.has("blackwater_route_open"), "Blackwater gate should derive readiness from existing upgrade ownership")
+	main.player_near_blackwater_crack = false
+	var not_handled: bool = main.call("_try_blackwater_crack_interaction")
+	_expect(not not_handled, "Blackwater Crack should not consume interact outside its proximity zone")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:
@@ -2531,6 +2591,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.player_near_resonance_alcove = true
 	main.player_near_blue_chimney = true
 	main.player_near_lantern_silt_nook = true
+	main.player_near_blackwater_crack = true
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
 	main.call("_prepare_next_run")
@@ -2538,6 +2599,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.player_near_resonance_alcove, "new expeditions should clear Resonance Alcove proximity state")
 	_expect(not main.player_near_blue_chimney, "new expeditions should clear Blue Chimney proximity state")
 	_expect(not main.player_near_lantern_silt_nook, "new expeditions should clear Lantern Silt proximity state")
+	_expect(not main.player_near_blackwater_crack, "new expeditions should clear Blackwater Crack proximity state")
 	_expect(not main.run_lower_connector_echo_recovered, "new expeditions should not carry Drop Echo research state")
 	_expect(not main.run_resonance_alcove_research_recovered, "new expeditions should not carry Resonance Alcove research state")
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "new expeditions should not carry Blue Chimney draft research state")

@@ -188,11 +188,18 @@ const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 @onready var resonance_alcove_interact_zone: Area2D = $EastShelfSpur/ResonanceAlcove/InteractZone
 @onready var blue_chimney_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/InteractZone
 @onready var lantern_silt_nook_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/InteractZone
+@onready var blackwater_crack_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/InteractZone
 @onready var blue_chimney_signal_opportunity: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity
 @onready var blue_chimney_reverse_draft: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ReverseDraftReturn
 @onready var blue_chimney_survey_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyHalo
 @onready var blue_chimney_survey_gem: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyGem
 @onready var blue_chimney_survey_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveySpark
+@onready var blackwater_crack_mouth: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/CrackMouth
+@onready var blackwater_pressure_wash: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/PressureDarkWash
+@onready var blackwater_seal_lip: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/SealLip
+@onready var blackwater_gate_badge: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateBadge
+@onready var blackwater_gate_label: Label = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateLabel
+@onready var blackwater_closed_shard: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/ClosedShard
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
 @onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
 @onready var sealed_shelf_hatch_lock_label: Label = $EastShelfSpur/SealedShelfHatch/LockLabel
@@ -207,6 +214,7 @@ var player_near_lower_connector_echo := false
 var player_near_resonance_alcove := false
 var player_near_blue_chimney := false
 var player_near_lantern_silt_nook := false
+var player_near_blackwater_crack := false
 var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
@@ -262,6 +270,8 @@ func _ready() -> void:
 	blue_chimney_interact_zone.body_exited.connect(_on_blue_chimney_body_exited)
 	lantern_silt_nook_interact_zone.body_entered.connect(_on_lantern_silt_nook_body_entered)
 	lantern_silt_nook_interact_zone.body_exited.connect(_on_lantern_silt_nook_body_exited)
+	blackwater_crack_interact_zone.body_entered.connect(_on_blackwater_crack_body_entered)
+	blackwater_crack_interact_zone.body_exited.connect(_on_blackwater_crack_body_exited)
 	pressure_boundary.body_entered.connect(_on_pressure_boundary_body_entered)
 	wreck_echo_clue_trigger.body_entered.connect(_on_wreck_echo_clue_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
@@ -319,7 +329,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 				status_label.text = "Surface view: upgrades."
 				_update_hud()
 		else:
-			if not _try_resonance_alcove_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
+			if not _try_resonance_alcove_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
 				_try_extract()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
 		_cycle_surface_tab(-1)
@@ -424,6 +434,7 @@ func _prepare_next_run() -> void:
 	player_near_resonance_alcove = false
 	player_near_blue_chimney = false
 	player_near_lantern_silt_nook = false
+	player_near_blackwater_crack = false
 	_reset_run_telemetry()
 	burst_thruster_cooldown_remaining = 0.0
 	decoy_pulse_used_this_run = false
@@ -512,6 +523,20 @@ func _on_lantern_silt_nook_body_exited(body: Node2D) -> void:
 		if is_inside_tree():
 			_update_hud()
 
+func _on_blackwater_crack_body_entered(body: Node2D) -> void:
+	if body == player:
+		player_near_blackwater_crack = true
+		if status_label != null:
+			status_label.text = _format_blackwater_gate_status()
+		if is_inside_tree():
+			_update_hud()
+
+func _on_blackwater_crack_body_exited(body: Node2D) -> void:
+	if body == player:
+		player_near_blackwater_crack = false
+		if is_inside_tree():
+			_update_hud()
+
 func _try_east_shelf_pocket_interaction() -> bool:
 	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_east_shelf_pocket:
 		return false
@@ -595,6 +620,16 @@ func _try_blue_chimney_interaction() -> bool:
 	_sync_blue_chimney_payoff_state()
 	if status_label != null:
 		status_label.text = "Blue Chimney survey core recovered. Return safely to keep the lower-route reading."
+	if is_inside_tree():
+		_update_hud()
+	return true
+
+func _try_blackwater_crack_interaction() -> bool:
+	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_blackwater_crack:
+		return false
+
+	if status_label != null:
+		status_label.text = _format_blackwater_gate_status()
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -1007,6 +1042,8 @@ func _format_hud_prompt() -> String:
 		prompt = "Expedition failed - press %s for next expedition" % _action_label("restart_dive")
 	elif player_near_resonance_alcove:
 		prompt = "Resonance Alcove: %s record hatch echo" % _action_label("interact")
+	elif player_near_blackwater_crack:
+		prompt = "Blackwater Crack: %s read Resonance seal" % _action_label("interact")
 	elif player_near_lantern_silt_nook:
 		prompt = "Lantern Silt Nook: %s collect silt sample" % _action_label("interact")
 	elif player_near_blue_chimney:
@@ -1107,8 +1144,10 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 		"echo_lens_wreck_echo":
 			_sync_wreck_echo_state()
 			_sync_sealed_shelf_hatch_state()
+			_sync_blackwater_crack_gate_state()
 		"resonance_key_1":
 			_sync_sealed_shelf_hatch_state()
+			_sync_blackwater_crack_gate_state()
 		"cargo_limit_4":
 			dive_session.cargo_limit = _current_cargo_limit()
 		"predator_warning_range_1":
@@ -1599,6 +1638,7 @@ func _sync_discovery_reveals() -> void:
 	_sync_predator_warning_upgrade_state()
 	_sync_wreck_echo_state()
 	_sync_sealed_shelf_hatch_state()
+	_sync_blackwater_crack_gate_state()
 	_sync_east_shelf_pocket_payoff_state()
 	_sync_blue_chimney_payoff_state()
 
@@ -1729,6 +1769,61 @@ func _sync_sealed_shelf_hatch_state() -> void:
 		lock_label.text = "ECHO LOCK"
 		if seal_bars != null:
 			seal_bars.color = Color(0.58, 0.82, 1.0, 0.34)
+
+func _blackwater_crack_gate_open() -> bool:
+	return progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)
+
+func _format_blackwater_gate_status() -> String:
+	if _blackwater_crack_gate_open():
+		return "Blackwater Crack: Resonance Key I reads a narrow sill beyond."
+	if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
+		return "Blackwater Crack sealed. Resonance Key I preparation needed."
+
+	return "Blackwater Crack sealed. Echo Lens study and Resonance Key I preparation needed."
+
+func _sync_blackwater_crack_gate_state() -> void:
+	var mouth := blackwater_crack_mouth
+	if mouth == null:
+		mouth = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/CrackMouth") as Polygon2D
+	var wash := blackwater_pressure_wash
+	if wash == null:
+		wash = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/PressureDarkWash") as Polygon2D
+	var seal_lip := blackwater_seal_lip
+	if seal_lip == null:
+		seal_lip = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/SealLip") as Polygon2D
+	var gate_badge := blackwater_gate_badge
+	if gate_badge == null:
+		gate_badge = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateBadge") as Polygon2D
+	var gate_label := blackwater_gate_label
+	if gate_label == null:
+		gate_label = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateLabel") as Label
+	var closed_shard := blackwater_closed_shard
+	if closed_shard == null:
+		closed_shard = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/ClosedShard") as Polygon2D
+	if mouth == null or wash == null or seal_lip == null or gate_badge == null or gate_label == null or closed_shard == null:
+		return
+
+	if _blackwater_crack_gate_open():
+		mouth.color = Color(0.006, 0.028, 0.06, 0.52)
+		wash.color = Color(0.12, 0.28, 0.42, 0.16)
+		seal_lip.color = Color(0.58, 0.9, 0.8, 0.22)
+		gate_badge.color = Color(0.62, 1.0, 0.82, 0.62)
+		gate_label.text = "KEY READY"
+		closed_shard.color = Color(0.54, 0.78, 0.92, 0.12)
+	elif progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
+		mouth.color = Color(0.002, 0.01, 0.026, 0.62)
+		wash.color = Color(0.08, 0.16, 0.32, 0.2)
+		seal_lip.color = Color(0.38, 0.58, 0.74, 0.28)
+		gate_badge.color = Color(0.62, 0.86, 1.0, 0.58)
+		gate_label.text = "KEY NEEDED"
+		closed_shard.color = Color(0.54, 0.78, 0.92, 0.3)
+	else:
+		mouth.color = Color(0.002, 0.01, 0.026, 0.64)
+		wash.color = Color(0.08, 0.16, 0.32, 0.2)
+		seal_lip.color = Color(0.38, 0.58, 0.74, 0.24)
+		gate_badge.color = Color(0.38, 0.58, 0.74, 0.5)
+		gate_label.text = "RESONANCE SEAL"
+		closed_shard.color = Color(0.54, 0.78, 0.92, 0.28)
 
 func _wreck_echo_route_available() -> bool:
 	return progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID) and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
