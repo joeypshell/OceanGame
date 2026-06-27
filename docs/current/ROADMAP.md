@@ -4,7 +4,9 @@ This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remai
 
 Current direction: build a 2D alien-ocean expedition game where every morning the ocean changes, the player dives for cargo and knowledge, and persistent discoveries plus upgrades unlock deeper remembered places.
 
-Active priority reset: `docs/planning/PROJECT_HEALTH_PIVOT_EXPANDED_DIVE_REGION_2026_06_26.md` supersedes the previous polish-heavy queue. The current slice is good enough to move forward as a foundation. The first expanded dive-region route sequence has now landed, so the next work should add more player-visible route decisions and progression promises rather than returning to broad first-screen polish.
+Active priority reset: `docs/planning/PLAYER_VISIBLE_MILESTONE_PIVOT_2026_06_27.md` supersedes micro-issue backlog replenishment for the next phase. The first expanded dive-region route sequence has landed structurally, but normal play still does not feel different enough. The next work must be organized around a small number of larger, player-visible milestone issues rather than separate metadata, guard, screenshot, and review tasks.
+
+Current active milestone: First Noticeably Larger Dive Map. Success means a normal five-minute play session visibly feels wider/deeper than the old column, includes a clear branch or cave-like destination, contains one worthwhile payoff, preserves return readability, and shows one deeper promise without needing debug tools.
 
 First expanded region layout: `docs/planning/FIRST_EXPANDED_DIVE_REGION_LAYOUT_2026_06_26.md` defines `East Shelf Spur` as the first wider side-route prototype. It should add a right-side midwater branch, `East Shelf Arch` landmark, cave/wreck-pocket entrance, one seeded daily opportunity, one upgrade-locked promise, and safe-return cues while preserving the current base column and existing loop.
 
@@ -44,6 +46,8 @@ Lantern Silt payoff contract: `docs/planning/LANTERN_SILT_SAMPLE_PAYOFF_CONTRACT
 
 Silt Vein Fork post-payoff review: `docs/planning/SILT_VEIN_FORK_READABILITY_OXYGEN_REVIEW_2026_06_27.md` keeps current oxygen tuning after the first fork/payoff pass. The fork can move forward as a small route-choice proof, but future work should strengthen local branch silhouettes, return cues, and sealed-branch readability before adding larger cave/region scope.
 
+Player-visible milestone pivot: `docs/planning/PLAYER_VISIBLE_MILESTONE_PIVOT_2026_06_27.md` defines the current process correction. Until the larger-map milestone is complete, avoid 20-issue batches and docs-only review churn. Each new issue should have a normal-play-visible outcome and may include its own metadata, copy, guards, and focused tests instead of splitting them into separate micro-issues.
+
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
 
 Detailed design rules live in:
@@ -69,6 +73,7 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_BLUE_CHIMNEY_PAYOFF_2026_06_27.md`
 - `docs/planning/LANTERN_SILT_SAMPLE_PAYOFF_CONTRACT_2026_06_27.md`
 - `docs/planning/SILT_VEIN_FORK_READABILITY_OXYGEN_REVIEW_2026_06_27.md`
+- `docs/planning/PLAYER_VISIBLE_MILESTONE_PIVOT_2026_06_27.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
