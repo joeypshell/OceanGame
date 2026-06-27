@@ -1797,6 +1797,9 @@ func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 	if progression_state.has_upgrade(upgrade.id):
 		return "State: Owned\n%s" % effect_summary
 
+	if upgrade.id == RESONANCE_KEY_UPGRADE_ID:
+		return _format_resonance_key_upgrade_state(effect_summary)
+
 	var missing_discovery := _upgrade_missing_discovery(upgrade)
 	if missing_discovery != "":
 		return "State: Locked by scan\nScan: %s\n%s" % [
@@ -1822,6 +1825,29 @@ func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 		effect_summary,
 	]
 
+func _format_resonance_key_upgrade_state(effect_summary: String) -> String:
+	var missing_upgrade := _upgrade_missing_upgrade(RESONANCE_KEY_UPGRADE)
+	if missing_upgrade != "":
+		return "State: Locked by upgrade\nInstall: %s\n%s" % [
+			_format_upgrade_display_name(missing_upgrade),
+			effect_summary,
+		]
+
+	var missing_discovery := _upgrade_missing_discovery(RESONANCE_KEY_UPGRADE)
+	if missing_discovery != "":
+		return "State: Needs route research\nRecover: East Shelf or Drop Echo\n%s" % effect_summary
+
+	if progression_state.can_afford(RESONANCE_KEY_UPGRADE.resource_cost):
+		return "State: Available now\n%s: buy\n%s" % [
+			_action_label("interact").replace("/", " or "),
+			effect_summary,
+		]
+
+	return "State: Missing resources\nNeeds: %s\n%s" % [
+		_format_missing_resources_inline(RESONANCE_KEY_UPGRADE.resource_cost),
+		effect_summary,
+	]
+
 func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
 	match upgrade.id:
 		OXYGEN_TANK_UPGRADE_ID:
@@ -1833,7 +1859,7 @@ func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
 		ECHO_LENS_UPGRADE_ID:
 			return "Role: broad wreck echoes, not a locator."
 		RESONANCE_KEY_UPGRADE_ID:
-			return "Effect: opens this hatch only."
+			return "Effect: opens East Shelf hatch only."
 		CARGO_RACK_UPGRADE_ID:
 			return "Effect: +1 cargo slot."
 		PREDATOR_WARNING_UPGRADE_ID:

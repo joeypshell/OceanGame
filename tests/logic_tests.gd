@@ -1360,6 +1360,36 @@ func _test_upgrade_bay_readability_states() -> void:
 	_expect(state.begins_with("State: Owned"), "upgrade bay should label Echo Lens I owned after purchase")
 	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I owned state should keep its compact role hint")
 
+	state = main._format_upgrade_state(ResonanceKeyUpgrade)
+	_expect(state.begins_with("State: Needs route research"), "Resonance Key I should ask for route research after Echo Lens I is owned")
+	_expect(state.contains("Recover: East Shelf or Drop Echo"), "Resonance Key I should name the broad route-research requirement")
+	_expect(state.contains("Effect: opens East Shelf hatch only."), "Resonance Key I should keep hatch-specific effect copy")
+	_expect_no_echo_lens_locator_language(state, "Resonance Key I route-research state")
+
+	main.progression_state.add_discovery("east_shelf_route_research", "East Shelf route research", "Route evidence.", "Plans a hatch key.")
+	main.progression_state.banked_resources = {
+		"glow_plankton": 1,
+		"shell_fragments": 1,
+	}
+	state = main._format_upgrade_state(ResonanceKeyUpgrade)
+	_expect(state.begins_with("State: Missing resources"), "Resonance Key I should show missing resources after prerequisites are met")
+	_expect(state.contains("Needs: Glow Plankton x1"), "Resonance Key I should show only missing glow plankton")
+	_expect_no_echo_lens_locator_language(state, "Resonance Key I missing-resource state")
+
+	main.progression_state.banked_resources = {
+		"glow_plankton": 2,
+		"shell_fragments": 1,
+	}
+	state = main._format_upgrade_state(ResonanceKeyUpgrade)
+	_expect(state.begins_with("State: Available now"), "Resonance Key I should become available after route context and resources")
+	_expect_no_echo_lens_locator_language(state, "Resonance Key I available state")
+
+	main.progression_state.purchase_upgrade(ResonanceKeyUpgrade.id, ResonanceKeyUpgrade.resource_cost)
+	state = main._format_upgrade_state(ResonanceKeyUpgrade)
+	_expect(state.begins_with("State: Owned"), "Resonance Key I should show owned state after purchase")
+	_expect(state.contains("Effect: opens East Shelf hatch only."), "Resonance Key I owned state should stay hatch-specific")
+	_expect_no_echo_lens_locator_language(state, "Resonance Key I owned state")
+
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
 	state = main._format_upgrade_state(DecoyPulseUpgrade)
 	_expect(state.begins_with("State: Locked by upgrade"), "upgrade bay should label upgrade-locked upgrades")
