@@ -32,7 +32,7 @@ A successful pass should let the player quickly distinguish:
 
 Area 01 Readability Rescue.
 
-This milestone temporarily takes priority over `Salvage Cutter 04` because adding another hazard or creature read to the salvage pocket would currently make the visual pileup worse.
+This milestone takes priority over `Salvage Cutter 04` because adding another hazard or creature read to the salvage pocket would currently make the visual pileup worse. Content expansion is paused until source-of-truth docs are reconciled and the current route is accepted as readable enough for another content step.
 
 ## Ordered Implementation Queue
 
@@ -41,7 +41,9 @@ This milestone temporarily takes priority over `Salvage Cutter 04` because addin
 3. Done in #626: reduce label noise by hiding redundant normal-play return labels and shortening local promise/place labels.
 4. Done in #627: clarify pickup/payoff language so resources, knowledge payoffs, locked routes, and return/timing support use distinct color/shape/opacity bands.
 5. Done in #628: add/update one deterministic visual capture record for the cleaned Wide Reef / salvage / Mirror Kelp cluster.
-6. Rechecked in #628: the salvage hazard issue can resume only if it stays visually distinct and improves the local decision without adding another bright reward/lock/label pile.
+6. Current source-of-truth cleanup: reconcile README, ROADMAP, GAMEPLAY, and current planning docs so they all name this milestone and the same next-work order.
+7. After cleanup, continue readability-only review or fixes if needed.
+8. Keep #622 paused until readability is explicitly accepted. If resumed, the salvage hazard issue can add only one light, visually distinct read that improves the local decision without adding another bright reward/lock/label pile.
 
 ## Guardrails
 

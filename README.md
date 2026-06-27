@@ -4,7 +4,7 @@ OceanGame is a 2D underwater roguelite prototype about short, seeded alien-ocean
 
 ## Current Prototype
 
-The current build is a Godot 4.7 side-view vertical dive slice. It includes a surface boat/lab, oxygen pressure, extraction and failure, seeded starter resource and predator-route placement, practical scanning, two upgrades, persistent prototype save data, a pressure-locked wreck opportunity, debug-gated telemetry, deterministic logic tests, and one route-control predator.
+The current build is a Godot 4.7 side-view expedition slice. It includes a surface boat/lab, oxygen pressure, extraction and failure, seeded resource and route variation, practical scanning, persistent prototype save data, several narrow upgrades, a growing authored Area 01 route, debug-gated telemetry, deterministic logic tests, and repeatable web/Playwright visual-smoke support.
 
 ## Controls
 
@@ -38,20 +38,19 @@ node .mcp/oceangame-context-server.mjs --self-test
 
 ## Current Milestone
 
-The active milestone is `Blind Validation Gate`: run the current prototype with unfamiliar players before adding more mechanics. `Signal Lens I`, `Cargo Rack I`, and `Burst Thruster` are planned candidates, but the next implementation choice should come from #37 validation evidence.
+The active milestone is `Area 01 Readability Rescue`. Content expansion is paused while the Hollow Reef / Wide Reef / Mirror Kelp / salvage-pocket cluster is made easier to read at normal play scale. The immediate order is source-of-truth cleanup first, then readability-only review or fixes if needed. `Salvage Cutter` content issues #622 and #623 stay paused until readability is explicitly accepted.
 
 ## Project Docs
 
 - `docs/current/ROADMAP.md`: active milestone, issue order, success gates, deferred scope.
 - `docs/current/GAMEPLAY.md`: implemented behavior.
 - `docs/current/TOOLING.md`: implemented tooling and MCP support.
-- `docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md`: current project-wide audit and next-decision summary.
-- `docs/planning/BLIND_VALIDATION_KIT.md`: facilitator kit for #37 unfamiliar-player validation.
+- `docs/current/PROJECT_INDEX.md`: index of active docs, planning anchors, and historical roadmap archive.
+- `docs/archive/ROADMAP_HISTORY_2026_06_27.md`: historical roadmap and issue-batch record from before roadmap compaction.
+- `docs/planning/AREA_01_READABILITY_RESCUE_2026_06_27.md`: active readability milestone plan.
+- `docs/planning/AREA_01_READABILITY_EVIDENCE_2026_06_27.md`: current readability evidence and next-work decision.
 - `docs/planning/GAME_VISION.md`: compact design anchor.
 - `docs/planning/CORE_LOOP_RULES.md`: core loop and system rules.
 - `docs/planning/DAILY_RUNS.md`: seeded expedition guidance.
 - `docs/planning/PROGRESSION_LADDER.md`: first progression steps.
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`: predator interaction direction.
-- `docs/planning/SCANNER_IMPROVEMENT_I.md`: `Signal Lens I` plan.
-- `docs/planning/CARGO_IMPROVEMENT_I.md`: `Cargo Rack I` plan.
-- `docs/planning/BURST_THRUSTER_MILESTONE.md`: future non-lethal active-tool plan.

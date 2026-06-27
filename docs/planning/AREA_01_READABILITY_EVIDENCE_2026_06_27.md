@@ -22,4 +22,4 @@ The cleaned Wide Reef / salvage / Mirror Kelp cluster is still prototype-abstrac
 
 ## Decision For Next Work
 
-Issue #622 can resume, but its hazard or timing read must stay light. It should add one readable decision under pressure without adding another bright reward, lock, label, or dense translucent pile. If the hazard cannot stay visually distinct in this capture state, stop and tune the existing cluster instead of adding more route content.
+This capture is pass-with-watchlist, but the latest project direction pauses content expansion. The next step is source-of-truth cleanup and any remaining readability-only review or fixes. Issue #622 should stay paused until readability is explicitly accepted. If it resumes later, its hazard or timing read must stay light and add one readable decision under pressure without adding another bright reward, lock, label, or dense translucent pile.
