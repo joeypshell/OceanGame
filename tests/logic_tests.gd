@@ -1717,6 +1717,14 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hollow_wide_far_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/ReturnRibbon") as Polygon2D
 	var hollow_wide_far_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/ReturnRib") as Polygon2D
 	var hollow_wide_far_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue/CueLabel") as Label
+	var mirror_kelp_pass := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass") as Node2D
+	var mirror_kelp_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/PassMouth") as Polygon2D
+	var mirror_kelp_water := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/ReflectiveBackwater") as Polygon2D
+	var mirror_kelp_curtain_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainA") as Polygon2D
+	var mirror_kelp_curtain_b := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainB") as Polygon2D
+	var mirror_kelp_floor := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/PassFloorShelf") as Polygon2D
+	var mirror_kelp_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/EntryReturnRibbon") as Polygon2D
+	var mirror_kelp_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/PassLabel") as Label
 	var hollow_deeper_promise := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise") as Node2D
 	var hollow_deeper_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth") as Polygon2D
 	var hollow_deeper_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PressureWash") as Polygon2D
@@ -2031,6 +2039,25 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_wide_chamber.get_script() == null, "Wide Reef Chamber should remain authored scene presentation for this pass")
 	_expect(hollow_wide_glass_rib_span.get_node_or_null("InteractZone") == null, "Glass Rib Span should not add an interaction hotspot")
 	_expect(hollow_wide_low_crown_shelf.get_node_or_null("InteractZone") == null, "Low Crown Shelf should not add an interaction hotspot")
+	_expect(mirror_kelp_pass.position.x > hollow_wide_far_turnback.position.x, "Mirror Kelp Pass should extend beyond the current wide-chamber far turnback")
+	_expect(mirror_kelp_pass.position.y >= -12.0 and mirror_kelp_pass.position.y <= 80.0, "Mirror Kelp Pass should branch locally from the current chamber band")
+	_expect(mirror_kelp_mouth.color.a >= 0.58, "Mirror Kelp Pass mouth should read as an intentional branch opening")
+	_expect(mirror_kelp_water.color.b >= mirror_kelp_water.color.r, "Mirror Kelp Pass water should use cool reflective branch language")
+	_expect(mirror_kelp_water.color.a <= 0.22, "Mirror Kelp Pass water should stay quieter than pickups and scan targets")
+	_expect(mirror_kelp_curtain_a.color.g > mirror_kelp_curtain_a.color.r and mirror_kelp_curtain_b.color.b > mirror_kelp_curtain_b.color.r, "Mirror Kelp Pass curtains should establish reflective kelp identity")
+	_expect(mirror_kelp_curtain_a.color.a <= 0.3 and mirror_kelp_curtain_b.color.a <= 0.26, "Mirror Kelp Pass curtains should not overpower the route")
+	_expect(mirror_kelp_floor.color.a <= 0.5, "Mirror Kelp Pass floor shelf should frame the branch without becoming a wall")
+	_expect(mirror_kelp_return.color.g > mirror_kelp_return.color.r, "Mirror Kelp Pass entry return ribbon should use safe-current color language")
+	_expect(mirror_kelp_return.polygon[1].x < mirror_kelp_return.polygon[0].x, "Mirror Kelp Pass entry return ribbon should point back left toward Wide Reef Chamber")
+	_expect(mirror_kelp_label.text == "MIRROR KELP PASS", "Mirror Kelp Pass should expose a stable prototype place name")
+	_expect_no_echo_lens_locator_language(mirror_kelp_label.text, "Mirror Kelp Pass label")
+	_expect(mirror_kelp_pass.get_node_or_null("InteractZone") == null, "Mirror Kelp Pass scaffold should not add an interaction hotspot yet")
+	_expect(mirror_kelp_pass.get_node_or_null("ResourcePickup") == null, "Mirror Kelp Pass scaffold should not add cargo or loot yet")
+	_expect(mirror_kelp_pass.get_node_or_null("Predator") == null, "Mirror Kelp Pass scaffold should not add combat pressure")
+	_expect(mirror_kelp_pass.get_node_or_null("PressureBoundary") == null, "Mirror Kelp Pass scaffold should not add hidden pressure behavior")
+	_expect(mirror_kelp_pass.get_node_or_null("MinimapMarker") == null, "Mirror Kelp Pass scaffold should not add minimap behavior")
+	_expect(mirror_kelp_pass.find_child("CollisionShape2D", true, false) == null, "Mirror Kelp Pass scaffold should not add collision or invisible walls")
+	_expect(mirror_kelp_pass.get_script() == null, "Mirror Kelp Pass should remain authored scene presentation for this issue")
 	_expect(hollow_deeper_promise.position.x > hollow_reef_reading_core.position.x, "Hollow Reef deeper promise should sit beyond the current cave reading payoff")
 	_expect(hollow_deeper_promise.position.y > hollow_reef_reading_core.position.y, "Hollow Reef deeper promise should imply lower future route growth")
 	_expect(hollow_deeper_mouth.color.a >= 0.62, "Hollow Reef deeper promise mouth should read as an intentional closed opening")
@@ -2103,6 +2130,7 @@ func _test_landmark_region_identity_metadata() -> void:
 		"HollowReef": "Hollow Reef",
 		"GlassRibSpan": "Wide Reef Chamber",
 		"LowCrownShelf": "Wide Reef Chamber",
+		"MirrorKelpPass": "Mirror Kelp Pass",
 		"ThermalVentField": "Thermal Vent Field",
 		"WreckShelf": "Wreck Shelf",
 		"PressureLockedWreck": "Wreck Shelf",
@@ -4305,17 +4333,19 @@ func _test_expanded_region_world_bounds() -> void:
 	_expect(player.world_bounds.end.x >= 2980.0, "expanded bounds should allow the first Dusk Trench continuation beyond Blackwater")
 	_expect(player.world_bounds.end.x >= 3180.0, "expanded bounds should allow the short Hollow Reef interior lane")
 	_expect(player.world_bounds.end.x >= 3820.0, "expanded bounds should allow the first wider chamber beyond Hollow Reef")
-	_expect(player.world_bounds.end.x <= 3860.0, "expanded bounds should stay tight around the first wider Hollow Reef chamber")
+	_expect(player.world_bounds.end.x >= 4300.0, "expanded bounds should allow the Mirror Kelp Pass branch beyond Wide Reef Chamber")
+	_expect(player.world_bounds.end.x <= 4340.0, "expanded bounds should stay tight around the first Mirror Kelp Pass branch")
 	_expect(player.world_bounds.end.y >= 2500.0, "expanded bounds should allow the first Silt Vein Fork scaffold below Blue Chimney")
 	_expect(player.world_bounds.end.y >= 2700.0, "expanded bounds should allow the short Blackwater Sill route")
 	_expect(player.world_bounds.end.y >= 3040.0, "expanded bounds should allow the first Dusk Trench continuation below Blackwater")
 	_expect(player.world_bounds.end.y >= 3160.0, "expanded bounds should allow the first wider Hollow Reef chamber")
-	_expect(player.world_bounds.end.y <= 3220.0, "expanded bounds should avoid implying a full lower biome")
+	_expect(player.world_bounds.end.y >= 3260.0, "expanded bounds should allow the Mirror Kelp Pass branch floor")
+	_expect(player.world_bounds.end.y <= 3300.0, "expanded bounds should avoid implying a full lower biome")
 
 	var clamped_high := player.clamp_position_to_world_bounds(Vector2(640.0, 0.0))
 	_expect(clamped_high.y >= player.world_bounds.position.y, "world clamp should prevent surfacing through the boat sprite")
 
-	var clamped_right := player.clamp_position_to_world_bounds(Vector2(3900.0, 900.0))
+	var clamped_right := player.clamp_position_to_world_bounds(Vector2(4500.0, 900.0))
 	_expect(is_equal_approx(clamped_right.x, player.world_bounds.end.x), "world clamp should stop at the expanded right edge")
 
 	var clamped_blue_chimney := player.clamp_position_to_world_bounds(Vector2(2112.0, 2190.0))
@@ -4340,6 +4370,9 @@ func _test_expanded_region_world_bounds() -> void:
 	var clamped_wide_reef_chamber := player.clamp_position_to_world_bounds(Vector2(3800.0, 3136.0))
 	_expect(is_equal_approx(clamped_wide_reef_chamber.x, 3800.0), "world clamp should keep the first wide Hollow Reef chamber horizontally playable")
 	_expect(is_equal_approx(clamped_wide_reef_chamber.y, 3136.0), "world clamp should keep the first wide Hollow Reef chamber vertically playable")
+	var clamped_mirror_kelp_pass := player.clamp_position_to_world_bounds(Vector2(4300.0, 3260.0))
+	_expect(is_equal_approx(clamped_mirror_kelp_pass.x, 4300.0), "world clamp should keep Mirror Kelp Pass horizontally playable")
+	_expect(is_equal_approx(clamped_mirror_kelp_pass.y, 3260.0), "world clamp should keep Mirror Kelp Pass vertically playable")
 
 	var clamped_left := player.clamp_position_to_world_bounds(Vector2(-80.0, 900.0))
 	_expect(is_equal_approx(clamped_left.x, player.world_bounds.position.x), "world clamp should preserve the left edge of the main column")
@@ -4347,10 +4380,10 @@ func _test_expanded_region_world_bounds() -> void:
 
 	var main_scene := MainScene.instantiate()
 	var camera := main_scene.get_node("Player/Camera2D") as Camera2D
-	_expect(camera.limit_right >= 3900, "camera limit should include the first wider Hollow Reef chamber")
-	_expect(camera.limit_bottom >= 3260, "camera limit should include the lower edge of the first wider Hollow Reef chamber")
-	_expect(camera.limit_right <= 3940, "camera limit should stay tight around the first wider Hollow Reef chamber")
-	_expect(camera.limit_bottom <= 3300, "camera limit should avoid implying a full lower biome")
+	_expect(camera.limit_right >= 4380, "camera limit should include Mirror Kelp Pass")
+	_expect(camera.limit_bottom >= 3340, "camera limit should include the lower edge of Mirror Kelp Pass")
+	_expect(camera.limit_right <= 4420, "camera limit should stay tight around Mirror Kelp Pass")
+	_expect(camera.limit_bottom <= 3380, "camera limit should avoid implying a full lower biome")
 	var sky := main_scene.get_node("Sky") as ColorRect
 	var ocean_shallows := main_scene.get_node("OceanShallows") as ColorRect
 	var ocean_midwater := main_scene.get_node("OceanMidwater") as ColorRect
@@ -4398,6 +4431,12 @@ func _test_expanded_region_base_direction() -> void:
 	_expect(wide_chamber_direction.contains("up-left"), "base direction should point up-left from the wide chamber")
 	_expect(wide_chamber_direction.contains("Hollow/Dusk/Blackwater"), "base direction should compactly name the wide chamber return route chain")
 	_expect(not wide_chamber_direction.contains("Silt/Blue"), "wide chamber base direction should avoid crowding the HUD with the full lower-route chain")
+
+	scene_player.global_position = Vector2(4300.0, 3260.0)
+	var mirror_kelp_direction: String = main.call("_format_base_direction")
+	_expect(mirror_kelp_direction.contains("up-left"), "base direction should point up-left from Mirror Kelp Pass")
+	_expect(mirror_kelp_direction.contains("Hollow/Dusk/Blackwater"), "Mirror Kelp Pass base direction should reuse the broad chamber return route chain")
+	_expect(not mirror_kelp_direction.contains("Silt/Blue"), "Mirror Kelp Pass base direction should avoid crowding the HUD with the full lower-route chain")
 
 	scene_player.global_position = main.start_position + Vector2(0.0, 500.0)
 	var vertical_direction: String = main.call("_format_base_direction")
@@ -4560,7 +4599,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	var clamped_lower_connector := player_bounds.clamp_position_to_world_bounds(Vector2(2124.0, 2450.0))
 	_expect(is_equal_approx(clamped_lower_connector.x, 2124.0), "lower connector bounds should keep the staged route horizontally playable")
 	_expect(is_equal_approx(clamped_lower_connector.y, 2450.0), "lower connector bounds should keep the Silt Vein Fork approach playable")
-	_expect(player_bounds.world_bounds.end.y <= 3220.0, "lower connector bounds should stay tight around the first Hollow Reef wide-chamber pass")
+	_expect(player_bounds.world_bounds.end.y <= 3300.0, "lower connector bounds should stay tight around the first Mirror Kelp Pass branch")
 	player_bounds.free()
 
 	var main := MainScene.instantiate()

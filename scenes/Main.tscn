@@ -246,6 +246,20 @@ It is not a pickup, scan target, pressure boundary, objective label, map marker,
 variable_hooks = "Future salvage, chamber payoff, or low-route creature placement can anchor near this lower chamber landmark."
 readability_priority = "Lower chamber memory while preserving the clear traversal band above it."
 
+[node name="MirrorKelpPass" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "mirror_kelp_pass"
+display_name = "Mirror Kelp Pass"
+stable_region_name = "Mirror Kelp Pass"
+kind = "side_branch"
+depth_band = "deep/chamber"
+role = "Second Area 01 branch off Wide Reef Chamber and the next route-breadth target."
+memory_goal = "Remember Mirror Kelp Pass as the reflective kelp branch beyond Wide Reef Chamber; returning from it means turning back through the chamber toward Hollow Reef and Dusk."
+persistent_facts = "Visible authored branch scaffold only.
+It is not a payoff, resource route, scan target, combat route, minimap marker, quest objective, procedural cave, or durable route state yet."
+variable_hooks = "Future Tideglass Sample, Mirrorfin route read, daily approach variation, cargo-vs-knowledge split, and deep-kelp promise can attach here."
+readability_priority = "New branch identity while keeping the Wide Reef Chamber return language readable."
+
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
 script = ExtResource("10_landmark_metadata")
 metadata_id = "thermal_vent_field"
@@ -311,26 +325,26 @@ related_upgrades = "predator_warning_1,decoy_pulse_1"
 readability_priority = "Danger before contact and route timing."
 
 [node name="Sky" type="ColorRect" parent="."]
-offset_right = 3900.0
+offset_right = 4380.0
 offset_bottom = 120.0
 color = Color(0.47, 0.78, 0.88, 1)
 
 [node name="OceanShallows" type="ColorRect" parent="."]
 offset_top = 120.0
-offset_right = 3900.0
+offset_right = 4380.0
 offset_bottom = 760.0
 color = Color(0.014, 0.31, 0.4, 1)
 
 [node name="OceanMidwater" type="ColorRect" parent="."]
 offset_top = 760.0
-offset_right = 3900.0
+offset_right = 4380.0
 offset_bottom = 1460.0
 color = Color(0.01, 0.16, 0.28, 1)
 
 [node name="OceanDeep" type="ColorRect" parent="."]
 offset_top = 1460.0
-offset_right = 3900.0
-offset_bottom = 3300.0
+offset_right = 4380.0
+offset_bottom = 3380.0
 color = Color(0.005, 0.048, 0.115, 1)
 
 [node name="ShallowMidwaterBackgroundStudy" type="Sprite2D" parent="."]
@@ -341,19 +355,19 @@ modulate = Color(1, 1, 1, 0.48)
 
 [node name="ShallowMidwaterTransition" type="ColorRect" parent="."]
 offset_top = 736.0
-offset_right = 3900.0
+offset_right = 4380.0
 offset_bottom = 790.0
 color = Color(0.58, 0.9, 0.92, 0.11)
 
 [node name="MidwaterDeepTransition" type="ColorRect" parent="."]
 offset_top = 1430.0
-offset_right = 3900.0
+offset_right = 4380.0
 offset_bottom = 1494.0
 color = Color(0.24, 0.42, 0.74, 0.14)
 
 [node name="SurfaceLine" type="ColorRect" parent="."]
 offset_top = 118.0
-offset_right = 3900.0
+offset_right = 4380.0
 offset_bottom = 124.0
 color = Color(0.74, 0.96, 1, 1)
 
@@ -1449,6 +1463,49 @@ offset_bottom = 84.0
 theme_override_font_sizes/font_size = 12
 text = "SALVAGE CLOSED"
 
+[node name="MirrorKelpPass" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+position = Vector2(760, 34)
+
+[node name="PassMouth" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.006, 0.028, 0.04, 0.62)
+polygon = PackedVector2Array(-112, -76, 28, -126, 178, -56, 210, 74, 56, 132, -132, 54)
+
+[node name="ReflectiveBackwater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.08, 0.36, 0.42, 0.2)
+polygon = PackedVector2Array(-84, -42, 66, -92, 184, -36, 176, 50, 42, 86, -98, 32)
+
+[node name="MirrorKelpCurtainA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.42, 0.94, 0.82, 0.28)
+polygon = PackedVector2Array(-42, -84, -22, -96, -8, -28, -20, 42, -44, 82, -56, 8)
+
+[node name="MirrorKelpCurtainB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.72, 0.96, 1, 0.24)
+polygon = PackedVector2Array(54, -104, 78, -86, 82, -18, 70, 58, 44, 104, 38, 22)
+
+[node name="MirrorKelpCurtainC" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.36, 0.82, 0.72, 0.22)
+polygon = PackedVector2Array(132, -62, 152, -48, 148, 18, 128, 80, 104, 106, 112, 36)
+
+[node name="PassFloorShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.018, 0.07, 0.064, 0.48)
+polygon = PackedVector2Array(-132, 62, 18, 104, 184, 74, 226, 116, 48, 170, -166, 104)
+
+[node name="PassCeilingRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.24, 0.52, 0.62, 0.28)
+polygon = PackedVector2Array(-108, -76, 28, -128, 178, -58, 150, -24, 24, -70, -98, -34)
+
+[node name="EntryReturnRibbon" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+color = Color(0.66, 1, 0.88, 0.12)
+polygon = PackedVector2Array(-18, 76, -150, 42, -296, 12, -276, -18, -126, 10, 18, 42)
+
+[node name="PassLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+offset_left = -96.0
+offset_top = -144.0
+offset_right = 166.0
+offset_bottom = -112.0
+theme_override_font_sizes/font_size = 12
+text = "MIRROR KELP PASS"
+
 [node name="DeeperReefPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 position = Vector2(218, 96)
 
@@ -1521,7 +1578,7 @@ polygon = PackedVector2Array(806, 1420, 974, 1420, 1038, 1760, 744, 1760)
 
 [node name="DeepPressureHaze" type="Polygon2D" parent="."]
 color = Color(0.28, 0.42, 0.8, 0.055)
-polygon = PackedVector2Array(0, 1460, 3900, 1460, 3900, 3300, 0, 3300)
+polygon = PackedVector2Array(0, 1460, 4380, 1460, 4380, 3380, 0, 3380)
 
 [node name="DeepRewardLure" type="Node2D" parent="."]
 visible = false
@@ -2596,8 +2653,8 @@ zoom = Vector2(0.9, 0.9)
 enabled = true
 limit_left = 0
 limit_top = 0
-limit_right = 3900
-limit_bottom = 3260
+limit_right = 4380
+limit_bottom = 3340
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

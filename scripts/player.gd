@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export var max_speed := 320.0
 @export var acceleration := 900.0
 @export var drag := 650.0
-@export var world_bounds := Rect2(Vector2(96.0, 245.0), Vector2(3744.0, 2935.0))
+@export var world_bounds := Rect2(Vector2(96.0, 245.0), Vector2(4204.0, 3015.0))
 
 var _movement_disrupt_timer := 0.0
 var _last_move_direction := Vector2.RIGHT
