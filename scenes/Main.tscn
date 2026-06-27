@@ -1378,6 +1378,7 @@ color = Color(0.82, 1, 0.92, 0.12)
 polygon = PackedVector2Array(-38, 22, -96, 2, -152, -8, -94, 26)
 
 [node name="CueLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/FarTurnbackCue"]
+visible = false
 offset_left = -122.0
 offset_top = 58.0
 offset_right = 82.0
@@ -1429,7 +1430,7 @@ offset_left = -48.0
 offset_top = 28.0
 offset_right = 70.0
 offset_bottom = 50.0
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 10
 text = "CUTTER NEEDED"
 
 [node name="DataCache" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
@@ -1456,12 +1457,12 @@ collision_mask = 1
 shape = SubResource("CircleShape2D_lower_connector_echo")
 
 [node name="PromiseLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
-offset_left = -66.0
+offset_left = -44.0
 offset_top = 58.0
-offset_right = 112.0
+offset_right = 88.0
 offset_bottom = 84.0
-theme_override_font_sizes/font_size = 12
-text = "SALVAGE CLOSED"
+theme_override_font_sizes/font_size = 10
+text = "SALVAGE"
 
 [node name="OpenedPocketLane" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
 visible = false
@@ -1484,6 +1485,7 @@ color = Color(0.66, 1, 0.86, 0.12)
 polygon = PackedVector2Array(58, 44, -24, 34, -106, 10, -92, -8, -4, 14, 76, 24)
 
 [node name="OpenLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
+visible = false
 offset_left = 30.0
 offset_top = 46.0
 offset_right = 182.0
@@ -1629,6 +1631,7 @@ color = Color(0.95, 1, 0.7, 0.12)
 polygon = PackedVector2Array(0, -54, 42, -30, 54, 0, 42, 30, 0, 54, -42, 30, -54, 0, -42, -30)
 
 [node name="ReturnLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+visible = false
 offset_left = -282.0
 offset_top = 80.0
 offset_right = -72.0
@@ -1641,8 +1644,8 @@ offset_left = -96.0
 offset_top = -144.0
 offset_right = 166.0
 offset_bottom = -112.0
-theme_override_font_sizes/font_size = 12
-text = "MIRROR KELP PASS"
+theme_override_font_sizes/font_size = 10
+text = "MIRROR KELP"
 
 [node name="DeepKelpSealPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
 position = Vector2(238, 116)
@@ -1664,12 +1667,12 @@ color = Color(0.84, 1, 0.92, 0.42)
 polygon = PackedVector2Array(12, -24, 26, -4, 52, 0, 26, 8, 12, 30, -2, 8, -28, 0, -2, -4)
 
 [node name="PromiseLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/DeepKelpSealPromise"]
-offset_left = -84.0
+offset_left = -52.0
 offset_top = 74.0
-offset_right = 128.0
+offset_right = 96.0
 offset_bottom = 104.0
-theme_override_font_sizes/font_size = 11
-text = "DEEP KELP SEALED"
+theme_override_font_sizes/font_size = 9
+text = "KELP SEALED"
 
 [node name="DeeperReefPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 position = Vector2(218, 96)
@@ -1691,12 +1694,12 @@ color = Color(0.82, 0.96, 1, 0.46)
 polygon = PackedVector2Array(10, -18, 20, -4, 38, 0, 20, 6, 10, 22, 0, 6, -18, 0, 0, -4)
 
 [node name="PromiseLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise"]
-offset_left = -70.0
+offset_left = -58.0
 offset_top = 70.0
 offset_right = 92.0
 offset_bottom = 96.0
-theme_override_font_sizes/font_size = 12
-text = "DEEP REEF CLOSED"
+theme_override_font_sizes/font_size = 9
+text = "DEEP CLOSED"
 
 [node name="CaveReadingCore" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 position = Vector2(74, -18)

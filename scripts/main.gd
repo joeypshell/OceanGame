@@ -2867,8 +2867,9 @@ func _sync_salvage_pocket_open_state() -> void:
 		glint.color = Color(1.0, 0.84, 0.46, 0.64) if cutter_owned else Color(0.95, 0.86, 0.58, 0.48)
 	if tool_label != null:
 		tool_label.text = "CUTTER READY" if cutter_owned else "CUTTER NEEDED"
+		tool_label.visible = not cutter_owned
 	if promise_label != null:
-		promise_label.text = "SALVAGE OPEN" if cutter_owned else "SALVAGE CLOSED"
+		promise_label.text = "OPEN" if cutter_owned else "SALVAGE"
 	_sync_salvage_manifest_state()
 
 func _sync_tideglass_sample_state() -> void:
