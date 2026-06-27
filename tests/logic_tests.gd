@@ -2120,10 +2120,25 @@ func _test_sealed_shelf_hatch_promise_state() -> void:
 	_expect(lock_badge.color != locked_badge_color, "Sealed Shelf Hatch badge should visually react to Echo Lens I ownership")
 
 	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+	main.dive_session.reset(30.0)
+	main.dive_session.start()
+	main.dive_session.oxygen = 18.0
+	main.dive_session.current_cargo = ["glow_plankton"]
+	main.run_east_shelf_pocket_ping_recovered = true
+	main.run_lower_connector_echo_recovered = true
 	main.call("_sync_sealed_shelf_hatch_state")
 	_expect(lock_label.text == "OPEN", "Sealed Shelf Hatch should visibly open after Resonance Key I")
 	_expect(lock_badge.color != locked_badge_color, "open Sealed Shelf Hatch badge should stay visually distinct from the locked state")
 	_expect(seal_bars.color.a < locked_bars_alpha, "open Sealed Shelf Hatch should soften the seal bars without adding an interior")
+	_expect(main.get_node_or_null("EastShelfSpur/SealedShelfHatch/Interior") == null, "open hatch should not add a broad interior system")
+	_expect(is_equal_approx(main.dive_session.oxygen, 18.0), "open hatch sync should not change oxygen")
+	_expect(main.dive_session.current_cargo == ["glow_plankton"], "open hatch sync should not change carried cargo")
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "open hatch sync should not change dive state")
+	var saved_after_open: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved_after_open.has("quest"), "open hatch should not add durable quest state")
+	_expect(not saved_after_open.has("map"), "open hatch should not add durable map state")
+	_expect(not saved_after_open.has("objective"), "open hatch should not add durable objective state")
+	_expect(not saved_after_open.has("sealed_shelf_hatch_open"), "open hatch should be derived from Resonance Key ownership, not separate hatch save state")
 	main.queue_free()
 
 	var copy_main := MainScript.new()
@@ -2134,9 +2149,7 @@ func _test_sealed_shelf_hatch_promise_state() -> void:
 	var readiness_copy := copy_main._format_sealed_shelf_hatch_readiness_callout()
 	_expect(readiness_copy.contains("Sealed Shelf Hatch"), "sealed hatch readiness copy should name the hatch promise")
 	_expect(readiness_copy.contains("Resonance Key"), "sealed hatch readiness copy should point to the future key promise")
-	_expect(not readiness_copy.to_lower().contains("map"), "sealed hatch readiness copy should not imply map UI")
-	_expect(not readiness_copy.to_lower().contains("quest"), "sealed hatch readiness copy should not imply quest UI")
-	_expect(not readiness_copy.to_lower().contains("checklist"), "sealed hatch readiness copy should not imply checklist UI")
+	_expect_no_echo_lens_locator_language(readiness_copy, "sealed hatch readiness copy")
 
 	var empty_cargo: Array[String] = []
 	var extraction_summary := copy_main._format_extraction_result_summary(0, empty_cargo)
