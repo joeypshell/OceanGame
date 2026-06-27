@@ -16,6 +16,8 @@ Sealed Shelf Hatch promise: `docs/planning/SEALED_SHELF_HATCH_UPGRADE_PROMISE_20
 
 Expanded-route oxygen margin review: `docs/planning/EXPANDED_ROUTE_OXYGEN_MARGIN_REVIEW_2026_06_26.md` keeps current oxygen tuning after the East Shelf and Shelf Drop payoffs. The branch should create optional return pressure, not immediate numeric retuning. Reopen only with evidence that clean East Shelf/Shelf Drop routes fail unfairly or that low/critical feedback arrives too late.
 
+No-minimap orientation guardrails: `docs/planning/NO_MINIMAP_ORIENTATION_GUARDRAILS_2026_06_26.md` defines how larger side-view routes should stay readable before a minimap exists. Future route growth should use broad base-direction copy, named landmarks, depth-band identity, return-current cues, turnback points, result memory, and targeted screenshots rather than exact locators, quest checklists, route graphs, or field-guide objective systems.
+
 Expanded-region status review: `docs/planning/EXPANDED_REGION_PROTOTYPE_STATUS_2026_06_26.md` records what landed, what is still only a spatial promise, and what should come next. The next batch should prioritize a minimal pocket interaction, route payoff, branch risk/timing choice, and result memory.
 
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
@@ -30,6 +32,7 @@ Detailed design rules live in:
 - `docs/planning/HYBRID_OCEAN_MODEL.md`
 - `docs/planning/GAME_VISION.md`
 - `docs/planning/FUTURE_EXPANSIVE_DIVE_LEVELS_2026_06_26.md`
+- `docs/planning/NO_MINIMAP_ORIENTATION_GUARDRAILS_2026_06_26.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`

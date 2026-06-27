@@ -92,6 +92,7 @@ func _initialize() -> void:
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
 	_run("expanded region base direction", _test_expanded_region_base_direction)
+	_run("no-minimap orientation guardrails", _test_no_minimap_orientation_guardrails)
 	_run("expanded region reset state ownership", _test_expanded_region_reset_state_ownership)
 	_run("lower connector reset and bounds coverage", _test_lower_connector_reset_and_bounds_coverage)
 	_run("East Shelf pocket prompt interaction", _test_east_shelf_pocket_prompt_interaction)
@@ -1848,6 +1849,36 @@ func _test_expanded_region_base_direction() -> void:
 
 	scene_player.global_position = main.start_position
 	_expect(main.call("_format_base_direction") == "Base: here", "base direction should still read here at the surface base")
+	main.queue_free()
+
+func _test_no_minimap_orientation_guardrails() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var scene_player := main.get_node("Player") as CharacterBody2D
+	main.player = scene_player
+
+	scene_player.global_position = main.start_position + Vector2(860.0, 640.0)
+	var east_shelf_direction: String = main.call("_format_base_direction")
+	_expect(east_shelf_direction.contains("up-left"), "East Shelf orientation should use broad return direction")
+	_expect_no_echo_lens_locator_language(east_shelf_direction, "East Shelf base direction")
+
+	scene_player.global_position = Vector2(2124.0, 2024.0)
+	var shelf_drop_direction: String = main.call("_format_base_direction")
+	_expect(shelf_drop_direction.contains("up-left"), "Shelf Drop orientation should use broad return direction")
+	_expect_no_echo_lens_locator_language(shelf_drop_direction, "Shelf Drop base direction")
+
+	main.run_east_shelf_pocket_ping_recovered = true
+	main.run_lower_connector_echo_recovered = true
+	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	var orientation_memory := "%s%s%s" % [
+		main.call("_format_east_shelf_pocket_research_callout"),
+		main.call("_format_lower_connector_echo_research_callout"),
+		main.call("_format_sealed_shelf_hatch_readiness_callout"),
+	]
+	_expect(orientation_memory.contains("East Shelf"), "orientation memory should name the learned side route")
+	_expect(orientation_memory.contains("Shelf Drop Connector"), "orientation memory should name the lower connector")
+	_expect(orientation_memory.contains("Sealed Shelf Hatch"), "orientation memory should name the upgrade-locked promise")
+	_expect_no_echo_lens_locator_language(orientation_memory, "larger side-view route result memory")
 	main.queue_free()
 
 func _test_expanded_region_reset_state_ownership() -> void:
