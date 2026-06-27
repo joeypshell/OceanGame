@@ -3266,6 +3266,8 @@ func _format_condition_briefing() -> String:
 func _format_route_choice_callout() -> String:
 	if run_hollow_reef_reading_recovered:
 		return "Route choice: lower-route research push reached Hollow Reef."
+	if _run_has_hollow_reef_observation():
+		return "Route choice: observed Hollow Reef upper-shelf timing."
 	if run_reached_dusk_trench:
 		return "Route choice: lower-route research push reached Dusk Trench."
 	if run_blackwater_trace_recovered:
@@ -3300,7 +3302,7 @@ func _format_route_choice_callout() -> String:
 	return "Route choice: banked a cautious resource run."
 
 func _format_recent_route_memory() -> String:
-	if run_hollow_reef_reading_recovered:
+	if run_hollow_reef_reading_recovered or _run_has_hollow_reef_observation():
 		return "Hollow Reef"
 	if run_reached_dusk_trench:
 		return "Dusk Trench"
@@ -3410,6 +3412,8 @@ func _format_sealed_shelf_hatch_readiness_callout() -> String:
 func _format_region_memory_callout() -> String:
 	if run_hollow_reef_reading_recovered:
 		return "Remembered place: Hollow Reef - side-cave branch off Dusk; return through Blackwater."
+	if _run_has_hollow_reef_observation():
+		return "Remembered place: Hollow Reef - upper-shelf timing, return through Blackwater."
 	if run_reached_dusk_trench:
 		return "Remembered place: Dusk Trench - return up-left through Blackwater and Silt Vein to Blue Chimney."
 	if run_completed_scans.has("lantern_ray"):
@@ -3440,6 +3444,9 @@ func _format_discovery_memory_callout() -> String:
 		return "\nDiscovery remembered: Shell Reef Shelf - safer midwater banking route marked."
 
 	return ""
+
+func _run_has_hollow_reef_observation() -> bool:
+	return run_completed_scans.has("hollow_reef_skitter")
 
 func _format_scan_ids(scan_ids: Array[String]) -> String:
 	if scan_ids.is_empty():

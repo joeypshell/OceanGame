@@ -2107,6 +2107,23 @@ func _test_region_memory_result_callout() -> void:
 	_expect(not hollow_memory.contains("Lantern Ray Route"), "Hollow Reef memory should not be crowded out by creature observation")
 	_expect(hollow_memory.contains("Blackwater"), "Hollow Reef memory should preserve broad return-chain language")
 	_expect_no_echo_lens_locator_language(hollow_memory, "Hollow Reef remembered place")
+
+	main.run_hollow_reef_reading_recovered = false
+	main.run_reached_dusk_trench = false
+	main.run_completed_scans = ["hollow_reef_skitter"]
+	var hollow_observation_memory := main._format_region_memory_callout()
+	_expect(hollow_observation_memory.contains("Hollow Reef"), "Hollow Reef Skitter scan should remember the side-cave place")
+	_expect(hollow_observation_memory.contains("upper-shelf timing"), "Hollow Reef Skitter memory should say what was learned compactly")
+	_expect(hollow_observation_memory.contains("Blackwater"), "Hollow Reef Skitter memory should preserve broad return-route language")
+	_expect(not hollow_observation_memory.contains("Lantern Ray Route"), "Hollow Reef Skitter memory should not reuse Lantern Ray route language")
+	_expect(not hollow_observation_memory.to_lower().contains("checklist"), "Hollow Reef Skitter memory should not imply checklist UI")
+	_expect(not hollow_observation_memory.to_lower().contains("field guide"), "Hollow Reef Skitter memory should not imply field-guide UI")
+	_expect_no_echo_lens_locator_language(hollow_observation_memory, "Hollow Reef Skitter remembered place")
+
+	main.run_reached_dusk_trench = true
+	var hollow_observation_over_dusk := main._format_region_memory_callout()
+	_expect(hollow_observation_over_dusk.contains("Hollow Reef"), "Hollow Reef observation should take priority over generic Dusk reach memory")
+	_expect(not hollow_observation_over_dusk.contains("Dusk Trench -"), "Hollow Reef observation should not collapse back to generic Dusk memory")
 	main.free()
 
 func _test_discovery_memory_result_callout() -> void:
@@ -2196,6 +2213,25 @@ func _test_route_choice_result_callout() -> void:
 	_expect(hollow_summary.contains("Route choice: lower-route research push reached Hollow Reef."), "Hollow Reef extraction summary should include the highest route-choice evidence")
 	main.run_hollow_reef_reading_recovered = false
 	main.run_reached_dusk_trench = false
+
+	main.run_completed_scans = ["hollow_reef_skitter"]
+	var save_before_hollow_observation: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var hollow_observation_route_choice := main._format_route_choice_callout()
+	_expect(hollow_observation_route_choice.contains("Hollow Reef"), "Hollow Reef Skitter scan should produce route-choice memory")
+	_expect(hollow_observation_route_choice.contains("upper-shelf timing"), "Hollow Reef Skitter route-choice memory should name the compact lesson")
+	_expect(not hollow_observation_route_choice.contains("Dusk Trench"), "Hollow Reef Skitter route choice should be more specific than generic Dusk reach")
+	_expect(not hollow_observation_route_choice.to_lower().contains("checklist"), "Hollow Reef Skitter route choice should not imply checklist UI")
+	_expect_no_echo_lens_locator_language(hollow_observation_route_choice, "Hollow Reef Skitter route choice")
+	var hollow_observation_summary := main._format_extraction_result_summary(0, empty_cargo)
+	_expect(hollow_observation_summary.contains("Remembered place: Hollow Reef"), "Hollow Reef Skitter extraction summary should remember the side-cave place")
+	_expect(hollow_observation_summary.contains("Route choice: observed Hollow Reef upper-shelf timing."), "Hollow Reef Skitter extraction summary should include one compact route-choice line")
+	_expect(hollow_observation_summary.find("Route choice:") == hollow_observation_summary.rfind("Route choice:"), "Hollow Reef Skitter extraction summary should not duplicate route-choice lines")
+	var save_after_hollow_observation: Dictionary = main.progression_state.to_save_data()
+	_expect(save_after_hollow_observation == save_before_hollow_observation, "Hollow Reef route memory formatting should not mutate durable progression")
+	_expect(not save_after_hollow_observation.has("hollow_reef_route"), "Hollow Reef route memory should not create durable route state")
+	_expect(not save_after_hollow_observation.has("recent_route_memory"), "Hollow Reef route memory should not create durable recent-route state")
+	_expect(not save_after_hollow_observation.has("route_graph"), "Hollow Reef route memory should not create route graph state")
+	main.run_completed_scans = []
 
 	main.run_blackwater_trace_recovered = false
 	main.run_predator_contacts = 0
@@ -3173,6 +3209,31 @@ func _test_recent_expedition_log() -> void:
 	_expect(not log_text.contains("route Lantern Ray"), "Hollow Reef recent route memory should take priority over creature observation")
 	_expect_no_echo_lens_locator_language(log_text, "Hollow Reef recent expedition log")
 	_expect(main._latest_recent_route_memory() == "Hollow Reef", "latest route helper should expose Hollow Reef for the next ready panel")
+
+	main.recent_expedition_log.clear()
+	main.progression_state.current_run_number = 12
+	main.progression_state.current_run_seed = 2012
+	main.progression_state.best_depth_reached = 316.0
+	main.run_completed_scans = ["hollow_reef_skitter"]
+	main.run_collected_resources = []
+	main.run_predator_contacts = 0
+	main.run_blue_chimney_draft_reading_recovered = false
+	main.run_blackwater_trace_recovered = false
+	main.run_reached_dusk_trench = false
+	main.run_hollow_reef_reading_recovered = false
+	var save_before_recent_hollow: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	main._record_recent_expedition("Extracted", 0)
+	log_text = main._format_recent_expedition_log()
+	_expect(log_text.contains("#12 Extracted"), "recent expedition log should include Hollow Reef Skitter observation runs")
+	_expect(log_text.contains("route Hollow Reef"), "Hollow Reef Skitter observation should produce compact Hollow Reef recent route memory")
+	_expect(log_text.contains("scans Hollow Reef Skitter"), "Hollow Reef Skitter scan should appear with readable scan name")
+	_expect(not log_text.contains("seed"), "Hollow Reef recent log should hide raw seed without debug telemetry")
+	_expect(not log_text.to_lower().contains("checklist"), "Hollow Reef recent log should not imply checklist UI")
+	_expect(not log_text.to_lower().contains("field guide"), "Hollow Reef recent log should not imply field-guide UI")
+	_expect_no_echo_lens_locator_language(log_text, "Hollow Reef Skitter recent expedition log")
+	_expect(main._latest_recent_route_memory() == "Hollow Reef", "latest route helper should expose Hollow Reef after a Skitter observation")
+	_expect(main.progression_state.to_save_data() == save_before_recent_hollow, "Hollow Reef recent route memory should remain session-only")
+	_expect(not main.progression_state.to_save_data().has("hollow_reef_route"), "recent Hollow Reef memory should not create durable route state")
 	main.free()
 
 func _test_thermal_vent_scan_clue_text() -> void:
