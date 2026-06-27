@@ -2033,6 +2033,10 @@ func _test_expanded_region_world_bounds() -> void:
 	var clamped_right := player.clamp_position_to_world_bounds(Vector2(2600.0, 900.0))
 	_expect(is_equal_approx(clamped_right.x, player.world_bounds.end.x), "world clamp should stop at the expanded right edge")
 
+	var clamped_blue_chimney := player.clamp_position_to_world_bounds(Vector2(2112.0, 2190.0))
+	_expect(is_equal_approx(clamped_blue_chimney.x, 2112.0), "world clamp should keep Blue Chimney Pocket horizontally playable")
+	_expect(is_equal_approx(clamped_blue_chimney.y, 2190.0), "world clamp should keep Blue Chimney Pocket vertically playable")
+
 	var clamped_left := player.clamp_position_to_world_bounds(Vector2(-80.0, 900.0))
 	_expect(is_equal_approx(clamped_left.x, player.world_bounds.position.x), "world clamp should preserve the left edge of the main column")
 	player.free()
@@ -2070,6 +2074,11 @@ func _test_no_minimap_orientation_guardrails() -> void:
 	_expect(shelf_drop_direction.contains("up-left"), "Shelf Drop orientation should use broad return direction")
 	_expect_no_echo_lens_locator_language(shelf_drop_direction, "Shelf Drop base direction")
 
+	scene_player.global_position = Vector2(2112.0, 2190.0)
+	var blue_chimney_direction: String = main.call("_format_base_direction")
+	_expect(blue_chimney_direction.contains("up-left"), "Blue Chimney orientation should use broad return direction")
+	_expect_no_echo_lens_locator_language(blue_chimney_direction, "Blue Chimney base direction")
+
 	main.run_east_shelf_pocket_ping_recovered = true
 	main.run_lower_connector_echo_recovered = true
 	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
@@ -2082,6 +2091,16 @@ func _test_no_minimap_orientation_guardrails() -> void:
 	_expect(orientation_memory.contains("Shelf Drop Connector"), "orientation memory should name the lower connector")
 	_expect(orientation_memory.contains("Sealed Shelf Hatch"), "orientation memory should name the upgrade-locked promise")
 	_expect_no_echo_lens_locator_language(orientation_memory, "larger side-view route result memory")
+
+	var blue_chimney_landmark := main.get_node("LandmarkMetadata/BlueChimney")
+	var blue_chimney_memory := "%s %s %s" % [
+		String(blue_chimney_landmark.get("display_name")),
+		String(blue_chimney_landmark.get("stable_region_name")),
+		String(blue_chimney_landmark.get("memory_goal")),
+	]
+	_expect(blue_chimney_memory.contains("Blue Chimney"), "Blue Chimney metadata should provide broad place memory")
+	_expect(blue_chimney_memory.contains("up-left"), "Blue Chimney metadata should preserve broad return orientation")
+	_expect_no_echo_lens_locator_language(blue_chimney_memory, "Blue Chimney metadata")
 	main.queue_free()
 
 func _test_expanded_region_reset_state_ownership() -> void:
@@ -2149,10 +2168,12 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.player_near_resonance_alcove = true
 	main.run_lower_connector_echo_recovered = true
 	main.run_resonance_alcove_research_recovered = true
+	main.blue_chimney_draft_timer = 1.7
 	main.visual_smoke_route_stage = "lower_connector"
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_lower_connector_echo_recovered, "run telemetry reset should clear Drop Echo research state")
 	_expect(not main.run_resonance_alcove_research_recovered, "run telemetry reset should clear Resonance Alcove research state")
+	_expect(is_equal_approx(main.blue_chimney_draft_timer, 0.0), "run telemetry reset should clear Blue Chimney visual timing state")
 	_expect(main.visual_smoke_route_stage == "", "run telemetry reset should clear lower-connector visual route stage")
 
 	main.player_near_lower_connector_echo = true
@@ -2164,6 +2185,8 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_resonance_alcove_research_recovered, "new expeditions should not carry Resonance Alcove research state")
 	_expect(not main.progression_state.to_save_data().has("lower_connector_echo"), "Drop Echo should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("resonance_alcove_research"), "Resonance Alcove research should not be stored in durable progression")
+	_expect(not main.progression_state.to_save_data().has("blue_chimney"), "Blue Chimney should not create durable route state")
+	_expect(not main.progression_state.to_save_data().has("blue_chimney_signal"), "Blue Chimney signal should not be stored in durable progression")
 	main.queue_free()
 
 func _test_east_shelf_pocket_prompt_interaction() -> void:

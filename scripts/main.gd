@@ -2166,6 +2166,7 @@ func _reset_run_telemetry() -> void:
 	debug_wreck_echo_review_staged = false
 	visual_smoke_route_stage = ""
 	echo_lens_pulse_timer = 0.0
+	blue_chimney_draft_timer = 0.0
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
 
