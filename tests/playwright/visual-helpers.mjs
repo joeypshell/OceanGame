@@ -134,6 +134,18 @@ export async function stageBlueChimneyPocket(page) {
   });
 }
 
+export async function stageBlueChimneyPayoff(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "blue_chimney_payoff";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "blue_chimney_payoff",
+    blue_chimney_draft_reading_recovered: true,
+  });
+}
+
 export async function stageOpenHatchResonanceAlcove(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "open_hatch_resonance_alcove";

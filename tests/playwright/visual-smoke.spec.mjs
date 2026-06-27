@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlueChimneyPocket, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageEastShelfPocketPing, stageExpandedRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -129,6 +129,18 @@ test.describe("OceanGame web visual smoke", () => {
       debug_telemetry: false,
       active_stats_visible: true,
       route_stage: "blue_chimney_pocket",
+    });
+  });
+
+  test("captures the staged Blue Chimney draft payoff view", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageBlueChimneyPayoff(page);
+    await capture(page, testInfo, "blue-chimney-payoff-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "blue_chimney_payoff",
+      blue_chimney_draft_reading_recovered: true,
     });
   });
 

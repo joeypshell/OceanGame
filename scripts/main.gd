@@ -808,6 +808,17 @@ func _stage_debug_blue_chimney_pocket_visual_review() -> void:
 	_update_depth()
 	_update_hud()
 
+func _stage_debug_blue_chimney_payoff_visual_review() -> void:
+	_stage_debug_blue_chimney_pocket_visual_review()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	player_near_blue_chimney = true
+	_try_blue_chimney_interaction()
+	visual_smoke_route_stage = "blue_chimney_payoff"
+	status_label.text = "Debug review: Blue Chimney draft payoff staged."
+	_update_hud()
+
 func _stage_debug_open_hatch_alcove_visual_review() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -866,6 +877,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_lower_connector_visual_review()
 		"blue_chimney_pocket":
 			_stage_debug_blue_chimney_pocket_visual_review()
+		"blue_chimney_payoff":
+			_stage_debug_blue_chimney_payoff_visual_review()
 		"open_hatch_resonance_alcove":
 			_stage_debug_open_hatch_alcove_visual_review()
 
