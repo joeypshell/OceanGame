@@ -834,6 +834,7 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var data_cache_core := salvage.get_node("DataCache/CacheCore") as Polygon2D
 	var interact_zone := salvage.get_node("InteractZone") as Area2D
 	var promise_label := salvage.get_node("PromiseLabel") as Label
+	var salvage_shell_candidate := main.get_node("StarterResourceCandidates/ShellFragments/SalvagePocketA") as SpawnPoint
 	var future_choice_shadow := chamber.get_node("FutureChoiceShadow") as Polygon2D
 	var return_current := chamber.get_node("ReturnCurrentBackToHollow") as Polygon2D
 	var swarm := chamber.get_node("GlassfinSwarm") as Area2D
@@ -853,6 +854,13 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(salvage_glint.color.a <= 0.5, "salvage glint should stay a subtle promise, not a collectable reward")
 	_expect(data_cache.position.x >= -10.0 and data_cache.position.x <= 40.0, "salvage data cache should sit inside the sealed pocket mouth")
 	_expect(data_cache_core.color.a >= 0.7, "salvage data cache should start visibly recoverable")
+	_expect(salvage_shell_candidate.target_id == "shell_fragments", "salvage pocket cargo choice should use existing Shell Fragments")
+	_expect(salvage_shell_candidate.depth_band == "midwater", "salvage pocket cargo choice should preserve existing shell depth identity")
+	_expect(salvage_shell_candidate.cluster_pattern == "deep_reward", "salvage pocket cargo choice should stay optional in the deep-reward resource pool")
+	_expect(salvage_shell_candidate.global_position.distance_to(data_cache.global_position) >= 120.0, "salvage pocket cargo and knowledge targets should not stack on each other")
+	_expect(salvage_shell_candidate.global_position.y > data_cache.global_position.y, "salvage pocket cargo should sit below the cache so the choice reads as two branches")
+	_expect(salvage_shell_candidate.global_position.distance_to(salvage.global_position) <= 180.0, "salvage pocket cargo should stay near the sealed pocket decision")
+	_expect(salvage_shell_candidate.global_position.distance_to(chamber.global_position + return_current.polygon[0]) >= 90.0, "salvage pocket cargo should not block the visible return-current entry")
 	_expect(interact_zone.collision_layer == 0 and interact_zone.collision_mask == 1, "salvage interact zone should be an explicit player trigger, not route collision")
 	_expect(promise_label.text == "SALVAGE SEALED", "salvage promise label should be compact and honest about current implementation")
 	_expect(not promise_label.text.to_lower().contains("objective"), "salvage promise label should not imply objective checklist language")
@@ -862,6 +870,7 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(salvage.find_child("LootTable", true, false) == null, "salvage promise should not add a loot table")
 	_expect(salvage.find_child("HarvestArea", true, false) == null, "salvage promise should not add harvesting")
 	_expect(salvage.find_child("HealthBar", true, false) == null, "salvage promise should not add combat UI")
+	_expect(main.get_node_or_null("ResourcePickups/SalvageShellFragments") == null, "salvage cargo choice should not add an extra active resource pickup")
 	_expect(main.progression_state.to_save_data() == save_before, "salvage promise should not mutate progression")
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "salvage promise should not drain oxygen")
 	_expect(main.dive_session.current_cargo == cargo_before, "salvage promise should not mutate cargo")
