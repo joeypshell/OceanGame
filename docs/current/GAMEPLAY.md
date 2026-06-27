@@ -4,7 +4,7 @@ This file describes implemented behavior. If gameplay, controls, runtime, deploy
 
 Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 
-Current planning posture: Hollow Reef Side Cave is complete as pass with watchlist. The next active batch is Lower-Route Expedition Goals, which should make Blackwater, Dusk Trench, and Hollow Reef feel like a coherent player-visible route chain before adding more cave geometry. See `docs/planning/HOLLOW_REEF_SIDE_CAVE_VALIDATION_2026_06_27.md`.
+Current planning posture: Lower-Route Expedition Goals is complete as pass with watchlist. The next active milestone is Hollow Reef Interior And Wide Chamber, which should make the lower route feel larger in normal play before deeper monster-hunting or surface-progression systems become the focus. See `docs/planning/LOWER_ROUTE_EXPEDITION_GOALS_VALIDATION_2026_06_27.md`.
 
 Current vertical-slice status: the prototype is structurally playable and most earlier readability blockers have been cleared with review evidence. It is close to polished acceptance; the remaining pass-with-watchlist risk is future visual-change regression rather than a known closeout blocker. The detailed gate lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`, the current evidence log lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md`, and the concise clean demo script lives in `docs/planning/VERTICAL_SLICE_CLEAN_DEMO_SCRIPT_2026_06_26.md`.
 
