@@ -1663,6 +1663,53 @@ offset_bottom = -112.0
 theme_override_font_sizes/font_size = 10
 text = "MIRROR KELP"
 
+[node name="OuterShelfReach" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+position = Vector2(318, 62)
+
+[node name="DeepBackwater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.012, 0.065, 0.095, 0.48)
+polygon = PackedVector2Array(-104, -158, 196, -226, 578, -204, 936, -126, 1166, 38, 1046, 218, 620, 254, 172, 196, -136, 86)
+
+[node name="PlayableWaterLane" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.07, 0.34, 0.42, 0.17)
+polygon = PackedVector2Array(-54, -74, 176, -126, 500, -106, 816, -42, 1004, 66, 886, 138, 520, 152, 172, 112, -76, 34)
+
+[node name="UpperRimSilhouette" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.025, 0.09, 0.11, 0.52)
+polygon = PackedVector2Array(-72, -150, 168, -206, 420, -186, 684, -128, 912, -84, 990, -20, 770, -42, 512, -86, 206, -94, -88, -44)
+
+[node name="LowerRimSilhouette" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.025, 0.075, 0.072, 0.5)
+polygon = PackedVector2Array(-112, 74, 154, 122, 462, 142, 816, 116, 1070, 168, 946, 244, 548, 246, 134, 190, -142, 116)
+
+[node name="GlassRimLandmark" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.42, 0.78, 0.9, 0.2)
+polygon = PackedVector2Array(258, -112, 372, -142, 534, -112, 670, -58, 610, -28, 432, -58, 278, -68)
+
+[node name="LowShelfLandmark" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.18, 0.34, 0.3, 0.28)
+polygon = PackedVector2Array(526, 104, 760, 80, 958, 122, 884, 178, 624, 188)
+
+[node name="ReturnWashToMirror" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.6, 1, 0.86, 0.1)
+polygon = PackedVector2Array(136, 98, -28, 54, -228, 22, -204, -14, 8, 18, 178, 58)
+
+[node name="OuterShelfLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+offset_left = 330.0
+offset_top = -190.0
+offset_right = 470.0
+offset_bottom = -166.0
+theme_override_font_sizes/font_size = 12
+text = "OUTER SHELF"
+
+[node name="GlassRimLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+offset_left = 502.0
+offset_top = -92.0
+offset_right = 616.0
+offset_bottom = -70.0
+theme_override_font_sizes/font_size = 10
+text = "GLASS RIM"
+
 [node name="DeepKelpSealPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
 position = Vector2(238, 116)
 

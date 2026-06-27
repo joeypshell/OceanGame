@@ -64,6 +64,7 @@ func _initialize() -> void:
 	_run("Glassfin Swarm scan behavior", _test_glassfin_swarm_scan_behavior)
 	_run("Mirrorfin route-read behavior", _test_mirrorfin_route_read_behavior)
 	_run("Mirror Kelp deep promise", _test_mirror_kelp_deep_promise)
+	_run("Outer Shelf route footprint", _test_outer_shelf_route_footprint)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
 	_run("Salvage Manifest interaction", _test_salvage_manifest_interaction)
@@ -1085,6 +1086,66 @@ func _test_mirror_kelp_deep_promise() -> void:
 	_expect(main.progression_state.to_save_data() == save_before, "deep kelp promise should not mutate progression")
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "deep kelp promise should not drain oxygen")
 	_expect(main.dive_session.current_cargo == cargo_before, "deep kelp promise should not mutate cargo")
+	main.queue_free()
+
+func _test_outer_shelf_route_footprint() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var mirror_kelp := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass") as Node2D
+	var outer_shelf := mirror_kelp.get_node("OuterShelfReach") as Node2D
+	var deep_backwater := outer_shelf.get_node("DeepBackwater") as Polygon2D
+	var playable_lane := outer_shelf.get_node("PlayableWaterLane") as Polygon2D
+	var upper_rim := outer_shelf.get_node("UpperRimSilhouette") as Polygon2D
+	var lower_rim := outer_shelf.get_node("LowerRimSilhouette") as Polygon2D
+	var glass_rim := outer_shelf.get_node("GlassRimLandmark") as Polygon2D
+	var low_shelf := outer_shelf.get_node("LowShelfLandmark") as Polygon2D
+	var return_wash := outer_shelf.get_node("ReturnWashToMirror") as Polygon2D
+	var outer_label := outer_shelf.get_node("OuterShelfLabel") as Label
+	var glass_label := outer_shelf.get_node("GlassRimLabel") as Label
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var oxygen_before: float = main.dive_session.oxygen
+	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+
+	var min_x := INF
+	var max_x := -INF
+	for point in deep_backwater.polygon:
+		min_x = minf(min_x, point.x)
+		max_x = maxf(max_x, point.x)
+
+	_expect(outer_shelf.get_parent() == mirror_kelp, "Outer Shelf should extend from the current Mirror Kelp edge")
+	_expect(outer_shelf.position.x > 280.0, "Outer Shelf should sit beyond existing Mirror Kelp payoffs")
+	_expect(max_x - min_x >= 1200.0, "Outer Shelf footprint should be wide enough for later branch and decision work")
+	_expect(playable_lane.color.a <= 0.2, "Outer Shelf playable water should stay readable without becoming a bright pickup")
+	_expect(deep_backwater.color.a > playable_lane.color.a, "Outer Shelf background should frame the route with darker mass")
+	_expect(upper_rim.color.a >= 0.45 and lower_rim.color.a >= 0.45, "Outer Shelf terrain rims should be distinguishable from playable water")
+	_expect(glass_rim.color.a <= 0.24 and low_shelf.color.a <= 0.32, "Outer Shelf landmarks should not compete with future payoffs")
+	_expect(return_wash.color.g > return_wash.color.r and return_wash.color.a <= 0.12, "Outer Shelf return wash should use quiet safe-current language")
+	_expect(outer_label.text == "OUTER SHELF", "Outer Shelf should have one compact region label")
+	_expect(glass_label.text == "GLASS RIM", "Outer Shelf should have one compact local landmark label")
+	_expect(not outer_label.text.to_lower().contains("objective"), "Outer Shelf label should not become checklist copy")
+	_expect(not glass_label.text.to_lower().contains("map"), "Glass Rim label should not imply exact map UI")
+	_expect(outer_shelf.get_node_or_null("InteractZone") == null, "Outer Shelf footprint should not add interactions yet")
+	_expect(outer_shelf.find_child("CollisionShape2D", true, false) == null, "Outer Shelf footprint should not add route collision yet")
+	_expect(outer_shelf.find_child("ResourcePickup", true, false) == null, "Outer Shelf footprint should not add pickups yet")
+	_expect(outer_shelf.find_child("LootTable", true, false) == null, "Outer Shelf footprint should not add loot tables")
+	_expect(outer_shelf.find_child("HealthBar", true, false) == null, "Outer Shelf footprint should not add combat UI")
+	_expect(main.progression_state.to_save_data() == save_before, "Outer Shelf footprint should not mutate progression")
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "Outer Shelf footprint should not drain oxygen")
+	_expect(main.dive_session.current_cargo == cargo_before, "Outer Shelf footprint should not mutate cargo")
+
+	var player_bounds := PlayerScript.new()
+	var outer_center := outer_shelf.global_position + Vector2(940.0, 120.0)
+	var clamped_outer := player_bounds.clamp_position_to_world_bounds(outer_center)
+	_expect(clamped_outer == outer_center, "player bounds should include the first Outer Shelf footprint")
+	player_bounds.free()
+
+	var scene_player := main.get_node("Player") as CharacterBody2D
+	main.player = scene_player
+	scene_player.global_position = outer_center
+	var outer_direction: String = main.call("_format_base_direction")
+	_expect(outer_direction.contains("up-left"), "Outer Shelf base direction should use broad return orientation")
+	_expect(outer_direction.contains("Mirror/Wide/Hollow"), "Outer Shelf base direction should keep compact named return memory")
+	_expect_no_echo_lens_locator_language(outer_direction, "Outer Shelf base direction")
 	main.queue_free()
 
 func _test_wide_chamber_salvage_pocket_entrance() -> void:
@@ -5062,18 +5123,20 @@ func _test_expanded_region_world_bounds() -> void:
 	_expect(player.world_bounds.end.x >= 3180.0, "expanded bounds should allow the short Hollow Reef interior lane")
 	_expect(player.world_bounds.end.x >= 3820.0, "expanded bounds should allow the first wider chamber beyond Hollow Reef")
 	_expect(player.world_bounds.end.x >= 4300.0, "expanded bounds should allow the Mirror Kelp Pass branch beyond Wide Reef Chamber")
-	_expect(player.world_bounds.end.x <= 4340.0, "expanded bounds should stay tight around the first Mirror Kelp Pass branch")
+	_expect(player.world_bounds.end.x >= 5400.0, "expanded bounds should allow the first Outer Shelf route footprint")
+	_expect(player.world_bounds.end.x <= 5450.0, "expanded bounds should include Area 02 without implying a full open ocean")
 	_expect(player.world_bounds.end.y >= 2500.0, "expanded bounds should allow the first Silt Vein Fork scaffold below Blue Chimney")
 	_expect(player.world_bounds.end.y >= 2700.0, "expanded bounds should allow the short Blackwater Sill route")
 	_expect(player.world_bounds.end.y >= 3040.0, "expanded bounds should allow the first Dusk Trench continuation below Blackwater")
 	_expect(player.world_bounds.end.y >= 3160.0, "expanded bounds should allow the first wider Hollow Reef chamber")
 	_expect(player.world_bounds.end.y >= 3260.0, "expanded bounds should allow the Mirror Kelp Pass branch floor")
-	_expect(player.world_bounds.end.y <= 3300.0, "expanded bounds should avoid implying a full lower biome")
+	_expect(player.world_bounds.end.y >= 3380.0, "expanded bounds should allow the first Outer Shelf low rim")
+	_expect(player.world_bounds.end.y <= 3450.0, "expanded bounds should avoid implying a full lower biome")
 
 	var clamped_high := player.clamp_position_to_world_bounds(Vector2(640.0, 0.0))
 	_expect(clamped_high.y >= player.world_bounds.position.y, "world clamp should prevent surfacing through the boat sprite")
 
-	var clamped_right := player.clamp_position_to_world_bounds(Vector2(4500.0, 900.0))
+	var clamped_right := player.clamp_position_to_world_bounds(Vector2(5600.0, 900.0))
 	_expect(is_equal_approx(clamped_right.x, player.world_bounds.end.x), "world clamp should stop at the expanded right edge")
 
 	var clamped_blue_chimney := player.clamp_position_to_world_bounds(Vector2(2112.0, 2190.0))
@@ -5101,6 +5164,9 @@ func _test_expanded_region_world_bounds() -> void:
 	var clamped_mirror_kelp_pass := player.clamp_position_to_world_bounds(Vector2(4300.0, 3260.0))
 	_expect(is_equal_approx(clamped_mirror_kelp_pass.x, 4300.0), "world clamp should keep Mirror Kelp Pass horizontally playable")
 	_expect(is_equal_approx(clamped_mirror_kelp_pass.y, 3260.0), "world clamp should keep Mirror Kelp Pass vertically playable")
+	var clamped_outer_shelf := player.clamp_position_to_world_bounds(Vector2(5240.0, 3380.0))
+	_expect(is_equal_approx(clamped_outer_shelf.x, 5240.0), "world clamp should keep the first Outer Shelf footprint horizontally playable")
+	_expect(is_equal_approx(clamped_outer_shelf.y, 3380.0), "world clamp should keep the first Outer Shelf footprint vertically playable")
 
 	var clamped_left := player.clamp_position_to_world_bounds(Vector2(-80.0, 900.0))
 	_expect(is_equal_approx(clamped_left.x, player.world_bounds.position.x), "world clamp should preserve the left edge of the main column")
@@ -5333,7 +5399,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	var clamped_lower_connector := player_bounds.clamp_position_to_world_bounds(Vector2(2124.0, 2450.0))
 	_expect(is_equal_approx(clamped_lower_connector.x, 2124.0), "lower connector bounds should keep the staged route horizontally playable")
 	_expect(is_equal_approx(clamped_lower_connector.y, 2450.0), "lower connector bounds should keep the Silt Vein Fork approach playable")
-	_expect(player_bounds.world_bounds.end.y <= 3300.0, "lower connector bounds should stay tight around the first Mirror Kelp Pass branch")
+	_expect(player_bounds.world_bounds.end.y <= 3450.0, "expanded bounds should include Area 02 without becoming an open-world canvas")
 	player_bounds.free()
 
 	var main := MainScene.instantiate()
