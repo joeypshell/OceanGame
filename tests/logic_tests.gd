@@ -517,6 +517,10 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"Creatures/LanternFry/FallbackVisual/Glow",
 		"Creatures/LanternFry/ScanMarker",
 		"Creatures/LanternFry/CollisionShape2D",
+		"Creatures/LanternRayRoute/RouteLane",
+		"Creatures/LanternRayRoute/RayBody",
+		"Creatures/LanternRayRoute/RayWingLeft",
+		"Creatures/LanternRayRoute/EyeFleck",
 		"Predators/GulperEel/SpriteAnchor/Sprite",
 		"Predators/GulperEel/FallbackVisual/Body",
 		"Predators/GulperEel/FallbackVisual/Eye",
@@ -988,6 +992,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var glass_kelp_interact := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone") as Area2D
 	var glass_kelp_reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard") as Polygon2D
 	var glass_kelp_reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark") as Polygon2D
+	var lantern_ray_route := main.get_node("Creatures/LanternRayRoute") as Node2D
+	var lantern_ray_lane := main.get_node("Creatures/LanternRayRoute/RouteLane") as Polygon2D
+	var lantern_ray_body := main.get_node("Creatures/LanternRayRoute/RayBody") as Polygon2D
+	var lantern_ray_wing := main.get_node("Creatures/LanternRayRoute/RayWingLeft") as Polygon2D
+	var lantern_ray_eye := main.get_node("Creatures/LanternRayRoute/EyeFleck") as Polygon2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -1161,6 +1170,18 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(glass_kelp_ledge.get_node_or_null("ResourcePickup") == null, "Glass Kelp Ledge should not add a resource pickup")
 	_expect(glass_kelp_ledge.get_node_or_null("Predator") == null, "Glass Kelp Ledge should not add a predator encounter")
 	_expect(glass_kelp_ledge.get_node_or_null("PressureBoundary") == null, "Glass Kelp Ledge should not add a hidden pressure or oxygen boundary")
+	_expect(lantern_ray_route.position.distance_to(dusk_trench.global_position) <= 240.0, "Lantern Ray Route should sit near Dusk Trench as lower-route creature presence")
+	_expect(lantern_ray_route.position.y < dusk_trench.global_position.y, "Lantern Ray Route should drift above the main trench return lane")
+	_expect(lantern_ray_lane.color.a <= 0.16, "Lantern Ray ambient lane should stay softer than predator warning lanes")
+	_expect(lantern_ray_body.color.b > lantern_ray_body.color.r and lantern_ray_body.color.g > lantern_ray_body.color.r, "Lantern Ray should use cool creature color language instead of predator red or resource yellow")
+	_expect(lantern_ray_wing.color.a <= 0.5, "Lantern Ray wing silhouette should read as ambient life without becoming a hard obstacle")
+	_expect(lantern_ray_eye.color.a >= 0.65, "Lantern Ray should have a small distinct creature focal point")
+	_expect(not (lantern_ray_route is Area2D), "Lantern Ray Route should not be a damaging or pickup area in its first pass")
+	_expect(not lantern_ray_route.is_in_group("scan_targets"), "Lantern Ray Route should wait for the scoped scannable issue before becoming scan-target gameplay")
+	_expect(lantern_ray_route.find_child("CollisionShape2D", true, false) == null, "Lantern Ray Route should not add collision, contact damage, or extraction blocking")
+	_expect(lantern_ray_route.get_node_or_null("InteractZone") == null, "Lantern Ray Route should not add an interaction hotspot yet")
+	_expect(lantern_ray_route.get_node_or_null("ResourcePickup") == null, "Lantern Ray Route should not add harvest or cargo behavior")
+	_expect(lantern_ray_route.get_node_or_null("Predator") == null, "Lantern Ray Route should not reuse predator behavior")
 	_expect(blackwater_crack.get_node_or_null("Interior") == null, "Blackwater Crack should not add a cave interior system")
 	_expect(blackwater_sill.get_node_or_null("Interior") == null, "Blackwater Sill should not add a cave interior system")
 	_expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
