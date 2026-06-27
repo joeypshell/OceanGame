@@ -82,6 +82,7 @@ func _initialize() -> void:
 	_run("Blue Chimney draft interaction", _test_blue_chimney_draft_interaction)
 	_run("Lantern Silt Sample interaction", _test_lantern_silt_sample_interaction)
 	_run("Blackwater Crack gate state", _test_blackwater_crack_gate_state)
+	_run("Blackwater Trace payoff", _test_blackwater_trace_payoff)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -281,26 +282,31 @@ func _test_save_load_behavior() -> void:
 	main.run_lower_connector_echo_recovered = true
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
+	main.run_blackwater_trace_recovered = true
 	main.player_near_east_shelf_pocket = true
 	main.player_near_lower_connector_echo = true
 	main.player_near_blue_chimney = true
 	main.player_near_lantern_silt_nook = true
+	main.player_near_blackwater_crack = true
 	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
 	var main_saved: Dictionary = main.progression_state.to_save_data()
 	_expect(not main_saved.has("run_east_shelf_pocket_ping_recovered"), "progression save should not leak East Shelf run state")
 	_expect(not main_saved.has("run_lower_connector_echo_recovered"), "progression save should not leak Drop Echo run state")
 	_expect(not main_saved.has("run_blue_chimney_draft_reading_recovered"), "progression save should not leak Blue Chimney draft state")
 	_expect(not main_saved.has("run_lantern_silt_sample_recovered"), "progression save should not leak Lantern Silt run state")
+	_expect(not main_saved.has("run_blackwater_trace_recovered"), "progression save should not leak Blackwater Trace run state")
 	_expect(not main_saved.has("player_near_east_shelf_pocket"), "progression save should not leak East Shelf proximity state")
 	_expect(not main_saved.has("player_near_lower_connector_echo"), "progression save should not leak Drop Echo proximity state")
 	_expect(not main_saved.has("player_near_blue_chimney"), "progression save should not leak Blue Chimney proximity state")
 	_expect(not main_saved.has("player_near_lantern_silt_nook"), "progression save should not leak Lantern Silt proximity state")
+	_expect(not main_saved.has("player_near_blackwater_crack"), "progression save should not leak Blackwater proximity state")
 	_expect(not main_saved.has("blue_chimney_draft"), "progression save should not add durable Blue Chimney draft data")
 	_expect(not main_saved.has("silt_vein"), "progression save should not add durable Silt Vein route data")
 	_expect(not main_saved.has("silt_vein_fork"), "progression save should not add durable Silt Vein Fork route data")
 	_expect(not main_saved.has("lantern_silt"), "progression save should not add durable Lantern Silt route data")
 	_expect(not main_saved.has("lantern_silt_sample"), "progression save should not add durable Lantern Silt sample data")
 	_expect(not main_saved.has("blackwater_crack"), "progression save should not add durable Blackwater Crack route data")
+	_expect(not main_saved.has("blackwater_trace"), "progression save should not add durable Blackwater Trace data")
 	_expect(main_saved.get("purchased_upgrades", {}).has(ResonanceKeyUpgrade.id), "progression save should keep Resonance Key I as durable upgrade state only")
 	main.queue_free()
 
@@ -824,6 +830,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TurnbackRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillEndSeal",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceHalo",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceGem",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceSpark",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -903,6 +913,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var blackwater_sill_floor := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillFloor") as Polygon2D
 	var blackwater_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue") as Polygon2D
 	var blackwater_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/SillEndSeal") as Polygon2D
+	var blackwater_trace_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore") as Node2D
+	var blackwater_trace_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceHalo") as Polygon2D
+	var blackwater_trace_gem := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceGem") as Polygon2D
+	var blackwater_trace_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceSpark") as Polygon2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -1016,6 +1030,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blackwater_return.polygon[1].x < blackwater_return.polygon[0].x, "Blackwater Sill return cue should point back left toward Silt Vein")
 	_expect(blackwater_return.polygon[1].y < blackwater_return.polygon[0].y, "Blackwater Sill return cue should point upward toward Blue Chimney")
 	_expect(blackwater_turnback.color.a <= 0.3, "Blackwater Sill end should read as a turnback, not a full cave network")
+	_expect(blackwater_trace_core.position.x > 0.0, "Blackwater Trace should sit inside the opened short sill route")
+	_expect(blackwater_trace_halo.color.a >= 0.28, "Blackwater Trace should have a readable halo in normal play")
+	_expect(blackwater_trace_gem.color.a >= 0.7, "Blackwater Trace should have a visible recoverable core")
+	_expect(blackwater_trace_spark.visible and blackwater_trace_spark.color.a >= 0.8, "Blackwater Trace should have a bright recovery spark")
 	_expect(blackwater_crack.get_node_or_null("Interior") == null, "Blackwater Crack should not add a cave interior system")
 	_expect(blackwater_sill.get_node_or_null("Interior") == null, "Blackwater Sill should not add a cave interior system")
 	_expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
@@ -1831,7 +1849,7 @@ func _test_blackwater_crack_gate_state() -> void:
 	_expect(ready_status.contains("return up-left"), "Blackwater ready status should preserve broad return orientation")
 	_expect_no_echo_lens_locator_language(ready_status, "Blackwater ready status")
 	var ready_prompt: String = main.call("_format_hud_prompt")
-	_expect(ready_prompt.contains("trace open sill"), "Blackwater ready prompt should shift from gate readback to route entry")
+	_expect(ready_prompt.contains("record trace"), "Blackwater ready prompt should shift from gate readback to the route payoff")
 
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(not saved.has("blackwater_crack"), "Blackwater gate should not add durable route state")
@@ -1840,6 +1858,72 @@ func _test_blackwater_crack_gate_state() -> void:
 	main.player_near_blackwater_crack = false
 	var not_handled: bool = main.call("_try_blackwater_crack_interaction")
 	_expect(not not_handled, "Blackwater Crack should not consume interact outside its proximity zone")
+	main.free()
+
+func _test_blackwater_trace_payoff() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_blackwater_crack = true
+	main.dive_session.oxygen = 18.0
+	main.dive_session.current_cargo = ["glow_plankton"]
+	main.progression_state.banked_resources = {"shell_fragments": 2}
+	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+	var trace_gem := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceGem") as Polygon2D
+	var trace_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceSpark") as Polygon2D
+	main.call("_sync_blackwater_crack_gate_state")
+	_expect(trace_gem.color.a >= 0.7, "Blackwater Trace should start visibly recoverable when the route is open")
+	_expect(trace_spark.visible, "Blackwater Trace spark should start visible before recovery")
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Blackwater Sill"), "Blackwater open-route proximity should own the active dive prompt")
+	_expect(prompt.contains("record trace"), "Blackwater prompt should explain the concrete knowledge payoff")
+
+	var handled: bool = main.call("_try_blackwater_crack_interaction")
+	_expect(handled, "Blackwater open route should handle interact while nearby during a dive")
+	_expect(main.run_blackwater_trace_recovered, "Blackwater interaction should record one run-scoped trace")
+	_expect(trace_gem.color.a <= 0.2, "Blackwater Trace should visibly dim after recovery")
+	_expect(not trace_spark.visible, "Blackwater Trace spark should disappear after recovery")
+	_expect(is_equal_approx(main.dive_session.oxygen, 18.0), "Blackwater Trace should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["glow_plankton"], "Blackwater Trace should not add or remove cargo")
+	_expect(main.progression_state.resource_count("shell_fragments") == 2, "Blackwater Trace should not mutate banked resources")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Return safely"), "Blackwater Trace interaction should preserve extraction pressure")
+		_expect(main.status_label.text.contains("deep-route reading"), "Blackwater Trace status should name the knowledge payoff")
+
+	var repeat_handled: bool = main.call("_try_blackwater_crack_interaction")
+	_expect(repeat_handled, "Blackwater Trace should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recorded"), "Blackwater Trace repeat interaction should not duplicate the payoff")
+
+	main.player_near_blackwater_crack = false
+	var not_handled: bool = main.call("_try_blackwater_crack_interaction")
+	_expect(not not_handled, "Blackwater Trace should not consume interact outside its proximity zone")
+
+	var callout: String = main.call("_format_blackwater_trace_research_callout")
+	_expect(callout.contains("Blackwater Trace"), "Blackwater Trace result memory should name the payoff")
+	_expect(callout.contains("right branch"), "Blackwater Trace result memory should explain the route choice")
+	_expect(callout.contains("deeper route"), "Blackwater Trace result memory should hint at future route growth")
+	_expect_no_echo_lens_locator_language(callout, "Blackwater Trace result line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Blackwater Trace"), "Blackwater extraction summary should include recovered trace memory")
+	_expect(not extraction_summary.contains("%s"), "Blackwater extraction summary should not leak string placeholders")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("blackwater_trace"), "Blackwater Trace should not become durable save data")
+	_expect(not saved.has("blackwater_route"), "Blackwater Trace should not create durable route state")
+
+	var fresh_main := MainScript.new()
+	_expect(fresh_main._format_blackwater_trace_research_callout() == "", "Blackwater Trace result line should stay hidden before recovery")
+	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not fresh_summary.contains("Blackwater Trace"), "Blackwater extraction summary should stay hidden before trace recovery")
+	fresh_main.free()
+
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_blackwater_trace_recovered, "Blackwater Trace should reset between expeditions")
+	_expect(trace_gem.color.a >= 0.7, "Blackwater Trace core should become visible again on expedition reset")
+	_expect(trace_spark.visible, "Blackwater Trace spark should reset between expeditions")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:
@@ -2630,6 +2714,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_resonance_alcove_research_recovered = true
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
+	main.run_blackwater_trace_recovered = true
 	main.blue_chimney_draft_timer = 1.7
 	main.visual_smoke_route_stage = "lower_connector"
 	main.call("_reset_run_telemetry")
@@ -2637,6 +2722,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_resonance_alcove_research_recovered, "run telemetry reset should clear Resonance Alcove research state")
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "run telemetry reset should clear Blue Chimney draft research state")
 	_expect(not main.run_lantern_silt_sample_recovered, "run telemetry reset should clear Lantern Silt sample state")
+	_expect(not main.run_blackwater_trace_recovered, "run telemetry reset should clear Blackwater Trace state")
 	_expect(is_equal_approx(main.blue_chimney_draft_timer, 0.0), "run telemetry reset should clear Blue Chimney visual timing state")
 	_expect(main.visual_smoke_route_stage == "", "run telemetry reset should clear lower-connector visual route stage")
 
@@ -2647,6 +2733,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.player_near_blackwater_crack = true
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
+	main.run_blackwater_trace_recovered = true
 	main.call("_prepare_next_run")
 	_expect(not main.player_near_lower_connector_echo, "new expeditions should clear Drop Echo proximity state")
 	_expect(not main.player_near_resonance_alcove, "new expeditions should clear Resonance Alcove proximity state")
@@ -2657,6 +2744,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_resonance_alcove_research_recovered, "new expeditions should not carry Resonance Alcove research state")
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "new expeditions should not carry Blue Chimney draft research state")
 	_expect(not main.run_lantern_silt_sample_recovered, "new expeditions should not carry Lantern Silt sample state")
+	_expect(not main.run_blackwater_trace_recovered, "new expeditions should not carry Blackwater Trace state")
 	_expect(not main.progression_state.to_save_data().has("lower_connector_echo"), "Drop Echo should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("resonance_alcove_research"), "Resonance Alcove research should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("blue_chimney"), "Blue Chimney should not create durable route state")
@@ -2667,6 +2755,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.progression_state.to_save_data().has("lantern_silt"), "Lantern Silt should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("lantern_silt_sample"), "Lantern Silt sample should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("blackwater_crack"), "Blackwater Crack should not be stored in durable progression")
+	_expect(not main.progression_state.to_save_data().has("blackwater_trace"), "Blackwater Trace should not be stored in durable progression")
 	main.queue_free()
 
 func _test_east_shelf_pocket_prompt_interaction() -> void:

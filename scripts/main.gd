@@ -202,6 +202,9 @@ const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 @onready var blackwater_closed_shard: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/ClosedShard
 @onready var blackwater_sill: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill
 @onready var blackwater_sill_return_current: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue
+@onready var blackwater_trace_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceHalo
+@onready var blackwater_trace_gem: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceGem
+@onready var blackwater_trace_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceSpark
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
 @onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
 @onready var sealed_shelf_hatch_lock_label: Label = $EastShelfSpur/SealedShelfHatch/LockLabel
@@ -255,6 +258,7 @@ var run_lower_connector_echo_recovered := false
 var run_resonance_alcove_research_recovered := false
 var run_blue_chimney_draft_reading_recovered := false
 var run_lantern_silt_sample_recovered := false
+var run_blackwater_trace_recovered := false
 var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
 var recent_expedition_log: Array[Dictionary] = []
@@ -629,6 +633,22 @@ func _try_blue_chimney_interaction() -> bool:
 func _try_blackwater_crack_interaction() -> bool:
 	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_blackwater_crack:
 		return false
+
+	if _blackwater_crack_gate_open():
+		if run_blackwater_trace_recovered:
+			if status_label != null:
+				status_label.text = "Blackwater trace already recorded this expedition."
+			if is_inside_tree():
+				_update_hud()
+			return true
+
+		run_blackwater_trace_recovered = true
+		_sync_blackwater_trace_payoff_state()
+		if status_label != null:
+			status_label.text = "Blackwater trace recorded. Return safely to keep the deep-route reading."
+		if is_inside_tree():
+			_update_hud()
+		return true
 
 	if status_label != null:
 		status_label.text = _format_blackwater_gate_status()
@@ -1785,9 +1805,35 @@ func _format_blackwater_gate_status() -> String:
 
 func _format_blackwater_prompt() -> String:
 	if _blackwater_crack_gate_open():
-		return "Blackwater Crack: %s trace open sill" % _action_label("interact")
+		if run_blackwater_trace_recovered:
+			return "Blackwater Sill: trace recorded"
+
+		return "Blackwater Sill: %s record trace" % _action_label("interact")
 
 	return "Blackwater Crack: %s read Resonance seal" % _action_label("interact")
+
+func _sync_blackwater_trace_payoff_state() -> void:
+	var halo := blackwater_trace_halo
+	if halo == null:
+		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceHalo") as Polygon2D
+	var gem := blackwater_trace_gem
+	if gem == null:
+		gem = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceGem") as Polygon2D
+	var spark := blackwater_trace_spark
+	if spark == null:
+		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceSpark") as Polygon2D
+	if halo == null or gem == null or spark == null:
+		return
+
+	if run_blackwater_trace_recovered:
+		halo.color = Color(0.45, 0.78, 1.0, 0.08)
+		gem.color = Color(0.72, 0.98, 1.0, 0.18)
+		spark.visible = false
+	else:
+		halo.color = Color(0.45, 0.78, 1.0, 0.32)
+		gem.color = Color(0.72, 0.98, 1.0, 0.82)
+		spark.color = Color(1.0, 1.0, 0.82, 0.9)
+		spark.visible = true
 
 func _sync_blackwater_crack_gate_state() -> void:
 	var mouth := blackwater_crack_mouth
@@ -1828,6 +1874,7 @@ func _sync_blackwater_crack_gate_state() -> void:
 			sill.visible = true
 		if sill_return != null:
 			sill_return.color = Color(0.62, 1.0, 0.9, 0.14)
+		_sync_blackwater_trace_payoff_state()
 	elif progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
 		mouth.color = Color(0.002, 0.01, 0.026, 0.62)
 		wash.color = Color(0.08, 0.16, 0.32, 0.2)
@@ -1837,6 +1884,7 @@ func _sync_blackwater_crack_gate_state() -> void:
 		closed_shard.color = Color(0.54, 0.78, 0.92, 0.3)
 		if sill != null:
 			sill.visible = false
+		_sync_blackwater_trace_payoff_state()
 	else:
 		mouth.color = Color(0.002, 0.01, 0.026, 0.64)
 		wash.color = Color(0.08, 0.16, 0.32, 0.2)
@@ -1846,6 +1894,7 @@ func _sync_blackwater_crack_gate_state() -> void:
 		closed_shard.color = Color(0.54, 0.78, 0.92, 0.28)
 		if sill != null:
 			sill.visible = false
+		_sync_blackwater_trace_payoff_state()
 
 func _wreck_echo_route_available() -> bool:
 	return progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID) and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
@@ -2531,6 +2580,7 @@ func _reset_run_telemetry() -> void:
 	run_resonance_alcove_research_recovered = false
 	run_blue_chimney_draft_reading_recovered = false
 	run_lantern_silt_sample_recovered = false
+	run_blackwater_trace_recovered = false
 	debug_wreck_echo_review_staged = false
 	visual_smoke_route_stage = ""
 	echo_lens_pulse_timer = 0.0
@@ -2539,6 +2589,7 @@ func _reset_run_telemetry() -> void:
 		echo_lens_pulse.visible = false
 	_sync_east_shelf_pocket_payoff_state()
 	_sync_blue_chimney_payoff_state()
+	_sync_blackwater_trace_payoff_state()
 
 func _format_run_telemetry(result_name: String) -> String:
 	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
@@ -2592,7 +2643,7 @@ func _format_completed_expedition_line(result_name: String) -> String:
 	]
 
 func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Array[String]) -> String:
-	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
+	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(extracted_count, extracted_cargo),
 		_format_region_memory_callout(),
@@ -2606,6 +2657,7 @@ func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Ar
 		_format_resonance_alcove_research_callout(),
 		_format_blue_chimney_research_callout(),
 		_format_lantern_silt_sample_research_callout(),
+		_format_blackwater_trace_research_callout(),
 		_format_sealed_shelf_hatch_readiness_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
@@ -2643,6 +2695,8 @@ func _format_condition_briefing() -> String:
 func _format_route_choice_callout() -> String:
 	if run_predator_contacts > 0:
 		return "Route choice: predator route contested the dive."
+	if run_blackwater_trace_recovered:
+		return "Route choice: lower-route research push reached Blackwater."
 	if run_blue_chimney_draft_reading_recovered:
 		return "Route choice: lower-route research push reached Blue Chimney."
 	if run_lantern_silt_sample_recovered:
@@ -2717,6 +2771,12 @@ func _format_blue_chimney_research_callout() -> String:
 func _format_lantern_silt_sample_research_callout() -> String:
 	if run_lantern_silt_sample_recovered:
 		return "\nResearch: Lantern Silt Sample confirms the left branch is the safer Silt Vein route."
+
+	return ""
+
+func _format_blackwater_trace_research_callout() -> String:
+	if run_blackwater_trace_recovered:
+		return "\nResearch: Blackwater Trace confirms the right branch carries a deeper route signal."
 
 	return ""
 

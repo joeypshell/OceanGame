@@ -849,6 +849,21 @@ polygon = PackedVector2Array(116, -40, 160, -16, 154, 56, 104, 84, 134, 28)
 color = Color(0.26, 0.44, 0.72, 0.26)
 polygon = PackedVector2Array(130, -24, 188, 12, 174, 78, 112, 92, 86, 32)
 
+[node name="TraceCore" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill"]
+position = Vector2(86, 18)
+
+[node name="TraceHalo" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore"]
+color = Color(0.45, 0.78, 1, 0.32)
+polygon = PackedVector2Array(0, -34, 28, -20, 34, 8, 12, 30, -18, 24, -32, -4, -20, -26)
+
+[node name="TraceGem" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore"]
+color = Color(0.72, 0.98, 1, 0.82)
+polygon = PackedVector2Array(0, -18, 16, -6, 12, 14, -8, 18, -18, 2, -10, -14)
+
+[node name="TraceSpark" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore"]
+color = Color(1, 1, 0.82, 0.9)
+polygon = PackedVector2Array(0, -10, 6, -2, 14, 0, 6, 4, 0, 12, -6, 4, -14, 0, -6, -2)
+
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
 position = Vector2(34, 24)
 collision_layer = 0
