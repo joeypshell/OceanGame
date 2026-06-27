@@ -2064,6 +2064,12 @@ func _test_expedition_prep_goals() -> void:
 	_expect(goal.contains("Dusk"), "recent Dusk memory should keep the ready nudge broad")
 	_expect(goal.contains("Hollow Reef"), "recent Dusk memory should point toward the side-cave branch")
 	_expect_no_echo_lens_locator_language(goal, "recent Dusk ready goal")
+	goal = ExpeditionGoalFormatterScript.format_goal(blackwater_ready_progression, full_upgrades, "", "Hollow Reef")
+	_expect(goal.contains("Hollow Reef"), "recent Hollow Reef memory should keep the ready nudge broad")
+	_expect(goal.contains("wide chamber"), "recent Hollow Reef memory should point toward the wider chamber")
+	_expect(goal.contains("if oxygen allows"), "recent Hollow Reef chamber goal should stay optional")
+	_expect(goal.contains("return safely"), "recent Hollow Reef chamber goal should preserve extraction pressure")
+	_expect_no_echo_lens_locator_language(goal, "recent Hollow Reef chamber goal")
 	var save_after_recent_goal: Dictionary = blackwater_ready_progression.to_save_data()
 	_expect(save_after_recent_goal == save_before_recent_goal, "ready route suggestions should not mutate save data")
 	_expect(not save_after_recent_goal.has("recent_route_memory"), "ready route suggestions should not add route memory to the save schema")
@@ -2074,6 +2080,9 @@ func _test_expedition_prep_goals() -> void:
 	_expect(incomplete_goal.contains("Oxygen Tank I"), "Rare Signal route goal should not override upgrade progression goals")
 	incomplete_goal = ExpeditionGoalFormatterScript.format_goal(incomplete_progression, upgrades, "", "Blackwater")
 	_expect(incomplete_goal.contains("Oxygen Tank I"), "recent route memory should not override incomplete upgrade progression goals")
+	incomplete_goal = ExpeditionGoalFormatterScript.format_goal(incomplete_progression, upgrades, "", "Hollow Reef")
+	_expect(incomplete_goal.contains("Oxygen Tank I"), "Hollow Reef chamber memory should not override incomplete upgrade progression goals")
+	_expect(not incomplete_goal.contains("wide chamber"), "wide chamber ready goal should wait until prep goals are complete")
 
 func _test_result_progress_callouts() -> void:
 	var main := MainScript.new()

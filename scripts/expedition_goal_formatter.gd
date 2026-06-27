@@ -34,6 +34,8 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 		]
 
 	var prepared_for_blackwater := progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)
+	if prepared_for_blackwater and recent_route_memory == "Hollow Reef":
+		return "Goal: follow Hollow Reef toward the wide chamber if oxygen allows, then return safely."
 	if prepared_for_blackwater and recent_route_memory == "Dusk Trench":
 		return "Goal: follow Dusk toward Hollow Reef if oxygen allows, then return safely."
 	if prepared_for_blackwater and recent_route_memory == "Blackwater":
