@@ -1095,6 +1095,29 @@ polygon = PackedVector2Array(86, 72, 22, 44, -32, 14, 32, 60)
 color = Color(0.018, 0.052, 0.064, 0.52)
 polygon = PackedVector2Array(132, -24, 218, 18, 214, 92, 146, 118, 106, 52)
 
+[node name="CaveReadingCore" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+position = Vector2(74, -18)
+
+[node name="ReadingHalo" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore"]
+color = Color(0.58, 1, 0.88, 0.36)
+polygon = PackedVector2Array(0, -34, 30, -16, 34, 16, 0, 38, -32, 16, -30, -14)
+
+[node name="ReadingShard" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore"]
+color = Color(0.88, 1, 0.7, 0.84)
+polygon = PackedVector2Array(-10, -22, 18, -8, 12, 22, -16, 18, -22, -6)
+
+[node name="ReadingSpark" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore"]
+color = Color(1, 1, 0.82, 0.9)
+polygon = PackedVector2Array(0, -14, 7, -3, 18, 0, 7, 5, 0, 16, -7, 5, -18, 0, -7, -3)
+
+[node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+position = Vector2(132, 38)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteractZone"]
+shape = SubResource("CircleShape2D_blue_chimney_reading")
+
 [node name="TurnbackLip" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 color = Color(0.16, 0.24, 0.26, 0.46)
 polygon = PackedVector2Array(124, 48, 214, 78, 176, 132, 82, 120)

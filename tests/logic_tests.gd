@@ -87,6 +87,7 @@ func _initialize() -> void:
 	_run("Blackwater Crack gate state", _test_blackwater_crack_gate_state)
 	_run("Blackwater Trace payoff", _test_blackwater_trace_payoff)
 	_run("Glass Kelp reading payoff", _test_glass_kelp_reading_payoff)
+	_run("Hollow Reef cave reading payoff", _test_hollow_reef_cave_reading_payoff)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -289,11 +290,13 @@ func _test_save_load_behavior() -> void:
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
 	main.run_blackwater_trace_recovered = true
+	main.run_hollow_reef_reading_recovered = true
 	main.player_near_east_shelf_pocket = true
 	main.player_near_lower_connector_echo = true
 	main.player_near_blue_chimney = true
 	main.player_near_lantern_silt_nook = true
 	main.player_near_blackwater_crack = true
+	main.player_near_hollow_reef = true
 	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
 	var main_saved: Dictionary = main.progression_state.to_save_data()
 	_expect(not main_saved.has("run_east_shelf_pocket_ping_recovered"), "progression save should not leak East Shelf run state")
@@ -301,11 +304,13 @@ func _test_save_load_behavior() -> void:
 	_expect(not main_saved.has("run_blue_chimney_draft_reading_recovered"), "progression save should not leak Blue Chimney draft state")
 	_expect(not main_saved.has("run_lantern_silt_sample_recovered"), "progression save should not leak Lantern Silt run state")
 	_expect(not main_saved.has("run_blackwater_trace_recovered"), "progression save should not leak Blackwater Trace run state")
+	_expect(not main_saved.has("run_hollow_reef_reading_recovered"), "progression save should not leak Hollow Reef run state")
 	_expect(not main_saved.has("player_near_east_shelf_pocket"), "progression save should not leak East Shelf proximity state")
 	_expect(not main_saved.has("player_near_lower_connector_echo"), "progression save should not leak Drop Echo proximity state")
 	_expect(not main_saved.has("player_near_blue_chimney"), "progression save should not leak Blue Chimney proximity state")
 	_expect(not main_saved.has("player_near_lantern_silt_nook"), "progression save should not leak Lantern Silt proximity state")
 	_expect(not main_saved.has("player_near_blackwater_crack"), "progression save should not leak Blackwater proximity state")
+	_expect(not main_saved.has("player_near_hollow_reef"), "progression save should not leak Hollow Reef proximity state")
 	_expect(not main_saved.has("blue_chimney_draft"), "progression save should not add durable Blue Chimney draft data")
 	_expect(not main_saved.has("silt_vein"), "progression save should not add durable Silt Vein route data")
 	_expect(not main_saved.has("silt_vein_fork"), "progression save should not add durable Silt Vein Fork route data")
@@ -316,6 +321,8 @@ func _test_save_load_behavior() -> void:
 	_expect(not main_saved.has("dusk_trench"), "progression save should not add durable Dusk Trench route data")
 	_expect(not main_saved.has("dusk_trench_reached"), "progression save should not add durable Dusk Trench reach memory")
 	_expect(not main_saved.has("glass_kelp_reading"), "progression save should not add durable Glass Kelp reading data")
+	_expect(not main_saved.has("hollow_reef"), "progression save should not add durable Hollow Reef route data")
+	_expect(not main_saved.has("hollow_reef_reading"), "progression save should not add durable Hollow Reef reading data")
 	_expect(main_saved.get("purchased_upgrades", {}).has(ResonanceKeyUpgrade.id), "progression save should keep Resonance Key I as durable upgrade state only")
 	main.queue_free()
 
@@ -1094,6 +1101,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitBackWall",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingHalo",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingShard",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingSpark",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteractZone",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteractZone/CollisionShape2D",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/TurnbackLip",
 	]
 	for path in branch_paths:
@@ -1216,6 +1229,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hollow_reef_exit_ribbon := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitReturnRibbon") as Polygon2D
 	var hollow_reef_exit_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitRib") as Polygon2D
 	var hollow_reef_exit_back := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitBackWall") as Polygon2D
+	var hollow_reef_reading_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore") as Node2D
+	var hollow_reef_reading_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingHalo") as Polygon2D
+	var hollow_reef_reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingShard") as Polygon2D
+	var hollow_reef_reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingSpark") as Polygon2D
+	var hollow_reef_interact := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteractZone") as Area2D
 	var hollow_reef_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/TurnbackLip") as Polygon2D
 	var lantern_ray_route := main.get_node("Creatures/LanternRayRoute") as Area2D
 	var lantern_ray_lane := main.get_node("Creatures/LanternRayRoute/RouteLane") as Polygon2D
@@ -1418,13 +1436,17 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_reef_exit_ribbon.polygon[1].x < hollow_reef_exit_ribbon.polygon[0].x, "Hollow Reef exit ribbon should point back left toward the entrance")
 	_expect(hollow_reef_exit_rib.polygon[1].x < hollow_reef_exit_rib.polygon[0].x, "Hollow Reef exit rib should step left toward the exit route")
 	_expect(hollow_reef_exit_back.color.a >= 0.45, "Hollow Reef exit back wall should make the current side-cave end readable")
+	_expect(hollow_reef_reading_core.position.distance_to(hollow_reef_interact.position) >= 64.0, "Hollow Reef cave reading marker should be offset from the hotspot so the sub does not cover it")
+	_expect(hollow_reef_reading_halo.color.a >= 0.3, "Hollow Reef cave reading should have a visible halo before recovery")
+	_expect(hollow_reef_reading_shard.color.a >= 0.8, "Hollow Reef cave reading should start visibly recoverable")
+	_expect(hollow_reef_reading_spark.visible and hollow_reef_reading_spark.color.a >= 0.8, "Hollow Reef cave reading should have a bright recovery spark")
 	_expect(hollow_reef_turnback.color.a >= 0.4, "Hollow Reef should include a visible turnback lip until the interior lane exists")
-	_expect(hollow_reef.get_node_or_null("InteractZone") == null, "Hollow Reef scaffold should not add payoff interaction yet")
+	_expect(hollow_reef_interact.collision_layer == 0 and hollow_reef_interact.collision_mask == 1, "Hollow Reef reading hotspot should detect the player without becoming a blocking body")
 	_expect(hollow_reef.get_node_or_null("Interior") == null, "Hollow Reef scaffold should not add a full cave interior system")
 	_expect(hollow_reef.get_node_or_null("ResourcePickup") == null, "Hollow Reef scaffold should not add a resource pickup yet")
 	_expect(hollow_reef.get_node_or_null("Predator") == null, "Hollow Reef scaffold should not add a predator encounter")
 	_expect(hollow_reef.get_script() == null, "Hollow Reef readability cues should not own oxygen, cargo, or progression state")
-	_expect(hollow_reef.find_child("CollisionShape2D", true, false) == null, "Hollow Reef scaffold should not add hidden collision or pressure")
+	_expect(hollow_reef.get_node_or_null("PressureBoundary") == null, "Hollow Reef cave reading should not add hidden pressure behavior")
 	_expect(lantern_ray_route.position.distance_to(dusk_trench.global_position) <= 240.0, "Lantern Ray Route should sit near Dusk Trench as lower-route creature presence")
 	_expect(lantern_ray_route.position.y < dusk_trench.global_position.y, "Lantern Ray Route should drift above the main trench return lane")
 	_expect(lantern_ray_lane.color.a <= 0.16, "Lantern Ray ambient lane should stay softer than predator warning lanes")
@@ -2489,6 +2511,75 @@ func _test_glass_kelp_reading_payoff() -> void:
 	_expect(not main.run_glass_kelp_reading_recovered, "Glass Kelp reading should reset between expeditions")
 	_expect(reading_shard.color.a >= 0.7, "Glass Kelp reading should become visible again on expedition reset")
 	_expect(reading_spark.visible, "Glass Kelp reading spark should reset between expeditions")
+	main.free()
+
+func _test_hollow_reef_cave_reading_payoff() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_hollow_reef = true
+	main.dive_session.oxygen = 16.0
+	main.dive_session.current_cargo = ["shell_fragments"]
+	main.progression_state.banked_resources = {"kelp_fiber": 2}
+	var reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingShard") as Polygon2D
+	var reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingSpark") as Polygon2D
+	main.call("_sync_hollow_reef_reading_state")
+	_expect(reading_shard.color.a >= 0.7, "Hollow Reef cave reading should start visibly recoverable")
+	_expect(reading_spark.visible, "Hollow Reef cave reading spark should start visible before recovery")
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Hollow Reef"), "Hollow Reef proximity should own the active dive prompt")
+	_expect(prompt.contains("record cave reading"), "Hollow Reef prompt should explain the concrete payoff")
+
+	var handled: bool = main.call("_try_hollow_reef_interaction")
+	_expect(handled, "Hollow Reef should handle interact while nearby during a dive")
+	_expect(main.run_hollow_reef_reading_recovered, "Hollow Reef interaction should record one run-scoped reading")
+	_expect(main.run_reached_dusk_trench, "Hollow Reef interaction should count as reaching Dusk Trench for place memory")
+	_expect(reading_shard.color.a <= 0.2, "Hollow Reef cave reading should visibly dim after recovery")
+	_expect(not reading_spark.visible, "Hollow Reef cave reading spark should disappear after recovery")
+	_expect(is_equal_approx(main.dive_session.oxygen, 16.0), "Hollow Reef reading should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["shell_fragments"], "Hollow Reef reading should not add or remove cargo")
+	_expect(main.progression_state.resource_count("kelp_fiber") == 2, "Hollow Reef reading should not mutate banked resources")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Return safely"), "Hollow Reef interaction should preserve extraction pressure")
+		_expect(main.status_label.text.contains("Dusk"), "Hollow Reef status should keep broad route language")
+		_expect(main.status_label.text.contains("Blackwater"), "Hollow Reef status should keep broad return-chain language")
+		_expect_no_echo_lens_locator_language(main.status_label.text, "Hollow Reef status")
+
+	var repeat_handled: bool = main.call("_try_hollow_reef_interaction")
+	_expect(repeat_handled, "Hollow Reef should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recorded"), "Hollow Reef repeat interaction should not duplicate the payoff")
+
+	main.player_near_hollow_reef = false
+	var not_handled: bool = main.call("_try_hollow_reef_interaction")
+	_expect(not not_handled, "Hollow Reef should not consume interact outside its proximity zone")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("hollow_reef_reading"), "Hollow Reef reading should not become durable save data")
+	_expect(not saved.has("hollow_reef"), "Hollow Reef should not create durable route state")
+	_expect(not saved.has("dusk_trench"), "Hollow Reef should not create durable Dusk Trench state")
+
+	var callout: String = main.call("_format_hollow_reef_reading_callout")
+	_expect(callout.contains("Hollow Reef"), "Hollow Reef result memory should name the branch")
+	_expect(callout.contains("side-cave branch"), "Hollow Reef result memory should explain why the branch mattered")
+	_expect(callout.contains("Dusk Trench"), "Hollow Reef result memory should name the broad route context")
+	_expect_no_echo_lens_locator_language(callout, "Hollow Reef result line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Hollow Reef cave reading"), "Hollow Reef extraction summary should include recovered reading memory")
+	_expect(not extraction_summary.contains("%s"), "Hollow Reef extraction summary should not leak string placeholders")
+
+	var fresh_main := MainScript.new()
+	_expect(fresh_main._format_hollow_reef_reading_callout() == "", "Hollow Reef result line should stay hidden before reading recovery")
+	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not fresh_summary.contains("Hollow Reef cave reading"), "Hollow Reef extraction summary should stay hidden before reading recovery")
+	fresh_main.free()
+
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_hollow_reef_reading_recovered, "Hollow Reef reading should reset between expeditions")
+	_expect(reading_shard.color.a >= 0.7, "Hollow Reef cave reading should become visible again on expedition reset")
+	_expect(reading_spark.visible, "Hollow Reef cave reading spark should reset between expeditions")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:
