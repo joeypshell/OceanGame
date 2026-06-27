@@ -57,6 +57,7 @@ func _initialize() -> void:
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("Lantern Ray scan behavior", _test_lantern_ray_scan_behavior)
+	_run("Hollow Reef passive creature scan behavior", _test_hollow_reef_passive_creature_scan_behavior)
 	_run("Lantern Ray timing lane is visual only", _test_lantern_ray_timing_lane_is_visual_only)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
@@ -635,6 +636,81 @@ func _test_lantern_ray_scan_behavior() -> void:
 	_expect(not saved.has("lantern_ray_objective"), "Lantern Ray scan should not create durable objective-chain state")
 	_expect(not saved.has("monster_parts"), "Lantern Ray scan should not add monster-part economy state")
 	_expect(not saved.has("creature_inventory"), "Lantern Ray scan should not add creature inventory state")
+	main.queue_free()
+
+func _test_hollow_reef_passive_creature_scan_behavior() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var skitter := main.get_node("Creatures/HollowReefSkitter") as Area2D
+	var scene_player := main.get_node("Player") as CharacterBody2D
+	var hollow_reef := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave") as Node2D
+	var lantern_ray_body := main.get_node("Creatures/LanternRayRoute/RayBody") as Polygon2D
+	var skitter_body := main.get_node("Creatures/HollowReefSkitter/SkitterBody") as Polygon2D
+	main.player = scene_player
+	skitter.call("_ready")
+	main.dive_session.reset(main.max_oxygen)
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_in_base = false
+	scene_player.global_position = skitter.global_position
+
+	_expect(skitter.is_in_group("scan_targets"), "Hollow Reef Skitter should register as a scan target once the scene is ready")
+	var scan_candidates: Array[Node] = [skitter]
+	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == skitter, "scanner target selection should find Hollow Reef Skitter reliably at close range")
+	_expect(main.call("_format_scan_target_type", skitter) == "creature", "Hollow Reef Skitter scan target should read as a creature")
+	_expect(main.call("_scan_target_id", skitter) == "hollow_reef_skitter", "Hollow Reef Skitter should expose a stable discovery id")
+	_expect(skitter.global_position.distance_to(hollow_reef.global_position) < 520.0, "Hollow Reef Skitter should live inside the Hollow Reef side-cave neighborhood")
+	_expect(skitter_body.color.g > skitter_body.color.r and skitter_body.color.b > skitter_body.color.r, "Hollow Reef Skitter should use cool passive reef colors instead of red warning language")
+	_expect(skitter_body.polygon[3].x < lantern_ray_body.polygon[3].x, "Hollow Reef Skitter should read smaller and distinct from the broad Lantern Ray")
+	_expect(skitter.collision_layer == 0 and skitter.collision_mask == 0, "Hollow Reef Skitter should not create contact collision")
+	_expect(skitter.find_child("HarvestArea", true, false) == null, "Hollow Reef Skitter should not add harvesting behavior")
+	_expect(skitter.find_child("HealthBar", true, false) == null, "Hollow Reef Skitter should not add combat health UI")
+	_expect(skitter.find_child("Predator", true, false) == null, "Hollow Reef Skitter should not reuse predator behavior")
+
+	var save_before_scan: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var starting_oxygen: float = main.dive_session.oxygen
+	var discovery_id: String = main.call("_scan_target_id", skitter)
+	var display_name: String = main.call("_scan_target_display_name", skitter)
+	main.dive_session.drain_oxygen(main.scan_oxygen_cost)
+	main.progression_state.add_discovery(
+		discovery_id,
+		display_name,
+		main.call("_scan_target_description", skitter),
+		main.call("_scan_target_gameplay_fact", skitter)
+	)
+	main.run_completed_scans.append(discovery_id)
+	var first_scan_status: String = main.call("_compact_dive_status", "Scanned %s.%s" % [
+		display_name,
+		main.call("_format_repeat_scan_effect_text", skitter) + main.call("_format_first_scan_guidance", skitter)
+	])
+	var first_scan_guidance: String = main.call("_format_first_scan_guidance", skitter)
+	_expect(main.progression_state.has_discovery("hollow_reef_skitter"), "first Hollow Reef Skitter scan should record a normal durable discovery")
+	_expect(main.run_completed_scans == ["hollow_reef_skitter"], "first Hollow Reef Skitter scan should count as current-run scan evidence")
+	_expect(is_equal_approx(main.dive_session.oxygen, starting_oxygen - main.scan_oxygen_cost), "first Hollow Reef Skitter scan should use the normal scan oxygen cost")
+	_expect(first_scan_status.contains("Scanned Hollow Reef Skitter"), "first Hollow Reef Skitter scan status should name the creature")
+	_expect(first_scan_guidance.contains("Observe the upper shelf timing"), "first Hollow Reef Skitter scan guidance should teach a compact behavior clue")
+	_expect_no_monster_combat_language(first_scan_status, "Hollow Reef Skitter first scan status")
+	_expect(not first_scan_status.to_lower().contains("field guide"), "Hollow Reef Skitter first scan should not imply field-guide UI")
+	_expect(not first_scan_status.to_lower().contains("checklist"), "Hollow Reef Skitter first scan should not imply checklist UI")
+
+	var oxygen_after_first: float = main.dive_session.oxygen
+	var repeat_scan_status: String = main.call("_compact_dive_status", "%s known.%s" % [
+		display_name,
+		main.call("_format_repeat_scan_effect_text", skitter) + main.call("_format_signal_lens_pulse_text", skitter)
+	])
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_after_first), "repeat Hollow Reef Skitter scan should stay free like existing known scans")
+	_expect(main.run_completed_scans == ["hollow_reef_skitter"], "repeat Hollow Reef Skitter scan should not duplicate current-run scan evidence")
+	_expect(repeat_scan_status.contains("Hollow Reef Skitter known"), "repeat Hollow Reef Skitter scan should use compact known-target copy")
+	_expect(repeat_scan_status.contains("observation refreshed"), "repeat Hollow Reef Skitter scan should refresh behavior text compactly")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(saved.get("scan_discoveries", {}).has("hollow_reef_skitter"), "Hollow Reef Skitter discovery should persist through normal scan discovery storage")
+	_expect(saved.get("banked_resources", {}) == save_before_scan.get("banked_resources", {}), "Hollow Reef Skitter scan should not mutate resources")
+	_expect(saved.get("purchased_upgrades", {}) == save_before_scan.get("purchased_upgrades", {}), "Hollow Reef Skitter scan should not mutate upgrades")
+	_expect(is_equal_approx(float(saved.get("best_depth_reached", 0.0)), float(save_before_scan.get("best_depth_reached", 0.0))), "Hollow Reef Skitter scan should not mutate best-depth state")
+	_expect(not saved.has("hollow_reef_skitter_objective"), "Hollow Reef Skitter scan should not create durable objective-chain state")
+	_expect(not saved.has("monster_parts"), "Hollow Reef Skitter scan should not add monster-part economy state")
+	_expect(not saved.has("creature_inventory"), "Hollow Reef Skitter scan should not add creature inventory state")
 	main.queue_free()
 
 func _test_lantern_ray_timing_lane_is_visual_only() -> void:

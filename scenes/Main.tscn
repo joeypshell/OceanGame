@@ -2050,6 +2050,46 @@ polygon = PackedVector2Array(-46, 0, -18, -30, 30, -22, 58, 0, 30, 22, -18, 30)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Creatures/LanternFry"]
 shape = SubResource("CircleShape2D_pickup")
 
+[node name="HollowReefSkitter" type="Area2D" parent="Creatures"]
+position = Vector2(3090, 2878)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("7_scannable")
+discovery_id = "hollow_reef_skitter"
+display_name = "Hollow Reef Skitter"
+description = "A tiny cave creature that tucks into the upper Hollow Reef shelf before crossing the still pocket."
+gameplay_fact = "It freezes near the upper shelf, then darts away from the broad return current."
+move_start = Vector2(3066, 2870)
+move_end = Vector2(3142, 2894)
+move_speed = 16.0
+
+[node name="StillPocketCue" type="Polygon2D" parent="Creatures/HollowReefSkitter"]
+color = Color(0.42, 0.86, 0.8, 0.11)
+polygon = PackedVector2Array(-54, -26, 8, -44, 66, -18, 58, 28, -4, 42, -70, 12)
+
+[node name="SkitterGlow" type="Polygon2D" parent="Creatures/HollowReefSkitter"]
+color = Color(0.42, 0.92, 0.86, 0.3)
+polygon = PackedVector2Array(-34, -12, -6, -26, 36, -10, 46, 14, 10, 28, -36, 12)
+
+[node name="SkitterBody" type="Polygon2D" parent="Creatures/HollowReefSkitter"]
+color = Color(0.28, 0.86, 0.78, 0.68)
+polygon = PackedVector2Array(-24, 0, -8, -12, 18, -8, 32, 0, 18, 8, -8, 12)
+
+[node name="SkitterTail" type="Polygon2D" parent="Creatures/HollowReefSkitter"]
+color = Color(0.62, 1, 0.9, 0.42)
+polygon = PackedVector2Array(-18, 0, -42, -8, -58, 0, -42, 8)
+
+[node name="EyeFleck" type="Polygon2D" parent="Creatures/HollowReefSkitter"]
+color = Color(0.9, 1, 0.96, 0.82)
+polygon = PackedVector2Array(14, -4, 24, -2, 24, 3, 14, 5)
+
+[node name="ScanMarker" type="Polygon2D" parent="Creatures/HollowReefSkitter"]
+color = Color(0.95, 1, 0.7, 0.12)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Creatures/HollowReefSkitter"]
+shape = SubResource("CircleShape2D_pickup")
+
 [node name="LanternRayRoute" type="Area2D" parent="Creatures"]
 position = Vector2(2680, 2640)
 collision_layer = 0
