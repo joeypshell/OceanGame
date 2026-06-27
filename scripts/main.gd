@@ -1887,7 +1887,7 @@ func _blackwater_crack_gate_open() -> bool:
 
 func _format_blackwater_gate_status() -> String:
 	if _blackwater_crack_gate_open():
-		return "Blackwater Crack open. Trace the narrow sill; return up-left via Silt Vein, Blue Chimney, Drop Arch."
+		return "Blackwater: trace sill. Return Silt/Blue/Drop."
 	if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
 		return "Blackwater Crack sealed. Resonance Key I preparation needed."
 

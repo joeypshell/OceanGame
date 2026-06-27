@@ -1058,13 +1058,17 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blackwater_pressure_shutter.color.a >= 0.1 and blackwater_pressure_shutter.color.a <= 0.2, "Blackwater pressure shutter should stay subtle and non-combat")
 	_expect(blackwater_pressure_rib_a.color.b > blackwater_pressure_rib_a.color.g, "Blackwater pressure ribs should stay visually distinct from safe return currents")
 	_expect(blackwater_pressure_rib_b.color.b > blackwater_pressure_rib_b.color.g, "Blackwater pressure ribs should reinforce local route pressure")
+	_expect(blackwater_pressure_shutter.polygon[0].y > blackwater_return_chain.polygon[0].y + 24.0, "Blackwater pressure cue should sit below the return chain instead of covering it")
 	_expect(blackwater_sill.get_node_or_null("PressureBoundary") == null, "Blackwater pressure cue should not add a hidden pressure collision boundary")
 	_expect(blackwater_turnback.color.a <= 0.3, "Blackwater Sill end should read as a turnback, not a full cave network")
 	_expect(blackwater_trace_core.position.x > 0.0, "Blackwater Trace should sit inside the opened short sill route")
+	_expect(blackwater_trace_core.position.x > blackwater_return_chain.polygon[0].x, "Blackwater Trace should sit to the right of the return-chain cue")
+	_expect(blackwater_trace_core.position.y < blackwater_pressure_shutter.polygon[0].y, "Blackwater Trace should stay visually separate from the lower pressure cue")
 	_expect(blackwater_trace_halo.color.a >= 0.28, "Blackwater Trace should have a readable halo in normal play")
 	_expect(blackwater_trace_gem.color.a >= 0.7, "Blackwater Trace should have a visible recoverable core")
 	_expect(blackwater_trace_spark.visible and blackwater_trace_spark.color.a >= 0.8, "Blackwater Trace should have a bright recovery spark")
 	_expect(not blackwater_signal.visible, "Blackwater signal opportunity should start hidden until Rare Signal and route preparation are ready")
+	_expect(blackwater_signal.position.y <= -70.0, "Blackwater signal wash should sit above the local route cues instead of covering them")
 	_expect(blackwater_signal_wash.color.a <= 0.1, "Blackwater signal wash should stay atmospheric, not a guaranteed reward marker")
 	_expect(blackwater_signal_fleck.color.a <= 0.36, "Blackwater signal fleck should stay subtle and optional")
 	_expect(blackwater_signal.get_node_or_null("InteractZone") == null, "Blackwater signal nudge should not add a second interaction hotspot")
@@ -1914,11 +1918,9 @@ func _test_blackwater_crack_gate_state() -> void:
 	_expect(closed_shard.color.a <= 0.14, "Blackwater ready state should soften the closed shard without opening an interior yet")
 	_expect(blackwater_sill.visible, "Blackwater Sill should become visible after Resonance Key I ownership")
 	var ready_status: String = main.call("_format_blackwater_gate_status")
-	_expect(ready_status.contains("narrow sill"), "Blackwater ready status should name the short route sequence")
-	_expect(ready_status.contains("return up-left"), "Blackwater ready status should preserve broad return orientation")
-	_expect(ready_status.contains("Silt Vein"), "Blackwater ready status should name the first broad return landmark")
-	_expect(ready_status.contains("Blue Chimney"), "Blackwater ready status should name the mid return landmark")
-	_expect(ready_status.contains("Drop Arch"), "Blackwater ready status should name the upper lower-route landmark")
+	_expect(ready_status.contains("trace sill"), "Blackwater ready status should name the short route sequence")
+	_expect(ready_status.contains("Silt/Blue/Drop"), "Blackwater ready status should compactly name the broad return chain")
+	_expect(ready_status.length() <= 52, "Blackwater ready status should fit the active HUD panel")
 	_expect_no_echo_lens_locator_language(ready_status, "Blackwater ready status")
 	var ready_prompt: String = main.call("_format_hud_prompt")
 	_expect(ready_prompt.contains("record trace"), "Blackwater ready prompt should shift from gate readback to the route payoff")
@@ -2681,6 +2683,25 @@ func _test_expanded_region_world_bounds() -> void:
 	_expect(camera.limit_bottom >= 2720, "camera limit should include the lower Blackwater Sill turnback")
 	_expect(camera.limit_right <= 2580, "camera limit should stay tight around the short Blackwater route")
 	_expect(camera.limit_bottom <= 2760, "camera limit should avoid implying a full lower biome")
+	var sky := main_scene.get_node("Sky") as ColorRect
+	var ocean_shallows := main_scene.get_node("OceanShallows") as ColorRect
+	var ocean_midwater := main_scene.get_node("OceanMidwater") as ColorRect
+	var ocean_deep := main_scene.get_node("OceanDeep") as ColorRect
+	var surface_line := main_scene.get_node("SurfaceLine") as ColorRect
+	var deep_pressure_haze := main_scene.get_node("DeepPressureHaze") as Polygon2D
+	_expect(sky.offset_right >= float(camera.limit_right), "sky backdrop should cover the expanded camera width")
+	_expect(ocean_shallows.offset_right >= float(camera.limit_right), "shallow ocean backdrop should cover the expanded camera width")
+	_expect(ocean_midwater.offset_right >= float(camera.limit_right), "midwater backdrop should cover the expanded camera width")
+	_expect(ocean_deep.offset_right >= float(camera.limit_right), "deep ocean backdrop should cover the Blackwater camera width")
+	_expect(ocean_deep.offset_bottom >= float(camera.limit_bottom), "deep ocean backdrop should cover the Blackwater camera bottom")
+	_expect(surface_line.offset_right >= float(camera.limit_right), "surface line should extend across the playable camera width")
+	var haze_right := -1.0
+	var haze_bottom := -1.0
+	for point in deep_pressure_haze.polygon:
+		haze_right = maxf(haze_right, point.x)
+		haze_bottom = maxf(haze_bottom, point.y)
+	_expect(haze_right >= float(camera.limit_right), "deep pressure haze should cover the Blackwater camera width")
+	_expect(haze_bottom >= float(camera.limit_bottom), "deep pressure haze should cover the Blackwater camera bottom")
 	main_scene.free()
 
 func _test_expanded_region_base_direction() -> void:
