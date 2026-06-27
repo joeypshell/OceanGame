@@ -719,6 +719,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/EastShelfArch/RightPillar",
 		"EastShelfSpur/EastShelfArch/ReturnCurrentLeft",
 		"EastShelfSpur/EastShelfArch/ReturnRib",
+		"RouteChoiceBand",
+		"RouteChoiceBand/DecisionRib",
+		"RouteChoiceBand/SafeBankLane",
+		"RouteChoiceBand/ResearchLane",
+		"RouteChoiceBand/SafeBankLabel",
+		"RouteChoiceBand/ResearchLabel",
 		"EastShelfSpur/ShelfGlimmerOpportunity",
 		"EastShelfSpur/ShelfGlimmerOpportunity/SignalWash",
 		"EastShelfSpur/ShelfGlimmerOpportunity/GlimmerCore",
@@ -813,6 +819,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var branch_mouth := main.get_node("EastShelfSpur/BranchMouthShadow") as Polygon2D
 	var branch_rim := main.get_node("EastShelfSpur/BranchRimFrame") as Polygon2D
 	var branch_opening := main.get_node("EastShelfSpur/BranchRouteOpening") as Polygon2D
+	var route_choice_band := main.get_node("RouteChoiceBand") as Node2D
+	var route_choice_rib := main.get_node("RouteChoiceBand/DecisionRib") as Polygon2D
+	var safe_bank_lane := main.get_node("RouteChoiceBand/SafeBankLane") as Polygon2D
+	var research_lane := main.get_node("RouteChoiceBand/ResearchLane") as Polygon2D
+	var safe_bank_label := main.get_node("RouteChoiceBand/SafeBankLabel") as Label
+	var research_label := main.get_node("RouteChoiceBand/ResearchLabel") as Label
 	var approach_current := main.get_node("EastShelfSpur/ApproachCurrent") as Polygon2D
 	var current_surge_lane := main.get_node("EastShelfSpur/CurrentSurgeLane") as Polygon2D
 	var current_surge_rib := main.get_node("EastShelfSpur/CurrentSurgeRib") as Polygon2D
@@ -876,6 +888,16 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(branch_mouth.color.a >= 0.5, "East Shelf branch mouth should be dark enough to read as a route opening")
 	_expect(branch_rim.color.a >= 0.3, "East Shelf branch rim should visibly frame the route entrance")
 	_expect(branch_opening.color.a >= 0.18, "East Shelf branch opening should be more visible than a subtle current hint")
+	_expect(route_choice_band.get_node_or_null("InteractZone") == null, "Route Choice Band should not add active interaction or objective UI")
+	_expect(route_choice_rib.color.a <= 0.22, "Route Choice Band rib should be readable without becoming a blocking marker")
+	_expect(safe_bank_lane.color.g > safe_bank_lane.color.r, "Safe banking lane should use a calmer green route language")
+	_expect(research_lane.color.b >= research_lane.color.r, "Research lane should use cyan route language toward East Shelf")
+	_expect(safe_bank_lane.polygon[1].x < safe_bank_lane.polygon[0].x, "Safe banking lane should point left/down toward Shell Reef")
+	_expect(research_lane.polygon[1].x > research_lane.polygon[0].x, "Research lane should point right toward East Shelf")
+	_expect(safe_bank_label.text == "SAFE BANK", "Safe banking label should be broad route language")
+	_expect(research_label.text == "RESEARCH ROUTE", "Research label should be broad route language")
+	_expect(not safe_bank_label.text.to_lower().contains("objective"), "Route labels should not become checklist language")
+	_expect(not research_label.text.to_lower().contains("map"), "Route labels should not imply a minimap or exact locator")
 	_expect(approach_current.polygon[1].x >= 1000.0, "East Shelf Spur should branch right of the existing main column while becoming visible earlier")
 	_expect(terminal_hint.polygon[terminal_hint.polygon.size() - 1].x >= 1800.0, "East Shelf Spur should reach into the expanded camera space")
 	_expect(approach_current.color.a <= 0.18, "East Shelf Spur current cue should stay readable without becoming a hard objective arrow")

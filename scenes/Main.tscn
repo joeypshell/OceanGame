@@ -351,6 +351,36 @@ polygon = PackedVector2Array(0, 1328, 244, 1304, 468, 1350, 720, 1308, 1280, 136
 color = Color(0.02, 0.08, 0.12, 0.22)
 polygon = PackedVector2Array(850, 1060, 1160, 1120, 1118, 1210, 782, 1168)
 
+[node name="RouteChoiceBand" type="Node2D" parent="."]
+
+[node name="DecisionRib" type="Polygon2D" parent="RouteChoiceBand"]
+color = Color(0.74, 0.92, 0.86, 0.18)
+polygon = PackedVector2Array(556, 1168, 612, 1128, 684, 1168, 620, 1220)
+
+[node name="SafeBankLane" type="Polygon2D" parent="RouteChoiceBand"]
+color = Color(0.46, 0.92, 0.64, 0.18)
+polygon = PackedVector2Array(558, 1216, 406, 1266, 272, 1348, 356, 1372, 466, 1308, 604, 1262)
+
+[node name="ResearchLane" type="Polygon2D" parent="RouteChoiceBand"]
+color = Color(0.52, 0.96, 1, 0.2)
+polygon = PackedVector2Array(642, 1130, 802, 1058, 1018, 1022, 982, 1086, 820, 1118, 688, 1182)
+
+[node name="SafeBankLabel" type="Label" parent="RouteChoiceBand"]
+offset_left = 254.0
+offset_top = 1302.0
+offset_right = 386.0
+offset_bottom = 1330.0
+theme_override_font_sizes/font_size = 14
+text = "SAFE BANK"
+
+[node name="ResearchLabel" type="Label" parent="RouteChoiceBand"]
+offset_left = 762.0
+offset_top = 1016.0
+offset_right = 942.0
+offset_bottom = 1044.0
+theme_override_font_sizes/font_size = 14
+text = "RESEARCH ROUTE"
+
 [node name="EastShelfSpur" type="Node2D" parent="."]
 
 [node name="BranchMouthShadow" type="Polygon2D" parent="EastShelfSpur"]
