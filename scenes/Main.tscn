@@ -203,6 +203,20 @@ This is place identity and return orientation, not a minimap route, quest object
 variable_hooks = "Future Glass Kelp ledge, low-visibility, and lower-route creature cues can attach near this landmark."
 readability_priority = "Lower-trench identity and broad return language through Blackwater and Silt Vein."
 
+[node name="HollowReef" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "hollow_reef"
+display_name = "Hollow Reef"
+stable_region_name = "Hollow Reef"
+kind = "side_cave"
+depth_band = "deep/trench"
+role = "First compact cave-like side branch off Dusk Trench."
+memory_goal = "Remember Hollow Reef as a side cave off Dusk Trench; returning from it means following the pale current up-left back through the trench and Blackwater route chain."
+persistent_facts = "Marks a visible side-cave mouth only.
+It is not a full cave network, minimap objective, combat route, harvest route, or procedural interior."
+variable_hooks = "Future Hollow Reef entrance, exit, payoff, safe-return, and deeper-promise cues can attach here."
+readability_priority = "Side-cave mouth identity and broad up-left return orientation."
+
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
 script = ExtResource("10_landmark_metadata")
 metadata_id = "thermal_vent_field"
@@ -1025,6 +1039,41 @@ collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone"]
 shape = SubResource("CircleShape2D_blue_chimney_reading")
+
+[node name="HollowReefCave" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench"]
+position = Vector2(248, 154)
+
+[node name="CaveMouthShadow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.004, 0.02, 0.034, 0.7)
+polygon = PackedVector2Array(-124, -58, 12, -100, 156, -52, 206, 34, 144, 112, -22, 102, -152, 38)
+
+[node name="ReefRim" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.12, 0.46, 0.44, 0.36)
+polygon = PackedVector2Array(-156, -44, -36, -104, 106, -96, 220, -22, 192, 36, 82, -24, -64, -10, -176, 32)
+
+[node name="ThresholdWater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.1, 0.36, 0.42, 0.26)
+polygon = PackedVector2Array(-72, -26, 42, -58, 142, -18, 154, 46, 48, 70, -86, 30)
+
+[node name="ReefToothA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.5, 0.78, 0.66, 0.34)
+polygon = PackedVector2Array(-36, 74, -14, -10, 12, 78, -8, 100)
+
+[node name="ReefToothB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.62, 0.86, 0.72, 0.3)
+polygon = PackedVector2Array(66, 76, 92, 8, 122, 82, 92, 106)
+
+[node name="ReturnCurrentToTrench" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.7, 1, 0.9, 0.22)
+polygon = PackedVector2Array(42, 96, -78, 42, -156, 40, -96, -4, -164, -42, -70, -30, 58, 36)
+
+[node name="ReturnRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.82, 1, 0.92, 0.24)
+polygon = PackedVector2Array(-78, 42, -18, 12, 42, 30, -24, 60)
+
+[node name="TurnbackLip" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.16, 0.24, 0.26, 0.46)
+polygon = PackedVector2Array(124, 48, 214, 78, 176, 132, 82, 120)
 
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
 position = Vector2(34, 24)

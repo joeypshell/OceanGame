@@ -1080,6 +1080,15 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone/CollisionShape2D",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveMouthShadow",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefRim",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ThresholdWater",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefToothA",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefToothB",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnCurrentToTrench",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnRib",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/TurnbackLip",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -1191,6 +1200,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var glass_kelp_interact := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone") as Area2D
 	var glass_kelp_reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard") as Polygon2D
 	var glass_kelp_reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark") as Polygon2D
+	var hollow_reef := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave") as Node2D
+	var hollow_reef_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveMouthShadow") as Polygon2D
+	var hollow_reef_rim := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefRim") as Polygon2D
+	var hollow_reef_threshold := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ThresholdWater") as Polygon2D
+	var hollow_reef_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnCurrentToTrench") as Polygon2D
+	var hollow_reef_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/TurnbackLip") as Polygon2D
 	var lantern_ray_route := main.get_node("Creatures/LanternRayRoute") as Area2D
 	var lantern_ray_lane := main.get_node("Creatures/LanternRayRoute/RouteLane") as Polygon2D
 	var lantern_ray_timing_lane := main.get_node("Creatures/LanternRayRoute/TimingLane") as Node2D
@@ -1375,6 +1390,21 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(glass_kelp_ledge.get_node_or_null("ResourcePickup") == null, "Glass Kelp Ledge should not add a resource pickup")
 	_expect(glass_kelp_ledge.get_node_or_null("Predator") == null, "Glass Kelp Ledge should not add a predator encounter")
 	_expect(glass_kelp_ledge.get_node_or_null("PressureBoundary") == null, "Glass Kelp Ledge should not add a hidden pressure or oxygen boundary")
+	_expect(hollow_reef.get_parent() == dusk_trench, "Hollow Reef should branch from the Dusk Trench route")
+	_expect(hollow_reef.position.x > glass_kelp_ledge.position.x, "Hollow Reef should sit farther along the trench than the calm Glass Kelp ledge")
+	_expect(hollow_reef.position.y > glass_kelp_ledge.position.y, "Hollow Reef should sit lower as the first cave-like branch")
+	_expect(hollow_reef_mouth.color.a >= 0.65, "Hollow Reef cave mouth should read as explorable dark space")
+	_expect(hollow_reef_rim.color.g > hollow_reef_rim.color.r, "Hollow Reef rim should use cool reef/cave color language")
+	_expect(hollow_reef_threshold.color.a <= 0.3, "Hollow Reef threshold water should be visible without becoming a hard objective marker")
+	_expect(hollow_reef_return.color.a >= 0.18 and hollow_reef_return.color.a <= 0.24, "Hollow Reef return current should be readable without becoming checklist guidance")
+	_expect(hollow_reef_return.polygon[1].x < hollow_reef_return.polygon[0].x, "Hollow Reef return current should point left back toward Dusk Trench")
+	_expect(hollow_reef_return.polygon[1].y < hollow_reef_return.polygon[0].y, "Hollow Reef return current should point upward toward Blackwater and Silt Vein")
+	_expect(hollow_reef_turnback.color.a >= 0.4, "Hollow Reef should include a visible turnback lip until the interior lane exists")
+	_expect(hollow_reef.get_node_or_null("InteractZone") == null, "Hollow Reef scaffold should not add payoff interaction yet")
+	_expect(hollow_reef.get_node_or_null("Interior") == null, "Hollow Reef scaffold should not add a full cave interior system")
+	_expect(hollow_reef.get_node_or_null("ResourcePickup") == null, "Hollow Reef scaffold should not add a resource pickup yet")
+	_expect(hollow_reef.get_node_or_null("Predator") == null, "Hollow Reef scaffold should not add a predator encounter")
+	_expect(hollow_reef.find_child("CollisionShape2D", true, false) == null, "Hollow Reef scaffold should not add hidden collision or pressure")
 	_expect(lantern_ray_route.position.distance_to(dusk_trench.global_position) <= 240.0, "Lantern Ray Route should sit near Dusk Trench as lower-route creature presence")
 	_expect(lantern_ray_route.position.y < dusk_trench.global_position.y, "Lantern Ray Route should drift above the main trench return lane")
 	_expect(lantern_ray_lane.color.a <= 0.16, "Lantern Ray ambient lane should stay softer than predator warning lanes")
@@ -1413,6 +1443,7 @@ func _test_landmark_region_identity_metadata() -> void:
 		"BlueChimney": "Blue Chimney Pocket",
 		"SiltVeinFork": "Silt Vein Fork",
 		"DuskTrench": "Dusk Trench",
+		"HollowReef": "Hollow Reef",
 		"ThermalVentField": "Thermal Vent Field",
 		"WreckShelf": "Wreck Shelf",
 		"PressureLockedWreck": "Wreck Shelf",
@@ -3201,6 +3232,9 @@ func _test_expanded_region_world_bounds() -> void:
 	var clamped_dusk_trench := player.clamp_position_to_world_bounds(Vector2(2900.0, 3000.0))
 	_expect(is_equal_approx(clamped_dusk_trench.x, 2900.0), "world clamp should keep the Dusk Trench horizontally playable")
 	_expect(is_equal_approx(clamped_dusk_trench.y, 3000.0), "world clamp should keep the Dusk Trench vertically playable")
+	var clamped_hollow_reef := player.clamp_position_to_world_bounds(Vector2(2940.0, 3040.0))
+	_expect(is_equal_approx(clamped_hollow_reef.x, 2940.0), "world clamp should keep the Hollow Reef side-cave mouth horizontally playable")
+	_expect(is_equal_approx(clamped_hollow_reef.y, 3040.0), "world clamp should keep the Hollow Reef side-cave turnback vertically playable")
 
 	var clamped_left := player.clamp_position_to_world_bounds(Vector2(-80.0, 900.0))
 	_expect(is_equal_approx(clamped_left.x, player.world_bounds.position.x), "world clamp should preserve the left edge of the main column")
