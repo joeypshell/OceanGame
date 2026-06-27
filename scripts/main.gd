@@ -3412,6 +3412,8 @@ func _format_condition_briefing() -> String:
 	]
 
 func _format_route_choice_callout() -> String:
+	if run_salvage_data_cache_recovered:
+		return "Route choice: wide chamber salvage cache marked a sealed pocket."
 	if run_hollow_reef_reading_recovered:
 		return "Route choice: lower-route research push reached Hollow Reef."
 	if _run_has_hollow_reef_observation():
@@ -3452,6 +3454,8 @@ func _format_route_choice_callout() -> String:
 	return "Route choice: banked a cautious resource run."
 
 func _format_recent_route_memory() -> String:
+	if run_salvage_data_cache_recovered:
+		return "Wide Reef Chamber"
 	if run_hollow_reef_reading_recovered or _run_has_hollow_reef_observation():
 		return "Hollow Reef"
 	if run_reached_dusk_trench:
@@ -3568,6 +3572,8 @@ func _format_sealed_shelf_hatch_readiness_callout() -> String:
 	return "\nLab note: Echo Lens reads the Sealed Shelf Hatch; Resonance Key planning can wait."
 
 func _format_region_memory_callout() -> String:
+	if run_salvage_data_cache_recovered:
+		return "Remembered place: Wide Reef Chamber - salvage pocket off Hollow Reef; return through Dusk."
 	if run_hollow_reef_reading_recovered:
 		return "Remembered place: Hollow Reef - side-cave branch off Dusk; return through Blackwater."
 	if _run_has_hollow_reef_observation():

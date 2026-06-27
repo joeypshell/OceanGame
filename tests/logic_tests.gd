@@ -2616,6 +2616,23 @@ func _test_route_choice_result_callout() -> void:
 	var hollow_summary := main._format_extraction_result_summary(0, empty_cargo)
 	_expect(hollow_summary.contains("Remembered place: Hollow Reef"), "Hollow Reef extraction summary should include the branch as remembered place")
 	_expect(hollow_summary.contains("Route choice: lower-route research push reached Hollow Reef."), "Hollow Reef extraction summary should include the highest route-choice evidence")
+
+	main.run_salvage_data_cache_recovered = true
+	var save_before_wide_chamber_memory: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var wide_chamber_callout := main._format_route_choice_callout()
+	_expect(wide_chamber_callout.contains("wide chamber"), "wide chamber salvage evidence should produce the most specific route-choice callout")
+	_expect(wide_chamber_callout.contains("sealed pocket"), "wide chamber route choice should name the compact salvage lesson")
+	_expect(not wide_chamber_callout.contains("Hollow Reef"), "wide chamber route choice should take priority over Hollow Reef reading evidence")
+	_expect(not wide_chamber_callout.contains("Dusk Trench"), "wide chamber route choice should take priority over Dusk reach evidence")
+	_expect_no_echo_lens_locator_language(wide_chamber_callout, "Wide Reef Chamber route choice")
+	var wide_chamber_summary := main._format_extraction_result_summary(0, empty_cargo)
+	_expect(wide_chamber_summary.contains("Remembered place: Wide Reef Chamber"), "wide chamber extraction summary should remember the larger chamber when salvage evidence exists")
+	_expect(wide_chamber_summary.contains("Route choice: wide chamber salvage cache marked a sealed pocket."), "wide chamber extraction summary should include one compact route-choice line")
+	_expect(wide_chamber_summary.find("Route choice:") == wide_chamber_summary.rfind("Route choice:"), "wide chamber extraction summary should not duplicate route-choice lines")
+	_expect(main.progression_state.to_save_data() == save_before_wide_chamber_memory, "wide chamber route memory formatting should not mutate durable progression")
+	_expect(not main.progression_state.to_save_data().has("wide_reef_chamber_route"), "wide chamber route memory should not create durable route state")
+	_expect(not main.progression_state.to_save_data().has("recent_route_memory"), "wide chamber route memory should not create durable recent-route state")
+	main.run_salvage_data_cache_recovered = false
 	main.run_hollow_reef_reading_recovered = false
 	main.run_reached_dusk_trench = false
 
@@ -3671,6 +3688,34 @@ func _test_recent_expedition_log() -> void:
 	_expect(main._latest_recent_route_memory() == "Hollow Reef", "latest route helper should expose Hollow Reef for the next ready panel")
 
 	main.recent_expedition_log.clear()
+	main.progression_state.current_run_number = 13
+	main.progression_state.current_run_seed = 2013
+	main.progression_state.best_depth_reached = 340.0
+	main.run_completed_scans = ["thermal_vent", "hollow_reef_skitter", "glassfin_swarm"]
+	main.run_collected_resources = ["shell_fragments"]
+	main.run_predator_contacts = 1
+	main.run_blue_chimney_draft_reading_recovered = true
+	main.run_blackwater_trace_recovered = true
+	main.run_reached_dusk_trench = true
+	main.run_hollow_reef_reading_recovered = true
+	main.run_salvage_data_cache_recovered = true
+	var save_before_recent_wide_chamber: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	main._record_recent_expedition("Extracted", 1)
+	log_text = main._format_recent_expedition_log()
+	_expect(log_text.contains("#13 Extracted"), "recent expedition log should include wide chamber salvage runs")
+	_expect(log_text.contains("route Wide Reef Chamber"), "wide chamber salvage evidence should produce compact recent route memory")
+	_expect(not log_text.contains("route Hollow Reef"), "wide chamber recent route memory should take priority over Hollow Reef when salvage evidence exists")
+	_expect(not log_text.contains("route Dusk Trench"), "wide chamber recent route memory should take priority over Dusk when salvage evidence exists")
+	_expect(not log_text.contains("route Blackwater"), "wide chamber recent route memory should take priority over Blackwater")
+	_expect(not log_text.contains("route Glassfin Swarm"), "wide chamber recent route memory should take priority over passive Glassfin observation")
+	_expect(not log_text.to_lower().contains("checklist"), "wide chamber recent log should not imply checklist UI")
+	_expect(not log_text.to_lower().contains("field guide"), "wide chamber recent log should not imply field-guide UI")
+	_expect_no_echo_lens_locator_language(log_text, "Wide Reef Chamber recent expedition log")
+	_expect(main._latest_recent_route_memory() == "Wide Reef Chamber", "latest route helper should expose Wide Reef Chamber after salvage cache evidence")
+	_expect(main.progression_state.to_save_data() == save_before_recent_wide_chamber, "wide chamber recent route memory should remain session-only")
+	_expect(not main.progression_state.to_save_data().has("wide_reef_chamber_route"), "recent wide chamber memory should not create durable route state")
+
+	main.recent_expedition_log.clear()
 	main.progression_state.current_run_number = 12
 	main.progression_state.current_run_seed = 2012
 	main.progression_state.best_depth_reached = 316.0
@@ -3681,6 +3726,7 @@ func _test_recent_expedition_log() -> void:
 	main.run_blackwater_trace_recovered = false
 	main.run_reached_dusk_trench = false
 	main.run_hollow_reef_reading_recovered = false
+	main.run_salvage_data_cache_recovered = false
 	var save_before_recent_hollow: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	main._record_recent_expedition("Extracted", 0)
 	log_text = main._format_recent_expedition_log()
