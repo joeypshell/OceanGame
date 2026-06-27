@@ -2500,6 +2500,14 @@ func _format_condition_briefing() -> String:
 func _format_route_choice_callout() -> String:
 	if run_predator_contacts > 0:
 		return "Route choice: predator route contested the dive."
+	if run_blue_chimney_draft_reading_recovered:
+		return "Route choice: lower-route research push reached Blue Chimney."
+	if run_lantern_silt_sample_recovered:
+		return "Route choice: lower-route research push reached Silt Vein."
+	if run_lower_connector_echo_recovered:
+		return "Route choice: lower-route research push reached Shelf Drop."
+	if run_east_shelf_pocket_ping_recovered:
+		return "Route choice: East Shelf research push paid off."
 	if run_completed_scans.has("wreck_signal_cache"):
 		return "Route choice: pressure-wreck progress secured."
 	if run_completed_scans.has("pressure_wreck_signal"):
@@ -2513,7 +2521,7 @@ func _format_route_choice_callout() -> String:
 	if run_completed_scans.has("shell_reef_shelf") or run_collected_resources.has("shell_fragments"):
 		return "Route choice: used Shell Reef as a midwater bank route."
 	if run_collected_resources.is_empty():
-		return "Route choice: returned without banking cargo."
+		return ""
 
 	return "Route choice: banked a cautious resource run."
 

@@ -1373,9 +1373,24 @@ func _test_discovery_memory_result_callout() -> void:
 func _test_route_choice_result_callout() -> void:
 	var main := MainScript.new()
 
+	_expect(main._format_route_choice_callout() == "", "route choice callout should stay hidden without run evidence")
+
 	main.run_collected_resources = ["shell_fragments"]
 	_expect(main._format_route_choice_callout().contains("Shell Reef"), "shell cargo should produce a reef banking callout")
 
+	main.run_collected_resources = []
+	main.run_east_shelf_pocket_ping_recovered = true
+	_expect(main._format_route_choice_callout().contains("East Shelf research push"), "East Shelf payoff should produce a research-push route callout")
+
+	main.run_lower_connector_echo_recovered = true
+	_expect(main._format_route_choice_callout().contains("Shelf Drop"), "Drop Echo payoff should produce a lower-route route callout")
+
+	main.run_blue_chimney_draft_reading_recovered = true
+	_expect(main._format_route_choice_callout().contains("Blue Chimney"), "Blue Chimney survey core should produce a lower-route route callout")
+
+	main.run_east_shelf_pocket_ping_recovered = false
+	main.run_lower_connector_echo_recovered = false
+	main.run_blue_chimney_draft_reading_recovered = false
 	main.current_resource_cluster_pattern = "deep_reward"
 	main.run_collected_resources = ["glow_plankton"]
 	_expect(main._format_route_choice_callout().contains("deep glow"), "deep reward glow cargo should produce a deep push callout")
