@@ -76,6 +76,7 @@ func _initialize() -> void:
 	_run("echo lens result callout", _test_echo_lens_result_callout)
 	_run("wreck echo route first pass", _test_wreck_echo_route_first_pass)
 	_run("East Shelf pocket result callout", _test_east_shelf_pocket_result_callout)
+	_run("lower connector echo opportunity", _test_lower_connector_echo_opportunity)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -674,6 +675,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/DropArch/RightPillar",
 		"EastShelfSpur/ShelfDropConnector/DropArch/ReturnCurrentUpLeft",
 		"EastShelfSpur/ShelfDropConnector/DropArch/ReturnRib",
+		"EastShelfSpur/ShelfDropConnector/DropEchoOpportunity",
+		"EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/SignalWash",
+		"EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/EchoCore",
+		"EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone",
+		"EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone/CollisionShape2D",
 		"EastShelfSpur/ShelfDropConnector/TurnbackPocketHint",
 	]
 	for path in branch_paths:
@@ -692,6 +698,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var connector_current := main.get_node("EastShelfSpur/ShelfDropConnector/DownCurrentThread") as Polygon2D
 	var drop_arch := main.get_node("EastShelfSpur/ShelfDropConnector/DropArch") as Node2D
 	var drop_arch_return := main.get_node("EastShelfSpur/ShelfDropConnector/DropArch/ReturnCurrentUpLeft") as Polygon2D
+	var drop_echo := main.get_node("EastShelfSpur/ShelfDropConnector/DropEchoOpportunity") as Node2D
+	var drop_echo_core := main.get_node("EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/EchoCore") as Polygon2D
 	var connector_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/TurnbackPocketHint") as Polygon2D
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -717,6 +725,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(drop_arch.position.y >= 1860.0, "Drop Arch should sit inside the lower connector rather than the East Shelf approach")
 	_expect(drop_arch_return.polygon[1].x < drop_arch_return.polygon[0].x, "Drop Arch return current should point up-left toward East Shelf and the base column")
 	_expect(drop_arch_return.polygon[1].y < drop_arch_return.polygon[0].y, "Drop Arch return current should show upward return direction")
+	_expect(drop_echo.position.y >= drop_arch.position.y, "Drop Echo should sit near the lower connector turnback point")
+	_expect(drop_echo_core.color.a <= 0.4, "Drop Echo should read as a subtle research ping, not a guaranteed major reward")
 
 	main.free()
 
@@ -1221,6 +1231,49 @@ func _test_east_shelf_pocket_result_callout() -> void:
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(not saved.has("east_shelf_pocket_ping"), "East Shelf pocket ping should not become durable save data")
 	_expect(not saved.has("east_shelf_routes"), "East Shelf pocket ping should not create durable route state")
+	main.free()
+
+func _test_lower_connector_echo_opportunity() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_lower_connector_echo = true
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Drop Echo"), "Lower connector proximity should own the active dive prompt")
+	_expect(prompt.contains("lower-route ping"), "Drop Echo prompt should explain the narrow research opportunity")
+
+	var handled: bool = main.call("_try_lower_connector_echo_interaction")
+	_expect(handled, "Drop Echo should handle interact while the player is nearby during a dive")
+	_expect(main.run_lower_connector_echo_recovered, "Drop Echo interaction should record one run-scoped research ping")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Return safely"), "Drop Echo interaction should preserve extraction pressure")
+
+	var repeat_handled: bool = main.call("_try_lower_connector_echo_interaction")
+	_expect(repeat_handled, "Drop Echo should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recorded"), "Drop Echo repeat interaction should not duplicate the payoff")
+
+	main.player_near_lower_connector_echo = false
+	var not_handled: bool = main.call("_try_lower_connector_echo_interaction")
+	_expect(not not_handled, "Drop Echo should not consume interact outside its proximity zone")
+
+	var callout: String = main.call("_format_lower_connector_echo_research_callout")
+	_expect(callout.contains("Drop Echo"), "Drop Echo should produce compact extraction research memory")
+	_expect(callout.contains("Shelf Drop Connector"), "Drop Echo result memory should name the lower connector")
+	_expect(not callout.to_lower().contains("map"), "Drop Echo result line should not imply map UI")
+	_expect(not callout.to_lower().contains("quest"), "Drop Echo result line should not imply quest UI")
+	_expect(not callout.to_lower().contains("checklist"), "Drop Echo result line should not imply checklist UI")
+
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Drop Echo"), "Drop Echo extraction summary should include recovered lower-route memory")
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("drop_echo"), "Drop Echo should not become durable save data")
+	_expect(not saved.has("lower_connector_echo"), "Drop Echo should not create durable route state")
+
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_lower_connector_echo_recovered, "Drop Echo research ping should reset between expeditions")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:

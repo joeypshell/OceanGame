@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=36 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -39,6 +39,9 @@ size = Vector2(58, 520)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_east_shelf_pocket"]
 radius = 120.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lower_connector_echo"]
+radius = 110.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_panel"]
 bg_color = Color(0.025, 0.075, 0.095, 0.74)
@@ -484,6 +487,24 @@ polygon = PackedVector2Array(-16, 48, -152, -36, -244, -54, -174, -82, -230, -13
 [node name="ReturnRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/DropArch"]
 color = Color(0.82, 1, 0.96, 0.13)
 polygon = PackedVector2Array(-174, -22, -100, -46, -52, -18, -132, 12)
+
+[node name="DropEchoOpportunity" type="Node2D" parent="EastShelfSpur/ShelfDropConnector"]
+position = Vector2(2124, 2024)
+
+[node name="SignalWash" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/DropEchoOpportunity"]
+color = Color(0.54, 0.9, 1, 0.1)
+polygon = PackedVector2Array(-112, -42, -32, -76, 74, -44, 122, 8, 60, 54, -50, 66, -126, 20)
+
+[node name="EchoCore" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/DropEchoOpportunity"]
+color = Color(0.82, 1, 0.84, 0.38)
+polygon = PackedVector2Array(0, -32, 28, -10, 36, 20, 8, 38, -24, 22, -36, -8)
+
+[node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/DropEchoOpportunity"]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone"]
+shape = SubResource("CircleShape2D_lower_connector_echo")
 
 [node name="TurnbackPocketHint" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector"]
 color = Color(0.28, 0.5, 0.56, 0.18)

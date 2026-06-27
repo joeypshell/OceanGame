@@ -175,6 +175,7 @@ const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 @onready var east_shelf_current_surge_lane: Polygon2D = $EastShelfSpur/CurrentSurgeLane
 @onready var east_shelf_current_surge_rib: Polygon2D = $EastShelfSpur/CurrentSurgeRib
 @onready var east_shelf_pocket_interact_zone: Area2D = $EastShelfSpur/PocketEntrance/InteractZone
+@onready var lower_connector_echo_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone
 @onready var sealed_shelf_hatch_echo_shimmer: Polygon2D = $EastShelfSpur/SealedShelfHatch/EchoShimmer
 @onready var sealed_shelf_hatch_lock_badge: Polygon2D = $EastShelfSpur/SealedShelfHatch/LockBadge
 @onready var sealed_shelf_hatch_lock_label: Label = $EastShelfSpur/SealedShelfHatch/LockLabel
@@ -185,6 +186,7 @@ var dive_session := DiveSessionScript.new()
 var progression_state := ProgressionStateScript.new()
 var player_in_base := true
 var player_near_east_shelf_pocket := false
+var player_near_lower_connector_echo := false
 var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
@@ -217,6 +219,7 @@ var run_failure_cause := "none"
 var run_echo_lens_echo_fired := false
 var run_wreck_echo_clue_recovered := false
 var run_east_shelf_pocket_ping_recovered := false
+var run_lower_connector_echo_recovered := false
 var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
 var recent_expedition_log: Array[Dictionary] = []
@@ -226,6 +229,8 @@ func _ready() -> void:
 	base_zone.body_exited.connect(_on_base_zone_body_exited)
 	east_shelf_pocket_interact_zone.body_entered.connect(_on_east_shelf_pocket_body_entered)
 	east_shelf_pocket_interact_zone.body_exited.connect(_on_east_shelf_pocket_body_exited)
+	lower_connector_echo_interact_zone.body_entered.connect(_on_lower_connector_echo_body_entered)
+	lower_connector_echo_interact_zone.body_exited.connect(_on_lower_connector_echo_body_exited)
 	pressure_boundary.body_entered.connect(_on_pressure_boundary_body_entered)
 	wreck_echo_clue_trigger.body_entered.connect(_on_wreck_echo_clue_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
@@ -282,7 +287,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 				status_label.text = "Surface view: upgrades."
 				_update_hud()
 		else:
-			if not _try_east_shelf_pocket_interaction():
+			if not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
 				_try_extract()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
 		_cycle_surface_tab(-1)
@@ -383,6 +388,7 @@ func _prepare_next_run() -> void:
 	dive_session.reset(_current_max_oxygen())
 	dive_session.cargo_limit = _current_cargo_limit()
 	player_near_east_shelf_pocket = false
+	player_near_lower_connector_echo = false
 	_reset_run_telemetry()
 	burst_thruster_cooldown_remaining = 0.0
 	decoy_pulse_used_this_run = false
@@ -415,6 +421,20 @@ func _on_east_shelf_pocket_body_exited(body: Node2D) -> void:
 		if is_inside_tree():
 			_update_hud()
 
+func _on_lower_connector_echo_body_entered(body: Node2D) -> void:
+	if body == player:
+		player_near_lower_connector_echo = true
+		if status_label != null:
+			status_label.text = "Drop Echo: inspect the lower connector signal."
+		if is_inside_tree():
+			_update_hud()
+
+func _on_lower_connector_echo_body_exited(body: Node2D) -> void:
+	if body == player:
+		player_near_lower_connector_echo = false
+		if is_inside_tree():
+			_update_hud()
+
 func _try_east_shelf_pocket_interaction() -> bool:
 	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_east_shelf_pocket:
 		return false
@@ -429,6 +449,24 @@ func _try_east_shelf_pocket_interaction() -> bool:
 	run_east_shelf_pocket_ping_recovered = true
 	if status_label != null:
 		status_label.text = "East Shelf pocket research ping recorded. Return safely to keep the note."
+	if is_inside_tree():
+		_update_hud()
+	return true
+
+func _try_lower_connector_echo_interaction() -> bool:
+	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_lower_connector_echo:
+		return false
+
+	if run_lower_connector_echo_recovered:
+		if status_label != null:
+			status_label.text = "Drop Echo already recorded for this expedition."
+		if is_inside_tree():
+			_update_hud()
+		return true
+
+	run_lower_connector_echo_recovered = true
+	if status_label != null:
+		status_label.text = "Drop Echo recorded. Return safely to keep the lower-route note."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -698,6 +736,8 @@ func _format_hud_prompt() -> String:
 			]
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		prompt = "Expedition failed - press %s for next expedition" % _action_label("restart_dive")
+	elif player_near_lower_connector_echo:
+		prompt = "Drop Echo: %s record lower-route ping" % _action_label("interact")
 	elif player_near_east_shelf_pocket:
 		prompt = "East Shelf pocket: %s inspect threshold" % _action_label("interact")
 	elif player_in_base:
@@ -1450,6 +1490,7 @@ func _publish_visual_smoke_state() -> void:
 		"active_stats_visible": active_stats_panel.visible,
 		"wreck_echo_clue_recovered": run_wreck_echo_clue_recovered,
 		"east_shelf_pocket_ping_recovered": run_east_shelf_pocket_ping_recovered,
+		"lower_connector_echo_recovered": run_lower_connector_echo_recovered,
 		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
@@ -1961,6 +2002,7 @@ func _reset_run_telemetry() -> void:
 	run_echo_lens_echo_fired = false
 	run_wreck_echo_clue_recovered = false
 	run_east_shelf_pocket_ping_recovered = false
+	run_lower_connector_echo_recovered = false
 	debug_wreck_echo_review_staged = false
 	visual_smoke_route_stage = ""
 	echo_lens_pulse_timer = 0.0
@@ -2019,7 +2061,7 @@ func _format_completed_expedition_line(result_name: String) -> String:
 	]
 
 func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Array[String]) -> String:
-	return "%s\n%s\n%s%s\n%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
+	return "%s\n%s\n%s%s\n%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(extracted_count, extracted_cargo),
 		_format_region_memory_callout(),
@@ -2029,6 +2071,7 @@ func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Ar
 		_format_echo_lens_research_callout(),
 		_format_wreck_echo_research_callout(),
 		_format_east_shelf_pocket_research_callout(),
+		_format_lower_connector_echo_research_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
 		roundi(progression_state.best_depth_reached),
@@ -2107,6 +2150,12 @@ func _format_wreck_echo_research_callout() -> String:
 func _format_east_shelf_pocket_research_callout() -> String:
 	if run_east_shelf_pocket_ping_recovered:
 		return "\nResearch: East Shelf pocket ping suggests a sealed route below the arch."
+
+	return ""
+
+func _format_lower_connector_echo_research_callout() -> String:
+	if run_lower_connector_echo_recovered:
+		return "\nResearch: Drop Echo confirms the Shelf Drop Connector continues below East Shelf."
 
 	return ""
 
