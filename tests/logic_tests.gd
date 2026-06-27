@@ -830,6 +830,10 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var hatch_panel := salvage.get_node("SealedHatchPanel") as Polygon2D
 	var lock_bars := salvage.get_node("LockBars") as Polygon2D
 	var salvage_glint := salvage.get_node("SalvageGlint") as Polygon2D
+	var future_cutter_port := salvage.get_node("FutureCutterPort") as Node2D
+	var cutter_port_plate := salvage.get_node("FutureCutterPort/PortPlate") as Polygon2D
+	var cutter_port_socket := salvage.get_node("FutureCutterPort/PortSocket") as Polygon2D
+	var cutter_port_label := salvage.get_node("FutureCutterPort/ToolLabel") as Label
 	var data_cache := salvage.get_node("DataCache") as Node2D
 	var data_cache_core := salvage.get_node("DataCache/CacheCore") as Polygon2D
 	var interact_zone := salvage.get_node("InteractZone") as Area2D
@@ -852,6 +856,14 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(hatch_panel.color.b >= hatch_panel.color.g, "sealed hatch panel should read as cold wreck metal, not a resource")
 	_expect(lock_bars.color.b > lock_bars.color.r and lock_bars.color.a >= 0.3, "salvage lock bars should read as sealed promise language")
 	_expect(salvage_glint.color.a <= 0.5, "salvage glint should stay a subtle promise, not a collectable reward")
+	_expect(future_cutter_port.position.x > data_cache.position.x, "future cutter port should sit beside the cache rather than on top of the knowledge payoff")
+	_expect(cutter_port_plate.color.r > cutter_port_plate.color.b and cutter_port_plate.color.g > cutter_port_plate.color.b, "future cutter port should use warm salvage-tool language, not pressure/echo blue")
+	_expect(cutter_port_socket.color.a >= 0.7, "future cutter socket should read as a closed tool interface")
+	_expect(cutter_port_label.text == "CUTTER NEEDED", "future salvage tool promise should name a compact missing tool")
+	_expect(not cutter_port_label.text.to_lower().contains("open"), "future salvage tool copy should not imply the route is open")
+	_expect(not cutter_port_label.text.to_lower().contains("pressure"), "future salvage tool copy should not conflict with Pressure Seal language")
+	_expect(not cutter_port_label.text.to_lower().contains("echo"), "future salvage tool copy should not conflict with Echo Lens language")
+	_expect(not cutter_port_label.text.to_lower().contains("key"), "future salvage tool copy should not conflict with Resonance Key language")
 	_expect(data_cache.position.x >= -10.0 and data_cache.position.x <= 40.0, "salvage data cache should sit inside the sealed pocket mouth")
 	_expect(data_cache_core.color.a >= 0.7, "salvage data cache should start visibly recoverable")
 	_expect(salvage_shell_candidate.target_id == "shell_fragments", "salvage pocket cargo choice should use existing Shell Fragments")
@@ -862,14 +874,20 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(salvage_shell_candidate.global_position.distance_to(salvage.global_position) <= 180.0, "salvage pocket cargo should stay near the sealed pocket decision")
 	_expect(salvage_shell_candidate.global_position.distance_to(chamber.global_position + return_current.polygon[0]) >= 90.0, "salvage pocket cargo should not block the visible return-current entry")
 	_expect(interact_zone.collision_layer == 0 and interact_zone.collision_mask == 1, "salvage interact zone should be an explicit player trigger, not route collision")
-	_expect(promise_label.text == "SALVAGE SEALED", "salvage promise label should be compact and honest about current implementation")
+	_expect(promise_label.text == "SALVAGE CLOSED", "salvage promise label should be compact and honest about current implementation")
 	_expect(not promise_label.text.to_lower().contains("objective"), "salvage promise label should not imply objective checklist language")
 	_expect(not promise_label.text.to_lower().contains("map"), "salvage promise label should not imply exact locator UI")
+	_expect(not promise_label.text.to_lower().contains("pressure"), "salvage promise label should not conflict with pressure-gate copy")
+	_expect(not promise_label.text.to_lower().contains("echo"), "salvage promise label should not conflict with Echo Lens copy")
+	_expect(not promise_label.text.to_lower().contains("key"), "salvage promise label should not conflict with Resonance Key copy")
 	_expect(salvage.get_node_or_null("Interior") == null, "salvage promise should not add a full interior system")
 	_expect(salvage.get_node_or_null("ResourcePickup") == null, "salvage promise should not add loot pickup behavior")
 	_expect(salvage.find_child("LootTable", true, false) == null, "salvage promise should not add a loot table")
 	_expect(salvage.find_child("HarvestArea", true, false) == null, "salvage promise should not add harvesting")
 	_expect(salvage.find_child("HealthBar", true, false) == null, "salvage promise should not add combat UI")
+	_expect(future_cutter_port.find_child("CollisionShape2D", true, false) == null, "future cutter port should not add collision")
+	_expect(future_cutter_port.get_node_or_null("InteractZone") == null, "future cutter port should not add interaction yet")
+	_expect(future_cutter_port.get_script() == null, "future cutter port should stay visual-only")
 	_expect(main.get_node_or_null("ResourcePickups/SalvageShellFragments") == null, "salvage cargo choice should not add an extra active resource pickup")
 	_expect(main.progression_state.to_save_data() == save_before, "salvage promise should not mutate progression")
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "salvage promise should not drain oxygen")

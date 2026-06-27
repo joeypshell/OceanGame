@@ -1371,6 +1371,29 @@ polygon = PackedVector2Array(-22, -18, 54, -8, 50, 0, -26, -10, -30, 8, 46, 18, 
 color = Color(0.95, 0.86, 0.58, 0.48)
 polygon = PackedVector2Array(28, -24, 38, -8, 56, -4, 38, 2, 28, 18, 18, 2, 0, -4, 18, -8)
 
+[node name="FutureCutterPort" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
+position = Vector2(74, 40)
+
+[node name="PortPlate" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort"]
+color = Color(0.72, 0.42, 0.2, 0.5)
+polygon = PackedVector2Array(-34, -18, 18, -26, 40, -4, 28, 24, -22, 30, -46, 4)
+
+[node name="PortSocket" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort"]
+color = Color(0.1, 0.055, 0.035, 0.72)
+polygon = PackedVector2Array(-14, -10, 16, -14, 26, 2, 12, 16, -18, 18, -28, 2)
+
+[node name="ToolLatch" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort"]
+color = Color(1, 0.78, 0.38, 0.58)
+polygon = PackedVector2Array(-24, -4, 20, -10, 24, -2, -20, 6, -18, 16, 26, 8, 30, 16, -14, 24)
+
+[node name="ToolLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort"]
+offset_left = -48.0
+offset_top = 28.0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 11
+text = "CUTTER NEEDED"
+
 [node name="DataCache" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
 position = Vector2(20, 6)
 
@@ -1400,7 +1423,7 @@ offset_top = 58.0
 offset_right = 112.0
 offset_bottom = 84.0
 theme_override_font_sizes/font_size = 12
-text = "SALVAGE SEALED"
+text = "SALVAGE CLOSED"
 
 [node name="DeeperReefPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 position = Vector2(218, 96)
