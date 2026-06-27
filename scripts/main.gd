@@ -238,6 +238,10 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var salvage_data_cache_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheHalo
 @onready var salvage_data_cache_core: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheCore
 @onready var salvage_data_cache_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheSpark
+@onready var tideglass_sample_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/InteractZone
+@onready var tideglass_sample_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleHalo
+@onready var tideglass_sample_core: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleCore
+@onready var tideglass_sample_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleSpark
 @onready var lantern_ray_timing_lane_upper: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneUpper
 @onready var lantern_ray_timing_lane_lower: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingLaneLower
 @onready var lantern_ray_timing_tick_a: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingTickA
@@ -268,6 +272,7 @@ var player_near_blackwater_crack := false
 var player_near_glass_kelp_ledge := false
 var player_near_hollow_reef := false
 var player_near_salvage_data_cache := false
+var player_near_tideglass_sample := false
 var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
 var resource_scan_highlight_timer := 0.0
@@ -316,6 +321,7 @@ var run_reached_dusk_trench := false
 var run_glass_kelp_reading_recovered := false
 var run_hollow_reef_reading_recovered := false
 var run_salvage_data_cache_recovered := false
+var run_tideglass_sample_recovered := false
 var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
 var recent_expedition_log: Array[Dictionary] = []
@@ -341,6 +347,8 @@ func _ready() -> void:
 	hollow_reef_interact_zone.body_exited.connect(_on_hollow_reef_body_exited)
 	salvage_data_cache_interact_zone.body_entered.connect(_on_salvage_data_cache_body_entered)
 	salvage_data_cache_interact_zone.body_exited.connect(_on_salvage_data_cache_body_exited)
+	tideglass_sample_interact_zone.body_entered.connect(_on_tideglass_sample_body_entered)
+	tideglass_sample_interact_zone.body_exited.connect(_on_tideglass_sample_body_exited)
 	pressure_boundary.body_entered.connect(_on_pressure_boundary_body_entered)
 	wreck_echo_clue_trigger.body_entered.connect(_on_wreck_echo_clue_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
@@ -402,7 +410,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 				status_label.text = "Surface view: upgrades."
 				_update_hud()
 		else:
-			if not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
+			if not _try_tideglass_sample_interaction() and not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
 				_try_extract()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
 		_cycle_surface_tab(-1)
@@ -511,6 +519,7 @@ func _prepare_next_run() -> void:
 	player_near_glass_kelp_ledge = false
 	player_near_hollow_reef = false
 	player_near_salvage_data_cache = false
+	player_near_tideglass_sample = false
 	_reset_run_telemetry()
 	burst_thruster_cooldown_remaining = 0.0
 	decoy_pulse_used_this_run = false
@@ -652,6 +661,20 @@ func _on_salvage_data_cache_body_entered(body: Node2D) -> void:
 func _on_salvage_data_cache_body_exited(body: Node2D) -> void:
 	if body == player:
 		player_near_salvage_data_cache = false
+		if is_inside_tree():
+			_update_hud()
+
+func _on_tideglass_sample_body_entered(body: Node2D) -> void:
+	if body == player:
+		player_near_tideglass_sample = true
+		if status_label != null:
+			status_label.text = "Mirror Kelp Pass: recover the Tideglass Sample."
+		if is_inside_tree():
+			_update_hud()
+
+func _on_tideglass_sample_body_exited(body: Node2D) -> void:
+	if body == player:
+		player_near_tideglass_sample = false
 		if is_inside_tree():
 			_update_hud()
 
@@ -842,6 +865,26 @@ func _try_salvage_data_cache_interaction() -> bool:
 	_sync_salvage_data_cache_state()
 	if status_label != null:
 		status_label.text = "Salvage data cache recovered for future cutter prep. Return safely through Hollow Reef to keep the wreck note."
+	if is_inside_tree():
+		_update_hud()
+	return true
+
+func _try_tideglass_sample_interaction() -> bool:
+	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_tideglass_sample:
+		return false
+
+	if run_tideglass_sample_recovered:
+		if status_label != null:
+			status_label.text = "Tideglass Sample already recorded this expedition."
+		if is_inside_tree():
+			_update_hud()
+		return true
+
+	run_tideglass_sample_recovered = true
+	run_reached_dusk_trench = true
+	_sync_tideglass_sample_state()
+	if status_label != null:
+		status_label.text = "Tideglass Sample recovered. Return safely through Wide Reef and Hollow Reef to keep the Mirror Kelp reading."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -1515,6 +1558,11 @@ func _format_hud_prompt() -> String:
 			prompt = "Salvage Pocket: cache recovered - return via Hollow Reef"
 		else:
 			prompt = "Salvage Pocket: %s recover data cache" % _action_label("interact")
+	elif player_near_tideglass_sample:
+		if run_tideglass_sample_recovered:
+			prompt = "Mirror Kelp Pass: Tideglass recorded - return via Wide Reef"
+		else:
+			prompt = "Mirror Kelp Pass: %s recover Tideglass Sample" % _action_label("interact")
 	elif player_near_blackwater_crack:
 		prompt = _format_blackwater_prompt()
 	elif player_near_lantern_silt_nook:
@@ -2571,6 +2619,29 @@ func _sync_salvage_data_cache_state() -> void:
 		spark.color = Color(1.0, 0.96, 0.74, 0.92)
 		spark.visible = true
 
+func _sync_tideglass_sample_state() -> void:
+	var halo := tideglass_sample_halo
+	if halo == null:
+		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleHalo") as Polygon2D
+	var core := tideglass_sample_core
+	if core == null:
+		core = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleCore") as Polygon2D
+	var spark := tideglass_sample_spark
+	if spark == null:
+		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleSpark") as Polygon2D
+	if halo == null or core == null or spark == null:
+		return
+
+	if run_tideglass_sample_recovered:
+		halo.color = Color(0.58, 1.0, 0.92, 0.07)
+		core.color = Color(0.9, 1.0, 0.76, 0.18)
+		spark.visible = false
+	else:
+		halo.color = Color(0.58, 1.0, 0.92, 0.36)
+		core.color = Color(0.9, 1.0, 0.76, 0.86)
+		spark.color = Color(1.0, 1.0, 0.82, 0.9)
+		spark.visible = true
+
 func _sync_blackwater_crack_gate_state() -> void:
 	var mouth := blackwater_crack_mouth
 	if mouth == null:
@@ -2774,6 +2845,7 @@ func _publish_visual_smoke_state() -> void:
 		"dusk_trench_reached": run_reached_dusk_trench,
 		"glass_kelp_reading_recovered": run_glass_kelp_reading_recovered,
 		"hollow_reef_reading_recovered": run_hollow_reef_reading_recovered,
+		"tideglass_sample_recovered": run_tideglass_sample_recovered,
 		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
@@ -3351,6 +3423,7 @@ func _reset_run_telemetry() -> void:
 	run_glass_kelp_reading_recovered = false
 	run_hollow_reef_reading_recovered = false
 	run_salvage_data_cache_recovered = false
+	run_tideglass_sample_recovered = false
 	debug_wreck_echo_review_staged = false
 	visual_smoke_route_stage = ""
 	current_lantern_ray_route_id = "none"
@@ -3368,6 +3441,7 @@ func _reset_run_telemetry() -> void:
 	_sync_glass_kelp_reading_state()
 	_sync_hollow_reef_reading_state()
 	_sync_salvage_data_cache_state()
+	_sync_tideglass_sample_state()
 
 func _format_run_telemetry(result_name: String) -> String:
 	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nLantern Ray route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
@@ -3425,7 +3499,7 @@ func _format_completed_expedition_line(result_name: String) -> String:
 	]
 
 func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Array[String]) -> String:
-	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
+	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(extracted_count, extracted_cargo),
 		_format_region_memory_callout(),
@@ -3443,6 +3517,7 @@ func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Ar
 		_format_glass_kelp_reading_callout(),
 		_format_hollow_reef_reading_callout(),
 		_format_salvage_data_cache_research_callout(),
+		_format_tideglass_sample_research_callout(),
 		_format_sealed_shelf_hatch_readiness_callout(),
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
@@ -3628,6 +3703,12 @@ func _format_hollow_reef_reading_callout() -> String:
 func _format_salvage_data_cache_research_callout() -> String:
 	if run_salvage_data_cache_recovered:
 		return "\nResearch: Salvage data cache gives the lab future cutter prep for the sealed wreck pocket."
+
+	return ""
+
+func _format_tideglass_sample_research_callout() -> String:
+	if run_tideglass_sample_recovered:
+		return "\nResearch: Tideglass Sample gives the lab a Mirror Kelp return-current reading."
 
 	return ""
 

@@ -61,6 +61,7 @@ func _initialize() -> void:
 	_run("Glassfin Swarm scan behavior", _test_glassfin_swarm_scan_behavior)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
+	_run("Tideglass Sample interaction", _test_tideglass_sample_interaction)
 	_run("Glassfin Swarm spacing cue visual only", _test_glassfin_swarm_spacing_cue_visual_only)
 	_run("Lantern Ray timing lane is visual only", _test_lantern_ray_timing_lane_is_visual_only)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
@@ -972,6 +973,75 @@ func _test_salvage_data_cache_interaction() -> void:
 	fresh_main.free()
 	main.free()
 
+func _test_tideglass_sample_interaction() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_tideglass_sample = true
+	main.dive_session.oxygen = 21.0
+	main.dive_session.current_cargo.append("shell_fragments")
+	var sample_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleHalo") as Polygon2D
+	var sample_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleCore") as Polygon2D
+	var sample_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleSpark") as Polygon2D
+	main.call("_sync_tideglass_sample_state")
+	_expect(sample_core.color.a >= 0.7, "Tideglass Sample should start visibly recoverable")
+	_expect(sample_spark.visible, "Tideglass Sample spark should start visible before recovery")
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Mirror Kelp Pass"), "Tideglass proximity should own the active dive prompt")
+	_expect(prompt.contains("recover Tideglass Sample"), "Tideglass prompt should explain the concrete knowledge payoff")
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+
+	var handled: bool = main.call("_try_tideglass_sample_interaction")
+	_expect(handled, "Tideglass Sample should handle interact while nearby during a dive")
+	_expect(main.run_tideglass_sample_recovered, "Tideglass Sample interaction should record one run-scoped sample")
+	_expect(main.run_reached_dusk_trench, "Tideglass Sample recovery should count as meaningful lower-route reach evidence")
+	_expect(sample_halo.color.a <= 0.08, "Tideglass Sample halo should visibly dim after recovery")
+	_expect(sample_core.color.a <= 0.2, "Tideglass Sample core should visibly dim after recovery")
+	_expect(not sample_spark.visible, "Tideglass Sample spark should disappear after recovery")
+	_expect(is_equal_approx(main.dive_session.oxygen, 21.0), "Tideglass Sample should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["shell_fragments"], "Tideglass Sample should not add or remove cargo")
+	var save_after: Dictionary = main.progression_state.to_save_data()
+	_expect(save_after == save_before, "Tideglass Sample should not mutate durable progression")
+	_expect(not save_after.has("tideglass_sample"), "Tideglass Sample should not create durable sample state")
+	_expect(not save_after.has("mirror_kelp_pass"), "Mirror Kelp Pass payoff should not create durable route state")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Return safely"), "Tideglass Sample interaction should preserve extraction pressure")
+		_expect(main.status_label.text.contains("Wide Reef"), "Tideglass status should keep broad return language")
+		_expect(main.status_label.text.contains("Mirror Kelp"), "Tideglass status should name the branch payoff")
+		_expect_no_echo_lens_locator_language(main.status_label.text, "Tideglass status")
+
+	var repeat_handled: bool = main.call("_try_tideglass_sample_interaction")
+	_expect(repeat_handled, "Tideglass Sample should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recorded"), "Tideglass repeat interaction should not duplicate the payoff")
+
+	main.player_near_tideglass_sample = false
+	var not_handled: bool = main.call("_try_tideglass_sample_interaction")
+	_expect(not not_handled, "Tideglass Sample should not consume interact outside its proximity zone")
+
+	var callout: String = main.call("_format_tideglass_sample_research_callout")
+	_expect(callout.contains("Tideglass Sample"), "Tideglass result memory should name the recovered sample")
+	_expect(callout.contains("Mirror Kelp"), "Tideglass result memory should name the branch context")
+	_expect(callout.contains("return-current"), "Tideglass result memory should explain why the sample mattered")
+	_expect_no_echo_lens_locator_language(callout, "Tideglass result line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Tideglass Sample"), "Tideglass extraction summary should include recovered sample memory")
+	_expect(extraction_summary.contains("Mirror Kelp"), "Tideglass extraction summary should keep the branch payoff readable")
+	_expect(not extraction_summary.to_lower().contains("inventory"), "Tideglass extraction summary should avoid inventory language")
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_tideglass_sample_recovered, "Tideglass Sample should reset between expeditions")
+	_expect(sample_core.color.a >= 0.7, "Tideglass Sample should become visible again after expedition reset")
+	_expect(sample_spark.visible, "Tideglass Sample spark should reset after expedition reset")
+
+	var fresh_main := MainScript.new()
+	_expect(fresh_main._format_tideglass_sample_research_callout() == "", "Tideglass result line should stay hidden before payoff recovery")
+	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not fresh_summary.contains("Tideglass Sample"), "Tideglass extraction summary should stay hidden before payoff recovery")
+	fresh_main.free()
+	main.free()
+
 func _test_glassfin_swarm_spacing_cue_visual_only() -> void:
 	var main := MainScript.new()
 	var low_alpha: float = main.call("_glassfin_swarm_spacing_alpha", 0.0)
@@ -1730,6 +1800,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var mirror_kelp_loop_silhouette := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/ChamberLoopSilhouette") as Polygon2D
 	var mirror_kelp_return_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/ReturnLabel") as Label
 	var mirror_kelp_label := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/PassLabel") as Label
+	var tideglass_sample := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample") as Node2D
+	var tideglass_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleHalo") as Polygon2D
+	var tideglass_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleCore") as Polygon2D
+	var tideglass_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleSpark") as Polygon2D
+	var tideglass_interact := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/InteractZone") as Area2D
 	var hollow_deeper_promise := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise") as Node2D
 	var hollow_deeper_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth") as Polygon2D
 	var hollow_deeper_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PressureWash") as Polygon2D
@@ -2068,12 +2143,19 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect_no_echo_lens_locator_language(mirror_kelp_return_label.text, "Mirror Kelp Pass return label")
 	_expect(mirror_kelp_label.text == "MIRROR KELP PASS", "Mirror Kelp Pass should expose a stable prototype place name")
 	_expect_no_echo_lens_locator_language(mirror_kelp_label.text, "Mirror Kelp Pass label")
-	_expect(mirror_kelp_pass.get_node_or_null("InteractZone") == null, "Mirror Kelp Pass scaffold should not add an interaction hotspot yet")
+	_expect(tideglass_sample.position.x > 70.0 and tideglass_sample.position.x < 180.0, "Tideglass Sample should sit inside Mirror Kelp Pass instead of on the chamber return path")
+	_expect(tideglass_sample.position.y > -20.0 and tideglass_sample.position.y < 72.0, "Tideglass Sample should stay readable within the Mirror Kelp branch band")
+	_expect(tideglass_halo.color.g >= tideglass_halo.color.r and tideglass_halo.color.b >= tideglass_halo.color.r, "Tideglass Sample should use cool knowledge-payoff color language")
+	_expect(tideglass_halo.color.a <= 0.4, "Tideglass Sample halo should be readable without becoming objective-bright")
+	_expect(tideglass_core.color.a >= 0.8, "Tideglass Sample should start visibly recoverable")
+	_expect(tideglass_spark.visible and tideglass_spark.color.a >= 0.8, "Tideglass Sample should expose a small recovery spark")
+	_expect(tideglass_interact.collision_layer == 0 and tideglass_interact.collision_mask == 1, "Tideglass Sample hotspot should detect the player without becoming route collision")
+	_expect(mirror_kelp_pass.get_node_or_null("InteractZone") == null, "Mirror Kelp Pass should not add a pass-wide interaction hotspot")
 	_expect(mirror_kelp_pass.get_node_or_null("ResourcePickup") == null, "Mirror Kelp Pass scaffold should not add cargo or loot yet")
 	_expect(mirror_kelp_pass.get_node_or_null("Predator") == null, "Mirror Kelp Pass scaffold should not add combat pressure")
 	_expect(mirror_kelp_pass.get_node_or_null("PressureBoundary") == null, "Mirror Kelp Pass scaffold should not add hidden pressure behavior")
 	_expect(mirror_kelp_pass.get_node_or_null("MinimapMarker") == null, "Mirror Kelp Pass scaffold should not add minimap behavior")
-	_expect(mirror_kelp_pass.find_child("CollisionShape2D", true, false) == null, "Mirror Kelp Pass scaffold should not add collision or invisible walls")
+	_expect(mirror_kelp_pass.find_child("CollisionShape2D", true, false) == tideglass_interact.get_node("CollisionShape2D"), "Mirror Kelp Pass should only add collision for the nested Tideglass trigger")
 	_expect(mirror_kelp_pass.get_script() == null, "Mirror Kelp Pass should remain authored scene presentation for this issue")
 	_expect(hollow_deeper_promise.position.x > hollow_reef_reading_core.position.x, "Hollow Reef deeper promise should sit beyond the current cave reading payoff")
 	_expect(hollow_deeper_promise.position.y > hollow_reef_reading_core.position.y, "Hollow Reef deeper promise should imply lower future route growth")
@@ -4568,10 +4650,12 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
 	main.run_glass_kelp_reading_recovered = true
+	main.run_tideglass_sample_recovered = true
 	main.player_near_resonance_alcove = true
 	main.player_near_blue_chimney = true
 	main.player_near_lantern_silt_nook = true
 	main.player_near_glass_kelp_ledge = true
+	main.player_near_tideglass_sample = true
 	main.run_collected_resources.append("kelp_fiber")
 	main.run_completed_scans.append("east_shelf_arch")
 	main.run_predator_contacts = 1
@@ -4596,10 +4680,12 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "restart should clear run-scoped Blue Chimney draft state")
 	_expect(not main.run_lantern_silt_sample_recovered, "restart should clear run-scoped Lantern Silt sample state")
 	_expect(not main.run_glass_kelp_reading_recovered, "restart should clear run-scoped Glass Kelp reading state")
+	_expect(not main.run_tideglass_sample_recovered, "restart should clear run-scoped Tideglass Sample state")
 	_expect(not main.player_near_resonance_alcove, "restart should clear Resonance Alcove proximity state")
 	_expect(not main.player_near_blue_chimney, "restart should clear Blue Chimney proximity state")
 	_expect(not main.player_near_lantern_silt_nook, "restart should clear Lantern Silt proximity state")
 	_expect(not main.player_near_glass_kelp_ledge, "restart should clear Glass Kelp proximity state")
+	_expect(not main.player_near_tideglass_sample, "restart should clear Tideglass Sample proximity state")
 	_expect(main.run_collected_resources.is_empty(), "restart should clear run-scoped collected-resource telemetry")
 	_expect(main.run_completed_scans.is_empty(), "restart should clear run-scoped scan telemetry")
 	_expect(main.run_predator_contacts == 0, "restart should clear run-scoped predator contact telemetry")
@@ -4665,6 +4751,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_blackwater_trace_recovered = true
 	main.run_reached_dusk_trench = true
 	main.run_glass_kelp_reading_recovered = true
+	main.run_tideglass_sample_recovered = true
 	main.blue_chimney_draft_timer = 1.7
 	main.blackwater_pressure_timer = 1.9
 	main.visual_smoke_route_stage = "lower_connector"
@@ -4676,6 +4763,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_blackwater_trace_recovered, "run telemetry reset should clear Blackwater Trace state")
 	_expect(not main.run_reached_dusk_trench, "run telemetry reset should clear Dusk Trench reach memory")
 	_expect(not main.run_glass_kelp_reading_recovered, "run telemetry reset should clear Glass Kelp reading state")
+	_expect(not main.run_tideglass_sample_recovered, "run telemetry reset should clear Tideglass Sample state")
 	_expect(is_equal_approx(main.blue_chimney_draft_timer, 0.0), "run telemetry reset should clear Blue Chimney visual timing state")
 	_expect(is_equal_approx(main.blackwater_pressure_timer, 0.0), "run telemetry reset should clear Blackwater pressure-cue timing state")
 	_expect(main.visual_smoke_route_stage == "", "run telemetry reset should clear lower-connector visual route stage")
@@ -4685,17 +4773,20 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.player_near_blue_chimney = true
 	main.player_near_lantern_silt_nook = true
 	main.player_near_blackwater_crack = true
+	main.player_near_tideglass_sample = true
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
 	main.run_blackwater_trace_recovered = true
 	main.run_reached_dusk_trench = true
 	main.run_glass_kelp_reading_recovered = true
+	main.run_tideglass_sample_recovered = true
 	main.call("_prepare_next_run")
 	_expect(not main.player_near_lower_connector_echo, "new expeditions should clear Drop Echo proximity state")
 	_expect(not main.player_near_resonance_alcove, "new expeditions should clear Resonance Alcove proximity state")
 	_expect(not main.player_near_blue_chimney, "new expeditions should clear Blue Chimney proximity state")
 	_expect(not main.player_near_lantern_silt_nook, "new expeditions should clear Lantern Silt proximity state")
 	_expect(not main.player_near_blackwater_crack, "new expeditions should clear Blackwater Crack proximity state")
+	_expect(not main.player_near_tideglass_sample, "new expeditions should clear Tideglass Sample proximity state")
 	_expect(not main.run_lower_connector_echo_recovered, "new expeditions should not carry Drop Echo research state")
 	_expect(not main.run_resonance_alcove_research_recovered, "new expeditions should not carry Resonance Alcove research state")
 	_expect(not main.run_blue_chimney_draft_reading_recovered, "new expeditions should not carry Blue Chimney draft research state")
@@ -4703,6 +4794,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_blackwater_trace_recovered, "new expeditions should not carry Blackwater Trace state")
 	_expect(not main.run_reached_dusk_trench, "new expeditions should not carry Dusk Trench reach memory")
 	_expect(not main.run_glass_kelp_reading_recovered, "new expeditions should not carry Glass Kelp reading state")
+	_expect(not main.run_tideglass_sample_recovered, "new expeditions should not carry Tideglass Sample state")
 	_expect(not main.progression_state.to_save_data().has("lower_connector_echo"), "Drop Echo should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("resonance_alcove_research"), "Resonance Alcove research should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("blue_chimney"), "Blue Chimney should not create durable route state")
@@ -4716,6 +4808,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.progression_state.to_save_data().has("blackwater_trace"), "Blackwater Trace should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("dusk_trench_reached"), "Dusk Trench reach memory should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("glass_kelp_reading"), "Glass Kelp reading should not be stored in durable progression")
+	_expect(not main.progression_state.to_save_data().has("tideglass_sample"), "Tideglass Sample should not be stored in durable progression")
 	main.queue_free()
 
 func _test_east_shelf_pocket_prompt_interaction() -> void:

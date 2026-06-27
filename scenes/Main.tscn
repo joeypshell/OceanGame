@@ -255,9 +255,9 @@ kind = "side_branch"
 depth_band = "deep/chamber"
 role = "Second Area 01 branch off Wide Reef Chamber and the next route-breadth target."
 memory_goal = "Remember Mirror Kelp Pass as the reflective kelp branch beyond Wide Reef Chamber; returning from it means turning back through the chamber toward Hollow Reef and Dusk."
-persistent_facts = "Visible authored branch scaffold only.
-It is not a payoff, resource route, scan target, combat route, minimap marker, quest objective, procedural cave, or durable route state yet."
-variable_hooks = "Future Tideglass Sample, Mirrorfin route read, daily approach variation, cargo-vs-knowledge split, and deep-kelp promise can attach here."
+persistent_facts = "Visible authored branch with one run-scoped Tideglass Sample payoff.
+It is not a resource route, scan target, combat route, minimap marker, quest objective, procedural cave, or durable route state."
+variable_hooks = "Mirrorfin route read, daily approach variation, cargo-vs-knowledge split, and deep-kelp promise can attach here."
 readability_priority = "New branch identity while keeping the Wide Reef Chamber return language readable."
 
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
@@ -1513,6 +1513,27 @@ polygon = PackedVector2Array(-28, 48, -92, 28, -150, 22, -92, 58)
 [node name="ChamberLoopSilhouette" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
 color = Color(0.04, 0.12, 0.14, 0.24)
 polygon = PackedVector2Array(-188, -28, -292, -62, -388, -42, -346, 20, -248, 28)
+
+[node name="TideglassSample" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
+position = Vector2(126, 24)
+
+[node name="SampleHalo" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample"]
+color = Color(0.58, 1, 0.92, 0.36)
+polygon = PackedVector2Array(0, -42, 34, -18, 42, 18, 10, 46, -34, 28, -44, -10)
+
+[node name="SampleCore" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample"]
+color = Color(0.9, 1, 0.76, 0.86)
+polygon = PackedVector2Array(0, -24, 21, -8, 17, 18, -8, 25, -26, 2, -16, -18)
+
+[node name="SampleSpark" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample"]
+color = Color(1, 1, 0.82, 0.9)
+polygon = PackedVector2Array(0, -12, 6, -2, 17, 0, 7, 6, 4, 17, -4, 7, -16, 5, -7, -2)
+
+[node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/InteractZone"]
+shape = SubResource("CircleShape2D_lower_connector_echo")
 
 [node name="ReturnLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
 offset_left = -282.0
