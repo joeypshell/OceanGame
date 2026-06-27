@@ -1,6 +1,6 @@
 # Blackwater Crack Route Sequence Milestone - 2026-06-27
 
-Status: active planning control.
+Status: completed as pass with watchlist by `docs/planning/BLACKWATER_CRACK_ROUTE_SEQUENCE_VALIDATION_2026_06_27.md`.
 
 ## Why This Milestone
 
@@ -54,6 +54,12 @@ The milestone is complete only when a normal play session can answer yes to thes
 4. Does the route pressure come from readable distance, darkness, timing, or local cues rather than hidden punishment?
 5. Does extraction/failure copy remember the route without becoming a checklist?
 6. Does the route stay understandable without minimap, exact locator, broad quest UI, combat, harvesting, or procedural cave generation?
+
+## Closeout Outcome
+
+The milestone passes with watchlist. Blackwater now functions as a short connected lower-route sequence with a gated branch, one run-scoped trace payoff, one local pressure/readability cue, Rare Signal nudge support, compact result/recent-log memory, return-chain copy, and deterministic visual evidence.
+
+The watchlist is not a blocker for moving on: Blackwater remains abstract prototype geometry near the current world edge, so the next route milestone should create more readable negative space and stronger landmark identity rather than repeatedly polishing this same short sill. The selected next milestone is `Dusk Trench`, a compact route continuation beyond Blackwater.
 
 ## Scope Guardrails
 

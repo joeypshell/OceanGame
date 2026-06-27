@@ -4,11 +4,11 @@ This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remai
 
 Current direction: build a 2D alien-ocean expedition game where every morning the ocean changes, the player dives for cargo and knowledge, and persistent discoveries plus upgrades unlock deeper remembered places.
 
-Latest milestone closeout: `docs/planning/FIRST_MEANINGFUL_ROUTE_CHOICE_VALIDATION_2026_06_27.md` closes First Meaningful Route Choice as pass with watchlist. Ordinary play now has a midwater safe-bank versus research-route decision, a lower-route Blue Chimney survey-core payoff, compact route-choice result memory, and a Rare Signal route-preference nudge. The next work should move to the next player-visible route-growth milestone rather than repeatedly polishing or revalidating this same first decision.
+Latest milestone closeout: `docs/planning/BLACKWATER_CRACK_ROUTE_SEQUENCE_VALIDATION_2026_06_27.md` closes Blackwater Crack Route Sequence as pass with watchlist. The lower ocean now has a connected route chain from East Shelf through Shelf Drop, Blue Chimney, Silt Vein Fork, and Blackwater Sill, with a gated branch, one trace payoff, local pressure/readability, route memory, and targeted visual evidence. The next work should move into a visibly larger lower-route continuation rather than repeatedly polishing Blackwater.
 
-Current active milestone: Blackwater Crack Route Sequence. `docs/planning/BLACKWATER_CRACK_ROUTE_SEQUENCE_MILESTONE_2026_06_27.md` defines the next larger issue batch: turn the sealed right branch at `Silt Vein Fork` into a short, gated, player-visible Blackwater route sequence with one payoff, one local pressure/readability cue, one condition nudge, route memory, targeted evidence, and compact validation. Avoid reopening the first Shell Reef / East Shelf decision as another long review batch unless a concrete playtest failure appears.
+Current active milestone: Dusk Trench Route Continuation. Existing issues #536 through #545 should extend the lower route beyond Blackwater into a darker, wider trench segment with one safe ledge/pocket, one Glass Kelp knowledge payoff, one non-damaging low-visibility cue, one daily-condition nudge, route memory, targeted evidence, and compact validation. Avoid reopening Blackwater as another long review batch unless a concrete playtest failure appears.
 
-Blackwater route sequence planning: `docs/planning/BLACKWATER_CRACK_ROUTE_SEQUENCE_MILESTONE_2026_06_27.md` intentionally uses bigger issues than the prior micro-batches. Each implementation issue may include scene, runtime state, copy, docs, focused tests, and targeted screenshot evidence when route layout changes. The batch should prove a connected lower-route sequence without adding a minimap, objective checklist, exact locator, full cave system, combat, harvesting, procedural generation, broad upgrade family, or global oxygen retune.
+Blackwater route sequence planning: `docs/planning/BLACKWATER_CRACK_ROUTE_SEQUENCE_MILESTONE_2026_06_27.md` is now completed as pass with watchlist by `docs/planning/BLACKWATER_CRACK_ROUTE_SEQUENCE_VALIDATION_2026_06_27.md`. Carry forward its guardrails into Dusk Trench: meaningful route/content issues may include scene, runtime state, copy, docs, focused tests, and targeted screenshot evidence when route layout changes, but should not add a minimap, objective checklist, exact locator, full cave system, combat, harvesting, procedural generation, broad upgrade family, or global oxygen retune.
 
 First expanded region layout: `docs/planning/FIRST_EXPANDED_DIVE_REGION_LAYOUT_2026_06_26.md` defines `East Shelf Spur` as the first wider side-route prototype. It should add a right-side midwater branch, `East Shelf Arch` landmark, cave/wreck-pocket entrance, one seeded daily opportunity, one upgrade-locked promise, and safe-return cues while preserving the current base column and existing loop.
 
@@ -75,6 +75,8 @@ Detailed design rules live in:
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_BLUE_CHIMNEY_PAYOFF_2026_06_27.md`
 - `docs/planning/LANTERN_SILT_SAMPLE_PAYOFF_CONTRACT_2026_06_27.md`
 - `docs/planning/SILT_VEIN_FORK_READABILITY_OXYGEN_REVIEW_2026_06_27.md`
+- `docs/planning/BLACKWATER_CRACK_ROUTE_SEQUENCE_MILESTONE_2026_06_27.md`
+- `docs/planning/BLACKWATER_CRACK_ROUTE_SEQUENCE_VALIDATION_2026_06_27.md`
 - `docs/planning/PLAYER_VISIBLE_MILESTONE_PIVOT_2026_06_27.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
