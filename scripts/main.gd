@@ -69,6 +69,7 @@ const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
 const BLACKWATER_PRESSURE_PERIOD_SECONDS := 3.1
 const LANTERN_RAY_TIMING_PERIOD_SECONDS := 2.6
 const HOLLOW_REEF_TIMING_PERIOD_SECONDS := 3.4
+const GLASSFIN_SWARM_SPACING_PERIOD_SECONDS := 3.0
 const DUSK_TRENCH_MEMORY_MIN_X := 2700.0
 const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 
@@ -238,6 +239,10 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var lantern_ray_timing_tick_a: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingTickA
 @onready var lantern_ray_timing_tick_b: Polygon2D = $Creatures/LanternRayRoute/TimingLane/TimingTickB
 @onready var lantern_ray_route: Node = $Creatures/LanternRayRoute
+@onready var glassfin_swarm_spacing_wake: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingWake
+@onready var glassfin_swarm_spacing_window: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingWindowPulse
+@onready var glassfin_swarm_spacing_tick_a: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingTickA
+@onready var glassfin_swarm_spacing_tick_b: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingTickB
 @onready var glass_kelp_reading_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingHalo
 @onready var glass_kelp_reading_shard: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard
 @onready var glass_kelp_reading_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark
@@ -267,6 +272,7 @@ var blue_chimney_draft_timer := 0.0
 var blackwater_pressure_timer := 0.0
 var lantern_ray_timing_timer := 0.0
 var hollow_reef_timing_timer := 0.0
+var glassfin_swarm_spacing_timer := 0.0
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -349,6 +355,7 @@ func _process(delta: float) -> void:
 	_update_blackwater_pressure_cue(delta)
 	_update_lantern_ray_timing_lane(delta)
 	_update_hollow_reef_timing_current(delta)
+	_update_glassfin_swarm_spacing_cue(delta)
 	_update_lantern_fry_idle()
 	_update_burst_thruster_cooldown(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -1724,6 +1731,39 @@ func _update_hollow_reef_timing_current(delta: float) -> void:
 func _hollow_reef_timing_current_alpha(timer_seconds: float) -> float:
 	var phase := sin((timer_seconds / HOLLOW_REEF_TIMING_PERIOD_SECONDS) * TAU)
 	return 0.08 + (phase + 1.0) * 0.035
+
+func _update_glassfin_swarm_spacing_cue(delta: float) -> void:
+	var wake := glassfin_swarm_spacing_wake
+	if wake == null:
+		wake = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingWake") as Polygon2D
+		glassfin_swarm_spacing_wake = wake
+	var window := glassfin_swarm_spacing_window
+	if window == null:
+		window = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingWindowPulse") as Polygon2D
+		glassfin_swarm_spacing_window = window
+	var tick_a := glassfin_swarm_spacing_tick_a
+	if tick_a == null:
+		tick_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingTickA") as Polygon2D
+		glassfin_swarm_spacing_tick_a = tick_a
+	var tick_b := glassfin_swarm_spacing_tick_b
+	if tick_b == null:
+		tick_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingTickB") as Polygon2D
+		glassfin_swarm_spacing_tick_b = tick_b
+
+	glassfin_swarm_spacing_timer = fposmod(glassfin_swarm_spacing_timer + delta, GLASSFIN_SWARM_SPACING_PERIOD_SECONDS)
+	var cue_alpha := _glassfin_swarm_spacing_alpha(glassfin_swarm_spacing_timer)
+	if wake != null:
+		wake.color = Color(0.72, 0.86, 1.0, cue_alpha)
+	if window != null:
+		window.color = Color(0.72, 0.74, 1.0, minf(0.18, cue_alpha + 0.025))
+	if tick_a != null:
+		tick_a.color = Color(0.9, 0.92, 1.0, minf(0.24, cue_alpha + 0.08))
+	if tick_b != null:
+		tick_b.color = Color(0.9, 0.92, 1.0, minf(0.2, cue_alpha + 0.05))
+
+func _glassfin_swarm_spacing_alpha(timer_seconds: float) -> float:
+	var phase := sin((timer_seconds / GLASSFIN_SWARM_SPACING_PERIOD_SECONDS) * TAU)
+	return 0.08 + (phase + 1.0) * 0.04
 
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
@@ -3179,6 +3219,7 @@ func _reset_run_telemetry() -> void:
 	blackwater_pressure_timer = 0.0
 	lantern_ray_timing_timer = 0.0
 	hollow_reef_timing_timer = 0.0
+	glassfin_swarm_spacing_timer = 0.0
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
 	_sync_east_shelf_pocket_payoff_state()

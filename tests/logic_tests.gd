@@ -59,6 +59,7 @@ func _initialize() -> void:
 	_run("Lantern Ray scan behavior", _test_lantern_ray_scan_behavior)
 	_run("Hollow Reef passive creature scan behavior", _test_hollow_reef_passive_creature_scan_behavior)
 	_run("Glassfin Swarm scan behavior", _test_glassfin_swarm_scan_behavior)
+	_run("Glassfin Swarm spacing cue visual only", _test_glassfin_swarm_spacing_cue_visual_only)
 	_run("Lantern Ray timing lane is visual only", _test_lantern_ray_timing_lane_is_visual_only)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
@@ -814,6 +815,52 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	_expect(not saved.has("monster_parts"), "Glassfin Swarm scan should not add monster-part economy state")
 	_expect(not saved.has("creature_inventory"), "Glassfin Swarm scan should not add creature inventory state")
 	main.queue_free()
+
+func _test_glassfin_swarm_spacing_cue_visual_only() -> void:
+	var main := MainScript.new()
+	var low_alpha: float = main.call("_glassfin_swarm_spacing_alpha", 0.0)
+	var high_alpha: float = main.call("_glassfin_swarm_spacing_alpha", MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS * 0.25)
+	var repeat_alpha: float = main.call("_glassfin_swarm_spacing_alpha", MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS * 0.5)
+
+	_expect(high_alpha > low_alpha, "Glassfin Swarm spacing cue alpha should pulse upward to suggest a pass window")
+	_expect(is_equal_approx(low_alpha, repeat_alpha), "Glassfin Swarm spacing cue pulse should repeat smoothly")
+
+	main.dive_session.reset(24.0)
+	main.dive_session.start()
+	main.dive_session.current_cargo.append("glow_plankton")
+	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+
+	main.call("_update_glassfin_swarm_spacing_cue", 0.8)
+	_expect(is_equal_approx(main.dive_session.oxygen, 24.0), "Glassfin Swarm spacing cue should not drain oxygen")
+	_expect(main.dive_session.current_cargo == ["glow_plankton"], "Glassfin Swarm spacing cue should not change carried cargo")
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Glassfin Swarm spacing cue should not change dive result")
+	_expect(main.progression_state.to_save_data() == save_before, "Glassfin Swarm spacing cue should not mutate progression")
+	main.free()
+
+	var scene_main := MainScene.instantiate()
+	root.add_child(scene_main)
+	var swarm := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm") as Area2D
+	var window := swarm.get_node("SpacingWindowPulse") as Polygon2D
+	var wake := swarm.get_node("SpacingWake") as Polygon2D
+	var tick_a := swarm.get_node("SpacingTickA") as Polygon2D
+	var return_gap := swarm.get_node("ReturnGapCue") as Polygon2D
+	var return_current := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentBackToHollow") as Polygon2D
+	var resource_glimmer := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket/PocketGlimmer") as Polygon2D
+	var pressure_shutter := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureShutter") as Polygon2D
+
+	scene_main.call("_update_glassfin_swarm_spacing_cue", MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS * 0.25)
+	_expect(window.color.b > window.color.g and window.color.b > window.color.r, "Glassfin Swarm spacing window should use pale blue timing color instead of safe-current green")
+	_expect(wake.color.b > wake.color.g, "Glassfin Swarm wake should stay bluer than green return-current language")
+	_expect(tick_a.color.a <= 0.25 and window.color.a <= 0.19, "Glassfin Swarm spacing cue should stay readable without becoming a hard wall")
+	_expect(return_current.color.g > window.color.g, "Glassfin Swarm safe-return current should stay greener than the spacing cue")
+	_expect(window.color.b > resource_glimmer.color.b, "Glassfin Swarm spacing cue should stay distinct from yellow-green resource glimmers")
+	_expect(window.color.r > pressure_shutter.color.r and window.color.g > pressure_shutter.color.g, "Glassfin Swarm spacing cue should stay brighter than pressure-lock language")
+	_expect(return_gap.color.a < return_current.color.a, "Glassfin Swarm return gap should remain softer than the main return current")
+	_expect(swarm.find_child("CollisionShape2D", true, false) == null, "Glassfin Swarm spacing cue should not add hidden collision")
+	_expect(swarm.find_child("PressureBoundary", true, false) == null, "Glassfin Swarm spacing cue should not add pressure behavior")
+	_expect(swarm.find_child("Predator", true, false) == null, "Glassfin Swarm spacing cue should not reuse predator behavior")
+	scene_main.queue_free()
 
 func _test_lantern_ray_timing_lane_is_visual_only() -> void:
 	var main := MainScene.instantiate()
