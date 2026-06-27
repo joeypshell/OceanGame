@@ -64,7 +64,7 @@ const RUN_SUMMARY_COMPACT_BOTTOM := 314.0
 const RUN_SUMMARY_TALL_BOTTOM := 624.0
 const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
 const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
-const DIVE_STATUS_MAX_CHARS := 76
+const DIVE_STATUS_MAX_CHARS := 72
 const ECHO_LENS_PULSE_DURATION := 1.2
 const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
@@ -653,7 +653,7 @@ func _on_glass_kelp_ledge_body_entered(body: Node2D) -> void:
 	if body == player:
 		player_near_glass_kelp_ledge = true
 		if status_label != null:
-			status_label.text = "Glass Kelp Ledge: record the kelp reading."
+			status_label.text = "Glass Kelp: read kelp."
 		if is_inside_tree():
 			_update_hud()
 
@@ -667,7 +667,7 @@ func _on_hollow_reef_body_entered(body: Node2D) -> void:
 	if body == player:
 		player_near_hollow_reef = true
 		if status_label != null:
-			status_label.text = "Hollow Reef: record the cave reading."
+			status_label.text = "Hollow Reef: read cave."
 		if is_inside_tree():
 			_update_hud()
 
@@ -681,7 +681,7 @@ func _on_salvage_manifest_body_entered(body: Node2D) -> void:
 	if body == player:
 		player_near_salvage_manifest = true
 		if status_label != null and progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID):
-			status_label.text = "Salvage pocket: recover the wreck manifest."
+			status_label.text = "Salvage: recover manifest."
 		if is_inside_tree():
 			_update_hud()
 
@@ -695,7 +695,7 @@ func _on_salvage_data_cache_body_entered(body: Node2D) -> void:
 	if body == player:
 		player_near_salvage_data_cache = true
 		if status_label != null:
-			status_label.text = "Salvage pocket: recover the data cache."
+			status_label.text = "Salvage: recover data cache."
 		if is_inside_tree():
 			_update_hud()
 
@@ -709,7 +709,7 @@ func _on_tideglass_sample_body_entered(body: Node2D) -> void:
 	if body == player:
 		player_near_tideglass_sample = true
 		if status_label != null:
-			status_label.text = "Mirror Kelp Pass: recover the Tideglass Sample."
+			status_label.text = "Mirror Kelp: recover Tideglass."
 		if is_inside_tree():
 			_update_hud()
 
@@ -1690,29 +1690,29 @@ func _format_hud_prompt() -> String:
 		prompt = "Resonance Alcove: %s record hatch echo" % _action_label("interact")
 	elif player_near_glass_kelp_ledge:
 		if run_glass_kelp_reading_recovered:
-			prompt = "Glass Kelp Ledge: reading recorded - return via Blackwater"
+			prompt = "Glass Kelp read"
 		else:
-			prompt = "Glass Kelp Ledge: %s record kelp reading" % _action_label("interact")
+			prompt = "Glass Kelp: %s" % _action_label("interact")
 	elif player_near_hollow_reef:
 		if run_hollow_reef_reading_recovered:
-			prompt = "Hollow Reef: reading recorded - return via Dusk"
+			prompt = "Hollow Reef read"
 		else:
-			prompt = "Hollow Reef: %s record cave reading" % _action_label("interact")
+			prompt = "Hollow Reef: %s" % _action_label("interact")
 	elif player_near_salvage_manifest and progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID):
 		if run_salvage_manifest_recovered:
-			prompt = "Salvage Pocket: manifest recovered - return via Hollow Reef"
+			prompt = "Salvage manifest"
 		else:
-			prompt = "Salvage Pocket: %s recover wreck manifest" % _action_label("interact")
+			prompt = "Salvage manifest: %s" % _action_label("interact")
 	elif player_near_salvage_data_cache:
 		if run_salvage_data_cache_recovered:
-			prompt = "Salvage Pocket: cache recovered - return via Hollow Reef"
+			prompt = "Salvage cache"
 		else:
-			prompt = "Salvage Pocket: %s recover data cache" % _action_label("interact")
+			prompt = "Salvage cache: %s" % _action_label("interact")
 	elif player_near_tideglass_sample:
 		if run_tideglass_sample_recovered:
-			prompt = "Mirror Kelp Pass: Tideglass recorded - return via Wide Reef"
+			prompt = "Tideglass read"
 		else:
-			prompt = "Mirror Kelp Pass: %s recover Tideglass Sample" % _action_label("interact")
+			prompt = "Tideglass: %s" % _action_label("interact")
 	elif player_near_blackwater_crack:
 		prompt = _format_blackwater_prompt()
 	elif player_near_lantern_silt_nook:
@@ -3346,7 +3346,7 @@ func _format_burst_thruster_prompt() -> String:
 	if burst_thruster_cooldown_remaining > 0.0:
 		return "Burst: %ds cooldown" % ceili(burst_thruster_cooldown_remaining)
 
-	return "%s: burst -%d O2" % [_action_label("burst_thruster"), ceili(burst_thruster_oxygen_cost)]
+	return "%s: burst -%d" % [_action_label("burst_thruster"), ceili(burst_thruster_oxygen_cost)]
 
 func _format_decoy_pulse_prompt() -> String:
 	if progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):

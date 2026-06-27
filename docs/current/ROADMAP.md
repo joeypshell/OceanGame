@@ -12,7 +12,7 @@ North-star filter: current work should help the player see something tempting, r
 
 Area 01 Readability Rescue.
 
-Recent playtesting says the Hollow Reef / Wide Reef / Mirror Kelp / salvage-pocket cluster is too visually messy to test comfortably. This is a playability blocker, so content expansion is paused until the current Area 01 route is easier to inspect at normal play scale.
+Recent playtesting said the Hollow Reef / Wide Reef / Mirror Kelp / salvage-pocket cluster was too visually messy to test comfortably. The bounded readability review now accepts Area 01 readability with a watchlist, so content expansion may resume carefully through #622.
 
 Primary planning docs:
 
@@ -23,10 +23,9 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. Current user-directed pass: reconcile source-of-truth docs, compact this roadmap, and move historical issue-batch material out of the active roadmap.
-2. Complete the tiny readability-only fix list from `docs/planning/AREA_01_READABILITY_DECISION_REPORT_2026_06_27.md`, then repeat the same four-state capture check.
-3. Keep #622 paused while content expansion is paused. Resume it only after readability is explicitly accepted, and keep any salvage-pocket timing/hazard read light, sparse, and visually distinct.
-4. Run #623 only after #622 is either completed, rewritten, or intentionally skipped, because #623 validates the Salvage Cutter Return Payoff milestone.
+1. Resume #622: add one light salvage-pocket timing/read addition that is sparse, visually distinct, and does not introduce a new route branch, resource, upgrade, or bright label pile.
+2. Run #623 only after #622 is either completed, rewritten, or intentionally skipped, because #623 validates the Salvage Cutter Return Payoff milestone.
+3. Recalibrate after #623 before creating another issue batch; the next batch should move back toward player-visible progress rather than further readability rescue.
 
 ## Completed In This Readability Rescue
 
@@ -35,6 +34,7 @@ Primary planning docs:
 - #626 reduced redundant normal-play route labels in the same cluster.
 - #627 separated resources, knowledge payoffs, locked promises, and return/timing support into clearer color/opacity bands.
 - #628 recorded deterministic `wide_reef_salvage_open` evidence in `docs/planning/AREA_01_READABILITY_EVIDENCE_2026_06_27.md`.
+- The bounded decision review accepted Area 01 readability with watchlist after a tiny HUD/current-cue pass and four refreshed staged captures.
 
 ## Current Readability Rules
 
@@ -47,8 +47,6 @@ Primary planning docs:
 
 ## Deferred Until Readability Is Accepted
 
-- #622 salvage-pocket timing hazard or passive creature read.
-- #623 Salvage Cutter Return Payoff validation.
 - New route branches, caves, creatures, resources, upgrades, locked promises, or additional payoff nodes.
 - Broader mobile/controller work beyond preserving semantic input guardrails.
 - Final art overhaul, large UI reskin, broad visual regression suite, or golden-image infrastructure.
