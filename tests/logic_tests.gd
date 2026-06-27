@@ -59,6 +59,7 @@ func _initialize() -> void:
 	_run("Lantern Ray scan behavior", _test_lantern_ray_scan_behavior)
 	_run("Hollow Reef passive creature scan behavior", _test_hollow_reef_passive_creature_scan_behavior)
 	_run("Glassfin Swarm scan behavior", _test_glassfin_swarm_scan_behavior)
+	_run("Mirrorfin route-read behavior", _test_mirrorfin_route_read_behavior)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
 	_run("Tideglass Sample interaction", _test_tideglass_sample_interaction)
@@ -821,6 +822,107 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	_expect(not saved.has("glassfin_swarm_objective"), "Glassfin Swarm scan should not create durable objective-chain state")
 	_expect(not saved.has("monster_parts"), "Glassfin Swarm scan should not add monster-part economy state")
 	_expect(not saved.has("creature_inventory"), "Glassfin Swarm scan should not add creature inventory state")
+	main.queue_free()
+
+func _test_mirrorfin_route_read_behavior() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var mirror_kelp := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass") as Node2D
+	var mirrorfin := mirror_kelp.get_node("MirrorfinDrift") as Area2D
+	var reflection_lane := mirrorfin.get_node("ReflectionLane") as Polygon2D
+	var body := mirrorfin.get_node("MirrorfinBody") as Polygon2D
+	var safe_break := mirrorfin.get_node("SafeBreakCue") as Polygon2D
+	var scan_marker := mirrorfin.get_node("ScanMarker") as Polygon2D
+	var tideglass_core := mirror_kelp.get_node("TideglassSample/SampleCore") as Polygon2D
+	var predator_warning := main.get_node("Predators/PredatorWarning/WarningRibs") as Polygon2D
+	var scene_player := main.get_node("Player") as CharacterBody2D
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var oxygen_before: float = main.dive_session.oxygen
+	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	main.player = scene_player
+	mirrorfin.call("_ready")
+
+	_expect(mirrorfin.get_parent() == mirror_kelp, "Mirrorfin should be authored inside Mirror Kelp Pass")
+	_expect(mirrorfin.is_in_group("scan_targets"), "Mirrorfin should register as a scan target once the scene is ready")
+	_expect(main.call("_format_scan_target_type", mirrorfin) == "creature", "Mirrorfin scan target should read as a creature")
+	_expect(main.call("_scan_target_id", mirrorfin) == "mirrorfin_drift", "Mirrorfin should expose a stable discovery id")
+	_expect(mirrorfin.collision_layer == 0 and mirrorfin.collision_mask == 0, "Mirrorfin should not collide, damage, or block the route")
+	_expect(reflection_lane.color.b > reflection_lane.color.r and reflection_lane.color.a <= 0.16, "Mirrorfin reflection lane should use subtle cool timing language")
+	_expect(body.color.b > body.color.r and body.color.g > body.color.r, "Mirrorfin body should avoid predator-warning red")
+	_expect(body.color.b >= tideglass_core.color.b, "Mirrorfin should share branch reflection language without looking like cargo")
+	_expect(body.color.r < predator_warning.color.r, "Mirrorfin should stay visually distinct from predator warnings")
+	_expect(safe_break.color.g > safe_break.color.r and safe_break.color.a < 0.18, "Mirrorfin safe-break cue should be a subtle route read")
+	_expect(scan_marker.color.a < 0.3, "Mirrorfin scan marker should stay subtle while idle")
+	_expect(mirrorfin.find_child("CollisionShape2D", true, false) == null, "Mirrorfin should not add collision geometry")
+	_expect(mirrorfin.find_child("HarvestArea", true, false) == null, "Mirrorfin should not add harvesting behavior")
+	_expect(mirrorfin.find_child("HealthBar", true, false) == null, "Mirrorfin should not add combat health UI")
+	_expect(mirrorfin.find_child("Predator", true, false) == null, "Mirrorfin should not reuse predator behavior")
+	_expect(main.progression_state.to_save_data() == save_before, "Mirrorfin passive route read should not mutate progression")
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "Mirrorfin passive route read should not drain oxygen")
+	_expect(main.dive_session.current_cargo == cargo_before, "Mirrorfin passive route read should not mutate cargo")
+
+	var start_position := mirrorfin.global_position
+	var end_position: Vector2 = mirrorfin.get("move_end")
+	mirrorfin.call("_physics_process", 1.0)
+	_expect(mirrorfin.global_position != start_position, "Mirrorfin should drift instead of reading as static scenery")
+	_expect(mirrorfin.global_position.distance_to(end_position) < start_position.distance_to(end_position), "Mirrorfin drift should move toward the reflection break")
+
+	main.dive_session.reset(main.max_oxygen)
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_in_base = false
+	scene_player.global_position = mirrorfin.global_position
+	var scan_candidates: Array[Node] = [mirrorfin]
+	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == mirrorfin, "scanner target selection should find Mirrorfin reliably at close range")
+
+	var starting_oxygen: float = main.dive_session.oxygen
+	var discovery_id: String = main.call("_scan_target_id", mirrorfin)
+	var display_name: String = main.call("_scan_target_display_name", mirrorfin)
+	main.dive_session.drain_oxygen(main.scan_oxygen_cost)
+	main.progression_state.add_discovery(
+		discovery_id,
+		display_name,
+		main.call("_scan_target_description", mirrorfin),
+		main.call("_scan_target_gameplay_fact", mirrorfin)
+	)
+	main.run_completed_scans.append(discovery_id)
+	var first_scan_status: String = main.call("_compact_dive_status", "Scanned %s.%s" % [
+		display_name,
+		main.call("_format_repeat_scan_effect_text", mirrorfin) + main.call("_format_first_scan_guidance", mirrorfin)
+	])
+	var first_scan_guidance: String = main.call("_format_first_scan_guidance", mirrorfin)
+	_expect(main.progression_state.has_discovery("mirrorfin_drift"), "first Mirrorfin scan should record a normal durable discovery")
+	_expect(main.run_completed_scans == ["mirrorfin_drift"], "first Mirrorfin scan should count as current-run scan evidence")
+	_expect(is_equal_approx(main.dive_session.oxygen, starting_oxygen - main.scan_oxygen_cost), "first Mirrorfin scan should use the normal scan oxygen cost")
+	_expect(first_scan_status.contains("Scanned Mirrorfin Drift"), "first Mirrorfin scan status should name the creature")
+	_expect(first_scan_guidance.contains("reflection break"), "first Mirrorfin scan guidance should teach the route read")
+	_expect(first_scan_guidance.contains("after the shimmer"), "first Mirrorfin scan guidance should teach timing instead of fighting")
+	_expect_no_monster_combat_language(first_scan_status, "Mirrorfin first scan status")
+	_expect(not first_scan_status.to_lower().contains("field guide"), "Mirrorfin first scan should not imply field-guide UI")
+	_expect(not first_scan_status.to_lower().contains("checklist"), "Mirrorfin first scan should not imply checklist UI")
+
+	var oxygen_after_first: float = main.dive_session.oxygen
+	var repeat_scan_status: String = main.call("_compact_dive_status", "%s known.%s" % [
+		display_name,
+		main.call("_format_repeat_scan_effect_text", mirrorfin) + main.call("_format_signal_lens_pulse_text", mirrorfin)
+	])
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_after_first), "repeat Mirrorfin scan should stay free like existing known scans")
+	_expect(main.run_completed_scans == ["mirrorfin_drift"], "repeat Mirrorfin scan should not duplicate current-run scan evidence")
+	_expect(repeat_scan_status.contains("Mirrorfin Drift known"), "repeat Mirrorfin scan should use compact known-target copy")
+	_expect(repeat_scan_status.contains("observation refreshed"), "repeat Mirrorfin scan should refresh behavior text compactly")
+	_expect(main._format_discovery_memory_callout().contains("Mirrorfin Drift"), "Mirrorfin first scan should produce compact discovery memory")
+	_expect(main._format_discovery_memory_callout().contains("without fighting"), "Mirrorfin discovery memory should frame observation as non-combat")
+	_expect(main._format_route_choice_callout() == "", "Mirrorfin scan alone should not override stronger route-choice memory")
+	main.run_reached_dusk_trench = true
+	_expect(main._format_route_choice_callout().contains("Dusk Trench"), "Dusk reach evidence should keep priority over Mirrorfin observation")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(saved.get("scan_discoveries", {}).has("mirrorfin_drift"), "Mirrorfin discovery should persist through normal scan discovery storage")
+	_expect(saved.get("banked_resources", {}) == save_before.get("banked_resources", {}), "Mirrorfin scan should not mutate resources")
+	_expect(saved.get("purchased_upgrades", {}) == save_before.get("purchased_upgrades", {}), "Mirrorfin scan should not mutate upgrades")
+	_expect(not saved.has("mirrorfin_objective"), "Mirrorfin scan should not create durable objective-chain state")
+	_expect(not saved.has("monster_parts"), "Mirrorfin scan should not add monster-part economy state")
+	_expect(not saved.has("creature_inventory"), "Mirrorfin scan should not add creature inventory state")
 	main.queue_free()
 
 func _test_wide_chamber_salvage_pocket_entrance() -> void:

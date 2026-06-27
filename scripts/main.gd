@@ -1942,6 +1942,8 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 		return " Hollow Reef Skitter observation refreshed."
 	elif _scan_target_id(target) == "glassfin_swarm":
 		return " Glassfin Swarm spacing observation refreshed."
+	elif _scan_target_id(target) == "mirrorfin_drift":
+		return " Mirrorfin reflection observation refreshed."
 	elif _scan_target_id(target) == "thermal_vent":
 		return " Warm clue refreshed; glow route optional."
 	elif _scan_target_id(target) == "shell_reef_shelf":
@@ -2031,6 +2033,8 @@ func _format_first_scan_guidance(target: Node) -> String:
 			return " Observe the upper shelf timing, then return through Hollow Reef."
 		"glassfin_swarm":
 			return " Observe the spacing lane, pass around the swarm, then return through Hollow Reef."
+		"mirrorfin_drift":
+			return " Observe the reflection break, pass after the shimmer, then return through Wide Reef."
 		"thermal_vent":
 			return " Warm current marks optional glow; bank Pressure Seal clue."
 		"shell_reef_shelf":
@@ -3375,6 +3379,8 @@ func _format_discovery_name(discovery_id: String) -> String:
 			return "Hollow Reef Skitter"
 		"glassfin_swarm":
 			return "Glassfin Swarm"
+		"mirrorfin_drift":
+			return "Mirrorfin Drift"
 		"lantern_fry":
 			return "Lantern Fry"
 		_:
@@ -3753,6 +3759,8 @@ func _format_discovery_memory_callout() -> String:
 		return "\nDiscovery remembered: Gulper Eel - warning-lane behavior can be studied."
 	if run_completed_scans.has("glassfin_swarm"):
 		return "\nDiscovery remembered: Glassfin Swarm - spacing can be read without fighting."
+	if run_completed_scans.has("mirrorfin_drift"):
+		return "\nDiscovery remembered: Mirrorfin Drift - reflection breaks can be read without fighting."
 	if run_completed_scans.has("lantern_ray"):
 		return "\nDiscovery remembered: Lantern Ray - lower-route movement can be observed without fighting."
 	if run_completed_scans.has("thermal_vent"):
@@ -3894,6 +3902,8 @@ func _format_scan_target_type(target: Node) -> String:
 		"hollow_reef_skitter":
 			return "creature"
 		"glassfin_swarm":
+			return "creature"
+		"mirrorfin_drift":
 			return "creature"
 		"gulper_eel":
 			return "creature"
