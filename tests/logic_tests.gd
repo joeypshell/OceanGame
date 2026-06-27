@@ -2356,6 +2356,24 @@ func _test_region_memory_result_callout() -> void:
 	var hollow_observation_over_dusk := main._format_region_memory_callout()
 	_expect(hollow_observation_over_dusk.contains("Hollow Reef"), "Hollow Reef observation should take priority over generic Dusk reach memory")
 	_expect(not hollow_observation_over_dusk.contains("Dusk Trench -"), "Hollow Reef observation should not collapse back to generic Dusk memory")
+	main.run_reached_dusk_trench = false
+	main.run_completed_scans = ["glassfin_swarm"]
+	var glassfin_memory := main._format_region_memory_callout()
+	_expect(glassfin_memory.contains("Glassfin Swarm"), "Glassfin Swarm scan should remember the creature-route place")
+	_expect(glassfin_memory.contains("spacing window"), "Glassfin Swarm memory should say what was learned compactly")
+	_expect(glassfin_memory.contains("Hollow Reef"), "Glassfin Swarm memory should preserve broad return-route language")
+	_expect_no_monster_combat_language(glassfin_memory, "Glassfin Swarm remembered place")
+	_expect(not glassfin_memory.to_lower().contains("field guide"), "Glassfin Swarm memory should not imply field-guide UI")
+	_expect(not glassfin_memory.to_lower().contains("checklist"), "Glassfin Swarm memory should not imply checklist UI")
+	main.run_reached_dusk_trench = true
+	var dusk_over_glassfin := main._format_region_memory_callout()
+	_expect(dusk_over_glassfin.contains("Dusk Trench"), "Dusk reach evidence should take priority over Glassfin observation")
+	_expect(not dusk_over_glassfin.contains("Glassfin Swarm"), "Glassfin observation should not crowd out Dusk route evidence")
+	main.run_reached_dusk_trench = false
+	main.run_hollow_reef_reading_recovered = true
+	var hollow_over_glassfin := main._format_region_memory_callout()
+	_expect(hollow_over_glassfin.contains("Hollow Reef"), "Hollow Reef route evidence should take priority over Glassfin observation")
+	_expect(not hollow_over_glassfin.contains("Glassfin Swarm"), "Glassfin observation should not crowd out Hollow Reef route evidence")
 	main.free()
 
 func _test_discovery_memory_result_callout() -> void:
@@ -2379,6 +2397,15 @@ func _test_discovery_memory_result_callout() -> void:
 	_expect_no_monster_combat_language(lantern_ray_discovery_memory, "Lantern Ray discovery memory")
 	_expect(not lantern_ray_discovery_memory.to_lower().contains("field guide"), "Lantern Ray discovery memory should not imply a field-guide UI")
 	_expect(not lantern_ray_discovery_memory.to_lower().contains("checklist"), "Lantern Ray discovery memory should not imply checklist UI")
+
+	main.run_completed_scans = ["glassfin_swarm"]
+	var glassfin_discovery_memory := main._format_discovery_memory_callout()
+	_expect(glassfin_discovery_memory.contains("Glassfin Swarm"), "Glassfin Swarm first scan should produce creature observation memory")
+	_expect(glassfin_discovery_memory.contains("spacing"), "Glassfin Swarm discovery memory should name the spacing lesson")
+	_expect(glassfin_discovery_memory.contains("without fighting"), "Glassfin Swarm discovery memory should frame observation as non-combat")
+	_expect_no_monster_combat_language(glassfin_discovery_memory, "Glassfin Swarm discovery memory")
+	_expect(not glassfin_discovery_memory.to_lower().contains("field guide"), "Glassfin Swarm discovery memory should not imply a field-guide UI")
+	_expect(not glassfin_discovery_memory.to_lower().contains("checklist"), "Glassfin Swarm discovery memory should not imply checklist UI")
 
 	main.run_completed_scans = ["pressure_wreck_signal", "wreck_signal_cache", "wreck_signal_cache"]
 	var memory := main._format_discovery_memory_callout()
@@ -2463,6 +2490,34 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not save_after_hollow_observation.has("hollow_reef_route"), "Hollow Reef route memory should not create durable route state")
 	_expect(not save_after_hollow_observation.has("recent_route_memory"), "Hollow Reef route memory should not create durable recent-route state")
 	_expect(not save_after_hollow_observation.has("route_graph"), "Hollow Reef route memory should not create route graph state")
+	main.run_completed_scans = ["glassfin_swarm"]
+	var save_before_glassfin_observation: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var glassfin_route_choice := main._format_route_choice_callout()
+	_expect(glassfin_route_choice.contains("Glassfin Swarm"), "Glassfin Swarm scan should produce route-choice memory")
+	_expect(glassfin_route_choice.contains("spacing"), "Glassfin Swarm route-choice memory should name the compact lesson")
+	_expect(glassfin_route_choice.contains("without fighting"), "Glassfin Swarm route-choice memory should reinforce observation-first creature direction")
+	_expect(not glassfin_route_choice.to_lower().contains("checklist"), "Glassfin Swarm route choice should not imply checklist UI")
+	_expect_no_monster_combat_language(glassfin_route_choice, "Glassfin Swarm route choice")
+	var glassfin_summary := main._format_extraction_result_summary(0, empty_cargo)
+	_expect(glassfin_summary.contains("Remembered place: Glassfin Swarm Route"), "Glassfin Swarm extraction summary should remember the creature-route place")
+	_expect(glassfin_summary.contains("Route choice: observed Glassfin Swarm spacing without fighting."), "Glassfin Swarm extraction summary should include one compact route-choice line")
+	_expect(glassfin_summary.contains("Discovery remembered: Glassfin Swarm"), "Glassfin Swarm extraction summary should include compact discovery memory")
+	_expect(glassfin_summary.find("Route choice:") == glassfin_summary.rfind("Route choice:"), "Glassfin Swarm extraction summary should not duplicate route-choice lines")
+	var save_after_glassfin_observation: Dictionary = main.progression_state.to_save_data()
+	_expect(save_after_glassfin_observation == save_before_glassfin_observation, "Glassfin Swarm route memory formatting should not mutate durable progression")
+	_expect(not save_after_glassfin_observation.has("glassfin_swarm_route"), "Glassfin Swarm route memory should not create durable route state")
+	_expect(not save_after_glassfin_observation.has("monster_journal"), "Glassfin Swarm route memory should not create monster journal state")
+	_expect(not save_after_glassfin_observation.has("creature_inventory"), "Glassfin Swarm route memory should not create creature inventory state")
+	main.run_reached_dusk_trench = true
+	var dusk_over_glassfin_route_choice := main._format_route_choice_callout()
+	_expect(dusk_over_glassfin_route_choice.contains("Dusk Trench"), "Dusk reach evidence should win over Glassfin route-choice memory")
+	_expect(not dusk_over_glassfin_route_choice.contains("Glassfin Swarm"), "Glassfin route-choice memory should not crowd out Dusk route evidence")
+	main.run_reached_dusk_trench = false
+	main.run_hollow_reef_reading_recovered = true
+	var hollow_over_glassfin_route_choice := main._format_route_choice_callout()
+	_expect(hollow_over_glassfin_route_choice.contains("Hollow Reef"), "Hollow Reef route evidence should win over Glassfin route-choice memory")
+	_expect(not hollow_over_glassfin_route_choice.contains("Glassfin Swarm"), "Glassfin route-choice memory should not crowd out Hollow Reef route evidence")
+	main.run_hollow_reef_reading_recovered = false
 	main.run_completed_scans = []
 
 	main.run_blackwater_trace_recovered = false
@@ -3367,6 +3422,31 @@ func _test_recent_expedition_log() -> void:
 	_expect_no_monster_combat_language(log_text, "Lantern Ray recent expedition log")
 
 	main.recent_expedition_log.clear()
+	main.progression_state.current_run_number = 82
+	main.progression_state.current_run_seed = 2082
+	main.progression_state.best_depth_reached = 336.0
+	main.run_completed_scans = ["glassfin_swarm"]
+	main.run_collected_resources = []
+	main.run_predator_contacts = 0
+	main.run_blue_chimney_draft_reading_recovered = false
+	main.run_blackwater_trace_recovered = false
+	main.run_reached_dusk_trench = false
+	main.run_hollow_reef_reading_recovered = false
+	var save_before_recent_glassfin: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	main._record_recent_expedition("Extracted", 0)
+	log_text = main._format_recent_expedition_log()
+	_expect(log_text.contains("#82 Extracted"), "recent expedition log should include Glassfin Swarm observation runs")
+	_expect(log_text.contains("route Glassfin Swarm"), "Glassfin Swarm observation should produce compact recent route memory")
+	_expect(log_text.contains("scans Glassfin Swarm"), "Glassfin Swarm scan should appear with readable scan name")
+	_expect(not log_text.contains("seed"), "Glassfin Swarm recent log should hide raw seed without debug telemetry")
+	_expect(not log_text.to_lower().contains("field guide"), "Glassfin Swarm recent log should not imply field-guide UI")
+	_expect(not log_text.to_lower().contains("checklist"), "Glassfin Swarm recent log should not imply checklist UI")
+	_expect_no_monster_combat_language(log_text, "Glassfin Swarm recent expedition log")
+	_expect(main._latest_recent_route_memory() == "Glassfin Swarm", "latest route helper should expose Glassfin Swarm after a swarm observation")
+	_expect(main.progression_state.to_save_data() == save_before_recent_glassfin, "Glassfin Swarm recent route memory should remain session-only")
+	_expect(not main.progression_state.to_save_data().has("glassfin_swarm_route"), "recent Glassfin Swarm memory should not create durable route state")
+
+	main.recent_expedition_log.clear()
 	main.progression_state.current_run_number = 81
 	main.progression_state.current_run_seed = 2081
 	main.progression_state.best_depth_reached = 260.0
@@ -3403,7 +3483,7 @@ func _test_recent_expedition_log() -> void:
 	main.progression_state.current_run_number = 10
 	main.progression_state.current_run_seed = 2010
 	main.progression_state.best_depth_reached = 302.0
-	main.run_completed_scans = ["thermal_vent", "lantern_ray"]
+	main.run_completed_scans = ["thermal_vent", "lantern_ray", "glassfin_swarm"]
 	main.run_collected_resources = ["shell_fragments"]
 	main.run_predator_contacts = 2
 	main.run_blue_chimney_draft_reading_recovered = true
@@ -3415,6 +3495,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(log_text.contains("route Dusk Trench"), "recent expedition log should prioritize Dusk reach evidence")
 	_expect(not log_text.contains("route Blackwater"), "Dusk recent route memory should take priority over Blackwater")
 	_expect(not log_text.contains("route Lantern Ray"), "Dusk recent route memory should take priority over Lantern Ray observation")
+	_expect(not log_text.contains("route Glassfin Swarm"), "Dusk recent route memory should take priority over Glassfin observation")
 	_expect(log_text.contains("scans Thermal Vent/Lantern Ray"), "Dusk recent log should still keep compact scan names when Lantern Ray was scanned")
 	_expect(log_text.find("route Dusk Trench") == log_text.rfind("route Dusk Trench"), "recent expedition log should not duplicate Dusk route memory")
 	_expect(not log_text.contains("seed"), "Dusk recent log should hide raw seed without debug telemetry")
@@ -3425,7 +3506,7 @@ func _test_recent_expedition_log() -> void:
 	main.progression_state.current_run_number = 11
 	main.progression_state.current_run_seed = 2011
 	main.progression_state.best_depth_reached = 312.0
-	main.run_completed_scans = ["thermal_vent", "lantern_ray"]
+	main.run_completed_scans = ["thermal_vent", "lantern_ray", "glassfin_swarm"]
 	main.run_collected_resources = ["shell_fragments"]
 	main.run_predator_contacts = 2
 	main.run_blue_chimney_draft_reading_recovered = true
@@ -3438,6 +3519,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(log_text.contains("route Hollow Reef"), "recent expedition log should prioritize Hollow Reef over Dusk and Blackwater")
 	_expect(not log_text.contains("route Dusk Trench"), "Hollow Reef recent route memory should take priority over Dusk")
 	_expect(not log_text.contains("route Blackwater"), "Hollow Reef recent route memory should take priority over Blackwater")
+	_expect(not log_text.contains("route Glassfin Swarm"), "Hollow Reef recent route memory should take priority over Glassfin observation")
 	_expect(not log_text.contains("route Lantern Ray"), "Hollow Reef recent route memory should take priority over creature observation")
 	_expect_no_echo_lens_locator_language(log_text, "Hollow Reef recent expedition log")
 	_expect(main._latest_recent_route_memory() == "Hollow Reef", "latest route helper should expose Hollow Reef for the next ready panel")

@@ -3344,6 +3344,8 @@ func _format_route_choice_callout() -> String:
 		return "Route choice: observed Hollow Reef upper-shelf timing."
 	if run_reached_dusk_trench:
 		return "Route choice: lower-route research push reached Dusk Trench."
+	if _run_has_glassfin_swarm_observation():
+		return "Route choice: observed Glassfin Swarm spacing without fighting."
 	if run_blackwater_trace_recovered:
 		return "Route choice: lower-route research push reached Blackwater."
 	if run_blue_chimney_draft_reading_recovered:
@@ -3380,6 +3382,8 @@ func _format_recent_route_memory() -> String:
 		return "Hollow Reef"
 	if run_reached_dusk_trench:
 		return "Dusk Trench"
+	if _run_has_glassfin_swarm_observation():
+		return "Glassfin Swarm"
 	if run_blackwater_trace_recovered:
 		return "Blackwater"
 	if run_blue_chimney_draft_reading_recovered:
@@ -3490,6 +3494,8 @@ func _format_region_memory_callout() -> String:
 		return "Remembered place: Hollow Reef - upper-shelf timing, return through Blackwater."
 	if run_reached_dusk_trench:
 		return "Remembered place: Dusk Trench - return up-left through Blackwater and Silt Vein to Blue Chimney."
+	if _run_has_glassfin_swarm_observation():
+		return "Remembered place: Glassfin Swarm Route - spacing window in the wide chamber; return through Hollow Reef."
 	if run_completed_scans.has("lantern_ray"):
 		return "Remembered place: Lantern Ray Route - watch the timing lane and return through Blackwater."
 	if run_predator_contacts > 0 or run_completed_scans.has("gulper_eel"):
@@ -3510,6 +3516,8 @@ func _format_discovery_memory_callout() -> String:
 		return "\nDiscovery remembered: Pressure-Locked Research Wreck - pressure access can open this route."
 	if run_completed_scans.has("gulper_eel"):
 		return "\nDiscovery remembered: Gulper Eel - warning-lane behavior can be studied."
+	if run_completed_scans.has("glassfin_swarm"):
+		return "\nDiscovery remembered: Glassfin Swarm - spacing can be read without fighting."
 	if run_completed_scans.has("lantern_ray"):
 		return "\nDiscovery remembered: Lantern Ray - lower-route movement can be observed without fighting."
 	if run_completed_scans.has("thermal_vent"):
@@ -3521,6 +3529,9 @@ func _format_discovery_memory_callout() -> String:
 
 func _run_has_hollow_reef_observation() -> bool:
 	return run_completed_scans.has("hollow_reef_skitter")
+
+func _run_has_glassfin_swarm_observation() -> bool:
+	return run_completed_scans.has("glassfin_swarm")
 
 func _format_scan_ids(scan_ids: Array[String]) -> String:
 	if scan_ids.is_empty():
