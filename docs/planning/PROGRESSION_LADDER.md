@@ -65,3 +65,10 @@ Avoid future upgrades that are only larger numbers unless they directly create a
 - Purpose: make deeper ocean progress feel like uncovering forbidden places, not just buying stats.
 - Possible unlocks: pressure pockets, wreck interiors, hidden vent routes, predator-safe timing windows, strange scan signatures, and abyssal-region entrances.
 - Constraint: mystery clues should point toward curiosity and route planning, not exact checklist coordinates.
+
+## Future Candidate: Resonance Key I
+
+- Purpose: eventually turn the visible `Sealed Shelf Hatch` into one small return payoff after the player has `Echo Lens I` context and has recovered East Shelf or lower-connector research.
+- Recommended behavior change: open one hatch-specific pocket or threshold, not a general sealed-door system.
+- Constraint: do not add a broad upgrade tier, tech tree, minimap, quest checklist, field guide, new material economy, or full interior system. `Echo Lens I` should make the hatch readable; it should not open every sealed route by itself.
+- Planning note: `docs/planning/SEALED_SHELF_HATCH_UPGRADE_PROMISE_2026_06_26.md`.
