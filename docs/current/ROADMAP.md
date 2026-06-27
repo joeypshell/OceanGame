@@ -6,7 +6,7 @@ Current direction: build a 2D alien-ocean expedition game where every morning th
 
 Latest milestone closeout: `docs/planning/FIRST_NOTICEABLY_LARGER_DIVE_MAP_VALIDATION_2026_06_27.md` closes the player-visible milestone pivot as pass with watchlist. East Shelf now has an obvious branch mouth, cave-like pocket, visible SignalCore payoff, return cues, and a sealed deeper-route promise. The next work should move to the next player-visible gameplay milestone rather than repeatedly polishing or revalidating this same early branch.
 
-Current active milestone: choose the next player-visible milestone. Good candidates are a second ordinary-play route decision, a stronger reason to revisit lower pockets, or the next narrow access/payoff step that makes the ocean feel more explorable. Keep the same rule from the pivot: a normal five-minute play session should notice the change without reading roadmap notes.
+Current active milestone: First Meaningful Route Choice. `docs/planning/FIRST_MEANINGFUL_ROUTE_CHOICE_MILESTONE_2026_06_27.md` defines the next player-visible batch: make the larger map matter by contrasting safer Shell Reef / midwater banking against East Shelf / lower-route research pushes, then validate that ordinary play now contains a recognizable route decision.
 
 First expanded region layout: `docs/planning/FIRST_EXPANDED_DIVE_REGION_LAYOUT_2026_06_26.md` defines `East Shelf Spur` as the first wider side-route prototype. It should add a right-side midwater branch, `East Shelf Arch` landmark, cave/wreck-pocket entrance, one seeded daily opportunity, one upgrade-locked promise, and safe-return cues while preserving the current base column and existing loop.
 
