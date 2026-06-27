@@ -357,10 +357,14 @@ func _test_spawn_selection() -> void:
 
 	var vent_glow := _make_spawn_point("vent", "resource", "glow_plankton", "deep", "deep_reward", Vector2(90.0, 100.0))
 	root.add_child(vent_glow)
+	var blue_chimney_glow := _make_spawn_point("blue_chimney", "resource", "glow_plankton", "deep", "deep_reward", Vector2(110.0, 130.0))
+	root.add_child(blue_chimney_glow)
 	var vent_positions := SpawnSelectionScript.positions_for_target(root, SpawnPointScript, "resource", "glow_plankton", "deep_reward")
-	_expect(vent_positions.size() == 1, "thermal vent pocket candidates should be selectable authored points without adding extra pickups")
+	_expect(vent_positions.size() == 2, "lower-route glow candidates should be selectable authored points without adding extra pickups")
 	_expect(vent_positions.has(Vector2(90.0, 100.0)), "thermal vent pocket should expose inspectable glow placement")
+	_expect(vent_positions.has(Vector2(110.0, 130.0)), "Blue Chimney should expose an optional existing-glow placement")
 	_expect(vent_glow.depth_band == "deep", "thermal vent glow candidates should preserve deep resource identity")
+	_expect(blue_chimney_glow.depth_band == "deep", "Blue Chimney glow candidate should preserve deep resource identity")
 	root.free()
 
 func _test_condition_weighted_spawn_selection() -> void:
@@ -788,6 +792,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var blue_chimney_signal := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity") as Node2D
 	var blue_chimney_signal_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/BlueChimneySignalOpportunity/SignalWash") as Polygon2D
 	var blue_chimney_crack := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/ClosedLowerCrack") as Polygon2D
+	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
 	var shelf_glimmer := main.get_node("EastShelfSpur/ShelfGlimmerOpportunity") as Node2D
@@ -834,6 +839,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blue_chimney_signal_wash.color.a <= 0.1, "Blue Chimney signal wash should stay subtle, not a guaranteed reward marker")
 	_expect(blue_chimney_crack.color.a >= 0.5, "Blue Chimney Pocket should include a visible closed lower turnback")
 	_expect(blue_chimney_pocket.get_node_or_null("Interior") == null, "Blue Chimney Pocket scaffold should not add a full interior system")
+	_expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
+	_expect(blue_chimney_glow_candidate.depth_band == "deep", "Blue Chimney material candidate should preserve deep resource identity")
+	_expect(blue_chimney_glow_candidate.cluster_pattern == "deep_reward", "Blue Chimney material candidate should remain optional deep-reward route pressure")
+	_expect(blue_chimney_glow_candidate.position.distance_to(blue_chimney_pocket.position) <= 72.0, "Blue Chimney material candidate should sit near the lower pocket")
+	_expect(main.get_node_or_null("ResourcePickups/BlueChimneyGlowPlankton") == null, "Blue Chimney candidate should not add an extra active resource pickup")
 
 	main.free()
 

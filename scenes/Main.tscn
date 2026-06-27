@@ -1120,6 +1120,14 @@ depth_band = "deep"
 cluster_pattern = "deep_reward"
 preferred_condition_id = "thermal_bloom"
 
+[node name="BlueChimneyA" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
+position = Vector2(2078, 2172)
+script = ExtResource("9_spawn_point")
+spawn_id = "glow_blue_chimney_a"
+target_id = "glow_plankton"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+
 [node name="CreatureRouteCandidates" type="Node2D" parent="."]
 
 [node name="CautiousRightGate" type="Node2D" parent="CreatureRouteCandidates"]
