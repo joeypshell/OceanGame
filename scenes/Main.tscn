@@ -1463,6 +1463,34 @@ offset_bottom = 84.0
 theme_override_font_sizes/font_size = 12
 text = "SALVAGE CLOSED"
 
+[node name="OpenedPocketLane" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
+visible = false
+position = Vector2(82, -6)
+
+[node name="EntryWater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
+color = Color(0.14, 0.58, 0.62, 0.2)
+polygon = PackedVector2Array(-74, -22, 18, -44, 112, -18, 130, 34, 40, 56, -60, 30)
+
+[node name="InnerHullPocket" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
+color = Color(0.02, 0.045, 0.052, 0.54)
+polygon = PackedVector2Array(-44, -12, 42, -30, 104, -6, 92, 30, 18, 42, -50, 18)
+
+[node name="CutEdgeGlow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
+color = Color(1, 0.78, 0.34, 0.44)
+polygon = PackedVector2Array(-56, -18, 18, -34, 26, -24, -44, -8, -48, 18, 28, 4, 34, 14, -54, 32)
+
+[node name="ReturnCurrentCue" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
+color = Color(0.66, 1, 0.86, 0.18)
+polygon = PackedVector2Array(58, 44, -24, 34, -106, 10, -92, -8, -4, 14, 76, 24)
+
+[node name="OpenLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane"]
+offset_left = 30.0
+offset_top = 46.0
+offset_right = 182.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 11
+text = "RETURN VIA HOLLOW"
+
 [node name="MirrorKelpPass" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
 position = Vector2(760, 34)
 

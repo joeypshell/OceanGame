@@ -1042,6 +1042,10 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var data_cache_core := salvage.get_node("DataCache/CacheCore") as Polygon2D
 	var interact_zone := salvage.get_node("InteractZone") as Area2D
 	var promise_label := salvage.get_node("PromiseLabel") as Label
+	var opened_lane := salvage.get_node("OpenedPocketLane") as Node2D
+	var open_entry_water := salvage.get_node("OpenedPocketLane/EntryWater") as Polygon2D
+	var open_return_cue := salvage.get_node("OpenedPocketLane/ReturnCurrentCue") as Polygon2D
+	var open_label := salvage.get_node("OpenedPocketLane/OpenLabel") as Label
 	var salvage_shell_candidate := main.get_node("StarterResourceCandidates/ShellFragments/SalvagePocketA") as SpawnPoint
 	var future_choice_shadow := chamber.get_node("FutureChoiceShadow") as Polygon2D
 	var return_current := chamber.get_node("ReturnCurrentBackToHollow") as Polygon2D
@@ -1084,6 +1088,7 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(not promise_label.text.to_lower().contains("pressure"), "salvage promise label should not conflict with pressure-gate copy")
 	_expect(not promise_label.text.to_lower().contains("echo"), "salvage promise label should not conflict with Echo Lens copy")
 	_expect(not promise_label.text.to_lower().contains("key"), "salvage promise label should not conflict with Resonance Key copy")
+	_expect(not opened_lane.visible, "salvage opened lane should stay hidden before Salvage Cutter I")
 	_expect(salvage.get_node_or_null("Interior") == null, "salvage promise should not add a full interior system")
 	_expect(salvage.get_node_or_null("ResourcePickup") == null, "salvage promise should not add loot pickup behavior")
 	_expect(salvage.find_child("LootTable", true, false) == null, "salvage promise should not add a loot table")
@@ -1096,6 +1101,21 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(main.progression_state.to_save_data() == save_before, "salvage promise should not mutate progression")
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "salvage promise should not drain oxygen")
 	_expect(main.dive_session.current_cargo == cargo_before, "salvage promise should not mutate cargo")
+
+	main.progression_state.purchased_upgrades[SalvageCutterUpgrade.id] = true
+	var save_before_open_sync: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	main.call("_sync_salvage_pocket_open_state")
+	_expect(opened_lane.visible, "owned Salvage Cutter I should reveal a small opened salvage pocket lane")
+	_expect(not lock_bars.visible, "owned Salvage Cutter I should visually remove the sealed lock bars")
+	_expect(hatch_panel.color.a <= 0.24, "opened salvage hatch should read as cut open rather than sealed")
+	_expect(cutter_port_label.text == "CUTTER READY", "owned cutter should update the port readback")
+	_expect(promise_label.text == "SALVAGE OPEN", "owned cutter should update the broad pocket state")
+	_expect(open_label.text.contains("RETURN VIA HOLLOW"), "opened salvage pocket should preserve broad safe-return language")
+	_expect(open_entry_water.color.a <= 0.22, "opened salvage pocket water should be readable but quieter than pickups")
+	_expect(open_return_cue.color.g > open_return_cue.color.r, "opened salvage return cue should use safe-current color language")
+	_expect(main.progression_state.to_save_data() == save_before_open_sync, "opening presentation should not mutate save state beyond owned cutter")
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "opening presentation should not drain oxygen")
+	_expect(main.dive_session.current_cargo == cargo_before, "opening presentation should not mutate cargo")
 	main.queue_free()
 	root.queue_free()
 

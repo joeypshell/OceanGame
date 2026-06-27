@@ -236,6 +236,12 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var wide_chamber_return_far: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentFarRib
 @onready var wide_chamber_return_mid: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentMidChain
 @onready var wide_chamber_return_entry: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentEntryChain
+@onready var salvage_hatch_panel: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/SealedHatchPanel
+@onready var salvage_lock_bars: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/LockBars
+@onready var salvage_glint: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/SalvageGlint
+@onready var salvage_tool_label: Label = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort/ToolLabel
+@onready var salvage_promise_label: Label = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/PromiseLabel
+@onready var salvage_opened_pocket_lane: Node2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane
 @onready var salvage_data_cache_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/InteractZone
 @onready var salvage_data_cache_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheHalo
 @onready var salvage_data_cache_core: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheCore
@@ -367,6 +373,7 @@ func _ready() -> void:
 	_load_progression()
 	_prepare_next_run()
 	_sync_discovery_reveals()
+	_sync_salvage_pocket_open_state()
 	_update_hud()
 
 func _process(delta: float) -> void:
@@ -536,6 +543,7 @@ func _prepare_next_run() -> void:
 	_place_starter_resources_for_run()
 	_sync_condition_visuals()
 	_sync_wreck_echo_state()
+	_sync_salvage_pocket_open_state()
 
 func _on_base_zone_body_entered(body: Node2D) -> void:
 	if body == player:
@@ -1374,7 +1382,7 @@ func _stage_debug_hollow_reef_payoff_visual_review(recovered := false) -> void:
 	_update_depth()
 	_update_hud()
 
-func _stage_debug_wide_chamber_visual_review() -> void:
+func _stage_debug_wide_chamber_visual_review(cutter_owned := false) -> void:
 	if not OS.has_feature("web"):
 		return
 
@@ -1395,6 +1403,8 @@ func _stage_debug_wide_chamber_visual_review() -> void:
 
 	progression_state.purchased_upgrades[ECHO_LENS_UPGRADE_ID] = true
 	progression_state.purchased_upgrades[RESONANCE_KEY_UPGRADE_ID] = true
+	if cutter_owned:
+		progression_state.purchased_upgrades[SALVAGE_CUTTER_UPGRADE_ID] = true
 	current_expedition_condition = {
 		"id": "calm_current",
 		"display_name": "Calm Current",
@@ -1403,11 +1413,12 @@ func _stage_debug_wide_chamber_visual_review() -> void:
 	}
 	_sync_sealed_shelf_hatch_state()
 	_sync_blackwater_crack_gate_state()
+	_sync_salvage_pocket_open_state()
 	_sync_condition_visuals()
 	_update_blackwater_pressure_cue(BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
 
 	player = staged_player
-	player.global_position = chamber.global_position + Vector2(112.0, -18.0)
+	player.global_position = chamber.global_position + (Vector2(456.0, -88.0) if cutter_owned else Vector2(112.0, -18.0))
 	player.velocity = Vector2.ZERO
 	player_in_base = false
 	dive_session.has_left_base = true
@@ -1423,8 +1434,8 @@ func _stage_debug_wide_chamber_visual_review() -> void:
 	_sync_glass_kelp_reading_state()
 	_sync_hollow_reef_reading_state()
 	_sync_salvage_data_cache_state()
-	visual_smoke_route_stage = "wide_reef_chamber"
-	status_label.text = "Debug review: Wide Reef Chamber staged."
+	visual_smoke_route_stage = "wide_reef_salvage_open" if cutter_owned else "wide_reef_chamber"
+	status_label.text = "Debug review: Wide Reef salvage pocket opened." if cutter_owned else "Debug review: Wide Reef Chamber staged."
 	_update_depth()
 	_update_hud()
 
@@ -1571,6 +1582,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_hollow_reef_payoff_visual_review(true)
 		"wide_reef_chamber":
 			_stage_debug_wide_chamber_visual_review()
+		"wide_reef_salvage_open":
+			_stage_debug_wide_chamber_visual_review(true)
 		"mirror_kelp_pass":
 			_stage_debug_mirror_kelp_visual_review()
 		"mirror_kelp_tideglass":
@@ -1762,7 +1775,7 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 		"decoy_pulse_1":
 			pass
 		"salvage_cutter_1":
-			pass
+			_sync_salvage_pocket_open_state()
 		_:
 			push_warning("Unknown upgrade effect: %s" % effect_id)
 
@@ -2744,6 +2757,40 @@ func _sync_salvage_data_cache_state() -> void:
 		spark.color = Color(1.0, 0.96, 0.74, 0.92)
 		spark.visible = true
 
+func _sync_salvage_pocket_open_state() -> void:
+	var hatch := salvage_hatch_panel
+	if hatch == null:
+		hatch = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/SealedHatchPanel") as Polygon2D
+	var lock_bars := salvage_lock_bars
+	if lock_bars == null:
+		lock_bars = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/LockBars") as Polygon2D
+	var glint := salvage_glint
+	if glint == null:
+		glint = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/SalvageGlint") as Polygon2D
+	var tool_label := salvage_tool_label
+	if tool_label == null:
+		tool_label = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort/ToolLabel") as Label
+	var promise_label := salvage_promise_label
+	if promise_label == null:
+		promise_label = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/PromiseLabel") as Label
+	var opened_lane := salvage_opened_pocket_lane
+	if opened_lane == null:
+		opened_lane = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane") as Node2D
+
+	var cutter_owned := progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID)
+	if opened_lane != null:
+		opened_lane.visible = cutter_owned
+	if lock_bars != null:
+		lock_bars.visible = not cutter_owned
+	if hatch != null:
+		hatch.color = Color(0.04, 0.09, 0.095, 0.22) if cutter_owned else Color(0.12, 0.22, 0.25, 0.58)
+	if glint != null:
+		glint.color = Color(1.0, 0.84, 0.46, 0.64) if cutter_owned else Color(0.95, 0.86, 0.58, 0.48)
+	if tool_label != null:
+		tool_label.text = "CUTTER READY" if cutter_owned else "CUTTER NEEDED"
+	if promise_label != null:
+		promise_label.text = "SALVAGE OPEN" if cutter_owned else "SALVAGE CLOSED"
+
 func _sync_tideglass_sample_state() -> void:
 	var halo := tideglass_sample_halo
 	if halo == null:
@@ -2972,6 +3019,7 @@ func _publish_visual_smoke_state() -> void:
 		"hollow_reef_reading_recovered": run_hollow_reef_reading_recovered,
 		"tideglass_sample_recovered": run_tideglass_sample_recovered,
 		"mirrorfin_drift_observed": run_completed_scans.has("mirrorfin_drift"),
+		"salvage_pocket_open": progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID),
 		"route_stage": visual_smoke_route_stage,
 	}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
