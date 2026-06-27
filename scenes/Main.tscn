@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=37 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -42,6 +42,9 @@ radius = 120.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lower_connector_echo"]
 radius = 110.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_resonance_alcove"]
+radius = 92.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_panel"]
 bg_color = Color(0.025, 0.075, 0.095, 0.74)
@@ -465,6 +468,13 @@ polygon = PackedVector2Array(40, -22, 78, -8, 88, 24, 54, 48, 12, 28, 4, -8)
 [node name="ReturnCurrentCue" type="Polygon2D" parent="EastShelfSpur/ResonanceAlcove"]
 color = Color(0.72, 1, 0.9, 0.11)
 polygon = PackedVector2Array(4, 70, -122, 26, -204, 36, -140, -2, -204, -42, -118, -22, 6, -44)
+
+[node name="InteractZone" type="Area2D" parent="EastShelfSpur/ResonanceAlcove"]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ResonanceAlcove/InteractZone"]
+shape = SubResource("CircleShape2D_resonance_alcove")
 
 [node name="ShelfDropConnector" type="Node2D" parent="EastShelfSpur"]
 

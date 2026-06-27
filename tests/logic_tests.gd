@@ -78,6 +78,7 @@ func _initialize() -> void:
 	_run("wreck echo route first pass", _test_wreck_echo_route_first_pass)
 	_run("East Shelf pocket result callout", _test_east_shelf_pocket_result_callout)
 	_run("lower connector echo opportunity", _test_lower_connector_echo_opportunity)
+	_run("Resonance Alcove research payoff", _test_resonance_alcove_research_payoff)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
@@ -717,6 +718,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ResonanceAlcove/AlcoveRim",
 		"EastShelfSpur/ResonanceAlcove/AlcoveGlow",
 		"EastShelfSpur/ResonanceAlcove/ReturnCurrentCue",
+		"EastShelfSpur/ResonanceAlcove/InteractZone",
+		"EastShelfSpur/ResonanceAlcove/InteractZone/CollisionShape2D",
 		"EastShelfSpur/ShelfDropConnector",
 		"EastShelfSpur/ShelfDropConnector/ConnectorMouth",
 		"EastShelfSpur/ShelfDropConnector/UpperDropShelf",
@@ -1351,6 +1354,45 @@ func _test_lower_connector_echo_opportunity() -> void:
 
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_lower_connector_echo_recovered, "Drop Echo research ping should reset between expeditions")
+	main.free()
+
+func _test_resonance_alcove_research_payoff() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_resonance_alcove = true
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Resonance Alcove"), "Resonance Alcove proximity should own the active dive prompt")
+	_expect(prompt.contains("record hatch echo"), "Resonance Alcove prompt should explain the narrow research payoff")
+
+	var locked_handled: bool = main.call("_try_resonance_alcove_interaction")
+	_expect(locked_handled, "Resonance Alcove should handle interaction before key ownership")
+	_expect(not main.run_resonance_alcove_research_recovered, "locked Resonance Alcove should not record research")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("behind the sealed hatch"), "locked Resonance Alcove should explain the hatch gate")
+
+	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var handled: bool = main.call("_try_resonance_alcove_interaction")
+	_expect(handled, "Resonance Alcove should handle interact while nearby during a dive")
+	_expect(main.run_resonance_alcove_research_recovered, "Resonance Alcove interaction should record one run-scoped research note")
+	_expect(main.dive_session.current_cargo == cargo_before, "Resonance Alcove research should not add cargo")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Return safely"), "Resonance Alcove payoff should preserve extraction pressure")
+
+	var repeat_handled: bool = main.call("_try_resonance_alcove_interaction")
+	_expect(repeat_handled, "Resonance Alcove should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recorded"), "Resonance Alcove repeat interaction should not duplicate the payoff")
+
+	main.player_near_resonance_alcove = false
+	var not_handled: bool = main.call("_try_resonance_alcove_interaction")
+	_expect(not not_handled, "Resonance Alcove should not consume interact outside its proximity zone")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("resonance_alcove"), "Resonance Alcove note should not become durable save data")
+	_expect(not saved.has("resonance_alcove_research"), "Resonance Alcove research should not create durable route state")
 	main.free()
 
 func _test_upgrade_bay_readability_states() -> void:
