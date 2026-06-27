@@ -60,6 +60,7 @@ func _initialize() -> void:
 	_run("Hollow Reef passive creature scan behavior", _test_hollow_reef_passive_creature_scan_behavior)
 	_run("Glassfin Swarm scan behavior", _test_glassfin_swarm_scan_behavior)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
+	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
 	_run("Glassfin Swarm spacing cue visual only", _test_glassfin_swarm_spacing_cue_visual_only)
 	_run("Lantern Ray timing lane is visual only", _test_lantern_ray_timing_lane_is_visual_only)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
@@ -829,6 +830,9 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var hatch_panel := salvage.get_node("SealedHatchPanel") as Polygon2D
 	var lock_bars := salvage.get_node("LockBars") as Polygon2D
 	var salvage_glint := salvage.get_node("SalvageGlint") as Polygon2D
+	var data_cache := salvage.get_node("DataCache") as Node2D
+	var data_cache_core := salvage.get_node("DataCache/CacheCore") as Polygon2D
+	var interact_zone := salvage.get_node("InteractZone") as Area2D
 	var promise_label := salvage.get_node("PromiseLabel") as Label
 	var future_choice_shadow := chamber.get_node("FutureChoiceShadow") as Polygon2D
 	var return_current := chamber.get_node("ReturnCurrentBackToHollow") as Polygon2D
@@ -847,21 +851,88 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	_expect(hatch_panel.color.b >= hatch_panel.color.g, "sealed hatch panel should read as cold wreck metal, not a resource")
 	_expect(lock_bars.color.b > lock_bars.color.r and lock_bars.color.a >= 0.3, "salvage lock bars should read as sealed promise language")
 	_expect(salvage_glint.color.a <= 0.5, "salvage glint should stay a subtle promise, not a collectable reward")
+	_expect(data_cache.position.x >= -10.0 and data_cache.position.x <= 40.0, "salvage data cache should sit inside the sealed pocket mouth")
+	_expect(data_cache_core.color.a >= 0.7, "salvage data cache should start visibly recoverable")
+	_expect(interact_zone.collision_layer == 0 and interact_zone.collision_mask == 1, "salvage interact zone should be an explicit player trigger, not route collision")
 	_expect(promise_label.text == "SALVAGE SEALED", "salvage promise label should be compact and honest about current implementation")
 	_expect(not promise_label.text.to_lower().contains("objective"), "salvage promise label should not imply objective checklist language")
 	_expect(not promise_label.text.to_lower().contains("map"), "salvage promise label should not imply exact locator UI")
-	_expect(salvage.get_node_or_null("InteractZone") == null, "salvage promise should not add an active interaction yet")
+	_expect(salvage.get_node_or_null("Interior") == null, "salvage promise should not add a full interior system")
 	_expect(salvage.get_node_or_null("ResourcePickup") == null, "salvage promise should not add loot pickup behavior")
-	_expect(salvage.find_child("CollisionShape2D", true, false) == null, "salvage promise should not add collision or block the route")
 	_expect(salvage.find_child("LootTable", true, false) == null, "salvage promise should not add a loot table")
 	_expect(salvage.find_child("HarvestArea", true, false) == null, "salvage promise should not add harvesting")
 	_expect(salvage.find_child("HealthBar", true, false) == null, "salvage promise should not add combat UI")
-	_expect(salvage.find_child("Interior", true, false) == null, "salvage promise should not add a full interior system")
 	_expect(main.progression_state.to_save_data() == save_before, "salvage promise should not mutate progression")
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "salvage promise should not drain oxygen")
 	_expect(main.dive_session.current_cargo == cargo_before, "salvage promise should not mutate cargo")
 	main.queue_free()
 	root.queue_free()
+
+func _test_salvage_data_cache_interaction() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_salvage_data_cache = true
+	main.dive_session.oxygen = 23.0
+	main.dive_session.current_cargo = ["glow_plankton"]
+	var cache_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheHalo") as Polygon2D
+	var cache_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheCore") as Polygon2D
+	var cache_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheSpark") as Polygon2D
+	main.call("_sync_salvage_data_cache_state")
+	_expect(cache_core.color.a >= 0.7, "salvage data cache should start visibly recoverable")
+	_expect(cache_spark.visible, "salvage data cache spark should start visible before recovery")
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Salvage Pocket"), "salvage proximity should own the active dive prompt")
+	_expect(prompt.contains("recover data cache"), "salvage prompt should explain the concrete knowledge payoff")
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+
+	var handled: bool = main.call("_try_salvage_data_cache_interaction")
+	_expect(handled, "salvage data cache should handle interact while nearby during a dive")
+	_expect(main.run_salvage_data_cache_recovered, "salvage data cache interaction should record one run-scoped cache")
+	_expect(main.run_reached_dusk_trench, "salvage cache recovery should count as meaningful lower-route reach evidence")
+	_expect(cache_halo.color.a <= 0.08, "salvage data cache halo should visibly dim after recovery")
+	_expect(cache_core.color.a <= 0.2, "salvage data cache core should visibly dim after recovery")
+	_expect(not cache_spark.visible, "salvage data cache spark should disappear after recovery")
+	_expect(is_equal_approx(main.dive_session.oxygen, 23.0), "salvage data cache should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["glow_plankton"], "salvage data cache should not add or remove cargo")
+	var save_after: Dictionary = main.progression_state.to_save_data()
+	_expect(save_after == save_before, "salvage data cache should not mutate durable progression")
+	_expect(not save_after.has("salvage_data_cache"), "salvage data cache should not create durable salvage state")
+	_expect(not save_after.has("salvage_inventory"), "salvage data cache should not create salvage inventory state")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Return safely"), "salvage data cache interaction should preserve extraction pressure")
+		_expect(main.status_label.text.contains("data cache"), "salvage status should name the visible payoff")
+
+	var repeat_handled: bool = main.call("_try_salvage_data_cache_interaction")
+	_expect(repeat_handled, "salvage data cache should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recovered"), "salvage repeat interaction should not duplicate the payoff")
+
+	main.player_near_salvage_data_cache = false
+	var not_handled: bool = main.call("_try_salvage_data_cache_interaction")
+	_expect(not not_handled, "salvage data cache should not consume interact outside its proximity zone")
+
+	var callout: String = main.call("_format_salvage_data_cache_research_callout")
+	_expect(callout.contains("Salvage data cache"), "salvage result memory should name the recovered cache")
+	_expect(callout.contains("sealed wreck pocket"), "salvage result memory should keep the future destination broad")
+	_expect_no_echo_lens_locator_language(callout, "salvage data cache result line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Salvage data cache"), "salvage extraction summary should include recovered cache memory")
+	_expect(not extraction_summary.to_lower().contains("loot table"), "salvage extraction summary should avoid loot-system language")
+	_expect(not extraction_summary.to_lower().contains("inventory"), "salvage extraction summary should avoid inventory language")
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_salvage_data_cache_recovered, "salvage cache should reset between expeditions")
+	_expect(cache_core.color.a >= 0.7, "salvage data cache should become visible again after expedition reset")
+	_expect(cache_spark.visible, "salvage data cache spark should reset after expedition reset")
+
+	var fresh_main := MainScript.new()
+	_expect(fresh_main._format_salvage_data_cache_research_callout() == "", "salvage result line should stay hidden before payoff recovery")
+	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not fresh_summary.contains("Salvage data cache"), "salvage extraction summary should stay hidden before payoff recovery")
+	fresh_main.free()
+	main.free()
 
 func _test_glassfin_swarm_spacing_cue_visual_only() -> void:
 	var main := MainScript.new()
@@ -1891,7 +1962,8 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_wide_chamber.get_node_or_null("ResourcePickup") == null, "Wide Reef Chamber should not add cargo or loot yet")
 	_expect(hollow_wide_chamber.get_node_or_null("Predator") == null, "Wide Reef Chamber should not add combat or monster pressure yet")
 	_expect(hollow_wide_chamber.get_node_or_null("PressureBoundary") == null, "Wide Reef Chamber should not add pressure gating yet")
-	_expect(hollow_wide_chamber.find_child("CollisionShape2D", true, false) == null, "Wide Reef Chamber should remain movement-readable visual staging")
+	_expect(hollow_wide_chamber.get_node_or_null("WreckSalvagePocketEntrance/InteractZone/CollisionShape2D") != null, "Wide Reef Chamber should only add collision for the nested salvage cache trigger")
+	_expect(hollow_wide_chamber.get_node_or_null("RouteCollision") == null, "Wide Reef Chamber should not add route-blocking collision")
 	_expect(hollow_wide_chamber.get_script() == null, "Wide Reef Chamber should remain authored scene presentation for this pass")
 	_expect(hollow_wide_glass_rib_span.get_node_or_null("InteractZone") == null, "Glass Rib Span should not add an interaction hotspot")
 	_expect(hollow_wide_low_crown_shelf.get_node_or_null("InteractZone") == null, "Low Crown Shelf should not add an interaction hotspot")
