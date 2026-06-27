@@ -42,6 +42,8 @@ Post-Blue-Chimney-payoff backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AF
 
 Lantern Silt payoff contract: `docs/planning/LANTERN_SILT_SAMPLE_PAYOFF_CONTRACT_2026_06_27.md` defines the first safe-branch payoff as one run-scoped `Lantern Silt Sample` interaction plus compact extraction memory. It should prove the left branch is a safer knowledge route without adding cargo, a new resource tier, durable quest state, minimap, combat, harvesting, or Blackwater Crack access.
 
+Silt Vein Fork post-payoff review: `docs/planning/SILT_VEIN_FORK_READABILITY_OXYGEN_REVIEW_2026_06_27.md` keeps current oxygen tuning after the first fork/payoff pass. The fork can move forward as a small route-choice proof, but future work should strengthen local branch silhouettes, return cues, and sealed-branch readability before adding larger cave/region scope.
+
 Post-expanded-region backlog update: `docs/planning/BACKLOG_REPLENISHMENT_AFTER_EXPANDED_REGION_PROTOTYPE_2026_06_26.md` creates the next ordered twenty-issue queue. The first cluster turns `East Shelf Spur` into route gameplay through an interactable pocket, run-scoped payoff, result memory, branch goal, and non-combat timing cue; the second cluster starts the first lower connector toward larger Dave-the-Diver-like side-view levels.
 
 Detailed design rules live in:
@@ -66,6 +68,7 @@ Detailed design rules live in:
 - `docs/planning/NEXT_ROUTE_FORK_AFTER_BLUE_CHIMNEY_2026_06_27.md`
 - `docs/planning/BACKLOG_REPLENISHMENT_AFTER_BLUE_CHIMNEY_PAYOFF_2026_06_27.md`
 - `docs/planning/LANTERN_SILT_SAMPLE_PAYOFF_CONTRACT_2026_06_27.md`
+- `docs/planning/SILT_VEIN_FORK_READABILITY_OXYGEN_REVIEW_2026_06_27.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
