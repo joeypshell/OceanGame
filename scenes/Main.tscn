@@ -1083,6 +1083,22 @@ polygon = PackedVector2Array(42, 96, -78, 42, -156, 40, -96, -4, -164, -42, -70,
 color = Color(0.58, 1, 0.86, 0.18)
 polygon = PackedVector2Array(142, 86, 40, 72, -50, 28, -132, -8, -108, -42, 10, -10, 110, 34)
 
+[node name="ReturnChainToDusk" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.66, 1, 0.88, 0.2)
+polygon = PackedVector2Array(186, 98, 78, 70, -28, 20, -154, -36, -126, -68, 16, -22, 124, 30)
+
+[node name="ReturnChainRibA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.82, 1, 0.92, 0.24)
+polygon = PackedVector2Array(80, 64, 22, 32, -34, 12, 28, 56)
+
+[node name="ReturnChainRibB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.82, 1, 0.92, 0.22)
+polygon = PackedVector2Array(-22, 14, -78, -16, -132, -34, -72, 12)
+
+[node name="DuskReturnFleck" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+color = Color(0.74, 1, 0.92, 0.28)
+polygon = PackedVector2Array(-142, -48, -126, -58, -108, -44, -124, -30)
+
 [node name="ReturnRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 color = Color(0.82, 1, 0.92, 0.24)
 polygon = PackedVector2Array(-78, 42, -18, 12, 42, 30, -24, 60)

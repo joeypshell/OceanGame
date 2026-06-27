@@ -1098,6 +1098,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReefToothB",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnCurrentToTrench",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitReturnRibbon",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnChainToDusk",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnChainRibA",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnChainRibB",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DuskReturnFleck",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitBackWall",
@@ -1227,6 +1231,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hollow_reef_entrance_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/EntranceRibA") as Polygon2D
 	var hollow_reef_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnCurrentToTrench") as Polygon2D
 	var hollow_reef_exit_ribbon := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitReturnRibbon") as Polygon2D
+	var hollow_reef_return_chain := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnChainToDusk") as Polygon2D
+	var hollow_reef_return_rib_a := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnChainRibA") as Polygon2D
+	var hollow_reef_return_rib_b := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnChainRibB") as Polygon2D
+	var hollow_reef_return_fleck := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DuskReturnFleck") as Polygon2D
 	var hollow_reef_exit_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitRib") as Polygon2D
 	var hollow_reef_exit_back := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitBackWall") as Polygon2D
 	var hollow_reef_reading_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore") as Node2D
@@ -1434,6 +1442,16 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_reef_exit_ribbon.color.g > hollow_reef_exit_ribbon.color.r, "Hollow Reef exit ribbon should use safe-return color language")
 	_expect(hollow_reef_exit_ribbon.color.a <= hollow_reef_return.color.a, "Hollow Reef exit ribbon should support the return current without becoming a second objective arrow")
 	_expect(hollow_reef_exit_ribbon.polygon[1].x < hollow_reef_exit_ribbon.polygon[0].x, "Hollow Reef exit ribbon should point back left toward the entrance")
+	_expect(hollow_reef_return_chain.color.g > hollow_reef_return_chain.color.r and hollow_reef_return_chain.color.b > hollow_reef_return_chain.color.r, "Hollow Reef return chain should use safe-current color language")
+	_expect(hollow_reef_return_chain.color.a >= 0.18 and hollow_reef_return_chain.color.a <= 0.22, "Hollow Reef return chain should stay readable without becoming a route graph")
+	_expect(hollow_reef_return_chain.polygon[1].x < hollow_reef_return_chain.polygon[0].x, "Hollow Reef return chain should point left toward Dusk Trench")
+	_expect(hollow_reef_return_chain.polygon[1].y < hollow_reef_return_chain.polygon[0].y, "Hollow Reef return chain should point upward toward Blackwater and Silt Vein")
+	_expect(hollow_reef_return_rib_a.polygon[1].x < hollow_reef_return_rib_a.polygon[0].x, "Hollow Reef first return rib should step left along the chain")
+	_expect(hollow_reef_return_rib_b.polygon[1].y < hollow_reef_return_rib_b.polygon[0].y, "Hollow Reef second return rib should step upward along the chain")
+	_expect(hollow_reef_return_fleck.color.a <= 0.3, "Hollow Reef return fleck should be a small landmark cue, not a resource marker")
+	_expect(hollow_reef_return_chain.color.g > blackwater_pressure_shutter.color.g, "Hollow Reef return chain should stay distinct from Blackwater pressure color language")
+	_expect(hollow_reef_return_chain.get_node_or_null("InteractZone") == null, "Hollow Reef return chain should not add interaction or objective state")
+	_expect(hollow_reef_return_chain.find_child("CollisionShape2D", true, false) == null, "Hollow Reef return chain should not add collision, movement, or hidden pressure behavior")
 	_expect(hollow_reef_exit_rib.polygon[1].x < hollow_reef_exit_rib.polygon[0].x, "Hollow Reef exit rib should step left toward the exit route")
 	_expect(hollow_reef_exit_back.color.a >= 0.45, "Hollow Reef exit back wall should make the current side-cave end readable")
 	_expect(hollow_reef_reading_core.position.distance_to(hollow_reef_interact.position) >= 64.0, "Hollow Reef cave reading marker should be offset from the hotspot so the sub does not cover it")
