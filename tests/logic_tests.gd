@@ -58,6 +58,7 @@ func _initialize() -> void:
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("Lantern Ray scan behavior", _test_lantern_ray_scan_behavior)
 	_run("Hollow Reef passive creature scan behavior", _test_hollow_reef_passive_creature_scan_behavior)
+	_run("Glassfin Swarm passive obstacle", _test_glassfin_swarm_passive_obstacle)
 	_run("Lantern Ray timing lane is visual only", _test_lantern_ray_timing_lane_is_visual_only)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
@@ -713,6 +714,45 @@ func _test_hollow_reef_passive_creature_scan_behavior() -> void:
 	_expect(not saved.has("hollow_reef_skitter_objective"), "Hollow Reef Skitter scan should not create durable objective-chain state")
 	_expect(not saved.has("monster_parts"), "Hollow Reef Skitter scan should not add monster-part economy state")
 	_expect(not saved.has("creature_inventory"), "Hollow Reef Skitter scan should not add creature inventory state")
+	main.queue_free()
+
+func _test_glassfin_swarm_passive_obstacle() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var chamber := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber") as Node2D
+	var swarm := chamber.get_node("GlassfinSwarm") as Node2D
+	var lane := swarm.get_node("SwarmRouteLane") as Polygon2D
+	var body_a := swarm.get_node("SwarmBodyA") as Polygon2D
+	var body_b := swarm.get_node("SwarmBodyB") as Polygon2D
+	var spacing_wake := swarm.get_node("SpacingWake") as Polygon2D
+	var return_gap := swarm.get_node("ReturnGapCue") as Polygon2D
+	var return_current := chamber.get_node("ReturnCurrentBackToHollow") as Polygon2D
+	var lantern_ray_body := main.get_node("Creatures/LanternRayRoute/RayBody") as Polygon2D
+	var predator_warning := main.get_node("Predators/PredatorWarning/WarningRibs") as Polygon2D
+	var resource_glimmer := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket/PocketGlimmer") as Polygon2D
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var oxygen_before: float = main.dive_session.oxygen
+	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+
+	_expect(swarm.get_parent() == chamber, "Glassfin Swarm should be authored inside the wide chamber route space")
+	_expect(swarm.position.x > 200.0 and swarm.position.x < 480.0, "Glassfin Swarm should sit in the chamber's mid/far open-water lane")
+	_expect(swarm.position.y < return_current.polygon[0].y, "Glassfin Swarm should leave the lower return-current route readable")
+	_expect(lane.color.b > lane.color.g and lane.color.g > lane.color.r, "Glassfin Swarm lane should use glassy blue timing language")
+	_expect(body_a.color.b > body_a.color.g and body_a.color.g > body_a.color.r, "Glassfin Swarm body should avoid red predator and yellow resource language")
+	_expect(body_a.color.b > lantern_ray_body.color.b and body_a.color.r > lantern_ray_body.color.r, "Glassfin Swarm should read brighter and more glasslike than Lantern Ray")
+	_expect(body_b.color.b > resource_glimmer.color.b, "Glassfin Swarm should stay distinct from yellow-green resource glimmers")
+	_expect(body_a.color.r < predator_warning.color.r, "Glassfin Swarm should not reuse predator-warning red")
+	_expect(return_gap.color.g > body_a.color.g and return_gap.color.a < return_current.color.a, "Glassfin Swarm return gap should remain softer than the main safe-return current")
+	_expect(spacing_wake.color.a <= 0.18, "Glassfin Swarm spacing wake should be a subtle observation cue")
+	_expect(not swarm.is_in_group("scan_targets"), "Glassfin Swarm should not become scannable until the next scoped issue")
+	_expect(swarm.find_child("CollisionShape2D", true, false) == null, "Glassfin Swarm should not add collision or physically block return")
+	_expect(swarm.find_child("ResourcePickup", true, false) == null, "Glassfin Swarm should not add resource pickup behavior")
+	_expect(swarm.find_child("HarvestArea", true, false) == null, "Glassfin Swarm should not add harvesting behavior")
+	_expect(swarm.find_child("HealthBar", true, false) == null, "Glassfin Swarm should not add combat health UI")
+	_expect(swarm.find_child("Predator", true, false) == null, "Glassfin Swarm should not reuse predator behavior")
+	_expect(main.progression_state.to_save_data() == save_before, "Glassfin Swarm passive obstacle should not mutate progression")
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "Glassfin Swarm passive obstacle should not drain oxygen")
+	_expect(main.dive_session.current_cargo == cargo_before, "Glassfin Swarm passive obstacle should not mutate cargo")
 	main.queue_free()
 
 func _test_lantern_ray_timing_lane_is_visual_only() -> void:
