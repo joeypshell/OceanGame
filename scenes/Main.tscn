@@ -1262,8 +1262,15 @@ polygon = PackedVector2Array(214, 132, 274, 92, 332, 128, 392, 94, 452, 136, 390
 color = Color(0.14, 0.48, 0.54, 0.13)
 polygon = PackedVector2Array(10, -74, 206, -116, 404, -80, 470, 16, 318, 82, 94, 60)
 
-[node name="GlassfinSwarm" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
+[node name="GlassfinSwarm" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
 position = Vector2(340, -34)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("7_scannable")
+discovery_id = "glassfin_swarm"
+display_name = "Glassfin Swarm"
+description = "A clustered school of glassy cave fish holding a narrow spacing lane in the wide chamber."
+gameplay_fact = "Read the gaps in the school, pass around the lane, and keep the lower return current clear."
 
 [node name="SwarmRouteLane" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm"]
 color = Color(0.5, 0.64, 1, 0.11)
@@ -1296,6 +1303,10 @@ polygon = PackedVector2Array(-158, -8, -86, -24, -20, -12, -92, 8)
 [node name="ReturnGapCue" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm"]
 color = Color(0.74, 1, 0.9, 0.1)
 polygon = PackedVector2Array(112, 28, 168, 42, 122, 58, 66, 44)
+
+[node name="ScanMarker" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm"]
+color = Color(0.95, 1, 0.7, 0.12)
+polygon = PackedVector2Array(0, -54, 42, -30, 54, 0, 42, 30, 0, 54, -42, 30, -54, 0, -42, -30)
 
 [node name="ReturnCurrentBackToHollow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"]
 color = Color(0.66, 1, 0.88, 0.18)

@@ -1748,6 +1748,8 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 		return " Lantern Ray route observation refreshed."
 	elif _scan_target_id(target) == "hollow_reef_skitter":
 		return " Hollow Reef Skitter observation refreshed."
+	elif _scan_target_id(target) == "glassfin_swarm":
+		return " Glassfin Swarm spacing observation refreshed."
 	elif _scan_target_id(target) == "thermal_vent":
 		return " Warm clue refreshed; glow route optional."
 	elif _scan_target_id(target) == "shell_reef_shelf":
@@ -1835,6 +1837,8 @@ func _format_first_scan_guidance(target: Node) -> String:
 			return " Observe its calm pass, then return through Blackwater."
 		"hollow_reef_skitter":
 			return " Observe the upper shelf timing, then return through Hollow Reef."
+		"glassfin_swarm":
+			return " Observe the spacing lane, pass around the swarm, then return through Hollow Reef."
 		"thermal_vent":
 			return " Warm current marks optional glow; bank Pressure Seal clue."
 		"shell_reef_shelf":
@@ -3118,6 +3122,8 @@ func _format_discovery_name(discovery_id: String) -> String:
 			return "Lantern Ray"
 		"hollow_reef_skitter":
 			return "Hollow Reef Skitter"
+		"glassfin_swarm":
+			return "Glassfin Swarm"
 		"lantern_fry":
 			return "Lantern Fry"
 		_:
@@ -3599,6 +3605,8 @@ func _format_scan_target_type(target: Node) -> String:
 		"lantern_ray":
 			return "creature"
 		"hollow_reef_skitter":
+			return "creature"
+		"glassfin_swarm":
 			return "creature"
 		"gulper_eel":
 			return "creature"
