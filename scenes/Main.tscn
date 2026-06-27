@@ -213,9 +213,9 @@ kind = "side_cave"
 depth_band = "deep/trench"
 role = "First compact cave-like side branch off Dusk Trench."
 memory_goal = "Remember Hollow Reef as a side cave off Dusk Trench; returning from it means following the pale current up-left back through the trench and Blackwater route chain."
-persistent_facts = "Marks a visible side-cave mouth only.
+persistent_facts = "Marks a visible side-cave mouth and one short authored interior lane.
 It is not a full cave network, minimap objective, combat route, harvest route, or procedural interior."
-variable_hooks = "Future Hollow Reef entrance, exit, payoff, safe-return, and deeper-promise cues can attach here."
+variable_hooks = "Future Hollow Reef upper shelf, creature, pocket, safe-return, and deeper-promise cues can attach here."
 readability_priority = "Side-cave mouth identity and broad up-left return orientation."
 
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
@@ -1107,6 +1107,37 @@ polygon = PackedVector2Array(86, 72, 22, 44, -32, 14, 32, 60)
 [node name="ExitBackWall" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 color = Color(0.018, 0.052, 0.064, 0.52)
 polygon = PackedVector2Array(132, -24, 218, 18, 214, 92, 146, 118, 106, 52)
+
+[node name="InteriorLane" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
+position = Vector2(88, 42)
+
+[node name="LaneBackWater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
+color = Color(0.006, 0.028, 0.048, 0.5)
+polygon = PackedVector2Array(-38, -28, 52, -58, 152, -20, 166, 44, 68, 78, -50, 28)
+
+[node name="UpperLaneShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
+color = Color(0.075, 0.18, 0.2, 0.42)
+polygon = PackedVector2Array(-58, -46, 40, -82, 150, -48, 184, 0, 132, 20, 48, -22, -68, -2)
+
+[node name="LowerLaneShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
+color = Color(0.028, 0.075, 0.078, 0.5)
+polygon = PackedVector2Array(-46, 56, 58, 90, 164, 62, 182, 104, 76, 128, -62, 98)
+
+[node name="InteriorDirectionRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
+color = Color(0.62, 1, 0.9, 0.2)
+polygon = PackedVector2Array(18, -4, 88, -22, 142, 6, 70, 28)
+
+[node name="LaneReturnCurrent" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
+color = Color(0.66, 1, 0.88, 0.19)
+polygon = PackedVector2Array(164, 70, 82, 48, 0, 8, -84, -18, -58, -48, 36, -8, 118, 20)
+
+[node name="LaneReturnRib" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
+color = Color(0.82, 1, 0.92, 0.22)
+polygon = PackedVector2Array(92, 44, 36, 18, -20, 8, 32, 40)
+
+[node name="LaneTurnbackLip" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane"]
+color = Color(0.14, 0.22, 0.24, 0.44)
+polygon = PackedVector2Array(126, 22, 182, 44, 166, 82, 106, 70)
 
 [node name="DeeperReefPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 position = Vector2(218, 96)
@@ -2199,7 +2230,7 @@ zoom = Vector2(0.9, 0.9)
 enabled = true
 limit_left = 0
 limit_top = 0
-limit_right = 3080
+limit_right = 3260
 limit_bottom = 3160
 
 [node name="HUD" type="CanvasLayer" parent="."]

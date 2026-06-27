@@ -1119,6 +1119,14 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ReturnRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitRib",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitBackWall",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneBackWater",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperLaneShelf",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LowerLaneShelf",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/InteriorDirectionRib",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneReturnCurrent",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneReturnRib",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneTurnbackLip",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PressureWash",
@@ -1257,6 +1265,14 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var hollow_reef_return_fleck := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DuskReturnFleck") as Polygon2D
 	var hollow_reef_exit_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitRib") as Polygon2D
 	var hollow_reef_exit_back := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/ExitBackWall") as Polygon2D
+	var hollow_reef_interior_lane := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane") as Node2D
+	var hollow_lane_water := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneBackWater") as Polygon2D
+	var hollow_lane_upper := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperLaneShelf") as Polygon2D
+	var hollow_lane_lower := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LowerLaneShelf") as Polygon2D
+	var hollow_lane_direction := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/InteriorDirectionRib") as Polygon2D
+	var hollow_lane_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneReturnCurrent") as Polygon2D
+	var hollow_lane_return_rib := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneReturnRib") as Polygon2D
+	var hollow_lane_turnback := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/LaneTurnbackLip") as Polygon2D
 	var hollow_deeper_promise := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise") as Node2D
 	var hollow_deeper_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PromiseMouth") as Polygon2D
 	var hollow_deeper_wash := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/DeeperReefPromise/PressureWash") as Polygon2D
@@ -1481,6 +1497,22 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_reef_return_chain.find_child("CollisionShape2D", true, false) == null, "Hollow Reef return chain should not add collision, movement, or hidden pressure behavior")
 	_expect(hollow_reef_exit_rib.polygon[1].x < hollow_reef_exit_rib.polygon[0].x, "Hollow Reef exit rib should step left toward the exit route")
 	_expect(hollow_reef_exit_back.color.a >= 0.45, "Hollow Reef exit back wall should make the current side-cave end readable")
+	_expect(hollow_reef_interior_lane.position.x > hollow_reef_reading_core.position.x, "Hollow Reef interior lane should extend beyond the first cave reading payoff")
+	_expect(hollow_reef_interior_lane.position.x < hollow_deeper_promise.position.x, "Hollow Reef interior lane should stay before the closed deeper promise")
+	_expect(hollow_lane_water.color.a >= 0.45 and hollow_lane_water.color.a <= 0.55, "Hollow Reef interior lane should read as cave water without hiding route cues")
+	_expect(hollow_lane_upper.color.a <= 0.45 and hollow_lane_lower.color.a <= 0.52, "Hollow Reef lane shelves should frame the path without becoming walls")
+	_expect(hollow_lane_direction.color.g > hollow_lane_direction.color.r, "Hollow Reef interior direction rib should use safe/cave route color language")
+	_expect(hollow_lane_return.color.a >= 0.18 and hollow_lane_return.color.a <= 0.2, "Hollow Reef lane return current should be readable but not objective-bright")
+	_expect(hollow_lane_return.polygon[1].x < hollow_lane_return.polygon[0].x, "Hollow Reef lane return current should point left toward the cave mouth")
+	_expect(hollow_lane_return.polygon[1].y < hollow_lane_return.polygon[0].y, "Hollow Reef lane return current should point up toward the exit route")
+	_expect(hollow_lane_return_rib.polygon[1].x < hollow_lane_return_rib.polygon[0].x, "Hollow Reef lane return rib should step left along the return chain")
+	_expect(hollow_lane_turnback.color.a <= 0.46, "Hollow Reef lane turnback lip should signal the current authored end without implying a full cave network")
+	_expect(hollow_reef_interior_lane.get_node_or_null("InteractZone") == null, "Hollow Reef interior lane should not add a second interaction hotspot")
+	_expect(hollow_reef_interior_lane.get_node_or_null("ResourcePickup") == null, "Hollow Reef interior lane should not add cargo or loot")
+	_expect(hollow_reef_interior_lane.get_node_or_null("Predator") == null, "Hollow Reef interior lane should not add combat or monster pressure")
+	_expect(hollow_reef_interior_lane.get_node_or_null("PressureBoundary") == null, "Hollow Reef interior lane should not add hidden pressure behavior")
+	_expect(hollow_reef_interior_lane.find_child("CollisionShape2D", true, false) == null, "Hollow Reef interior lane should not add hidden collision")
+	_expect(hollow_reef_interior_lane.get_script() == null, "Hollow Reef interior lane should remain authored scene presentation, not gameplay state")
 	_expect(hollow_deeper_promise.position.x > hollow_reef_reading_core.position.x, "Hollow Reef deeper promise should sit beyond the current cave reading payoff")
 	_expect(hollow_deeper_promise.position.y > hollow_reef_reading_core.position.y, "Hollow Reef deeper promise should imply lower future route growth")
 	_expect(hollow_deeper_mouth.color.a >= 0.62, "Hollow Reef deeper promise mouth should read as an intentional closed opening")
@@ -1500,7 +1532,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(hollow_reef_reading_halo.color.a >= 0.3, "Hollow Reef cave reading should have a visible halo before recovery")
 	_expect(hollow_reef_reading_shard.color.a >= 0.8, "Hollow Reef cave reading should start visibly recoverable")
 	_expect(hollow_reef_reading_spark.visible and hollow_reef_reading_spark.color.a >= 0.8, "Hollow Reef cave reading should have a bright recovery spark")
-	_expect(hollow_reef_turnback.color.a >= 0.4, "Hollow Reef should include a visible turnback lip until the interior lane exists")
+	_expect(hollow_reef_turnback.color.a >= 0.4, "Hollow Reef should keep the old mouth turnback lip readable beside the new interior lane")
 	_expect(hollow_reef_interact.collision_layer == 0 and hollow_reef_interact.collision_mask == 1, "Hollow Reef reading hotspot should detect the player without becoming a blocking body")
 	_expect(hollow_reef.get_node_or_null("Interior") == null, "Hollow Reef scaffold should not add a full cave interior system")
 	_expect(hollow_reef.get_node_or_null("ResourcePickup") == null, "Hollow Reef scaffold should not add a resource pickup yet")
@@ -3462,7 +3494,8 @@ func _test_expanded_region_world_bounds() -> void:
 	_expect(player.world_bounds.end.y >= 2350.0, "expanded bounds should allow the first lower connector beyond East Shelf")
 	_expect(player.world_bounds.end.x >= 2520.0, "expanded bounds should allow the short Blackwater Sill route")
 	_expect(player.world_bounds.end.x >= 2980.0, "expanded bounds should allow the first Dusk Trench continuation beyond Blackwater")
-	_expect(player.world_bounds.end.x <= 3040.0, "expanded bounds should stay tight around the first Dusk Trench continuation")
+	_expect(player.world_bounds.end.x >= 3180.0, "expanded bounds should allow the short Hollow Reef interior lane")
+	_expect(player.world_bounds.end.x <= 3220.0, "expanded bounds should stay tight around the short Hollow Reef interior lane")
 	_expect(player.world_bounds.end.y >= 2500.0, "expanded bounds should allow the first Silt Vein Fork scaffold below Blue Chimney")
 	_expect(player.world_bounds.end.y >= 2700.0, "expanded bounds should allow the short Blackwater Sill route")
 	_expect(player.world_bounds.end.y >= 3040.0, "expanded bounds should allow the first Dusk Trench continuation below Blackwater")
@@ -3490,6 +3523,9 @@ func _test_expanded_region_world_bounds() -> void:
 	var clamped_hollow_reef := player.clamp_position_to_world_bounds(Vector2(2940.0, 3040.0))
 	_expect(is_equal_approx(clamped_hollow_reef.x, 2940.0), "world clamp should keep the Hollow Reef side-cave mouth horizontally playable")
 	_expect(is_equal_approx(clamped_hollow_reef.y, 3040.0), "world clamp should keep the Hollow Reef side-cave turnback vertically playable")
+	var clamped_hollow_reef_lane := player.clamp_position_to_world_bounds(Vector2(3180.0, 3056.0))
+	_expect(is_equal_approx(clamped_hollow_reef_lane.x, 3180.0), "world clamp should keep the short Hollow Reef interior lane endpoint horizontally playable")
+	_expect(is_equal_approx(clamped_hollow_reef_lane.y, 3056.0), "world clamp should keep the short Hollow Reef interior lane endpoint vertically playable")
 
 	var clamped_left := player.clamp_position_to_world_bounds(Vector2(-80.0, 900.0))
 	_expect(is_equal_approx(clamped_left.x, player.world_bounds.position.x), "world clamp should preserve the left edge of the main column")
@@ -3497,9 +3533,9 @@ func _test_expanded_region_world_bounds() -> void:
 
 	var main_scene := MainScene.instantiate()
 	var camera := main_scene.get_node("Player/Camera2D") as Camera2D
-	_expect(camera.limit_right >= 3060, "camera limit should include the first Dusk Trench route continuation")
+	_expect(camera.limit_right >= 3260, "camera limit should include the short Hollow Reef interior lane")
 	_expect(camera.limit_bottom >= 3140, "camera limit should include the lower Dusk Trench turnback")
-	_expect(camera.limit_right <= 3120, "camera limit should stay tight around the first Dusk Trench route")
+	_expect(camera.limit_right <= 3300, "camera limit should stay tight around the short Hollow Reef interior lane")
 	_expect(camera.limit_bottom <= 3200, "camera limit should avoid implying a full lower biome")
 	var sky := main_scene.get_node("Sky") as ColorRect
 	var ocean_shallows := main_scene.get_node("OceanShallows") as ColorRect
