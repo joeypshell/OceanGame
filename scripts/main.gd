@@ -1355,18 +1355,30 @@ func _sync_sealed_shelf_hatch_state() -> void:
 	var lock_label := sealed_shelf_hatch_lock_label
 	if lock_label == null:
 		lock_label = get_node_or_null("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
+	var seal_bars := get_node_or_null("EastShelfSpur/SealedShelfHatch/SealBars") as Polygon2D
 	if echo_shimmer == null or lock_badge == null or lock_label == null:
 		return
 
+	var has_resonance_key := progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)
 	var has_echo_lens := progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
-	if has_echo_lens:
+	if has_resonance_key:
+		echo_shimmer.color = Color(0.95, 1.0, 0.72, 0.28)
+		lock_badge.color = Color(0.95, 1.0, 0.72, 0.78)
+		lock_label.text = "OPEN"
+		if seal_bars != null:
+			seal_bars.color = Color(0.86, 1.0, 0.72, 0.12)
+	elif has_echo_lens:
 		echo_shimmer.color = Color(0.62, 1.0, 0.78, 0.22)
 		lock_badge.color = Color(0.62, 1.0, 0.72, 0.72)
 		lock_label.text = "ECHO PING"
+		if seal_bars != null:
+			seal_bars.color = Color(0.58, 0.82, 1.0, 0.34)
 	else:
 		echo_shimmer.color = Color(0.62, 0.94, 1.0, 0.11)
 		lock_badge.color = Color(0.74, 0.86, 1.0, 0.74)
 		lock_label.text = "ECHO LOCK"
+		if seal_bars != null:
+			seal_bars.color = Color(0.58, 0.82, 1.0, 0.34)
 
 func _wreck_echo_route_available() -> bool:
 	return progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID) and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)

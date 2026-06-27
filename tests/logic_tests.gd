@@ -2105,10 +2105,12 @@ func _test_sealed_shelf_hatch_promise_state() -> void:
 	root.add_child(main)
 	var lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
 	var lock_badge := main.get_node("EastShelfSpur/SealedShelfHatch/LockBadge") as Polygon2D
+	var seal_bars := main.get_node("EastShelfSpur/SealedShelfHatch/SealBars") as Polygon2D
 	main.sealed_shelf_hatch_echo_shimmer = main.get_node("EastShelfSpur/SealedShelfHatch/EchoShimmer") as Polygon2D
 	main.sealed_shelf_hatch_lock_badge = lock_badge
 	main.sealed_shelf_hatch_lock_label = lock_label
 	var locked_badge_color := lock_badge.color
+	var locked_bars_alpha := seal_bars.color.a
 	main.call("_sync_sealed_shelf_hatch_state")
 	_expect(lock_label.text == "ECHO LOCK", "Sealed Shelf Hatch should advertise the missing Echo Lens upgrade before ownership")
 
@@ -2116,6 +2118,12 @@ func _test_sealed_shelf_hatch_promise_state() -> void:
 	main.call("_sync_sealed_shelf_hatch_state")
 	_expect(lock_label.text == "ECHO PING", "Sealed Shelf Hatch should change to a scanner-ready promise after Echo Lens I")
 	_expect(lock_badge.color != locked_badge_color, "Sealed Shelf Hatch badge should visually react to Echo Lens I ownership")
+
+	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
+	main.call("_sync_sealed_shelf_hatch_state")
+	_expect(lock_label.text == "OPEN", "Sealed Shelf Hatch should visibly open after Resonance Key I")
+	_expect(lock_badge.color != locked_badge_color, "open Sealed Shelf Hatch badge should stay visually distinct from the locked state")
+	_expect(seal_bars.color.a < locked_bars_alpha, "open Sealed Shelf Hatch should soften the seal bars without adding an interior")
 	main.queue_free()
 
 	var copy_main := MainScript.new()
