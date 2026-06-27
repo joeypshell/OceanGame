@@ -1612,6 +1612,22 @@ func _test_lantern_silt_sample_interaction() -> void:
 	_expect(not saved.has("lantern_silt"), "Lantern Silt sample should not create durable route state")
 	_expect(not saved.has("silt_vein_fork"), "Silt Vein Fork should not create durable route state")
 
+	var callout: String = main.call("_format_lantern_silt_sample_research_callout")
+	_expect(callout.contains("Lantern Silt Sample"), "Lantern Silt result memory should name the sample")
+	_expect(callout.contains("left branch"), "Lantern Silt result memory should explain the broad route choice")
+	_expect(callout.contains("Silt Vein"), "Lantern Silt result memory should keep broad fork context")
+	_expect_no_echo_lens_locator_language(callout, "Lantern Silt result line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Lantern Silt Sample"), "Lantern Silt extraction summary should include recovered sample memory")
+	_expect(not extraction_summary.contains("%s"), "Lantern Silt extraction summary should not leak string placeholders")
+
+	var fresh_main := MainScript.new()
+	_expect(fresh_main._format_lantern_silt_sample_research_callout() == "", "Lantern Silt result line should stay hidden before sample recovery")
+	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not fresh_summary.contains("Lantern Silt Sample"), "Lantern Silt extraction summary should stay hidden before sample recovery")
+	fresh_main.free()
+
 	main.call("_reset_run_telemetry")
 	_expect(not main.run_lantern_silt_sample_recovered, "Lantern Silt sample should reset between expeditions")
 	main.free()
