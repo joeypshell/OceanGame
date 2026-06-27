@@ -1933,6 +1933,13 @@ func _test_region_memory_result_callout() -> void:
 	_expect(not dusk_memory.contains("coordinate"), "Dusk reach memory should avoid exact-coordinate language")
 	_expect(not dusk_memory.contains("map"), "Dusk reach memory should avoid map language")
 	_expect_no_echo_lens_locator_language(dusk_memory, "Dusk Trench remembered place")
+
+	main.run_hollow_reef_reading_recovered = true
+	var hollow_memory := main._format_region_memory_callout()
+	_expect(hollow_memory.contains("Hollow Reef"), "Hollow Reef reading should own the remembered place over Dusk")
+	_expect(not hollow_memory.contains("Lantern Ray Route"), "Hollow Reef memory should not be crowded out by creature observation")
+	_expect(hollow_memory.contains("Blackwater"), "Hollow Reef memory should preserve broad return-chain language")
+	_expect_no_echo_lens_locator_language(hollow_memory, "Hollow Reef remembered place")
 	main.free()
 
 func _test_discovery_memory_result_callout() -> void:
@@ -2010,6 +2017,17 @@ func _test_route_choice_result_callout() -> void:
 	_expect(dusk_summary.contains("Remembered place: Dusk Trench"), "Dusk extraction summary should include supported remembered-place evidence")
 	_expect(dusk_summary.contains("Route choice: lower-route research push reached Dusk Trench."), "Dusk extraction summary should include supported route-choice evidence")
 	_expect(not dusk_summary.contains("map"), "Dusk extraction summary should avoid map language")
+
+	main.run_hollow_reef_reading_recovered = true
+	var hollow_callout := main._format_route_choice_callout()
+	_expect(hollow_callout.contains("Hollow Reef"), "Hollow Reef reading should produce the deepest route-choice callout")
+	_expect(not hollow_callout.contains("Dusk Trench"), "Hollow Reef route choice should take priority over Dusk reach evidence")
+	_expect(not hollow_callout.contains("Blackwater"), "Hollow Reef route choice should take priority over Blackwater trace evidence")
+	_expect_no_echo_lens_locator_language(hollow_callout, "Hollow Reef route choice")
+	var hollow_summary := main._format_extraction_result_summary(0, empty_cargo)
+	_expect(hollow_summary.contains("Remembered place: Hollow Reef"), "Hollow Reef extraction summary should include the branch as remembered place")
+	_expect(hollow_summary.contains("Route choice: lower-route research push reached Hollow Reef."), "Hollow Reef extraction summary should include the highest route-choice evidence")
+	main.run_hollow_reef_reading_recovered = false
 	main.run_reached_dusk_trench = false
 
 	main.run_blackwater_trace_recovered = false
@@ -2025,6 +2043,11 @@ func _test_route_choice_result_callout() -> void:
 	_expect(main._format_route_choice_callout().contains("predator route"), "predator contact should take priority in the route callout")
 
 	main.run_predator_contacts = 0
+	main.run_completed_scans = ["lantern_ray"]
+	var lantern_route_choice := main._format_route_choice_callout()
+	_expect(lantern_route_choice.contains("Lantern Ray"), "Lantern Ray scan should produce a route observation callout when no deeper route wins")
+	_expect_no_monster_combat_language(lantern_route_choice, "Lantern Ray route choice")
+
 	main.run_completed_scans = ["thermal_vent"]
 	main.run_collected_resources = []
 	main.current_expedition_condition = {
@@ -2909,6 +2932,21 @@ func _test_recent_expedition_log() -> void:
 	_expect_no_monster_combat_language(log_text, "Lantern Ray recent expedition log")
 
 	main.recent_expedition_log.clear()
+	main.progression_state.current_run_number = 81
+	main.progression_state.current_run_seed = 2081
+	main.progression_state.best_depth_reached = 260.0
+	main.run_completed_scans = ["lantern_ray"]
+	main.run_predator_contacts = 1
+	main.run_blue_chimney_draft_reading_recovered = false
+	main.run_blackwater_trace_recovered = false
+	main.run_reached_dusk_trench = false
+	main.run_hollow_reef_reading_recovered = false
+	main._record_recent_expedition("Extracted", 0)
+	log_text = main._format_recent_expedition_log()
+	_expect(log_text.contains("route Gulper Route"), "recent log should keep predator safety memory when no deeper route wins")
+	_expect(not log_text.contains("route Lantern Ray"), "predator safety memory should win over passive creature observation after contact")
+
+	main.recent_expedition_log.clear()
 	main.progression_state.current_run_number = 9
 	main.progression_state.current_run_seed = 2009
 	main.progression_state.best_depth_reached = 208.0
@@ -2947,6 +2985,27 @@ func _test_recent_expedition_log() -> void:
 	_expect(not log_text.contains("seed"), "Dusk recent log should hide raw seed without debug telemetry")
 	_expect_no_echo_lens_locator_language(log_text, "Dusk recent expedition log")
 	_expect(main._latest_recent_route_memory() == "Dusk Trench", "latest route helper should expose Dusk for the next ready panel")
+
+	main.recent_expedition_log.clear()
+	main.progression_state.current_run_number = 11
+	main.progression_state.current_run_seed = 2011
+	main.progression_state.best_depth_reached = 312.0
+	main.run_completed_scans = ["thermal_vent", "lantern_ray"]
+	main.run_collected_resources = ["shell_fragments"]
+	main.run_predator_contacts = 2
+	main.run_blue_chimney_draft_reading_recovered = true
+	main.run_blackwater_trace_recovered = true
+	main.run_reached_dusk_trench = true
+	main.run_hollow_reef_reading_recovered = true
+	main._record_recent_expedition("Extracted", 1)
+	log_text = main._format_recent_expedition_log()
+	_expect(log_text.contains("#11 Extracted"), "recent expedition log should include Hollow Reef route attempts")
+	_expect(log_text.contains("route Hollow Reef"), "recent expedition log should prioritize Hollow Reef over Dusk and Blackwater")
+	_expect(not log_text.contains("route Dusk Trench"), "Hollow Reef recent route memory should take priority over Dusk")
+	_expect(not log_text.contains("route Blackwater"), "Hollow Reef recent route memory should take priority over Blackwater")
+	_expect(not log_text.contains("route Lantern Ray"), "Hollow Reef recent route memory should take priority over creature observation")
+	_expect_no_echo_lens_locator_language(log_text, "Hollow Reef recent expedition log")
+	_expect(main._latest_recent_route_memory() == "Hollow Reef", "latest route helper should expose Hollow Reef for the next ready panel")
 	main.free()
 
 func _test_thermal_vent_scan_clue_text() -> void:

@@ -3217,6 +3217,8 @@ func _format_condition_briefing() -> String:
 	]
 
 func _format_route_choice_callout() -> String:
+	if run_hollow_reef_reading_recovered:
+		return "Route choice: lower-route research push reached Hollow Reef."
 	if run_reached_dusk_trench:
 		return "Route choice: lower-route research push reached Dusk Trench."
 	if run_blackwater_trace_recovered:
@@ -3231,6 +3233,8 @@ func _format_route_choice_callout() -> String:
 		return "Route choice: East Shelf research push paid off."
 	if run_predator_contacts > 0:
 		return "Route choice: predator route contested the dive."
+	if run_completed_scans.has("lantern_ray"):
+		return "Route choice: observed Lantern Ray timing without fighting."
 	if run_completed_scans.has("wreck_signal_cache"):
 		return "Route choice: pressure-wreck progress secured."
 	if run_completed_scans.has("pressure_wreck_signal"):
@@ -3249,6 +3253,8 @@ func _format_route_choice_callout() -> String:
 	return "Route choice: banked a cautious resource run."
 
 func _format_recent_route_memory() -> String:
+	if run_hollow_reef_reading_recovered:
+		return "Hollow Reef"
 	if run_reached_dusk_trench:
 		return "Dusk Trench"
 	if run_blackwater_trace_recovered:
@@ -3261,10 +3267,10 @@ func _format_recent_route_memory() -> String:
 		return "Shelf Drop"
 	if run_east_shelf_pocket_ping_recovered:
 		return "East Shelf"
-	if run_completed_scans.has("lantern_ray"):
-		return "Lantern Ray"
 	if run_predator_contacts > 0:
 		return "Gulper Route"
+	if run_completed_scans.has("lantern_ray"):
+		return "Lantern Ray"
 	if run_completed_scans.has("wreck_signal_cache") or run_completed_scans.has("pressure_wreck_signal"):
 		return "Wreck Shelf"
 	if run_completed_scans.has("thermal_vent") or run_collected_resources.has("glow_plankton"):
@@ -3355,6 +3361,8 @@ func _format_sealed_shelf_hatch_readiness_callout() -> String:
 	return "\nLab note: Echo Lens reads the Sealed Shelf Hatch; Resonance Key planning can wait."
 
 func _format_region_memory_callout() -> String:
+	if run_hollow_reef_reading_recovered:
+		return "Remembered place: Hollow Reef - side-cave branch off Dusk; return through Blackwater."
 	if run_reached_dusk_trench:
 		return "Remembered place: Dusk Trench - return up-left through Blackwater and Silt Vein to Blue Chimney."
 	if run_completed_scans.has("lantern_ray"):
