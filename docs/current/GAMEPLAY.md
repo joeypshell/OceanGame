@@ -4,7 +4,7 @@ This file describes implemented behavior. If gameplay, controls, runtime, deploy
 
 Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 
-Current planning posture: Blackwater Crack Route Sequence is complete as pass with watchlist. The next active batch is Dusk Trench Route Continuation, which should extend the lower route beyond Blackwater into a visibly darker, wider route segment rather than repeatedly polishing Blackwater. See `docs/planning/BLACKWATER_CRACK_ROUTE_SEQUENCE_VALIDATION_2026_06_27.md`.
+Current planning posture: Dusk Trench Route Continuation is complete as pass with watchlist. The next active batch is Lantern Ray Creature Route, which should add one non-combat lower-route creature presence and observation loop rather than repeatedly polishing Dusk. See `docs/planning/DUSK_TRENCH_ROUTE_VALIDATION_2026_06_27.md`.
 
 Current vertical-slice status: the prototype is structurally playable and most earlier readability blockers have been cleared with review evidence. It is close to polished acceptance; the remaining pass-with-watchlist risk is future visual-change regression rather than a known closeout blocker. The detailed gate lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_ACCEPTANCE_CHECKLIST_2026_06_26.md`, the current evidence log lives in `docs/planning/PLAYABLE_VERTICAL_SLICE_MANUAL_SMOKE_LOG_2026_06_26.md`, and the concise clean demo script lives in `docs/planning/VERTICAL_SLICE_CLEAN_DEMO_SCRIPT_2026_06_26.md`.
 
