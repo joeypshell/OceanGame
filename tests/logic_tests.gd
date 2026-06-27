@@ -65,6 +65,7 @@ func _initialize() -> void:
 	_run("Mirrorfin route-read behavior", _test_mirrorfin_route_read_behavior)
 	_run("Mirror Kelp deep promise", _test_mirror_kelp_deep_promise)
 	_run("Outer Shelf route footprint", _test_outer_shelf_route_footprint)
+	_run("Outer Shelf Glass Rim branch", _test_outer_shelf_glass_rim_branch)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
 	_run("Salvage Manifest interaction", _test_salvage_manifest_interaction)
@@ -1146,6 +1147,60 @@ func _test_outer_shelf_route_footprint() -> void:
 	_expect(outer_direction.contains("up-left"), "Outer Shelf base direction should use broad return orientation")
 	_expect(outer_direction.contains("Mirror/Wide/Hollow"), "Outer Shelf base direction should keep compact named return memory")
 	_expect_no_echo_lens_locator_language(outer_direction, "Outer Shelf base direction")
+	main.queue_free()
+
+func _test_outer_shelf_glass_rim_branch() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var outer_shelf := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach") as Node2D
+	var branch := outer_shelf.get_node("GlassRimCutBranch") as Node2D
+	var mouth_shadow := branch.get_node("BranchMouthShadow") as Polygon2D
+	var water_pocket := branch.get_node("BranchWaterPocket") as Polygon2D
+	var upper_rim := branch.get_node("UpperCutRim") as Polygon2D
+	var lower_rim := branch.get_node("LowerCutRim") as Polygon2D
+	var return_wash := branch.get_node("BranchReturnWash") as Polygon2D
+	var branch_label := branch.get_node("BranchLabel") as Label
+	var outer_metadata := main.get_node("LandmarkMetadata/OuterShelf")
+	var branch_metadata := main.get_node("LandmarkMetadata/GlassRimCut")
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	var oxygen_before: float = main.dive_session.oxygen
+	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+
+	_expect(branch.get_parent() == outer_shelf, "Glass Rim Cut should be authored inside the Outer Shelf footprint")
+	_expect(branch.position.x > 700.0, "Glass Rim Cut should sit deeper inside Area 02 instead of at the entrance")
+	_expect(branch.position.y < 0.0, "Glass Rim Cut should read as a high branch off the main water lane")
+	_expect(branch_label.text == "GLASS RIM CUT", "Glass Rim Cut should have compact place-label copy")
+	_expect(not branch_label.text.to_lower().contains("objective"), "Glass Rim Cut label should not read like a checklist")
+	_expect(not branch_label.text.to_lower().contains("map"), "Glass Rim Cut label should not imply exact map UI")
+	_expect(mouth_shadow.color.a >= 0.5, "Glass Rim Cut branch mouth should read as a deliberate side opening")
+	_expect(water_pocket.color.a <= 0.18, "Glass Rim Cut water should stay readable without becoming a reward marker")
+	_expect(upper_rim.color.a <= 0.24 and lower_rim.color.a <= 0.34, "Glass Rim Cut rims should frame the branch without overpowering the sub")
+	_expect(return_wash.color.g > return_wash.color.r and return_wash.color.a <= 0.1, "Glass Rim Cut return wash should use quiet safe-current language")
+	_expect(branch.find_child("InteractZone", true, false) == null, "Glass Rim Cut branch should not add interactions yet")
+	_expect(branch.find_child("CollisionShape2D", true, false) == null, "Glass Rim Cut branch should not add collision yet")
+	_expect(branch.find_child("ResourcePickup", true, false) == null, "Glass Rim Cut branch should not add pickups yet")
+	_expect(branch.find_child("ScannerObjective", true, false) == null, "Glass Rim Cut branch should not add objective-like scanner UI")
+	_expect(branch.find_child("LootTable", true, false) == null, "Glass Rim Cut branch should not add loot tables")
+	_expect(branch.find_child("HealthBar", true, false) == null, "Glass Rim Cut branch should not add combat UI")
+	var outer_memory := "%s %s %s" % [
+		String(outer_metadata.get("display_name")),
+		String(outer_metadata.get("memory_goal")),
+		String(outer_metadata.get("persistent_facts")),
+	]
+	var branch_memory := "%s %s %s" % [
+		String(branch_metadata.get("display_name")),
+		String(branch_metadata.get("memory_goal")),
+		String(branch_metadata.get("persistent_facts")),
+	]
+	_expect(outer_memory.contains("Outer Shelf"), "Outer Shelf metadata should support future result memory")
+	_expect(outer_memory.contains("Mirror Kelp"), "Outer Shelf metadata should preserve broad return orientation")
+	_expect(branch_memory.contains("Glass Rim Cut"), "Glass Rim Cut metadata should support future result memory")
+	_expect(branch_memory.contains("up-left") or branch_memory.contains("back left"), "Glass Rim Cut metadata should preserve broad return orientation")
+	_expect_no_echo_lens_locator_language(outer_memory, "Outer Shelf metadata")
+	_expect_no_echo_lens_locator_language(branch_memory, "Glass Rim Cut metadata")
+	_expect(main.progression_state.to_save_data() == save_before, "Glass Rim Cut branch should not mutate progression")
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "Glass Rim Cut branch should not drain oxygen")
+	_expect(main.dive_session.current_cargo == cargo_before, "Glass Rim Cut branch should not mutate cargo")
 	main.queue_free()
 
 func _test_wide_chamber_salvage_pocket_entrance() -> void:

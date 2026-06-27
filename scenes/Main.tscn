@@ -260,6 +260,34 @@ It is not a resource route, scan target, combat route, minimap marker, quest obj
 variable_hooks = "Mirrorfin route read, daily approach variation, cargo-vs-knowledge split, and future deep-kelp promise tuning can attach here."
 readability_priority = "New branch identity while keeping the Wide Reef Chamber return language readable."
 
+[node name="OuterShelf" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "outer_shelf"
+display_name = "Outer Shelf"
+stable_region_name = "Outer Shelf"
+kind = "larger_route_region"
+depth_band = "deep/outer"
+role = "First Area 02 route footprint beyond Mirror Kelp and Wide Reef."
+memory_goal = "Remember Outer Shelf as the wider water beyond Mirror Kelp; returning from it means turning up-left through Mirror Kelp, Wide Reef, and Hollow Reef."
+persistent_facts = "Passive place identity only.
+It has no pickup, scan target, durable route flag, or full open-ocean biome behavior."
+variable_hooks = "Future Area 02 timing choices, passive creature reads, and cargo-vs-knowledge payoffs can attach here."
+readability_priority = "Larger route identity without overpowering current goals or the player focal point."
+
+[node name="GlassRimCut" type="Node" parent="LandmarkMetadata"]
+script = ExtResource("10_landmark_metadata")
+metadata_id = "glass_rim_cut"
+display_name = "Glass Rim Cut"
+stable_region_name = "Outer Shelf"
+kind = "side_branch_landmark"
+depth_band = "deep/outer"
+role = "First memorable branch landmark inside the Outer Shelf footprint."
+memory_goal = "Remember Glass Rim Cut as the high notch in Outer Shelf; returning from it means following the pale wash back left through Mirror Kelp."
+persistent_facts = "Passive place identity only.
+It has no resource, scanner task, route list, or durable progression state."
+variable_hooks = "Future traversal timing, passive creature read, or result-memory line can anchor to this branch."
+readability_priority = "Named branch memory with quiet return guidance."
+
 [node name="ThermalVentField" type="Node" parent="LandmarkMetadata"]
 script = ExtResource("10_landmark_metadata")
 metadata_id = "thermal_vent_field"
@@ -1709,6 +1737,37 @@ offset_right = 616.0
 offset_bottom = -70.0
 theme_override_font_sizes/font_size = 10
 text = "GLASS RIM"
+
+[node name="GlassRimCutBranch" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+position = Vector2(742, -44)
+
+[node name="BranchMouthShadow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
+color = Color(0.006, 0.026, 0.042, 0.58)
+polygon = PackedVector2Array(-102, -78, 28, -126, 184, -72, 232, 26, 96, 88, -72, 46)
+
+[node name="BranchWaterPocket" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
+color = Color(0.08, 0.32, 0.42, 0.16)
+polygon = PackedVector2Array(-70, -42, 34, -78, 156, -40, 190, 18, 80, 52, -64, 22)
+
+[node name="UpperCutRim" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
+color = Color(0.24, 0.5, 0.58, 0.2)
+polygon = PackedVector2Array(-108, -78, 36, -126, 194, -72, 168, -42, 28, -78, -86, -38)
+
+[node name="LowerCutRim" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
+color = Color(0.08, 0.18, 0.16, 0.32)
+polygon = PackedVector2Array(-80, 34, 70, 62, 214, 22, 238, 58, 84, 110, -106, 68)
+
+[node name="BranchReturnWash" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
+color = Color(0.62, 1, 0.86, 0.09)
+polygon = PackedVector2Array(-32, 46, -164, 64, -314, 34, -296, 2, -126, 24, 18, 10)
+
+[node name="BranchLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch"]
+offset_left = -42.0
+offset_top = -118.0
+offset_right = 114.0
+offset_bottom = -94.0
+theme_override_font_sizes/font_size = 10
+text = "GLASS RIM CUT"
 
 [node name="DeepKelpSealPromise" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"]
 position = Vector2(238, 116)
