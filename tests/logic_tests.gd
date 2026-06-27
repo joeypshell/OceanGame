@@ -712,6 +712,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/SealedShelfHatch/EchoShimmer",
 		"EastShelfSpur/SealedShelfHatch/LockBadge",
 		"EastShelfSpur/SealedShelfHatch/LockLabel",
+		"EastShelfSpur/ResonanceAlcove",
+		"EastShelfSpur/ResonanceAlcove/AlcoveMouth",
+		"EastShelfSpur/ResonanceAlcove/AlcoveRim",
+		"EastShelfSpur/ResonanceAlcove/AlcoveGlow",
+		"EastShelfSpur/ResonanceAlcove/ReturnCurrentCue",
 		"EastShelfSpur/ShelfDropConnector",
 		"EastShelfSpur/ShelfDropConnector/ConnectorMouth",
 		"EastShelfSpur/ShelfDropConnector/UpperDropShelf",
@@ -742,6 +747,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var exit_current := main.get_node("EastShelfSpur/PocketEntrance/ExitCurrentCue") as Polygon2D
 	var sealed_hatch := main.get_node("EastShelfSpur/SealedShelfHatch") as Node2D
 	var hatch_lock_label := main.get_node("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
+	var resonance_alcove := main.get_node("EastShelfSpur/ResonanceAlcove") as Node2D
+	var resonance_mouth := main.get_node("EastShelfSpur/ResonanceAlcove/AlcoveMouth") as Polygon2D
+	var resonance_glow := main.get_node("EastShelfSpur/ResonanceAlcove/AlcoveGlow") as Polygon2D
+	var resonance_return := main.get_node("EastShelfSpur/ResonanceAlcove/ReturnCurrentCue") as Polygon2D
 	var connector_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/ConnectorMouth") as Polygon2D
 	var connector_current := main.get_node("EastShelfSpur/ShelfDropConnector/DownCurrentThread") as Polygon2D
 	var drop_arch := main.get_node("EastShelfSpur/ShelfDropConnector/DropArch") as Node2D
@@ -767,6 +776,12 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(exit_current.polygon[1].x < exit_current.polygon[0].x, "East Shelf pocket exit cue should point back left toward the main route")
 	_expect(sealed_hatch.position.x >= pocket_entrance.position.x, "Sealed Shelf Hatch should sit at or beyond the pocket entrance as a future promise")
 	_expect(hatch_lock_label.text == "ECHO LOCK", "Sealed Shelf Hatch should start as an Echo Lens locked promise")
+	_expect(resonance_alcove.position.x > sealed_hatch.position.x, "Resonance Alcove should sit just beyond the sealed hatch")
+	_expect(resonance_alcove.position.y <= sealed_hatch.position.y + 80.0, "Resonance Alcove should stay near the hatch rather than becoming a new deep route")
+	_expect(resonance_mouth.color.a <= 0.62, "Resonance Alcove mouth should read as a small pocket, not a full biome")
+	_expect(resonance_glow.color.a <= 0.22, "Resonance Alcove glow should stay subtle until payoff behavior exists")
+	_expect(resonance_return.polygon[1].x < resonance_return.polygon[0].x, "Resonance Alcove return cue should point back left toward East Shelf")
+	_expect(resonance_alcove.get_node_or_null("Interior") == null, "Resonance Alcove scaffold should not add a full interior system")
 	_expect(connector_mouth.polygon[0].x >= 1880.0, "Shelf Drop Connector should start beyond the East Shelf pocket area")
 	_expect(connector_turnback.polygon[connector_turnback.polygon.size() - 1].y >= 2040.0, "Shelf Drop Connector should drop below East Shelf into the lower route space")
 	_expect(connector_current.color.a <= 0.12, "Shelf Drop Connector current should stay subtle until route art and payoff exist")

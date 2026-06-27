@@ -447,6 +447,25 @@ offset_bottom = 58.0
 theme_override_font_sizes/font_size = 14
 text = "ECHO LOCK"
 
+[node name="ResonanceAlcove" type="Node2D" parent="EastShelfSpur"]
+position = Vector2(2146, 1574)
+
+[node name="AlcoveMouth" type="Polygon2D" parent="EastShelfSpur/ResonanceAlcove"]
+color = Color(0.012, 0.044, 0.072, 0.58)
+polygon = PackedVector2Array(-42, -54, 86, -72, 160, -10, 126, 62, -18, 82, -86, 12)
+
+[node name="AlcoveRim" type="Polygon2D" parent="EastShelfSpur/ResonanceAlcove"]
+color = Color(0.18, 0.42, 0.48, 0.24)
+polygon = PackedVector2Array(-72, -72, 94, -104, 188, -16, 144, 92, -30, 116, -122, 18, -88, -12, -24, 56, 110, 38, 132, -4, 72, -42, -36, -24)
+
+[node name="AlcoveGlow" type="Polygon2D" parent="EastShelfSpur/ResonanceAlcove"]
+color = Color(0.86, 1, 0.72, 0.18)
+polygon = PackedVector2Array(40, -22, 78, -8, 88, 24, 54, 48, 12, 28, 4, -8)
+
+[node name="ReturnCurrentCue" type="Polygon2D" parent="EastShelfSpur/ResonanceAlcove"]
+color = Color(0.72, 1, 0.9, 0.11)
+polygon = PackedVector2Array(4, 70, -122, 26, -204, 36, -140, -2, -204, -42, -118, -22, 6, -44)
+
 [node name="ShelfDropConnector" type="Node2D" parent="EastShelfSpur"]
 
 [node name="ConnectorMouth" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector"]
