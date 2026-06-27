@@ -766,6 +766,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LeftBranchHint",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/RightBranchHint",
 		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/ForkTurnbackLip",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/NookMouth",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/LanternGlow",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/SiltShelf",
+		"EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/ReturnCurrentCue",
 	]
 	for path in branch_paths:
 		_expect(main.get_node_or_null(path) != null, "East Shelf Spur should keep first side-route branch scene node: %s" % path)
@@ -803,6 +808,10 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var silt_left_hint := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LeftBranchHint") as Polygon2D
 	var silt_right_hint := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/RightBranchHint") as Polygon2D
 	var silt_turnback_lip := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/ForkTurnbackLip") as Polygon2D
+	var lantern_silt_nook := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook") as Node2D
+	var lantern_nook_mouth := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/NookMouth") as Polygon2D
+	var lantern_glow := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/LanternGlow") as Polygon2D
+	var lantern_return := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/ReturnCurrentCue") as Polygon2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -859,6 +868,14 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(silt_turnback_lip.color.a >= 0.45, "Silt Vein Fork should include a visible lower turnback lip")
 	_expect(silt_vein_fork.get_node_or_null("InteractZone") == null, "Silt Vein Fork scaffold should not add payoff interaction yet")
 	_expect(silt_vein_fork.get_node_or_null("Interior") == null, "Silt Vein Fork scaffold should not add a cave interior system")
+	_expect(lantern_silt_nook.position.x < silt_vein_fork.position.x, "Lantern Silt Nook should sit on the left safe branch")
+	_expect(lantern_silt_nook.position.y > 100.0, "Lantern Silt Nook should sit below the fork mouth, not above Blue Chimney")
+	_expect(lantern_nook_mouth.color.a <= 0.5, "Lantern Silt Nook mouth should be readable but not a full cave entrance")
+	_expect(lantern_glow.color.a <= 0.2, "Lantern Silt Nook glow should stay subtle until payoff exists")
+	_expect(lantern_return.polygon[1].x > lantern_return.polygon[0].x, "Lantern Silt Nook return cue should point back toward the fork")
+	_expect(lantern_return.polygon[1].y < lantern_return.polygon[0].y, "Lantern Silt Nook return cue should point upward toward the fork")
+	_expect(lantern_silt_nook.get_node_or_null("InteractZone") == null, "Lantern Silt Nook scaffold should not add payoff interaction yet")
+	_expect(lantern_silt_nook.get_node_or_null("Interior") == null, "Lantern Silt Nook scaffold should not add a multi-room cave")
 	_expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
 	_expect(blue_chimney_glow_candidate.depth_band == "deep", "Blue Chimney material candidate should preserve deep resource identity")
 	_expect(blue_chimney_glow_candidate.cluster_pattern == "deep_reward", "Blue Chimney material candidate should remain optional deep-reward route pressure")
