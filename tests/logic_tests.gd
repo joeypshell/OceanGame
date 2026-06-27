@@ -55,6 +55,7 @@ func _initialize() -> void:
 	_run("debug Wreck Echo visual staging", _test_debug_wreck_echo_visual_staging)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
+	_run("Lantern Ray scan behavior", _test_lantern_ray_scan_behavior)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
 	_run("east shelf spur branch scene contract", _test_east_shelf_spur_branch_scene_contract)
@@ -488,6 +489,49 @@ func _test_compact_scan_marker() -> void:
 	_expect(marker.color.a > 0.5, "selected compact scan marker should brighten")
 	scannable.free()
 
+func _test_lantern_ray_scan_behavior() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	var lantern_ray := main.get_node("Creatures/LanternRayRoute") as Area2D
+	main.dive_session.reset(main.max_oxygen)
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_in_base = false
+	main.player.global_position = lantern_ray.global_position
+
+	_expect(lantern_ray.is_in_group("scan_targets"), "Lantern Ray should register as a scan target once the scene is ready")
+	_expect(main.call("_nearest_scan_target") == lantern_ray, "scanner target selection should find Lantern Ray reliably at close range")
+	_expect(main.call("_format_scan_target_type", lantern_ray) == "creature", "Lantern Ray scan target should read as a creature")
+	_expect(main.call("_scan_target_id", lantern_ray) == "lantern_ray", "Lantern Ray should expose a stable discovery id")
+
+	var starting_oxygen: float = main.dive_session.oxygen
+	main.call("_try_scan")
+	_expect(main.progression_state.has_discovery("lantern_ray"), "first Lantern Ray scan should record a durable discovery")
+	_expect(main.run_completed_scans == ["lantern_ray"], "first Lantern Ray scan should count as current-run scan evidence")
+	_expect(is_equal_approx(main.dive_session.oxygen, starting_oxygen - main.scan_oxygen_cost), "first Lantern Ray scan should use the normal scan oxygen cost")
+	_expect(main.status_label.text.contains("Scanned Lantern Ray"), "first Lantern Ray scan status should name the creature")
+	_expect(main.status_label.text.contains("Observe its calm pass"), "first Lantern Ray scan guidance should stay route-observation focused")
+
+	var summary: String = main.call("_format_extraction_result_summary", 0, [])
+	_expect(summary.contains("Lantern Ray"), "Lantern Ray scan should appear in scan/discovery result copy")
+	_expect_no_monster_combat_language(summary, "Lantern Ray scan result copy")
+	_expect(not summary.to_lower().contains("field guide"), "Lantern Ray scan result should not imply field-guide UI")
+	_expect(not summary.to_lower().contains("checklist"), "Lantern Ray scan result should not imply checklist UI")
+
+	var oxygen_after_first: float = main.dive_session.oxygen
+	main.call("_try_scan")
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_after_first), "repeat Lantern Ray scan should stay free like existing known scans")
+	_expect(main.run_completed_scans == ["lantern_ray"], "repeat Lantern Ray scan should not duplicate current-run scan evidence")
+	_expect(main.status_label.text.contains("Lantern Ray known"), "repeat Lantern Ray scan should use compact known-target copy")
+	_expect(main.status_label.text.contains("observation refreshed"), "repeat Lantern Ray scan should refresh behavior text compactly")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(saved.get("scan_discoveries", {}).has("lantern_ray"), "Lantern Ray discovery should persist through normal scan discovery storage")
+	_expect(not saved.has("lantern_ray_objective"), "Lantern Ray scan should not create durable objective-chain state")
+	_expect(not saved.has("monster_parts"), "Lantern Ray scan should not add monster-part economy state")
+	_expect(not saved.has("creature_inventory"), "Lantern Ray scan should not add creature inventory state")
+	main.queue_free()
+
 func _test_scan_pulse_visual_helper() -> void:
 	var idle := ScanPulseVisualScript.idle_modulate()
 	var selected := ScanPulseVisualScript.selected_modulate()
@@ -521,6 +565,8 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 		"Creatures/LanternRayRoute/RayBody",
 		"Creatures/LanternRayRoute/RayWingLeft",
 		"Creatures/LanternRayRoute/EyeFleck",
+		"Creatures/LanternRayRoute/ScanMarker",
+		"Creatures/LanternRayRoute/CollisionShape2D",
 		"Predators/GulperEel/SpriteAnchor/Sprite",
 		"Predators/GulperEel/FallbackVisual/Body",
 		"Predators/GulperEel/FallbackVisual/Eye",
@@ -992,11 +1038,13 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	var glass_kelp_interact := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone") as Area2D
 	var glass_kelp_reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard") as Polygon2D
 	var glass_kelp_reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark") as Polygon2D
-	var lantern_ray_route := main.get_node("Creatures/LanternRayRoute") as Node2D
+	var lantern_ray_route := main.get_node("Creatures/LanternRayRoute") as Area2D
 	var lantern_ray_lane := main.get_node("Creatures/LanternRayRoute/RouteLane") as Polygon2D
 	var lantern_ray_body := main.get_node("Creatures/LanternRayRoute/RayBody") as Polygon2D
 	var lantern_ray_wing := main.get_node("Creatures/LanternRayRoute/RayWingLeft") as Polygon2D
 	var lantern_ray_eye := main.get_node("Creatures/LanternRayRoute/EyeFleck") as Polygon2D
+	var lantern_ray_scan_marker := main.get_node("Creatures/LanternRayRoute/ScanMarker") as Polygon2D
+	var lantern_ray_collision := main.get_node("Creatures/LanternRayRoute/CollisionShape2D") as CollisionShape2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
 	var arch := main.get_node("EastShelfSpur/EastShelfArch") as Node2D
 	var arch_return := main.get_node("EastShelfSpur/EastShelfArch/ReturnCurrentLeft") as Polygon2D
@@ -1176,10 +1224,11 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(lantern_ray_body.color.b > lantern_ray_body.color.r and lantern_ray_body.color.g > lantern_ray_body.color.r, "Lantern Ray should use cool creature color language instead of predator red or resource yellow")
 	_expect(lantern_ray_wing.color.a <= 0.5, "Lantern Ray wing silhouette should read as ambient life without becoming a hard obstacle")
 	_expect(lantern_ray_eye.color.a >= 0.65, "Lantern Ray should have a small distinct creature focal point")
-	_expect(not (lantern_ray_route is Area2D), "Lantern Ray Route should not be a damaging or pickup area in its first pass")
-	_expect(not lantern_ray_route.is_in_group("scan_targets"), "Lantern Ray Route should wait for the scoped scannable issue before becoming scan-target gameplay")
-	_expect(lantern_ray_route.find_child("CollisionShape2D", true, false) == null, "Lantern Ray Route should not add collision, contact damage, or extraction blocking")
-	_expect(lantern_ray_route.get_node_or_null("InteractZone") == null, "Lantern Ray Route should not add an interaction hotspot yet")
+	_expect(lantern_ray_route is Area2D, "Lantern Ray Route should be a passive scannable observation area")
+	_expect(lantern_ray_route.collision_layer == 0 and lantern_ray_route.collision_mask == 0, "Lantern Ray scan area should not collide, damage, or block extraction")
+	_expect(lantern_ray_scan_marker.color.a <= 0.2, "Lantern Ray scan marker should stay subtle while idle")
+	_expect(lantern_ray_collision != null, "Lantern Ray should keep a scan-area shape for target readability")
+	_expect(lantern_ray_route.get_node_or_null("InteractZone") == null, "Lantern Ray Route should not add an interaction hotspot")
 	_expect(lantern_ray_route.get_node_or_null("ResourcePickup") == null, "Lantern Ray Route should not add harvest or cargo behavior")
 	_expect(lantern_ray_route.get_node_or_null("Predator") == null, "Lantern Ray Route should not reuse predator behavior")
 	_expect(blackwater_crack.get_node_or_null("Interior") == null, "Blackwater Crack should not add a cave interior system")

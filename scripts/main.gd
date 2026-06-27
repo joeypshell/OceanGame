@@ -1527,6 +1527,8 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 		return " Matching %s deposits highlighted." % target.definition.display_name
 	elif _scan_target_id(target) == "lantern_fry":
 		return " Nearby Glow Plankton pulsed again."
+	elif _scan_target_id(target) == "lantern_ray":
+		return " Lantern Ray route observation refreshed."
 	elif _scan_target_id(target) == "thermal_vent":
 		return " Warm clue refreshed; glow route optional."
 	elif _scan_target_id(target) == "shell_reef_shelf":
@@ -1610,6 +1612,8 @@ func _format_first_scan_guidance(target: Node) -> String:
 	match _scan_target_id(target):
 		"lantern_fry":
 			return " Follow the plankton pulse if oxygen allows, then return to base."
+		"lantern_ray":
+			return " Observe its calm pass, then return through Blackwater."
 		"thermal_vent":
 			return " Warm current marks optional glow; bank Pressure Seal clue."
 		"shell_reef_shelf":
@@ -2813,6 +2817,8 @@ func _format_discovery_name(discovery_id: String) -> String:
 			return "East Shelf or Drop Echo research"
 		"gulper_eel":
 			return "Gulper Eel"
+		"lantern_ray":
+			return "Lantern Ray"
 		"lantern_fry":
 			return "Lantern Fry"
 		_:
@@ -3129,6 +3135,8 @@ func _format_discovery_memory_callout() -> String:
 		return "\nDiscovery remembered: Pressure-Locked Research Wreck - pressure access can open this route."
 	if run_completed_scans.has("gulper_eel"):
 		return "\nDiscovery remembered: Gulper Eel - warning-lane behavior can be studied."
+	if run_completed_scans.has("lantern_ray"):
+		return "\nDiscovery remembered: Lantern Ray - lower-route movement can be observed without fighting."
 	if run_completed_scans.has("thermal_vent"):
 		return "\nDiscovery remembered: Thermal Vent - pressure-seal knowledge is banked."
 	if run_completed_scans.has("shell_reef_shelf"):
@@ -3256,6 +3264,8 @@ func _format_scan_target_type(target: Node) -> String:
 
 	match _scan_target_id(target):
 		"lantern_fry":
+			return "creature"
+		"lantern_ray":
 			return "creature"
 		"gulper_eel":
 			return "creature"

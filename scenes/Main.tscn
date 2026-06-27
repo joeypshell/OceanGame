@@ -1773,8 +1773,18 @@ polygon = PackedVector2Array(-46, 0, -18, -30, 30, -22, 58, 0, 30, 22, -18, 30)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Creatures/LanternFry"]
 shape = SubResource("CircleShape2D_pickup")
 
-[node name="LanternRayRoute" type="Node2D" parent="Creatures"]
+[node name="LanternRayRoute" type="Area2D" parent="Creatures"]
 position = Vector2(2680, 2640)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("7_scannable")
+discovery_id = "lantern_ray"
+display_name = "Lantern Ray"
+description = "A broad lower-trench creature that glides through dim return currents."
+gameplay_fact = "Watch its calm pass, then keep the route wide and return through Blackwater."
+move_start = Vector2(2620, 2620)
+move_end = Vector2(2820, 2670)
+move_speed = 30.0
 
 [node name="RouteLane" type="Polygon2D" parent="Creatures/LanternRayRoute"]
 color = Color(0.3, 0.86, 0.98, 0.14)
@@ -1811,6 +1821,13 @@ polygon = PackedVector2Array(-82, 0, -146, -10, -206, 0, -146, 10)
 [node name="EyeFleck" type="Polygon2D" parent="Creatures/LanternRayRoute"]
 color = Color(0.82, 1, 0.96, 0.7)
 polygon = PackedVector2Array(48, -5, 62, -2, 62, 4, 48, 7)
+
+[node name="ScanMarker" type="Polygon2D" parent="Creatures/LanternRayRoute"]
+color = Color(0.95, 1, 0.7, 0.12)
+polygon = PackedVector2Array(0, -74, 58, -42, 74, 0, 58, 42, 0, 74, -58, 42, -74, 0, -58, -42)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Creatures/LanternRayRoute"]
+shape = SubResource("CircleShape2D_pickup")
 
 [node name="Predators" type="Node2D" parent="."]
 
