@@ -3946,9 +3946,9 @@ func _cargo_slot_color(state: String) -> Color:
 		"hidden":
 			return Color(0.0, 0.0, 0.0, 0.0)
 		"locked":
-			return Color(0.012, 0.025, 0.032, 0.5)
+			return Color(0.012, 0.025, 0.032, 0.26)
 		_:
-			return Color(0.035, 0.1, 0.13, 0.9)
+			return Color(0.035, 0.1, 0.13, 0.56)
 
 func _cargo_slot_icon_polygon(state: String) -> PackedVector2Array:
 	match state:
@@ -4030,17 +4030,17 @@ func _tool_belt_state(tool_id: String) -> String:
 func _tool_slot_color(state: String) -> Color:
 	match state:
 		"active":
-			return Color(0.08, 0.38, 0.42, 0.96)
+			return Color(0.08, 0.38, 0.42, 0.72)
 		"ready":
-			return Color(0.025, 0.095, 0.12, 0.94)
+			return Color(0.025, 0.095, 0.12, 0.62)
 		"cooldown":
-			return Color(0.11, 0.1, 0.045, 0.9)
+			return Color(0.11, 0.1, 0.045, 0.64)
 		"spent":
-			return Color(0.075, 0.075, 0.09, 0.86)
+			return Color(0.075, 0.075, 0.09, 0.52)
 		"locked":
-			return Color(0.018, 0.026, 0.034, 0.72)
+			return Color(0.018, 0.026, 0.034, 0.42)
 		_:
-			return Color(0.02, 0.03, 0.04, 0.72)
+			return Color(0.02, 0.03, 0.04, 0.42)
 
 func _tool_key_color(state: String) -> Color:
 	match state:

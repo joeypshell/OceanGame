@@ -51,12 +51,12 @@ radius = 92.0
 radius = 96.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_panel"]
-bg_color = Color(0.004, 0.02, 0.032, 0.78)
+bg_color = Color(0.004, 0.02, 0.032, 0.58)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.28, 0.86, 1, 0.48)
+border_color = Color(0.28, 0.86, 1, 0.34)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -65,16 +65,16 @@ content_margin_left = 12.0
 content_margin_top = 10.0
 content_margin_right = 12.0
 content_margin_bottom = 10.0
-shadow_color = Color(0, 0.012, 0.02, 0.68)
-shadow_size = 10
+shadow_color = Color(0, 0.012, 0.02, 0.42)
+shadow_size = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_warning_panel"]
-bg_color = Color(0.11, 0.052, 0.018, 0.84)
+bg_color = Color(0.11, 0.052, 0.018, 0.68)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(1, 0.72, 0.3, 0.76)
+border_color = Color(1, 0.72, 0.3, 0.62)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -83,8 +83,8 @@ content_margin_left = 12.0
 content_margin_top = 10.0
 content_margin_right = 12.0
 content_margin_bottom = 10.0
-shadow_color = Color(0, 0.012, 0.02, 0.54)
-shadow_size = 8
+shadow_color = Color(0, 0.012, 0.02, 0.42)
+shadow_size = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_surface_panel"]
 bg_color = Color(0.018, 0.055, 0.07, 0.9)
@@ -3135,7 +3135,7 @@ offset_right = 220.0
 offset_bottom = 26.0
 theme_override_colors/font_color = Color(0.82, 0.96, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "CARGO"
@@ -3184,7 +3184,7 @@ offset_right = 314.0
 offset_bottom = 54.0
 theme_override_colors/font_color = Color(0.93, 0.98, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 15
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "OXYGEN: 30 / 30"
@@ -3195,7 +3195,7 @@ offset_left = 28.0
 offset_top = 58.0
 offset_right = 300.0
 offset_bottom = 68.0
-color = Color(0.012, 0.028, 0.036, 0.96)
+color = Color(0.012, 0.028, 0.036, 0.58)
 
 [node name="OxygenBarFill" type="ColorRect" parent="HUD"]
 visible = false
@@ -3212,7 +3212,7 @@ offset_right = 314.0
 offset_bottom = 104.0
 theme_override_colors/font_color = Color(0.8, 0.93, 0.98, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "Depth: 0m | Best: 0m"
@@ -3223,7 +3223,7 @@ offset_left = 28.0
 offset_top = 106.0
 offset_right = 300.0
 offset_bottom = 114.0
-color = Color(0.012, 0.028, 0.036, 0.92)
+color = Color(0.012, 0.028, 0.036, 0.52)
 
 [node name="DepthBarFill" type="ColorRect" parent="HUD"]
 visible = false
@@ -3240,7 +3240,7 @@ offset_right = 314.0
 offset_bottom = 144.0
 theme_override_colors/font_color = Color(0.74, 0.96, 0.92, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "Base: here"
@@ -3252,7 +3252,7 @@ offset_right = 572.0
 offset_bottom = 82.0
 theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 15
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "0 / 3"
@@ -3263,25 +3263,25 @@ position = Vector2(600, 50)
 [node name="Slot1" type="ColorRect" parent="HUD/CargoSlots"]
 offset_right = 26.0
 offset_bottom = 26.0
-color = Color(0.035, 0.1, 0.13, 0.9)
+color = Color(0.035, 0.1, 0.13, 0.56)
 
 [node name="Slot2" type="ColorRect" parent="HUD/CargoSlots"]
 offset_left = 34.0
 offset_right = 60.0
 offset_bottom = 26.0
-color = Color(0.035, 0.1, 0.13, 0.9)
+color = Color(0.035, 0.1, 0.13, 0.56)
 
 [node name="Slot3" type="ColorRect" parent="HUD/CargoSlots"]
 offset_left = 68.0
 offset_right = 94.0
 offset_bottom = 26.0
-color = Color(0.035, 0.1, 0.13, 0.9)
+color = Color(0.035, 0.1, 0.13, 0.56)
 
 [node name="Slot4" type="ColorRect" parent="HUD/CargoSlots"]
 offset_left = 102.0
 offset_right = 128.0
 offset_bottom = 26.0
-color = Color(0.012, 0.025, 0.032, 0.5)
+color = Color(0.012, 0.025, 0.032, 0.26)
 
 [node name="Icon1" type="Polygon2D" parent="HUD/CargoSlots"]
 visible = false
@@ -3324,7 +3324,7 @@ offset_right = 314.0
 offset_bottom = 170.0
 theme_override_colors/font_color = Color(0.68, 0.9, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "Discoveries: 0 / 3"
@@ -3344,7 +3344,7 @@ offset_right = 320.0
 offset_bottom = 30.0
 theme_override_colors/font_color = Color(0.48, 1, 0.42, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "DIVE ROUTE"
@@ -3356,7 +3356,7 @@ offset_right = 320.0
 offset_bottom = 54.0
 theme_override_colors/font_color = Color(0.86, 0.96, 1, 0.92)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "Explore, collect, scan, then return"
@@ -3377,7 +3377,7 @@ offset_right = 1200.0
 offset_bottom = 254.0
 theme_override_colors/font_color = Color(0.26, 0.94, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "SCAN TARGET"
@@ -3390,7 +3390,7 @@ offset_right = 1200.0
 offset_bottom = 308.0
 theme_override_colors/font_color = Color(0.78, 0.93, 1, 0.92)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "No readable signal"
@@ -3403,7 +3403,7 @@ offset_right = 1200.0
 offset_bottom = 340.0
 theme_override_colors/font_color = Color(0.92, 0.96, 1, 0.94)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "Hold F near a target"
@@ -3435,7 +3435,7 @@ offset_right = 336.0
 offset_bottom = 316.0
 theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 13
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "Dive status: active"
@@ -3447,7 +3447,7 @@ offset_right = 336.0
 offset_bottom = 278.0
 theme_override_colors/font_color = Color(0.82, 0.95, 0.96, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 13
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "At base: E/Enter extract"
@@ -3460,7 +3460,7 @@ offset_right = 1200.0
 offset_bottom = 282.0
 theme_override_colors/font_color = Color(1, 0.78, 0.38, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 13
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "none nearby"
@@ -3480,7 +3480,7 @@ offset_right = 284.0
 offset_bottom = 58.0
 theme_override_colors/font_color = Color(1, 0.88, 0.68, 1)
 theme_override_colors/font_shadow_color = Color(0.06, 0.02, 0.01, 0.95)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 14
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "O2 LOW - PLAN RETURN"
@@ -3498,7 +3498,7 @@ offset_top = 28.0
 offset_right = 1230.0
 offset_bottom = 50.0
 theme_override_colors/font_color = Color(1, 0.75, 0.28, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 12
 text = "FOOD 3 / 5"
 
 [node name="FoodNeedIcon" type="Polygon2D" parent="HUD"]
@@ -3530,7 +3530,7 @@ offset_top = 68.0
 offset_right = 1230.0
 offset_bottom = 90.0
 theme_override_colors/font_color = Color(0.42, 0.9, 1, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 12
 text = "WATER 3 / 5"
 
 [node name="WaterNeedIcon" type="Polygon2D" parent="HUD"]
@@ -3562,7 +3562,7 @@ offset_top = 108.0
 offset_right = 1230.0
 offset_bottom = 130.0
 theme_override_colors/font_color = Color(1, 0.92, 0.24, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 12
 text = "POWER 3 / 5"
 
 [node name="PowerNeedIcon" type="Polygon2D" parent="HUD"]
@@ -3609,7 +3609,7 @@ offset_right = 64.0
 offset_bottom = 344.0
 theme_override_colors/font_color = Color(0.9, 0.98, 1, 0.92)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "0m"
@@ -3622,7 +3622,7 @@ offset_right = 64.0
 offset_bottom = 466.0
 theme_override_colors/font_color = Color(0.9, 0.98, 1, 0.9)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "50m"
@@ -3635,7 +3635,7 @@ offset_right = 74.0
 offset_bottom = 590.0
 theme_override_colors/font_color = Color(0.9, 0.98, 1, 0.9)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "100m"
@@ -3653,35 +3653,35 @@ offset_left = 18.0
 offset_top = 18.0
 offset_right = 72.0
 offset_bottom = 62.0
-color = Color(0.025, 0.095, 0.12, 0.94)
+color = Color(0.025, 0.095, 0.12, 0.62)
 
 [node name="ToolSlot2" type="ColorRect" parent="HUD/ToolBeltPanel"]
 offset_left = 88.0
 offset_top = 18.0
 offset_right = 142.0
 offset_bottom = 62.0
-color = Color(0.025, 0.095, 0.12, 0.94)
+color = Color(0.025, 0.095, 0.12, 0.62)
 
 [node name="ToolSlot3" type="ColorRect" parent="HUD/ToolBeltPanel"]
 offset_left = 158.0
 offset_top = 18.0
 offset_right = 212.0
 offset_bottom = 62.0
-color = Color(0.018, 0.026, 0.034, 0.72)
+color = Color(0.018, 0.026, 0.034, 0.42)
 
 [node name="ToolSlot4" type="ColorRect" parent="HUD/ToolBeltPanel"]
 offset_left = 228.0
 offset_top = 18.0
 offset_right = 282.0
 offset_bottom = 62.0
-color = Color(0.018, 0.026, 0.034, 0.72)
+color = Color(0.018, 0.026, 0.034, 0.42)
 
 [node name="ToolSlot5" type="ColorRect" parent="HUD/ToolBeltPanel"]
 offset_left = 298.0
 offset_top = 18.0
 offset_right = 352.0
 offset_bottom = 62.0
-color = Color(0.018, 0.026, 0.034, 0.72)
+color = Color(0.018, 0.026, 0.034, 0.42)
 
 [node name="ToolIcon1" type="Polygon2D" parent="HUD/ToolBeltPanel"]
 position = Vector2(45, 40)
@@ -3714,7 +3714,7 @@ offset_top = 2.0
 offset_right = 54.0
 offset_bottom = 18.0
 theme_override_colors/font_color = Color(0.88, 0.96, 1, 0.96)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 10
 text = "F"
 
 [node name="ToolKey2" type="Label" parent="HUD/ToolBeltPanel"]
@@ -3723,7 +3723,7 @@ offset_top = 2.0
 offset_right = 140.0
 offset_bottom = 18.0
 theme_override_colors/font_color = Color(0.88, 0.96, 1, 0.96)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 10
 text = "Space"
 
 [node name="ToolKey3" type="Label" parent="HUD/ToolBeltPanel"]
@@ -3732,7 +3732,7 @@ offset_top = 2.0
 offset_right = 194.0
 offset_bottom = 18.0
 theme_override_colors/font_color = Color(0.62, 0.7, 0.74, 0.82)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 10
 text = "2"
 
 [node name="ToolKey4" type="Label" parent="HUD/ToolBeltPanel"]
@@ -3741,7 +3741,7 @@ offset_top = 2.0
 offset_right = 264.0
 offset_bottom = 18.0
 theme_override_colors/font_color = Color(0.62, 0.7, 0.74, 0.82)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 10
 text = "3"
 
 [node name="ToolKey5" type="Label" parent="HUD/ToolBeltPanel"]
@@ -3750,7 +3750,7 @@ offset_top = 2.0
 offset_right = 334.0
 offset_bottom = 18.0
 theme_override_colors/font_color = Color(0.62, 0.7, 0.74, 0.82)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 10
 text = "5"
 
 [node name="MinimapPanel" type="Panel" parent="HUD"]
@@ -3792,7 +3792,7 @@ offset_right = 202.0
 offset_bottom = 154.0
 theme_override_colors/font_color = Color(0.88, 0.98, 1, 0.92)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "M"
