@@ -61,6 +61,15 @@ Record durable decisions, blockers, commit hashes, and verification results in i
 
 For broad features, write a compact plan under `docs/planning/` before implementation. Split the plan into small issues that one agent can complete and verify. Use an integration branch only when multiple issues must be reviewed together before merging.
 
+## Architecture Refactor Guardrails
+
+- Do not add new unrelated responsibilities to `scripts/main.gd`; it should trend toward scene composition, signal wiring, and high-level orchestration.
+- Before adding logic to `main.gd`, check whether it belongs in an existing state/model class, presenter, service, controller, or focused helper.
+- Keep UI formatting separate from durable gameplay state. Presenters may format/render state, but they should not own progression, survival, cargo, or save rules.
+- Keep state/model classes independent of Godot scene nodes and UI controls.
+- Prefer small extraction issues over broad rewrites. Every refactor issue must preserve existing behavior unless the issue explicitly says otherwise.
+- Use `docs/current/MAIN_GD_ARCHITECTURE_REFACTOR_EPIC.md` as the active decomposition plan for `main.gd`.
+
 ## Verification Commands
 
 Prefer the tiered runner when possible:
