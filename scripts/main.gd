@@ -67,8 +67,8 @@ const RUN_SUMMARY_TALL_BOTTOM := 624.0
 const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
 const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
 const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(272.0, 116.0))
-const CARGO_PANEL_RECT := Rect2(Vector2(474.0, 16.0), Vector2(332.0, 58.0))
-const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(1020.0, 16.0), Vector2(244.0, 112.0))
+const CARGO_PANEL_RECT := Rect2(Vector2(510.0, 16.0), Vector2(260.0, 56.0))
+const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(1036.0, 16.0), Vector2(228.0, 106.0))
 const DIVE_INFO_RECT := Rect2(Vector2(16.0, 148.0), Vector2(292.0, 104.0))
 const SCAN_CARD_RECT := Rect2(Vector2(948.0, 220.0), Vector2(260.0, 106.0))
 const TOOL_BELT_PANEL_RECT := Rect2(Vector2(460.0, 638.0), Vector2(360.0, 62.0))
@@ -81,7 +81,7 @@ const ACTIVE_HUD_LABEL_RECTS := {
 	"oxygen": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 28.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
 	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 68.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
 	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 96.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
-	"cargo": Rect2(Vector2(500.0, 45.0), Vector2(72.0, HUD_SINGLE_ROW_HEIGHT)),
+	"cargo": Rect2(Vector2(536.0, 44.0), Vector2(58.0, HUD_SINGLE_ROW_HEIGHT)),
 	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 108.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
 	"scan": Rect2(Vector2(964.0, 252.0), Vector2(224.0, HUD_SINGLE_ROW_HEIGHT)),
 	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 204.0), Vector2(260.0, HUD_SINGLE_ROW_HEIGHT)),
@@ -96,16 +96,21 @@ const OXYGEN_BAR_BACK_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
 const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
 const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
 const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
-const CARGO_SLOT_ACTIVE_POSITION := Vector2(600.0, 38.0)
+const CARGO_SLOT_ACTIVE_POSITION := Vector2(606.0, 37.0)
 const SURVIVAL_NEED_LABEL_RECTS := {
-	"food": Rect2(Vector2(1062.0, 28.0), Vector2(154.0, 18.0)),
-	"water": Rect2(Vector2(1062.0, 62.0), Vector2(154.0, 18.0)),
-	"power": Rect2(Vector2(1062.0, 96.0), Vector2(154.0, 18.0)),
+	"food": Rect2(Vector2(1070.0, 28.0), Vector2(140.0, 18.0)),
+	"water": Rect2(Vector2(1070.0, 60.0), Vector2(140.0, 18.0)),
+	"power": Rect2(Vector2(1070.0, 92.0), Vector2(140.0, 18.0)),
 }
 const SURVIVAL_NEED_BAR_BACK_RECTS := {
-	"food": Rect2(Vector2(1062.0, 48.0), Vector2(150.0, 7.0)),
-	"water": Rect2(Vector2(1062.0, 82.0), Vector2(150.0, 7.0)),
-	"power": Rect2(Vector2(1062.0, 116.0), Vector2(150.0, 7.0)),
+	"food": Rect2(Vector2(1070.0, 48.0), Vector2(136.0, 7.0)),
+	"water": Rect2(Vector2(1070.0, 80.0), Vector2(136.0, 7.0)),
+	"power": Rect2(Vector2(1070.0, 112.0), Vector2(136.0, 7.0)),
+}
+const SURVIVAL_NEED_ICON_POSITIONS := {
+	"food": Vector2(1048.0, 39.0),
+	"water": Vector2(1048.0, 71.0),
+	"power": Vector2(1048.0, 103.0),
 }
 const DEPTH_RAIL_LINE_RECT := Rect2(Vector2(28.0, 304.0), Vector2(2.0, 280.0))
 const DEPTH_RAIL_LABEL_RECTS := {
@@ -3534,6 +3539,12 @@ func _apply_active_hud_layout() -> void:
 	_set_control_rect(food_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["food"])
 	_set_control_rect(water_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["water"])
 	_set_control_rect(power_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["power"])
+	if food_need_icon != null:
+		food_need_icon.position = SURVIVAL_NEED_ICON_POSITIONS["food"]
+	if water_need_icon != null:
+		water_need_icon.position = SURVIVAL_NEED_ICON_POSITIONS["water"]
+	if power_need_icon != null:
+		power_need_icon.position = SURVIVAL_NEED_ICON_POSITIONS["power"]
 	_set_control_rect(depth_rail_line, DEPTH_RAIL_LINE_RECT)
 	if depth_rail_labels.size() >= 3:
 		_set_control_rect(depth_rail_labels[0], DEPTH_RAIL_LABEL_RECTS["0"])
@@ -3618,6 +3629,12 @@ func _ensure_active_hud_references() -> void:
 		water_need_label = get_node_or_null("HUD/WaterNeed") as Label
 	if power_need_label == null:
 		power_need_label = get_node_or_null("HUD/PowerNeed") as Label
+	if food_need_icon == null:
+		food_need_icon = get_node_or_null("HUD/FoodNeedIcon") as Polygon2D
+	if water_need_icon == null:
+		water_need_icon = get_node_or_null("HUD/WaterNeedIcon") as Polygon2D
+	if power_need_icon == null:
+		power_need_icon = get_node_or_null("HUD/PowerNeedIcon") as Polygon2D
 	if food_need_bar_back == null:
 		food_need_bar_back = get_node_or_null("HUD/FoodNeedBarBack") as ColorRect
 	if water_need_bar_back == null:
