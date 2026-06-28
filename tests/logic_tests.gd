@@ -5444,6 +5444,14 @@ func _test_compact_dive_hud_helpers() -> void:
 	main_scene.dive_session.cargo_limit = 3
 	main_scene.call("_apply_active_hud_layout")
 	main_scene.call("_update_cargo_slots")
+	var camera := main_scene.get_node("Player/Camera2D") as Camera2D
+	var zoomed_out_reticle: Vector2 = main_scene.call(
+		"_scan_reticle_fallback_screen_position",
+		main_scene.player.global_position + Vector2(100.0, 0.0),
+		Vector2(1280.0, 720.0)
+	)
+	_expect(zoomed_out_reticle.x < 740.0, "scan reticle should apply zoomed-out camera scale instead of drifting beyond the target")
+	_expect(is_equal_approx(zoomed_out_reticle.x, 640.0 + 100.0 * camera.zoom.x), "scan reticle fallback should match Camera2D zoomed screen offset")
 	var hud_style := active_panel.get_theme_stylebox("panel") as StyleBoxFlat
 	var warning_style := warning_panel.get_theme_stylebox("panel") as StyleBoxFlat
 	_expect(hud_style.bg_color.a <= 0.62, "active HUD glass should stay translucent instead of opaque black")

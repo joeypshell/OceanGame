@@ -5101,20 +5101,33 @@ func _update_scan_reticle_position(target: Node) -> void:
 		return
 
 	var viewport_size := get_viewport_rect().size
-	var screen_position := viewport_size * 0.5
-	if player != null:
-		var zoom := Vector2.ONE
-		var camera := player.get_node_or_null("Camera2D") as Camera2D
-		if camera != null:
-			zoom = camera.zoom
-		var world_delta: Vector2 = (target as Node2D).global_position - player.global_position
-		screen_position += Vector2(world_delta.x / maxf(zoom.x, 0.001), world_delta.y / maxf(zoom.y, 0.001))
+	var screen_position := _scan_reticle_screen_position((target as Node2D).global_position)
 
 	scan_reticle_root.visible = true
 	scan_reticle_root.position = Vector2(
 		clampf(screen_position.x, 96.0, viewport_size.x - 96.0),
 		clampf(screen_position.y, 96.0, viewport_size.y - 96.0)
 	)
+
+func _scan_reticle_screen_position(world_position: Vector2) -> Vector2:
+	var viewport_size := get_viewport_rect().size
+	var canvas_transform := get_viewport().get_canvas_transform()
+	if not canvas_transform.is_equal_approx(Transform2D.IDENTITY):
+		return canvas_transform * world_position
+
+	return _scan_reticle_fallback_screen_position(world_position, viewport_size)
+
+func _scan_reticle_fallback_screen_position(world_position: Vector2, viewport_size: Vector2) -> Vector2:
+	var screen_position := viewport_size * 0.5
+	if player == null:
+		return screen_position
+
+	var zoom := Vector2.ONE
+	var camera := player.get_node_or_null("Camera2D") as Camera2D
+	if camera != null:
+		zoom = camera.zoom
+	var world_delta := world_position - player.global_position
+	return screen_position + Vector2(world_delta.x * maxf(zoom.x, 0.001), world_delta.y * maxf(zoom.y, 0.001))
 
 func _format_scan_target_discovery_state(target: Node) -> String:
 	return "known" if progression_state.has_discovery(_scan_target_id(target)) else "new"
