@@ -88,6 +88,7 @@ func _initialize() -> void:
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
 	_run("Area 01 first art slice scene contract", _test_area_01_first_art_slice_scene_contract)
+	_run("Area 01 source map contract", _test_area_01_source_map_contract)
 	_run("Area 01 starter resource pocket placement", _test_area_01_starter_resource_pocket_placement)
 	_run("Area 01 reusable reef visual kit", _test_area_01_reusable_reef_visual_kit)
 	_run("east shelf spur branch scene contract", _test_east_shelf_spur_branch_scene_contract)
@@ -3482,6 +3483,90 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	_expect(cargo_slot.color.a < left_wall.color.a, "gameplay object slots should not look like solid terrain")
 	_expect(background_study.modulate.a <= 0.24, "old broad background study should sit behind the first real art slice")
 	_expect(not route_choice_band.visible, "route-choice review band should stay hidden by default so the first art slice reads as a place, not a diagram")
+	main.free()
+
+func _test_area_01_source_map_contract() -> void:
+	var file := FileAccess.open("res://docs/planning/maps/area_01_blockout_source_map_v1.json", FileAccess.READ)
+	_expect(file != null, "Area 01 source map JSON should exist")
+	if file == null:
+		return
+
+	var parsed = JSON.parse_string(file.get_as_text())
+	_expect(typeof(parsed) == TYPE_DICTIONARY, "Area 01 source map should parse as a JSON object")
+	if typeof(parsed) != TYPE_DICTIONARY:
+		return
+
+	var source_map := parsed as Dictionary
+	var required_keys := [
+		"schema_version",
+		"coordinate_space",
+		"known_playtest_defects",
+		"playable_water_lanes",
+		"solid_terrain",
+		"resource_pockets",
+		"validation_rules",
+	]
+	for key in required_keys:
+		_expect(source_map.has(key), "Area 01 source map should include %s" % key)
+
+	var lanes: Array = source_map.get("playable_water_lanes", [])
+	var solid_terrain: Array = source_map.get("solid_terrain", [])
+	var resource_pockets: Array = source_map.get("resource_pockets", [])
+	var validation_rules: Array = source_map.get("validation_rules", [])
+	var known_defects: Array = source_map.get("known_playtest_defects", [])
+	_expect(lanes.size() >= 6, "Area 01 source map should define enough playable lanes for a larger shell")
+	_expect(solid_terrain.size() >= 8, "Area 01 source map should define current solid terrain blockers")
+	_expect(resource_pockets.size() >= 6, "Area 01 source map should define starter resource pockets")
+	_expect(validation_rules.size() >= 6, "Area 01 source map should define validation rules")
+
+	var defect_ids: Array[String] = []
+	for defect in known_defects:
+		if typeof(defect) == TYPE_DICTIONARY:
+			defect_ids.append(String((defect as Dictionary).get("id", "")))
+	for id in [
+		"reported_right_wall_swim_through",
+		"reported_left_invisible_stop",
+		"reported_inaccessible_scannables",
+	]:
+		_expect(defect_ids.has(id), "Area 01 source map should capture playtest defect %s" % id)
+
+	var rule_ids: Array[String] = []
+	for rule in validation_rules:
+		if typeof(rule) == TYPE_DICTIONARY:
+			rule_ids.append(String((rule as Dictionary).get("id", "")))
+	for id in [
+		"blocking_collision_requires_visible_solid_and_lip",
+		"reachable_interactables_must_be_in_lane_or_marked_future_locked",
+		"background_shape_must_not_block_player",
+	]:
+		_expect(rule_ids.has(id), "Area 01 source map should include validation rule %s" % id)
+
+	var main := MainScene.instantiate()
+	for terrain in solid_terrain:
+		if typeof(terrain) != TYPE_DICTIONARY:
+			_expect(false, "Area 01 solid terrain entries should be dictionaries")
+			continue
+		var terrain_entry := terrain as Dictionary
+		var terrain_id := String(terrain_entry.get("id", "unknown"))
+		var visible_path := String(terrain_entry.get("visible_path", ""))
+		var collision_path := String(terrain_entry.get("collision_path", ""))
+		var lip_path := String(terrain_entry.get("lip_path", ""))
+		var visible_node := main.get_node_or_null(visible_path)
+		var collision_node := main.get_node_or_null(collision_path)
+		var lip_node := main.get_node_or_null(lip_path)
+		_expect(visible_node is Polygon2D, "Area 01 source map visible terrain should exist as Polygon2D: %s" % terrain_id)
+		_expect(collision_node is CollisionPolygon2D, "Area 01 source map collision should exist as CollisionPolygon2D: %s" % terrain_id)
+		_expect(lip_node is Polygon2D, "Area 01 source map lip/rim should exist as Polygon2D: %s" % terrain_id)
+		if collision_node is CollisionPolygon2D:
+			_expect(not (collision_node as CollisionPolygon2D).disabled, "Area 01 mapped blocker collision should stay enabled: %s" % terrain_id)
+
+	for pocket in resource_pockets:
+		if typeof(pocket) != TYPE_DICTIONARY:
+			_expect(false, "Area 01 resource pocket entries should be dictionaries")
+			continue
+		var pocket_entry := pocket as Dictionary
+		var pocket_path := String(pocket_entry.get("scene_path", ""))
+		_expect(main.get_node_or_null(pocket_path) != null, "Area 01 source map resource pocket should exist: %s" % pocket_path)
 	main.free()
 
 func _test_area_01_starter_resource_pocket_placement() -> void:

@@ -80,3 +80,17 @@ This milestone is working when a fresh playtest no longer feels like the same sm
 ## Current Correction
 
 The earlier one-room art slice created a misleading result: some upper-water collision read like invisible walls, and the playable area still felt tiny. Area 01 work should now prioritize map-scale blockout truth over local decoration. Any blocking wall must have a visible solid terrain mass, and any abstract shallow background shape that does not read as terrain should not own collision.
+
+## Source Map Gate
+
+Area 01 blockout changes should now flow through `docs/planning/maps/area_01_blockout_source_map_v1.json` and the companion note `docs/planning/AREA_01_BLOCKOUT_SOURCE_MAP_2026_06_28.md`.
+
+Before adding more cave-mouth affordances, visual dressing, scannables, or route content, confirm the scene still matches the source map:
+
+- playable water lanes remain open;
+- every enabled blocker has a visible solid and rim/lip;
+- background and lighting shapes do not block the player;
+- resource pockets sit in intended lanes;
+- current scannables are reachable, while future promises are quiet and explicitly locked.
+
+#692 and #693 should stay behind the source-map validation/debug-overlay work so the larger skeleton is trustworthy before more content or polish is layered on top.

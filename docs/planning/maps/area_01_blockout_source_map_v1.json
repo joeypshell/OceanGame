@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "purpose": "Developer source-of-truth for Area 01 blockout lanes, solid terrain, collision visibility, resource pockets, and reachability rules. This is not an in-game minimap or an exact player locator.",
+  "coordinate_space": {
+    "units": "Godot 2D scene pixels",
+    "origin": "Main.tscn world coordinates",
+    "camera_intent": "Side-view dive map with surface entry above, wider exploration left/right, and deeper routes below.",
+    "note": "Coordinates are approximate planning anchors. Scene node paths are authoritative for current implementation checks."
+  },
+  "known_playtest_defects": [
+    {
+      "id": "reported_right_wall_swim_through",
+      "player_report": "Player can swim into a wall-looking right terrain mass.",
+      "must_resolve_by": "Every solid-looking wall must either have matching collision and lip visuals or be clearly marked as nonblocking background in this map."
+    },
+    {
+      "id": "reported_left_invisible_stop",
+      "player_report": "Player gets stopped by nothing when trying to move left.",
+      "must_resolve_by": "Every enabled blocking collision must have a visible solid terrain mass and visible rim or lip before contact."
+    },
+    {
+      "id": "reported_inaccessible_scannables",
+      "player_report": "Several scannable or interactable objects appear to sit behind terrain or outside reachable lanes.",
+      "must_resolve_by": "Current-run scannables and pickups must sit in playable lanes or be explicitly authored as quiet future-locked promises."
+    }
+  ],
+  "playable_water_lanes": [
+    {
+      "id": "surface_entry_lane",
+      "role": "Boat/moonpool entry and extraction approach.",
+      "approx_polygon": [[-80, -70], [180, -70], [190, 210], [-95, 210]],
+      "must_remain_open": true
+    },
+    {
+      "id": "central_drop_lane",
+      "role": "Primary vertical descent spine from surface toward the first deeper decision space.",
+      "approx_polygon": [[-70, 100], [110, 95], [140, 900], [-160, 900]],
+      "must_remain_open": true
+    },
+    {
+      "id": "left_shallow_shelf_lane",
+      "role": "Early left-side resource teaching route.",
+      "approx_polygon": [[-640, 160], [-120, 140], [-135, 470], [-690, 470]],
+      "must_remain_open": true
+    },
+    {
+      "id": "left_chamber_lane",
+      "role": "Wider left-side chamber that should feel like explorable map, not a tiny pocket.",
+      "approx_polygon": [[-820, 420], [-160, 390], [-120, 820], [-840, 850]],
+      "must_remain_open": true
+    },
+    {
+      "id": "right_shelf_lane",
+      "role": "Early right-side shelf route with room to approach resource pockets.",
+      "approx_polygon": [[110, 160], [700, 150], [740, 500], [115, 510]],
+      "must_remain_open": true
+    },
+    {
+      "id": "right_chamber_lane",
+      "role": "Right-side chamber route for starter material spread and future cave-mouth affordances.",
+      "approx_polygon": [[120, 430], [900, 390], [940, 840], [90, 860]],
+      "must_remain_open": true
+    },
+    {
+      "id": "lower_basin_lane",
+      "role": "Lower central basin that hints at deeper route progression without becoming exact-route guidance.",
+      "approx_polygon": [[-300, 760], [560, 730], [650, 1040], [-410, 1050]],
+      "must_remain_open": true
+    }
+  ],
+  "solid_terrain": [
+    {
+      "id": "left_solid_wall",
+      "role": "Primary left reef boundary.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/LeftSolidWall",
+      "collision_path": "Area01ArtSlice/TerrainCollision/LeftWallCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/LeftWallBlockingRim"
+    },
+    {
+      "id": "right_solid_wall",
+      "role": "Primary right reef boundary.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/RightSolidWall",
+      "collision_path": "Area01ArtSlice/TerrainCollision/RightWallCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightWallBlockingRim"
+    },
+    {
+      "id": "left_starter_ledge",
+      "role": "First left shelf terrain under the surface entry.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/LeftStarterLedge",
+      "collision_path": "Area01ArtSlice/TerrainCollision/LeftLedgeCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/LeftLedgeBlockingLip"
+    },
+    {
+      "id": "right_starter_ledge",
+      "role": "First right shelf terrain under the surface entry.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/RightStarterLedge",
+      "collision_path": "Area01ArtSlice/TerrainCollision/RightLedgeCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightLedgeBlockingLip"
+    },
+    {
+      "id": "blockout_east_reef_mass",
+      "role": "Large right-side blockout mass that should frame a reachable lane, not hide a blocker.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutEastReefMass",
+      "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutEastReefCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutEastReefLip"
+    },
+    {
+      "id": "blockout_lower_basin_floor",
+      "role": "Lower basin terrain boundary.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutLowerBasinFloor",
+      "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutLowerBasinCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutLowerBasinLip"
+    },
+    {
+      "id": "blockout_west_cave_shelf",
+      "role": "Left-side shelf framing a future cave pocket.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutWestCaveShelf",
+      "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutWestCaveShelfCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutWestCaveShelfLip"
+    },
+    {
+      "id": "blockout_left_chamber_ceiling",
+      "role": "Top boundary for the left chamber lane.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutLeftChamberCeiling",
+      "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutLeftChamberCeilingCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutLeftChamberCeilingLip"
+    },
+    {
+      "id": "blockout_right_chamber_shelf",
+      "role": "Right chamber shelf and upper lane boundary.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutRightChamberShelf",
+      "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutRightChamberShelfCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutRightChamberShelfLip"
+    }
+  ],
+  "nonblocking_background_policy": [
+    {
+      "id": "old_shallow_upper_water_blockers",
+      "paths": [
+        "Area01ArtSlice/TerrainBackWalls/ShallowLeftWall",
+        "Area01ArtSlice/TerrainBackWalls/ShallowRightWall",
+        "Area01ArtSlice/TerrainCollision/ShallowLeftWallCollision",
+        "Area01ArtSlice/TerrainCollision/ShallowRightWallCollision"
+      ],
+      "rule": "These upper-water shapes must stay nonblocking until redesigned as visible terrain."
+    },
+    {
+      "id": "parallax_depth_shapes",
+      "rule": "BackgroundFar, BackgroundMid, OceanParallaxBackground, and lighting polygons must never own collision or imply hard blockers."
+    }
+  ],
+  "resource_pockets": [
+    {
+      "id": "left_shallow_resource_pocket",
+      "scene_path": "Area01ArtSlice/GameplayObjects/LeftShallowResourcePocket",
+      "lane_id": "left_shallow_shelf_lane",
+      "current_role": "First shallow food, water, driftwood, and kelp teaching pocket."
+    },
+    {
+      "id": "right_shelf_resource_pocket",
+      "scene_path": "Area01ArtSlice/GameplayObjects/RightShelfResourcePocket",
+      "lane_id": "right_shelf_lane",
+      "current_role": "Early right route readable pocket."
+    },
+    {
+      "id": "left_cave_resource_pocket",
+      "scene_path": "Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket",
+      "lane_id": "left_chamber_lane",
+      "current_role": "Left cave material promise without exact route locator behavior."
+    },
+    {
+      "id": "right_deep_resource_pocket",
+      "scene_path": "Area01ArtSlice/GameplayObjects/RightDeepResourcePocket",
+      "lane_id": "right_chamber_lane",
+      "current_role": "Right/deeper material pocket."
+    },
+    {
+      "id": "left_chamber_resource_pocket",
+      "scene_path": "Area01ArtSlice/GameplayObjects/LeftChamberResourcePocket",
+      "lane_id": "left_chamber_lane",
+      "current_role": "Left chamber starter material spread."
+    },
+    {
+      "id": "right_chamber_resource_pocket",
+      "scene_path": "Area01ArtSlice/GameplayObjects/RightChamberResourcePocket",
+      "lane_id": "right_chamber_lane",
+      "current_role": "Right chamber starter material spread."
+    }
+  ],
+  "scannable_and_interactable_policy": {
+    "current_run_targets": "Must be reachable from a playable water lane and visually separated from solid terrain.",
+    "future_locked_promises": "May sit beyond visible blockers only if marked as locked/future and rendered quieter than current goals.",
+    "labels": "Labels confirm interaction state; they must not be the only way to understand reachability.",
+    "no_exact_locator": "Do not add exact map markers, checklists, or route arrows that remove exploration mystery."
+  },
+  "validation_rules": [
+    {
+      "id": "blocking_collision_requires_visible_solid_and_lip",
+      "rule": "Every enabled CollisionPolygon2D blocker in Area01ArtSlice/TerrainCollision must have a mapped visible Polygon2D solid and a mapped Polygon2D rim/lip."
+    },
+    {
+      "id": "solid_looking_terrain_requires_collision_or_background_only_flag",
+      "rule": "Any opaque terrain-looking Polygon2D must either be mapped as solid terrain or listed as nonblocking background/decor."
+    },
+    {
+      "id": "playable_lane_has_no_blocking_collision",
+      "rule": "Playable water lanes are planned as open movement spaces; collision should frame their edges, not cross their centers."
+    },
+    {
+      "id": "reachable_interactables_must_be_in_lane_or_marked_future_locked",
+      "rule": "Current pickups, scan targets, and interactables must be reachable from a playable lane unless intentionally marked as future-locked."
+    },
+    {
+      "id": "background_shape_must_not_block_player",
+      "rule": "Background, lighting, parallax, and dressing shapes may not own player-blocking collision."
+    },
+    {
+      "id": "scannables_must_be_reachable_nonblocking_or_future_locked",
+      "rule": "Scannable targets must be reachable and nonblocking in the current run, or visually quiet and explicitly locked as future content."
+    },
+    {
+      "id": "resource_pockets_teach_movement",
+      "rule": "Starter pockets should be spread across left, right, and deeper lanes so resources teach the room layout instead of clustering in one tiny area."
+    }
+  ],
+  "next_implementation_order": [
+    "#695: Add a debug overlay that can show mapped lanes, solids, collision, pockets, and future-locked targets.",
+    "#696: Rebuild the current shell against this source map and fix the reported right-wall, left-invisible-stop, and inaccessible-scannable defects.",
+    "#692: Resume cave-mouth affordances only after collision and reachability are trustworthy.",
+    "#693: Validate the larger skeleton after the source map and blockers are corrected."
+  ],
+  "non_goals": [
+    "No final art pass.",
+    "No new route content, creatures, upgrades, resources, or promises.",
+    "No in-game minimap or exact locator behavior.",
+    "No broad procedural generation system in this pass."
+  ]
+}

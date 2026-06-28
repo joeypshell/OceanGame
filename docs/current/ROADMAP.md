@@ -28,14 +28,17 @@ Primary planning docs:
 - `docs/planning/AREA_02_GLASS_RIM_EXPANSION_2026_06_28.md`
 - `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`
 - `docs/planning/PLAYABLE_EXPLORATION_SKELETON_2026_06_28.md`
+- `docs/planning/AREA_01_BLOCKOUT_SOURCE_MAP_2026_06_28.md`
 - `docs/planning/FIRST_REAL_2D_ENVIRONMENT_SLICE_2026_06_28.md`
 
 ## Immediate Issue Order
 
-1. #692: add cave-mouth affordances without exact route locators.
-2. #693: validate the larger level skeleton before returning to more visual polish.
-3. Re-evaluate #675-#678 after the skeleton validation; keep only the parts that support the larger playable map.
-4. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #695: add a collision and placement debug overlay mode for Area 01 source-map validation.
+2. #696: rebuild the current shell from the source map and fix the reported blockers, swim-through terrain, invisible stops, and inaccessible-looking scannables.
+3. #692: add cave-mouth affordances without exact route locators, only after collision and reachability are trustworthy.
+4. #693: validate the larger level skeleton before returning to more visual polish.
+5. Re-evaluate #675-#678 after the skeleton validation; keep only the parts that support the larger playable map.
+6. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -67,6 +70,7 @@ Primary planning docs:
 - #689 removed the misleading shallow upper-water blockers, disabled their collision, and started a larger Area 01 blockout with visible solid reef masses and matching collision/lip reads.
 - #690 added left/right chamber framing masses with matching collision and visible lips so Area 01 starts reading less like one tiny room and more like a larger level skeleton.
 - #691 added left/right chamber resource-pocket anchors and spread starter survival/material candidates into the larger shell so collection starts teaching movement beyond the original pocket cluster.
+- #694 created the Area 01 blockout source map and validation contract so walls, playable water lanes, resource pockets, and scannable reachability can be checked before more content expands the level.
 
 ## Current Readability Rules
 
@@ -77,6 +81,7 @@ Primary planning docs:
 - Labels should be sparse and reserved for compact place names or honest locked/open states.
 - Active HUD copy must use reserved stats/prompt/status rows; long commands or feedback should clip or be shortened instead of wrapping into neighboring text.
 - Area 01 collision boundaries must be readable as terrain lips/rims before contact; do not leave invisible or random-feeling blockers in normal play.
+- Area 01 collision, terrain, pockets, and scannables must map to `docs/planning/maps/area_01_blockout_source_map_v1.json`, or the source map must be updated before the scene changes.
 - Passive creature scan targets need visible silhouettes or outlines at normal play scale; scan labels should confirm the target, not be the only way to perceive it.
 - Do not spend another batch polishing a tiny room if the level bones still do not support wider exploration. Block out readable map scale first, then decorate.
 - Do not solve confusion by adding more bright shapes, exact locators, checklists, minimaps, or route graphs.
