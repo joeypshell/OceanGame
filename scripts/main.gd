@@ -74,7 +74,7 @@ const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
 const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(272.0, 116.0))
 const CARGO_PANEL_RECT := Rect2(Vector2(516.0, 14.0), Vector2(248.0, 48.0))
 const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(1036.0, 16.0), Vector2(228.0, 106.0))
-const DIVE_INFO_RECT := Rect2(Vector2(16.0, 148.0), Vector2(292.0, 104.0))
+const DIVE_INFO_RECT := Rect2(Vector2(16.0, 148.0), Vector2(292.0, 94.0))
 const SCAN_CARD_RECT := Rect2(Vector2(972.0, 236.0), Vector2(220.0, 88.0))
 const TOOL_BELT_PANEL_RECT := Rect2(Vector2(486.0, 648.0), Vector2(308.0, 56.0))
 const MINIMAP_PANEL_RECT := Rect2(Vector2(1052.0, 548.0), Vector2(188.0, 140.0))
@@ -89,8 +89,12 @@ const ACTIVE_HUD_LABEL_RECTS := {
 	"cargo": Rect2(Vector2(716.0, 38.0), Vector2(40.0, HUD_SINGLE_ROW_HEIGHT)),
 	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 108.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
 	"scan": Rect2(Vector2(986.0, 266.0), Vector2(188.0, HUD_SINGLE_ROW_HEIGHT)),
-	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 204.0), Vector2(260.0, HUD_SINGLE_ROW_HEIGHT)),
-	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 232.0), Vector2(260.0, HUD_SINGLE_ROW_HEIGHT)),
+	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 194.0), Vector2(260.0, 18.0)),
+	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 218.0), Vector2(260.0, 18.0)),
+}
+const DIVE_INFO_LABEL_RECTS := {
+	"title": Rect2(Vector2(12.0, 10.0), Vector2(260.0, 18.0)),
+	"objective": Rect2(Vector2(12.0, 31.0), Vector2(260.0, 18.0)),
 }
 const SCAN_CARD_LABEL_RECTS := {
 	"title": Rect2(Vector2(986.0, 246.0), Vector2(188.0, 16.0)),
@@ -127,6 +131,7 @@ const DEPTH_RAIL_LABEL_RECTS := {
 }
 const DEPTH_RAIL_MAX_DISPLAY_DEPTH := 120.0
 const DIVE_STATUS_MAX_CHARS := 72
+const ACTIVE_OBJECTIVE_MAX_CHARS := 46
 const SURVIVAL_NEED_BAR_DISPLAY_MAX := 5.0
 const TOOL_BELT_TOOL_IDS := ["scanner", "burst", "cutter", "decoy", "reserve"]
 const ECHO_LENS_PULSE_DURATION := 1.2
@@ -205,6 +210,8 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var scan_card_prompt_label: Label = $HUD/ScanCardPrompt
 @onready var scan_reticle_root: Node2D = $HUD/ScanReticleRoot
 @onready var dive_info_panel: Panel = $HUD/DiveInfoPanel
+@onready var objective_title_label: Label = $HUD/DiveInfoPanel/ObjectiveTitle
+@onready var objective_line_label: Label = $HUD/DiveInfoPanel/ObjectiveLine
 @onready var oxygen_warning_panel: Panel = $HUD/OxygenWarningPanel
 @onready var oxygen_warning_label: Label = $HUD/OxygenWarningPanel/OxygenWarning
 @onready var oxygen_warning_icon: Polygon2D = $HUD/OxygenWarningPanel/OxygenWarningIcon
@@ -3615,8 +3622,11 @@ func _update_hud() -> void:
 	status_label.visible = is_diving
 	prompt_label.visible = is_diving
 	status_label.text = _compact_dive_status(status_label.text) if is_diving else status_label.text
+	if is_diving:
+		objective_title_label.text = "SURVIVAL ROUTE"
+		objective_line_label.text = _format_active_objective_line()
 
-	prompt_label.text = _format_hud_prompt()
+	prompt_label.text = _compact_dive_status(_format_hud_prompt()) if is_diving else _format_hud_prompt()
 	_update_tool_belt(is_diving)
 
 	_publish_visual_smoke_state()
@@ -3627,6 +3637,8 @@ func _apply_active_hud_layout() -> void:
 	_set_control_rect(cargo_panel, CARGO_PANEL_RECT)
 	_set_control_rect(survival_needs_panel, SURVIVAL_NEEDS_PANEL_RECT)
 	_set_control_rect(dive_info_panel, DIVE_INFO_RECT)
+	_set_control_rect(objective_title_label, DIVE_INFO_LABEL_RECTS["title"])
+	_set_control_rect(objective_line_label, DIVE_INFO_LABEL_RECTS["objective"])
 	_set_control_rect(scan_card_panel, SCAN_CARD_RECT)
 	_set_control_rect(tool_belt_panel, TOOL_BELT_PANEL_RECT)
 	_set_control_rect(minimap_panel, MINIMAP_PANEL_RECT)
@@ -3679,6 +3691,8 @@ func _apply_active_hud_layout() -> void:
 		scan_card_title_label,
 		scan_card_meta_label,
 		scan_card_prompt_label,
+		objective_title_label,
+		objective_line_label,
 		prompt_label,
 		status_label,
 		food_need_label,
@@ -3701,6 +3715,10 @@ func _ensure_active_hud_references() -> void:
 		survival_needs_panel = get_node_or_null("HUD/SurvivalNeedsPanel") as Panel
 	if dive_info_panel == null:
 		dive_info_panel = get_node_or_null("HUD/DiveInfoPanel") as Panel
+	if objective_title_label == null:
+		objective_title_label = get_node_or_null("HUD/DiveInfoPanel/ObjectiveTitle") as Label
+	if objective_line_label == null:
+		objective_line_label = get_node_or_null("HUD/DiveInfoPanel/ObjectiveLine") as Label
 	if scan_card_panel == null:
 		scan_card_panel = get_node_or_null("HUD/ScanCardPanel") as Panel
 	if tool_belt_panel == null:
@@ -5249,6 +5267,26 @@ func _compact_dive_status(text: String) -> String:
 		return cleaned
 
 	return cleaned.substr(0, DIVE_STATUS_MAX_CHARS - 3).strip_edges() + "..."
+
+func _format_active_objective_line() -> String:
+	var objective := "Find supplies, scan, return"
+	if dive_session.current_cargo.size() >= dive_session.cargo_limit:
+		objective = "Cargo full: return to bank"
+	elif player_in_base and dive_session.has_left_base:
+		objective = "At base: extract or push out"
+	elif player_in_base:
+		objective = "Leave moonpool, gather supplies"
+	elif survival_state.food <= 1 or survival_state.water <= 1 or survival_state.power <= 1:
+		objective = "Prioritize food, water, power"
+	elif dive_session.current_cargo.size() > 0:
+		objective = "Bank cargo or push deeper"
+	elif current_scan_target != null:
+		objective = "Scan target or collect cargo"
+
+	if objective.length() <= ACTIVE_OBJECTIVE_MAX_CHARS:
+		return objective
+
+	return objective.substr(0, ACTIVE_OBJECTIVE_MAX_CHARS - 3).strip_edges() + "..."
 
 func _update_scan_target_feedback() -> void:
 	var next_target := _scan_target_candidate() if dive_session.result == DiveSessionScript.Result.DIVING else null

@@ -26,6 +26,7 @@ This layer stack is the contract for replacing placeholder polygons with reusabl
 - The slice uses simple polygons as temporary art slots. It is not final art and should not be treated as the finished Area 01 look.
 - Starter resource spawn candidates now align to four readable pockets in the slice: a shallow left supply pocket, a shallow/right shelf pocket, a left cave material pocket, and a deeper right material pocket. These are still authored spawn candidates, not new resource families or procedural generation.
 - The main shell walls, starter ledges, and resource pockets now use reusable reef-wall and resource-pocket visual modules. The modules add denser silhouettes, ledge lips, algae/coral flecks, and subdued cargo beds while preserving the existing collision and resource behavior.
+- The active HUD now frames the room with one compact `SURVIVAL ROUTE` objective card, contextual scan card visibility, and clipped prompt/status rows instead of paragraph-like route/status blocks.
 
 ## Acceptance
 
@@ -40,11 +41,10 @@ At normal 1280x720 play scale:
 
 ## Next Work
 
-1. Tighten the HUD and scan prompts around the first room so panels stay compact and contextual.
-2. Add one surface upgrade or night choice tied to starter resources after the room remains readable with resource pockets.
-3. Add deterministic captures for the playable exploration slice.
-4. Add one passive scan target or existing scan target placement inside the slice only if it improves the room's teachable focus.
-5. Keep route expansion paused until the slice reads like a playable room rather than a diagram.
+1. Add one surface upgrade or night choice tied to starter resources after the room remains readable with resource pockets.
+2. Add deterministic captures for the playable exploration slice.
+3. Add one passive scan target or existing scan target placement inside the slice only if it improves the room's teachable focus.
+4. Keep route expansion paused until the slice reads like a playable room rather than a diagram.
 
 ## Guardrails
 

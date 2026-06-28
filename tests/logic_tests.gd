@@ -5728,6 +5728,7 @@ func _test_compact_dive_hud_helpers() -> void:
 	var discoveries_label: Label = main_scene.get_node("HUD/Discoveries")
 	var dive_info_panel: Panel = main_scene.get_node("HUD/DiveInfoPanel")
 	var objective_title: Label = main_scene.get_node("HUD/DiveInfoPanel/ObjectiveTitle")
+	var objective_line: Label = main_scene.get_node("HUD/DiveInfoPanel/ObjectiveLine")
 	var scan_target_label: Label = main_scene.get_node("HUD/ScanTarget")
 	var scan_card_meta_label: Label = main_scene.get_node("HUD/ScanCardMeta")
 	var scan_card_prompt_label: Label = main_scene.get_node("HUD/ScanCardPrompt")
@@ -5794,6 +5795,7 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(depth_label.get_theme_font_size("font_size") <= 12, "depth value should use compact reference-style type")
 	_expect(discoveries_label.get_theme_font_size("font_size") <= 12, "discoveries count should stay subordinate")
 	_expect(objective_title.get_theme_font_size("font_size") <= 12, "objective title should be a compact HUD label")
+	_expect(objective_line.get_theme_font_size("font_size") <= 12, "objective line should be compact enough for a small route card")
 	_expect(status_label.get_theme_font_size("font_size") <= 13, "status text should be readable without oversized copy")
 	_expect(_control_rect(active_panel).size.x <= 280.0, "active stats panel should keep a compact reference-style width")
 	_expect(_control_rect(active_panel).size.y <= 120.0, "active stats panel should keep a compact reference-style height")
@@ -5855,6 +5857,20 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(not scan_card_panel.visible, "surface-ready state should hide the contextual scan card")
 	_expect(not tool_belt_panel.visible, "surface-ready state should hide the active tool belt")
 	_expect(not minimap_panel.visible, "surface-ready state should hide the active minimap")
+
+	main_scene.dive_session.start()
+	main_scene.player_in_base = false
+	main_scene.call("_update_hud")
+	_expect(dive_info_panel.visible, "active diving should show one compact objective card")
+	_expect(objective_title.text == "SURVIVAL ROUTE", "objective card title should frame the active goal as survival route work")
+	_expect(objective_line.text.length() <= 46, "active objective line should stay shorter than paragraph-style HUD copy")
+	_expect(not objective_line.text.contains("|"), "active objective line should not become another command strip")
+	_expect(_control_rect(dive_info_panel).encloses(_control_rect(prompt_label)), "active prompt row should stay inside the objective card")
+	_expect(_control_rect(dive_info_panel).encloses(_control_rect(status_label)), "active status row should stay inside the objective card")
+	main_scene.dive_session.cargo_limit = 3
+	main_scene.dive_session.current_cargo = ["food_supply", "water_supply", "driftwood"]
+	main_scene.call("_update_hud")
+	_expect(objective_line.text == "Cargo full: return to bank", "cargo-full state should replace generic objective copy with a compact return objective")
 	main_scene.queue_free()
 
 	var long_status := "Scanned Thermal Vent.\nWarm current marks optional glow; bank Pressure Seal clue. Return safely before oxygen runs out."

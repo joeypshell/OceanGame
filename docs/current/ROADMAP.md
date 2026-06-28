@@ -32,13 +32,12 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #684 and #670: keep the HUD compact and contextual around the slice, especially scan prompts and active objective copy.
-2. #682: tie one surface upgrade or night choice to starter resources after the room has readable resource pockets.
-3. #685: add deterministic captures for the playable exploration slice.
-4. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
-5. #678: compare against the visual reference after the slice has real wall/ledge modules.
-6. Resume route expansion only after the first room reads as a playable place rather than a diagram.
-7. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #682: tie one surface upgrade or night choice to starter resources after the room has readable resource pockets.
+2. #685: add deterministic captures for the playable exploration slice.
+3. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
+4. #678: compare against the visual reference after the slice has real wall/ledge modules.
+5. Resume route expansion only after the first room reads as a playable place rather than a diagram.
+6. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -58,6 +57,7 @@ Primary planning docs:
 - #686 built the first real Area 01 art/playability slice and hid the debug-like broad exploration shell in normal play.
 - #681 placed starter resource candidates into four readable Area 01 pockets so supplies and materials start teaching the room layout.
 - #683 added reusable reef-wall and resource-pocket visual modules to the Area 01 shell walls, starter ledges, and resource pockets.
+- #684/#670 replaced the active route/status text stack with one compact `SURVIVAL ROUTE` objective card, contextual scan card behavior, and reserved prompt/status rows.
 
 ## Current Readability Rules
 
