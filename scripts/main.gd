@@ -50,6 +50,7 @@ const KEYBOARD_ACTION_LABELS := {
 	"restart_dive": "R",
 	"move_left_right": "Left/Right",
 	"move_up_down": "Up/Down",
+	"scan": "F",
 	"burst_thruster": "Space",
 	"decoy_pulse": "F",
 }
@@ -69,6 +70,8 @@ const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(330.0, 162.0))
 const CARGO_PANEL_RECT := Rect2(Vector2(456.0, 16.0), Vector2(368.0, 78.0))
 const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(994.0, 16.0), Vector2(270.0, 132.0))
 const DIVE_INFO_RECT := Rect2(Vector2(16.0, 196.0), Vector2(340.0, 126.0))
+const SCAN_CARD_RECT := Rect2(Vector2(930.0, 220.0), Vector2(300.0, 132.0))
+const TOOL_BELT_PANEL_RECT := Rect2(Vector2(440.0, 628.0), Vector2(400.0, 76.0))
 const OXYGEN_WARNING_RECT := Rect2(Vector2(16.0, 456.0), Vector2(300.0, 68.0))
 const ACTIVE_HUD_CONTENT_LEFT := 28.0
 const ACTIVE_HUD_CONTENT_RIGHT := 720.0
@@ -79,9 +82,14 @@ const ACTIVE_HUD_LABEL_RECTS := {
 	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 118.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
 	"cargo": Rect2(Vector2(488.0, 56.0), Vector2(84.0, HUD_SINGLE_ROW_HEIGHT)),
 	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 144.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
-	"scan": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 214.0), Vector2(308.0, HUD_SINGLE_ROW_HEIGHT)),
+	"scan": Rect2(Vector2(948.0, 256.0), Vector2(252.0, HUD_SINGLE_ROW_HEIGHT)),
 	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 252.0), Vector2(308.0, HUD_SINGLE_ROW_HEIGHT)),
 	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 290.0), Vector2(308.0, HUD_SINGLE_ROW_HEIGHT)),
+}
+const SCAN_CARD_LABEL_RECTS := {
+	"title": Rect2(Vector2(948.0, 232.0), Vector2(252.0, 22.0)),
+	"meta": Rect2(Vector2(948.0, 286.0), Vector2(252.0, 22.0)),
+	"prompt": Rect2(Vector2(948.0, 318.0), Vector2(252.0, 22.0)),
 }
 const OXYGEN_BAR_BACK_RECT := Rect2(Vector2(28.0, 58.0), Vector2(272.0, 10.0))
 const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 58.0), Vector2(272.0, 10.0))
@@ -100,6 +108,7 @@ const SURVIVAL_NEED_BAR_BACK_RECTS := {
 }
 const DIVE_STATUS_MAX_CHARS := 72
 const SURVIVAL_NEED_BAR_DISPLAY_MAX := 5.0
+const TOOL_BELT_TOOL_IDS := ["scanner", "burst", "cutter", "decoy", "reserve"]
 const ECHO_LENS_PULSE_DURATION := 1.2
 const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
@@ -166,9 +175,35 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var status_label: Label = $HUD/Status
 @onready var prompt_label: Label = $HUD/ExtractionPrompt
 @onready var scan_target_label: Label = $HUD/ScanTarget
+@onready var scan_card_panel: Panel = $HUD/ScanCardPanel
+@onready var scan_card_title_label: Label = $HUD/ScanCardTitle
+@onready var scan_card_meta_label: Label = $HUD/ScanCardMeta
+@onready var scan_card_prompt_label: Label = $HUD/ScanCardPrompt
 @onready var dive_info_panel: Panel = $HUD/DiveInfoPanel
 @onready var oxygen_warning_panel: Panel = $HUD/OxygenWarningPanel
 @onready var oxygen_warning_label: Label = $HUD/OxygenWarningPanel/OxygenWarning
+@onready var tool_belt_panel: Panel = $HUD/ToolBeltPanel
+@onready var tool_slot_nodes: Array[ColorRect] = [
+	$HUD/ToolBeltPanel/ToolSlot1,
+	$HUD/ToolBeltPanel/ToolSlot2,
+	$HUD/ToolBeltPanel/ToolSlot3,
+	$HUD/ToolBeltPanel/ToolSlot4,
+	$HUD/ToolBeltPanel/ToolSlot5,
+]
+@onready var tool_icon_nodes: Array[Polygon2D] = [
+	$HUD/ToolBeltPanel/ToolIcon1,
+	$HUD/ToolBeltPanel/ToolIcon2,
+	$HUD/ToolBeltPanel/ToolIcon3,
+	$HUD/ToolBeltPanel/ToolIcon4,
+	$HUD/ToolBeltPanel/ToolIcon5,
+]
+@onready var tool_key_label_nodes: Array[Label] = [
+	$HUD/ToolBeltPanel/ToolKey1,
+	$HUD/ToolBeltPanel/ToolKey2,
+	$HUD/ToolBeltPanel/ToolKey3,
+	$HUD/ToolBeltPanel/ToolKey4,
+	$HUD/ToolBeltPanel/ToolKey5,
+]
 @onready var food_need_label: Label = $HUD/FoodNeed
 @onready var water_need_label: Label = $HUD/WaterNeed
 @onready var power_need_label: Label = $HUD/PowerNeed
@@ -3387,6 +3422,8 @@ func _update_hud() -> void:
 	active_stats_panel.visible = is_diving
 	cargo_panel.visible = is_diving
 	survival_needs_panel.visible = is_diving
+	scan_card_panel.visible = is_diving
+	tool_belt_panel.visible = is_diving
 	oxygen_label.visible = is_diving
 	oxygen_bar_back.visible = is_diving
 	oxygen_bar_fill.visible = is_diving
@@ -3420,11 +3457,15 @@ func _update_hud() -> void:
 	discoveries_label.visible = not has_surface_panel
 	dive_info_panel.visible = is_diving
 	scan_target_label.visible = is_diving
+	scan_card_title_label.visible = is_diving
+	scan_card_meta_label.visible = is_diving
+	scan_card_prompt_label.visible = is_diving
 	status_label.visible = is_diving
 	prompt_label.visible = is_diving
 	status_label.text = _compact_dive_status(status_label.text) if is_diving else status_label.text
 
 	prompt_label.text = _format_hud_prompt()
+	_update_tool_belt(is_diving)
 
 	_publish_visual_smoke_state()
 
@@ -3433,6 +3474,8 @@ func _apply_active_hud_layout() -> void:
 	_set_control_rect(cargo_panel, CARGO_PANEL_RECT)
 	_set_control_rect(survival_needs_panel, SURVIVAL_NEEDS_PANEL_RECT)
 	_set_control_rect(dive_info_panel, DIVE_INFO_RECT)
+	_set_control_rect(scan_card_panel, SCAN_CARD_RECT)
+	_set_control_rect(tool_belt_panel, TOOL_BELT_PANEL_RECT)
 	_set_control_rect(oxygen_warning_panel, OXYGEN_WARNING_RECT)
 	_set_control_rect(oxygen_label, ACTIVE_HUD_LABEL_RECTS["oxygen"])
 	_set_control_rect(oxygen_bar_back, OXYGEN_BAR_BACK_RECT)
@@ -3444,6 +3487,9 @@ func _apply_active_hud_layout() -> void:
 	_set_control_rect(cargo_label, ACTIVE_HUD_LABEL_RECTS["cargo"])
 	_set_control_rect(discoveries_label, ACTIVE_HUD_LABEL_RECTS["discoveries"])
 	_set_control_rect(scan_target_label, ACTIVE_HUD_LABEL_RECTS["scan"])
+	_set_control_rect(scan_card_title_label, SCAN_CARD_LABEL_RECTS["title"])
+	_set_control_rect(scan_card_meta_label, SCAN_CARD_LABEL_RECTS["meta"])
+	_set_control_rect(scan_card_prompt_label, SCAN_CARD_LABEL_RECTS["prompt"])
 	_set_control_rect(prompt_label, ACTIVE_HUD_LABEL_RECTS["prompt"])
 	_set_control_rect(status_label, ACTIVE_HUD_LABEL_RECTS["status"])
 	_set_control_rect(food_need_label, SURVIVAL_NEED_LABEL_RECTS["food"])
@@ -3464,6 +3510,9 @@ func _apply_active_hud_layout() -> void:
 		cargo_label,
 		discoveries_label,
 		scan_target_label,
+		scan_card_title_label,
+		scan_card_meta_label,
+		scan_card_prompt_label,
 		prompt_label,
 		status_label,
 		food_need_label,
@@ -3790,6 +3839,99 @@ func _update_cargo_slots() -> void:
 		cargo_slot_icon_nodes[index].polygon = _cargo_slot_icon_polygon(states[index])
 		cargo_slot_icon_nodes[index].color = _cargo_slot_icon_color(states[index])
 		cargo_slot_icon_nodes[index].visible = slot_visible and cargo_slot_icon_nodes[index].polygon.size() > 0
+
+func _update_tool_belt(is_visible: bool) -> void:
+	var tool_keys := ["F", "Space", "2", "3", "5"]
+	for index in range(tool_slot_nodes.size()):
+		var tool_id: String = TOOL_BELT_TOOL_IDS[index]
+		var state := _tool_belt_state(tool_id)
+		tool_slot_nodes[index].visible = is_visible
+		tool_icon_nodes[index].visible = is_visible
+		tool_key_label_nodes[index].visible = is_visible
+		tool_slot_nodes[index].color = _tool_slot_color(state)
+		tool_icon_nodes[index].polygon = _tool_icon_polygon(tool_id)
+		tool_icon_nodes[index].color = _tool_icon_color(tool_id, state)
+		tool_key_label_nodes[index].text = tool_keys[index]
+		tool_key_label_nodes[index].modulate = _tool_key_color(state)
+
+func _tool_belt_state(tool_id: String) -> String:
+	match tool_id:
+		"scanner":
+			return "active" if current_scan_target != null else "ready"
+		"burst":
+			if burst_thruster_cooldown_remaining > 0.0:
+				return "cooldown"
+			return "ready" if dive_session.oxygen > burst_thruster_oxygen_cost else "disabled"
+		"cutter":
+			return "ready" if progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID) else "locked"
+		"decoy":
+			if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
+				return "locked"
+			return "spent" if decoy_pulse_used_this_run else "ready"
+		"reserve":
+			return "locked"
+		_:
+			return "disabled"
+
+func _tool_slot_color(state: String) -> Color:
+	match state:
+		"active":
+			return Color(0.08, 0.38, 0.42, 0.96)
+		"ready":
+			return Color(0.025, 0.095, 0.12, 0.94)
+		"cooldown":
+			return Color(0.11, 0.1, 0.045, 0.9)
+		"spent":
+			return Color(0.075, 0.075, 0.09, 0.86)
+		"locked":
+			return Color(0.018, 0.026, 0.034, 0.72)
+		_:
+			return Color(0.02, 0.03, 0.04, 0.72)
+
+func _tool_key_color(state: String) -> Color:
+	match state:
+		"active":
+			return Color(0.72, 1.0, 1.0, 1.0)
+		"ready":
+			return Color(0.88, 0.96, 1.0, 0.96)
+		"cooldown":
+			return Color(1.0, 0.82, 0.38, 0.92)
+		"locked", "spent":
+			return Color(0.62, 0.7, 0.74, 0.82)
+		_:
+			return Color(0.5, 0.55, 0.6, 0.75)
+
+func _tool_icon_color(tool_id: String, state: String) -> Color:
+	if state == "locked" or state == "spent":
+		return Color(0.45, 0.56, 0.62, 0.72)
+	match tool_id:
+		"scanner":
+			return Color(0.1, 0.92, 1.0, 0.98)
+		"burst":
+			return Color(0.55, 0.92, 1.0, 0.98)
+		"cutter":
+			return Color(1.0, 0.82, 0.48, 0.98)
+		"decoy":
+			return Color(0.45, 0.88, 1.0, 0.98)
+		"reserve":
+			return Color(1.0, 0.72, 0.58, 0.98)
+		_:
+			return Color(0.8, 0.9, 1.0, 0.88)
+
+func _tool_icon_polygon(tool_id: String) -> PackedVector2Array:
+	match tool_id:
+		"scanner":
+			return PackedVector2Array([Vector2(-12, -3), Vector2(-4, -12), Vector2(10, -9), Vector2(14, 0), Vector2(8, 10), Vector2(-7, 9), Vector2(-14, 2)])
+		"burst":
+			return PackedVector2Array([Vector2(-13, 7), Vector2(-2, -12), Vector2(4, -3), Vector2(13, -6), Vector2(3, 12), Vector2(-3, 3)])
+		"cutter":
+			return PackedVector2Array([Vector2(-12, 9), Vector2(-4, -8), Vector2(3, -11), Vector2(12, -3), Vector2(4, 1), Vector2(0, 11)])
+		"decoy":
+			return PackedVector2Array([Vector2(0, -13), Vector2(10, -5), Vector2(10, 7), Vector2(0, 13), Vector2(-10, 7), Vector2(-10, -5)])
+		"reserve":
+			return PackedVector2Array([Vector2(-11, -8), Vector2(11, -8), Vector2(11, 8), Vector2(-11, 8)])
+		_:
+			return PackedVector2Array()
 
 func _short_resource_name(resource_id: String) -> String:
 	match resource_id:
@@ -4767,13 +4909,18 @@ func _update_scan_target_feedback() -> void:
 			current_scan_target.set_scan_selected(true)
 
 	if current_scan_target == null:
-		scan_target_label.text = "Scan: none nearby"
+		scan_card_title_label.text = "SCAN TARGET"
+		scan_target_label.text = "none nearby"
+		scan_card_meta_label.text = "No readable signal"
+		scan_card_prompt_label.text = "Hold %s near a target" % _action_label("scan")
 	else:
-		scan_target_label.text = "Scan: %s [%s %s]" % [
-			_scan_target_display_name(current_scan_target),
-			_format_scan_target_discovery_state(current_scan_target),
-			_format_scan_target_type(current_scan_target)
+		scan_card_title_label.text = "SCAN TARGET"
+		scan_target_label.text = _scan_target_display_name(current_scan_target)
+		scan_card_meta_label.text = "%s | %s" % [
+			_format_scan_target_discovery_state(current_scan_target).to_upper(),
+			_format_scan_target_type(current_scan_target).to_upper()
 		]
+		scan_card_prompt_label.text = "%s TO SCAN" % _action_label("scan")
 
 func _format_scan_target_discovery_state(target: Node) -> String:
 	return "known" if progression_state.has_discovery(_scan_target_id(target)) else "new"
