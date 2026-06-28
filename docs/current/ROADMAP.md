@@ -12,9 +12,9 @@ Loop direction under review: the next survival-loop shape is a daylight multi-di
 
 ## Active Milestone
 
-Playable Exploration Skeleton With Visual Readability.
+First Real 2D Environment Slice.
 
-The next milestone is no longer a narrow landmark-by-landmark expansion. The active goal is to turn the first dive space into a Safe Shallows-style playable framework: a wider side-view area with reef walls, chambers, cave mouths, resource pockets, and early survival/resource goals. Visual polish remains active, but it should now make the level bones clearer and more inviting instead of polishing isolated artifacts.
+The next milestone is a correction pass before more route/content expansion. The prototype has enough working systems to prove the loop shape, but normal play still reads too much like translucent debug/readability geometry. The active goal is to create one controlled Area 01 art-playability room with readable open water, solid terrain silhouettes, ledges, object pockets, foreground/background separation, and compact HUD framing. Visual work remains active, but it must make this room feel playable rather than add more abstract route artifacts.
 
 Primary planning docs:
 
@@ -28,18 +28,19 @@ Primary planning docs:
 - `docs/planning/AREA_02_GLASS_RIM_EXPANSION_2026_06_28.md`
 - `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`
 - `docs/planning/PLAYABLE_EXPLORATION_SKELETON_2026_06_28.md`
+- `docs/planning/FIRST_REAL_2D_ENVIRONMENT_SLICE_2026_06_28.md`
 
 ## Immediate Issue Order
 
-1. #679: build the Safe Shallows exploration shell with authored walls, side-to-side lanes, chambers, and cave pockets.
-2. #680: add starter survival resource families: scrap/iron, driftwood or fiber, glass/quartz, food, and water.
-3. #681: place those resources inside readable pockets so exploration teaches collection.
-4. #682: tie one surface upgrade or night choice to starter resources.
-5. #683: apply the reef visual kit to the larger shell rather than isolated landmarks.
-6. #684 and #670: compact the survival objective, route/status, scan, and alert HUD around the new exploration loop.
-7. #671-#677: continue visual direction work only where it supports the larger shell.
-8. #685: add deterministic captures for the exploration shell.
-9. #678: compare against the visual reference after the larger shell exists.
+1. #686: build the first real 2D environment-room slice and hide the debug-like broad shell in normal play.
+2. #681: place starter resources inside readable pockets in the slice so exploration teaches collection.
+3. #683: replace the most important slice polygons with reusable reef-wall/ledge art modules.
+4. #684 and #670: keep the HUD compact and contextual around the slice, especially scan prompts and active objective copy.
+5. #682: tie one surface upgrade or night choice to starter resources after the room has readable resource pockets.
+6. #685: add deterministic captures for the playable exploration slice.
+7. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
+8. #678: compare against the visual reference after the slice has real wall/ledge modules.
+9. Resume route expansion only after the first room reads as a playable place rather than a diagram.
 10. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue

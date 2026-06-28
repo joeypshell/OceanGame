@@ -86,6 +86,7 @@ func _initialize() -> void:
 	_run("Lantern Ray timing lane is visual only", _test_lantern_ray_timing_lane_is_visual_only)
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
+	_run("Area 01 first art slice scene contract", _test_area_01_first_art_slice_scene_contract)
 	_run("east shelf spur branch scene contract", _test_east_shelf_spur_branch_scene_contract)
 	_run("landmark region identity metadata", _test_landmark_region_identity_metadata)
 	_run("predator scan target", _test_predator_scan_target)
@@ -3287,6 +3288,59 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(main.get_node_or_null("ResourcePickups/HollowReefGlowPlankton") == null, "Hollow Reef candidate should not add an extra active resource pickup")
 	_expect(main.get_node_or_null("ResourcePickups/MirrorKelpFiber") == null, "Mirror Kelp cargo split should not add an extra active resource pickup")
 
+	main.free()
+
+func _test_area_01_first_art_slice_scene_contract() -> void:
+	var main := MainScene.instantiate()
+	var slice_paths := [
+		"Area01ArtSlice",
+		"Area01ArtSlice/BackgroundFar",
+		"Area01ArtSlice/BackgroundFar/FarLeftReefMass",
+		"Area01ArtSlice/BackgroundFar/FarRightReefMass",
+		"Area01ArtSlice/BackgroundFar/FarCenterDepthPocket",
+		"Area01ArtSlice/BackgroundMid",
+		"Area01ArtSlice/BackgroundMid/LeftMidWallShadow",
+		"Area01ArtSlice/BackgroundMid/RightMidWallShadow",
+		"Area01ArtSlice/WaterLightShafts",
+		"Area01ArtSlice/TerrainBackWalls",
+		"Area01ArtSlice/TerrainBackWalls/ShallowLeftWall",
+		"Area01ArtSlice/TerrainBackWalls/ShallowRightWall",
+		"Area01ArtSlice/TerrainBackWalls/LeftSolidWall",
+		"Area01ArtSlice/TerrainBackWalls/RightSolidWall",
+		"Area01ArtSlice/TerrainCollision",
+		"Area01ArtSlice/TerrainCollision/ShallowLeftWallCollision",
+		"Area01ArtSlice/TerrainCollision/ShallowRightWallCollision",
+		"Area01ArtSlice/TerrainCollision/LeftWallCollision",
+		"Area01ArtSlice/TerrainCollision/RightWallCollision",
+		"Area01ArtSlice/TerrainVisualEdges",
+		"Area01ArtSlice/TerrainVisualEdges/ShallowLeftLitEdge",
+		"Area01ArtSlice/TerrainVisualEdges/ShallowRightLitEdge",
+		"Area01ArtSlice/TerrainVisualEdges/LeftLedgeLitEdge",
+		"Area01ArtSlice/TerrainVisualEdges/RightLedgeLitEdge",
+		"Area01ArtSlice/GameplayObjects",
+		"Area01ArtSlice/GameplayObjects/CargoPocketGlow",
+		"Area01ArtSlice/GameplayObjects/ScanFocusPocket",
+		"Area01ArtSlice/ForegroundDecor",
+	]
+	for path in slice_paths:
+		_expect(main.get_node_or_null(path) != null, "Area 01 art slice should include %s" % path)
+
+	var old_debug_shell := main.get_node("SafeShallowsExplorationShell") as Node2D
+	_expect(not old_debug_shell.visible, "old Safe Shallows exploration shell should stay hidden behind the first real art slice")
+	var left_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/LeftSolidWall") as Polygon2D
+	var right_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/RightSolidWall") as Polygon2D
+	var shallow_left_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/ShallowLeftWall") as Polygon2D
+	var far_center := main.get_node("Area01ArtSlice/BackgroundFar/FarCenterDepthPocket") as Polygon2D
+	var cargo_slot := main.get_node("Area01ArtSlice/GameplayObjects/CargoPocketGlow") as Polygon2D
+	var background_study := main.get_node("ShallowMidwaterBackgroundStudy") as Sprite2D
+	var route_choice_band := main.get_node("RouteChoiceBand") as Node2D
+	_expect(left_wall.color.a >= 0.9, "primary art-slice walls should read as solid terrain instead of translucent route overlays")
+	_expect(right_wall.color.a >= 0.9, "primary art-slice walls should read as solid terrain instead of translucent route overlays")
+	_expect(shallow_left_wall.color.a >= 0.9, "shallow art-slice walls should be visible in the early-dive camera")
+	_expect(far_center.color.a < left_wall.color.a, "background pocket should sit behind solid terrain in opacity hierarchy")
+	_expect(cargo_slot.color.a < left_wall.color.a, "gameplay object slots should not look like solid terrain")
+	_expect(background_study.modulate.a <= 0.24, "old broad background study should sit behind the first real art slice")
+	_expect(not route_choice_band.visible, "route-choice review band should stay hidden by default so the first art slice reads as a place, not a diagram")
 	main.free()
 
 func _test_landmark_region_identity_metadata() -> void:

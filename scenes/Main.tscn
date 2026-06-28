@@ -388,7 +388,7 @@ color = Color(0.005, 0.048, 0.115, 1)
 position = Vector2(0, 120)
 texture = ExtResource("26_shallow_midwater_background")
 centered = false
-modulate = Color(1, 1, 1, 0.48)
+modulate = Color(1, 1, 1, 0.22)
 
 [node name="ShallowMidwaterTransition" type="ColorRect" parent="."]
 offset_top = 736.0
@@ -402,7 +402,146 @@ offset_right = 6200.0
 offset_bottom = 1494.0
 color = Color(0.24, 0.42, 0.74, 0.14)
 
+[node name="Area01ArtSlice" type="Node2D" parent="."]
+z_index = -1
+
+[node name="BackgroundFar" type="Node2D" parent="Area01ArtSlice"]
+
+[node name="FarLeftReefMass" type="Polygon2D" parent="Area01ArtSlice/BackgroundFar"]
+color = Color(0.006, 0.075, 0.12, 0.56)
+polygon = PackedVector2Array(-180, 268, 182, 190, 382, 368, 338, 734, 474, 1036, 334, 1388, -180, 1460)
+
+[node name="FarRightReefMass" type="Polygon2D" parent="Area01ArtSlice/BackgroundFar"]
+color = Color(0.006, 0.07, 0.115, 0.54)
+polygon = PackedVector2Array(1044, 248, 1464, 198, 1696, 394, 1612, 866, 1748, 1204, 1518, 1460, 1000, 1460, 1112, 1056, 1018, 722)
+
+[node name="FarCenterDepthPocket" type="Polygon2D" parent="Area01ArtSlice/BackgroundFar"]
+color = Color(0.009, 0.105, 0.155, 0.34)
+polygon = PackedVector2Array(388, 336, 760, 276, 1048, 392, 970, 664, 776, 806, 506, 710)
+
+[node name="BackgroundMid" type="Node2D" parent="Area01ArtSlice"]
+
+[node name="LeftMidWallShadow" type="Polygon2D" parent="Area01ArtSlice/BackgroundMid"]
+color = Color(0.012, 0.095, 0.13, 0.74)
+polygon = PackedVector2Array(-80, 496, 224, 430, 376, 566, 332, 744, 426, 910, 332, 1104, 444, 1372, 292, 1588, -80, 1588)
+
+[node name="RightMidWallShadow" type="Polygon2D" parent="Area01ArtSlice/BackgroundMid"]
+color = Color(0.01, 0.086, 0.128, 0.74)
+polygon = PackedVector2Array(1026, 452, 1300, 420, 1542, 546, 1612, 780, 1508, 1016, 1600, 1290, 1440, 1588, 1006, 1588, 1108, 1298, 1028, 1066, 1104, 826)
+
+[node name="MidPocketShadow" type="Polygon2D" parent="Area01ArtSlice/BackgroundMid"]
+color = Color(0.003, 0.035, 0.07, 0.72)
+polygon = PackedVector2Array(912, 760, 1128, 682, 1364, 744, 1446, 910, 1308, 1050, 1056, 1024, 886, 892)
+
+[node name="WaterLightShafts" type="Node2D" parent="Area01ArtSlice"]
+
+[node name="SurfaceShaftLeft" type="Polygon2D" parent="Area01ArtSlice/WaterLightShafts"]
+color = Color(0.46, 0.9, 0.96, 0.13)
+polygon = PackedVector2Array(180, 122, 342, 122, 264, 720, 86, 720)
+
+[node name="SurfaceShaftCenter" type="Polygon2D" parent="Area01ArtSlice/WaterLightShafts"]
+color = Color(0.44, 0.9, 0.96, 0.16)
+polygon = PackedVector2Array(558, 122, 734, 122, 810, 790, 604, 790)
+
+[node name="SurfaceShaftRight" type="Polygon2D" parent="Area01ArtSlice/WaterLightShafts"]
+color = Color(0.45, 0.9, 0.96, 0.1)
+polygon = PackedVector2Array(928, 122, 1076, 122, 1232, 722, 1032, 722)
+
+[node name="TerrainBackWalls" type="Node2D" parent="Area01ArtSlice"]
+
+[node name="ShallowLeftWall" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.018, 0.064, 0.078, 0.94)
+polygon = PackedVector2Array(-120, 238, 140, 214, 274, 350, 230, 520, 324, 666, 228, 792, -120, 820)
+
+[node name="ShallowRightWall" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.016, 0.06, 0.074, 0.94)
+polygon = PackedVector2Array(1018, 250, 1320, 226, 1518, 350, 1588, 548, 1508, 742, 1320, 820, 1002, 792, 1082, 620, 1038, 438)
+
+[node name="LeftSolidWall" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.018, 0.058, 0.07, 0.96)
+polygon = PackedVector2Array(-140, 640, 170, 574, 356, 700, 308, 866, 430, 1014, 338, 1212, 472, 1468, 282, 1640, -140, 1640)
+
+[node name="RightSolidWall" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.016, 0.055, 0.068, 0.96)
+polygon = PackedVector2Array(1058, 612, 1308, 572, 1544, 692, 1598, 894, 1498, 1076, 1594, 1322, 1406, 1640, 1022, 1640, 1118, 1352, 1048, 1126, 1112, 878)
+
+[node name="LeftStarterLedge" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.035, 0.092, 0.095, 0.98)
+polygon = PackedVector2Array(40, 852, 276, 808, 454, 866, 520, 936, 436, 1000, 198, 982, 20, 928)
+
+[node name="RightStarterLedge" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.036, 0.096, 0.098, 0.98)
+polygon = PackedVector2Array(868, 906, 1106, 850, 1346, 912, 1454, 1002, 1338, 1090, 1046, 1054, 816, 980)
+
+[node name="TerrainCollision" type="StaticBody2D" parent="Area01ArtSlice"]
+
+[node name="ShallowLeftWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(-120, 238, 140, 214, 274, 350, 230, 520, 324, 666, 228, 792, -120, 820)
+
+[node name="ShallowRightWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(1018, 250, 1320, 226, 1518, 350, 1588, 548, 1508, 742, 1320, 820, 1002, 792, 1082, 620, 1038, 438)
+
+[node name="LeftWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(-140, 640, 170, 574, 356, 700, 308, 866, 430, 1014, 338, 1212, 472, 1468, 282, 1640, -140, 1640)
+
+[node name="RightWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(1058, 612, 1308, 572, 1544, 692, 1598, 894, 1498, 1076, 1594, 1322, 1406, 1640, 1022, 1640, 1118, 1352, 1048, 1126, 1112, 878)
+
+[node name="LeftLedgeCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(40, 852, 276, 808, 454, 866, 520, 936, 436, 1000, 198, 982, 20, 928)
+
+[node name="RightLedgeCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(868, 906, 1106, 850, 1346, 912, 1454, 1002, 1338, 1090, 1046, 1054, 816, 980)
+
+[node name="TerrainVisualEdges" type="Node2D" parent="Area01ArtSlice"]
+
+[node name="ShallowLeftLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
+color = Color(0.42, 0.66, 0.55, 0.5)
+polygon = PackedVector2Array(144, 216, 274, 350, 230, 520, 324, 666, 288, 706, 190, 540, 230, 366, 116, 250)
+
+[node name="ShallowRightLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
+color = Color(0.42, 0.66, 0.55, 0.48)
+polygon = PackedVector2Array(1018, 250, 1082, 438, 1038, 620, 1002, 792, 1052, 802, 1126, 630, 1082, 444, 1048, 300)
+
+[node name="LeftLedgeLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
+color = Color(0.42, 0.64, 0.52, 0.58)
+polygon = PackedVector2Array(54, 842, 278, 802, 456, 858, 520, 924, 454, 944, 278, 882, 60, 918)
+
+[node name="RightLedgeLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
+color = Color(0.45, 0.66, 0.54, 0.56)
+polygon = PackedVector2Array(884, 896, 1108, 842, 1346, 904, 1440, 984, 1358, 1010, 1110, 930, 896, 974)
+
+[node name="LeftWallRim" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
+color = Color(0.15, 0.34, 0.33, 0.48)
+polygon = PackedVector2Array(172, 574, 356, 700, 308, 866, 430, 1014, 386, 1056, 272, 894, 316, 724, 152, 618)
+
+[node name="RightWallRim" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
+color = Color(0.16, 0.35, 0.34, 0.46)
+polygon = PackedVector2Array(1058, 612, 1308, 572, 1544, 692, 1568, 738, 1324, 630, 1100, 672, 1148, 882, 1096, 916)
+
+[node name="GameplayObjects" type="Node2D" parent="Area01ArtSlice"]
+
+[node name="CargoPocketGlow" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects"]
+color = Color(0.1, 0.84, 1, 0.22)
+polygon = PackedVector2Array(252, 766, 292, 738, 342, 752, 364, 800, 326, 838, 270, 826, 236, 792)
+
+[node name="ScanFocusPocket" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects"]
+color = Color(0.82, 0.92, 0.55, 0.18)
+polygon = PackedVector2Array(1142, 810, 1182, 778, 1238, 786, 1274, 832, 1236, 884, 1174, 874, 1132, 842)
+
+[node name="ForegroundDecor" type="Node2D" parent="Area01ArtSlice"]
+z_index = 1
+
+[node name="ForegroundLeftKelp" type="Polygon2D" parent="Area01ArtSlice/ForegroundDecor"]
+color = Color(0.06, 0.35, 0.18, 0.62)
+polygon = PackedVector2Array(118, 964, 132, 838, 148, 966, 172, 888, 184, 974, 206, 930, 214, 982, 96, 982)
+
+[node name="ForegroundRightKelp" type="Polygon2D" parent="Area01ArtSlice/ForegroundDecor"]
+color = Color(0.06, 0.34, 0.18, 0.58)
+polygon = PackedVector2Array(1244, 1050, 1258, 906, 1274, 1054, 1302, 958, 1318, 1062, 1348, 1004, 1356, 1070, 1222, 1070)
+
 [node name="SafeShallowsExplorationShell" type="Node2D" parent="."]
+visible = false
 z_index = -2
 
 [node name="LeftReefWallBack" type="Polygon2D" parent="SafeShallowsExplorationShell"]
@@ -553,6 +692,7 @@ color = Color(0.02, 0.08, 0.12, 0.22)
 polygon = PackedVector2Array(850, 1060, 1160, 1120, 1118, 1210, 782, 1168)
 
 [node name="RouteChoiceBand" type="Node2D" parent="."]
+visible = false
 
 [node name="DecisionRib" type="Polygon2D" parent="RouteChoiceBand"]
 color = Color(0.74, 0.92, 0.86, 0.18)
