@@ -10,9 +10,9 @@ North-star filter: every expedition should force a survival tradeoff. Bring back
 
 ## Active Milestone
 
-Survival Expedition Loop Prototype.
+Area 02 Outer Shelf Payoff Slice.
 
-Route expansion is paused. The active goal is for a short playtest to feel like an expedition day rather than only a route tour: the player starts with Food/Water/Power pressure, chooses whether to spend cargo space on survival supplies, extracts or fails, reads a night report, and sees the next day or Emergency Week collapse.
+The survival loop is readable enough to resume one player-visible route payoff without reopening broad content expansion. Keep the Emergency Week pressure visible, but the active goal is now for Outer Shelf to feel consequential: a short playtest should reveal a cargo-vs-knowledge choice, preserve return pressure, and create a next-run hypothesis if the player extracts safely.
 
 Primary planning docs:
 
@@ -25,11 +25,11 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. Validate the first Emergency Week loop in play: ready panel, shallow supply cache, extraction, night report, next day, collapse/restart.
-2. Validate the diver-scale feel in play: starter avatar size, collision, camera framing, flashlight/readability, and whether the ocean has enough visible room to explore.
-3. Improve survival UI clarity only where the prototype loop is hard to understand.
-4. Add one more survival supply placement or day-condition hook only after the first loop is understandable.
-5. Resume route/content growth only after the survival loop gives players a reason to care what they bring home.
+1. #633: add one Outer Shelf cargo-vs-knowledge payoff choice.
+2. #634: make surface results tease the next Outer Shelf expedition.
+3. #635: add one visible future lock or upgrade promise tied to a seen Outer Shelf place.
+4. #636: add deterministic staging and one evidence capture for the new Area 02 route.
+5. Recalibrate before opening broader Area 02 content so route growth does not outrun readability or the survival loop.
 
 ## Completed In This Readability Rescue
 
@@ -41,6 +41,7 @@ Primary planning docs:
 - The bounded decision review accepted Area 01 readability with watchlist after a tiny HUD/current-cue pass and four refreshed staged captures.
 - #622 added one subtle salvage-pocket timing read after the Area 01 readability pass.
 - #623 validated the Salvage Cutter Return Payoff milestone and moved the next direction to larger route progress.
+- #637 and #638 fixed the active HUD overlap and clarified Emergency Week base-needs/result copy enough to resume one Area 02 payoff slice.
 
 ## Current Readability Rules
 
@@ -52,9 +53,8 @@ Primary planning docs:
 - Active HUD copy must use reserved stats/prompt/status rows; long commands or feedback should clip or be shortened instead of wrapping into neighboring text.
 - Do not solve confusion by adding more bright shapes, exact locators, checklists, minimaps, or route graphs.
 
-## Deferred Until Survival Loop Is Playable
+## Still Deferred
 
-- Area 02 route-content expansion that does not affect survival tradeoffs.
 - Local clutter or readability work that does not block survival-loop playtesting.
 - Starting with a bulky submarine-scale avatar; compact vehicles belong to later upgrades.
 - Broader mobile/controller work beyond preserving semantic input guardrails.

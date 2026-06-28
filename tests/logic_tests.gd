@@ -72,6 +72,7 @@ func _initialize() -> void:
 	_run("Outer Shelf route footprint", _test_outer_shelf_route_footprint)
 	_run("Outer Shelf Glass Rim branch", _test_outer_shelf_glass_rim_branch)
 	_run("Outer Shelf slackwater timing cue visual only", _test_outer_shelf_slackwater_timing_cue_visual_only)
+	_run("Outer Shelf cargo knowledge payoff choice", _test_outer_shelf_cargo_knowledge_payoff_choice)
 	_run("Glass Ray Drifter passive route read", _test_glass_ray_drifter_passive_route_read)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
@@ -1169,6 +1170,7 @@ func _test_outer_shelf_route_footprint() -> void:
 	var glass_rim := outer_shelf.get_node("GlassRimLandmark") as Polygon2D
 	var low_shelf := outer_shelf.get_node("LowShelfLandmark") as Polygon2D
 	var return_wash := outer_shelf.get_node("ReturnWashToMirror") as Polygon2D
+	var survey_core := outer_shelf.get_node("OuterShelfSurveyCore") as Node2D
 	var outer_label := outer_shelf.get_node("OuterShelfLabel") as Label
 	var glass_label := outer_shelf.get_node("GlassRimLabel") as Label
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
@@ -1193,8 +1195,9 @@ func _test_outer_shelf_route_footprint() -> void:
 	_expect(glass_label.text == "GLASS RIM", "Outer Shelf should have one compact local landmark label")
 	_expect(not outer_label.text.to_lower().contains("objective"), "Outer Shelf label should not become checklist copy")
 	_expect(not glass_label.text.to_lower().contains("map"), "Glass Rim label should not imply exact map UI")
-	_expect(outer_shelf.get_node_or_null("InteractZone") == null, "Outer Shelf footprint should not add interactions yet")
-	_expect(outer_shelf.find_child("CollisionShape2D", true, false) == null, "Outer Shelf footprint should not add route collision yet")
+	_expect(survey_core.get_node_or_null("InteractZone/CollisionShape2D") != null, "Outer Shelf should own exactly one nested survey interaction")
+	_expect(outer_shelf.get_node_or_null("InteractZone") == null, "Outer Shelf footprint should not add a route-wide interaction hotspot")
+	_expect(outer_shelf.find_child("CollisionShape2D", true, false) == survey_core.get_node("InteractZone/CollisionShape2D"), "Outer Shelf footprint should only add collision for the survey trigger")
 	_expect(outer_shelf.find_child("ResourcePickup", true, false) == null, "Outer Shelf footprint should not add pickups yet")
 	_expect(outer_shelf.find_child("LootTable", true, false) == null, "Outer Shelf footprint should not add loot tables")
 	_expect(outer_shelf.find_child("HealthBar", true, false) == null, "Outer Shelf footprint should not add combat UI")
@@ -1307,6 +1310,85 @@ func _test_outer_shelf_slackwater_timing_cue_visual_only() -> void:
 	_expect(branch.find_child("Predator", true, false) == null, "Outer Shelf slackwater timing cue should not add combat pressure")
 	_expect(branch.find_child("ResourcePickup", true, false) == null, "Outer Shelf slackwater timing cue should not create cargo")
 	scene_main.queue_free()
+
+func _test_outer_shelf_cargo_knowledge_payoff_choice() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_outer_shelf_survey = true
+	main.dive_session.oxygen = 18.0
+	main.dive_session.current_cargo = ["shell_fragments"]
+	main.progression_state.banked_resources = {"kelp_fiber": 1}
+	var outer_shelf := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach") as Node2D
+	var survey := outer_shelf.get_node("OuterShelfSurveyCore") as Node2D
+	var survey_core := survey.get_node("SurveyCore") as Polygon2D
+	var survey_spark := survey.get_node("SurveySpark") as Polygon2D
+	var kelp_candidate := main.get_node("StarterResourceCandidates/KelpFiber/OuterShelfA") as SpawnPoint
+	main.call("_sync_outer_shelf_survey_state")
+	_expect(survey_core.color.a >= 0.8, "Outer Shelf survey core should start visibly recoverable")
+	_expect(survey_spark.visible, "Outer Shelf survey spark should start visible before recovery")
+	_expect(kelp_candidate.target_id == "kelp_fiber", "Outer Shelf cargo choice should use existing Kelp Fiber")
+	_expect(kelp_candidate.depth_band == "deep", "Outer Shelf cargo choice should stay in the deep branch context")
+	_expect(kelp_candidate.cluster_pattern == "deep_reward", "Outer Shelf cargo choice should remain optional deep-reward pressure")
+	_expect(kelp_candidate.global_position.distance_to(survey.global_position) >= 90.0, "Outer Shelf cargo and survey should not stack on each other")
+	_expect(kelp_candidate.global_position.y > survey.global_position.y, "Outer Shelf cargo should sit below the survey so it reads as a separate commitment")
+	_expect(main.get_node_or_null("ResourcePickups/OuterShelfKelpFiber") == null, "Outer Shelf cargo choice should reuse existing pickup placement instead of adding an extra active pickup")
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Outer Shelf survey"), "Outer Shelf proximity should own the active dive prompt")
+	_expect(prompt.contains("E/Enter"), "Outer Shelf prompt should keep the compact interaction command")
+
+	var handled: bool = main.call("_try_outer_shelf_survey_interaction")
+	_expect(handled, "Outer Shelf should handle interact while nearby during a dive")
+	_expect(main.run_outer_shelf_survey_recovered, "Outer Shelf interaction should record one run-scoped survey")
+	_expect(main.run_reached_dusk_trench, "Outer Shelf interaction should count as a deep-route reach for broad place memory")
+	_expect(survey_core.color.a <= 0.2, "Outer Shelf survey should visibly dim after recovery")
+	_expect(not survey_spark.visible, "Outer Shelf survey spark should disappear after recovery")
+	_expect(is_equal_approx(main.dive_session.oxygen, 18.0), "Outer Shelf survey should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["shell_fragments"], "Outer Shelf survey should not add or remove cargo")
+	_expect(main.progression_state.resource_count("kelp_fiber") == 1, "Outer Shelf survey should not mutate banked resources")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("return through Mirror/Wide/Hollow"), "Outer Shelf status should keep broad return language")
+		_expect(main.status_label.text.contains("Kelp Fiber"), "Outer Shelf status should name the nearby cargo alternative")
+		_expect_no_echo_lens_locator_language(main.status_label.text, "Outer Shelf status")
+
+	var repeat_handled: bool = main.call("_try_outer_shelf_survey_interaction")
+	_expect(repeat_handled, "Outer Shelf should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recorded"), "Outer Shelf repeat interaction should not duplicate the payoff")
+
+	main.player_near_outer_shelf_survey = false
+	var not_handled: bool = main.call("_try_outer_shelf_survey_interaction")
+	_expect(not not_handled, "Outer Shelf should not consume interact outside its proximity zone")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(not saved.has("outer_shelf_survey"), "Outer Shelf survey should not become durable save data")
+	_expect(not saved.has("outer_shelf_route"), "Outer Shelf should not create durable route state")
+	_expect(not saved.has("glass_rim_cut"), "Glass Rim Cut should not create durable route state")
+
+	var callout: String = main.call("_format_outer_shelf_survey_research_callout")
+	_expect(callout.contains("Outer Shelf"), "Outer Shelf result memory should name the area")
+	_expect(callout.contains("Glass Rim Cut"), "Outer Shelf result memory should explain why the survey mattered")
+	_expect(callout.contains("Kelp Fiber cargo"), "Outer Shelf result memory should preserve the cargo-vs-knowledge choice")
+	_expect_no_echo_lens_locator_language(callout, "Outer Shelf result line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Remembered place: Outer Shelf"), "Outer Shelf extraction summary should remember the newest area")
+	_expect(extraction_summary.contains("Outer Shelf survey"), "Outer Shelf extraction summary should include recovered survey memory")
+	_expect(main._format_recent_route_memory() == "Outer Shelf", "recent route helper should expose Outer Shelf after survey evidence")
+	_expect(not extraction_summary.contains("%s"), "Outer Shelf extraction summary should not leak string placeholders")
+
+	var fresh_main := MainScript.new()
+	_expect(fresh_main._format_outer_shelf_survey_research_callout() == "", "Outer Shelf result line should stay hidden before survey recovery")
+	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	_expect(not fresh_summary.contains("Outer Shelf survey"), "Outer Shelf extraction summary should stay hidden before survey recovery")
+	fresh_main.free()
+
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_outer_shelf_survey_recovered, "Outer Shelf survey should reset between expeditions")
+	_expect(survey_core.color.a >= 0.8, "Outer Shelf survey should become visible again on expedition reset")
+	_expect(survey_spark.visible, "Outer Shelf survey spark should reset between expeditions")
+	main.free()
 
 func _test_glass_ray_drifter_passive_route_read() -> void:
 	var main := MainScene.instantiate()
@@ -5582,12 +5664,14 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	main.run_lantern_silt_sample_recovered = true
 	main.run_glass_kelp_reading_recovered = true
 	main.run_tideglass_sample_recovered = true
+	main.run_outer_shelf_survey_recovered = true
 	main.run_salvage_manifest_recovered = true
 	main.player_near_resonance_alcove = true
 	main.player_near_blue_chimney = true
 	main.player_near_lantern_silt_nook = true
 	main.player_near_glass_kelp_ledge = true
 	main.player_near_tideglass_sample = true
+	main.player_near_outer_shelf_survey = true
 	main.player_near_salvage_manifest = true
 	main.run_collected_resources.append("kelp_fiber")
 	main.run_completed_scans.append("east_shelf_arch")
@@ -5614,11 +5698,13 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	_expect(not main.run_lantern_silt_sample_recovered, "restart should clear run-scoped Lantern Silt sample state")
 	_expect(not main.run_glass_kelp_reading_recovered, "restart should clear run-scoped Glass Kelp reading state")
 	_expect(not main.run_tideglass_sample_recovered, "restart should clear run-scoped Tideglass Sample state")
+	_expect(not main.run_outer_shelf_survey_recovered, "restart should clear run-scoped Outer Shelf survey state")
 	_expect(not main.player_near_resonance_alcove, "restart should clear Resonance Alcove proximity state")
 	_expect(not main.player_near_blue_chimney, "restart should clear Blue Chimney proximity state")
 	_expect(not main.player_near_lantern_silt_nook, "restart should clear Lantern Silt proximity state")
 	_expect(not main.player_near_glass_kelp_ledge, "restart should clear Glass Kelp proximity state")
 	_expect(not main.player_near_tideglass_sample, "restart should clear Tideglass Sample proximity state")
+	_expect(not main.player_near_outer_shelf_survey, "restart should clear Outer Shelf proximity state")
 	_expect(main.run_collected_resources.is_empty(), "restart should clear run-scoped collected-resource telemetry")
 	_expect(main.run_completed_scans.is_empty(), "restart should clear run-scoped scan telemetry")
 	_expect(main.run_predator_contacts == 0, "restart should clear run-scoped predator contact telemetry")
@@ -5685,6 +5771,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_reached_dusk_trench = true
 	main.run_glass_kelp_reading_recovered = true
 	main.run_tideglass_sample_recovered = true
+	main.run_outer_shelf_survey_recovered = true
 	main.run_salvage_manifest_recovered = true
 	main.blue_chimney_draft_timer = 1.7
 	main.blackwater_pressure_timer = 1.9
@@ -5698,6 +5785,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_reached_dusk_trench, "run telemetry reset should clear Dusk Trench reach memory")
 	_expect(not main.run_glass_kelp_reading_recovered, "run telemetry reset should clear Glass Kelp reading state")
 	_expect(not main.run_tideglass_sample_recovered, "run telemetry reset should clear Tideglass Sample state")
+	_expect(not main.run_outer_shelf_survey_recovered, "run telemetry reset should clear Outer Shelf survey state")
 	_expect(not main.run_salvage_manifest_recovered, "run telemetry reset should clear Salvage Manifest state")
 	_expect(is_equal_approx(main.blue_chimney_draft_timer, 0.0), "run telemetry reset should clear Blue Chimney visual timing state")
 	_expect(is_equal_approx(main.blackwater_pressure_timer, 0.0), "run telemetry reset should clear Blackwater pressure-cue timing state")
@@ -5709,6 +5797,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.player_near_lantern_silt_nook = true
 	main.player_near_blackwater_crack = true
 	main.player_near_tideglass_sample = true
+	main.player_near_outer_shelf_survey = true
 	main.player_near_salvage_manifest = true
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
@@ -5716,6 +5805,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_reached_dusk_trench = true
 	main.run_glass_kelp_reading_recovered = true
 	main.run_tideglass_sample_recovered = true
+	main.run_outer_shelf_survey_recovered = true
 	main.run_salvage_manifest_recovered = true
 	main.call("_prepare_next_run")
 	_expect(not main.player_near_lower_connector_echo, "new expeditions should clear Drop Echo proximity state")
@@ -5724,6 +5814,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.player_near_lantern_silt_nook, "new expeditions should clear Lantern Silt proximity state")
 	_expect(not main.player_near_blackwater_crack, "new expeditions should clear Blackwater Crack proximity state")
 	_expect(not main.player_near_tideglass_sample, "new expeditions should clear Tideglass Sample proximity state")
+	_expect(not main.player_near_outer_shelf_survey, "new expeditions should clear Outer Shelf proximity state")
 	_expect(not main.player_near_salvage_manifest, "new expeditions should clear Salvage Manifest proximity state")
 	_expect(not main.run_lower_connector_echo_recovered, "new expeditions should not carry Drop Echo research state")
 	_expect(not main.run_resonance_alcove_research_recovered, "new expeditions should not carry Resonance Alcove research state")
@@ -5733,6 +5824,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_reached_dusk_trench, "new expeditions should not carry Dusk Trench reach memory")
 	_expect(not main.run_glass_kelp_reading_recovered, "new expeditions should not carry Glass Kelp reading state")
 	_expect(not main.run_tideglass_sample_recovered, "new expeditions should not carry Tideglass Sample state")
+	_expect(not main.run_outer_shelf_survey_recovered, "new expeditions should not carry Outer Shelf survey state")
 	_expect(not main.run_salvage_manifest_recovered, "new expeditions should not carry Salvage Manifest state")
 	_expect(not main.progression_state.to_save_data().has("lower_connector_echo"), "Drop Echo should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("resonance_alcove_research"), "Resonance Alcove research should not be stored in durable progression")
@@ -5748,6 +5840,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.progression_state.to_save_data().has("dusk_trench_reached"), "Dusk Trench reach memory should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("glass_kelp_reading"), "Glass Kelp reading should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("tideglass_sample"), "Tideglass Sample should not be stored in durable progression")
+	_expect(not main.progression_state.to_save_data().has("outer_shelf_survey"), "Outer Shelf survey should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("salvage_manifest"), "Salvage Manifest should not be stored in durable progression")
 	main.queue_free()
 

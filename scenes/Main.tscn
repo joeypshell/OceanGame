@@ -1752,6 +1752,27 @@ polygon = PackedVector2Array(526, 104, 760, 80, 958, 122, 884, 178, 624, 188)
 color = Color(0.6, 1, 0.86, 0.1)
 polygon = PackedVector2Array(136, 98, -28, 54, -228, 22, -204, -14, 8, 18, 178, 58)
 
+[node name="OuterShelfSurveyCore" type="Node2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+position = Vector2(702, 102)
+
+[node name="SurveyHalo" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore"]
+color = Color(0.48, 0.92, 1, 0.22)
+polygon = PackedVector2Array(-48, -20, -12, -46, 34, -34, 58, 4, 22, 42, -34, 34, -62, 4)
+
+[node name="SurveyCore" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore"]
+color = Color(0.78, 1, 0.96, 0.86)
+polygon = PackedVector2Array(-22, -8, 2, -25, 28, -12, 30, 14, 4, 28, -24, 12)
+
+[node name="SurveySpark" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore"]
+color = Color(0.95, 1, 0.9, 0.86)
+polygon = PackedVector2Array(0, -16, 6, -4, 20, -2, 8, 6, 4, 20, -4, 8, -18, 6, -6, -4)
+
+[node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/InteractZone"]
+shape = SubResource("CircleShape2D_blue_chimney_reading")
+
 [node name="OuterShelfLabel" type="Label" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
 offset_left = 330.0
 offset_top = -190.0
@@ -2318,6 +2339,14 @@ cluster_pattern = "deep_reward"
 position = Vector2(4084, 3096)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_mirror_kelp_pass_a"
+target_id = "kelp_fiber"
+depth_band = "deep"
+cluster_pattern = "deep_reward"
+
+[node name="OuterShelfA" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
+position = Vector2(4896, 3282)
+script = ExtResource("9_spawn_point")
+spawn_id = "kelp_outer_shelf_a"
 target_id = "kelp_fiber"
 depth_band = "deep"
 cluster_pattern = "deep_reward"
