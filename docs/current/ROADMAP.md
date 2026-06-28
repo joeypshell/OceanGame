@@ -32,14 +32,13 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #683: replace the most important slice polygons with reusable reef-wall/ledge art modules.
-2. #684 and #670: keep the HUD compact and contextual around the slice, especially scan prompts and active objective copy.
-3. #682: tie one surface upgrade or night choice to starter resources after the room has readable resource pockets.
-4. #685: add deterministic captures for the playable exploration slice.
-5. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
-6. #678: compare against the visual reference after the slice has real wall/ledge modules.
-7. Resume route expansion only after the first room reads as a playable place rather than a diagram.
-8. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #684 and #670: keep the HUD compact and contextual around the slice, especially scan prompts and active objective copy.
+2. #682: tie one surface upgrade or night choice to starter resources after the room has readable resource pockets.
+3. #685: add deterministic captures for the playable exploration slice.
+4. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
+5. #678: compare against the visual reference after the slice has real wall/ledge modules.
+6. Resume route expansion only after the first room reads as a playable place rather than a diagram.
+7. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -58,6 +57,7 @@ Primary planning docs:
 - #636 added deterministic `outer_shelf_survey` staging and one targeted Playwright evidence capture path for the Area 02 route without changing durable progression.
 - #686 built the first real Area 01 art/playability slice and hid the debug-like broad exploration shell in normal play.
 - #681 placed starter resource candidates into four readable Area 01 pockets so supplies and materials start teaching the room layout.
+- #683 added reusable reef-wall and resource-pocket visual modules to the Area 01 shell walls, starter ledges, and resource pockets.
 
 ## Current Readability Rules
 

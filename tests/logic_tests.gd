@@ -88,6 +88,7 @@ func _initialize() -> void:
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
 	_run("Area 01 first art slice scene contract", _test_area_01_first_art_slice_scene_contract)
 	_run("Area 01 starter resource pocket placement", _test_area_01_starter_resource_pocket_placement)
+	_run("Area 01 reusable reef visual kit", _test_area_01_reusable_reef_visual_kit)
 	_run("east shelf spur branch scene contract", _test_east_shelf_spur_branch_scene_contract)
 	_run("landmark region identity metadata", _test_landmark_region_identity_metadata)
 	_run("predator scan target", _test_predator_scan_target)
@@ -3318,6 +3319,10 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/TerrainVisualEdges/ShallowRightLitEdge",
 		"Area01ArtSlice/TerrainVisualEdges/LeftLedgeLitEdge",
 		"Area01ArtSlice/TerrainVisualEdges/RightLedgeLitEdge",
+		"Area01ArtSlice/TerrainVisualEdges/LeftWallReefKit",
+		"Area01ArtSlice/TerrainVisualEdges/RightWallReefKit",
+		"Area01ArtSlice/TerrainVisualEdges/LeftLedgeReefKit",
+		"Area01ArtSlice/TerrainVisualEdges/RightLedgeReefKit",
 		"Area01ArtSlice/GameplayObjects",
 		"Area01ArtSlice/GameplayObjects/CargoPocketGlow",
 		"Area01ArtSlice/GameplayObjects/ScanFocusPocket",
@@ -3381,6 +3386,31 @@ func _test_area_01_starter_resource_pocket_placement() -> void:
 	_expect(food_a.depth_band == "shallow" and water_a.depth_band == "shallow", "survival supply pockets should stay shallow enough to teach early routes")
 	_expect(quartz_a.global_position.y > food_a.global_position.y, "quartz should sit deeper than the first food pocket")
 	_expect(shell_b.global_position.y > water_a.global_position.y, "shell material should sit deeper than the first water pocket")
+	main.free()
+
+func _test_area_01_reusable_reef_visual_kit() -> void:
+	var main := MainScene.instantiate()
+	var wall_paths := [
+		"Area01ArtSlice/TerrainVisualEdges/LeftWallReefKit/ReefRockStack",
+		"Area01ArtSlice/TerrainVisualEdges/RightWallReefKit/ReefRockStack",
+		"Area01ArtSlice/TerrainVisualEdges/LeftLedgeReefKit/TopLipHighlight",
+		"Area01ArtSlice/TerrainVisualEdges/RightLedgeReefKit/TopLipHighlight",
+	]
+	for path in wall_paths:
+		var wall_piece := main.get_node(path) as Polygon2D
+		_expect(wall_piece != null, "Area 01 shell wall and ledge should use the reusable reef visual kit: %s" % path)
+		_expect(wall_piece.color.a <= 0.8, "reusable reef wall dressing should stay below pickup/scan brightness: %s" % path)
+
+	var pocket_paths := [
+		"Area01ArtSlice/GameplayObjects/LeftShallowResourcePocket/ReusablePocketArt/ResourceBed",
+		"Area01ArtSlice/GameplayObjects/RightShelfResourcePocket/ReusablePocketArt/ResourceBed",
+		"Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket/ReusablePocketArt/CargoReadGap",
+		"Area01ArtSlice/GameplayObjects/RightDeepResourcePocket/ReusablePocketArt/CargoReadGap",
+	]
+	for path in pocket_paths:
+		var pocket_piece := main.get_node(path) as Polygon2D
+		_expect(pocket_piece != null, "Area 01 resource pockets should use the reusable pocket visual kit: %s" % path)
+		_expect(pocket_piece.color.a <= 0.5, "resource pocket dressing should support cargo readability without becoming the reward: %s" % path)
 	main.free()
 
 func _test_landmark_region_identity_metadata() -> void:

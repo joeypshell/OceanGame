@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://area01_reef_wall_kit"]
+
+[node name="Area01ReefWallKit" type="Node2D"]
+
+[node name="BackPlate" type="Polygon2D" parent="."]
+color = Color(0.006, 0.026, 0.04, 0.62)
+polygon = PackedVector2Array(-156, -88, 96, -118, 184, -36, 142, 124, -110, 146, -206, 34)
+
+[node name="ReefRockStack" type="Polygon2D" parent="."]
+color = Color(0.05, 0.105, 0.115, 0.78)
+polygon = PackedVector2Array(-136, -54, -52, -104, 54, -92, 142, -24, 116, 42, 160, 98, 46, 132, -72, 110, -166, 38)
+
+[node name="TopLipHighlight" type="Polygon2D" parent="."]
+color = Color(0.36, 0.55, 0.46, 0.46)
+polygon = PackedVector2Array(-124, -62, -46, -94, 56, -82, 136, -24, 120, -4, 38, -48, -48, -58, -118, -34)
+
+[node name="CreviceBand" type="Polygon2D" parent="."]
+color = Color(0.002, 0.014, 0.026, 0.5)
+polygon = PackedVector2Array(-116, 6, -22, -14, 80, 8, 134, 48, 82, 76, -30, 56, -128, 76)
+
+[node name="AlgaeRidgeA" type="Polygon2D" parent="."]
+color = Color(0.18, 0.42, 0.22, 0.34)
+polygon = PackedVector2Array(-78, -44, -68, -88, -56, -42, -42, -74, -34, -30, -86, -22)
+
+[node name="AlgaeRidgeB" type="Polygon2D" parent="."]
+color = Color(0.2, 0.48, 0.25, 0.28)
+polygon = PackedVector2Array(88, -18, 98, -58, 112, -16, 130, -44, 136, 2, 82, 12)
+
+[node name="CoralFleckA" type="Polygon2D" parent="."]
+color = Color(0.64, 0.42, 0.76, 0.26)
+polygon = PackedVector2Array(-20, 74, -8, 34, 8, 76, 28, 44, 26, 90, -6, 98)
+
+[node name="CoralFleckB" type="Polygon2D" parent="."]
+color = Color(0.1, 0.74, 0.82, 0.2)
+polygon = PackedVector2Array(70, 92, 86, 52, 102, 94, 124, 68, 116, 114, 82, 122)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=46 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -33,6 +33,8 @@
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/shallow_midwater_background_study_v1.svg" id="26_shallow_midwater_background"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/deep_reward_lure_sprite_v1.svg" id="27_deep_reward_lure_sprite"]
 [ext_resource type="PackedScene" path="res://scenes/readability/DuskLowVisibilityCue.tscn" id="28_dusk_low_visibility_cue"]
+[ext_resource type="PackedScene" path="res://scenes/environment/Area01ReefWallKit.tscn" id="34_area01_reef_wall_kit"]
+[ext_resource type="PackedScene" path="res://scenes/environment/Area01ResourcePocketKit.tscn" id="35_area01_resource_pocket_kit"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -519,6 +521,22 @@ polygon = PackedVector2Array(172, 574, 356, 700, 308, 866, 430, 1014, 386, 1056,
 color = Color(0.16, 0.35, 0.34, 0.46)
 polygon = PackedVector2Array(1058, 612, 1308, 572, 1544, 692, 1568, 738, 1324, 630, 1100, 672, 1148, 882, 1096, 916)
 
+[node name="LeftWallReefKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("34_area01_reef_wall_kit")]
+position = Vector2(210, 620)
+scale = Vector2(1.06, 0.92)
+
+[node name="RightWallReefKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("34_area01_reef_wall_kit")]
+position = Vector2(1260, 640)
+scale = Vector2(-1.08, 0.94)
+
+[node name="LeftLedgeReefKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("34_area01_reef_wall_kit")]
+position = Vector2(286, 884)
+scale = Vector2(0.78, 0.5)
+
+[node name="RightLedgeReefKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("34_area01_reef_wall_kit")]
+position = Vector2(1130, 932)
+scale = Vector2(0.96, 0.52)
+
 [node name="GameplayObjects" type="Node2D" parent="Area01ArtSlice"]
 
 [node name="CargoPocketGlow" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects"]
@@ -540,6 +558,10 @@ polygon = PackedVector2Array(-98, -54, 32, -80, 112, -18, 80, 58, -62, 76, -126,
 color = Color(0.5, 0.68, 0.48, 0.34)
 polygon = PackedVector2Array(-76, 28, 60, 18, 112, 50, -38, 72)
 
+[node name="ReusablePocketArt" parent="Area01ArtSlice/GameplayObjects/LeftShallowResourcePocket" instance=ExtResource("35_area01_resource_pocket_kit")]
+position = Vector2(0, 8)
+scale = Vector2(0.9, 0.76)
+
 [node name="RightShelfResourcePocket" type="Node2D" parent="Area01ArtSlice/GameplayObjects"]
 position = Vector2(1084, 850)
 
@@ -550,6 +572,10 @@ polygon = PackedVector2Array(-130, -56, 62, -74, 146, 4, 98, 82, -72, 70, -164, 
 [node name="DepositShelf" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/RightShelfResourcePocket"]
 color = Color(0.48, 0.66, 0.48, 0.32)
 polygon = PackedVector2Array(-98, 26, 82, 12, 142, 48, -48, 76)
+
+[node name="ReusablePocketArt" parent="Area01ArtSlice/GameplayObjects/RightShelfResourcePocket" instance=ExtResource("35_area01_resource_pocket_kit")]
+position = Vector2(0, 8)
+scale = Vector2(1.12, 0.78)
 
 [node name="LeftCaveResourcePocket" type="Node2D" parent="Area01ArtSlice/GameplayObjects"]
 position = Vector2(356, 1004)
@@ -562,6 +588,10 @@ polygon = PackedVector2Array(-130, -78, 78, -92, 158, -18, 110, 82, -78, 96, -17
 color = Color(0.56, 0.48, 0.34, 0.36)
 polygon = PackedVector2Array(-116, 30, 96, 18, 162, 56, -50, 90)
 
+[node name="ReusablePocketArt" parent="Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket" instance=ExtResource("35_area01_resource_pocket_kit")]
+position = Vector2(0, 8)
+scale = Vector2(1.2, 0.88)
+
 [node name="RightDeepResourcePocket" type="Node2D" parent="Area01ArtSlice/GameplayObjects"]
 position = Vector2(1128, 1070)
 
@@ -572,6 +602,10 @@ polygon = PackedVector2Array(-164, -90, 108, -112, 208, -12, 144, 102, -116, 96,
 [node name="DepositShelf" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/RightDeepResourcePocket"]
 color = Color(0.36, 0.58, 0.62, 0.34)
 polygon = PackedVector2Array(-130, 34, 130, 14, 204, 62, -74, 98)
+
+[node name="ReusablePocketArt" parent="Area01ArtSlice/GameplayObjects/RightDeepResourcePocket" instance=ExtResource("35_area01_resource_pocket_kit")]
+position = Vector2(0, 8)
+scale = Vector2(1.38, 0.92)
 
 [node name="ForegroundDecor" type="Node2D" parent="Area01ArtSlice"]
 z_index = 1
