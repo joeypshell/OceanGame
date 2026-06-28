@@ -64,8 +64,8 @@ Visual tasks should be delayed when they only decorate a tiny landmark, add more
 ## Recommended Issue Order
 
 1. Build the Safe Shallows exploration shell with authored walls, chambers, and cave pockets. Current first passes: remove the misleading shallow upper-water blockers, start a larger visible reef blockout with matching collision, and add first left/right chamber framing masses.
-2. Add starter survival resource node families with temporary readable art.
-3. Place resource pockets inside the shell so collection teaches exploration.
+2. Add starter survival resource node families with temporary readable art. Current first pass exists for food, water, scrap, driftwood, quartz, and existing materials.
+3. Place resource pockets inside the shell so collection teaches exploration. Current first pass spreads starter candidates from the shallow pockets into left/right chamber pockets.
 4. Tie one surface upgrade or night choice to starter resources.
 5. Apply the reef visual kit to the exploration shell, not isolated landmarks.
 6. Convert route/status HUD into compact objectives and contextual alerts.

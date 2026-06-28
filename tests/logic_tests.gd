@@ -3398,6 +3398,8 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/GameplayObjects/RightShelfResourcePocket",
 		"Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket",
 		"Area01ArtSlice/GameplayObjects/RightDeepResourcePocket",
+		"Area01ArtSlice/GameplayObjects/LeftChamberResourcePocket",
+		"Area01ArtSlice/GameplayObjects/RightChamberResourcePocket",
 		"Area01ArtSlice/ForegroundDecor",
 		"Area01ArtSlice/ForegroundDecor/LeftShelfDressing",
 		"Area01ArtSlice/ForegroundDecor/LeftShelfDressing/KelpFrondA",
@@ -3488,20 +3490,22 @@ func _test_area_01_starter_resource_pocket_placement() -> void:
 	var right_shelf := main.get_node("Area01ArtSlice/GameplayObjects/RightShelfResourcePocket") as Node2D
 	var left_cave := main.get_node("Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket") as Node2D
 	var right_deep := main.get_node("Area01ArtSlice/GameplayObjects/RightDeepResourcePocket") as Node2D
+	var left_chamber := main.get_node("Area01ArtSlice/GameplayObjects/LeftChamberResourcePocket") as Node2D
+	var right_chamber := main.get_node("Area01ArtSlice/GameplayObjects/RightChamberResourcePocket") as Node2D
 	var pocket_checks := {
 		"StarterResourceCandidates/FoodSupply/A": left_shallow,
 		"StarterResourceCandidates/WaterSupply/A": left_shallow,
 		"StarterResourceCandidates/Driftwood/A": left_shallow,
 		"StarterResourceCandidates/KelpFiber/C": left_shallow,
-		"StarterResourceCandidates/FoodSupply/B": right_shelf,
-		"StarterResourceCandidates/WaterSupply/B": right_shelf,
-		"StarterResourceCandidates/Driftwood/B": right_shelf,
-		"StarterResourceCandidates/KelpFiber/B": right_shelf,
-		"StarterResourceCandidates/ScrapMetal/A": left_cave,
+		"StarterResourceCandidates/FoodSupply/B": right_chamber,
+		"StarterResourceCandidates/WaterSupply/B": right_chamber,
+		"StarterResourceCandidates/Driftwood/B": right_chamber,
+		"StarterResourceCandidates/ScrapMetal/A": left_chamber,
 		"StarterResourceCandidates/ShellFragments/A": left_cave,
-		"StarterResourceCandidates/ScrapMetal/B": right_deep,
-		"StarterResourceCandidates/QuartzGlass/A": right_deep,
-		"StarterResourceCandidates/ShellFragments/B": right_deep,
+		"StarterResourceCandidates/ShellFragments/F": left_chamber,
+		"StarterResourceCandidates/ScrapMetal/B": right_chamber,
+		"StarterResourceCandidates/QuartzGlass/A": right_chamber,
+		"StarterResourceCandidates/ShellFragments/B": right_chamber,
 	}
 	for path in pocket_checks.keys():
 		var candidate := main.get_node(path) as SpawnPoint
@@ -3513,6 +3517,7 @@ func _test_area_01_starter_resource_pocket_placement() -> void:
 	var quartz_a := main.get_node("StarterResourceCandidates/QuartzGlass/A") as SpawnPoint
 	var shell_b := main.get_node("StarterResourceCandidates/ShellFragments/B") as SpawnPoint
 	_expect(food_a.depth_band == "shallow" and water_a.depth_band == "shallow", "survival supply pockets should stay shallow enough to teach early routes")
+	_expect(food_a.global_position.x < right_chamber.global_position.x and shell_b.global_position.x > right_shelf.global_position.x, "starter resources should now teach movement from shallow pockets toward the larger right chamber")
 	_expect(quartz_a.global_position.y > food_a.global_position.y, "quartz should sit deeper than the first food pocket")
 	_expect(shell_b.global_position.y > water_a.global_position.y, "shell material should sit deeper than the first water pocket")
 	main.free()
