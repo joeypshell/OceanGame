@@ -65,23 +65,41 @@ const RUN_SUMMARY_COMPACT_BOTTOM := 314.0
 const RUN_SUMMARY_TALL_BOTTOM := 624.0
 const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
 const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
-const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(560.0, 176.0))
-const DIVE_INFO_RECT := Rect2(Vector2(16.0, 204.0), Vector2(720.0, 136.0))
+const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(330.0, 176.0))
+const CARGO_PANEL_RECT := Rect2(Vector2(440.0, 16.0), Vector2(400.0, 78.0))
+const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(1010.0, 16.0), Vector2(254.0, 132.0))
+const DIVE_INFO_RECT := Rect2(Vector2(16.0, 540.0), Vector2(720.0, 150.0))
+const OXYGEN_WARNING_RECT := Rect2(Vector2(16.0, 456.0), Vector2(300.0, 68.0))
 const ACTIVE_HUD_CONTENT_LEFT := 28.0
 const ACTIVE_HUD_CONTENT_RIGHT := 720.0
 const HUD_SINGLE_ROW_HEIGHT := 26.0
 const ACTIVE_HUD_LABEL_RECTS := {
-	"oxygen": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 28.0), Vector2(328.0, HUD_SINGLE_ROW_HEIGHT)),
-	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 62.0), Vector2(328.0, HUD_SINGLE_ROW_HEIGHT)),
-	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 96.0), Vector2(328.0, HUD_SINGLE_ROW_HEIGHT)),
-	"cargo": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 130.0), Vector2(150.0, HUD_SINGLE_ROW_HEIGHT)),
-	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 162.0), Vector2(328.0, HUD_SINGLE_ROW_HEIGHT)),
-	"scan": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 216.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
-	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 254.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
-	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 296.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
+	"oxygen": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 26.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
+	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 74.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
+	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 116.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
+	"cargo": Rect2(Vector2(458.0, 24.0), Vector2(170.0, HUD_SINGLE_ROW_HEIGHT)),
+	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 148.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
+	"scan": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 552.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
+	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 594.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
+	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 636.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
 }
-const CARGO_SLOT_ACTIVE_POSITION := Vector2(184.0, 130.0)
+const OXYGEN_BAR_BACK_RECT := Rect2(Vector2(28.0, 56.0), Vector2(250.0, 10.0))
+const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 56.0), Vector2(250.0, 10.0))
+const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 104.0), Vector2(250.0, 8.0))
+const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 104.0), Vector2(250.0, 8.0))
+const CARGO_SLOT_ACTIVE_POSITION := Vector2(636.0, 48.0)
+const SURVIVAL_NEED_LABEL_RECTS := {
+	"food": Rect2(Vector2(1046.0, 30.0), Vector2(182.0, 22.0)),
+	"water": Rect2(Vector2(1046.0, 70.0), Vector2(182.0, 22.0)),
+	"power": Rect2(Vector2(1046.0, 110.0), Vector2(182.0, 22.0)),
+}
+const SURVIVAL_NEED_BAR_BACK_RECTS := {
+	"food": Rect2(Vector2(1046.0, 54.0), Vector2(178.0, 8.0)),
+	"water": Rect2(Vector2(1046.0, 94.0), Vector2(178.0, 8.0)),
+	"power": Rect2(Vector2(1046.0, 134.0), Vector2(178.0, 8.0)),
+}
 const DIVE_STATUS_MAX_CHARS := 72
+const SURVIVAL_NEED_BAR_DISPLAY_MAX := 5.0
 const ECHO_LENS_PULSE_DURATION := 1.2
 const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
 const BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS := 2.9
@@ -119,8 +137,14 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var hint_label: Label = $HUD/Hint
 @onready var bounds_hint_label: Label = $HUD/BoundsHint
 @onready var active_stats_panel: Panel = $HUD/ActiveStatsPanel
+@onready var cargo_panel: Panel = $HUD/CargoPanel
+@onready var survival_needs_panel: Panel = $HUD/SurvivalNeedsPanel
 @onready var oxygen_label: Label = $HUD/Oxygen
+@onready var oxygen_bar_back: ColorRect = $HUD/OxygenBarBack
+@onready var oxygen_bar_fill: ColorRect = $HUD/OxygenBarFill
 @onready var depth_label: Label = $HUD/Depth
+@onready var depth_bar_back: ColorRect = $HUD/DepthBarBack
+@onready var depth_bar_fill: ColorRect = $HUD/DepthBarFill
 @onready var base_direction_label: Label = $HUD/BaseDirection
 @onready var cargo_label: Label = $HUD/Cargo
 @onready var cargo_slots_root: Node2D = $HUD/CargoSlots
@@ -145,6 +169,15 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var dive_info_panel: Panel = $HUD/DiveInfoPanel
 @onready var oxygen_warning_panel: Panel = $HUD/OxygenWarningPanel
 @onready var oxygen_warning_label: Label = $HUD/OxygenWarningPanel/OxygenWarning
+@onready var food_need_label: Label = $HUD/FoodNeed
+@onready var water_need_label: Label = $HUD/WaterNeed
+@onready var power_need_label: Label = $HUD/PowerNeed
+@onready var food_need_bar_back: ColorRect = $HUD/FoodNeedBarBack
+@onready var food_need_bar_fill: ColorRect = $HUD/FoodNeedBarFill
+@onready var water_need_bar_back: ColorRect = $HUD/WaterNeedBarBack
+@onready var water_need_bar_fill: ColorRect = $HUD/WaterNeedBarFill
+@onready var power_need_bar_back: ColorRect = $HUD/PowerNeedBarBack
+@onready var power_need_bar_fill: ColorRect = $HUD/PowerNeedBarFill
 @onready var recent_expedition_log_label: Label = $HUD/RecentExpeditionLog
 @onready var run_panel: Panel = $HUD/RunPanel
 @onready var surface_tabs_label: Label = $HUD/RunPanel/SurfaceTabs
@@ -3352,8 +3385,14 @@ func _update_hud() -> void:
 	hint_label.visible = false
 	bounds_hint_label.visible = false
 	active_stats_panel.visible = is_diving
+	cargo_panel.visible = is_diving
+	survival_needs_panel.visible = is_diving
 	oxygen_label.visible = is_diving
+	oxygen_bar_back.visible = is_diving
+	oxygen_bar_fill.visible = is_diving
 	depth_label.visible = is_diving
+	depth_bar_back.visible = is_diving
+	depth_bar_fill.visible = is_diving
 	base_direction_label.visible = is_diving
 	cargo_label.visible = is_diving
 	cargo_slots_root.visible = is_diving
@@ -3369,6 +3408,8 @@ func _update_hud() -> void:
 		dive_session.cargo_limit
 	]
 	_update_cargo_slots()
+	_update_instrument_bars()
+	_update_survival_needs_panel(is_diving)
 	bank_label.text = "Banked:%s" % _format_banked_resources()
 	upgrade_label.text = _format_upgrade_status()
 	discoveries_label.text = _format_discoveries(true)
@@ -3389,15 +3430,31 @@ func _update_hud() -> void:
 
 func _apply_active_hud_layout() -> void:
 	_set_control_rect(active_stats_panel, ACTIVE_STATS_RECT)
+	_set_control_rect(cargo_panel, CARGO_PANEL_RECT)
+	_set_control_rect(survival_needs_panel, SURVIVAL_NEEDS_PANEL_RECT)
 	_set_control_rect(dive_info_panel, DIVE_INFO_RECT)
+	_set_control_rect(oxygen_warning_panel, OXYGEN_WARNING_RECT)
 	_set_control_rect(oxygen_label, ACTIVE_HUD_LABEL_RECTS["oxygen"])
+	_set_control_rect(oxygen_bar_back, OXYGEN_BAR_BACK_RECT)
+	_set_control_rect(oxygen_bar_fill, OXYGEN_BAR_FILL_RECT)
 	_set_control_rect(depth_label, ACTIVE_HUD_LABEL_RECTS["depth"])
+	_set_control_rect(depth_bar_back, DEPTH_BAR_BACK_RECT)
+	_set_control_rect(depth_bar_fill, DEPTH_BAR_FILL_RECT)
 	_set_control_rect(base_direction_label, ACTIVE_HUD_LABEL_RECTS["base"])
 	_set_control_rect(cargo_label, ACTIVE_HUD_LABEL_RECTS["cargo"])
 	_set_control_rect(discoveries_label, ACTIVE_HUD_LABEL_RECTS["discoveries"])
 	_set_control_rect(scan_target_label, ACTIVE_HUD_LABEL_RECTS["scan"])
 	_set_control_rect(prompt_label, ACTIVE_HUD_LABEL_RECTS["prompt"])
 	_set_control_rect(status_label, ACTIVE_HUD_LABEL_RECTS["status"])
+	_set_control_rect(food_need_label, SURVIVAL_NEED_LABEL_RECTS["food"])
+	_set_control_rect(water_need_label, SURVIVAL_NEED_LABEL_RECTS["water"])
+	_set_control_rect(power_need_label, SURVIVAL_NEED_LABEL_RECTS["power"])
+	_set_control_rect(food_need_bar_back, SURVIVAL_NEED_BAR_BACK_RECTS["food"])
+	_set_control_rect(water_need_bar_back, SURVIVAL_NEED_BAR_BACK_RECTS["water"])
+	_set_control_rect(power_need_bar_back, SURVIVAL_NEED_BAR_BACK_RECTS["power"])
+	_set_control_rect(food_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["food"])
+	_set_control_rect(water_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["water"])
+	_set_control_rect(power_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["power"])
 	cargo_slots_root.position = CARGO_SLOT_ACTIVE_POSITION
 
 	var bounded_labels: Array[Label] = [
@@ -3409,10 +3466,51 @@ func _apply_active_hud_layout() -> void:
 		scan_target_label,
 		prompt_label,
 		status_label,
+		food_need_label,
+		water_need_label,
+		power_need_label,
 	]
 	for label in bounded_labels:
 		label.autowrap_mode = TextServer.AUTOWRAP_OFF
 		label.clip_text = true
+
+func _update_instrument_bars() -> void:
+	var oxygen_ratio := 0.0
+	if dive_session.max_oxygen > 0.0:
+		oxygen_ratio = clampf(dive_session.oxygen / dive_session.max_oxygen, 0.0, 1.0)
+	_set_bar_fill_width(oxygen_bar_fill, OXYGEN_BAR_FILL_RECT, oxygen_ratio)
+
+	var depth_ratio := clampf(dive_session.current_depth / 200.0, 0.0, 1.0)
+	_set_bar_fill_width(depth_bar_fill, DEPTH_BAR_FILL_RECT, depth_ratio)
+
+func _update_survival_needs_panel(is_visible: bool) -> void:
+	var need_labels: Array[Label] = [food_need_label, water_need_label, power_need_label]
+	var need_bars: Array[ColorRect] = [
+		food_need_bar_back,
+		food_need_bar_fill,
+		water_need_bar_back,
+		water_need_bar_fill,
+		power_need_bar_back,
+		power_need_bar_fill,
+	]
+	for label in need_labels:
+		label.visible = is_visible
+	for bar in need_bars:
+		bar.visible = is_visible
+
+	if not is_visible:
+		return
+
+	food_need_label.text = "Food %d" % survival_state.food
+	water_need_label.text = "Water %d" % survival_state.water
+	power_need_label.text = "Power %d" % survival_state.power
+	_set_bar_fill_width(food_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["food"], clampf(float(survival_state.food) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
+	_set_bar_fill_width(water_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["water"], clampf(float(survival_state.water) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
+	_set_bar_fill_width(power_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["power"], clampf(float(survival_state.power) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
+
+func _set_bar_fill_width(fill: ColorRect, base_rect: Rect2, ratio: float) -> void:
+	_set_control_rect(fill, base_rect)
+	fill.offset_right = fill.offset_left + base_rect.size.x * clampf(ratio, 0.0, 1.0)
 
 func _set_control_rect(control: Control, rect: Rect2) -> void:
 	control.offset_left = rect.position.x
