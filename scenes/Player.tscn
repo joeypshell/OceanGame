@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ocean_player_scene"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player_script"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/player_diver_tiny_v1.png" id="2_research_sub"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/player_diver_swim_sheet_v1.png" id="2_research_sub"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
 radius = 9.0
@@ -28,8 +28,10 @@ polygon = PackedVector2Array(-24, -7, -56, 0, -24, 7, -38, 0)
 [node name="SubSpriteAnchor" type="Node2D" parent="VisualRoot"]
 
 [node name="SubSprite" type="Sprite2D" parent="VisualRoot/SubSpriteAnchor"]
-scale = Vector2(0.3, 0.3)
+scale = Vector2(0.22, 0.22)
 texture = ExtResource("2_research_sub")
+region_enabled = true
+region_rect = Rect2(0, 0, 362, 724)
 offset = Vector2(0, 0)
 
 [node name="TailFin" type="Polygon2D" parent="VisualRoot/SubSpriteAnchor"]

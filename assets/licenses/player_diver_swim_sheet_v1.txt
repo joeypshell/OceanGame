@@ -1,0 +1,12 @@
+Asset: player_diver_swim_sheet_v1.png
+Generated: 2026-06-28
+Tool: Codex built-in image generation, then local chroma-key removal.
+Source file: assets/source/sprites/player_diver_swim_sheet_source_v1.png
+Final file: assets/sprites/player/player_diver_swim_sheet_v1.png
+
+Prompt summary:
+Six-frame horizontal pixel-art swim-cycle sprite sheet for a compact side-view diver, based on the user's preferred reference: yellow brass-style helmet, cyan visor, dark wetsuit, small air tank, orange flippers, and small flashlight glow. Generated on a flat magenta chroma-key background and converted to transparency.
+Regenerated before commit after review feedback that swim flippers should kick one foot at a time. The final sheet uses alternating left/right flipper poses across the movement cycle rather than matching both flippers in the same pose.
+
+Usage notes:
+Frames are arranged in one horizontal row. The sheet is 2172x724, so each of the six generated cells is approximately 362x724 before trimming or runtime region setup.

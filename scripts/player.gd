@@ -10,13 +10,20 @@ var _last_move_direction := Vector2.RIGHT
 var _facing_sign := 1.0
 var _visual_motion_time := 0.0
 
+const SWIM_SHEET_FRAME_COUNT := 6
+const SWIM_SHEET_FRAME_SIZE := Vector2(362.0, 724.0)
+const SWIM_SHEET_FRAMES_PER_SECOND := 8.0
+const SWIM_SHEET_IDLE_FRAME := 0
+
 @onready var _visual_root: Node2D = get_node_or_null("VisualRoot")
 @onready var _bubble_trail: Polygon2D = get_node_or_null("VisualRoot/BubbleTrail")
 @onready var _idle_bubble: Polygon2D = get_node_or_null("VisualRoot/IdleBubble")
 @onready var _thrust_flare: Polygon2D = get_node_or_null("VisualRoot/ThrustFlare")
+@onready var _swim_sprite: Sprite2D = get_node_or_null("VisualRoot/SubSpriteAnchor/SubSprite")
 
 func _ready() -> void:
 	add_to_group("player")
+	_configure_swim_sheet()
 
 func _physics_process(delta: float) -> void:
 	if _movement_disrupt_timer > 0.0:
@@ -96,3 +103,37 @@ func _sync_movement_visuals(delta: float, is_moving: bool) -> void:
 		_thrust_flare.visible = is_moving
 		_thrust_flare.scale = Vector2(1.0 + 0.22 * pulse, 0.82 + 0.12 * pulse)
 		_thrust_flare.color = Color(0.42, 1.0, 0.92, 0.38 + 0.2 * pulse)
+
+	_sync_swim_sheet_frame(is_moving)
+
+func _configure_swim_sheet() -> void:
+	if _swim_sprite == null:
+		_swim_sprite = get_node_or_null("VisualRoot/SubSpriteAnchor/SubSprite")
+	if _swim_sprite == null:
+		return
+
+	_swim_sprite.region_enabled = true
+	_set_swim_sheet_frame(SWIM_SHEET_IDLE_FRAME)
+
+func _sync_swim_sheet_frame(is_moving: bool) -> void:
+	if _swim_sprite == null:
+		_swim_sprite = get_node_or_null("VisualRoot/SubSpriteAnchor/SubSprite")
+	if _swim_sprite == null:
+		return
+
+	if not is_moving:
+		_set_swim_sheet_frame(SWIM_SHEET_IDLE_FRAME)
+		return
+
+	var frame := int(floor(_visual_motion_time * SWIM_SHEET_FRAMES_PER_SECOND)) % SWIM_SHEET_FRAME_COUNT
+	_set_swim_sheet_frame(frame)
+
+func _set_swim_sheet_frame(frame: int) -> void:
+	if _swim_sprite == null:
+		return
+
+	var wrapped_frame := posmod(frame, SWIM_SHEET_FRAME_COUNT)
+	_swim_sprite.region_rect = Rect2(
+		Vector2(SWIM_SHEET_FRAME_SIZE.x * wrapped_frame, 0.0),
+		SWIM_SHEET_FRAME_SIZE
+	)
