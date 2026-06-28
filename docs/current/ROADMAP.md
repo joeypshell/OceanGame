@@ -32,8 +32,8 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
-2. #678: compare against the visual reference after the slice has real wall/ledge modules.
+1. #672-#677: continue visual direction work only where it supports the slice or the larger playable shell.
+2. #678: compare against the visual reference after the slice has real wall/ledge modules and lighting.
 3. Resume route expansion only after the first room reads as a playable place rather than a diagram.
 4. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
@@ -58,6 +58,7 @@ Primary planning docs:
 - #684/#670 replaced the active route/status text stack with one compact `SURVIVAL ROUTE` objective card, contextual scan card behavior, and reserved prompt/status rows.
 - #682 added `Water Filter I`, a first starter-material upgrade that spends `Driftwood` and `Quartz Glass` for an immediate `+1 Water` reserve so shallow resource pockets feed the Emergency Week loop.
 - #685 added a cheap targeted Area 01 Playwright capture workflow for `area01-surface-entry`, `area01-left-shelf-cave`, `area01-right-shelf-pocket`, and `area01-central-drop`.
+- #671 added a reusable Area 01 ocean lighting stack with brighter surface wash, stronger blue depth haze, subtle play-space light, caustic ribbons, and edge/lower vignettes so the first room reads less flat without changing gameplay.
 
 ## Current Readability Rules
 

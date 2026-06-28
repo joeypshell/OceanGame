@@ -3314,6 +3314,16 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/BackgroundFar/FarLeftReefMass",
 		"Area01ArtSlice/BackgroundFar/FarRightReefMass",
 		"Area01ArtSlice/BackgroundFar/FarCenterDepthPocket",
+		"Area01ArtSlice/OceanLightingStack",
+		"Area01ArtSlice/OceanLightingStack/SurfaceGlow",
+		"Area01ArtSlice/OceanLightingStack/ShallowBlueWash",
+		"Area01ArtSlice/OceanLightingStack/MidDepthCyanWash",
+		"Area01ArtSlice/OceanLightingStack/DeepBlueHaze",
+		"Area01ArtSlice/OceanLightingStack/CenterPlayLight",
+		"Area01ArtSlice/OceanLightingStack/SunShaftBroad",
+		"Area01ArtSlice/OceanLightingStack/CausticRibbonA",
+		"Area01ArtSlice/OceanLightingStack/LeftEdgeVignette",
+		"Area01ArtSlice/OceanLightingStack/RightEdgeVignette",
 		"Area01ArtSlice/BackgroundMid",
 		"Area01ArtSlice/BackgroundMid/LeftMidWallShadow",
 		"Area01ArtSlice/BackgroundMid/RightMidWallShadow",
@@ -3355,6 +3365,9 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	var right_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/RightSolidWall") as Polygon2D
 	var shallow_left_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/ShallowLeftWall") as Polygon2D
 	var far_center := main.get_node("Area01ArtSlice/BackgroundFar/FarCenterDepthPocket") as Polygon2D
+	var surface_glow := main.get_node("Area01ArtSlice/OceanLightingStack/SurfaceGlow") as Polygon2D
+	var deep_haze := main.get_node("Area01ArtSlice/OceanLightingStack/DeepBlueHaze") as Polygon2D
+	var center_play_light := main.get_node("Area01ArtSlice/OceanLightingStack/CenterPlayLight") as Polygon2D
 	var cargo_slot := main.get_node("Area01ArtSlice/GameplayObjects/CargoPocketGlow") as Polygon2D
 	var background_study := main.get_node("ShallowMidwaterBackgroundStudy") as Sprite2D
 	var route_choice_band := main.get_node("RouteChoiceBand") as Node2D
@@ -3362,6 +3375,9 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	_expect(right_wall.color.a >= 0.9, "primary art-slice walls should read as solid terrain instead of translucent route overlays")
 	_expect(shallow_left_wall.color.a >= 0.9, "shallow art-slice walls should be visible in the early-dive camera")
 	_expect(far_center.color.a < left_wall.color.a, "background pocket should sit behind solid terrain in opacity hierarchy")
+	_expect(surface_glow.color.b > deep_haze.color.b, "ocean lighting stack should grade from brighter surface water into deeper blue haze")
+	_expect(deep_haze.color.a > surface_glow.color.a, "deep haze should become more present than the surface glow at depth")
+	_expect(center_play_light.color.a <= 0.2, "center play light should support focal readability without becoming a solid overlay")
 	_expect(cargo_slot.color.a < left_wall.color.a, "gameplay object slots should not look like solid terrain")
 	_expect(background_study.modulate.a <= 0.24, "old broad background study should sit behind the first real art slice")
 	_expect(not route_choice_band.visible, "route-choice review band should stay hidden by default so the first art slice reads as a place, not a diagram")

@@ -29,6 +29,7 @@ This layer stack is the contract for replacing placeholder polygons with reusabl
 - The active HUD now frames the room with one compact `SURVIVAL ROUTE` objective card, contextual scan card visibility, and clipped prompt/status rows instead of paragraph-like route/status blocks.
 - `Water Filter I` now spends `Driftwood x1` and `Quartz Glass x1` for an immediate `+1 Water` reserve, tying the first starter material pockets to Emergency Week survival instead of leaving them as decorative cargo.
 - A targeted Area 01 shell capture suite now stages `area01-surface-entry`, `area01-left-shelf-cave`, `area01-right-shelf-pocket`, and `area01-central-drop` through web debug commands and Playwright screenshots.
+- A reusable `OceanLightingStack` now grades the room from brighter surface water into deeper blue haze, adds a subtle center play-space light, and uses caustic/vignette overlays to make the dive feel richer without adding route content or gameplay state.
 
 ## Acceptance
 
@@ -44,7 +45,7 @@ At normal 1280x720 play scale:
 ## Next Work
 
 1. Add one passive scan target or existing scan target placement inside the slice only if it improves the room's teachable focus.
-2. Continue visual direction issues only where they make this first room easier to parse.
+2. Continue visual direction issues only where they make this first room easier to parse, especially terrain/module clarity and reference-matched HUD/world composition.
 3. Keep route expansion paused until the slice reads like a playable room rather than a diagram.
 
 ## Capture Workflow
