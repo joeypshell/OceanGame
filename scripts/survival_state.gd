@@ -91,11 +91,11 @@ func resolve_night() -> Array[String]:
 	food -= 1
 	water -= 1
 	power -= 1
-	lines.append("Night consumed Food, Water, and Power.")
+	lines.append("Night cost paid: Food -1, Water -1, Power -1.")
 
 	if _has_collapse():
 		chapter_failed = true
-		lines.append("Collapse: a survival need fell below 0. Restart Emergency Week; major knowledge and upgrades stay.")
+		lines.append("Collapse: a base need fell below 0. Restart Emergency Week; major knowledge and upgrades stay.")
 		return lines
 
 	if current_day >= max_days:
@@ -105,7 +105,7 @@ func resolve_night() -> Array[String]:
 
 	current_day += 1
 	if oxygen_penalty() > 0.0:
-		lines.append("Warning: a need hit 0. Tomorrow starts with reduced oxygen.")
+		lines.append("Tomorrow oxygen penalty: -%d max oxygen because a need is empty." % ceili(oxygen_penalty()))
 	lines.append("Day %d begins tomorrow." % current_day)
 	return lines
 
@@ -122,12 +122,18 @@ func oxygen_penalty() -> float:
 func status_line() -> String:
 	var suffix := ""
 	if chapter_failed:
-		suffix = " | COLLAPSE"
+		suffix = " | COLLAPSED"
 	elif chapter_complete:
 		suffix = " | STABILIZED"
 	elif oxygen_penalty() > 0.0:
-		suffix = " | O2 penalty"
-	return "Survival F%d W%d P%d%s" % [food, water, power, suffix]
+		suffix = " | oxygen penalty tomorrow"
+	return "Base needs: Food %d, Water %d, Power %d%s" % [food, water, power, suffix]
+
+func nightly_pressure_line() -> String:
+	return "Tonight: Food -1, Water -1, Power -1."
+
+func supply_cache_hint_line() -> String:
+	return "Supply cache fills the lowest need, but uses cargo space."
 
 func to_save_data() -> Dictionary:
 	return {

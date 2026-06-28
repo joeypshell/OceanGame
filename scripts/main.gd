@@ -3417,7 +3417,9 @@ func _format_ready_panel_summary() -> String:
 	var lines: Array[String] = [
 		"Start with %d oxygen." % ceili(dive_session.max_oxygen),
 		survival_state.status_line(),
-		"Collect survival supplies, cargo, or knowledge, then extract.",
+		survival_state.nightly_pressure_line(),
+		survival_state.supply_cache_hint_line(),
+		"Dive for supplies, cargo, or knowledge, then extract.",
 		_format_condition_briefing(),
 		ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory()),
 		"%s begins." % _action_label("interact"),

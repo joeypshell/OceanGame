@@ -217,13 +217,19 @@ func _test_survival_night_consumption() -> void:
 	_expect(survival.food == 2, "survival night should consume one food")
 	_expect(survival.water == 2, "survival night should consume one water")
 	_expect(survival.power == 2, "survival night should consume one power")
-	_expect(day_one_report[0].contains("Night consumed"), "survival report should explain night consumption")
+	_expect(day_one_report[0].contains("Night cost paid"), "survival report should explain night consumption")
+	_expect(day_one_report[0].contains("Food -1") and day_one_report[0].contains("Water -1") and day_one_report[0].contains("Power -1"), "survival report should name each consumed need")
+	_expect(survival.status_line().contains("Base needs: Food 2, Water 2, Power 2"), "survival status should use readable Food/Water/Power names")
+	_expect(not survival.status_line().contains("F2 W2 P2"), "survival status should not use cryptic need abbreviations")
+	_expect(survival.nightly_pressure_line().contains("Tonight"), "ready copy helper should explain nightly pressure")
+	_expect(survival.supply_cache_hint_line().contains("cargo space"), "ready copy helper should explain the supply-cache cargo tradeoff")
 
 	survival.resolve_night()
 	var warning_report := survival.resolve_night()
 	_expect(survival.current_day == 4, "survival should keep advancing while needs are at zero")
 	_expect(survival.oxygen_penalty() == 12.0, "zero food, water, and power should create a staged oxygen penalty")
-	_expect("\n".join(warning_report).contains("reduced oxygen"), "zero-need night should warn about reduced oxygen")
+	_expect("\n".join(warning_report).contains("Tomorrow oxygen penalty"), "zero-need night should warn about reduced oxygen")
+	_expect("\n".join(warning_report).contains("-12 max oxygen"), "zero-need night should quantify the next-day oxygen penalty")
 
 func _test_survival_collapse_and_reset() -> void:
 	var survival := SurvivalStateScript.new()
@@ -4859,6 +4865,10 @@ func _test_surface_summary_tabs() -> void:
 
 	var ready_summary := main._format_ready_panel_summary()
 	_expect(ready_summary.contains("E/Enter begins."), "ready panel should keep the start action visible")
+	_expect(ready_summary.contains("Base needs: Food"), "ready panel should explain survival needs with readable names")
+	_expect(ready_summary.contains("Tonight: Food -1, Water -1, Power -1."), "ready panel should explain nightly survival pressure")
+	_expect(ready_summary.contains("Supply cache fills the lowest need"), "ready panel should explain why the shallow cache matters")
+	_expect(not ready_summary.contains("Survival F"), "ready panel should not use cryptic survival abbreviations")
 	_expect(not ready_summary.contains("F9"), "ready panel should hide prototype reset copy when debug telemetry is off")
 	main.show_debug_telemetry = true
 	_expect(main._format_ready_panel_summary().contains("F9 resets prototype save"), "ready panel may expose reset copy when debug telemetry is on")
