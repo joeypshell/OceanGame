@@ -2527,6 +2527,8 @@ func _format_repeat_scan_effect_text(target: Node) -> String:
 		return " Glassfin Swarm spacing observation refreshed."
 	elif _scan_target_id(target) == "mirrorfin_drift":
 		return " Mirrorfin reflection observation refreshed."
+	elif _scan_target_id(target) == "glass_ray_drifter":
+		return " Glass Ray slackwater observation refreshed."
 	elif _scan_target_id(target) == "thermal_vent":
 		return " Warm clue refreshed; glow route optional."
 	elif _scan_target_id(target) == "shell_reef_shelf":
@@ -2618,6 +2620,8 @@ func _format_first_scan_guidance(target: Node) -> String:
 			return " Observe the spacing lane, pass around the swarm, then return through Hollow Reef."
 		"mirrorfin_drift":
 			return " Observe the reflection break, pass after the shimmer, then return through Wide Reef."
+		"glass_ray_drifter":
+			return " Observe its turn, cross on slackwater if oxygen allows, or bank cargo."
 		"thermal_vent":
 			return " Warm current marks optional glow; bank Pressure Seal clue."
 		"shell_reef_shelf":
@@ -4529,6 +4533,8 @@ func _format_discovery_name(discovery_id: String) -> String:
 			return "Glassfin Swarm"
 		"mirrorfin_drift":
 			return "Mirrorfin Drift"
+		"glass_ray_drifter":
+			return "Glass Ray Drifter"
 		"lantern_fry":
 			return "Lantern Fry"
 		_:
@@ -4752,6 +4758,8 @@ func _format_condition_briefing() -> String:
 func _format_route_choice_callout() -> String:
 	if run_outer_shelf_survey_recovered:
 		return "Route choice: Outer Shelf survey marked Glass Rim Cut as a timing branch."
+	if _run_has_glass_rim_observation():
+		return "Route choice: observed Glass Ray slackwater timing near Glass Rim."
 	if run_tideglass_sample_recovered:
 		return "Route choice: Mirror Kelp Pass reading marked a deeper kelp seal."
 	if run_completed_scans.has("mirrorfin_drift"):
@@ -4800,7 +4808,7 @@ func _format_route_choice_callout() -> String:
 	return "Route choice: banked a cautious resource run."
 
 func _format_recent_route_memory() -> String:
-	if run_outer_shelf_survey_recovered:
+	if run_outer_shelf_survey_recovered or _run_has_glass_rim_observation():
 		return "Outer Shelf"
 	if _run_has_mirror_kelp_evidence():
 		return "Mirror Kelp Pass"
@@ -4944,6 +4952,8 @@ func _format_sealed_shelf_hatch_readiness_callout() -> String:
 func _format_region_memory_callout() -> String:
 	if run_outer_shelf_survey_recovered:
 		return "Remembered place: Outer Shelf - wider water beyond Mirror Kelp; return through Mirror/Wide/Hollow."
+	if _run_has_glass_rim_observation():
+		return "Remembered place: Outer Shelf - Glass Ray timing marks the Glass Rim slackwater; return through Mirror/Wide/Hollow."
 	if _run_has_mirror_kelp_evidence():
 		return "Remembered place: Mirror Kelp Pass - reflective branch beyond Wide Reef; return through Hollow Reef."
 	if run_salvage_manifest_recovered:
@@ -4974,6 +4984,9 @@ func _format_region_memory_callout() -> String:
 func _run_has_mirror_kelp_evidence() -> bool:
 	return run_tideglass_sample_recovered or run_completed_scans.has("mirrorfin_drift")
 
+func _run_has_glass_rim_observation() -> bool:
+	return run_completed_scans.has("glass_ray_drifter")
+
 func _format_discovery_memory_callout() -> String:
 	if run_completed_scans.has("wreck_signal_cache"):
 		return "\nDiscovery remembered: Wreck Signal Cache - deeper echoes may be readable later."
@@ -4985,6 +4998,8 @@ func _format_discovery_memory_callout() -> String:
 		return "\nDiscovery remembered: Glassfin Swarm - spacing can be read without fighting."
 	if run_completed_scans.has("mirrorfin_drift"):
 		return "\nDiscovery remembered: Mirrorfin Drift - reflection breaks can be read without fighting."
+	if run_completed_scans.has("glass_ray_drifter"):
+		return "\nDiscovery remembered: Glass Ray Drifter - Glass Rim slackwater can be read without fighting."
 	if run_completed_scans.has("lantern_ray"):
 		return "\nDiscovery remembered: Lantern Ray - lower-route movement can be observed without fighting."
 	if run_completed_scans.has("thermal_vent"):

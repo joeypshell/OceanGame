@@ -1487,13 +1487,18 @@ func _test_glass_ray_drifter_passive_route_read() -> void:
 	var description: String = String(ray.get("description"))
 	var gameplay_fact: String = String(ray.get("gameplay_fact"))
 	_expect(description.contains("Glass Rim Cut"), "Glass Ray description should anchor to the remembered branch")
-	_expect(gameplay_fact.contains("slackwater window"), "Glass Ray gameplay fact should teach the timing read")
+	_expect(gameplay_fact.contains("Glass Rim slackwater window"), "Glass Ray gameplay fact should teach the timing read")
 	_expect(gameplay_fact.contains("wait"), "Glass Ray gameplay fact should encourage observation over forcing the route")
+	_expect(gameplay_fact.contains("cross after the turn"), "Glass Ray gameplay fact should explain the local traversal timing")
+	_expect(gameplay_fact.contains("bank cargo"), "Glass Ray gameplay fact should preserve the push-or-return choice")
+	_expect(not gameplay_fact.to_lower().contains("coordinate") and not gameplay_fact.to_lower().contains("checklist"), "Glass Ray gameplay fact should not read like exact locator or checklist copy")
 	_expect_no_monster_combat_language(description, "Glass Ray description")
 	_expect_no_monster_combat_language(gameplay_fact, "Glass Ray gameplay fact")
-	_expect(wake.color.a <= 0.14, "Glass Ray route wake should stay subtle and not read as a reward")
+	_expect(wake.color.a <= 0.14 and wake.color.b > wake.color.r, "Glass Ray route wake should stay subtle and not read as a reward")
 	_expect(body.color.a <= 0.55, "Glass Ray should read as a passive translucent creature")
 	_expect(scan_marker.color.a < 0.3, "Glass Ray scan marker should stay quiet while idle")
+	_expect(Vector2(ray.get("move_start")).x < Vector2(ray.get("move_end")).x, "Glass Ray should drift across the Glass Rim route read instead of bobbing in place")
+	_expect(Vector2(ray.get("move_start")).distance_to(Vector2(ray.get("move_end"))) >= 200.0, "Glass Ray drift should be long enough to imply a timing loop")
 	_expect(ray.find_child("HealthBar", true, false) == null, "Glass Ray should not add combat health UI")
 	_expect(ray.find_child("LootTable", true, false) == null, "Glass Ray should not add loot tables")
 	_expect(ray.find_child("HarvestArea", true, false) == null, "Glass Ray should not add harvesting")
@@ -1514,6 +1519,48 @@ func _test_glass_ray_drifter_passive_route_read() -> void:
 	_expect(main.progression_state.to_save_data() == save_before, "unscanned Glass Ray should not mutate progression")
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "unscanned Glass Ray should not drain oxygen")
 	_expect(main.dive_session.current_cargo == cargo_before, "unscanned Glass Ray should not mutate cargo")
+
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_in_base = false
+	var starting_oxygen: float = main.dive_session.oxygen
+	var discovery_id: String = main.call("_scan_target_id", ray)
+	var display_name: String = main.call("_scan_target_display_name", ray)
+	main.dive_session.drain_oxygen(main.scan_oxygen_cost)
+	main.progression_state.add_discovery(
+		discovery_id,
+		display_name,
+		main.call("_scan_target_description", ray),
+		main.call("_scan_target_gameplay_fact", ray)
+	)
+	main.run_completed_scans.append(discovery_id)
+	var first_scan_status: String = main.call("_compact_dive_status", "Scanned %s.%s" % [
+		display_name,
+		main.call("_format_repeat_scan_effect_text", ray) + main.call("_format_first_scan_guidance", ray)
+	])
+	var first_scan_guidance: String = main.call("_format_first_scan_guidance", ray)
+	_expect(main.progression_state.has_discovery("glass_ray_drifter"), "first Glass Ray scan should record a normal durable discovery")
+	_expect(main.run_completed_scans == ["glass_ray_drifter"], "first Glass Ray scan should count as current-run observation evidence")
+	_expect(is_equal_approx(main.dive_session.oxygen, starting_oxygen - main.scan_oxygen_cost), "first Glass Ray scan should use the normal scan oxygen cost")
+	_expect(first_scan_status.contains("Scanned Glass Ray Drifter"), "first Glass Ray scan status should name the creature")
+	_expect(first_scan_status.contains("slackwater observation refreshed"), "first Glass Ray scan status should refresh the route lesson")
+	_expect(first_scan_guidance.contains("cross on slackwater"), "first Glass Ray scan guidance should teach the Glass Rim timing decision")
+	_expect(first_scan_guidance.contains("bank cargo"), "first Glass Ray scan guidance should preserve the return option")
+	_expect_no_monster_combat_language(first_scan_status, "Glass Ray first scan status")
+	_expect(not first_scan_status.to_lower().contains("field guide"), "Glass Ray scan should not imply field-guide UI")
+	_expect(not first_scan_status.to_lower().contains("checklist"), "Glass Ray scan should not imply checklist UI")
+	_expect(main._format_discovery_memory_callout().contains("Glass Ray Drifter"), "Glass Ray scan should produce compact discovery memory")
+	_expect(main._format_discovery_memory_callout().contains("without fighting"), "Glass Ray discovery memory should frame observation as non-combat")
+	_expect(main._format_route_choice_callout().contains("Glass Ray slackwater timing"), "Glass Ray scan should produce a compact Glass Rim route-choice memory")
+	_expect(main._format_region_memory_callout().contains("Outer Shelf"), "Glass Ray scan should remember the broad Outer Shelf place")
+	_expect(main._format_recent_route_memory() == "Outer Shelf", "Glass Ray scan should support current-run Outer Shelf route memory")
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(saved.get("scan_discoveries", {}).has("glass_ray_drifter"), "Glass Ray discovery should persist through normal scan discovery storage")
+	_expect(saved.get("banked_resources", {}) == save_before.get("banked_resources", {}), "Glass Ray scan should not mutate resources")
+	_expect(saved.get("purchased_upgrades", {}) == save_before.get("purchased_upgrades", {}), "Glass Ray scan should not mutate upgrades")
+	_expect(not saved.has("glass_ray_objective"), "Glass Ray scan should not create durable objective-chain state")
+	_expect(not saved.has("monster_parts"), "Glass Ray scan should not add monster-part economy state")
+	_expect(not saved.has("creature_inventory"), "Glass Ray scan should not add creature inventory state")
 	main.queue_free()
 
 func _test_wide_chamber_salvage_pocket_entrance() -> void:
