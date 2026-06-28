@@ -3314,6 +3314,14 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/BackgroundFar/FarLeftReefMass",
 		"Area01ArtSlice/BackgroundFar/FarRightReefMass",
 		"Area01ArtSlice/BackgroundFar/FarCenterDepthPocket",
+		"Area01ArtSlice/OceanParallaxBackground",
+		"Area01ArtSlice/OceanParallaxBackground/FarOpenWaterPocket",
+		"Area01ArtSlice/OceanParallaxBackground/FarLeftReefWall",
+		"Area01ArtSlice/OceanParallaxBackground/FarRightReefWall",
+		"Area01ArtSlice/OceanParallaxBackground/MidLeftRidge",
+		"Area01ArtSlice/OceanParallaxBackground/MidCenterBackPlate",
+		"Area01ArtSlice/OceanParallaxBackground/MidRightRidge",
+		"Area01ArtSlice/OceanParallaxBackground/DeepCenterSilhouette",
 		"Area01ArtSlice/OceanLightingStack",
 		"Area01ArtSlice/OceanLightingStack/SurfaceGlow",
 		"Area01ArtSlice/OceanLightingStack/ShallowBlueWash",
@@ -3365,6 +3373,9 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	var right_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/RightSolidWall") as Polygon2D
 	var shallow_left_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/ShallowLeftWall") as Polygon2D
 	var far_center := main.get_node("Area01ArtSlice/BackgroundFar/FarCenterDepthPocket") as Polygon2D
+	var far_open_water := main.get_node("Area01ArtSlice/OceanParallaxBackground/FarOpenWaterPocket") as Polygon2D
+	var mid_center_plate := main.get_node("Area01ArtSlice/OceanParallaxBackground/MidCenterBackPlate") as Polygon2D
+	var deep_center_silhouette := main.get_node("Area01ArtSlice/OceanParallaxBackground/DeepCenterSilhouette") as Polygon2D
 	var surface_glow := main.get_node("Area01ArtSlice/OceanLightingStack/SurfaceGlow") as Polygon2D
 	var deep_haze := main.get_node("Area01ArtSlice/OceanLightingStack/DeepBlueHaze") as Polygon2D
 	var center_play_light := main.get_node("Area01ArtSlice/OceanLightingStack/CenterPlayLight") as Polygon2D
@@ -3375,6 +3386,9 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	_expect(right_wall.color.a >= 0.9, "primary art-slice walls should read as solid terrain instead of translucent route overlays")
 	_expect(shallow_left_wall.color.a >= 0.9, "shallow art-slice walls should be visible in the early-dive camera")
 	_expect(far_center.color.a < left_wall.color.a, "background pocket should sit behind solid terrain in opacity hierarchy")
+	_expect(far_open_water.color.a < left_wall.color.a, "parallax open-water pockets should stay quieter than solid terrain")
+	_expect(mid_center_plate.color.a > far_open_water.color.a, "mid parallax plates should be slightly stronger than far open-water pockets")
+	_expect(deep_center_silhouette.color.a < left_wall.color.a, "deep parallax silhouettes should add depth without competing with walls")
 	_expect(surface_glow.color.b > deep_haze.color.b, "ocean lighting stack should grade from brighter surface water into deeper blue haze")
 	_expect(deep_haze.color.a > surface_glow.color.a, "deep haze should become more present than the surface glow at depth")
 	_expect(center_play_light.color.a <= 0.2, "center play light should support focal readability without becoming a solid overlay")

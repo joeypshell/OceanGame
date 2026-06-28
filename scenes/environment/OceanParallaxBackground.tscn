@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://ocean_parallax_background"]
+
+[node name="OceanParallaxBackground" type="Node2D"]
+
+[node name="FarOpenWaterPocket" type="Polygon2D" parent="."]
+color = Color(0.008, 0.12, 0.19, 0.26)
+polygon = PackedVector2Array(260, 210, 692, 150, 1118, 236, 1298, 548, 1162, 916, 720, 1048, 342, 908, 166, 562)
+
+[node name="FarLeftReefWall" type="Polygon2D" parent="."]
+color = Color(0.002, 0.035, 0.07, 0.42)
+polygon = PackedVector2Array(-240, 140, 118, 112, 282, 306, 244, 510, 354, 746, 252, 1010, 358, 1314, 194, 1720, -240, 1720)
+
+[node name="FarLeftShelfSteps" type="Polygon2D" parent="."]
+color = Color(0.018, 0.15, 0.21, 0.24)
+polygon = PackedVector2Array(34, 392, 300, 352, 458, 422, 398, 480, 148, 506, 28, 470)
+
+[node name="FarLeftLowerSteps" type="Polygon2D" parent="."]
+color = Color(0.015, 0.13, 0.19, 0.22)
+polygon = PackedVector2Array(88, 830, 382, 780, 556, 846, 470, 924, 172, 968, 40, 918)
+
+[node name="FarRightReefWall" type="Polygon2D" parent="."]
+color = Color(0.001, 0.032, 0.066, 0.43)
+polygon = PackedVector2Array(1228, 122, 1660, 116, 1660, 1720, 1178, 1720, 1298, 1330, 1168, 1002, 1286, 744, 1192, 468)
+
+[node name="FarRightShelfSteps" type="Polygon2D" parent="."]
+color = Color(0.017, 0.14, 0.2, 0.24)
+polygon = PackedVector2Array(936, 454, 1204, 392, 1438, 460, 1528, 552, 1300, 598, 1010, 552)
+
+[node name="FarRightLowerSteps" type="Polygon2D" parent="."]
+color = Color(0.014, 0.12, 0.18, 0.22)
+polygon = PackedVector2Array(918, 956, 1164, 896, 1482, 972, 1548, 1076, 1260, 1132, 984, 1056)
+
+[node name="MidLeftRidge" type="Polygon2D" parent="."]
+color = Color(0.01, 0.09, 0.135, 0.34)
+polygon = PackedVector2Array(-80, 610, 184, 544, 388, 600, 478, 728, 344, 830, 82, 826, -80, 762)
+
+[node name="MidCenterBackPlate" type="Polygon2D" parent="."]
+color = Color(0.012, 0.1, 0.15, 0.3)
+polygon = PackedVector2Array(442, 600, 786, 514, 1084, 626, 1134, 828, 872, 962, 512, 888)
+
+[node name="MidRightRidge" type="Polygon2D" parent="."]
+color = Color(0.009, 0.082, 0.128, 0.34)
+polygon = PackedVector2Array(918, 660, 1254, 576, 1544, 644, 1622, 786, 1424, 930, 1076, 874)
+
+[node name="DeepCenterSilhouette" type="Polygon2D" parent="."]
+color = Color(0.001, 0.026, 0.055, 0.32)
+polygon = PackedVector2Array(292, 1180, 628, 1084, 986, 1148, 1306, 1078, 1540, 1212, 1398, 1480, 908, 1588, 418, 1490)
+
+[node name="SoftSurfaceCausticBack" type="Polygon2D" parent="."]
+color = Color(0.36, 0.82, 0.92, 0.055)
+polygon = PackedVector2Array(8, 300, 312, 258, 678, 292, 1030, 250, 1378, 286, 1440, 318, 1010, 336, 672, 316, 316, 344, 28, 338)
+

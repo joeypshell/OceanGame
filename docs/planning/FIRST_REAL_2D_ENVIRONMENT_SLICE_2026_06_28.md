@@ -9,6 +9,7 @@ OceanGame needs one controlled art-playability room before more route/content ex
 Create and maintain an `Area01ArtSlice` hierarchy in the main scene:
 
 - `BackgroundFar`
+- `OceanParallaxBackground`
 - `BackgroundMid`
 - `WaterLightShafts`
 - `TerrainBackWalls`
@@ -30,6 +31,7 @@ This layer stack is the contract for replacing placeholder polygons with reusabl
 - `Water Filter I` now spends `Driftwood x1` and `Quartz Glass x1` for an immediate `+1 Water` reserve, tying the first starter material pockets to Emergency Week survival instead of leaving them as decorative cargo.
 - A targeted Area 01 shell capture suite now stages `area01-surface-entry`, `area01-left-shelf-cave`, `area01-right-shelf-pocket`, and `area01-central-drop` through web debug commands and Playwright screenshots.
 - A reusable `OceanLightingStack` now grades the room from brighter surface water into deeper blue haze, adds a subtle center play-space light, and uses caustic/vignette overlays to make the dive feel richer without adding route content or gameplay state.
+- A reusable `OceanParallaxBackground` now places distant reef walls, stepped shelf silhouettes, open-water pockets, mid-depth plates, and a deep center silhouette behind the lighting stack so the room reads less like flat background bands.
 
 ## Acceptance
 

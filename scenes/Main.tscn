@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=48 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -36,6 +36,7 @@
 [ext_resource type="PackedScene" path="res://scenes/environment/Area01ReefWallKit.tscn" id="34_area01_reef_wall_kit"]
 [ext_resource type="PackedScene" path="res://scenes/environment/Area01ResourcePocketKit.tscn" id="35_area01_resource_pocket_kit"]
 [ext_resource type="PackedScene" path="res://scenes/environment/OceanLightingStack.tscn" id="36_ocean_lighting_stack"]
+[ext_resource type="PackedScene" path="res://scenes/environment/OceanParallaxBackground.tscn" id="37_ocean_parallax_background"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -421,6 +422,8 @@ polygon = PackedVector2Array(1044, 248, 1464, 198, 1696, 394, 1612, 866, 1748, 1
 [node name="FarCenterDepthPocket" type="Polygon2D" parent="Area01ArtSlice/BackgroundFar"]
 color = Color(0.016, 0.14, 0.22, 0.36)
 polygon = PackedVector2Array(388, 336, 760, 276, 1048, 392, 970, 664, 776, 806, 506, 710)
+
+[node name="OceanParallaxBackground" parent="Area01ArtSlice" instance=ExtResource("37_ocean_parallax_background")]
 
 [node name="OceanLightingStack" parent="Area01ArtSlice" instance=ExtResource("36_ocean_lighting_stack")]
 
