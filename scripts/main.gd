@@ -72,6 +72,7 @@ const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(994.0, 16.0), Vector2(270.0, 13
 const DIVE_INFO_RECT := Rect2(Vector2(16.0, 196.0), Vector2(340.0, 126.0))
 const SCAN_CARD_RECT := Rect2(Vector2(930.0, 220.0), Vector2(300.0, 132.0))
 const TOOL_BELT_PANEL_RECT := Rect2(Vector2(440.0, 628.0), Vector2(400.0, 76.0))
+const MINIMAP_PANEL_RECT := Rect2(Vector2(1032.0, 530.0), Vector2(210.0, 164.0))
 const OXYGEN_WARNING_RECT := Rect2(Vector2(16.0, 456.0), Vector2(300.0, 68.0))
 const ACTIVE_HUD_CONTENT_LEFT := 28.0
 const ACTIVE_HUD_CONTENT_RIGHT := 720.0
@@ -97,15 +98,22 @@ const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 106.0), Vector2(272.0, 8.0))
 const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 106.0), Vector2(272.0, 8.0))
 const CARGO_SLOT_ACTIVE_POSITION := Vector2(600.0, 50.0)
 const SURVIVAL_NEED_LABEL_RECTS := {
-	"food": Rect2(Vector2(1040.0, 28.0), Vector2(190.0, 22.0)),
-	"water": Rect2(Vector2(1040.0, 68.0), Vector2(190.0, 22.0)),
-	"power": Rect2(Vector2(1040.0, 108.0), Vector2(190.0, 22.0)),
+	"food": Rect2(Vector2(1066.0, 28.0), Vector2(164.0, 22.0)),
+	"water": Rect2(Vector2(1066.0, 68.0), Vector2(164.0, 22.0)),
+	"power": Rect2(Vector2(1066.0, 108.0), Vector2(164.0, 22.0)),
 }
 const SURVIVAL_NEED_BAR_BACK_RECTS := {
-	"food": Rect2(Vector2(1040.0, 52.0), Vector2(196.0, 8.0)),
-	"water": Rect2(Vector2(1040.0, 92.0), Vector2(196.0, 8.0)),
-	"power": Rect2(Vector2(1040.0, 132.0), Vector2(196.0, 8.0)),
+	"food": Rect2(Vector2(1066.0, 52.0), Vector2(170.0, 8.0)),
+	"water": Rect2(Vector2(1066.0, 92.0), Vector2(170.0, 8.0)),
+	"power": Rect2(Vector2(1066.0, 132.0), Vector2(170.0, 8.0)),
 }
+const DEPTH_RAIL_LINE_RECT := Rect2(Vector2(28.0, 348.0), Vector2(2.0, 248.0))
+const DEPTH_RAIL_LABEL_RECTS := {
+	"0": Rect2(Vector2(16.0, 326.0), Vector2(48.0, 18.0)),
+	"50": Rect2(Vector2(16.0, 448.0), Vector2(48.0, 18.0)),
+	"100": Rect2(Vector2(16.0, 572.0), Vector2(58.0, 18.0)),
+}
+const DEPTH_RAIL_MAX_DISPLAY_DEPTH := 120.0
 const DIVE_STATUS_MAX_CHARS := 72
 const SURVIVAL_NEED_BAR_DISPLAY_MAX := 5.0
 const TOOL_BELT_TOOL_IDS := ["scanner", "burst", "cutter", "decoy", "reserve"]
@@ -148,6 +156,8 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var active_stats_panel: Panel = $HUD/ActiveStatsPanel
 @onready var cargo_panel: Panel = $HUD/CargoPanel
 @onready var survival_needs_panel: Panel = $HUD/SurvivalNeedsPanel
+@onready var oxygen_icon: Polygon2D = $HUD/OxygenIcon
+@onready var depth_icon: Polygon2D = $HUD/DepthIcon
 @onready var oxygen_label: Label = $HUD/Oxygen
 @onready var oxygen_bar_back: ColorRect = $HUD/OxygenBarBack
 @onready var oxygen_bar_fill: ColorRect = $HUD/OxygenBarFill
@@ -179,9 +189,11 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var scan_card_title_label: Label = $HUD/ScanCardTitle
 @onready var scan_card_meta_label: Label = $HUD/ScanCardMeta
 @onready var scan_card_prompt_label: Label = $HUD/ScanCardPrompt
+@onready var scan_reticle_root: Node2D = $HUD/ScanReticleRoot
 @onready var dive_info_panel: Panel = $HUD/DiveInfoPanel
 @onready var oxygen_warning_panel: Panel = $HUD/OxygenWarningPanel
 @onready var oxygen_warning_label: Label = $HUD/OxygenWarningPanel/OxygenWarning
+@onready var oxygen_warning_icon: Polygon2D = $HUD/OxygenWarningPanel/OxygenWarningIcon
 @onready var tool_belt_panel: Panel = $HUD/ToolBeltPanel
 @onready var tool_slot_nodes: Array[ColorRect] = [
 	$HUD/ToolBeltPanel/ToolSlot1,
@@ -207,12 +219,25 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var food_need_label: Label = $HUD/FoodNeed
 @onready var water_need_label: Label = $HUD/WaterNeed
 @onready var power_need_label: Label = $HUD/PowerNeed
+@onready var food_need_icon: Polygon2D = $HUD/FoodNeedIcon
+@onready var water_need_icon: Polygon2D = $HUD/WaterNeedIcon
+@onready var power_need_icon: Polygon2D = $HUD/PowerNeedIcon
 @onready var food_need_bar_back: ColorRect = $HUD/FoodNeedBarBack
 @onready var food_need_bar_fill: ColorRect = $HUD/FoodNeedBarFill
 @onready var water_need_bar_back: ColorRect = $HUD/WaterNeedBarBack
 @onready var water_need_bar_fill: ColorRect = $HUD/WaterNeedBarFill
 @onready var power_need_bar_back: ColorRect = $HUD/PowerNeedBarBack
 @onready var power_need_bar_fill: ColorRect = $HUD/PowerNeedBarFill
+@onready var depth_rail_line: ColorRect = $HUD/DepthRailLine
+@onready var depth_rail_marker: Polygon2D = $HUD/DepthRailMarker
+@onready var depth_rail_labels: Array[Label] = [
+	$HUD/DepthRailLabel0,
+	$HUD/DepthRailLabel50,
+	$HUD/DepthRailLabel100,
+]
+@onready var minimap_panel: Panel = $HUD/MinimapPanel
+@onready var minimap_path: Line2D = $HUD/MinimapPanel/MinimapPath
+@onready var minimap_player_marker: Polygon2D = $HUD/MinimapPanel/MinimapPlayerMarker
 @onready var recent_expedition_log_label: Label = $HUD/RecentExpeditionLog
 @onready var run_panel: Panel = $HUD/RunPanel
 @onready var surface_tabs_label: Label = $HUD/RunPanel/SurfaceTabs
@@ -3422,8 +3447,12 @@ func _update_hud() -> void:
 	active_stats_panel.visible = is_diving
 	cargo_panel.visible = is_diving
 	survival_needs_panel.visible = is_diving
-	scan_card_panel.visible = is_diving
+	var has_scan_target := is_diving and current_scan_target != null
+	scan_card_panel.visible = has_scan_target
 	tool_belt_panel.visible = is_diving
+	minimap_panel.visible = is_diving
+	oxygen_icon.visible = is_diving
+	depth_icon.visible = is_diving
 	oxygen_label.visible = is_diving
 	oxygen_bar_back.visible = is_diving
 	oxygen_bar_fill.visible = is_diving
@@ -3447,6 +3476,8 @@ func _update_hud() -> void:
 	_update_cargo_slots()
 	_update_instrument_bars()
 	_update_survival_needs_panel(is_diving)
+	_update_depth_rail(is_diving)
+	_update_minimap(is_diving)
 	bank_label.text = "Banked:%s" % _format_banked_resources()
 	upgrade_label.text = _format_upgrade_status()
 	discoveries_label.text = _format_discoveries(true)
@@ -3456,10 +3487,10 @@ func _update_hud() -> void:
 	recent_expedition_log_label.visible = false
 	discoveries_label.visible = not has_surface_panel
 	dive_info_panel.visible = is_diving
-	scan_target_label.visible = is_diving
-	scan_card_title_label.visible = is_diving
-	scan_card_meta_label.visible = is_diving
-	scan_card_prompt_label.visible = is_diving
+	scan_target_label.visible = has_scan_target
+	scan_card_title_label.visible = has_scan_target
+	scan_card_meta_label.visible = has_scan_target
+	scan_card_prompt_label.visible = has_scan_target
 	status_label.visible = is_diving
 	prompt_label.visible = is_diving
 	status_label.text = _compact_dive_status(status_label.text) if is_diving else status_label.text
@@ -3476,6 +3507,7 @@ func _apply_active_hud_layout() -> void:
 	_set_control_rect(dive_info_panel, DIVE_INFO_RECT)
 	_set_control_rect(scan_card_panel, SCAN_CARD_RECT)
 	_set_control_rect(tool_belt_panel, TOOL_BELT_PANEL_RECT)
+	_set_control_rect(minimap_panel, MINIMAP_PANEL_RECT)
 	_set_control_rect(oxygen_warning_panel, OXYGEN_WARNING_RECT)
 	_set_control_rect(oxygen_label, ACTIVE_HUD_LABEL_RECTS["oxygen"])
 	_set_control_rect(oxygen_bar_back, OXYGEN_BAR_BACK_RECT)
@@ -3501,7 +3533,13 @@ func _apply_active_hud_layout() -> void:
 	_set_control_rect(food_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["food"])
 	_set_control_rect(water_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["water"])
 	_set_control_rect(power_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["power"])
-	cargo_slots_root.position = CARGO_SLOT_ACTIVE_POSITION
+	_set_control_rect(depth_rail_line, DEPTH_RAIL_LINE_RECT)
+	if depth_rail_labels.size() >= 3:
+		_set_control_rect(depth_rail_labels[0], DEPTH_RAIL_LABEL_RECTS["0"])
+		_set_control_rect(depth_rail_labels[1], DEPTH_RAIL_LABEL_RECTS["50"])
+		_set_control_rect(depth_rail_labels[2], DEPTH_RAIL_LABEL_RECTS["100"])
+	if cargo_slots_root != null:
+		cargo_slots_root.position = CARGO_SLOT_ACTIVE_POSITION
 
 	var bounded_labels: Array[Label] = [
 		oxygen_label,
@@ -3519,9 +3557,12 @@ func _apply_active_hud_layout() -> void:
 		water_need_label,
 		power_need_label,
 	]
+	for label in depth_rail_labels:
+		bounded_labels.append(label)
 	for label in bounded_labels:
-		label.autowrap_mode = TextServer.AUTOWRAP_OFF
-		label.clip_text = true
+		if label != null:
+			label.autowrap_mode = TextServer.AUTOWRAP_OFF
+			label.clip_text = true
 
 func _update_instrument_bars() -> void:
 	var oxygen_ratio := 0.0
@@ -3534,6 +3575,7 @@ func _update_instrument_bars() -> void:
 
 func _update_survival_needs_panel(is_visible: bool) -> void:
 	var need_labels: Array[Label] = [food_need_label, water_need_label, power_need_label]
+	var need_icons: Array[Polygon2D] = [food_need_icon, water_need_icon, power_need_icon]
 	var need_bars: Array[ColorRect] = [
 		food_need_bar_back,
 		food_need_bar_fill,
@@ -3544,6 +3586,8 @@ func _update_survival_needs_panel(is_visible: bool) -> void:
 	]
 	for label in need_labels:
 		label.visible = is_visible
+	for icon in need_icons:
+		icon.visible = is_visible
 	for bar in need_bars:
 		bar.visible = is_visible
 
@@ -3557,11 +3601,44 @@ func _update_survival_needs_panel(is_visible: bool) -> void:
 	_set_bar_fill_width(water_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["water"], clampf(float(survival_state.water) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
 	_set_bar_fill_width(power_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["power"], clampf(float(survival_state.power) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
 
+func _update_depth_rail(is_visible: bool) -> void:
+	depth_rail_line.visible = is_visible
+	depth_rail_marker.visible = is_visible
+	for label in depth_rail_labels:
+		label.visible = is_visible
+
+	if not is_visible:
+		return
+
+	depth_rail_labels[0].text = "0m"
+	depth_rail_labels[1].text = "50m"
+	depth_rail_labels[2].text = "100m"
+	var ratio := clampf(dive_session.current_depth / DEPTH_RAIL_MAX_DISPLAY_DEPTH, 0.0, 1.0)
+	depth_rail_marker.position = Vector2(
+		DEPTH_RAIL_LINE_RECT.position.x + 1.0,
+		DEPTH_RAIL_LINE_RECT.position.y + DEPTH_RAIL_LINE_RECT.size.y * ratio
+	)
+
+func _update_minimap(is_visible: bool) -> void:
+	minimap_path.visible = is_visible
+	minimap_player_marker.visible = is_visible
+	if not is_visible:
+		return
+
+	var depth_ratio := clampf(dive_session.current_depth / DEPTH_RAIL_MAX_DISPLAY_DEPTH, 0.0, 1.0)
+	var horizontal_ratio := 0.5
+	if player != null:
+		horizontal_ratio = clampf((player.global_position.x - 160.0) / 2200.0, 0.0, 1.0)
+	minimap_player_marker.position = Vector2(105.0 + (horizontal_ratio - 0.5) * 92.0, 42.0 + depth_ratio * 84.0)
+
 func _set_bar_fill_width(fill: ColorRect, base_rect: Rect2, ratio: float) -> void:
 	_set_control_rect(fill, base_rect)
 	fill.offset_right = fill.offset_left + base_rect.size.x * clampf(ratio, 0.0, 1.0)
 
 func _set_control_rect(control: Control, rect: Rect2) -> void:
+	if control == null:
+		return
+
 	control.offset_left = rect.position.x
 	control.offset_top = rect.position.y
 	control.offset_right = rect.position.x + rect.size.x
@@ -4913,6 +4990,7 @@ func _update_scan_target_feedback() -> void:
 		scan_target_label.text = "none nearby"
 		scan_card_meta_label.text = "No readable signal"
 		scan_card_prompt_label.text = "Hold %s near a target" % _action_label("scan")
+		scan_reticle_root.visible = false
 	else:
 		scan_card_title_label.text = "SCAN TARGET"
 		scan_target_label.text = _scan_target_display_name(current_scan_target)
@@ -4921,6 +4999,28 @@ func _update_scan_target_feedback() -> void:
 			_format_scan_target_type(current_scan_target).to_upper()
 		]
 		scan_card_prompt_label.text = "%s TO SCAN" % _action_label("scan")
+		_update_scan_reticle_position(current_scan_target)
+
+func _update_scan_reticle_position(target: Node) -> void:
+	if target == null or not (target is Node2D):
+		scan_reticle_root.visible = false
+		return
+
+	var viewport_size := get_viewport_rect().size
+	var screen_position := viewport_size * 0.5
+	if player != null:
+		var zoom := Vector2.ONE
+		var camera := player.get_node_or_null("Camera2D") as Camera2D
+		if camera != null:
+			zoom = camera.zoom
+		var world_delta: Vector2 = (target as Node2D).global_position - player.global_position
+		screen_position += Vector2(world_delta.x / maxf(zoom.x, 0.001), world_delta.y / maxf(zoom.y, 0.001))
+
+	scan_reticle_root.visible = true
+	scan_reticle_root.position = Vector2(
+		clampf(screen_position.x, 96.0, viewport_size.x - 96.0),
+		clampf(screen_position.y, 96.0, viewport_size.y - 96.0)
+	)
 
 func _format_scan_target_discovery_state(target: Node) -> String:
 	return "known" if progression_state.has_discovery(_scan_target_id(target)) else "new"
