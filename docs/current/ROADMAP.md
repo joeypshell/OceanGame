@@ -33,12 +33,11 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #695: add a collision and placement debug overlay mode for Area 01 source-map validation.
-2. #696: rebuild the current shell from the source map and fix the reported blockers, swim-through terrain, invisible stops, and inaccessible-looking scannables.
-3. #692: add cave-mouth affordances without exact route locators, only after collision and reachability are trustworthy.
-4. #693: validate the larger level skeleton before returning to more visual polish.
-5. Re-evaluate #675-#678 after the skeleton validation; keep only the parts that support the larger playable map.
-6. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #696: rebuild the current shell from the source map and fix the reported blockers, swim-through terrain, invisible stops, and inaccessible-looking scannables.
+2. #692: add cave-mouth affordances without exact route locators, only after collision and reachability are trustworthy.
+3. #693: validate the larger level skeleton before returning to more visual polish.
+4. Re-evaluate #675-#678 after the skeleton validation; keep only the parts that support the larger playable map.
+5. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -71,6 +70,7 @@ Primary planning docs:
 - #690 added left/right chamber framing masses with matching collision and visible lips so Area 01 starts reading less like one tiny room and more like a larger level skeleton.
 - #691 added left/right chamber resource-pocket anchors and spread starter survival/material candidates into the larger shell so collection starts teaching movement beyond the original pocket cluster.
 - #694 created the Area 01 blockout source map and validation contract so walls, playable water lanes, resource pockets, and scannable reachability can be checked before more content expands the level.
+- #695 added a developer-only Area 01 source-map overlay toggle so playable lanes, mapped collision, pockets, resources, scannables, and scan range can be inspected without manual screenshot guessing.
 
 ## Current Readability Rules
 

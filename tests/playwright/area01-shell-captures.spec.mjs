@@ -43,5 +43,14 @@ test.describe("OceanGame Area 01 shell captures", () => {
       active_stats_visible: true,
       route_stage: "area01_central_drop",
     });
+
+    await page.keyboard.press("F10");
+    await capture(page, testInfo, "area01-source-map-overlay", {
+      result: "diving",
+      debug_telemetry: true,
+      area01_source_map_overlay: true,
+      active_stats_visible: true,
+      route_stage: "area01_central_drop",
+    });
   });
 });

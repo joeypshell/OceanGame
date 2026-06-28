@@ -10,6 +10,7 @@ const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
+const Area01SourceMapOverlayScript := preload("res://scripts/area01_source_map_overlay.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -513,9 +514,12 @@ var last_night_report := ""
 var last_completed_survival_day := 0
 var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
+var show_area01_source_map_overlay := false
+var area01_source_map_overlay: Area01SourceMapOverlay = null
 var recent_expedition_log: Array[Dictionary] = []
 
 func _ready() -> void:
+	_ensure_area01_source_map_overlay()
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
 	base_zone.body_exited.connect(_on_base_zone_body_exited)
 	survival_supply_cache_interact_zone.body_entered.connect(_on_survival_supply_cache_body_entered)
@@ -556,6 +560,7 @@ func _ready() -> void:
 	_prepare_next_run()
 	_sync_discovery_reveals()
 	_sync_salvage_pocket_open_state()
+	_sync_area01_source_map_overlay()
 	_update_hud()
 
 func _process(delta: float) -> void:
@@ -599,6 +604,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 		_stage_debug_oxygen_visual_review(0.08, "critical")
 	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F9:
 		_reset_local_prototype_save()
+	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F10:
+		_toggle_area01_source_map_overlay()
 	elif Input.is_action_just_pressed("interact"):
 		if dive_session.result == DiveSessionScript.Result.READY:
 			_start_dive()
@@ -1305,8 +1312,30 @@ func _cycle_surface_tab(direction: int) -> void:
 
 func _toggle_debug_telemetry() -> void:
 	show_debug_telemetry = not show_debug_telemetry
+	_sync_area01_source_map_overlay()
 	status_label.text = "Debug telemetry: %s." % ("shown" if show_debug_telemetry else "hidden")
 	_update_hud()
+
+func _toggle_area01_source_map_overlay() -> void:
+	show_area01_source_map_overlay = not show_area01_source_map_overlay
+	if show_area01_source_map_overlay:
+		show_debug_telemetry = true
+	_ensure_area01_source_map_overlay()
+	_sync_area01_source_map_overlay()
+	status_label.text = "Area 01 source map overlay: %s." % ("shown" if show_area01_source_map_overlay else "hidden")
+	_update_hud()
+
+func _ensure_area01_source_map_overlay() -> void:
+	if area01_source_map_overlay != null and is_instance_valid(area01_source_map_overlay):
+		return
+
+	area01_source_map_overlay = Area01SourceMapOverlayScript.new()
+	add_child(area01_source_map_overlay)
+
+func _sync_area01_source_map_overlay() -> void:
+	_ensure_area01_source_map_overlay()
+	area01_source_map_overlay.scan_range = scan_range
+	area01_source_map_overlay.set_debug_visible(show_debug_telemetry and show_area01_source_map_overlay)
 
 func _cycle_debug_condition() -> void:
 	if not show_debug_telemetry:
@@ -3948,6 +3977,7 @@ func _publish_visual_smoke_state() -> void:
 		"result": String(DIVE_RESULT_NAMES.get(dive_session.result, "unknown")),
 		"surface_tab": SURFACE_TAB_NAMES[surface_tab_index].to_lower(),
 		"debug_telemetry": show_debug_telemetry,
+		"area01_source_map_overlay": area01_source_map_overlay != null and area01_source_map_overlay.visible,
 		"oxygen_state": _oxygen_state(dive_session.oxygen, dive_session.max_oxygen),
 		"oxygen": ceili(dive_session.oxygen),
 		"max_oxygen": ceili(dive_session.max_oxygen),
