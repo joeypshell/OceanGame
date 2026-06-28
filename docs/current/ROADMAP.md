@@ -4,7 +4,7 @@ This is the compact active roadmap for issue-driven work. Historical issue batch
 
 ## Current Direction
 
-OceanGame is a 2D alien-ocean survival expedition roguelite. Each expedition starts from the surface boat/lab, sends the player into persistent side-view geography with seeded daily variation, and asks them to return with whatever matters most: supplies that keep the base alive tonight, cargo that improves future dives, or knowledge that unlocks the deeper mystery.
+OceanGame is a 2D alien-ocean survival expedition roguelite. Each expedition starts from the surface boat/lab with a small diver-scale avatar, sends the player into persistent side-view geography with seeded daily variation, and asks them to return with whatever matters most: supplies that keep the base alive tonight, cargo that improves future dives, or knowledge that unlocks the deeper mystery.
 
 North-star filter: every expedition should force a survival tradeoff. Bring back what keeps you alive tonight, what makes future dives safer, or what unlocks a remembered deeper place. Prefer player-visible loop progress over more route breadth until the survival day rhythm works.
 
@@ -26,9 +26,10 @@ Primary planning docs:
 ## Immediate Issue Order
 
 1. Validate the first Emergency Week loop in play: ready panel, shallow supply cache, extraction, night report, next day, collapse/restart.
-2. Improve survival UI clarity only where the prototype loop is hard to understand.
-3. Add one more survival supply placement or day-condition hook only after the first loop is understandable.
-4. Resume route/content growth only after the survival loop gives players a reason to care what they bring home.
+2. Validate the diver-scale feel in play: starter avatar size, collision, camera framing, flashlight/readability, and whether the ocean has enough visible room to explore.
+3. Improve survival UI clarity only where the prototype loop is hard to understand.
+4. Add one more survival supply placement or day-condition hook only after the first loop is understandable.
+5. Resume route/content growth only after the survival loop gives players a reason to care what they bring home.
 
 ## Completed In This Readability Rescue
 
@@ -54,6 +55,7 @@ Primary planning docs:
 
 - Area 02 route-content expansion that does not affect survival tradeoffs.
 - Local clutter or readability work that does not block survival-loop playtesting.
+- Starting with a bulky submarine-scale avatar; compact vehicles belong to later upgrades.
 - Broader mobile/controller work beyond preserving semantic input guardrails.
 - Final art overhaul, large UI reskin, broad visual regression suite, or golden-image infrastructure.
 

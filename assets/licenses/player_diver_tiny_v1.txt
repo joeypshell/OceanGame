@@ -1,0 +1,10 @@
+Asset: player_diver_tiny_v1.png
+Source: AI-generated prototype sprite created in Codex from user-provided art-direction references on 2026-06-27.
+Source file: assets/source/sprites/player_diver_tiny_source_v1.png
+Runtime file: assets/sprites/player/player_diver_tiny_v1.png
+
+Prompt summary:
+Create an ultra-simple tiny side-view diver sprite for a 2D underwater exploration game. The diver should read as a small gameplay avatar on a large map: round yellow helmet, blue visor dot, dark compact body, orange fins, tiny tank, and tiny flashlight, facing right. Use a flat #ff00ff chroma-key background for removal. Avoid detailed armor, bulky submarine proportions, realism, large gear, UI, text, or watermark.
+
+Processing:
+The chroma-key background was removed with the Codex imagegen remove_chroma_key helper, then the transparent result was cropped and resized to a 192px-wide runtime PNG.

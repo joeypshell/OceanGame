@@ -2,15 +2,15 @@
 
 ## Pitch
 
-Every morning the alien ocean changes. Pilot a fragile research sub, scan what the sea reveals today, and survive long enough to bring back the knowledge that lets you go deeper tomorrow.
+Every morning the alien ocean changes. Dive from a fragile research boat, scan what the sea reveals today, and survive long enough to bring back the supplies and knowledge that let you go deeper tomorrow.
 
 Short form:
 
-Pilot a small research sub through seeded alien-ocean expedition days where every descent asks whether to bring back what keeps the base alive tonight, what makes future dives safer, or what unlocks the deeper mystery.
+Guide a small diver through seeded alien-ocean expedition days where every descent asks whether to bring back what keeps the base alive tonight, what makes future dives safer, or what unlocks the deeper mystery.
 
 ## Player Role
 
-The player is an expedition pilot and field researcher working from a surface boat or shallow lab. They gather materials, scan useful discoveries, read predator behavior, and upgrade the sub to reach stranger and riskier opportunities.
+The player is an expedition diver and field researcher working from a surface boat or shallow lab. They gather materials, scan useful discoveries, read predator behavior, and upgrade gear into stronger tools, suits, scooters, and eventually compact submersibles that reach stranger and riskier opportunities.
 
 ## Core Fantasy
 

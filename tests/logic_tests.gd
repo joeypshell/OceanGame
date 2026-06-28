@@ -2081,6 +2081,8 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	_expect(gulper_eye_overlay.color.a >= 0.78, "Gulper overlay eye should keep the predator state readable")
 	_expect(PredatorScript.BODY_OVERLAY_ALPHA <= 0.46, "runtime Gulper body overlays should stay translucent across predator states")
 	_expect(PredatorScript.EYE_OVERLAY_ALPHA >= 0.78, "runtime Gulper eye overlays should stay readable across predator states")
+	var camera := main.get_node("Player/Camera2D") as Camera2D
+	_expect(camera.zoom.x <= 0.75 and camera.zoom.y <= 0.75, "starter diver camera should pull back for more exploration space")
 
 	main.free()
 
@@ -2097,6 +2099,13 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	for path in player_required_paths:
 		_expect(player.get_node_or_null(path) != null, "player scene should keep sprite-ready visual slot or fallback node: %s" % path)
 
+	var player_sprite := player.get_node("VisualRoot/SubSpriteAnchor/SubSprite") as Sprite2D
+	var player_texture_path := player_sprite.texture.resource_path if player_sprite.texture != null else ""
+	_expect(player_texture_path.ends_with("player_diver_tiny_v1.png"), "starter player sprite should use the compact diver asset")
+	_expect(player_sprite.scale.x <= 0.32 and player_sprite.scale.y <= 0.32, "starter diver sprite should stay small enough for exploration framing")
+	var collision_shape := player.get_node("CollisionShape2D") as CollisionShape2D
+	var capsule_shape := collision_shape.shape as CapsuleShape2D
+	_expect(capsule_shape != null and capsule_shape.radius <= 10.0 and capsule_shape.height <= 30.0, "starter diver collision should be smaller than the old sub body")
 	player.free()
 
 func _test_east_shelf_spur_branch_scene_contract() -> void:
