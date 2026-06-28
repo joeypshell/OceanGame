@@ -70,7 +70,7 @@ const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(272.0, 116.0))
 const CARGO_PANEL_RECT := Rect2(Vector2(516.0, 14.0), Vector2(248.0, 48.0))
 const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(1036.0, 16.0), Vector2(228.0, 106.0))
 const DIVE_INFO_RECT := Rect2(Vector2(16.0, 148.0), Vector2(292.0, 104.0))
-const SCAN_CARD_RECT := Rect2(Vector2(948.0, 220.0), Vector2(260.0, 106.0))
+const SCAN_CARD_RECT := Rect2(Vector2(972.0, 236.0), Vector2(220.0, 88.0))
 const TOOL_BELT_PANEL_RECT := Rect2(Vector2(486.0, 648.0), Vector2(308.0, 56.0))
 const MINIMAP_PANEL_RECT := Rect2(Vector2(1052.0, 548.0), Vector2(188.0, 140.0))
 const OXYGEN_WARNING_RECT := Rect2(Vector2(16.0, 594.0), Vector2(230.0, 70.0))
@@ -83,15 +83,17 @@ const ACTIVE_HUD_LABEL_RECTS := {
 	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 96.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
 	"cargo": Rect2(Vector2(716.0, 38.0), Vector2(40.0, HUD_SINGLE_ROW_HEIGHT)),
 	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 108.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
-	"scan": Rect2(Vector2(964.0, 252.0), Vector2(224.0, HUD_SINGLE_ROW_HEIGHT)),
+	"scan": Rect2(Vector2(986.0, 266.0), Vector2(188.0, HUD_SINGLE_ROW_HEIGHT)),
 	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 204.0), Vector2(260.0, HUD_SINGLE_ROW_HEIGHT)),
 	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 232.0), Vector2(260.0, HUD_SINGLE_ROW_HEIGHT)),
 }
 const SCAN_CARD_LABEL_RECTS := {
-	"title": Rect2(Vector2(964.0, 232.0), Vector2(224.0, 18.0)),
-	"meta": Rect2(Vector2(964.0, 278.0), Vector2(224.0, 18.0)),
-	"prompt": Rect2(Vector2(964.0, 304.0), Vector2(224.0, 18.0)),
+	"title": Rect2(Vector2(986.0, 246.0), Vector2(188.0, 16.0)),
+	"meta": Rect2(Vector2(986.0, 286.0), Vector2(188.0, 16.0)),
+	"prompt": Rect2(Vector2(986.0, 306.0), Vector2(188.0, 16.0)),
 }
+const SCAN_RETICLE_SCREEN_MARGIN := 72.0
+const SCAN_TARGET_STICKY_RANGE_BUFFER := 28.0
 const OXYGEN_BAR_BACK_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
 const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
 const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
@@ -5214,7 +5216,7 @@ func _compact_dive_status(text: String) -> String:
 	return cleaned.substr(0, DIVE_STATUS_MAX_CHARS - 3).strip_edges() + "..."
 
 func _update_scan_target_feedback() -> void:
-	var next_target := _nearest_scan_target() if dive_session.result == DiveSessionScript.Result.DIVING else null
+	var next_target := _scan_target_candidate() if dive_session.result == DiveSessionScript.Result.DIVING else null
 	if current_scan_target != next_target:
 		if current_scan_target != null and current_scan_target.has_method("set_scan_selected"):
 			current_scan_target.set_scan_selected(false)
@@ -5235,8 +5237,24 @@ func _update_scan_target_feedback() -> void:
 			_format_scan_target_discovery_state(current_scan_target).to_upper(),
 			_format_scan_target_type(current_scan_target).to_upper()
 		]
-		scan_card_prompt_label.text = "%s TO SCAN" % _action_label("scan")
+		scan_card_prompt_label.text = "HOLD %s TO SCAN" % _action_label("scan")
 		_update_scan_reticle_position(current_scan_target)
+
+func _scan_target_candidate() -> Node:
+	if _scan_target_still_selectable(current_scan_target):
+		return current_scan_target
+
+	return _nearest_scan_target()
+
+func _scan_target_still_selectable(target: Node) -> bool:
+	if target == null or player == null or not is_instance_valid(target):
+		return false
+	if not (target is Node2D):
+		return false
+	if not ScanTargetResolverScript.is_valid_target(target):
+		return false
+
+	return player.global_position.distance_to((target as Node2D).global_position) <= scan_range + SCAN_TARGET_STICKY_RANGE_BUFFER
 
 func _update_scan_reticle_position(target: Node) -> void:
 	if target == null or not (target is Node2D):
@@ -5248,8 +5266,8 @@ func _update_scan_reticle_position(target: Node) -> void:
 
 	scan_reticle_root.visible = true
 	scan_reticle_root.position = Vector2(
-		clampf(screen_position.x, 96.0, viewport_size.x - 96.0),
-		clampf(screen_position.y, 96.0, viewport_size.y - 96.0)
+		clampf(screen_position.x, SCAN_RETICLE_SCREEN_MARGIN, viewport_size.x - SCAN_RETICLE_SCREEN_MARGIN),
+		clampf(screen_position.y, SCAN_RETICLE_SCREEN_MARGIN, viewport_size.y - SCAN_RETICLE_SCREEN_MARGIN)
 	)
 
 func _scan_reticle_screen_position(world_position: Vector2) -> Vector2:

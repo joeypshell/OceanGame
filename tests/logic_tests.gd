@@ -5606,6 +5606,23 @@ func _test_compact_dive_hud_helpers() -> void:
 	)
 	_expect(zoomed_out_reticle.x < 740.0, "scan reticle should apply zoomed-out camera scale instead of drifting beyond the target")
 	_expect(is_equal_approx(zoomed_out_reticle.x, 640.0 + 100.0 * camera.zoom.x), "scan reticle fallback should match Camera2D zoomed screen offset")
+	var sticky_player := CharacterBody2D.new()
+	root.add_child(sticky_player)
+	var sticky_target := DummyScanTarget.new()
+	sticky_target.discovery_id = "sticky_target"
+	sticky_target.display_name = "Sticky Target"
+	sticky_target.global_position = Vector2(142.0, 0.0)
+	root.add_child(sticky_target)
+	main.player = sticky_player
+	main.scan_range = 120.0
+	_expect(main.call("_scan_target_still_selectable", sticky_target), "scan target selection should keep the current target inside the sticky buffer")
+	sticky_target.global_position = Vector2(154.0, 0.0)
+	_expect(not main.call("_scan_target_still_selectable", sticky_target), "scan target selection should release a target beyond the sticky buffer")
+	sticky_target.visible = false
+	sticky_target.global_position = Vector2(80.0, 0.0)
+	_expect(not main.call("_scan_target_still_selectable", sticky_target), "hidden scan targets should not stay selected")
+	sticky_target.queue_free()
+	sticky_player.queue_free()
 	var hud_style := active_panel.get_theme_stylebox("panel") as StyleBoxFlat
 	var warning_style := warning_panel.get_theme_stylebox("panel") as StyleBoxFlat
 	_expect(hud_style.bg_color.a <= 0.62, "active HUD glass should stay translucent instead of opaque black")
@@ -5624,6 +5641,8 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(_control_rect(survival_panel).size.x <= 250.0, "survival needs panel should keep a compact reference-style width")
 	_expect(_control_rect(survival_panel).size.x <= 232.0, "survival needs panel should tighten toward the right edge")
 	_expect(_control_rect(dive_info_panel).size.x <= 300.0, "route objective card should stay compact")
+	_expect(_control_rect(scan_card_panel).size.x <= 230.0, "scan card should be a compact contextual popup")
+	_expect(_control_rect(scan_card_panel).size.y <= 92.0, "scan card should stay shallow and avoid permanent right-side clutter")
 	_expect(_control_rect(tool_belt_panel).size.x <= 320.0, "tool belt should use compact icon cards instead of a wide placeholder tray")
 	_expect(_control_rect(tool_belt_panel).size.y <= 58.0, "tool belt should stay close to the lower edge without tall glass")
 	_expect(_control_rect(minimap_panel).size.x <= 192.0, "minimap should stay compact in the lower-right corner")
@@ -5647,6 +5666,8 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(_control_rect(scan_card_panel).encloses(_control_rect(scan_target_label)), "scan target should stay inside the dedicated scan card when visible")
 	_expect(_control_rect(scan_card_panel).encloses(_control_rect(scan_card_meta_label)), "scan metadata should stay inside the dedicated scan card when visible")
 	_expect(_control_rect(scan_card_panel).encloses(_control_rect(scan_card_prompt_label)), "scan prompt should stay inside the dedicated scan card when visible")
+	var scan_reticle_top_left: Polygon2D = main_scene.get_node("HUD/ScanReticleRoot/TopLeft")
+	_expect(scan_reticle_top_left.polygon[0].x >= -44.0 and scan_reticle_top_left.polygon[0].y >= -32.0, "scan reticle bracket should stay tight around the target instead of covering nearby sprites")
 	_expect(tool_belt_panel.offset_top > dive_info_panel.offset_bottom, "tool belt should sit below active guidance and away from the play focus")
 	_expect(minimap_panel.offset_left > tool_belt_panel.offset_right, "minimap should occupy the bottom-right reference zone away from the tool belt")
 	_expect(depth_rail_line.offset_top > dive_info_panel.offset_bottom, "depth rail should start below the left objective card")
