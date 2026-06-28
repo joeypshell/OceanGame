@@ -23,6 +23,7 @@ const SignalLensUpgrade := preload("res://resources/upgrades/signal_lens_1.tres"
 const EchoLensUpgrade := preload("res://resources/upgrades/echo_lens_1.tres")
 const ResonanceKeyUpgrade := preload("res://resources/upgrades/resonance_key_1.tres")
 const CargoRackUpgrade := preload("res://resources/upgrades/cargo_rack_1.tres")
+const WaterFilterUpgrade := preload("res://resources/upgrades/water_filter_1.tres")
 const PredatorWarningUpgrade := preload("res://resources/upgrades/predator_warning_1.tres")
 const DecoyPulseUpgrade := preload("res://resources/upgrades/decoy_pulse_1.tres")
 const SalvageCutterUpgrade := preload("res://resources/upgrades/salvage_cutter_1.tres")
@@ -339,6 +340,19 @@ func _test_upgrade_affordability() -> void:
 	_expect(resonance_progression.resource_count("glow_plankton") == 0, "Resonance Key I purchase should spend glow plankton")
 	_expect(resonance_progression.resource_count("shell_fragments") == 0, "Resonance Key I purchase should spend shell fragments")
 	_expect(not UpgradePurchaseScript.purchase(resonance_progression, ResonanceKeyUpgrade), "Resonance Key I should not purchase twice")
+
+	var starter_progression := ProgressionStateScript.new()
+	_expect(not starter_progression.can_afford(WaterFilterUpgrade.resource_cost), "Water Filter I should not be affordable without starter resources")
+	starter_progression.banked_resources = {
+		"driftwood": 1,
+		"quartz_glass": 1,
+	}
+	_expect(starter_progression.can_afford(WaterFilterUpgrade.resource_cost), "Water Filter I should become affordable with starter resources")
+	_expect(UpgradePurchaseScript.purchase(starter_progression, WaterFilterUpgrade), "Water Filter I should purchase without scan prerequisites")
+	_expect(starter_progression.has_upgrade(WaterFilterUpgrade.id), "Water Filter I purchase should record ownership")
+	_expect(starter_progression.resource_count("driftwood") == 0, "Water Filter I should spend driftwood")
+	_expect(starter_progression.resource_count("quartz_glass") == 0, "Water Filter I should spend quartz glass")
+	_expect(not UpgradePurchaseScript.purchase(starter_progression, WaterFilterUpgrade), "Water Filter I should not purchase twice")
 
 func _test_progression_reset() -> void:
 	var progression := ProgressionStateScript.new()
@@ -3484,6 +3498,13 @@ func _test_discovery_prerequisites() -> void:
 	_expect(not ResonanceKeyUpgrade.description.to_lower().contains("all sealed"), "Resonance Key I should not imply a broad key family")
 	_expect(CargoRackUpgrade.required_discovery.is_empty(), "Cargo Rack I should not require a discovery")
 	_expect(CargoRackUpgrade.effect_id == "cargo_limit_4", "Cargo Rack I should use cargo limit effect")
+	_expect(WaterFilterUpgrade.id == "water_filter_1", "Water Filter I should have a stable upgrade id")
+	_expect(WaterFilterUpgrade.required_discovery.is_empty(), "Water Filter I should not require a discovery")
+	_expect(WaterFilterUpgrade.required_upgrade.is_empty(), "Water Filter I should not require another upgrade")
+	_expect(WaterFilterUpgrade.effect_id == "water_reserve_1", "Water Filter I should use the water reserve effect")
+	_expect(int(WaterFilterUpgrade.resource_cost.get("driftwood", 0)) == 1, "Water Filter I should cost one driftwood")
+	_expect(int(WaterFilterUpgrade.resource_cost.get("quartz_glass", 0)) == 1, "Water Filter I should cost one quartz glass")
+	_expect(WaterFilterUpgrade.description.contains("starter salvage"), "Water Filter I should explain starter-material purpose")
 	_expect(PredatorWarningUpgrade.required_discovery == "gulper_eel", "Predator Warning I should require Gulper Eel")
 	_expect(DecoyPulseUpgrade.required_discovery == "gulper_eel", "Decoy Pulse I should require Gulper Eel")
 	_expect(DecoyPulseUpgrade.required_upgrade == PredatorWarningUpgrade.id, "Decoy Pulse I should require Predator Warning I")
@@ -3507,6 +3528,7 @@ func _test_discovery_prerequisites() -> void:
 	_expect(UpgradePurchaseScript.missing_discovery(progression, ResonanceKeyUpgrade) == "east_shelf_route_research", "Resonance Key I route-research prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_upgrade(progression, ResonanceKeyUpgrade) == EchoLensUpgrade.id, "Resonance Key I Echo Lens prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, CargoRackUpgrade) == "", "Cargo Rack I prerequisite should be satisfied by default")
+	_expect(UpgradePurchaseScript.missing_discovery(progression, WaterFilterUpgrade) == "", "Water Filter I prerequisite should be satisfied by default")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, PredatorWarningUpgrade) == "gulper_eel", "Predator Warning I prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_upgrade(progression, DecoyPulseUpgrade) == PredatorWarningUpgrade.id, "Decoy Pulse I upgrade prerequisite should start missing")
 	_expect(UpgradePurchaseScript.missing_discovery(progression, SalvageCutterUpgrade) == "salvage_data_cache", "Salvage Cutter I prerequisite should start missing")
@@ -4809,6 +4831,25 @@ func _test_upgrade_bay_readability_states() -> void:
 	main.progression_state.purchase_upgrade(OxygenTankUpgrade.id, OxygenTankUpgrade.resource_cost)
 	state = main._format_upgrade_state(OxygenTankUpgrade)
 	_expect(state.begins_with("State: Owned"), "upgrade bay should label owned upgrades")
+
+	state = main._format_upgrade_state(WaterFilterUpgrade)
+	_expect(state.begins_with("State: Missing resources"), "Water Filter I should show missing starter resources")
+	_expect(state.contains("Driftwood x1"), "Water Filter I should name missing driftwood")
+	_expect(state.contains("Quartz Glass x1"), "Water Filter I should name missing quartz glass")
+	var starter_goal := ExpeditionGoalFormatterScript.format_goal(main.progression_state, [WaterFilterUpgrade])
+	_expect(starter_goal.contains("Driftwood x1") and starter_goal.contains("Quartz Glass x1"), "ready goal should display starter resource names for Water Filter I")
+	main.progression_state.banked_resources = {
+		"driftwood": 1,
+		"quartz_glass": 1,
+	}
+	state = main._format_upgrade_state(WaterFilterUpgrade)
+	_expect(state.begins_with("State: Available now"), "Water Filter I should become available after starter resources are banked")
+	var water_before := main.survival_state.water
+	_expect(UpgradePurchaseScript.purchase(main.progression_state, WaterFilterUpgrade), "Water Filter I should purchase through the normal upgrade pipeline")
+	main.call("_apply_upgrade_effect", WaterFilterUpgrade.effect_id)
+	_expect(main.survival_state.water == water_before + 1, "Water Filter I effect should add one water reserve")
+	state = main._format_upgrade_state(WaterFilterUpgrade)
+	_expect(state.begins_with("State: Owned"), "Water Filter I should show owned after purchase")
 
 	state = main._format_upgrade_state(PressureSealUpgrade)
 	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label scan-locked upgrades")

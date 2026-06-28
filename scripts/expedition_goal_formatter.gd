@@ -82,6 +82,12 @@ static func _resource_name(resource_id: String) -> String:
 			return "Shell Fragments"
 		"glow_plankton":
 			return "Glow Plankton"
+		"scrap_metal":
+			return "Scrap Metal"
+		"driftwood":
+			return "Driftwood"
+		"quartz_glass":
+			return "Quartz Glass"
 		_:
 			return resource_id
 
@@ -112,6 +118,8 @@ static func _upgrade_name(upgrade_id: String, upgrade_definitions: Array[Upgrade
 			return upgrade.display_name
 
 	match upgrade_id:
+		"water_filter_1":
+			return "Water Filter I"
 		"predator_warning_1":
 			return "Predator Warning I"
 		"decoy_pulse_1":

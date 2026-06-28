@@ -32,12 +32,11 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #682: tie one surface upgrade or night choice to starter resources after the room has readable resource pockets.
-2. #685: add deterministic captures for the playable exploration slice.
-3. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
-4. #678: compare against the visual reference after the slice has real wall/ledge modules.
-5. Resume route expansion only after the first room reads as a playable place rather than a diagram.
-6. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #685: add deterministic captures for the playable exploration slice.
+2. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
+3. #678: compare against the visual reference after the slice has real wall/ledge modules.
+4. Resume route expansion only after the first room reads as a playable place rather than a diagram.
+5. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -58,6 +57,7 @@ Primary planning docs:
 - #681 placed starter resource candidates into four readable Area 01 pockets so supplies and materials start teaching the room layout.
 - #683 added reusable reef-wall and resource-pocket visual modules to the Area 01 shell walls, starter ledges, and resource pockets.
 - #684/#670 replaced the active route/status text stack with one compact `SURVIVAL ROUTE` objective card, contextual scan card behavior, and reserved prompt/status rows.
+- #682 added `Water Filter I`, a first starter-material upgrade that spends `Driftwood` and `Quartz Glass` for an immediate `+1 Water` reserve so shallow resource pockets feed the Emergency Week loop.
 
 ## Current Readability Rules
 

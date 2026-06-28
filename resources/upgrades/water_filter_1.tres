@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3 uid="uid://water_filter_1_upgrade"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="1_upgrade_definition"]
+
+[resource]
+script = ExtResource("1_upgrade_definition")
+id = "water_filter_1"
+display_name = "Water Filter I"
+description = "Turns starter salvage into one extra water reserve before the next night."
+resource_cost = {
+"driftwood": 1,
+"quartz_glass": 1
+}
+required_discovery = ""
+required_upgrade = ""
+effect_id = "water_reserve_1"
+locked_reason = ""
+available_text = "Available: press E or Enter to purchase."
+owned_text = "Owned: added +1 Water reserve for Emergency Week."

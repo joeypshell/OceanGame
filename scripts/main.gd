@@ -16,6 +16,7 @@ const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tre
 const ECHO_LENS_UPGRADE := preload("res://resources/upgrades/echo_lens_1.tres")
 const RESONANCE_KEY_UPGRADE := preload("res://resources/upgrades/resonance_key_1.tres")
 const CARGO_RACK_UPGRADE := preload("res://resources/upgrades/cargo_rack_1.tres")
+const WATER_FILTER_UPGRADE := preload("res://resources/upgrades/water_filter_1.tres")
 const PREDATOR_WARNING_UPGRADE := preload("res://resources/upgrades/predator_warning_1.tres")
 const DECOY_PULSE_UPGRADE := preload("res://resources/upgrades/decoy_pulse_1.tres")
 const SALVAGE_CUTTER_UPGRADE := preload("res://resources/upgrades/salvage_cutter_1.tres")
@@ -26,6 +27,7 @@ const SIGNAL_LENS_UPGRADE_ID := "signal_lens_1"
 const ECHO_LENS_UPGRADE_ID := "echo_lens_1"
 const RESONANCE_KEY_UPGRADE_ID := "resonance_key_1"
 const CARGO_RACK_UPGRADE_ID := "cargo_rack_1"
+const WATER_FILTER_UPGRADE_ID := "water_filter_1"
 const PREDATOR_WARNING_UPGRADE_ID := "predator_warning_1"
 const DECOY_PULSE_UPGRADE_ID := "decoy_pulse_1"
 const SALVAGE_CUTTER_UPGRADE_ID := "salvage_cutter_1"
@@ -474,6 +476,7 @@ var current_scan_target: Node = null
 var selected_upgrade_index := 0
 var surface_tab_index := SURFACE_TAB_RESULT
 var upgrade_definitions: Array[UpgradeDefinition] = [
+	WATER_FILTER_UPGRADE,
 	OXYGEN_TANK_UPGRADE,
 	PRESSURE_SEAL_UPGRADE,
 	SIGNAL_LENS_UPGRADE,
@@ -2216,6 +2219,8 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 			_sync_blackwater_crack_gate_state()
 		"cargo_limit_4":
 			dive_session.cargo_limit = _current_cargo_limit()
+		"water_reserve_1":
+			survival_state.water += 1
 		"predator_warning_range_1":
 			_sync_predator_warning_upgrade_state()
 		"decoy_pulse_1":
@@ -4461,6 +4466,8 @@ func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
 			return "Effect: opens East Shelf hatch only."
 		CARGO_RACK_UPGRADE_ID:
 			return "Effect: +1 cargo slot."
+		WATER_FILTER_UPGRADE_ID:
+			return "Effect: +1 Water reserve now."
 		PREDATOR_WARNING_UPGRADE_ID:
 			return "Effect: earlier predator warning."
 		DECOY_PULSE_UPGRADE_ID:
@@ -4618,6 +4625,8 @@ func _format_upgrade_display_name(upgrade_id: String) -> String:
 			return "Decoy Pulse I"
 		RESONANCE_KEY_UPGRADE_ID:
 			return "Resonance Key I"
+		WATER_FILTER_UPGRADE_ID:
+			return "Water Filter I"
 		SALVAGE_CUTTER_UPGRADE_ID:
 			return "Salvage Cutter I"
 		_:

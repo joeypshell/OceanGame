@@ -27,6 +27,7 @@ This layer stack is the contract for replacing placeholder polygons with reusabl
 - Starter resource spawn candidates now align to four readable pockets in the slice: a shallow left supply pocket, a shallow/right shelf pocket, a left cave material pocket, and a deeper right material pocket. These are still authored spawn candidates, not new resource families or procedural generation.
 - The main shell walls, starter ledges, and resource pockets now use reusable reef-wall and resource-pocket visual modules. The modules add denser silhouettes, ledge lips, algae/coral flecks, and subdued cargo beds while preserving the existing collision and resource behavior.
 - The active HUD now frames the room with one compact `SURVIVAL ROUTE` objective card, contextual scan card visibility, and clipped prompt/status rows instead of paragraph-like route/status blocks.
+- `Water Filter I` now spends `Driftwood x1` and `Quartz Glass x1` for an immediate `+1 Water` reserve, tying the first starter material pockets to Emergency Week survival instead of leaving them as decorative cargo.
 
 ## Acceptance
 
@@ -41,14 +42,13 @@ At normal 1280x720 play scale:
 
 ## Next Work
 
-1. Add one surface upgrade or night choice tied to starter resources after the room remains readable with resource pockets.
-2. Add deterministic captures for the playable exploration slice.
-3. Add one passive scan target or existing scan target placement inside the slice only if it improves the room's teachable focus.
-4. Keep route expansion paused until the slice reads like a playable room rather than a diagram.
+1. Add deterministic captures for the playable exploration slice.
+2. Add one passive scan target or existing scan target placement inside the slice only if it improves the room's teachable focus.
+3. Keep route expansion paused until the slice reads like a playable room rather than a diagram.
 
 ## Guardrails
 
-- Do not add new routes, creatures, upgrades, hazards, resources, promises, checklist UI, or map systems as part of this slice.
+- Do not add new routes, creatures, hazards, resources, promises, checklist UI, or map systems as part of this slice. Additional upgrades should wait unless they directly connect existing starter materials to the core survival loop like `Water Filter I`.
 - Do not copy reference-game assets; use them as composition and readability targets only.
 - Prefer fewer, stronger terrain silhouettes over more translucent explanation layers.
 - Use screenshots as evidence artifacts, not committed source assets, unless a future issue explicitly asks for committed references.
