@@ -62,6 +62,8 @@ Primary planning docs:
 - #672 added a reusable Area 01 parallax-background scene with distant reef walls, stepped shelves, open-water pockets, mid-depth plates, and deep silhouettes so the room reads more like layered geography than flat teal bands.
 - #673 added a reusable Area 01 reef-platform kit and placed it on the starter shelves/ledges so terrain reads more like stacked explorable reef platforms while collision and route ownership stay unchanged.
 - #674 added restrained reusable Area 01 dressing clusters with kelp, coral, dim crystals, tube coral, and pebbles around existing shelves/pockets so the room feels more authored without adding collectible or scan behavior.
+- #687 added dedicated Area 01 blocking-rim visuals that trace existing wall and ledge collision so players can see where terrain blocks movement before bumping into it.
+- #688 restored Glassfin Swarm readability with dark body outlines and brighter clustered fish shapes while preserving its passive, scan-only, non-colliding behavior.
 
 ## Current Readability Rules
 
@@ -71,6 +73,8 @@ Primary planning docs:
 - Return-current and timing support should stay lower-opacity than recoverable objects.
 - Labels should be sparse and reserved for compact place names or honest locked/open states.
 - Active HUD copy must use reserved stats/prompt/status rows; long commands or feedback should clip or be shortened instead of wrapping into neighboring text.
+- Area 01 collision boundaries must be readable as terrain lips/rims before contact; do not leave invisible or random-feeling blockers in normal play.
+- Passive creature scan targets need visible silhouettes or outlines at normal play scale; scan labels should confirm the target, not be the only way to perceive it.
 - Do not solve confusion by adding more bright shapes, exact locators, checklists, minimaps, or route graphs.
 
 ## Still Deferred

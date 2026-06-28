@@ -505,6 +505,33 @@ polygon = PackedVector2Array(868, 906, 1106, 850, 1346, 912, 1454, 1002, 1338, 1
 
 [node name="TerrainVisualEdges" type="Node2D" parent="Area01ArtSlice"]
 
+[node name="CollisionReadBoundaries" type="Node2D" parent="Area01ArtSlice/TerrainVisualEdges"]
+z_index = 4
+
+[node name="ShallowLeftBlockingRim" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.18, 0.38, 0.34, 0.72)
+polygon = PackedVector2Array(136, 214, 274, 350, 230, 520, 324, 666, 300, 704, 208, 538, 250, 360, 112, 238)
+
+[node name="ShallowRightBlockingRim" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.18, 0.38, 0.34, 0.7)
+polygon = PackedVector2Array(1018, 250, 1082, 438, 1038, 620, 1002, 792, 1038, 820, 1112, 624, 1070, 442, 1044, 284)
+
+[node name="LeftWallBlockingRim" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.17, 0.35, 0.32, 0.74)
+polygon = PackedVector2Array(168, 574, 356, 700, 308, 866, 430, 1014, 396, 1064, 276, 902, 320, 728, 142, 620)
+
+[node name="RightWallBlockingRim" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.17, 0.35, 0.32, 0.72)
+polygon = PackedVector2Array(1058, 612, 1308, 572, 1544, 692, 1578, 746, 1322, 626, 1102, 676, 1148, 880, 1092, 918)
+
+[node name="LeftLedgeBlockingLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.46, 0.62, 0.46, 0.66)
+polygon = PackedVector2Array(40, 852, 276, 808, 454, 866, 520, 936, 470, 960, 284, 894, 54, 928)
+
+[node name="RightLedgeBlockingLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.46, 0.62, 0.46, 0.64)
+polygon = PackedVector2Array(868, 906, 1106, 850, 1346, 912, 1454, 1002, 1376, 1022, 1112, 938, 884, 982)
+
 [node name="ShallowLeftLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
 color = Color(0.42, 0.66, 0.55, 0.34)
 polygon = PackedVector2Array(144, 216, 274, 350, 230, 520, 324, 666, 288, 706, 190, 540, 230, 366, 116, 250)
@@ -1682,16 +1709,28 @@ gameplay_fact = "Read the gaps in the school, pass around the lane, and keep the
 color = Color(0.5, 0.64, 1, 0.11)
 polygon = PackedVector2Array(-168, -38, -58, -62, 62, -52, 172, -18, 132, 18, 24, 6, -84, 14, -178, 0)
 
+[node name="SwarmBodyAOutline" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm"]
+color = Color(0.014, 0.05, 0.08, 0.72)
+polygon = PackedVector2Array(-80, -16, -44, -38, 4, -22, 26, 0, 4, 22, -44, 38)
+
 [node name="SwarmBodyA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm"]
-color = Color(0.58, 0.72, 1, 0.52)
+color = Color(0.7, 0.86, 1, 0.82)
 polygon = PackedVector2Array(-72, -14, -42, -30, -2, -16, 16, 0, -2, 14, -42, 30)
 
+[node name="SwarmBodyBOutline" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm"]
+color = Color(0.014, 0.05, 0.08, 0.7)
+polygon = PackedVector2Array(-2, -30, 36, -50, 84, -30, 110, -4, 82, 22, 32, 30)
+
 [node name="SwarmBodyB" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm"]
-color = Color(0.62, 0.78, 1, 0.48)
+color = Color(0.72, 0.9, 1, 0.78)
 polygon = PackedVector2Array(4, -28, 36, -42, 80, -24, 100, -4, 78, 14, 34, 22)
 
+[node name="SwarmBodyCOutline" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm"]
+color = Color(0.014, 0.05, 0.08, 0.68)
+polygon = PackedVector2Array(-140, 10, -106, -12, -68, 2, -44, 24, -72, 48, -118, 42)
+
 [node name="SwarmBodyC" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm"]
-color = Color(0.5, 0.7, 0.96, 0.44)
+color = Color(0.66, 0.84, 1, 0.74)
 polygon = PackedVector2Array(-132, 10, -104, -4, -70, 8, -54, 24, -74, 40, -114, 34)
 
 [node name="SwarmFinFleckA" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm"]

@@ -989,6 +989,9 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	var chamber := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber") as Node2D
 	var swarm := chamber.get_node("GlassfinSwarm") as Area2D
 	var lane := swarm.get_node("SwarmRouteLane") as Polygon2D
+	var body_a_outline := swarm.get_node("SwarmBodyAOutline") as Polygon2D
+	var body_b_outline := swarm.get_node("SwarmBodyBOutline") as Polygon2D
+	var body_c_outline := swarm.get_node("SwarmBodyCOutline") as Polygon2D
 	var body_a := swarm.get_node("SwarmBodyA") as Polygon2D
 	var body_b := swarm.get_node("SwarmBodyB") as Polygon2D
 	var spacing_wake := swarm.get_node("SpacingWake") as Polygon2D
@@ -1010,6 +1013,9 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	_expect(swarm.position.y < return_current.polygon[0].y, "Glassfin Swarm should leave the lower return-current route readable")
 	_expect(lane.color.b > lane.color.g and lane.color.g > lane.color.r, "Glassfin Swarm lane should use glassy blue timing language")
 	_expect(body_a.color.b > body_a.color.g and body_a.color.g > body_a.color.r, "Glassfin Swarm body should avoid red predator and yellow resource language")
+	_expect(body_a.color.a >= 0.78 and body_b.color.a >= 0.74, "Glassfin Swarm bodies should stay visible at normal play scale instead of becoming label-only targets")
+	_expect(body_a_outline.color.a >= 0.68 and body_b_outline.color.a >= 0.68 and body_c_outline.color.a >= 0.64, "Glassfin Swarm should keep dark body outlines so the pale fish separate from chamber water")
+	_expect(body_a_outline.color.b < body_a.color.b and body_a_outline.color.g < body_a.color.g, "Glassfin Swarm outline should frame the fish without reading as another bright timing cue")
 	_expect(body_a.color.b > lantern_ray_body.color.b and body_a.color.r > lantern_ray_body.color.r, "Glassfin Swarm should read brighter and more glasslike than Lantern Ray")
 	_expect(body_b.color.b > resource_glimmer.color.b, "Glassfin Swarm should stay distinct from yellow-green resource glimmers")
 	_expect(body_a.color.r < predator_warning.color.r, "Glassfin Swarm should not reuse predator-warning red")
@@ -3347,6 +3353,13 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/TerrainCollision/LeftWallCollision",
 		"Area01ArtSlice/TerrainCollision/RightWallCollision",
 		"Area01ArtSlice/TerrainVisualEdges",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/ShallowLeftBlockingRim",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/ShallowRightBlockingRim",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/LeftWallBlockingRim",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightWallBlockingRim",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/LeftLedgeBlockingLip",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightLedgeBlockingLip",
 		"Area01ArtSlice/TerrainVisualEdges/ShallowLeftLitEdge",
 		"Area01ArtSlice/TerrainVisualEdges/ShallowRightLitEdge",
 		"Area01ArtSlice/TerrainVisualEdges/LeftLedgeLitEdge",
@@ -3395,6 +3408,11 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	var surface_glow := main.get_node("Area01ArtSlice/OceanLightingStack/SurfaceGlow") as Polygon2D
 	var deep_haze := main.get_node("Area01ArtSlice/OceanLightingStack/DeepBlueHaze") as Polygon2D
 	var center_play_light := main.get_node("Area01ArtSlice/OceanLightingStack/CenterPlayLight") as Polygon2D
+	var collision_read_boundaries := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries") as Node2D
+	var left_wall_blocking_rim := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/LeftWallBlockingRim") as Polygon2D
+	var right_wall_blocking_rim := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightWallBlockingRim") as Polygon2D
+	var left_ledge_blocking_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/LeftLedgeBlockingLip") as Polygon2D
+	var right_ledge_blocking_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightLedgeBlockingLip") as Polygon2D
 	var left_platform_mass := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/MainShelfMass") as Polygon2D
 	var left_platform_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/TopLitLip") as Polygon2D
 	var dressing_crystal := main.get_node("Area01ArtSlice/ForegroundDecor/LeftShelfDressing/DimCrystalA") as Polygon2D
@@ -3412,6 +3430,10 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	_expect(surface_glow.color.b > deep_haze.color.b, "ocean lighting stack should grade from brighter surface water into deeper blue haze")
 	_expect(deep_haze.color.a > surface_glow.color.a, "deep haze should become more present than the surface glow at depth")
 	_expect(center_play_light.color.a <= 0.2, "center play light should support focal readability without becoming a solid overlay")
+	_expect(left_wall_blocking_rim.color.a >= 0.7 and right_wall_blocking_rim.color.a >= 0.7, "wall collision rims should be readable enough that solid terrain does not feel random")
+	_expect(left_ledge_blocking_lip.color.a >= 0.6 and right_ledge_blocking_lip.color.a >= 0.6, "ledge collision lips should show where the player will bump")
+	_expect(left_wall_blocking_rim.color.a < left_wall.color.a and right_wall_blocking_rim.color.a < right_wall.color.a, "collision rims should clarify terrain without replacing the solid mass")
+	_expect(collision_read_boundaries.find_child("CollisionShape2D", true, false) == null, "collision-read boundary visuals should not add extra hidden collision")
 	_expect(left_platform_mass.color.a >= 0.8, "platform kit shelf masses should read as solid reef rather than route overlays")
 	_expect(left_platform_lip.color.a < left_platform_mass.color.a, "platform kit lip highlights should support terrain edges without becoming the solid mass")
 	_expect(dressing_crystal.color.a < cargo_slot.color.a, "decorative crystals should stay quieter than cargo-object glows")

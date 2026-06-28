@@ -35,6 +35,8 @@ This layer stack is the contract for replacing placeholder polygons with reusabl
 - A reusable `OceanParallaxBackground` now places distant reef walls, stepped shelf silhouettes, open-water pockets, mid-depth plates, and a deep center silhouette behind the lighting stack so the room reads less like flat background bands.
 - A reusable `Area01ReefPlatformKit` now dresses the starter shelves and ledges with stacked shelf masses, darker undercuts, lip highlights, cracks, kelp, and coral accents. These are visual-only children under `TerrainVisualEdges`; collision and route state remain in their existing nodes.
 - A reusable `Area01DressingKit` now adds subdued kelp, coral fans, tube coral, dim crystals, and pebbles around existing shelves/pockets. The dressing stays quieter than cargo/resource glows and adds no interaction, scan, route, hazard, or progression behavior.
+- `CollisionReadBoundaries` now traces the authored Area 01 blocking walls and ledges with stronger visual rims/lips so solid terrain reads before the player collides with it. These are visual-only polygons and do not add collision.
+- The Wide Reef `GlassfinSwarm` now keeps dark body outlines and brighter glass-blue fish bodies so the passive scan target is visible at normal scale without changing its scan-only, non-colliding behavior.
 
 ## Acceptance
 
@@ -42,6 +44,7 @@ At normal 1280x720 play scale:
 
 - the player can tell where open water is;
 - walls and ledges read as terrain rather than route hints;
+- collision boundaries are visible before contact instead of feeling like random invisible walls;
 - background shapes are quieter than solid terrain;
 - cargo/scan object slots do not look like walls;
 - old debug-like area scaffolding does not dominate the view;
