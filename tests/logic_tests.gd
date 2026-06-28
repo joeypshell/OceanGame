@@ -3355,6 +3355,14 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/TerrainVisualEdges/RightWallReefKit",
 		"Area01ArtSlice/TerrainVisualEdges/LeftLedgeReefKit",
 		"Area01ArtSlice/TerrainVisualEdges/RightLedgeReefKit",
+		"Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit",
+		"Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/MainShelfMass",
+		"Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/TopLitLip",
+		"Area01ArtSlice/TerrainVisualEdges/RightShelfPlatformKit",
+		"Area01ArtSlice/TerrainVisualEdges/RightShelfPlatformKit/MainShelfMass",
+		"Area01ArtSlice/TerrainVisualEdges/RightShelfPlatformKit/TopLitLip",
+		"Area01ArtSlice/TerrainVisualEdges/ShallowLeftPlatformKit",
+		"Area01ArtSlice/TerrainVisualEdges/ShallowRightPlatformKit",
 		"Area01ArtSlice/GameplayObjects",
 		"Area01ArtSlice/GameplayObjects/CargoPocketGlow",
 		"Area01ArtSlice/GameplayObjects/ScanFocusPocket",
@@ -3379,6 +3387,8 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	var surface_glow := main.get_node("Area01ArtSlice/OceanLightingStack/SurfaceGlow") as Polygon2D
 	var deep_haze := main.get_node("Area01ArtSlice/OceanLightingStack/DeepBlueHaze") as Polygon2D
 	var center_play_light := main.get_node("Area01ArtSlice/OceanLightingStack/CenterPlayLight") as Polygon2D
+	var left_platform_mass := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/MainShelfMass") as Polygon2D
+	var left_platform_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/TopLitLip") as Polygon2D
 	var cargo_slot := main.get_node("Area01ArtSlice/GameplayObjects/CargoPocketGlow") as Polygon2D
 	var background_study := main.get_node("ShallowMidwaterBackgroundStudy") as Sprite2D
 	var route_choice_band := main.get_node("RouteChoiceBand") as Node2D
@@ -3392,6 +3402,8 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	_expect(surface_glow.color.b > deep_haze.color.b, "ocean lighting stack should grade from brighter surface water into deeper blue haze")
 	_expect(deep_haze.color.a > surface_glow.color.a, "deep haze should become more present than the surface glow at depth")
 	_expect(center_play_light.color.a <= 0.2, "center play light should support focal readability without becoming a solid overlay")
+	_expect(left_platform_mass.color.a >= 0.8, "platform kit shelf masses should read as solid reef rather than route overlays")
+	_expect(left_platform_lip.color.a < left_platform_mass.color.a, "platform kit lip highlights should support terrain edges without becoming the solid mass")
 	_expect(cargo_slot.color.a < left_wall.color.a, "gameplay object slots should not look like solid terrain")
 	_expect(background_study.modulate.a <= 0.24, "old broad background study should sit behind the first real art slice")
 	_expect(not route_choice_band.visible, "route-choice review band should stay hidden by default so the first art slice reads as a place, not a diagram")

@@ -15,6 +15,7 @@ Create and maintain an `Area01ArtSlice` hierarchy in the main scene:
 - `TerrainBackWalls`
 - `TerrainCollision`
 - `TerrainVisualEdges`
+- reusable reef-wall/platform kits
 - `GameplayObjects`
 - `ForegroundDecor`
 
@@ -32,6 +33,7 @@ This layer stack is the contract for replacing placeholder polygons with reusabl
 - A targeted Area 01 shell capture suite now stages `area01-surface-entry`, `area01-left-shelf-cave`, `area01-right-shelf-pocket`, and `area01-central-drop` through web debug commands and Playwright screenshots.
 - A reusable `OceanLightingStack` now grades the room from brighter surface water into deeper blue haze, adds a subtle center play-space light, and uses caustic/vignette overlays to make the dive feel richer without adding route content or gameplay state.
 - A reusable `OceanParallaxBackground` now places distant reef walls, stepped shelf silhouettes, open-water pockets, mid-depth plates, and a deep center silhouette behind the lighting stack so the room reads less like flat background bands.
+- A reusable `Area01ReefPlatformKit` now dresses the starter shelves and ledges with stacked shelf masses, darker undercuts, lip highlights, cracks, kelp, and coral accents. These are visual-only children under `TerrainVisualEdges`; collision and route state remain in their existing nodes.
 
 ## Acceptance
 

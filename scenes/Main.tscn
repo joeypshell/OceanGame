@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=49 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -37,6 +37,7 @@
 [ext_resource type="PackedScene" path="res://scenes/environment/Area01ResourcePocketKit.tscn" id="35_area01_resource_pocket_kit"]
 [ext_resource type="PackedScene" path="res://scenes/environment/OceanLightingStack.tscn" id="36_ocean_lighting_stack"]
 [ext_resource type="PackedScene" path="res://scenes/environment/OceanParallaxBackground.tscn" id="37_ocean_parallax_background"]
+[ext_resource type="PackedScene" path="res://scenes/environment/Area01ReefPlatformKit.tscn" id="38_area01_reef_platform_kit"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -504,19 +505,19 @@ polygon = PackedVector2Array(868, 906, 1106, 850, 1346, 912, 1454, 1002, 1338, 1
 [node name="TerrainVisualEdges" type="Node2D" parent="Area01ArtSlice"]
 
 [node name="ShallowLeftLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
-color = Color(0.42, 0.66, 0.55, 0.5)
+color = Color(0.42, 0.66, 0.55, 0.34)
 polygon = PackedVector2Array(144, 216, 274, 350, 230, 520, 324, 666, 288, 706, 190, 540, 230, 366, 116, 250)
 
 [node name="ShallowRightLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
-color = Color(0.42, 0.66, 0.55, 0.48)
+color = Color(0.42, 0.66, 0.55, 0.32)
 polygon = PackedVector2Array(1018, 250, 1082, 438, 1038, 620, 1002, 792, 1052, 802, 1126, 630, 1082, 444, 1048, 300)
 
 [node name="LeftLedgeLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
-color = Color(0.42, 0.64, 0.52, 0.58)
+color = Color(0.42, 0.64, 0.52, 0.36)
 polygon = PackedVector2Array(54, 842, 278, 802, 456, 858, 520, 924, 454, 944, 278, 882, 60, 918)
 
 [node name="RightLedgeLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
-color = Color(0.45, 0.66, 0.54, 0.56)
+color = Color(0.45, 0.66, 0.54, 0.36)
 polygon = PackedVector2Array(884, 896, 1108, 842, 1346, 904, 1440, 984, 1358, 1010, 1110, 930, 896, 974)
 
 [node name="LeftWallRim" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
@@ -542,6 +543,22 @@ scale = Vector2(0.78, 0.5)
 [node name="RightLedgeReefKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("34_area01_reef_wall_kit")]
 position = Vector2(1130, 932)
 scale = Vector2(0.96, 0.52)
+
+[node name="LeftShelfPlatformKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("38_area01_reef_platform_kit")]
+position = Vector2(290, 844)
+scale = Vector2(1.05, 0.72)
+
+[node name="RightShelfPlatformKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("38_area01_reef_platform_kit")]
+position = Vector2(1130, 886)
+scale = Vector2(1.24, 0.76)
+
+[node name="ShallowLeftPlatformKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("38_area01_reef_platform_kit")]
+position = Vector2(230, 356)
+scale = Vector2(0.64, 0.54)
+
+[node name="ShallowRightPlatformKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("38_area01_reef_platform_kit")]
+position = Vector2(1040, 430)
+scale = Vector2(0.58, 0.5)
 
 [node name="GameplayObjects" type="Node2D" parent="Area01ArtSlice"]
 

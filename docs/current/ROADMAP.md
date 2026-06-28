@@ -32,7 +32,7 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #673-#677: continue visual direction work only where it supports the slice or the larger playable shell.
+1. #674-#677: continue visual direction work only where it supports the slice or the larger playable shell.
 2. #678: compare against the visual reference after the slice has real wall/ledge modules and lighting.
 3. Resume route expansion only after the first room reads as a playable place rather than a diagram.
 4. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
@@ -60,6 +60,7 @@ Primary planning docs:
 - #685 added a cheap targeted Area 01 Playwright capture workflow for `area01-surface-entry`, `area01-left-shelf-cave`, `area01-right-shelf-pocket`, and `area01-central-drop`.
 - #671 added a reusable Area 01 ocean lighting stack with brighter surface wash, stronger blue depth haze, subtle play-space light, caustic ribbons, and edge/lower vignettes so the first room reads less flat without changing gameplay.
 - #672 added a reusable Area 01 parallax-background scene with distant reef walls, stepped shelves, open-water pockets, mid-depth plates, and deep silhouettes so the room reads more like layered geography than flat teal bands.
+- #673 added a reusable Area 01 reef-platform kit and placed it on the starter shelves/ledges so terrain reads more like stacked explorable reef platforms while collision and route ownership stay unchanged.
 
 ## Current Readability Rules
 
