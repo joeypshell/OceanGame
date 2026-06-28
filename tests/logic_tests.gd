@@ -62,6 +62,7 @@ func _initialize() -> void:
 	_run("debug Wreck Echo visual staging", _test_debug_wreck_echo_visual_staging)
 	_run("debug Wide Reef salvage staging guardrails", _test_debug_wide_reef_salvage_staging_guardrails)
 	_run("debug Mirror Kelp evidence staging", _test_debug_mirror_kelp_evidence_staging)
+	_run("debug Outer Shelf evidence staging", _test_debug_outer_shelf_evidence_staging)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("Lantern Ray scan behavior", _test_lantern_ray_scan_behavior)
@@ -725,6 +726,34 @@ func _test_debug_mirror_kelp_evidence_staging() -> void:
 	_expect(main._format_recent_route_memory() == "Mirror Kelp Pass", "Mirrorfin staging should support recent route memory")
 	_expect(main.progression_state.to_save_data() == save_before, "Mirrorfin staging should not mutate durable progression")
 	_expect(not main.progression_state.to_save_data().has("mirror_kelp_pass_route"), "Mirror Kelp staging should not add durable route state")
+	main.queue_free()
+
+func _test_debug_outer_shelf_evidence_staging() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.reset(main.max_oxygen)
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+
+	main.show_debug_telemetry = false
+	main.call("_stage_debug_outer_shelf_visual_review")
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Outer Shelf staging should be ignored while debug telemetry is hidden outside web visual smoke")
+	_expect(main.visual_smoke_route_stage == "", "hidden Outer Shelf staging should not set visual route state")
+	_expect(main.progression_state.to_save_data() == save_before, "hidden Outer Shelf staging should not mutate durable progression")
+
+	main.show_debug_telemetry = true
+	main.call("_stage_debug_outer_shelf_visual_review")
+	var survey_zone := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/InteractZone") as Area2D
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Outer Shelf staging should start or keep a dive active")
+	_expect(main.visual_smoke_route_stage == "outer_shelf_survey", "Outer Shelf staging should expose a deterministic route stage")
+	_expect(main.player.global_position.distance_to(survey_zone.global_position) < 120.0, "Outer Shelf staging should place the player near the survey payoff")
+	_expect(main.dive_session.has_left_base, "Outer Shelf staging should make extraction eligibility match an active route attempt")
+	_expect(main.player_near_outer_shelf_survey, "Outer Shelf staging should expose the survey prompt for readability review")
+	_expect(not main.run_outer_shelf_survey_recovered, "Outer Shelf staging should not auto-complete the survey payoff")
+	_expect(not main.run_tideglass_sample_recovered, "Outer Shelf staging should not inherit Mirror Kelp payoff state")
+	_expect(not main.run_salvage_manifest_recovered, "Outer Shelf staging should not inherit salvage payoff state")
+	_expect(not main.run_completed_scans.has("mirrorfin_drift"), "Outer Shelf staging should not auto-add Mirrorfin evidence")
+	_expect(main.progression_state.to_save_data() == save_before, "Outer Shelf staging should not mutate durable progression")
+	_expect(not main.progression_state.to_save_data().has("outer_shelf_survey"), "Outer Shelf staging should not add durable survey state")
 	main.queue_free()
 
 func _test_scanner_target_resolver() -> void:
@@ -5537,9 +5566,9 @@ func _test_expanded_region_world_bounds() -> void:
 
 	var main_scene := MainScene.instantiate()
 	var camera := main_scene.get_node("Player/Camera2D") as Camera2D
-	_expect(camera.limit_right >= 4380, "camera limit should include Mirror Kelp Pass")
+	_expect(camera.limit_right >= 6120, "camera limit should frame the first Outer Shelf footprint")
 	_expect(camera.limit_bottom >= 3340, "camera limit should include the lower edge of Mirror Kelp Pass")
-	_expect(camera.limit_right <= 4420, "camera limit should stay tight around Mirror Kelp Pass")
+	_expect(camera.limit_right <= 6240, "camera limit should stay tight around the first Outer Shelf footprint")
 	_expect(camera.limit_bottom <= 3380, "camera limit should avoid implying a full lower biome")
 	var sky := main_scene.get_node("Sky") as ColorRect
 	var ocean_shallows := main_scene.get_node("OceanShallows") as ColorRect

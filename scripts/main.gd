@@ -1714,6 +1714,60 @@ func _stage_debug_mirror_kelp_visual_review(recovered := false, observed := fals
 	if is_inside_tree() and active_stats_panel != null:
 		_update_hud()
 
+func _stage_debug_outer_shelf_visual_review() -> void:
+	if not OS.has_feature("web") and not show_debug_telemetry:
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var survey_zone := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/InteractZone") as Area2D
+	if survey_zone == null:
+		return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	player = staged_player
+	player.global_position = survey_zone.global_position + Vector2(-92.0, -36.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	player_near_blackwater_crack = false
+	player_near_glass_kelp_ledge = false
+	player_near_hollow_reef = false
+	player_near_salvage_manifest = false
+	player_near_salvage_data_cache = false
+	player_near_tideglass_sample = false
+	player_near_outer_shelf_survey = true
+	run_reached_dusk_trench = true
+	run_glass_kelp_reading_recovered = false
+	run_hollow_reef_reading_recovered = true
+	run_salvage_manifest_recovered = false
+	run_salvage_data_cache_recovered = false
+	run_tideglass_sample_recovered = false
+	run_outer_shelf_survey_recovered = false
+	while run_completed_scans.has("mirrorfin_drift"):
+		run_completed_scans.erase("mirrorfin_drift")
+	_sync_salvage_manifest_state()
+	_sync_salvage_data_cache_state()
+	_sync_tideglass_sample_state()
+	_sync_outer_shelf_survey_state()
+	_update_outer_shelf_slackwater_timing_cue(OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
+	visual_smoke_route_stage = "outer_shelf_survey"
+	if status_label != null:
+		status_label.text = "Debug review: Outer Shelf survey and Glass Rim route staged."
+
+	dive_session.current_depth = maxf(0.0, (player.global_position.y - surface_y) / pixels_per_meter)
+	if is_inside_tree() and active_stats_panel != null:
+		_update_hud()
+
 func _stage_debug_open_hatch_alcove_visual_review() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -1800,6 +1854,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_mirror_kelp_visual_review(true)
 		"mirror_kelp_mirrorfin":
 			_stage_debug_mirror_kelp_visual_review(false, true)
+		"outer_shelf_survey":
+			_stage_debug_outer_shelf_visual_review()
 		"open_hatch_resonance_alcove":
 			_stage_debug_open_hatch_alcove_visual_review()
 

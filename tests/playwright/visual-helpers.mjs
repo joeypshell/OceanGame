@@ -275,6 +275,20 @@ export async function stageWideReefSalvageOpen(page) {
   });
 }
 
+export async function stageOuterShelfSurvey(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "outer_shelf_survey";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "outer_shelf_survey",
+    outer_shelf_survey_recovered: false,
+    tideglass_sample_recovered: false,
+    salvage_manifest_recovered: false,
+  });
+}
+
 export async function stageOpenHatchResonanceAlcove(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "open_hatch_resonance_alcove";

@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOuterShelfSurvey, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -243,6 +243,20 @@ test.describe("OceanGame web visual smoke", () => {
       active_stats_visible: true,
       route_stage: "open_hatch_resonance_alcove",
       resonance_alcove_research_recovered: true,
+    });
+  });
+
+  test("captures the staged Outer Shelf survey and Glass Rim route view", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageOuterShelfSurvey(page);
+    await capture(page, testInfo, "outer-shelf-survey-staged", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "outer_shelf_survey",
+      outer_shelf_survey_recovered: false,
+      tideglass_sample_recovered: false,
+      salvage_manifest_recovered: false,
     });
   });
 

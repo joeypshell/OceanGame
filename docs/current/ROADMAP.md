@@ -22,11 +22,11 @@ Primary planning docs:
 - `docs/planning/AREA_01_BLUE_HOLE_ATLAS_2026_06_27.md`
 - `docs/planning/SALVAGE_CUTTER_RETURN_PAYOFF_VALIDATION_2026_06_27.md`
 - `docs/planning/AREA_02_LARGER_ROUTE_PROGRESS_2026_06_27.md`
+- `docs/planning/AREA_02_OUTER_SHELF_EVIDENCE_2026_06_27.md`
 
 ## Immediate Issue Order
 
-1. #636: add deterministic staging and one evidence capture for the new Area 02 route.
-2. Recalibrate before opening broader Area 02 content so route growth does not outrun readability or the survival loop.
+1. Recalibrate before opening broader Area 02 content so route growth does not outrun readability or the survival loop.
 
 ## Completed In This Readability Rescue
 
@@ -42,6 +42,7 @@ Primary planning docs:
 - #633 added one Outer Shelf cargo-vs-knowledge payoff choice.
 - #634 made extraction results, recent expedition memory, and the next ready goal tease a compact Outer Shelf return hypothesis without adding checklist/map behavior.
 - #635 added a quiet `RIM SEAL NEEDED` future promise beyond Glass Rim Cut so Area 02 has a remembered upgrade-return target without adding new route state.
+- #636 added deterministic `outer_shelf_survey` staging and one targeted Playwright evidence capture path for the Area 02 route without changing durable progression.
 
 ## Current Readability Rules
 

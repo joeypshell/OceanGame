@@ -353,25 +353,25 @@ related_upgrades = "predator_warning_1,decoy_pulse_1"
 readability_priority = "Danger before contact and route timing."
 
 [node name="Sky" type="ColorRect" parent="."]
-offset_right = 4380.0
+offset_right = 6200.0
 offset_bottom = 120.0
 color = Color(0.47, 0.78, 0.88, 1)
 
 [node name="OceanShallows" type="ColorRect" parent="."]
 offset_top = 120.0
-offset_right = 4380.0
+offset_right = 6200.0
 offset_bottom = 760.0
 color = Color(0.014, 0.31, 0.4, 1)
 
 [node name="OceanMidwater" type="ColorRect" parent="."]
 offset_top = 760.0
-offset_right = 4380.0
+offset_right = 6200.0
 offset_bottom = 1460.0
 color = Color(0.01, 0.16, 0.28, 1)
 
 [node name="OceanDeep" type="ColorRect" parent="."]
 offset_top = 1460.0
-offset_right = 4380.0
+offset_right = 6200.0
 offset_bottom = 3380.0
 color = Color(0.005, 0.048, 0.115, 1)
 
@@ -383,19 +383,19 @@ modulate = Color(1, 1, 1, 0.48)
 
 [node name="ShallowMidwaterTransition" type="ColorRect" parent="."]
 offset_top = 736.0
-offset_right = 4380.0
+offset_right = 6200.0
 offset_bottom = 790.0
 color = Color(0.58, 0.9, 0.92, 0.11)
 
 [node name="MidwaterDeepTransition" type="ColorRect" parent="."]
 offset_top = 1430.0
-offset_right = 4380.0
+offset_right = 6200.0
 offset_bottom = 1494.0
 color = Color(0.24, 0.42, 0.74, 0.14)
 
 [node name="SurfaceLine" type="ColorRect" parent="."]
 offset_top = 118.0
-offset_right = 4380.0
+offset_right = 6200.0
 offset_bottom = 124.0
 color = Color(0.74, 0.96, 1, 1)
 
@@ -1995,7 +1995,7 @@ polygon = PackedVector2Array(806, 1420, 974, 1420, 1038, 1760, 744, 1760)
 
 [node name="DeepPressureHaze" type="Polygon2D" parent="."]
 color = Color(0.28, 0.42, 0.8, 0.055)
-polygon = PackedVector2Array(0, 1460, 4380, 1460, 4380, 3380, 0, 3380)
+polygon = PackedVector2Array(0, 1460, 6200, 1460, 6200, 3380, 0, 3380)
 
 [node name="DeepRewardLure" type="Node2D" parent="."]
 visible = false
@@ -3086,7 +3086,7 @@ zoom = Vector2(0.72, 0.72)
 enabled = true
 limit_left = 0
 limit_top = 0
-limit_right = 4380
+limit_right = 6200
 limit_bottom = 3340
 
 [node name="HUD" type="CanvasLayer" parent="."]
