@@ -1231,6 +1231,13 @@ func _test_outer_shelf_glass_rim_branch() -> void:
 	var lower_rim := branch.get_node("LowerCutRim") as Polygon2D
 	var return_wash := branch.get_node("BranchReturnWash") as Polygon2D
 	var branch_label := branch.get_node("BranchLabel") as Label
+	var rim_promise := outer_shelf.get_node("RimSealPromise") as Node2D
+	var rim_promise_mouth := rim_promise.get_node("SealMouth") as Polygon2D
+	var rim_promise_veil := rim_promise.get_node("SealVeil") as Polygon2D
+	var rim_promise_bars := rim_promise.get_node("RimSealBars") as Polygon2D
+	var rim_promise_glint := rim_promise.get_node("FutureGlint") as Polygon2D
+	var rim_promise_label := rim_promise.get_node("PromiseLabel") as Label
+	var survey_core := outer_shelf.get_node("OuterShelfSurveyCore/SurveyCore") as Polygon2D
 	var outer_metadata := main.get_node("LandmarkMetadata/OuterShelf")
 	var branch_metadata := main.get_node("LandmarkMetadata/GlassRimCut")
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
@@ -1253,6 +1260,19 @@ func _test_outer_shelf_glass_rim_branch() -> void:
 	_expect(branch.find_child("ScannerObjective", true, false) == null, "Glass Rim Cut branch should not add objective-like scanner UI")
 	_expect(branch.find_child("LootTable", true, false) == null, "Glass Rim Cut branch should not add loot tables")
 	_expect(branch.find_child("HealthBar", true, false) == null, "Glass Rim Cut branch should not add combat UI")
+	_expect(rim_promise.position.x > branch.position.x, "Rim Seal Promise should sit beyond the visible Glass Rim Cut landmark")
+	_expect(rim_promise_label.text == "RIM SEAL NEEDED", "Rim Seal Promise should name the missing capability compactly")
+	_expect(not rim_promise_label.text.to_lower().contains("objective"), "Rim Seal Promise should not read like a checklist objective")
+	_expect(not rim_promise_label.text.to_lower().contains("map"), "Rim Seal Promise should not imply exact map UI")
+	_expect(rim_promise_mouth.color.a >= 0.5, "Rim Seal Promise should read as a blocked future route mouth")
+	_expect(rim_promise_veil.color.a <= 0.14, "Rim Seal Promise veil should stay quieter than active goals")
+	_expect(rim_promise_bars.color.a <= 0.24, "Rim Seal Promise bars should stay quieter than recoverable payoffs")
+	_expect(rim_promise_glint.color.a <= 0.28, "Rim Seal Promise glint should be curiosity, not a reward marker")
+	_expect(rim_promise_bars.color.a < survey_core.color.a, "Rim Seal Promise should be quieter than the active Outer Shelf survey payoff")
+	_expect(rim_promise.get_node_or_null("InteractZone") == null, "Rim Seal Promise should not add an active interaction")
+	_expect(rim_promise.find_child("CollisionShape2D", true, false) == null, "Rim Seal Promise should not add collision")
+	_expect(rim_promise.find_child("ResourcePickup", true, false) == null, "Rim Seal Promise should not create cargo")
+	_expect(rim_promise.find_child("UpgradeDefinition", true, false) == null, "Rim Seal Promise should not create a purchasable upgrade entry")
 	var outer_memory := "%s %s %s" % [
 		String(outer_metadata.get("display_name")),
 		String(outer_metadata.get("memory_goal")),

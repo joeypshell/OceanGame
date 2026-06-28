@@ -25,9 +25,8 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #635: add one visible future lock or upgrade promise tied to a seen Outer Shelf place.
-2. #636: add deterministic staging and one evidence capture for the new Area 02 route.
-3. Recalibrate before opening broader Area 02 content so route growth does not outrun readability or the survival loop.
+1. #636: add deterministic staging and one evidence capture for the new Area 02 route.
+2. Recalibrate before opening broader Area 02 content so route growth does not outrun readability or the survival loop.
 
 ## Completed In This Readability Rescue
 
@@ -42,6 +41,7 @@ Primary planning docs:
 - #637 and #638 fixed the active HUD overlap and clarified Emergency Week base-needs/result copy enough to resume one Area 02 payoff slice.
 - #633 added one Outer Shelf cargo-vs-knowledge payoff choice.
 - #634 made extraction results, recent expedition memory, and the next ready goal tease a compact Outer Shelf return hypothesis without adding checklist/map behavior.
+- #635 added a quiet `RIM SEAL NEEDED` future promise beyond Glass Rim Cut so Area 02 has a remembered upgrade-return target without adding new route state.
 
 ## Current Readability Rules
 
