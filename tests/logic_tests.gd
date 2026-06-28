@@ -3371,6 +3371,14 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket",
 		"Area01ArtSlice/GameplayObjects/RightDeepResourcePocket",
 		"Area01ArtSlice/ForegroundDecor",
+		"Area01ArtSlice/ForegroundDecor/LeftShelfDressing",
+		"Area01ArtSlice/ForegroundDecor/LeftShelfDressing/KelpFrondA",
+		"Area01ArtSlice/ForegroundDecor/LeftShelfDressing/CoralFan",
+		"Area01ArtSlice/ForegroundDecor/LeftShelfDressing/DimCrystalA",
+		"Area01ArtSlice/ForegroundDecor/LeftCaveDressing",
+		"Area01ArtSlice/ForegroundDecor/RightShelfDressing",
+		"Area01ArtSlice/ForegroundDecor/RightDeepDressing",
+		"Area01ArtSlice/ForegroundDecor/CentralDropDressing",
 	]
 	for path in slice_paths:
 		_expect(main.get_node_or_null(path) != null, "Area 01 art slice should include %s" % path)
@@ -3389,6 +3397,8 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	var center_play_light := main.get_node("Area01ArtSlice/OceanLightingStack/CenterPlayLight") as Polygon2D
 	var left_platform_mass := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/MainShelfMass") as Polygon2D
 	var left_platform_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/TopLitLip") as Polygon2D
+	var dressing_crystal := main.get_node("Area01ArtSlice/ForegroundDecor/LeftShelfDressing/DimCrystalA") as Polygon2D
+	var dressing_coral := main.get_node("Area01ArtSlice/ForegroundDecor/LeftShelfDressing/CoralFan") as Polygon2D
 	var cargo_slot := main.get_node("Area01ArtSlice/GameplayObjects/CargoPocketGlow") as Polygon2D
 	var background_study := main.get_node("ShallowMidwaterBackgroundStudy") as Sprite2D
 	var route_choice_band := main.get_node("RouteChoiceBand") as Node2D
@@ -3404,6 +3414,8 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	_expect(center_play_light.color.a <= 0.2, "center play light should support focal readability without becoming a solid overlay")
 	_expect(left_platform_mass.color.a >= 0.8, "platform kit shelf masses should read as solid reef rather than route overlays")
 	_expect(left_platform_lip.color.a < left_platform_mass.color.a, "platform kit lip highlights should support terrain edges without becoming the solid mass")
+	_expect(dressing_crystal.color.a < cargo_slot.color.a, "decorative crystals should stay quieter than cargo-object glows")
+	_expect(dressing_coral.color.a < left_platform_mass.color.a, "decorative coral should enrich shelves without competing with terrain masses")
 	_expect(cargo_slot.color.a < left_wall.color.a, "gameplay object slots should not look like solid terrain")
 	_expect(background_study.modulate.a <= 0.24, "old broad background study should sit behind the first real art slice")
 	_expect(not route_choice_band.visible, "route-choice review band should stay hidden by default so the first art slice reads as a place, not a diagram")

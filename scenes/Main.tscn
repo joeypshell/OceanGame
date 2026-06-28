@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=50 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -38,6 +38,7 @@
 [ext_resource type="PackedScene" path="res://scenes/environment/OceanLightingStack.tscn" id="36_ocean_lighting_stack"]
 [ext_resource type="PackedScene" path="res://scenes/environment/OceanParallaxBackground.tscn" id="37_ocean_parallax_background"]
 [ext_resource type="PackedScene" path="res://scenes/environment/Area01ReefPlatformKit.tscn" id="38_area01_reef_platform_kit"]
+[ext_resource type="PackedScene" path="res://scenes/environment/Area01DressingKit.tscn" id="39_area01_dressing_kit"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
@@ -640,6 +641,26 @@ polygon = PackedVector2Array(118, 964, 132, 838, 148, 966, 172, 888, 184, 974, 2
 [node name="ForegroundRightKelp" type="Polygon2D" parent="Area01ArtSlice/ForegroundDecor"]
 color = Color(0.06, 0.34, 0.18, 0.58)
 polygon = PackedVector2Array(1244, 1050, 1258, 906, 1274, 1054, 1302, 958, 1318, 1062, 1348, 1004, 1356, 1070, 1222, 1070)
+
+[node name="LeftShelfDressing" parent="Area01ArtSlice/ForegroundDecor" instance=ExtResource("39_area01_dressing_kit")]
+position = Vector2(180, 840)
+scale = Vector2(0.82, 0.78)
+
+[node name="LeftCaveDressing" parent="Area01ArtSlice/ForegroundDecor" instance=ExtResource("39_area01_dressing_kit")]
+position = Vector2(422, 986)
+scale = Vector2(-0.78, 0.76)
+
+[node name="RightShelfDressing" parent="Area01ArtSlice/ForegroundDecor" instance=ExtResource("39_area01_dressing_kit")]
+position = Vector2(1032, 854)
+scale = Vector2(0.86, 0.76)
+
+[node name="RightDeepDressing" parent="Area01ArtSlice/ForegroundDecor" instance=ExtResource("39_area01_dressing_kit")]
+position = Vector2(1218, 1066)
+scale = Vector2(-0.92, 0.82)
+
+[node name="CentralDropDressing" parent="Area01ArtSlice/ForegroundDecor" instance=ExtResource("39_area01_dressing_kit")]
+position = Vector2(682, 1028)
+scale = Vector2(0.66, 0.64)
 
 [node name="SafeShallowsExplorationShell" type="Node2D" parent="."]
 visible = false

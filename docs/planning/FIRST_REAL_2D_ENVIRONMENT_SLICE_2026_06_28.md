@@ -34,6 +34,7 @@ This layer stack is the contract for replacing placeholder polygons with reusabl
 - A reusable `OceanLightingStack` now grades the room from brighter surface water into deeper blue haze, adds a subtle center play-space light, and uses caustic/vignette overlays to make the dive feel richer without adding route content or gameplay state.
 - A reusable `OceanParallaxBackground` now places distant reef walls, stepped shelf silhouettes, open-water pockets, mid-depth plates, and a deep center silhouette behind the lighting stack so the room reads less like flat background bands.
 - A reusable `Area01ReefPlatformKit` now dresses the starter shelves and ledges with stacked shelf masses, darker undercuts, lip highlights, cracks, kelp, and coral accents. These are visual-only children under `TerrainVisualEdges`; collision and route state remain in their existing nodes.
+- A reusable `Area01DressingKit` now adds subdued kelp, coral fans, tube coral, dim crystals, and pebbles around existing shelves/pockets. The dressing stays quieter than cargo/resource glows and adds no interaction, scan, route, hazard, or progression behavior.
 
 ## Acceptance
 
