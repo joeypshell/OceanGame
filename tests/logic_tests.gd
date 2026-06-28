@@ -87,6 +87,7 @@ func _initialize() -> void:
 	_run("scan pulse visual helper", _test_scan_pulse_visual_helper)
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
 	_run("Area 01 first art slice scene contract", _test_area_01_first_art_slice_scene_contract)
+	_run("Area 01 starter resource pocket placement", _test_area_01_starter_resource_pocket_placement)
 	_run("east shelf spur branch scene contract", _test_east_shelf_spur_branch_scene_contract)
 	_run("landmark region identity metadata", _test_landmark_region_identity_metadata)
 	_run("predator scan target", _test_predator_scan_target)
@@ -3320,6 +3321,10 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/GameplayObjects",
 		"Area01ArtSlice/GameplayObjects/CargoPocketGlow",
 		"Area01ArtSlice/GameplayObjects/ScanFocusPocket",
+		"Area01ArtSlice/GameplayObjects/LeftShallowResourcePocket",
+		"Area01ArtSlice/GameplayObjects/RightShelfResourcePocket",
+		"Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket",
+		"Area01ArtSlice/GameplayObjects/RightDeepResourcePocket",
 		"Area01ArtSlice/ForegroundDecor",
 	]
 	for path in slice_paths:
@@ -3341,6 +3346,41 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	_expect(cargo_slot.color.a < left_wall.color.a, "gameplay object slots should not look like solid terrain")
 	_expect(background_study.modulate.a <= 0.24, "old broad background study should sit behind the first real art slice")
 	_expect(not route_choice_band.visible, "route-choice review band should stay hidden by default so the first art slice reads as a place, not a diagram")
+	main.free()
+
+func _test_area_01_starter_resource_pocket_placement() -> void:
+	var main := MainScene.instantiate()
+	var left_shallow := main.get_node("Area01ArtSlice/GameplayObjects/LeftShallowResourcePocket") as Node2D
+	var right_shelf := main.get_node("Area01ArtSlice/GameplayObjects/RightShelfResourcePocket") as Node2D
+	var left_cave := main.get_node("Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket") as Node2D
+	var right_deep := main.get_node("Area01ArtSlice/GameplayObjects/RightDeepResourcePocket") as Node2D
+	var pocket_checks := {
+		"StarterResourceCandidates/FoodSupply/A": left_shallow,
+		"StarterResourceCandidates/WaterSupply/A": left_shallow,
+		"StarterResourceCandidates/Driftwood/A": left_shallow,
+		"StarterResourceCandidates/KelpFiber/C": left_shallow,
+		"StarterResourceCandidates/FoodSupply/B": right_shelf,
+		"StarterResourceCandidates/WaterSupply/B": right_shelf,
+		"StarterResourceCandidates/Driftwood/B": right_shelf,
+		"StarterResourceCandidates/KelpFiber/B": right_shelf,
+		"StarterResourceCandidates/ScrapMetal/A": left_cave,
+		"StarterResourceCandidates/ShellFragments/A": left_cave,
+		"StarterResourceCandidates/ScrapMetal/B": right_deep,
+		"StarterResourceCandidates/QuartzGlass/A": right_deep,
+		"StarterResourceCandidates/ShellFragments/B": right_deep,
+	}
+	for path in pocket_checks.keys():
+		var candidate := main.get_node(path) as SpawnPoint
+		var pocket := pocket_checks[path] as Node2D
+		_expect(candidate.global_position.distance_to(pocket.global_position) <= 130.0, "starter resource candidate should sit inside its readable art-slice pocket: %s" % path)
+
+	var food_a := main.get_node("StarterResourceCandidates/FoodSupply/A") as SpawnPoint
+	var water_a := main.get_node("StarterResourceCandidates/WaterSupply/A") as SpawnPoint
+	var quartz_a := main.get_node("StarterResourceCandidates/QuartzGlass/A") as SpawnPoint
+	var shell_b := main.get_node("StarterResourceCandidates/ShellFragments/B") as SpawnPoint
+	_expect(food_a.depth_band == "shallow" and water_a.depth_band == "shallow", "survival supply pockets should stay shallow enough to teach early routes")
+	_expect(quartz_a.global_position.y > food_a.global_position.y, "quartz should sit deeper than the first food pocket")
+	_expect(shell_b.global_position.y > water_a.global_position.y, "shell material should sit deeper than the first water pocket")
 	main.free()
 
 func _test_landmark_region_identity_metadata() -> void:

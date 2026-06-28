@@ -529,6 +529,50 @@ polygon = PackedVector2Array(252, 766, 292, 738, 342, 752, 364, 800, 326, 838, 2
 color = Color(0.82, 0.92, 0.55, 0.18)
 polygon = PackedVector2Array(1142, 810, 1182, 778, 1238, 786, 1274, 832, 1236, 884, 1174, 874, 1132, 842)
 
+[node name="LeftShallowResourcePocket" type="Node2D" parent="Area01ArtSlice/GameplayObjects"]
+position = Vector2(318, 790)
+
+[node name="PocketWash" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/LeftShallowResourcePocket"]
+color = Color(0.08, 0.72, 0.84, 0.2)
+polygon = PackedVector2Array(-98, -54, 32, -80, 112, -18, 80, 58, -62, 76, -126, 12)
+
+[node name="DepositShelf" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/LeftShallowResourcePocket"]
+color = Color(0.5, 0.68, 0.48, 0.34)
+polygon = PackedVector2Array(-76, 28, 60, 18, 112, 50, -38, 72)
+
+[node name="RightShelfResourcePocket" type="Node2D" parent="Area01ArtSlice/GameplayObjects"]
+position = Vector2(1084, 850)
+
+[node name="PocketWash" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/RightShelfResourcePocket"]
+color = Color(0.08, 0.72, 0.84, 0.18)
+polygon = PackedVector2Array(-130, -56, 62, -74, 146, 4, 98, 82, -72, 70, -164, 10)
+
+[node name="DepositShelf" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/RightShelfResourcePocket"]
+color = Color(0.48, 0.66, 0.48, 0.32)
+polygon = PackedVector2Array(-98, 26, 82, 12, 142, 48, -48, 76)
+
+[node name="LeftCaveResourcePocket" type="Node2D" parent="Area01ArtSlice/GameplayObjects"]
+position = Vector2(356, 1004)
+
+[node name="PocketWash" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket"]
+color = Color(0.04, 0.36, 0.48, 0.24)
+polygon = PackedVector2Array(-130, -78, 78, -92, 158, -18, 110, 82, -78, 96, -176, 18)
+
+[node name="DepositShelf" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket"]
+color = Color(0.56, 0.48, 0.34, 0.36)
+polygon = PackedVector2Array(-116, 30, 96, 18, 162, 56, -50, 90)
+
+[node name="RightDeepResourcePocket" type="Node2D" parent="Area01ArtSlice/GameplayObjects"]
+position = Vector2(1128, 1070)
+
+[node name="PocketWash" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/RightDeepResourcePocket"]
+color = Color(0.08, 0.56, 0.74, 0.2)
+polygon = PackedVector2Array(-164, -90, 108, -112, 208, -12, 144, 102, -116, 96, -218, 4)
+
+[node name="DepositShelf" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/RightDeepResourcePocket"]
+color = Color(0.36, 0.58, 0.62, 0.34)
+polygon = PackedVector2Array(-130, 34, 130, 14, 204, 62, -74, 98)
+
 [node name="ForegroundDecor" type="Node2D" parent="Area01ArtSlice"]
 z_index = 1
 
@@ -2565,7 +2609,7 @@ shape = SubResource("CircleShape2D_base_zone")
 [node name="KelpFiber" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
-position = Vector2(760, 390)
+position = Vector2(598, 610)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_shallow_a"
 target_id = "kelp_fiber"
@@ -2573,7 +2617,7 @@ depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
-position = Vector2(900, 470)
+position = Vector2(1074, 812)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_shallow_b"
 target_id = "kelp_fiber"
@@ -2581,7 +2625,7 @@ depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="C" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
-position = Vector2(560, 570)
+position = Vector2(342, 762)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_shallow_c"
 target_id = "kelp_fiber"
@@ -2589,7 +2633,7 @@ depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="D" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
-position = Vector2(940, 430)
+position = Vector2(1134, 840)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_deep_route_a"
 target_id = "kelp_fiber"
@@ -2597,7 +2641,7 @@ depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="E" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
-position = Vector2(1010, 540)
+position = Vector2(998, 890)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_deep_route_b"
 target_id = "kelp_fiber"
@@ -2605,7 +2649,7 @@ depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="F" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
-position = Vector2(820, 610)
+position = Vector2(380, 820)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_deep_route_c"
 target_id = "kelp_fiber"
@@ -2631,7 +2675,7 @@ cluster_pattern = "deep_reward"
 [node name="ShellFragments" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
-position = Vector2(450, 900)
+position = Vector2(380, 1010)
 script = ExtResource("9_spawn_point")
 spawn_id = "shell_midwater_a"
 target_id = "shell_fragments"
@@ -2639,7 +2683,7 @@ depth_band = "midwater"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
-position = Vector2(700, 1020)
+position = Vector2(1110, 1064)
 script = ExtResource("9_spawn_point")
 spawn_id = "shell_midwater_b"
 target_id = "shell_fragments"
@@ -2647,7 +2691,7 @@ depth_band = "midwater"
 cluster_pattern = "cautious"
 
 [node name="C" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
-position = Vector2(1010, 1130)
+position = Vector2(1188, 1102)
 script = ExtResource("9_spawn_point")
 spawn_id = "shell_midwater_c"
 target_id = "shell_fragments"
@@ -2655,7 +2699,7 @@ depth_band = "midwater"
 cluster_pattern = "cautious"
 
 [node name="D" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
-position = Vector2(880, 1110)
+position = Vector2(1048, 1068)
 script = ExtResource("9_spawn_point")
 spawn_id = "shell_deep_route_a"
 target_id = "shell_fragments"
@@ -2663,7 +2707,7 @@ depth_band = "midwater"
 cluster_pattern = "deep_reward"
 
 [node name="E" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
-position = Vector2(1040, 1240)
+position = Vector2(1194, 1184)
 script = ExtResource("9_spawn_point")
 spawn_id = "shell_deep_route_b"
 target_id = "shell_fragments"
@@ -2671,7 +2715,7 @@ depth_band = "midwater"
 cluster_pattern = "deep_reward"
 
 [node name="F" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
-position = Vector2(720, 1340)
+position = Vector2(428, 1078)
 script = ExtResource("9_spawn_point")
 spawn_id = "shell_deep_route_c"
 target_id = "shell_fragments"
@@ -2789,7 +2833,7 @@ cluster_pattern = "deep_reward"
 [node name="ScrapMetal" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/ScrapMetal"]
-position = Vector2(332, 1036)
+position = Vector2(314, 1000)
 script = ExtResource("9_spawn_point")
 spawn_id = "scrap_left_cave_a"
 target_id = "scrap_metal"
@@ -2797,7 +2841,7 @@ depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/ScrapMetal"]
-position = Vector2(1184, 1012)
+position = Vector2(1130, 1018)
 script = ExtResource("9_spawn_point")
 spawn_id = "scrap_right_chamber_a"
 target_id = "scrap_metal"
@@ -2807,7 +2851,7 @@ cluster_pattern = "deep_reward"
 [node name="Driftwood" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/Driftwood"]
-position = Vector2(430, 720)
+position = Vector2(288, 780)
 script = ExtResource("9_spawn_point")
 spawn_id = "driftwood_left_ledge_a"
 target_id = "driftwood"
@@ -2815,7 +2859,7 @@ depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/Driftwood"]
-position = Vector2(1378, 922)
+position = Vector2(1040, 838)
 script = ExtResource("9_spawn_point")
 spawn_id = "driftwood_right_ledge_a"
 target_id = "driftwood"
@@ -2825,7 +2869,7 @@ cluster_pattern = "deep_reward"
 [node name="QuartzGlass" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/QuartzGlass"]
-position = Vector2(1260, 1150)
+position = Vector2(1160, 1060)
 script = ExtResource("9_spawn_point")
 spawn_id = "quartz_right_pocket_a"
 target_id = "quartz_glass"
@@ -2833,7 +2877,7 @@ depth_band = "midwater"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/QuartzGlass"]
-position = Vector2(1130, 1860)
+position = Vector2(1218, 1180)
 script = ExtResource("9_spawn_point")
 spawn_id = "quartz_deep_chamber_a"
 target_id = "quartz_glass"
@@ -2843,7 +2887,7 @@ cluster_pattern = "deep_reward"
 [node name="FoodSupply" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/FoodSupply"]
-position = Vector2(360, 940)
+position = Vector2(264, 802)
 script = ExtResource("9_spawn_point")
 spawn_id = "food_left_cave_a"
 target_id = "food_supply"
@@ -2851,7 +2895,7 @@ depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/FoodSupply"]
-position = Vector2(1480, 1032)
+position = Vector2(1118, 872)
 script = ExtResource("9_spawn_point")
 spawn_id = "food_right_chamber_a"
 target_id = "food_supply"
@@ -2861,7 +2905,7 @@ cluster_pattern = "deep_reward"
 [node name="WaterSupply" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/WaterSupply"]
-position = Vector2(590, 1180)
+position = Vector2(350, 824)
 script = ExtResource("9_spawn_point")
 spawn_id = "water_left_pocket_a"
 target_id = "water_supply"
@@ -2869,7 +2913,7 @@ depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/WaterSupply"]
-position = Vector2(1560, 1184)
+position = Vector2(1182, 884)
 script = ExtResource("9_spawn_point")
 spawn_id = "water_right_pocket_a"
 target_id = "water_supply"

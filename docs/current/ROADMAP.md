@@ -32,16 +32,14 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #686: build the first real 2D environment-room slice and hide the debug-like broad shell in normal play.
-2. #681: place starter resources inside readable pockets in the slice so exploration teaches collection.
-3. #683: replace the most important slice polygons with reusable reef-wall/ledge art modules.
-4. #684 and #670: keep the HUD compact and contextual around the slice, especially scan prompts and active objective copy.
-5. #682: tie one surface upgrade or night choice to starter resources after the room has readable resource pockets.
-6. #685: add deterministic captures for the playable exploration slice.
-7. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
-8. #678: compare against the visual reference after the slice has real wall/ledge modules.
-9. Resume route expansion only after the first room reads as a playable place rather than a diagram.
-10. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #683: replace the most important slice polygons with reusable reef-wall/ledge art modules.
+2. #684 and #670: keep the HUD compact and contextual around the slice, especially scan prompts and active objective copy.
+3. #682: tie one surface upgrade or night choice to starter resources after the room has readable resource pockets.
+4. #685: add deterministic captures for the playable exploration slice.
+5. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
+6. #678: compare against the visual reference after the slice has real wall/ledge modules.
+7. Resume route expansion only after the first room reads as a playable place rather than a diagram.
+8. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -58,6 +56,8 @@ Primary planning docs:
 - #634 made extraction results, recent expedition memory, and the next ready goal tease a compact Outer Shelf return hypothesis without adding checklist/map behavior.
 - #635 added a quiet `RIM SEAL NEEDED` future promise beyond Glass Rim Cut so Area 02 has a remembered upgrade-return target without adding new route state.
 - #636 added deterministic `outer_shelf_survey` staging and one targeted Playwright evidence capture path for the Area 02 route without changing durable progression.
+- #686 built the first real Area 01 art/playability slice and hid the debug-like broad exploration shell in normal play.
+- #681 placed starter resource candidates into four readable Area 01 pockets so supplies and materials start teaching the room layout.
 
 ## Current Readability Rules
 

@@ -24,6 +24,7 @@ This layer stack is the contract for replacing placeholder polygons with reusabl
 - A first-pass `Area01ArtSlice` now sits behind the active play space with opaque terrain masses, quieter far/mid background pockets, visible ledge edges, light shafts, foreground kelp, and explicit object-slot glows.
 - The previous broad `SafeShallowsExplorationShell` remains in the scene as historical scaffolding but is hidden by default because it made normal play feel like overlapping route/debug overlays.
 - The slice uses simple polygons as temporary art slots. It is not final art and should not be treated as the finished Area 01 look.
+- Starter resource spawn candidates now align to four readable pockets in the slice: a shallow left supply pocket, a shallow/right shelf pocket, a left cave material pocket, and a deeper right material pocket. These are still authored spawn candidates, not new resource families or procedural generation.
 
 ## Acceptance
 
@@ -39,7 +40,7 @@ At normal 1280x720 play scale:
 ## Next Work
 
 1. Replace the most important `Area01ArtSlice` polygons with reusable reef-wall and ledge sprite modules.
-2. Move actual starter resources into readable pockets inside the slice without adding new resource families.
+2. Replace the temporary pocket washes/deposit shelves with reusable reef-wall, ledge, cargo-pocket, and resource-bed art modules.
 3. Add one passive scan target or existing scan target placement inside the slice only if it improves the room's teachable focus.
 4. Keep route expansion paused until the slice reads like a playable room rather than a diagram.
 
