@@ -5430,6 +5430,13 @@ func _test_compact_dive_hud_helpers() -> void:
 	main_scene.dive_session.cargo_limit = 3
 	main_scene.call("_apply_active_hud_layout")
 	main_scene.call("_update_cargo_slots")
+	_expect(_control_rect(active_panel).size.x <= 280.0, "active stats panel should keep a compact reference-style width")
+	_expect(_control_rect(active_panel).size.y <= 120.0, "active stats panel should keep a compact reference-style height")
+	_expect(_control_rect(cargo_panel).size.y <= 62.0, "cargo strip should stay shallow and avoid wasting top-screen space")
+	_expect(_control_rect(survival_panel).size.x <= 250.0, "survival needs panel should keep a compact reference-style width")
+	_expect(_control_rect(dive_info_panel).size.x <= 300.0, "route objective card should stay compact")
+	_expect(_control_rect(tool_belt_panel).size.y <= 66.0, "tool belt should stay close to the lower edge without tall glass")
+	_expect(_control_rect(minimap_panel).size.x <= 192.0, "minimap should stay compact in the lower-right corner")
 	_expect(_control_rect(cargo_panel).encloses(_control_rect(cargo_label)), "active Cargo label should stay inside the top-center cargo strip")
 	_expect(_control_rect(survival_panel).encloses(_control_rect(food_label)), "Food need should stay inside the top-right survival panel")
 	_expect(_control_rect(survival_panel).encloses(_control_rect(water_label)), "Water need should stay inside the top-right survival panel")

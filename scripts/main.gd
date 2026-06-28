@@ -66,52 +66,52 @@ const RUN_SUMMARY_COMPACT_BOTTOM := 314.0
 const RUN_SUMMARY_TALL_BOTTOM := 624.0
 const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
 const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
-const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(330.0, 162.0))
-const CARGO_PANEL_RECT := Rect2(Vector2(456.0, 16.0), Vector2(368.0, 78.0))
-const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(994.0, 16.0), Vector2(270.0, 132.0))
-const DIVE_INFO_RECT := Rect2(Vector2(16.0, 196.0), Vector2(340.0, 126.0))
-const SCAN_CARD_RECT := Rect2(Vector2(930.0, 220.0), Vector2(300.0, 132.0))
-const TOOL_BELT_PANEL_RECT := Rect2(Vector2(440.0, 628.0), Vector2(400.0, 76.0))
-const MINIMAP_PANEL_RECT := Rect2(Vector2(1032.0, 530.0), Vector2(210.0, 164.0))
-const OXYGEN_WARNING_RECT := Rect2(Vector2(16.0, 456.0), Vector2(300.0, 68.0))
+const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(272.0, 116.0))
+const CARGO_PANEL_RECT := Rect2(Vector2(474.0, 16.0), Vector2(332.0, 58.0))
+const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(1020.0, 16.0), Vector2(244.0, 112.0))
+const DIVE_INFO_RECT := Rect2(Vector2(16.0, 148.0), Vector2(292.0, 104.0))
+const SCAN_CARD_RECT := Rect2(Vector2(948.0, 220.0), Vector2(260.0, 106.0))
+const TOOL_BELT_PANEL_RECT := Rect2(Vector2(460.0, 638.0), Vector2(360.0, 62.0))
+const MINIMAP_PANEL_RECT := Rect2(Vector2(1052.0, 548.0), Vector2(188.0, 140.0))
+const OXYGEN_WARNING_RECT := Rect2(Vector2(16.0, 594.0), Vector2(230.0, 70.0))
 const ACTIVE_HUD_CONTENT_LEFT := 28.0
 const ACTIVE_HUD_CONTENT_RIGHT := 720.0
-const HUD_SINGLE_ROW_HEIGHT := 26.0
+const HUD_SINGLE_ROW_HEIGHT := 20.0
 const ACTIVE_HUD_LABEL_RECTS := {
-	"oxygen": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 28.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
-	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 78.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
-	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 118.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
-	"cargo": Rect2(Vector2(488.0, 56.0), Vector2(84.0, HUD_SINGLE_ROW_HEIGHT)),
-	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 144.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
-	"scan": Rect2(Vector2(948.0, 256.0), Vector2(252.0, HUD_SINGLE_ROW_HEIGHT)),
-	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 252.0), Vector2(308.0, HUD_SINGLE_ROW_HEIGHT)),
-	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 290.0), Vector2(308.0, HUD_SINGLE_ROW_HEIGHT)),
+	"oxygen": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 28.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
+	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 68.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
+	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 96.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
+	"cargo": Rect2(Vector2(500.0, 45.0), Vector2(72.0, HUD_SINGLE_ROW_HEIGHT)),
+	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 108.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
+	"scan": Rect2(Vector2(964.0, 252.0), Vector2(224.0, HUD_SINGLE_ROW_HEIGHT)),
+	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 204.0), Vector2(260.0, HUD_SINGLE_ROW_HEIGHT)),
+	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 232.0), Vector2(260.0, HUD_SINGLE_ROW_HEIGHT)),
 }
 const SCAN_CARD_LABEL_RECTS := {
-	"title": Rect2(Vector2(948.0, 232.0), Vector2(252.0, 22.0)),
-	"meta": Rect2(Vector2(948.0, 286.0), Vector2(252.0, 22.0)),
-	"prompt": Rect2(Vector2(948.0, 318.0), Vector2(252.0, 22.0)),
+	"title": Rect2(Vector2(964.0, 232.0), Vector2(224.0, 18.0)),
+	"meta": Rect2(Vector2(964.0, 278.0), Vector2(224.0, 18.0)),
+	"prompt": Rect2(Vector2(964.0, 304.0), Vector2(224.0, 18.0)),
 }
-const OXYGEN_BAR_BACK_RECT := Rect2(Vector2(28.0, 58.0), Vector2(272.0, 10.0))
-const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 58.0), Vector2(272.0, 10.0))
-const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 106.0), Vector2(272.0, 8.0))
-const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 106.0), Vector2(272.0, 8.0))
-const CARGO_SLOT_ACTIVE_POSITION := Vector2(600.0, 50.0)
+const OXYGEN_BAR_BACK_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
+const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
+const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
+const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
+const CARGO_SLOT_ACTIVE_POSITION := Vector2(600.0, 38.0)
 const SURVIVAL_NEED_LABEL_RECTS := {
-	"food": Rect2(Vector2(1066.0, 28.0), Vector2(164.0, 22.0)),
-	"water": Rect2(Vector2(1066.0, 68.0), Vector2(164.0, 22.0)),
-	"power": Rect2(Vector2(1066.0, 108.0), Vector2(164.0, 22.0)),
+	"food": Rect2(Vector2(1062.0, 28.0), Vector2(154.0, 18.0)),
+	"water": Rect2(Vector2(1062.0, 62.0), Vector2(154.0, 18.0)),
+	"power": Rect2(Vector2(1062.0, 96.0), Vector2(154.0, 18.0)),
 }
 const SURVIVAL_NEED_BAR_BACK_RECTS := {
-	"food": Rect2(Vector2(1066.0, 52.0), Vector2(170.0, 8.0)),
-	"water": Rect2(Vector2(1066.0, 92.0), Vector2(170.0, 8.0)),
-	"power": Rect2(Vector2(1066.0, 132.0), Vector2(170.0, 8.0)),
+	"food": Rect2(Vector2(1062.0, 48.0), Vector2(150.0, 7.0)),
+	"water": Rect2(Vector2(1062.0, 82.0), Vector2(150.0, 7.0)),
+	"power": Rect2(Vector2(1062.0, 116.0), Vector2(150.0, 7.0)),
 }
-const DEPTH_RAIL_LINE_RECT := Rect2(Vector2(28.0, 348.0), Vector2(2.0, 248.0))
+const DEPTH_RAIL_LINE_RECT := Rect2(Vector2(28.0, 304.0), Vector2(2.0, 280.0))
 const DEPTH_RAIL_LABEL_RECTS := {
-	"0": Rect2(Vector2(16.0, 326.0), Vector2(48.0, 18.0)),
-	"50": Rect2(Vector2(16.0, 448.0), Vector2(48.0, 18.0)),
-	"100": Rect2(Vector2(16.0, 572.0), Vector2(58.0, 18.0)),
+	"0": Rect2(Vector2(16.0, 282.0), Vector2(48.0, 18.0)),
+	"50": Rect2(Vector2(16.0, 420.0), Vector2(48.0, 18.0)),
+	"100": Rect2(Vector2(16.0, 558.0), Vector2(58.0, 18.0)),
 }
 const DEPTH_RAIL_MAX_DISPLAY_DEPTH := 120.0
 const DIVE_STATUS_MAX_CHARS := 72
@@ -3501,6 +3501,7 @@ func _update_hud() -> void:
 	_publish_visual_smoke_state()
 
 func _apply_active_hud_layout() -> void:
+	_ensure_active_hud_references()
 	_set_control_rect(active_stats_panel, ACTIVE_STATS_RECT)
 	_set_control_rect(cargo_panel, CARGO_PANEL_RECT)
 	_set_control_rect(survival_needs_panel, SURVIVAL_NEEDS_PANEL_RECT)
@@ -3563,6 +3564,82 @@ func _apply_active_hud_layout() -> void:
 		if label != null:
 			label.autowrap_mode = TextServer.AUTOWRAP_OFF
 			label.clip_text = true
+
+func _ensure_active_hud_references() -> void:
+	if active_stats_panel == null:
+		active_stats_panel = get_node_or_null("HUD/ActiveStatsPanel") as Panel
+	if cargo_panel == null:
+		cargo_panel = get_node_or_null("HUD/CargoPanel") as Panel
+	if survival_needs_panel == null:
+		survival_needs_panel = get_node_or_null("HUD/SurvivalNeedsPanel") as Panel
+	if dive_info_panel == null:
+		dive_info_panel = get_node_or_null("HUD/DiveInfoPanel") as Panel
+	if scan_card_panel == null:
+		scan_card_panel = get_node_or_null("HUD/ScanCardPanel") as Panel
+	if tool_belt_panel == null:
+		tool_belt_panel = get_node_or_null("HUD/ToolBeltPanel") as Panel
+	if minimap_panel == null:
+		minimap_panel = get_node_or_null("HUD/MinimapPanel") as Panel
+	if oxygen_warning_panel == null:
+		oxygen_warning_panel = get_node_or_null("HUD/OxygenWarningPanel") as Panel
+	if oxygen_label == null:
+		oxygen_label = get_node_or_null("HUD/Oxygen") as Label
+	if oxygen_bar_back == null:
+		oxygen_bar_back = get_node_or_null("HUD/OxygenBarBack") as ColorRect
+	if oxygen_bar_fill == null:
+		oxygen_bar_fill = get_node_or_null("HUD/OxygenBarFill") as ColorRect
+	if depth_label == null:
+		depth_label = get_node_or_null("HUD/Depth") as Label
+	if depth_bar_back == null:
+		depth_bar_back = get_node_or_null("HUD/DepthBarBack") as ColorRect
+	if depth_bar_fill == null:
+		depth_bar_fill = get_node_or_null("HUD/DepthBarFill") as ColorRect
+	if base_direction_label == null:
+		base_direction_label = get_node_or_null("HUD/BaseDirection") as Label
+	if cargo_label == null:
+		cargo_label = get_node_or_null("HUD/Cargo") as Label
+	if discoveries_label == null:
+		discoveries_label = get_node_or_null("HUD/Discoveries") as Label
+	if scan_target_label == null:
+		scan_target_label = get_node_or_null("HUD/ScanTarget") as Label
+	if scan_card_title_label == null:
+		scan_card_title_label = get_node_or_null("HUD/ScanCardTitle") as Label
+	if scan_card_meta_label == null:
+		scan_card_meta_label = get_node_or_null("HUD/ScanCardMeta") as Label
+	if scan_card_prompt_label == null:
+		scan_card_prompt_label = get_node_or_null("HUD/ScanCardPrompt") as Label
+	if prompt_label == null:
+		prompt_label = get_node_or_null("HUD/ExtractionPrompt") as Label
+	if status_label == null:
+		status_label = get_node_or_null("HUD/Status") as Label
+	if food_need_label == null:
+		food_need_label = get_node_or_null("HUD/FoodNeed") as Label
+	if water_need_label == null:
+		water_need_label = get_node_or_null("HUD/WaterNeed") as Label
+	if power_need_label == null:
+		power_need_label = get_node_or_null("HUD/PowerNeed") as Label
+	if food_need_bar_back == null:
+		food_need_bar_back = get_node_or_null("HUD/FoodNeedBarBack") as ColorRect
+	if water_need_bar_back == null:
+		water_need_bar_back = get_node_or_null("HUD/WaterNeedBarBack") as ColorRect
+	if power_need_bar_back == null:
+		power_need_bar_back = get_node_or_null("HUD/PowerNeedBarBack") as ColorRect
+	if food_need_bar_fill == null:
+		food_need_bar_fill = get_node_or_null("HUD/FoodNeedBarFill") as ColorRect
+	if water_need_bar_fill == null:
+		water_need_bar_fill = get_node_or_null("HUD/WaterNeedBarFill") as ColorRect
+	if power_need_bar_fill == null:
+		power_need_bar_fill = get_node_or_null("HUD/PowerNeedBarFill") as ColorRect
+	if depth_rail_line == null:
+		depth_rail_line = get_node_or_null("HUD/DepthRailLine") as ColorRect
+	if depth_rail_labels.is_empty():
+		depth_rail_labels = [
+			get_node_or_null("HUD/DepthRailLabel0") as Label,
+			get_node_or_null("HUD/DepthRailLabel50") as Label,
+			get_node_or_null("HUD/DepthRailLabel100") as Label,
+		]
+	if cargo_slots_root == null:
+		cargo_slots_root = get_node_or_null("HUD/CargoSlots") as Node2D
 
 func _update_instrument_bars() -> void:
 	var oxygen_ratio := 0.0
@@ -3629,7 +3706,7 @@ func _update_minimap(is_visible: bool) -> void:
 	var horizontal_ratio := 0.5
 	if player != null:
 		horizontal_ratio = clampf((player.global_position.x - 160.0) / 2200.0, 0.0, 1.0)
-	minimap_player_marker.position = Vector2(105.0 + (horizontal_ratio - 0.5) * 92.0, 42.0 + depth_ratio * 84.0)
+	minimap_player_marker.position = Vector2(94.0 + (horizontal_ratio - 0.5) * 78.0, 34.0 + depth_ratio * 76.0)
 
 func _set_bar_fill_width(fill: ColorRect, base_rect: Rect2, ratio: float) -> void:
 	_set_control_rect(fill, base_rect)
