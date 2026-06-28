@@ -63,7 +63,7 @@ Visual tasks should be delayed when they only decorate a tiny landmark, add more
 
 ## Recommended Issue Order
 
-1. Build the Safe Shallows exploration shell with authored walls, chambers, and cave pockets.
+1. Build the Safe Shallows exploration shell with authored walls, chambers, and cave pockets. Current first pass: remove the misleading shallow upper-water blockers and start a larger visible reef blockout with matching collision.
 2. Add starter survival resource node families with temporary readable art.
 3. Place resource pockets inside the shell so collection teaches exploration.
 4. Tie one surface upgrade or night choice to starter resources.
@@ -76,3 +76,7 @@ Visual tasks should be delayed when they only decorate a tiny landmark, add more
 ## Acceptance Signal
 
 This milestone is working when a fresh playtest no longer feels like the same small cluster with new labels. The player should be able to say where they went, what kind of place they entered, what resources they found, and what they want to try on the next dive.
+
+## Current Correction
+
+The earlier one-room art slice created a misleading result: some upper-water collision read like invisible walls, and the playable area still felt tiny. Area 01 work should now prioritize map-scale blockout truth over local decoration. Any blocking wall must have a visible solid terrain mass, and any abstract shallow background shape that does not read as terrain should not own collision.

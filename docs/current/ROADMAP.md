@@ -12,9 +12,9 @@ Loop direction under review: the next survival-loop shape is a daylight multi-di
 
 ## Active Milestone
 
-First Real 2D Environment Slice.
+First Playable Area 01 Blockout Skeleton.
 
-The next milestone is a correction pass before more route/content expansion. The prototype has enough working systems to prove the loop shape, but normal play still reads too much like translucent debug/readability geometry. The active goal is to create one controlled Area 01 art-playability room with readable open water, solid terrain silhouettes, ledges, object pockets, foreground/background separation, and compact HUD framing. Visual work remains active, but it must make this room feel playable rather than add more abstract route artifacts.
+The next milestone is a correction pass before more route/content expansion. The prototype has enough working systems to prove the loop shape, but the playable map is still too small and its collision/art relationship has not been trustworthy enough. The active goal is to build a larger Safe Shallows-style Area 01 blockout with obvious open water, visible solid reef boundaries, ledges, cave pockets, resource spaces, and enough room to explore sideways and downward. Visual work remains active only where it makes the larger blockout easier to parse.
 
 Primary planning docs:
 
@@ -32,9 +32,9 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #675-#677: continue visual direction work only where it supports the slice or the larger playable shell.
-2. #678: compare against the visual reference after the slice has real wall/ledge modules and lighting.
-3. Resume route expansion only after the first room reads as a playable place rather than a diagram.
+1. #689: replace the tiny-room priority with a larger readable Area 01 blockout skeleton and remove invisible-feeling blockers.
+2. Re-evaluate #675-#678 after #689; keep only the parts that support the larger playable map.
+3. Continue visual direction work only where it makes walls, caves, ledges, resources, scan targets, and open water clearer inside the larger shell.
 4. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
@@ -64,6 +64,7 @@ Primary planning docs:
 - #674 added restrained reusable Area 01 dressing clusters with kelp, coral, dim crystals, tube coral, and pebbles around existing shelves/pockets so the room feels more authored without adding collectible or scan behavior.
 - #687 added dedicated Area 01 blocking-rim visuals that trace existing wall and ledge collision so players can see where terrain blocks movement before bumping into it.
 - #688 restored Glassfin Swarm readability with dark body outlines and brighter clustered fish shapes while preserving its passive, scan-only, non-colliding behavior.
+- #689 removed the misleading shallow upper-water blockers, disabled their collision, and started a larger Area 01 blockout with visible solid reef masses and matching collision/lip reads.
 
 ## Current Readability Rules
 
@@ -75,6 +76,7 @@ Primary planning docs:
 - Active HUD copy must use reserved stats/prompt/status rows; long commands or feedback should clip or be shortened instead of wrapping into neighboring text.
 - Area 01 collision boundaries must be readable as terrain lips/rims before contact; do not leave invisible or random-feeling blockers in normal play.
 - Passive creature scan targets need visible silhouettes or outlines at normal play scale; scan labels should confirm the target, not be the only way to perceive it.
+- Do not spend another batch polishing a tiny room if the level bones still do not support wider exploration. Block out readable map scale first, then decorate.
 - Do not solve confusion by adding more bright shapes, exact locators, checklists, minimaps, or route graphs.
 
 ## Still Deferred

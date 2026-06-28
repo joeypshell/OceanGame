@@ -460,11 +460,13 @@ polygon = PackedVector2Array(928, 122, 1076, 122, 1232, 722, 1032, 722)
 [node name="TerrainBackWalls" type="Node2D" parent="Area01ArtSlice"]
 
 [node name="ShallowLeftWall" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
-color = Color(0.018, 0.064, 0.078, 0.94)
+visible = false
+color = Color(0.018, 0.064, 0.078, 0.18)
 polygon = PackedVector2Array(-120, 238, 140, 214, 274, 350, 230, 520, 324, 666, 228, 792, -120, 820)
 
 [node name="ShallowRightWall" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
-color = Color(0.016, 0.06, 0.074, 0.94)
+visible = false
+color = Color(0.016, 0.06, 0.074, 0.18)
 polygon = PackedVector2Array(1018, 250, 1320, 226, 1518, 350, 1588, 548, 1508, 742, 1320, 820, 1002, 792, 1082, 620, 1038, 438)
 
 [node name="LeftSolidWall" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
@@ -483,12 +485,26 @@ polygon = PackedVector2Array(40, 852, 276, 808, 454, 866, 520, 936, 436, 1000, 1
 color = Color(0.036, 0.096, 0.098, 0.98)
 polygon = PackedVector2Array(868, 906, 1106, 850, 1346, 912, 1454, 1002, 1338, 1090, 1046, 1054, 816, 980)
 
+[node name="BlockoutEastReefMass" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.014, 0.05, 0.06, 0.98)
+polygon = PackedVector2Array(1540, 820, 2200, 744, 2920, 910, 3360, 1260, 3440, 1680, 2980, 2000, 2140, 1880, 1640, 1420)
+
+[node name="BlockoutLowerBasinFloor" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.018, 0.055, 0.064, 0.98)
+polygon = PackedVector2Array(420, 1460, 1140, 1340, 1840, 1480, 2500, 1760, 2560, 2140, 1640, 2260, 760, 2040)
+
+[node name="BlockoutWestCaveShelf" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.02, 0.06, 0.068, 0.96)
+polygon = PackedVector2Array(-160, 1120, 360, 1030, 860, 1190, 980, 1460, 610, 1640, 40, 1540, -160, 1360)
+
 [node name="TerrainCollision" type="StaticBody2D" parent="Area01ArtSlice"]
 
 [node name="ShallowLeftWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+disabled = true
 polygon = PackedVector2Array(-120, 238, 140, 214, 274, 350, 230, 520, 324, 666, 228, 792, -120, 820)
 
 [node name="ShallowRightWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+disabled = true
 polygon = PackedVector2Array(1018, 250, 1320, 226, 1518, 350, 1588, 548, 1508, 742, 1320, 820, 1002, 792, 1082, 620, 1038, 438)
 
 [node name="LeftWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
@@ -503,16 +519,27 @@ polygon = PackedVector2Array(40, 852, 276, 808, 454, 866, 520, 936, 436, 1000, 1
 [node name="RightLedgeCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
 polygon = PackedVector2Array(868, 906, 1106, 850, 1346, 912, 1454, 1002, 1338, 1090, 1046, 1054, 816, 980)
 
+[node name="BlockoutEastReefCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(1540, 820, 2200, 744, 2920, 910, 3360, 1260, 3440, 1680, 2980, 2000, 2140, 1880, 1640, 1420)
+
+[node name="BlockoutLowerBasinCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(420, 1460, 1140, 1340, 1840, 1480, 2500, 1760, 2560, 2140, 1640, 2260, 760, 2040)
+
+[node name="BlockoutWestCaveShelfCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(-160, 1120, 360, 1030, 860, 1190, 980, 1460, 610, 1640, 40, 1540, -160, 1360)
+
 [node name="TerrainVisualEdges" type="Node2D" parent="Area01ArtSlice"]
 
 [node name="CollisionReadBoundaries" type="Node2D" parent="Area01ArtSlice/TerrainVisualEdges"]
 z_index = 4
 
 [node name="ShallowLeftBlockingRim" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+visible = false
 color = Color(0.18, 0.38, 0.34, 0.72)
 polygon = PackedVector2Array(136, 214, 274, 350, 230, 520, 324, 666, 300, 704, 208, 538, 250, 360, 112, 238)
 
 [node name="ShallowRightBlockingRim" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+visible = false
 color = Color(0.18, 0.38, 0.34, 0.7)
 polygon = PackedVector2Array(1018, 250, 1082, 438, 1038, 620, 1002, 792, 1038, 820, 1112, 624, 1070, 442, 1044, 284)
 
@@ -532,11 +559,25 @@ polygon = PackedVector2Array(40, 852, 276, 808, 454, 866, 520, 936, 470, 960, 28
 color = Color(0.46, 0.62, 0.46, 0.64)
 polygon = PackedVector2Array(868, 906, 1106, 850, 1346, 912, 1454, 1002, 1376, 1022, 1112, 938, 884, 982)
 
+[node name="BlockoutEastReefLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.42, 0.6, 0.48, 0.68)
+polygon = PackedVector2Array(1540, 820, 2200, 744, 2920, 910, 3340, 1260, 3260, 1310, 2900, 990, 2200, 820, 1586, 888)
+
+[node name="BlockoutLowerBasinLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.42, 0.58, 0.46, 0.66)
+polygon = PackedVector2Array(420, 1460, 1140, 1340, 1840, 1480, 2500, 1760, 2440, 1824, 1810, 1562, 1140, 1424, 468, 1538)
+
+[node name="BlockoutWestCaveShelfLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.42, 0.58, 0.46, 0.64)
+polygon = PackedVector2Array(-160, 1120, 360, 1030, 860, 1190, 958, 1450, 900, 1500, 822, 1256, 352, 1110, -120, 1196)
+
 [node name="ShallowLeftLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
+visible = false
 color = Color(0.42, 0.66, 0.55, 0.34)
 polygon = PackedVector2Array(144, 216, 274, 350, 230, 520, 324, 666, 288, 706, 190, 540, 230, 366, 116, 250)
 
 [node name="ShallowRightLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
+visible = false
 color = Color(0.42, 0.66, 0.55, 0.32)
 polygon = PackedVector2Array(1018, 250, 1082, 438, 1038, 620, 1002, 792, 1052, 802, 1126, 630, 1082, 444, 1048, 300)
 
@@ -581,10 +622,12 @@ position = Vector2(1130, 886)
 scale = Vector2(1.24, 0.76)
 
 [node name="ShallowLeftPlatformKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("38_area01_reef_platform_kit")]
+visible = false
 position = Vector2(230, 356)
 scale = Vector2(0.64, 0.54)
 
 [node name="ShallowRightPlatformKit" parent="Area01ArtSlice/TerrainVisualEdges" instance=ExtResource("38_area01_reef_platform_kit")]
+visible = false
 position = Vector2(1040, 430)
 scale = Vector2(0.58, 0.5)
 

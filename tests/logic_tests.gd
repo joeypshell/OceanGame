@@ -3347,11 +3347,17 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/TerrainBackWalls/ShallowRightWall",
 		"Area01ArtSlice/TerrainBackWalls/LeftSolidWall",
 		"Area01ArtSlice/TerrainBackWalls/RightSolidWall",
+		"Area01ArtSlice/TerrainBackWalls/BlockoutEastReefMass",
+		"Area01ArtSlice/TerrainBackWalls/BlockoutLowerBasinFloor",
+		"Area01ArtSlice/TerrainBackWalls/BlockoutWestCaveShelf",
 		"Area01ArtSlice/TerrainCollision",
 		"Area01ArtSlice/TerrainCollision/ShallowLeftWallCollision",
 		"Area01ArtSlice/TerrainCollision/ShallowRightWallCollision",
 		"Area01ArtSlice/TerrainCollision/LeftWallCollision",
 		"Area01ArtSlice/TerrainCollision/RightWallCollision",
+		"Area01ArtSlice/TerrainCollision/BlockoutEastReefCollision",
+		"Area01ArtSlice/TerrainCollision/BlockoutLowerBasinCollision",
+		"Area01ArtSlice/TerrainCollision/BlockoutWestCaveShelfCollision",
 		"Area01ArtSlice/TerrainVisualEdges",
 		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries",
 		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/ShallowLeftBlockingRim",
@@ -3360,6 +3366,9 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightWallBlockingRim",
 		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/LeftLedgeBlockingLip",
 		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightLedgeBlockingLip",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutEastReefLip",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutLowerBasinLip",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutWestCaveShelfLip",
 		"Area01ArtSlice/TerrainVisualEdges/ShallowLeftLitEdge",
 		"Area01ArtSlice/TerrainVisualEdges/ShallowRightLitEdge",
 		"Area01ArtSlice/TerrainVisualEdges/LeftLedgeLitEdge",
@@ -3401,6 +3410,15 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	var left_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/LeftSolidWall") as Polygon2D
 	var right_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/RightSolidWall") as Polygon2D
 	var shallow_left_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/ShallowLeftWall") as Polygon2D
+	var shallow_right_wall := main.get_node("Area01ArtSlice/TerrainBackWalls/ShallowRightWall") as Polygon2D
+	var shallow_left_collision := main.get_node("Area01ArtSlice/TerrainCollision/ShallowLeftWallCollision") as CollisionPolygon2D
+	var shallow_right_collision := main.get_node("Area01ArtSlice/TerrainCollision/ShallowRightWallCollision") as CollisionPolygon2D
+	var blockout_east_reef := main.get_node("Area01ArtSlice/TerrainBackWalls/BlockoutEastReefMass") as Polygon2D
+	var blockout_lower_basin := main.get_node("Area01ArtSlice/TerrainBackWalls/BlockoutLowerBasinFloor") as Polygon2D
+	var blockout_west_cave := main.get_node("Area01ArtSlice/TerrainBackWalls/BlockoutWestCaveShelf") as Polygon2D
+	var blockout_east_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutEastReefCollision") as CollisionPolygon2D
+	var blockout_lower_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutLowerBasinCollision") as CollisionPolygon2D
+	var blockout_west_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutWestCaveShelfCollision") as CollisionPolygon2D
 	var far_center := main.get_node("Area01ArtSlice/BackgroundFar/FarCenterDepthPocket") as Polygon2D
 	var far_open_water := main.get_node("Area01ArtSlice/OceanParallaxBackground/FarOpenWaterPocket") as Polygon2D
 	var mid_center_plate := main.get_node("Area01ArtSlice/OceanParallaxBackground/MidCenterBackPlate") as Polygon2D
@@ -3413,6 +3431,9 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	var right_wall_blocking_rim := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightWallBlockingRim") as Polygon2D
 	var left_ledge_blocking_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/LeftLedgeBlockingLip") as Polygon2D
 	var right_ledge_blocking_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightLedgeBlockingLip") as Polygon2D
+	var blockout_east_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutEastReefLip") as Polygon2D
+	var blockout_lower_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutLowerBasinLip") as Polygon2D
+	var blockout_west_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutWestCaveShelfLip") as Polygon2D
 	var left_platform_mass := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/MainShelfMass") as Polygon2D
 	var left_platform_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/TopLitLip") as Polygon2D
 	var dressing_crystal := main.get_node("Area01ArtSlice/ForegroundDecor/LeftShelfDressing/DimCrystalA") as Polygon2D
@@ -3422,7 +3443,9 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	var route_choice_band := main.get_node("RouteChoiceBand") as Node2D
 	_expect(left_wall.color.a >= 0.9, "primary art-slice walls should read as solid terrain instead of translucent route overlays")
 	_expect(right_wall.color.a >= 0.9, "primary art-slice walls should read as solid terrain instead of translucent route overlays")
-	_expect(shallow_left_wall.color.a >= 0.9, "shallow art-slice walls should be visible in the early-dive camera")
+	_expect(not shallow_left_wall.visible and not shallow_right_wall.visible and shallow_left_collision.disabled and shallow_right_collision.disabled, "upper open water should not contain invisible shallow-wall blockers")
+	_expect(blockout_east_reef.color.a >= 0.9 and blockout_lower_basin.color.a >= 0.9 and blockout_west_cave.color.a >= 0.9, "larger Area 01 blockout masses should read as solid reef terrain")
+	_expect(not blockout_east_collision.disabled and not blockout_lower_collision.disabled and not blockout_west_collision.disabled, "larger Area 01 blockout collision should stay enabled only where matching terrain is visible")
 	_expect(far_center.color.a < left_wall.color.a, "background pocket should sit behind solid terrain in opacity hierarchy")
 	_expect(far_open_water.color.a < left_wall.color.a, "parallax open-water pockets should stay quieter than solid terrain")
 	_expect(mid_center_plate.color.a > far_open_water.color.a, "mid parallax plates should be slightly stronger than far open-water pockets")
@@ -3432,6 +3455,7 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	_expect(center_play_light.color.a <= 0.2, "center play light should support focal readability without becoming a solid overlay")
 	_expect(left_wall_blocking_rim.color.a >= 0.7 and right_wall_blocking_rim.color.a >= 0.7, "wall collision rims should be readable enough that solid terrain does not feel random")
 	_expect(left_ledge_blocking_lip.color.a >= 0.6 and right_ledge_blocking_lip.color.a >= 0.6, "ledge collision lips should show where the player will bump")
+	_expect(blockout_east_lip.color.a >= 0.6 and blockout_lower_lip.color.a >= 0.6 and blockout_west_lip.color.a >= 0.6, "larger blockout terrain should expose visible lips before the player collides")
 	_expect(left_wall_blocking_rim.color.a < left_wall.color.a and right_wall_blocking_rim.color.a < right_wall.color.a, "collision rims should clarify terrain without replacing the solid mass")
 	_expect(collision_read_boundaries.find_child("CollisionShape2D", true, false) == null, "collision-read boundary visuals should not add extra hidden collision")
 	_expect(left_platform_mass.color.a >= 0.8, "platform kit shelf masses should read as solid reef rather than route overlays")
