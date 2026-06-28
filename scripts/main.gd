@@ -1733,6 +1733,9 @@ func _stage_debug_outer_shelf_visual_review() -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
 		return
 
+	var blackwater_sill := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill") as Node2D
+	if blackwater_sill != null:
+		blackwater_sill.visible = true
 	player = staged_player
 	player.global_position = survey_zone.global_position + Vector2(-92.0, -36.0)
 	player.velocity = Vector2.ZERO

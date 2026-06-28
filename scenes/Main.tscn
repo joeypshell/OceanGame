@@ -1725,12 +1725,16 @@ text = "MIRROR KELP"
 position = Vector2(318, 62)
 
 [node name="DeepBackwater" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
-color = Color(0.012, 0.065, 0.095, 0.48)
+color = Color(0.018, 0.09, 0.13, 0.56)
 polygon = PackedVector2Array(-104, -158, 196, -226, 578, -204, 936, -126, 1166, 38, 1046, 218, 620, 254, 172, 196, -136, 86)
 
 [node name="PlayableWaterLane" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
 color = Color(0.07, 0.34, 0.42, 0.17)
 polygon = PackedVector2Array(-54, -74, 176, -126, 500, -106, 816, -42, 1004, 66, 886, 138, 520, 152, 172, 112, -76, 34)
+
+[node name="MidShelfBackPlate" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.055, 0.24, 0.28, 0.42)
+polygon = PackedVector2Array(82, -112, 298, -166, 582, -142, 858, -54, 1040, 36, 914, 118, 584, 130, 252, 82, 42, 2)
 
 [node name="UpperRimSilhouette" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
 color = Color(0.025, 0.09, 0.11, 0.52)
@@ -1744,9 +1748,21 @@ polygon = PackedVector2Array(-112, 74, 154, 122, 462, 142, 816, 116, 1070, 168, 
 color = Color(0.42, 0.78, 0.9, 0.2)
 polygon = PackedVector2Array(258, -112, 372, -142, 534, -112, 670, -58, 610, -28, 432, -58, 278, -68)
 
+[node name="GlassRimShelfSteps" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.2, 0.48, 0.54, 0.4)
+polygon = PackedVector2Array(332, -82, 492, -118, 706, -76, 818, -18, 718, 16, 520, -22, 354, -32)
+
 [node name="LowShelfLandmark" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
 color = Color(0.18, 0.34, 0.3, 0.28)
 polygon = PackedVector2Array(526, 104, 760, 80, 958, 122, 884, 178, 624, 188)
+
+[node name="SurveyPerchShadow" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.22, 0.46, 0.38, 0.38)
+polygon = PackedVector2Array(602, 84, 724, 62, 862, 98, 816, 144, 668, 154)
+
+[node name="OuterShelfForegroundShelf" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
+color = Color(0.045, 0.16, 0.13, 0.5)
+polygon = PackedVector2Array(360, 150, 646, 128, 980, 164, 1148, 216, 960, 272, 574, 250, 314, 198)
 
 [node name="ReturnWashToMirror" type="Polygon2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach"]
 color = Color(0.6, 1, 0.86, 0.1)

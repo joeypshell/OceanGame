@@ -10,9 +10,9 @@ North-star filter: every expedition should force a survival tradeoff. Bring back
 
 ## Active Milestone
 
-Area 02 Outer Shelf Payoff Slice.
+Area 02 Glass Rim Expansion.
 
-The survival loop is readable enough to resume one player-visible route payoff without reopening broad content expansion. Keep the Emergency Week pressure visible, but the active goal is now for Outer Shelf to feel consequential: a short playtest should reveal a cargo-vs-knowledge choice, preserve return pressure, and create a next-run hypothesis if the player extracts safely.
+The first Outer Shelf payoff slice is implemented and staged, but evidence shows the area can still read sparse and dark. The active goal is now to turn Outer Shelf / Glass Rim into a small expedition arc: the player reaches a wider shelf, learns a timing/current read, chooses between cargo and knowledge, extracts, and understands one smarter thing to try tomorrow.
 
 Primary planning docs:
 
@@ -23,10 +23,17 @@ Primary planning docs:
 - `docs/planning/SALVAGE_CUTTER_RETURN_PAYOFF_VALIDATION_2026_06_27.md`
 - `docs/planning/AREA_02_LARGER_ROUTE_PROGRESS_2026_06_27.md`
 - `docs/planning/AREA_02_OUTER_SHELF_EVIDENCE_2026_06_27.md`
+- `docs/planning/AREA_02_GLASS_RIM_EXPANSION_2026_06_28.md`
 
 ## Immediate Issue Order
 
-1. Recalibrate before opening broader Area 02 content so route growth does not outrun readability or the survival loop.
+1. #659: strengthen Outer Shelf terrain readability as a larger place.
+2. #660: add one Glass Rim timing-current decision.
+3. #661: make Glass Ray Drifter teach the Glass Rim read.
+4. #662: add one beyond-rim cargo-vs-knowledge payoff choice.
+5. #663: reflect Glass Rim choices in surface result memory.
+6. #664: refresh deterministic evidence after Glass Rim changes.
+7. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 

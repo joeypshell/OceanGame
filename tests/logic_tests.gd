@@ -742,9 +742,11 @@ func _test_debug_outer_shelf_evidence_staging() -> void:
 
 	main.show_debug_telemetry = true
 	main.call("_stage_debug_outer_shelf_visual_review")
+	var blackwater_sill := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill") as Node2D
 	var survey_zone := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/InteractZone") as Area2D
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Outer Shelf staging should start or keep a dive active")
 	_expect(main.visual_smoke_route_stage == "outer_shelf_survey", "Outer Shelf staging should expose a deterministic route stage")
+	_expect(blackwater_sill.visible, "Outer Shelf staging should reveal the hidden route ancestor for visual review only")
 	_expect(main.player.global_position.distance_to(survey_zone.global_position) < 120.0, "Outer Shelf staging should place the player near the survey payoff")
 	_expect(main.dive_session.has_left_base, "Outer Shelf staging should make extraction eligibility match an active route attempt")
 	_expect(main.player_near_outer_shelf_survey, "Outer Shelf staging should expose the survey prompt for readability review")
@@ -1194,12 +1196,17 @@ func _test_outer_shelf_route_footprint() -> void:
 	var outer_shelf := mirror_kelp.get_node("OuterShelfReach") as Node2D
 	var deep_backwater := outer_shelf.get_node("DeepBackwater") as Polygon2D
 	var playable_lane := outer_shelf.get_node("PlayableWaterLane") as Polygon2D
+	var mid_plate := outer_shelf.get_node("MidShelfBackPlate") as Polygon2D
 	var upper_rim := outer_shelf.get_node("UpperRimSilhouette") as Polygon2D
 	var lower_rim := outer_shelf.get_node("LowerRimSilhouette") as Polygon2D
 	var glass_rim := outer_shelf.get_node("GlassRimLandmark") as Polygon2D
+	var glass_steps := outer_shelf.get_node("GlassRimShelfSteps") as Polygon2D
 	var low_shelf := outer_shelf.get_node("LowShelfLandmark") as Polygon2D
+	var survey_perch := outer_shelf.get_node("SurveyPerchShadow") as Polygon2D
+	var foreground_shelf := outer_shelf.get_node("OuterShelfForegroundShelf") as Polygon2D
 	var return_wash := outer_shelf.get_node("ReturnWashToMirror") as Polygon2D
 	var survey_core := outer_shelf.get_node("OuterShelfSurveyCore") as Node2D
+	var survey_visual := survey_core.get_node("SurveyCore") as Polygon2D
 	var outer_label := outer_shelf.get_node("OuterShelfLabel") as Label
 	var glass_label := outer_shelf.get_node("GlassRimLabel") as Label
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
@@ -1217,8 +1224,12 @@ func _test_outer_shelf_route_footprint() -> void:
 	_expect(max_x - min_x >= 1200.0, "Outer Shelf footprint should be wide enough for later branch and decision work")
 	_expect(playable_lane.color.a <= 0.2, "Outer Shelf playable water should stay readable without becoming a bright pickup")
 	_expect(deep_backwater.color.a > playable_lane.color.a, "Outer Shelf background should frame the route with darker mass")
+	_expect(mid_plate.color.a > playable_lane.color.a and mid_plate.color.a < deep_backwater.color.a, "Outer Shelf mid plate should separate route mass from playable water")
 	_expect(upper_rim.color.a >= 0.45 and lower_rim.color.a >= 0.45, "Outer Shelf terrain rims should be distinguishable from playable water")
 	_expect(glass_rim.color.a <= 0.24 and low_shelf.color.a <= 0.32, "Outer Shelf landmarks should not compete with future payoffs")
+	_expect(glass_steps.color.a > glass_rim.color.a and glass_steps.color.a < survey_visual.color.a, "Outer Shelf Glass Rim steps should frame the route without competing with the survey")
+	_expect(survey_perch.color.a < survey_visual.color.a and survey_perch.polygon.size() >= 5, "Outer Shelf survey perch should anchor the payoff as terrain, not cargo")
+	_expect(foreground_shelf.color.a >= 0.42 and foreground_shelf.color.a < upper_rim.color.a, "Outer Shelf foreground shelf should read as terrain while staying behind active rewards")
 	_expect(return_wash.color.g > return_wash.color.r and return_wash.color.a <= 0.12, "Outer Shelf return wash should use quiet safe-current language")
 	_expect(outer_label.text == "OUTER SHELF", "Outer Shelf should have one compact region label")
 	_expect(glass_label.text == "GLASS RIM", "Outer Shelf should have one compact local landmark label")
