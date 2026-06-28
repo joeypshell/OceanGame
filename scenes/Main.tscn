@@ -424,6 +424,36 @@ visible = false
 color = Color(0.72, 1, 0.9, 0.22)
 polygon = PackedVector2Array(454, 120, 826, 120, 764, 300, 516, 300)
 
+[node name="SurvivalSupplyCache" type="Node2D" parent="."]
+position = Vector2(494, 438)
+
+[node name="SupplyHalo" type="Polygon2D" parent="SurvivalSupplyCache"]
+color = Color(0.72, 0.95, 1, 0.22)
+polygon = PackedVector2Array(-72, -34, -24, -62, 42, -48, 78, 0, 42, 48, -34, 58, -82, 12)
+
+[node name="SupplyCrate" type="Polygon2D" parent="SurvivalSupplyCache"]
+color = Color(0.18, 0.38, 0.42, 0.66)
+polygon = PackedVector2Array(-42, -22, 34, -24, 46, 22, -32, 28)
+
+[node name="SupplyCore" type="Polygon2D" parent="SurvivalSupplyCache"]
+color = Color(0.96, 0.78, 0.38, 0.72)
+polygon = PackedVector2Array(-24, -14, 22, -16, 30, 12, -18, 18)
+
+[node name="SupplyLabel" type="Label" parent="SurvivalSupplyCache"]
+offset_left = -54.0
+offset_top = 36.0
+offset_right = 78.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 12
+text = "SUPPLY CACHE"
+
+[node name="InteractZone" type="Area2D" parent="SurvivalSupplyCache"]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SurvivalSupplyCache/InteractZone"]
+shape = SubResource("CircleShape2D_east_shelf_pocket")
+
 [node name="BaseReturnBeacon" type="Polygon2D" parent="."]
 visible = false
 color = Color(0.74, 1, 0.9, 0.34)

@@ -8,6 +8,10 @@ Every new mechanic should strengthen one question:
 
 Should the player continue downward or return safely now?
 
+Survival extension:
+
+Should the player use limited cargo and oxygen on what keeps the base alive tonight, what makes future dives safer, or what unlocks a remembered deeper place?
+
 ## Compulsion Question
 
 Every expedition should leave at least one reason to start the next:
@@ -29,6 +33,8 @@ Current-dive state should remain temporary:
 - active expedition result
 - temporary effects
 
+Survival supplies may be carried as current cargo during a dive, but they resolve into chapter survival state only on extraction.
+
 Current-dive cargo is lost on oxygen failure and should not be restored by disk-backed progression saves.
 
 ## Persistent Progression State
@@ -41,6 +47,15 @@ Progression should survive across dives during a session, and later across launc
 - best depth reached
 
 Persistent progression does not mean restoring an in-progress dive.
+
+## Survival Expedition Rules
+
+- Chapter 1 is `Emergency Week`: survive 5 days and stabilize the base.
+- Food, Water, and Power start at 3.
+- Each night consumes 1 Food, 1 Water, and 1 Power.
+- A need at 0 creates a staged next-expedition oxygen penalty.
+- A need below 0 collapses the week; restart the week while keeping major knowledge/upgrades where possible.
+- Survival supplies are distinct from upgrade resources and should not appear in the resource bank.
 
 ## Oxygen Decision Rules
 

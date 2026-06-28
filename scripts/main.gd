@@ -2,6 +2,7 @@ extends Node2D
 
 const DiveSessionScript := preload("res://scripts/dive_session.gd")
 const ProgressionStateScript := preload("res://scripts/progression_state.gd")
+const SurvivalStateScript := preload("res://scripts/survival_state.gd")
 const SpawnPointScript := preload("res://scripts/spawn_point.gd")
 const UpgradeDefinitionScript := preload("res://scripts/upgrade_definition.gd")
 const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
@@ -148,6 +149,10 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var base_return_rib_deep: Polygon2D = $BaseReturnRibDeep
 @onready var base_return_beacon: Polygon2D = $BaseReturnBeacon
 @onready var base_return_beacon_rib: Polygon2D = $BaseReturnBeaconRib
+@onready var survival_supply_cache_interact_zone: Area2D = $SurvivalSupplyCache/InteractZone
+@onready var survival_supply_cache_halo: Polygon2D = $SurvivalSupplyCache/SupplyHalo
+@onready var survival_supply_cache_core: Polygon2D = $SurvivalSupplyCache/SupplyCore
+@onready var survival_supply_cache_label: Label = $SurvivalSupplyCache/SupplyLabel
 @onready var thermal_warm_wash: Polygon2D = $ThermalVentPocket/Visuals/FallbackGeometry/WarmWash
 @onready var thermal_heat_plume: Polygon2D = $ThermalVentPocket/Visuals/FallbackGeometry/HeatPlume
 @onready var thermal_bubble_string_a: Polygon2D = $ThermalVentPocket/Visuals/FallbackGeometry/BubbleStringA
@@ -290,7 +295,9 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 
 var dive_session := DiveSessionScript.new()
 var progression_state := ProgressionStateScript.new()
+var survival_state := SurvivalStateScript.new()
 var player_in_base := true
+var player_near_survival_supply_cache := false
 var player_near_east_shelf_pocket := false
 var player_near_lower_connector_echo := false
 var player_near_resonance_alcove := false
@@ -338,6 +345,7 @@ var upgrade_definitions: Array[UpgradeDefinition] = [
 	SALVAGE_CUTTER_UPGRADE,
 ]
 var run_collected_resources: Array[String] = []
+var run_collected_survival_supplies: Array[String] = []
 var run_completed_scans: Array[String] = []
 var run_predator_contacts := 0
 var run_failure_cause := "none"
@@ -355,6 +363,9 @@ var run_hollow_reef_reading_recovered := false
 var run_salvage_manifest_recovered := false
 var run_salvage_data_cache_recovered := false
 var run_tideglass_sample_recovered := false
+var run_survival_supply_cache_recovered := false
+var last_night_report := ""
+var last_completed_survival_day := 0
 var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
 var recent_expedition_log: Array[Dictionary] = []
@@ -362,6 +373,8 @@ var recent_expedition_log: Array[Dictionary] = []
 func _ready() -> void:
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
 	base_zone.body_exited.connect(_on_base_zone_body_exited)
+	survival_supply_cache_interact_zone.body_entered.connect(_on_survival_supply_cache_body_entered)
+	survival_supply_cache_interact_zone.body_exited.connect(_on_survival_supply_cache_body_exited)
 	east_shelf_pocket_interact_zone.body_entered.connect(_on_east_shelf_pocket_body_entered)
 	east_shelf_pocket_interact_zone.body_exited.connect(_on_east_shelf_pocket_body_exited)
 	lower_connector_echo_interact_zone.body_entered.connect(_on_lower_connector_echo_body_entered)
@@ -448,7 +461,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 				status_label.text = "Surface view: upgrades."
 				_update_hud()
 		else:
-			if not _try_tideglass_sample_interaction() and not _try_salvage_manifest_interaction() and not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
+			if not _try_survival_supply_cache_interaction() and not _try_tideglass_sample_interaction() and not _try_salvage_manifest_interaction() and not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
 				_try_extract()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
 		_cycle_surface_tab(-1)
@@ -472,14 +485,18 @@ func _try_extract() -> void:
 	var extracted_cargo := dive_session.current_cargo.duplicate()
 	var extracted_count := extracted_cargo.size()
 	dive_session.extract()
-	progression_state.bank_cargo(extracted_cargo)
+	var banked_resources := _bank_extracted_cargo(extracted_cargo)
+	var banked_survival_supplies := _bank_extracted_survival_supplies(extracted_cargo)
 	_record_salvage_data_cache_discovery_if_extracted()
+	last_completed_survival_day = survival_state.current_day
+	_resolve_night_after_result()
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = _format_extraction_result_summary(extracted_count, extracted_cargo)
-	upgrade_menu_feedback = "Deposited %d resource(s) into the bank.%s\n%s" % [
+	last_result_summary = _format_extraction_result_summary(extracted_count, banked_resources, banked_survival_supplies)
+	upgrade_menu_feedback = "Deposited %d cargo item(s).%s%s\n%s" % [
 		extracted_count,
-		_format_resource_counts(extracted_cargo),
+		_format_resource_counts(banked_resources),
+		_format_survival_supply_counts(banked_survival_supplies),
 		_format_ready_upgrade_callout(),
 	]
 	_record_recent_expedition("Extracted", extracted_count)
@@ -487,11 +504,34 @@ func _try_extract() -> void:
 	status_label.text = "Dive complete: extracted safely with %d oxygen." % ceili(dive_session.oxygen)
 	_update_hud()
 
+func _bank_extracted_cargo(extracted_cargo: Array[String]) -> Array[String]:
+	var banked_resources: Array[String] = []
+	for item_id in extracted_cargo:
+		if not survival_state.is_supply_id(item_id):
+			banked_resources.append(item_id)
+	progression_state.bank_cargo(banked_resources)
+	return banked_resources
+
+func _bank_extracted_survival_supplies(extracted_cargo: Array[String]) -> Array[String]:
+	var banked_supplies: Array[String] = []
+	for item_id in extracted_cargo:
+		if survival_state.bank_supply(item_id):
+			banked_supplies.append(item_id)
+	return banked_supplies
+
+func _resolve_night_after_result() -> void:
+	var night_lines := survival_state.resolve_night()
+	last_night_report = "\n".join(night_lines)
+
 func _fail_dive() -> void:
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	surface_tab_index = SURFACE_TAB_RESULT
-	last_result_summary = "%s\nCargo lost. Banked resources, upgrades, scans, and best depth kept.\n%s%s\n%s%s%s\n%s\nBest depth: %dm.\n%s" % [
+	upgrade_menu_feedback = ""
+	_record_recent_expedition("Failed", 0)
+	last_completed_survival_day = survival_state.current_day
+	_resolve_night_after_result()
+	last_result_summary = "%s\nCargo lost. Banked resources, upgrades, scans, and best depth kept.\n%s%s\n%s%s%s\n%s\nBest depth: %dm.\n%s%s" % [
 		_format_completed_expedition_line("Failure"),
 		_format_region_memory_callout(),
 		_format_discovery_memory_callout(),
@@ -500,10 +540,9 @@ func _fail_dive() -> void:
 		_format_echo_lens_research_callout(),
 		_format_scan_progress_callout("Scans kept"),
 		roundi(progression_state.best_depth_reached),
+		_format_night_report_block(),
 		_format_next_expedition_prompt(),
 	]
-	upgrade_menu_feedback = ""
-	_record_recent_expedition("Failed", 0)
 	_save_progression()
 	status_label.text = "Dive failed: oxygen depleted. Cargo lost."
 	_update_hud()
@@ -516,11 +555,15 @@ func _start_dive() -> void:
 	_update_hud()
 
 func _restart_dive() -> void:
+	if survival_state.chapter_failed:
+		survival_state.reset_chapter()
 	_prepare_next_run()
 	player.global_position = start_position
 	player.velocity = Vector2.ZERO
 	player_in_base = true
 	last_result_summary = ""
+	last_night_report = ""
+	last_completed_survival_day = 0
 	upgrade_menu_feedback = ""
 	surface_tab_index = SURFACE_TAB_RESULT
 	_reset_resource_pickups()
@@ -529,12 +572,15 @@ func _restart_dive() -> void:
 
 func _reset_local_prototype_save() -> void:
 	progression_state.reset()
+	survival_state.reset_chapter()
 	_delete_progression_save()
 	_prepare_next_run()
 	player.global_position = start_position
 	player.velocity = Vector2.ZERO
 	player_in_base = true
 	last_result_summary = ""
+	last_night_report = ""
+	last_completed_survival_day = 0
 	upgrade_menu_feedback = ""
 	surface_tab_index = SURFACE_TAB_RESULT
 	selected_upgrade_index = 0
@@ -549,6 +595,7 @@ func _prepare_next_run() -> void:
 	current_expedition_condition = ExpeditionConditionScript.condition_for_seed(progression_state.current_run_seed)
 	dive_session.reset(_current_max_oxygen())
 	dive_session.cargo_limit = _current_cargo_limit()
+	player_near_survival_supply_cache = false
 	player_near_east_shelf_pocket = false
 	player_near_lower_connector_echo = false
 	player_near_resonance_alcove = false
@@ -567,6 +614,21 @@ func _prepare_next_run() -> void:
 	_sync_condition_visuals()
 	_sync_wreck_echo_state()
 	_sync_salvage_pocket_open_state()
+	_sync_survival_supply_cache_state()
+
+func _on_survival_supply_cache_body_entered(body: Node2D) -> void:
+	if body == player:
+		player_near_survival_supply_cache = true
+		if status_label != null:
+			status_label.text = "Emergency cache: recover one survival supply."
+		if is_inside_tree():
+			_update_hud()
+
+func _on_survival_supply_cache_body_exited(body: Node2D) -> void:
+	if body == player:
+		player_near_survival_supply_cache = false
+		if is_inside_tree():
+			_update_hud()
 
 func _on_base_zone_body_entered(body: Node2D) -> void:
 	if body == player:
@@ -732,6 +794,30 @@ func _on_tideglass_sample_body_exited(body: Node2D) -> void:
 		player_near_tideglass_sample = false
 		if is_inside_tree():
 			_update_hud()
+
+func _try_survival_supply_cache_interaction() -> bool:
+	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_survival_supply_cache:
+		return false
+
+	if run_survival_supply_cache_recovered:
+		if status_label != null:
+			status_label.text = "Emergency cache already recovered this expedition."
+		if is_inside_tree():
+			_update_hud()
+		return true
+
+	var supply_id: String = survival_state.most_needed_supply_id()
+	if not dive_session.add_cargo(supply_id):
+		status_label.text = "Cargo full: choose between supplies, resources, or returning."
+		_update_hud()
+		return true
+
+	run_survival_supply_cache_recovered = true
+	run_collected_survival_supplies.append(supply_id)
+	_sync_survival_supply_cache_state()
+	status_label.text = "Recovered %s. Extract to keep the base alive tonight." % survival_state.display_name_for_supply(supply_id)
+	_update_hud()
+	return true
 
 func _try_east_shelf_pocket_interaction() -> bool:
 	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_east_shelf_pocket:
@@ -1700,6 +1786,11 @@ func _format_hud_prompt() -> String:
 			]
 	elif dive_session.result == DiveSessionScript.Result.FAILED:
 		prompt = "Expedition failed - press %s for next expedition" % _action_label("restart_dive")
+	elif player_near_survival_supply_cache:
+		if run_survival_supply_cache_recovered:
+			prompt = "Emergency cache recovered"
+		else:
+			prompt = "Emergency cache: %s recover supply" % _action_label("interact")
 	elif player_near_resonance_alcove:
 		prompt = "Resonance Alcove: %s record hatch echo" % _action_label("interact")
 	elif player_near_glass_kelp_ledge:
@@ -3275,7 +3366,8 @@ func _format_upgrade_menu_title(selected_position: int, total_count: int) -> Str
 func _format_ready_panel_summary() -> String:
 	var lines: Array[String] = [
 		"Start with %d oxygen." % ceili(dive_session.max_oxygen),
-		"Collect, scan, push deeper, then return to bank cargo.",
+		survival_state.status_line(),
+		"Collect survival supplies, cargo, or knowledge, then extract.",
 		_format_condition_briefing(),
 		ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory()),
 		"%s begins." % _action_label("interact"),
@@ -3305,6 +3397,26 @@ func _format_resource_counts(resource_ids: Array[String]) -> String:
 		parts.append(" %s x%d" % [_display_name_for_resource(resource_id), int(counts[resource_id])])
 
 	return "\n" + "\n".join(parts)
+
+func _format_survival_supply_counts(supply_ids: Array[String]) -> String:
+	if supply_ids.is_empty():
+		return ""
+
+	var counts := {}
+	for supply_id in supply_ids:
+		counts[supply_id] = int(counts.get(supply_id, 0)) + 1
+
+	var parts: Array[String] = []
+	for supply_id in counts.keys():
+		parts.append(" %s x%d" % [survival_state.display_name_for_supply(supply_id), int(counts[supply_id])])
+
+	return "\n" + "\n".join(parts)
+
+func _format_survival_banking_line(banked_survival_supplies: Array[String]) -> String:
+	if banked_survival_supplies.is_empty():
+		return "Survival supplies banked: none."
+
+	return "Survival supplies banked:%s" % _format_survival_supply_counts(banked_survival_supplies)
 
 func _format_cargo_counts_inline(resource_ids: Array[String]) -> String:
 	if resource_ids.is_empty():
@@ -3340,6 +3452,12 @@ func _cargo_slot_color(state: String) -> Color:
 			return Color(0.94, 0.76, 0.46, 0.95)
 		"glow_plankton":
 			return Color(0.84, 0.98, 0.28, 0.95)
+		"food_supply":
+			return Color(0.92, 0.64, 0.34, 0.95)
+		"water_supply":
+			return Color(0.32, 0.78, 0.98, 0.95)
+		"power_supply":
+			return Color(0.88, 0.88, 0.34, 0.95)
 		"hidden":
 			return Color(0.0, 0.0, 0.0, 0.0)
 		"locked":
@@ -3355,6 +3473,12 @@ func _cargo_slot_icon_polygon(state: String) -> PackedVector2Array:
 			return PackedVector2Array([Vector2(-9, 7), Vector2(-5, -5), Vector2(0, -9), Vector2(5, -5), Vector2(9, 7), Vector2(3, 10), Vector2(-3, 10)])
 		"glow_plankton":
 			return PackedVector2Array([Vector2(0, -9), Vector2(8, 0), Vector2(0, 9), Vector2(-8, 0)])
+		"food_supply":
+			return PackedVector2Array([Vector2(-8, -7), Vector2(8, -7), Vector2(10, 3), Vector2(2, 10), Vector2(-9, 6)])
+		"water_supply":
+			return PackedVector2Array([Vector2(0, -10), Vector2(8, -1), Vector2(5, 9), Vector2(-5, 9), Vector2(-8, -1)])
+		"power_supply":
+			return PackedVector2Array([Vector2(-3, -10), Vector2(7, -2), Vector2(1, -1), Vector2(5, 10), Vector2(-7, 0), Vector2(-1, 0)])
 		_:
 			return PackedVector2Array()
 
@@ -3366,6 +3490,12 @@ func _cargo_slot_icon_color(state: String) -> Color:
 			return Color(1.0, 0.96, 0.74, 0.95)
 		"glow_plankton":
 			return Color(0.98, 1.0, 0.54, 0.98)
+		"food_supply":
+			return Color(1.0, 0.86, 0.58, 0.98)
+		"water_supply":
+			return Color(0.74, 0.96, 1.0, 0.98)
+		"power_supply":
+			return Color(1.0, 1.0, 0.52, 0.98)
 		_:
 			return Color(1.0, 1.0, 1.0, 0.0)
 
@@ -3387,6 +3517,8 @@ func _short_resource_name(resource_id: String) -> String:
 			return "Shell"
 		"glow_plankton":
 			return "Glow"
+		"food_supply", "water_supply", "power_supply":
+			return survival_state.short_name_for_supply(resource_id)
 		_:
 			return resource_id
 
@@ -3411,6 +3543,8 @@ func _display_name_for_resource(resource_id: String) -> String:
 			return "Shell Fragments"
 		"glow_plankton":
 			return "Glow Plankton"
+		"food_supply", "water_supply", "power_supply":
+			return survival_state.display_name_for_supply(resource_id)
 		_:
 			return resource_id
 
@@ -3678,6 +3812,21 @@ func _format_extraction_banking_line(extracted_count: int, extracted_cargo: Arra
 
 	return "Banked 0 resources. No cargo or new scans came home."
 
+func _sync_survival_supply_cache_state() -> void:
+	if survival_supply_cache_halo == null or survival_supply_cache_core == null:
+		return
+
+	if run_survival_supply_cache_recovered:
+		survival_supply_cache_halo.color = Color(0.72, 0.95, 1.0, 0.08)
+		survival_supply_cache_core.color = Color(0.96, 0.78, 0.38, 0.18)
+		if survival_supply_cache_label != null:
+			survival_supply_cache_label.text = "SUPPLY TAKEN"
+	else:
+		survival_supply_cache_halo.color = Color(0.72, 0.95, 1.0, 0.22)
+		survival_supply_cache_core.color = Color(0.96, 0.78, 0.38, 0.72)
+		if survival_supply_cache_label != null:
+			survival_supply_cache_label.text = "SUPPLY CACHE"
+
 func _record_salvage_data_cache_discovery_if_extracted() -> void:
 	if not run_salvage_data_cache_recovered:
 		return
@@ -3784,6 +3933,7 @@ func _format_cluster_pattern(pattern: String) -> String:
 
 func _reset_run_telemetry() -> void:
 	run_collected_resources.clear()
+	run_collected_survival_supplies.clear()
 	run_completed_scans.clear()
 	run_predator_contacts = 0
 	run_failure_cause = "none"
@@ -3801,6 +3951,8 @@ func _reset_run_telemetry() -> void:
 	run_salvage_manifest_recovered = false
 	run_salvage_data_cache_recovered = false
 	run_tideglass_sample_recovered = false
+	run_survival_supply_cache_recovered = false
+	last_completed_survival_day = 0
 	debug_wreck_echo_review_staged = false
 	visual_smoke_route_stage = ""
 	current_lantern_ray_route_id = "none"
@@ -3822,9 +3974,10 @@ func _reset_run_telemetry() -> void:
 	_sync_salvage_manifest_state()
 	_sync_salvage_data_cache_state()
 	_sync_tideglass_sample_state()
+	_sync_survival_supply_cache_state()
 
 func _format_run_telemetry(result_name: String) -> String:
-	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nLantern Ray route: %s\nCargo collected:%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
+	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nLantern Ray route: %s\nCargo collected:%s%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
 		result_name,
 		progression_state.current_run_seed,
 		_format_cluster_pattern(current_resource_cluster_pattern),
@@ -3832,6 +3985,7 @@ func _format_run_telemetry(result_name: String) -> String:
 		current_predator_route_id,
 		current_lantern_ray_route_id,
 		_format_resource_counts(run_collected_resources),
+		_format_survival_supply_counts(run_collected_survival_supplies),
 		_format_scan_ids(run_completed_scans),
 		run_predator_contacts,
 		ceili(dive_session.oxygen),
@@ -3855,35 +4009,49 @@ func _format_run_summary(player_summary: String, result_name: String) -> String:
 	return "%s\n%s" % [player_summary, _format_run_telemetry(result_name)]
 
 func _format_next_expedition_prompt() -> String:
+	if survival_state.chapter_failed:
+		return "Next: press %s to restart Emergency Week." % _action_label("restart_dive")
+	if survival_state.chapter_complete:
+		return "Next: press %s for a stabilized expedition." % _action_label("restart_dive")
 	return "Next: press %s for Expedition %d; the ocean shifts again." % [
 		_action_label("restart_dive"),
 		progression_state.current_run_number + 1,
 	]
 
 func _format_expedition_ready_status() -> String:
+	if survival_state.chapter_complete:
+		return "Base stabilized: continue expeditions without nightly collapse."
 	if _current_condition_id() == "low_visibility":
-		return "Expedition %d ready: lower-trench visibility is poor today." % progression_state.current_run_number
+		return "Day %d ready: lower-trench visibility is poor today." % survival_state.current_day
 	if _current_condition_id() == "kelp_bloom":
-		return "Expedition %d ready: Mirror Kelp approaches are thicker today." % progression_state.current_run_number
+		return "Day %d ready: Mirror Kelp approaches are thicker today." % survival_state.current_day
 
-	return "Expedition %d ready: the ocean changed overnight." % progression_state.current_run_number
+	return "Day %d ready: the ocean changed overnight." % survival_state.current_day
 
 func _format_expedition_day_title(suffix: String) -> String:
-	return "Expedition Day %d %s" % [
-		progression_state.current_run_number,
+	if survival_state.chapter_complete:
+		return "Base Stabilized %s" % suffix
+	var display_day := last_completed_survival_day if suffix.begins_with("Result") and last_completed_survival_day > 0 else survival_state.current_day
+	return "Emergency Week Day %d/%d %s" % [
+		display_day,
+		survival_state.max_days,
 		suffix,
 	]
 
 func _format_completed_expedition_line(result_name: String) -> String:
-	return "Expedition Day %d: %s." % [
-		progression_state.current_run_number,
+	if survival_state.chapter_complete:
+		return "Base Stabilized: %s." % result_name
+	var display_day := last_completed_survival_day if last_completed_survival_day > 0 else survival_state.current_day
+	return "Emergency Week Day %d: %s." % [
+		display_day,
 		result_name,
 	]
 
-func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Array[String]) -> String:
-	return "%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s" % [
+func _format_extraction_result_summary(extracted_count: int, banked_resources: Array[String], banked_survival_supplies: Array[String] = []) -> String:
+	return "%s\n%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s%s" % [
 		_format_completed_expedition_line("Extraction"),
-		_format_extraction_banking_line(extracted_count, extracted_cargo),
+		_format_extraction_banking_line(banked_resources.size(), banked_resources),
+		_format_survival_banking_line(banked_survival_supplies),
 		_format_region_memory_callout(),
 		_format_discovery_memory_callout(),
 		_format_route_choice_callout(),
@@ -3905,8 +4073,15 @@ func _format_extraction_result_summary(extracted_count: int, extracted_cargo: Ar
 		_format_upgrade_progress_callout(),
 		_format_scan_progress_callout("Discoveries recorded"),
 		roundi(progression_state.best_depth_reached),
+		_format_night_report_block(),
 		_format_next_expedition_prompt()
 	]
+
+func _format_night_report_block() -> String:
+	if last_night_report.is_empty():
+		return ""
+
+	return "Night Report:\n%s\n" % last_night_report
 
 func _format_condition_briefing() -> String:
 	if current_expedition_condition.is_empty():
@@ -4317,10 +4492,11 @@ func _format_scan_target_type(target: Node) -> String:
 			return "clue"
 
 func _current_max_oxygen() -> float:
+	var oxygen_max := max_oxygen
 	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
-		return oxygen_tank_1_max_oxygen
+		oxygen_max = oxygen_tank_1_max_oxygen
 
-	return max_oxygen
+	return maxf(12.0, oxygen_max - survival_state.oxygen_penalty())
 
 func _current_cargo_limit() -> int:
 	if progression_state.has_upgrade(CARGO_RACK_UPGRADE_ID):
@@ -4446,6 +4622,7 @@ func _load_progression() -> void:
 	var parsed = JSON.parse_string(file.get_as_text())
 	if parsed is Dictionary:
 		progression_state.load_save_data(parsed)
+		survival_state.load_save_data(parsed.get("survival_state", {}))
 
 func _save_progression() -> void:
 	var file := FileAccess.open(PROGRESSION_SAVE_PATH, FileAccess.WRITE)
@@ -4453,7 +4630,9 @@ func _save_progression() -> void:
 		push_warning("Could not write progression save.")
 		return
 
-	file.store_string(JSON.stringify(progression_state.to_save_data(), "\t"))
+	var save_data := progression_state.to_save_data()
+	save_data["survival_state"] = survival_state.to_save_data()
+	file.store_string(JSON.stringify(save_data, "\t"))
 
 func _delete_progression_save() -> void:
 	if not FileAccess.file_exists(PROGRESSION_SAVE_PATH):

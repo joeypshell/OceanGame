@@ -4,19 +4,15 @@ This is the compact active roadmap for issue-driven work. Historical issue batch
 
 ## Current Direction
 
-OceanGame is a 2D alien-ocean expedition game. Each expedition starts from the surface boat/lab, sends the player into persistent side-view geography with seeded daily variation, and asks them to return with cargo or knowledge that makes the next dive smarter.
+OceanGame is a 2D alien-ocean survival expedition roguelite. Each expedition starts from the surface boat/lab, sends the player into persistent side-view geography with seeded daily variation, and asks them to return with whatever matters most: supplies that keep the base alive tonight, cargo that improves future dives, or knowledge that unlocks the deeper mystery.
 
-North-star filter: current work should help the player see something tempting, risk a dive, return with cargo or knowledge, understand what changed, and want to try one smarter expedition tomorrow. Prefer remembered places, readable route choices, useful surface results, and upgrades that open or clarify known destinations.
+North-star filter: every expedition should force a survival tradeoff. Bring back what keeps you alive tonight, what makes future dives safer, or what unlocks a remembered deeper place. Prefer player-visible loop progress over more route breadth until the survival day rhythm works.
 
 ## Active Milestone
 
-Area 02 Larger Route Progress.
+Survival Expedition Loop Prototype.
 
-Recent playtesting said the Hollow Reef / Wide Reef / Mirror Kelp / salvage-pocket cluster was too visually messy to test comfortably. The bounded readability review now accepts Area 01 readability with a watchlist, so content expansion may resume carefully through #622.
-
-The Salvage Cutter return payoff validation accepts the opened-pocket loop with a watchlist. The next batch should move away from local readability rescue and back toward player-visible route growth.
-
-The active milestone is now the first larger-route pass beyond the current Area 01 cluster. The goal is for a short playtest to reveal a wider ocean space, one memorable branch, one pressure/timing or creature-read decision, and one result-memory payoff that makes the next expedition clearer.
+Route expansion is paused. The active goal is for a short playtest to feel like an expedition day rather than only a route tour: the player starts with Food/Water/Power pressure, chooses whether to spend cargo space on survival supplies, extracts or fails, reads a night report, and sees the next day or Emergency Week collapse.
 
 Primary planning docs:
 
@@ -29,14 +25,10 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. Create the Area 02 route footprint and world/camera contract.
-2. Add a first memorable branch and broad return path.
-3. Add one local pressure/timing traversal decision.
-4. Add one passive creature/read behavior.
-5. Add one payoff that creates result memory and a next-run hypothesis.
-6. Add one surface/result update that makes the new route feel consequential.
-7. Add one visible upgrade/lock promise only if it points back to a place the player has seen.
-8. Add deterministic staging/evidence after the visible route exists.
+1. Validate the first Emergency Week loop in play: ready panel, shallow supply cache, extraction, night report, next day, collapse/restart.
+2. Improve survival UI clarity only where the prototype loop is hard to understand.
+3. Add one more survival supply placement or day-condition hook only after the first loop is understandable.
+4. Resume route/content growth only after the survival loop gives players a reason to care what they bring home.
 
 ## Completed In This Readability Rescue
 
@@ -58,9 +50,10 @@ Primary planning docs:
 - Labels should be sparse and reserved for compact place names or honest locked/open states.
 - Do not solve confusion by adding more bright shapes, exact locators, checklists, minimaps, or route graphs.
 
-## Deferred Until Readability Is Accepted
+## Deferred Until Survival Loop Is Playable
 
-- Local clutter or readability work that does not unblock a specific next playable route.
+- Area 02 route-content expansion that does not affect survival tradeoffs.
+- Local clutter or readability work that does not block survival-loop playtesting.
 - Broader mobile/controller work beyond preserving semantic input guardrails.
 - Final art overhaul, large UI reskin, broad visual regression suite, or golden-image infrastructure.
 

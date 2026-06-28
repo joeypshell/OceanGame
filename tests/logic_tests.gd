@@ -2,6 +2,7 @@ extends SceneTree
 
 const DiveSessionScript := preload("res://scripts/dive_session.gd")
 const ProgressionStateScript := preload("res://scripts/progression_state.gd")
+const SurvivalStateScript := preload("res://scripts/survival_state.gd")
 const SpawnPointScript := preload("res://scripts/spawn_point.gd")
 const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
@@ -44,6 +45,10 @@ func _initialize() -> void:
 	_run("upgraded cargo limit", _test_upgraded_cargo_limit)
 	_run("extraction requirements", _test_extraction_requirements)
 	_run("oxygen failure", _test_oxygen_failure)
+	_run("survival night consumption", _test_survival_night_consumption)
+	_run("survival collapse and reset", _test_survival_collapse_and_reset)
+	_run("survival supply banking isolation", _test_survival_supply_banking_isolation)
+	_run("survival oxygen penalty", _test_survival_oxygen_penalty)
 	_run("upgrade affordability", _test_upgrade_affordability)
 	_run("progression reset", _test_progression_reset)
 	_run("save/load behavior", _test_save_load_behavior)
@@ -202,6 +207,61 @@ func _test_oxygen_failure() -> void:
 	_expect(session.oxygen == 0.0, "oxygen should clamp to zero")
 	_expect(session.result == DiveSessionScript.Result.FAILED, "oxygen depletion should fail the dive")
 	_expect(session.current_cargo.is_empty(), "oxygen failure should discard current cargo")
+
+func _test_survival_night_consumption() -> void:
+	var survival := SurvivalStateScript.new()
+
+	var day_one_report := survival.resolve_night()
+
+	_expect(survival.current_day == 2, "survival night should advance from day one to day two")
+	_expect(survival.food == 2, "survival night should consume one food")
+	_expect(survival.water == 2, "survival night should consume one water")
+	_expect(survival.power == 2, "survival night should consume one power")
+	_expect(day_one_report[0].contains("Night consumed"), "survival report should explain night consumption")
+
+	survival.resolve_night()
+	var warning_report := survival.resolve_night()
+	_expect(survival.current_day == 4, "survival should keep advancing while needs are at zero")
+	_expect(survival.oxygen_penalty() == 12.0, "zero food, water, and power should create a staged oxygen penalty")
+	_expect("\n".join(warning_report).contains("reduced oxygen"), "zero-need night should warn about reduced oxygen")
+
+func _test_survival_collapse_and_reset() -> void:
+	var survival := SurvivalStateScript.new()
+	survival.food = 0
+	survival.water = 0
+	survival.power = 0
+
+	var collapse_report := survival.resolve_night()
+
+	_expect(survival.chapter_failed, "survival should collapse when a need falls below zero")
+	_expect("\n".join(collapse_report).contains("Collapse"), "collapse report should name the chapter failure")
+	survival.reset_chapter()
+	_expect(not survival.chapter_failed, "survival reset should clear chapter failure")
+	_expect(survival.current_day == 1, "survival reset should return to day one")
+	_expect(survival.food == 3 and survival.water == 3 and survival.power == 3, "survival reset should restore starting supplies")
+
+func _test_survival_supply_banking_isolation() -> void:
+	var main := MainScript.new()
+	var cargo: Array[String] = ["kelp_fiber", "food_supply", "power_supply"]
+
+	var resources: Array[String] = main.call("_bank_extracted_cargo", cargo)
+	var supplies: Array[String] = main.call("_bank_extracted_survival_supplies", cargo)
+
+	_expect(resources == ["kelp_fiber"], "survival supplies should not bank as upgrade resources")
+	_expect(supplies == ["food_supply", "power_supply"], "survival supply banking should return only supply cargo")
+	_expect(main.progression_state.resource_count("kelp_fiber") == 1, "resource cargo should still bank normally")
+	_expect(main.progression_state.resource_count("food_supply") == 0, "food supply should not appear in resource bank")
+	_expect(main.survival_state.food == 4, "food supply should increase survival food")
+	_expect(main.survival_state.power == 4, "power supply should increase survival power")
+	_expect(main.survival_state.water == 3, "unbanked water should remain unchanged")
+
+func _test_survival_oxygen_penalty() -> void:
+	var main := MainScript.new()
+	main.survival_state.food = 0
+
+	_expect(main._current_max_oxygen() == 26.0, "one empty survival need should reduce next expedition oxygen")
+	main.progression_state.purchased_upgrades[OxygenTankUpgrade.id] = true
+	_expect(main._current_max_oxygen() == 36.0, "survival oxygen penalty should apply after oxygen upgrade max is calculated")
 
 func _test_upgrade_affordability() -> void:
 	var progression := ProgressionStateScript.new()
@@ -3304,12 +3364,13 @@ func _test_next_expedition_framing() -> void:
 	_expect(not prompt.to_lower().contains("restart"), "result prompt should avoid raw restart language")
 
 	main.progression_state.current_run_number = 4
+	main.survival_state.current_day = 4
 	var ready_status := main._format_expedition_ready_status()
-	_expect(ready_status.contains("Expedition 4 ready"), "ready status should name the prepared expedition")
+	_expect(ready_status.contains("Day 4 ready"), "ready status should name the prepared survival day")
 	_expect(ready_status.contains("ocean changed"), "ready status should describe the changed ocean")
-	_expect(main._format_expedition_day_title("Ready") == "Expedition Day 4 Ready", "ready title should show expedition day number")
-	_expect(main._format_expedition_day_title("Result: Extraction") == "Expedition Day 4 Result: Extraction", "result title should show completed expedition day number")
-	_expect(main._format_completed_expedition_line("Failure") == "Expedition Day 4: Failure.", "result summary should name the completed expedition day")
+	_expect(main._format_expedition_day_title("Ready") == "Emergency Week Day 4/5 Ready", "ready title should show survival day number")
+	_expect(main._format_expedition_day_title("Result: Extraction") == "Emergency Week Day 4/5 Result: Extraction", "result title should show completed survival day number")
+	_expect(main._format_completed_expedition_line("Failure") == "Emergency Week Day 4: Failure.", "result summary should name the completed survival day")
 	main.free()
 
 func _test_region_memory_result_callout() -> void:

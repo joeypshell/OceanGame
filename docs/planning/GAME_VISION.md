@@ -6,7 +6,7 @@ Every morning the alien ocean changes. Pilot a fragile research sub, scan what t
 
 Short form:
 
-Pilot a small research sub through seeded alien-ocean expedition days where every descent asks whether to push deeper for knowledge and cargo or return safely before oxygen runs out.
+Pilot a small research sub through seeded alien-ocean expedition days where every descent asks whether to bring back what keeps the base alive tonight, what makes future dives safer, or what unlocks the deeper mystery.
 
 ## Player Role
 
@@ -39,6 +39,7 @@ The next expedition should offer a different route, a visible goal left behind, 
 
 The "one more expedition day" pull should come from:
 
+- a survival need that makes today's cargo choice matter,
 - a morning report that hints at today's condition or opportunity,
 - a visible route or discovery the player could not reach yet,
 - lab analysis that turns scans and failure into useful knowledge,
@@ -65,6 +66,7 @@ The surface phase should feel emotionally different from the ocean without becom
 - cargo and scans are counted,
 - lab analysis clarifies what was learned,
 - upgrades and locked-route promises are surfaced,
+- survival supplies are consumed overnight and consequences are shown,
 - the player sleeps or advances to the next expedition day,
 - the ocean condition shifts.
 

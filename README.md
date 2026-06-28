@@ -1,10 +1,10 @@
 # OceanGame
 
-OceanGame is a 2D underwater roguelite prototype about short, seeded alien-ocean expeditions. You pilot a small research sub, gather resources, scan useful discoveries, avoid predators, extract safely, and use persistent knowledge and upgrades to reach deeper opportunities.
+OceanGame is a 2D alien-ocean survival expedition roguelite prototype. You pilot a small research sub, gather survival supplies and resources, scan useful discoveries, avoid predators, extract safely, and use persistent knowledge and upgrades to keep the base alive long enough to reach deeper opportunities.
 
 ## Current Prototype
 
-The current build is a Godot 4.7 side-view expedition slice. It includes a surface boat/lab, oxygen pressure, extraction and failure, seeded resource and route variation, practical scanning, persistent prototype save data, several narrow upgrades, a growing authored Area 01 route, debug-gated telemetry, deterministic logic tests, and repeatable web/Playwright visual-smoke support.
+The current build is a Godot 4.7 side-view expedition slice. It includes a surface boat/lab, oxygen pressure, extraction and failure, a first Emergency Week survival state, seeded resource and route variation, practical scanning, persistent prototype save data, several narrow upgrades, a growing authored Area 01 route, debug-gated telemetry, deterministic logic tests, and repeatable web/Playwright visual-smoke support.
 
 ## Controls
 
@@ -38,7 +38,7 @@ node .mcp/oceangame-context-server.mjs --self-test
 
 ## Current Milestone
 
-The active milestone is `Area 01 Readability Rescue`. Content expansion is paused while the Hollow Reef / Wide Reef / Mirror Kelp / salvage-pocket cluster is made easier to read at normal play scale. The immediate order is source-of-truth cleanup first, then readability-only review or fixes if needed. `Salvage Cutter` content issues #622 and #623 stay paused until readability is explicitly accepted.
+The active milestone is `Survival Expedition Loop Prototype`. Route/content expansion is paused while the core day loop becomes playable: start a day with survival needs and an ocean condition, dive for supplies/cargo/knowledge, extract or fail, resolve the night, and either advance the Emergency Week or collapse and restart it.
 
 ## Project Docs
 

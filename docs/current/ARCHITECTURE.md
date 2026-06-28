@@ -29,6 +29,10 @@ Scene orchestration
         |      scripts/progression_state.gd
         |      user://progression_save.json
         |
+        +--> Chapter survival state
+        |      scripts/survival_state.gd
+        |      stored under survival_state in user://progression_save.json
+        |
         +--> Data/helpers
                resource definitions
                upgrade definitions
@@ -91,6 +95,18 @@ This state is reset between expeditions and should not be saved as durable progr
 - current save schema version.
 
 Progression state should be updated only through explicit progression events such as extraction, scan completion, upgrade purchase, best-depth recording, and save/load migration.
+
+### Chapter Survival State
+
+`SurvivalState` owns the Emergency Week survival pressure:
+
+- current day and max days,
+- Food, Water, and Power,
+- staged oxygen penalty when a need reaches 0,
+- chapter collapse when a need drops below 0,
+- chapter stabilization after the week is survived.
+
+Survival supplies may travel through `DiveSession.current_cargo` during a dive, but extraction routes them into `SurvivalState` instead of `ProgressionState.banked_resources`. This keeps survival pressure separate from upgrade resources while still making cargo space a real tradeoff.
 
 Compact research clues, such as the first `Wreck Echo Descent` clue, begin as run result memory rather than durable progression. Promote them into `ProgressionState` only when a later issue explicitly needs persistence after relaunch, prerequisite checks, or a stable learned-state surface.
 
@@ -162,6 +178,7 @@ Small reusable visual helpers such as `scripts/scan_pulse_visual.gd` may central
 ## State-Management Guardrails
 
 - Do not let visual effects mutate durable progression directly.
+- Do not bank survival supplies as upgrade resources.
 - Do not save active oxygen, active cargo, temporary highlights, selected scan target, current seed telemetry, or surface tab selection as progression.
 - Do not make HUD labels the only source of route meaning; important route states should have visible scene language.
 - Do not add a parallel objective/quest state system while the expedition prep goal formatter is enough.
