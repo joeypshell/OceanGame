@@ -48,6 +48,7 @@ func _initialize() -> void:
 	_run("survival night consumption", _test_survival_night_consumption)
 	_run("survival collapse and reset", _test_survival_collapse_and_reset)
 	_run("survival supply banking isolation", _test_survival_supply_banking_isolation)
+	_run("starter survival resource families", _test_starter_survival_resource_families)
 	_run("survival oxygen penalty", _test_survival_oxygen_penalty)
 	_run("upgrade affordability", _test_upgrade_affordability)
 	_run("progression reset", _test_progression_reset)
@@ -263,6 +264,36 @@ func _test_survival_supply_banking_isolation() -> void:
 	_expect(main.survival_state.food == 4, "food supply should increase survival food")
 	_expect(main.survival_state.power == 4, "power supply should increase survival power")
 	_expect(main.survival_state.water == 3, "unbanked water should remain unchanged")
+
+func _test_starter_survival_resource_families() -> void:
+	var main := MainScript.new()
+	var cargo: Array[String] = ["scrap_metal", "driftwood", "quartz_glass", "food_supply", "water_supply"]
+	var resources: Array[String] = main.call("_bank_extracted_cargo", cargo)
+	var supplies: Array[String] = main.call("_bank_extracted_survival_supplies", cargo)
+
+	_expect(resources == ["scrap_metal", "driftwood", "quartz_glass"], "starter crafting materials should bank as upgrade resources")
+	_expect(supplies == ["food_supply", "water_supply"], "starter food and water should bank as survival supplies")
+	_expect(main.progression_state.resource_count("scrap_metal") == 1, "scrap metal should appear in the resource bank")
+	_expect(main.progression_state.resource_count("driftwood") == 1, "driftwood should appear in the resource bank")
+	_expect(main.progression_state.resource_count("quartz_glass") == 1, "quartz glass should appear in the resource bank")
+	_expect(main.survival_state.food == 4, "food pickup should increase survival food")
+	_expect(main.survival_state.water == 4, "water pickup should increase survival water")
+
+	var scene := MainScene.instantiate()
+	root.add_child(scene)
+	var expected_pickups := {
+		"ScrapMetal": "scrap_metal",
+		"Driftwood": "driftwood",
+		"QuartzGlass": "quartz_glass",
+		"FoodSupply": "food_supply",
+		"WaterSupply": "water_supply",
+	}
+	for pickup_name in expected_pickups.keys():
+		var pickup := scene.get_node("ResourcePickups/%s" % pickup_name) as ResourcePickup
+		var candidate := scene.get_node_or_null("StarterResourceCandidates/%s/A" % pickup_name)
+		_expect(pickup.definition.id == String(expected_pickups[pickup_name]), "%s should use the expected resource definition" % pickup_name)
+		_expect(candidate != null, "%s should have at least one authored spawn candidate" % pickup_name)
+	scene.queue_free()
 
 func _test_survival_oxygen_penalty() -> void:
 	var main := MainScript.new()
@@ -5538,6 +5569,12 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(main.call("_cargo_slot_icon_polygon", "kelp_fiber").size() > 0, "kelp cargo slots should have a mini-icon polygon")
 	_expect(main.call("_cargo_slot_icon_polygon", "shell_fragments").size() > 0, "shell cargo slots should have a mini-icon polygon")
 	_expect(main.call("_cargo_slot_icon_polygon", "glow_plankton").size() > 0, "glow cargo slots should have a mini-icon polygon")
+	_expect(main.call("_cargo_slot_icon_polygon", "scrap_metal").size() > 0, "scrap cargo slots should have a mini-icon polygon")
+	_expect(main.call("_cargo_slot_icon_polygon", "driftwood").size() > 0, "driftwood cargo slots should have a mini-icon polygon")
+	_expect(main.call("_cargo_slot_icon_polygon", "quartz_glass").size() > 0, "quartz glass cargo slots should have a mini-icon polygon")
+	_expect(main.call("_short_resource_name", "scrap_metal") == "Scrap", "scrap metal should have a compact HUD name")
+	_expect(main.call("_short_resource_name", "driftwood") == "Wood", "driftwood should have a compact HUD name")
+	_expect(main.call("_short_resource_name", "quartz_glass") == "Glass", "quartz glass should have a compact HUD name")
 	_expect(main.call("_cargo_slot_icon_polygon", "empty").is_empty(), "empty cargo slots should not show a resource mini-icon")
 	_expect(main.call("_cargo_slot_icon_color", "hidden").a == 0.0, "hidden cargo slot icon color should stay transparent")
 	_expect(main.call("_tool_slot_color", "ready").a <= 0.52, "ready tool slots should stay translucent like reference HUD glass")

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ResourceDefinition" load_steps=2 format=3 uid="uid://scrap_metal_resource"]
+
+[ext_resource type="Script" path="res://scripts/resource_definition.gd" id="1_resource_definition"]
+
+[resource]
+script = ExtResource("1_resource_definition")
+id = "scrap_metal"
+display_name = "Scrap Metal"
+depth_band = "shallow"
+value = 1
+scan_description = "Loose wreck scrap near the shallows. Useful for basic tool housings and repairs."
+upgrade_use = "starter crafting"

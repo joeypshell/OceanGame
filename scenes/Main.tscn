@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=44 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -6,6 +6,11 @@
 [ext_resource type="Resource" path="res://resources/kelp_fiber.tres" id="4_kelp_fiber"]
 [ext_resource type="Resource" path="res://resources/shell_fragments.tres" id="5_shell_fragments"]
 [ext_resource type="Resource" path="res://resources/glow_plankton.tres" id="6_glow_plankton"]
+[ext_resource type="Resource" path="res://resources/scrap_metal.tres" id="29_scrap_metal"]
+[ext_resource type="Resource" path="res://resources/driftwood.tres" id="30_driftwood"]
+[ext_resource type="Resource" path="res://resources/quartz_glass.tres" id="31_quartz_glass"]
+[ext_resource type="Resource" path="res://resources/food_supply.tres" id="32_food_supply"]
+[ext_resource type="Resource" path="res://resources/water_supply.tres" id="33_water_supply"]
 [ext_resource type="Script" path="res://scripts/scannable.gd" id="7_scannable"]
 [ext_resource type="Script" path="res://scripts/predator.gd" id="8_predator"]
 [ext_resource type="Script" path="res://scripts/spawn_point.gd" id="9_spawn_point"]
@@ -2641,6 +2646,96 @@ target_id = "glow_plankton"
 depth_band = "deep"
 cluster_pattern = "deep_reward"
 
+[node name="ScrapMetal" type="Node2D" parent="StarterResourceCandidates"]
+
+[node name="A" type="Marker2D" parent="StarterResourceCandidates/ScrapMetal"]
+position = Vector2(332, 1036)
+script = ExtResource("9_spawn_point")
+spawn_id = "scrap_left_cave_a"
+target_id = "scrap_metal"
+depth_band = "shallow"
+cluster_pattern = "cautious"
+
+[node name="B" type="Marker2D" parent="StarterResourceCandidates/ScrapMetal"]
+position = Vector2(1184, 1012)
+script = ExtResource("9_spawn_point")
+spawn_id = "scrap_right_chamber_a"
+target_id = "scrap_metal"
+depth_band = "shallow"
+cluster_pattern = "deep_reward"
+
+[node name="Driftwood" type="Node2D" parent="StarterResourceCandidates"]
+
+[node name="A" type="Marker2D" parent="StarterResourceCandidates/Driftwood"]
+position = Vector2(430, 720)
+script = ExtResource("9_spawn_point")
+spawn_id = "driftwood_left_ledge_a"
+target_id = "driftwood"
+depth_band = "shallow"
+cluster_pattern = "cautious"
+
+[node name="B" type="Marker2D" parent="StarterResourceCandidates/Driftwood"]
+position = Vector2(1378, 922)
+script = ExtResource("9_spawn_point")
+spawn_id = "driftwood_right_ledge_a"
+target_id = "driftwood"
+depth_band = "shallow"
+cluster_pattern = "deep_reward"
+
+[node name="QuartzGlass" type="Node2D" parent="StarterResourceCandidates"]
+
+[node name="A" type="Marker2D" parent="StarterResourceCandidates/QuartzGlass"]
+position = Vector2(1260, 1150)
+script = ExtResource("9_spawn_point")
+spawn_id = "quartz_right_pocket_a"
+target_id = "quartz_glass"
+depth_band = "midwater"
+cluster_pattern = "cautious"
+
+[node name="B" type="Marker2D" parent="StarterResourceCandidates/QuartzGlass"]
+position = Vector2(1130, 1860)
+script = ExtResource("9_spawn_point")
+spawn_id = "quartz_deep_chamber_a"
+target_id = "quartz_glass"
+depth_band = "midwater"
+cluster_pattern = "deep_reward"
+
+[node name="FoodSupply" type="Node2D" parent="StarterResourceCandidates"]
+
+[node name="A" type="Marker2D" parent="StarterResourceCandidates/FoodSupply"]
+position = Vector2(360, 940)
+script = ExtResource("9_spawn_point")
+spawn_id = "food_left_cave_a"
+target_id = "food_supply"
+depth_band = "shallow"
+cluster_pattern = "cautious"
+
+[node name="B" type="Marker2D" parent="StarterResourceCandidates/FoodSupply"]
+position = Vector2(1480, 1032)
+script = ExtResource("9_spawn_point")
+spawn_id = "food_right_chamber_a"
+target_id = "food_supply"
+depth_band = "shallow"
+cluster_pattern = "deep_reward"
+
+[node name="WaterSupply" type="Node2D" parent="StarterResourceCandidates"]
+
+[node name="A" type="Marker2D" parent="StarterResourceCandidates/WaterSupply"]
+position = Vector2(590, 1180)
+script = ExtResource("9_spawn_point")
+spawn_id = "water_left_pocket_a"
+target_id = "water_supply"
+depth_band = "shallow"
+cluster_pattern = "cautious"
+
+[node name="B" type="Marker2D" parent="StarterResourceCandidates/WaterSupply"]
+position = Vector2(1560, 1184)
+script = ExtResource("9_spawn_point")
+spawn_id = "water_right_pocket_a"
+target_id = "water_supply"
+depth_band = "shallow"
+cluster_pattern = "deep_reward"
+
 [node name="CreatureRouteCandidates" type="Node2D" parent="."]
 
 [node name="CautiousRightGate" type="Node2D" parent="CreatureRouteCandidates"]
@@ -2891,6 +2986,90 @@ definition = ExtResource("6_glow_plankton")
 [node name="Visuals" parent="ResourcePickups/DeepGlowPlankton" instance=ExtResource("12_glow_plankton_visual")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/DeepGlowPlankton"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="ScrapMetal" type="Area2D" parent="ResourcePickups"]
+position = Vector2(332, 1036)
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("29_scrap_metal")
+
+[node name="ScrapShard" type="Polygon2D" parent="ResourcePickups/ScrapMetal"]
+color = Color(0.72, 0.92, 0.98, 0.9)
+polygon = PackedVector2Array(-18, -10, 6, -18, 24, -4, 12, 18, -14, 22, -26, 4)
+
+[node name="ScrapShadow" type="Polygon2D" parent="ResourcePickups/ScrapMetal"]
+z_index = -1
+color = Color(0.06, 0.16, 0.18, 0.46)
+polygon = PackedVector2Array(-34, -14, 8, -30, 42, -4, 24, 32, -22, 34, -44, 6)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/ScrapMetal"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="Driftwood" type="Area2D" parent="ResourcePickups"]
+position = Vector2(430, 720)
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("30_driftwood")
+
+[node name="WoodBranch" type="Polygon2D" parent="ResourcePickups/Driftwood"]
+color = Color(1, 0.72, 0.4, 0.88)
+polygon = PackedVector2Array(-28, 8, -8, -22, 4, -14, 22, -26, 14, 12, -8, 26)
+
+[node name="WoodShadow" type="Polygon2D" parent="ResourcePickups/Driftwood"]
+z_index = -1
+color = Color(0.18, 0.11, 0.05, 0.42)
+polygon = PackedVector2Array(-36, 14, -12, -30, 8, -20, 34, -34, 22, 22, -14, 34)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/Driftwood"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="QuartzGlass" type="Area2D" parent="ResourcePickups"]
+position = Vector2(1260, 1150)
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("31_quartz_glass")
+
+[node name="QuartzCore" type="Polygon2D" parent="ResourcePickups/QuartzGlass"]
+color = Color(0.6, 1, 1, 0.92)
+polygon = PackedVector2Array(0, -28, 20, -8, 14, 24, -12, 26, -24, -8)
+
+[node name="QuartzHalo" type="Polygon2D" parent="ResourcePickups/QuartzGlass"]
+z_index = -1
+color = Color(0.22, 0.84, 1, 0.24)
+polygon = PackedVector2Array(0, -44, 36, -18, 34, 26, -2, 46, -38, 20, -34, -20)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/QuartzGlass"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="FoodSupply" type="Area2D" parent="ResourcePickups"]
+position = Vector2(360, 940)
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("32_food_supply")
+
+[node name="FoodCrate" type="Polygon2D" parent="ResourcePickups/FoodSupply"]
+color = Color(1, 0.72, 0.32, 0.9)
+polygon = PackedVector2Array(-22, -16, 18, -18, 28, 12, 4, 26, -24, 18)
+
+[node name="FoodBadge" type="Polygon2D" parent="ResourcePickups/FoodSupply"]
+color = Color(1, 0.92, 0.64, 0.78)
+polygon = PackedVector2Array(-6, -8, 8, -8, 10, 6, -8, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/FoodSupply"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="WaterSupply" type="Area2D" parent="ResourcePickups"]
+position = Vector2(590, 1180)
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("33_water_supply")
+
+[node name="WaterCanister" type="Polygon2D" parent="ResourcePickups/WaterSupply"]
+color = Color(0.52, 0.94, 1, 0.9)
+polygon = PackedVector2Array(0, -26, 22, -6, 14, 22, -14, 22, -22, -6)
+
+[node name="WaterHalo" type="Polygon2D" parent="ResourcePickups/WaterSupply"]
+z_index = -1
+color = Color(0.18, 0.72, 1, 0.22)
+polygon = PackedVector2Array(0, -42, 34, -14, 28, 30, -2, 44, -34, 18, -28, -18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/WaterSupply"]
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="Creatures" type="Node2D" parent="."]
