@@ -385,6 +385,10 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var outer_shelf_survey_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/SurveyHalo
 @onready var outer_shelf_survey_core: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/SurveyCore
 @onready var outer_shelf_survey_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/SurveySpark
+@onready var rim_glass_reading_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/RimGlassReading/InteractZone
+@onready var rim_glass_reading_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/RimGlassReading/ReadingHalo
+@onready var rim_glass_reading_core: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/RimGlassReading/ReadingCore
+@onready var rim_glass_reading_spark: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/RimGlassReading/ReadingSpark
 @onready var tideglass_sample_interact_zone: Area2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/InteractZone
 @onready var tideglass_sample_halo: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleHalo
 @onready var tideglass_sample_core: Polygon2D = $EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleCore
@@ -429,6 +433,7 @@ var player_near_hollow_reef := false
 var player_near_salvage_manifest := false
 var player_near_salvage_data_cache := false
 var player_near_outer_shelf_survey := false
+var player_near_rim_glass_reading := false
 var player_near_tideglass_sample := false
 var glow_plankton_highlight_timer := 0.0
 var resource_scan_highlight_id := ""
@@ -484,6 +489,7 @@ var run_hollow_reef_reading_recovered := false
 var run_salvage_manifest_recovered := false
 var run_salvage_data_cache_recovered := false
 var run_outer_shelf_survey_recovered := false
+var run_rim_glass_reading_recovered := false
 var run_tideglass_sample_recovered := false
 var run_survival_supply_cache_recovered := false
 var last_night_report := ""
@@ -519,6 +525,8 @@ func _ready() -> void:
 	salvage_data_cache_interact_zone.body_exited.connect(_on_salvage_data_cache_body_exited)
 	outer_shelf_survey_interact_zone.body_entered.connect(_on_outer_shelf_survey_body_entered)
 	outer_shelf_survey_interact_zone.body_exited.connect(_on_outer_shelf_survey_body_exited)
+	rim_glass_reading_interact_zone.body_entered.connect(_on_rim_glass_reading_body_entered)
+	rim_glass_reading_interact_zone.body_exited.connect(_on_rim_glass_reading_body_exited)
 	tideglass_sample_interact_zone.body_entered.connect(_on_tideglass_sample_body_entered)
 	tideglass_sample_interact_zone.body_exited.connect(_on_tideglass_sample_body_exited)
 	pressure_boundary.body_entered.connect(_on_pressure_boundary_body_entered)
@@ -585,7 +593,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 				status_label.text = "Surface view: upgrades."
 				_update_hud()
 		else:
-			if not _try_survival_supply_cache_interaction() and not _try_outer_shelf_survey_interaction() and not _try_tideglass_sample_interaction() and not _try_salvage_manifest_interaction() and not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
+			if not _try_survival_supply_cache_interaction() and not _try_outer_shelf_survey_interaction() and not _try_rim_glass_reading_interaction() and not _try_tideglass_sample_interaction() and not _try_salvage_manifest_interaction() and not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
 				_try_extract()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
 		_cycle_surface_tab(-1)
@@ -731,6 +739,7 @@ func _prepare_next_run() -> void:
 	player_near_salvage_manifest = false
 	player_near_salvage_data_cache = false
 	player_near_outer_shelf_survey = false
+	player_near_rim_glass_reading = false
 	player_near_tideglass_sample = false
 	_reset_run_telemetry()
 	burst_thruster_cooldown_remaining = 0.0
@@ -931,6 +940,20 @@ func _on_outer_shelf_survey_body_entered(body: Node2D) -> void:
 func _on_outer_shelf_survey_body_exited(body: Node2D) -> void:
 	if body == player:
 		player_near_outer_shelf_survey = false
+		if is_inside_tree():
+			_update_hud()
+
+func _on_rim_glass_reading_body_entered(body: Node2D) -> void:
+	if body == player:
+		player_near_rim_glass_reading = true
+		if status_label != null:
+			status_label.text = "Glass Rim: recover slackwater reading."
+		if is_inside_tree():
+			_update_hud()
+
+func _on_rim_glass_reading_body_exited(body: Node2D) -> void:
+	if body == player:
+		player_near_rim_glass_reading = false
 		if is_inside_tree():
 			_update_hud()
 
@@ -1187,6 +1210,26 @@ func _try_outer_shelf_survey_interaction() -> bool:
 	_sync_outer_shelf_survey_state()
 	if status_label != null:
 		status_label.text = "Outer Shelf survey recorded. Choose nearby Kelp Fiber, return through Mirror/Wide/Hollow, or read the Glass Rim current: %s" % _outer_shelf_slackwater_decision_text(outer_shelf_slackwater_timer)
+	if is_inside_tree():
+		_update_hud()
+	return true
+
+func _try_rim_glass_reading_interaction() -> bool:
+	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_rim_glass_reading:
+		return false
+
+	if run_rim_glass_reading_recovered:
+		if status_label != null:
+			status_label.text = "Glass Rim reading already recovered this expedition."
+		if is_inside_tree():
+			_update_hud()
+		return true
+
+	run_rim_glass_reading_recovered = true
+	run_reached_dusk_trench = true
+	_sync_rim_glass_reading_state()
+	if status_label != null:
+		status_label.text = "Glass Rim reading recovered. Bank it now, or risk nearby Kelp Fiber if oxygen allows."
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -2036,6 +2079,11 @@ func _format_hud_prompt() -> String:
 			prompt = "Tideglass read"
 		else:
 			prompt = "Tideglass: %s" % _action_label("interact")
+	elif player_near_rim_glass_reading:
+		if run_rim_glass_reading_recovered:
+			prompt = "Glass Rim reading recovered"
+		else:
+			prompt = "Glass Rim reading: %s" % _action_label("interact")
 	elif player_near_outer_shelf_survey:
 		if run_outer_shelf_survey_recovered:
 			prompt = _outer_shelf_slackwater_decision_prompt(outer_shelf_slackwater_timer)
@@ -2494,11 +2542,11 @@ func _outer_shelf_slackwater_decision_prompt(timer_seconds: float) -> String:
 func _outer_shelf_slackwater_decision_text(timer_seconds: float) -> String:
 	match _outer_shelf_slackwater_decision_state(timer_seconds):
 		"open":
-			return "Glass Rim slackwater is open: cross now or bank cargo."
+			return "Glass Rim open: cross now or bank cargo."
 		"easing":
-			return "Glass Rim current is easing: wait for the pale window, cross, or turn back."
+			return "Glass Rim easing: wait, cross, or turn back."
 		_:
-			return "Glass Rim current is surging: turn back or spend oxygen waiting."
+			return "Glass Rim surge: turn back or wait."
 
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
@@ -3349,6 +3397,29 @@ func _sync_outer_shelf_survey_state() -> void:
 		spark.color = Color(0.95, 1.0, 0.9, 0.86)
 		spark.visible = true
 
+func _sync_rim_glass_reading_state() -> void:
+	var halo := rim_glass_reading_halo
+	if halo == null:
+		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/RimGlassReading/ReadingHalo") as Polygon2D
+	var core := rim_glass_reading_core
+	if core == null:
+		core = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/RimGlassReading/ReadingCore") as Polygon2D
+	var spark := rim_glass_reading_spark
+	if spark == null:
+		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/RimGlassReading/ReadingSpark") as Polygon2D
+	if halo == null or core == null or spark == null:
+		return
+
+	if run_rim_glass_reading_recovered:
+		halo.color = Color(0.74, 0.78, 1.0, 0.07)
+		core.color = Color(0.96, 0.9, 1.0, 0.18)
+		spark.visible = false
+	else:
+		halo.color = Color(0.74, 0.78, 1.0, 0.22)
+		core.color = Color(0.96, 0.9, 1.0, 0.86)
+		spark.color = Color(1.0, 0.98, 1.0, 0.86)
+		spark.visible = true
+
 func _sync_blackwater_crack_gate_state() -> void:
 	var mouth := blackwater_crack_mouth
 	if mouth == null:
@@ -3808,6 +3879,7 @@ func _publish_visual_smoke_state() -> void:
 		"hollow_reef_reading_recovered": run_hollow_reef_reading_recovered,
 		"salvage_manifest_recovered": run_salvage_manifest_recovered,
 		"outer_shelf_survey_recovered": run_outer_shelf_survey_recovered,
+		"rim_glass_reading_recovered": run_rim_glass_reading_recovered,
 		"tideglass_sample_recovered": run_tideglass_sample_recovered,
 		"mirrorfin_drift_observed": run_completed_scans.has("mirrorfin_drift"),
 		"salvage_pocket_open": progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID),
@@ -4586,6 +4658,7 @@ func _reset_run_telemetry() -> void:
 	run_salvage_manifest_recovered = false
 	run_salvage_data_cache_recovered = false
 	run_outer_shelf_survey_recovered = false
+	run_rim_glass_reading_recovered = false
 	run_tideglass_sample_recovered = false
 	run_survival_supply_cache_recovered = false
 	last_completed_survival_day = 0
@@ -4610,6 +4683,7 @@ func _reset_run_telemetry() -> void:
 	_sync_salvage_manifest_state()
 	_sync_salvage_data_cache_state()
 	_sync_outer_shelf_survey_state()
+	_sync_rim_glass_reading_state()
 	_sync_tideglass_sample_state()
 	_sync_survival_supply_cache_state()
 
@@ -4650,6 +4724,11 @@ func _format_next_expedition_prompt() -> String:
 		return "Next: press %s to restart Emergency Week." % _action_label("restart_dive")
 	if survival_state.chapter_complete:
 		return "Next: press %s for a stabilized expedition." % _action_label("restart_dive")
+	if run_rim_glass_reading_recovered:
+		return "Next: press %s for Expedition %d; use the Glass Rim reading to choose timing, cargo, or return." % [
+			_action_label("restart_dive"),
+			progression_state.current_run_number + 1,
+		]
 	if run_outer_shelf_survey_recovered:
 		return "Next: press %s for Expedition %d; try Glass Rim timing or bank the Outer Shelf cargo." % [
 			_action_label("restart_dive"),
@@ -4690,7 +4769,7 @@ func _format_completed_expedition_line(result_name: String) -> String:
 	]
 
 func _format_extraction_result_summary(extracted_count: int, banked_resources: Array[String], banked_survival_supplies: Array[String] = []) -> String:
-	return "%s\n%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s%s" % [
+	return "%s\n%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(banked_resources.size(), banked_resources),
 		_format_survival_banking_line(banked_survival_supplies),
@@ -4711,6 +4790,7 @@ func _format_extraction_result_summary(extracted_count: int, banked_resources: A
 		_format_salvage_data_cache_research_callout(),
 		_format_salvage_manifest_research_callout(),
 		_format_tideglass_sample_research_callout(),
+		_format_rim_glass_reading_callout(),
 		_format_outer_shelf_survey_research_callout(),
 		_format_sealed_shelf_hatch_readiness_callout(),
 		_format_upgrade_progress_callout(),
@@ -4756,6 +4836,8 @@ func _format_condition_briefing() -> String:
 	]
 
 func _format_route_choice_callout() -> String:
+	if run_rim_glass_reading_recovered:
+		return "Route choice: recovered Glass Rim reading beyond the timing branch."
 	if run_outer_shelf_survey_recovered:
 		return "Route choice: Outer Shelf survey marked Glass Rim Cut as a timing branch."
 	if _run_has_glass_rim_observation():
@@ -4808,6 +4890,8 @@ func _format_route_choice_callout() -> String:
 	return "Route choice: banked a cautious resource run."
 
 func _format_recent_route_memory() -> String:
+	if run_rim_glass_reading_recovered:
+		return "Glass Rim"
 	if run_outer_shelf_survey_recovered or _run_has_glass_rim_observation():
 		return "Outer Shelf"
 	if _run_has_mirror_kelp_evidence():
@@ -4941,6 +5025,12 @@ func _format_outer_shelf_survey_research_callout() -> String:
 
 	return ""
 
+func _format_rim_glass_reading_callout() -> String:
+	if run_rim_glass_reading_recovered:
+		return "\nResearch: Glass Rim reading confirms the slackwater crossing; cargo remains optional if oxygen allows."
+
+	return ""
+
 func _format_sealed_shelf_hatch_readiness_callout() -> String:
 	if not progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
 		return ""
@@ -4950,6 +5040,8 @@ func _format_sealed_shelf_hatch_readiness_callout() -> String:
 	return "\nLab note: Echo Lens reads the Sealed Shelf Hatch; Resonance Key planning can wait."
 
 func _format_region_memory_callout() -> String:
+	if run_rim_glass_reading_recovered:
+		return "Remembered place: Glass Rim - slackwater crossing beyond Outer Shelf; return through Mirror/Wide/Hollow."
 	if run_outer_shelf_survey_recovered:
 		return "Remembered place: Outer Shelf - wider water beyond Mirror Kelp; return through Mirror/Wide/Hollow."
 	if _run_has_glass_rim_observation():
@@ -5071,6 +5163,8 @@ func _format_recent_expedition_log() -> String:
 
 func _format_recent_route_tease(route_memory: String) -> String:
 	match route_memory:
+		"Glass Rim":
+			return "timing, cargo, or return"
 		"Outer Shelf":
 			return "Glass Rim timing or cargo"
 		_:

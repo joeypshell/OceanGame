@@ -74,6 +74,7 @@ func _initialize() -> void:
 	_run("Outer Shelf Glass Rim branch", _test_outer_shelf_glass_rim_branch)
 	_run("Outer Shelf slackwater timing cue visual only", _test_outer_shelf_slackwater_timing_cue_visual_only)
 	_run("Outer Shelf cargo knowledge payoff choice", _test_outer_shelf_cargo_knowledge_payoff_choice)
+	_run("Glass Rim reading payoff choice", _test_glass_rim_reading_payoff_choice)
 	_run("Glass Ray Drifter passive route read", _test_glass_ray_drifter_passive_route_read)
 	_run("wide chamber salvage pocket entrance", _test_wide_chamber_salvage_pocket_entrance)
 	_run("salvage data cache interaction", _test_salvage_data_cache_interaction)
@@ -1469,6 +1470,88 @@ func _test_outer_shelf_cargo_knowledge_payoff_choice() -> void:
 	_expect(not main.run_outer_shelf_survey_recovered, "Outer Shelf survey should reset between expeditions")
 	_expect(survey_core.color.a >= 0.8, "Outer Shelf survey should become visible again on expedition reset")
 	_expect(survey_spark.visible, "Outer Shelf survey spark should reset between expeditions")
+	main.free()
+
+func _test_glass_rim_reading_payoff_choice() -> void:
+	var main := MainScene.instantiate()
+	main.status_label = Label.new()
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_near_rim_glass_reading = true
+	main.dive_session.oxygen = 16.0
+	main.dive_session.current_cargo = ["kelp_fiber"]
+	main.progression_state.banked_resources = {"shell_fragments": 1}
+	var outer_shelf := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach") as Node2D
+	var branch := outer_shelf.get_node("GlassRimCutBranch") as Node2D
+	var promise := outer_shelf.get_node("RimSealPromise") as Node2D
+	var reading := outer_shelf.get_node("RimGlassReading") as Node2D
+	var halo := reading.get_node("ReadingHalo") as Polygon2D
+	var core := reading.get_node("ReadingCore") as Polygon2D
+	var spark := reading.get_node("ReadingSpark") as Polygon2D
+	var interact_zone := reading.get_node("InteractZone") as Area2D
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+	main.call("_sync_rim_glass_reading_state")
+	_expect(reading.position.x > branch.position.x, "Glass Rim reading should sit beyond the timing branch")
+	_expect(reading.position.x < promise.position.x, "Glass Rim reading should sit before the sealed future promise")
+	_expect(interact_zone.collision_layer == 0, "Glass Rim reading interaction should not become route collision")
+	_expect(halo.color.a <= 0.24 and core.color.a >= 0.8, "Glass Rim reading should read as a visible knowledge payoff")
+	_expect(spark.visible, "Glass Rim reading spark should start visible before recovery")
+	_expect(reading.find_child("ResourcePickup", true, false) == null, "Glass Rim reading should not be cargo")
+	_expect(reading.find_child("LootTable", true, false) == null, "Glass Rim reading should not add loot tables")
+	_expect(reading.find_child("HealthBar", true, false) == null, "Glass Rim reading should not add combat UI")
+	var prompt: String = main.call("_format_hud_prompt")
+	_expect(prompt.contains("Glass Rim reading"), "Glass Rim reading proximity should own the active prompt")
+	_expect(prompt.contains("E/Enter"), "Glass Rim reading prompt should expose the normal interact command")
+
+	var handled: bool = main.call("_try_rim_glass_reading_interaction")
+	_expect(handled, "Glass Rim reading should handle interact while nearby during a dive")
+	_expect(main.run_rim_glass_reading_recovered, "Glass Rim interaction should record one run-scoped reading")
+	_expect(main.run_reached_dusk_trench, "Glass Rim reading should count as a deeper route reach for broad place memory")
+	_expect(core.color.a <= 0.2, "Glass Rim reading core should visibly dim after recovery")
+	_expect(not spark.visible, "Glass Rim reading spark should disappear after recovery")
+	_expect(is_equal_approx(main.dive_session.oxygen, 16.0), "Glass Rim reading should not spend oxygen directly")
+	_expect(main.dive_session.current_cargo == ["kelp_fiber"], "Glass Rim reading should not add or remove cargo")
+	_expect(main.progression_state.resource_count("shell_fragments") == 1, "Glass Rim reading should not mutate banked resources")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("Bank it now"), "Glass Rim status should name the safe return option")
+		_expect(main.status_label.text.contains("Kelp Fiber"), "Glass Rim status should preserve the nearby cargo alternative")
+		_expect(main.status_label.text.contains("oxygen"), "Glass Rim status should frame the oxygen risk")
+		_expect_no_echo_lens_locator_language(main.status_label.text, "Glass Rim reading status")
+
+	var repeat_handled: bool = main.call("_try_rim_glass_reading_interaction")
+	_expect(repeat_handled, "Glass Rim should keep handling repeat interact while nearby")
+	if main.status_label != null:
+		_expect(main.status_label.text.contains("already recovered"), "Glass Rim repeat interaction should not duplicate the payoff")
+
+	var saved: Dictionary = main.progression_state.to_save_data()
+	_expect(saved == save_before, "Glass Rim reading should not mutate durable progression")
+	_expect(not saved.has("rim_glass_reading"), "Glass Rim reading should not create durable reading state")
+	_expect(not saved.has("glass_rim_route"), "Glass Rim reading should not create durable route state")
+	_expect(not saved.has("route_graph"), "Glass Rim reading should not create route graph state")
+	var callout: String = main.call("_format_rim_glass_reading_callout")
+	_expect(callout.contains("Glass Rim reading"), "Glass Rim research line should name the new payoff")
+	_expect(callout.contains("cargo remains optional"), "Glass Rim research line should preserve the cargo-vs-knowledge decision")
+	_expect_no_echo_lens_locator_language(callout, "Glass Rim research line")
+	var empty_cargo: Array[String] = []
+	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	_expect(extraction_summary.contains("Remembered place: Glass Rim"), "Glass Rim extraction summary should remember the specific payoff place")
+	_expect(extraction_summary.contains("Route choice: recovered Glass Rim reading"), "Glass Rim extraction summary should distinguish this payoff from the survey")
+	_expect(extraction_summary.contains("Research: Glass Rim reading"), "Glass Rim extraction summary should include the new research payoff")
+	_expect(extraction_summary.contains("timing, cargo, or return"), "Glass Rim extraction summary should tease the next decision loop")
+	_expect(not extraction_summary.to_lower().contains("checklist"), "Glass Rim extraction summary should not imply checklist UI")
+	_expect(not extraction_summary.to_lower().contains("map"), "Glass Rim extraction summary should not imply map UI")
+	_expect(main._format_recent_route_memory() == "Glass Rim", "recent route helper should prefer Glass Rim after the new payoff")
+	main.progression_state.current_run_number = 9
+	main.progression_state.current_run_seed = 1009
+	main.call("_record_recent_expedition", "Extracted", 0)
+	var recent_log: String = main.call("_format_recent_expedition_log")
+	_expect(recent_log.contains("route Glass Rim"), "Glass Rim recent log should name the new payoff place")
+	_expect(recent_log.contains("next timing, cargo, or return"), "Glass Rim recent log should tease the compact next dive")
+
+	main.call("_reset_run_telemetry")
+	_expect(not main.run_rim_glass_reading_recovered, "Glass Rim reading should reset between expeditions")
+	_expect(core.color.a >= 0.8, "Glass Rim reading should become visible again on expedition reset")
+	_expect(spark.visible, "Glass Rim reading spark should reset between expeditions")
 	main.free()
 
 func _test_glass_ray_drifter_passive_route_read() -> void:
@@ -5912,6 +5995,7 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	main.run_glass_kelp_reading_recovered = true
 	main.run_tideglass_sample_recovered = true
 	main.run_outer_shelf_survey_recovered = true
+	main.run_rim_glass_reading_recovered = true
 	main.run_salvage_manifest_recovered = true
 	main.player_near_resonance_alcove = true
 	main.player_near_blue_chimney = true
@@ -5919,6 +6003,7 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	main.player_near_glass_kelp_ledge = true
 	main.player_near_tideglass_sample = true
 	main.player_near_outer_shelf_survey = true
+	main.player_near_rim_glass_reading = true
 	main.player_near_salvage_manifest = true
 	main.run_collected_resources.append("kelp_fiber")
 	main.run_completed_scans.append("east_shelf_arch")
@@ -5946,12 +6031,14 @@ func _test_expanded_region_reset_state_ownership() -> void:
 	_expect(not main.run_glass_kelp_reading_recovered, "restart should clear run-scoped Glass Kelp reading state")
 	_expect(not main.run_tideglass_sample_recovered, "restart should clear run-scoped Tideglass Sample state")
 	_expect(not main.run_outer_shelf_survey_recovered, "restart should clear run-scoped Outer Shelf survey state")
+	_expect(not main.run_rim_glass_reading_recovered, "restart should clear run-scoped Glass Rim reading state")
 	_expect(not main.player_near_resonance_alcove, "restart should clear Resonance Alcove proximity state")
 	_expect(not main.player_near_blue_chimney, "restart should clear Blue Chimney proximity state")
 	_expect(not main.player_near_lantern_silt_nook, "restart should clear Lantern Silt proximity state")
 	_expect(not main.player_near_glass_kelp_ledge, "restart should clear Glass Kelp proximity state")
 	_expect(not main.player_near_tideglass_sample, "restart should clear Tideglass Sample proximity state")
 	_expect(not main.player_near_outer_shelf_survey, "restart should clear Outer Shelf proximity state")
+	_expect(not main.player_near_rim_glass_reading, "restart should clear Glass Rim reading proximity state")
 	_expect(main.run_collected_resources.is_empty(), "restart should clear run-scoped collected-resource telemetry")
 	_expect(main.run_completed_scans.is_empty(), "restart should clear run-scoped scan telemetry")
 	_expect(main.run_predator_contacts == 0, "restart should clear run-scoped predator contact telemetry")
@@ -6019,6 +6106,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_glass_kelp_reading_recovered = true
 	main.run_tideglass_sample_recovered = true
 	main.run_outer_shelf_survey_recovered = true
+	main.run_rim_glass_reading_recovered = true
 	main.run_salvage_manifest_recovered = true
 	main.blue_chimney_draft_timer = 1.7
 	main.blackwater_pressure_timer = 1.9
@@ -6033,6 +6121,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_glass_kelp_reading_recovered, "run telemetry reset should clear Glass Kelp reading state")
 	_expect(not main.run_tideglass_sample_recovered, "run telemetry reset should clear Tideglass Sample state")
 	_expect(not main.run_outer_shelf_survey_recovered, "run telemetry reset should clear Outer Shelf survey state")
+	_expect(not main.run_rim_glass_reading_recovered, "run telemetry reset should clear Glass Rim reading state")
 	_expect(not main.run_salvage_manifest_recovered, "run telemetry reset should clear Salvage Manifest state")
 	_expect(is_equal_approx(main.blue_chimney_draft_timer, 0.0), "run telemetry reset should clear Blue Chimney visual timing state")
 	_expect(is_equal_approx(main.blackwater_pressure_timer, 0.0), "run telemetry reset should clear Blackwater pressure-cue timing state")
@@ -6045,6 +6134,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.player_near_blackwater_crack = true
 	main.player_near_tideglass_sample = true
 	main.player_near_outer_shelf_survey = true
+	main.player_near_rim_glass_reading = true
 	main.player_near_salvage_manifest = true
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_lantern_silt_sample_recovered = true
@@ -6053,6 +6143,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	main.run_glass_kelp_reading_recovered = true
 	main.run_tideglass_sample_recovered = true
 	main.run_outer_shelf_survey_recovered = true
+	main.run_rim_glass_reading_recovered = true
 	main.run_salvage_manifest_recovered = true
 	main.call("_prepare_next_run")
 	_expect(not main.player_near_lower_connector_echo, "new expeditions should clear Drop Echo proximity state")
@@ -6062,6 +6153,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.player_near_blackwater_crack, "new expeditions should clear Blackwater Crack proximity state")
 	_expect(not main.player_near_tideglass_sample, "new expeditions should clear Tideglass Sample proximity state")
 	_expect(not main.player_near_outer_shelf_survey, "new expeditions should clear Outer Shelf proximity state")
+	_expect(not main.player_near_rim_glass_reading, "new expeditions should clear Glass Rim reading proximity state")
 	_expect(not main.player_near_salvage_manifest, "new expeditions should clear Salvage Manifest proximity state")
 	_expect(not main.run_lower_connector_echo_recovered, "new expeditions should not carry Drop Echo research state")
 	_expect(not main.run_resonance_alcove_research_recovered, "new expeditions should not carry Resonance Alcove research state")
@@ -6072,6 +6164,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.run_glass_kelp_reading_recovered, "new expeditions should not carry Glass Kelp reading state")
 	_expect(not main.run_tideglass_sample_recovered, "new expeditions should not carry Tideglass Sample state")
 	_expect(not main.run_outer_shelf_survey_recovered, "new expeditions should not carry Outer Shelf survey state")
+	_expect(not main.run_rim_glass_reading_recovered, "new expeditions should not carry Glass Rim reading state")
 	_expect(not main.run_salvage_manifest_recovered, "new expeditions should not carry Salvage Manifest state")
 	_expect(not main.progression_state.to_save_data().has("lower_connector_echo"), "Drop Echo should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("resonance_alcove_research"), "Resonance Alcove research should not be stored in durable progression")
@@ -6088,6 +6181,7 @@ func _test_lower_connector_reset_and_bounds_coverage() -> void:
 	_expect(not main.progression_state.to_save_data().has("glass_kelp_reading"), "Glass Kelp reading should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("tideglass_sample"), "Tideglass Sample should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("outer_shelf_survey"), "Outer Shelf survey should not be stored in durable progression")
+	_expect(not main.progression_state.to_save_data().has("rim_glass_reading"), "Glass Rim reading should not be stored in durable progression")
 	_expect(not main.progression_state.to_save_data().has("salvage_manifest"), "Salvage Manifest should not be stored in durable progression")
 	main.queue_free()
 
