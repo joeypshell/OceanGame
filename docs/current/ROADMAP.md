@@ -25,11 +25,9 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #633: add one Outer Shelf cargo-vs-knowledge payoff choice.
-2. #634: make surface results tease the next Outer Shelf expedition.
-3. #635: add one visible future lock or upgrade promise tied to a seen Outer Shelf place.
-4. #636: add deterministic staging and one evidence capture for the new Area 02 route.
-5. Recalibrate before opening broader Area 02 content so route growth does not outrun readability or the survival loop.
+1. #635: add one visible future lock or upgrade promise tied to a seen Outer Shelf place.
+2. #636: add deterministic staging and one evidence capture for the new Area 02 route.
+3. Recalibrate before opening broader Area 02 content so route growth does not outrun readability or the survival loop.
 
 ## Completed In This Readability Rescue
 
@@ -42,6 +40,8 @@ Primary planning docs:
 - #622 added one subtle salvage-pocket timing read after the Area 01 readability pass.
 - #623 validated the Salvage Cutter Return Payoff milestone and moved the next direction to larger route progress.
 - #637 and #638 fixed the active HUD overlap and clarified Emergency Week base-needs/result copy enough to resume one Area 02 payoff slice.
+- #633 added one Outer Shelf cargo-vs-knowledge payoff choice.
+- #634 made extraction results, recent expedition memory, and the next ready goal tease a compact Outer Shelf return hypothesis without adding checklist/map behavior.
 
 ## Current Readability Rules
 

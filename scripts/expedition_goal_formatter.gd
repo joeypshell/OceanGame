@@ -35,6 +35,8 @@ static func format_goal(progression_state: ProgressionState, upgrade_definitions
 		]
 
 	var prepared_for_blackwater := progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)
+	if prepared_for_blackwater and recent_route_memory == "Outer Shelf":
+		return "Goal: revisit Outer Shelf for Glass Rim timing or Kelp Fiber cargo if oxygen allows, then exit via Mirror/Wide/Hollow."
 	if prepared_for_blackwater and recent_route_memory == "Mirror Kelp Pass":
 		return "Goal: revisit Mirror Kelp for the deep-kelp seal if oxygen allows, then exit via Wide Reef."
 	if prepared_for_blackwater and recent_route_memory == "Wide Reef Chamber":

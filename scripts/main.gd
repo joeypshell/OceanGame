@@ -4140,6 +4140,11 @@ func _format_next_expedition_prompt() -> String:
 		return "Next: press %s to restart Emergency Week." % _action_label("restart_dive")
 	if survival_state.chapter_complete:
 		return "Next: press %s for a stabilized expedition." % _action_label("restart_dive")
+	if run_outer_shelf_survey_recovered:
+		return "Next: press %s for Expedition %d; try Glass Rim timing or bank the Outer Shelf cargo." % [
+			_action_label("restart_dive"),
+			progression_state.current_run_number + 1,
+		]
 	return "Next: press %s for Expedition %d; the ocean shifts again." % [
 		_action_label("restart_dive"),
 		progression_state.current_run_number + 1,
@@ -4523,15 +4528,19 @@ func _format_recent_expedition_log() -> String:
 
 	var lines: Array[String] = ["Recent Expeditions"]
 	for entry in recent_expedition_log:
+		var route_memory := String(entry.get("route_memory", "none"))
 		var line := "#%d %s: banked %d, route %s, scans %s, contacts %d, best %dm" % [
 			int(entry.get("run_number", 0)),
 			String(entry.get("result", "Unknown")),
 			int(entry.get("banked_cargo_count", 0)),
-			String(entry.get("route_memory", "none")),
+			route_memory,
 			_format_scan_names_short(_string_array_from(entry.get("scans", []))),
 			int(entry.get("predator_contacts", 0)),
 			int(entry.get("best_depth", 0)),
 		]
+		var route_tease := _format_recent_route_tease(route_memory)
+		if not route_tease.is_empty():
+			line += ", next %s" % route_tease
 		if show_debug_telemetry:
 			line += " | seed %d, %s" % [
 				int(entry.get("seed", 0)),
@@ -4540,6 +4549,13 @@ func _format_recent_expedition_log() -> String:
 		lines.append(line)
 
 	return "\n".join(lines)
+
+func _format_recent_route_tease(route_memory: String) -> String:
+	match route_memory:
+		"Outer Shelf":
+			return "Glass Rim timing or cargo"
+		_:
+			return ""
 
 func _format_scan_names_short(scan_ids: Array[String]) -> String:
 	if scan_ids.is_empty():
