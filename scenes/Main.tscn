@@ -397,6 +397,69 @@ offset_right = 6200.0
 offset_bottom = 1494.0
 color = Color(0.24, 0.42, 0.74, 0.14)
 
+[node name="SafeShallowsExplorationShell" type="Node2D" parent="."]
+z_index = -2
+
+[node name="LeftReefWallBack" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.012, 0.065, 0.09, 0.54)
+polygon = PackedVector2Array(-120, 512, 156, 448, 336, 632, 286, 924, 504, 1128, 402, 1468, 608, 1728, 472, 2208, 702, 2608, 556, 3340, -120, 3340)
+
+[node name="LeftReefLedgeStack" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.036, 0.13, 0.15, 0.46)
+polygon = PackedVector2Array(108, 718, 346, 674, 624, 738, 758, 878, 652, 954, 356, 894, 86, 956, 8, 846)
+
+[node name="LeftShallowCaveMouth" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.002, 0.024, 0.044, 0.68)
+polygon = PackedVector2Array(150, 1004, 324, 914, 562, 946, 672, 1076, 540, 1212, 268, 1190, 104, 1092)
+
+[node name="LeftCaveWaterPocket" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.065, 0.26, 0.3, 0.22)
+polygon = PackedVector2Array(260, 1014, 394, 970, 548, 1010, 590, 1084, 506, 1152, 336, 1140, 224, 1082)
+
+[node name="CentralDropOpenWater" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.018, 0.32, 0.38, 0.2)
+polygon = PackedVector2Array(520, 122, 774, 122, 842, 740, 792, 1360, 874, 2044, 802, 3340, 500, 3340, 546, 2048, 482, 1362, 530, 740)
+
+[node name="CentralDropRibA" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.74, 1, 0.92, 0.11)
+polygon = PackedVector2Array(502, 680, 808, 620, 774, 680, 522, 746)
+
+[node name="CentralDropRibB" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.74, 1, 0.92, 0.09)
+polygon = PackedVector2Array(502, 1288, 826, 1222, 784, 1284, 524, 1354)
+
+[node name="RightReefWallBack" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.01, 0.058, 0.082, 0.56)
+polygon = PackedVector2Array(1136, 510, 1456, 458, 1780, 608, 1946, 888, 2188, 1048, 2314, 1428, 2590, 1688, 2690, 2240, 2940, 2584, 3040, 3340, 6200, 3340, 6200, 760, 3100, 688, 2784, 968, 2448, 852, 2100, 642, 1764, 760, 1462, 650, 1224, 704)
+
+[node name="RightShelfChamberMouth" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.003, 0.02, 0.04, 0.7)
+polygon = PackedVector2Array(1036, 940, 1288, 824, 1600, 888, 1748, 1074, 1582, 1260, 1240, 1232, 1004, 1092)
+
+[node name="RightShelfPlayablePocket" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.07, 0.27, 0.31, 0.22)
+polygon = PackedVector2Array(1138, 974, 1344, 900, 1560, 946, 1640, 1080, 1512, 1182, 1282, 1166, 1096, 1068)
+
+[node name="RightDropLedgeStack" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.036, 0.13, 0.15, 0.5)
+polygon = PackedVector2Array(1246, 1328, 1528, 1258, 1872, 1320, 2088, 1496, 2002, 1636, 1624, 1574, 1346, 1644, 1126, 1512)
+
+[node name="DeepCentralChamberBack" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.004, 0.025, 0.058, 0.52)
+polygon = PackedVector2Array(850, 1760, 1186, 1600, 1648, 1688, 1908, 1948, 1746, 2244, 1244, 2292, 846, 2100)
+
+[node name="DeepCentralChamberWater" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.052, 0.19, 0.27, 0.18)
+polygon = PackedVector2Array(1016, 1808, 1268, 1708, 1584, 1782, 1744, 1948, 1580, 2116, 1240, 2148, 982, 2020)
+
+[node name="DeepPocketFloor" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.02, 0.074, 0.09, 0.58)
+polygon = PackedVector2Array(840, 2188, 1188, 2264, 1610, 2220, 1908, 2056, 1992, 2198, 1664, 2448, 1164, 2496, 768, 2340)
+
+[node name="RightFutureCaveHint" type="Polygon2D" parent="SafeShallowsExplorationShell"]
+color = Color(0.004, 0.015, 0.034, 0.58)
+polygon = PackedVector2Array(2058, 1510, 2244, 1432, 2434, 1518, 2464, 1702, 2264, 1818, 2046, 1702)
+
 [node name="SurfaceLine" type="ColorRect" parent="."]
 offset_top = 118.0
 offset_right = 6200.0
