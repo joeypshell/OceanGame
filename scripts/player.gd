@@ -14,6 +14,14 @@ const SWIM_SHEET_FRAME_COUNT := 6
 const SWIM_SHEET_FRAME_SIZE := Vector2(362.0, 724.0)
 const SWIM_SHEET_FRAMES_PER_SECOND := 8.0
 const SWIM_SHEET_IDLE_FRAME := 0
+const SWIM_SHEET_FRAME_OFFSETS := [
+	Vector2(-4.0, 0.0),
+	Vector2(0.0, 0.0),
+	Vector2(1.0, 1.0),
+	Vector2(22.0, 0.0),
+	Vector2(34.0, 1.0),
+	Vector2(43.0, -1.0),
+]
 
 @onready var _visual_root: Node2D = get_node_or_null("VisualRoot")
 @onready var _bubble_trail: Polygon2D = get_node_or_null("VisualRoot/BubbleTrail")
@@ -130,6 +138,8 @@ func _sync_swim_sheet_frame(is_moving: bool) -> void:
 
 func _set_swim_sheet_frame(frame: int) -> void:
 	if _swim_sprite == null:
+		_swim_sprite = get_node_or_null("VisualRoot/SubSpriteAnchor/SubSprite")
+	if _swim_sprite == null:
 		return
 
 	var wrapped_frame := posmod(frame, SWIM_SHEET_FRAME_COUNT)
@@ -137,3 +147,4 @@ func _set_swim_sheet_frame(frame: int) -> void:
 		Vector2(SWIM_SHEET_FRAME_SIZE.x * wrapped_frame, 0.0),
 		SWIM_SHEET_FRAME_SIZE
 	)
+	_swim_sprite.offset = SWIM_SHEET_FRAME_OFFSETS[wrapped_frame]

@@ -2095,6 +2095,17 @@ func _test_sprite_ready_scene_asset_slots() -> void:
 	var dock_rim := main.get_node("BaseZone/DockRim") as Polygon2D
 	var scene_player := main.get_node("Player") as CharacterBody2D
 	var boat_sprite := main.get_node("SurfaceBaseArt/SpriteAnchor/ResearchBoatSprite") as Sprite2D
+	var player_scene := PlayerScene.instantiate()
+	root.add_child(player_scene)
+	var diver_sprite := player_scene.get_node("VisualRoot/SubSpriteAnchor/SubSprite") as Sprite2D
+	player_scene.call("_set_swim_sheet_frame", 0)
+	_expect(diver_sprite.region_rect.position.x == 0.0, "diver swim idle frame should use the first sprite-sheet cell")
+	_expect(diver_sprite.offset.x < 0.0, "diver swim idle frame should apply a small registration offset")
+	player_scene.call("_set_swim_sheet_frame", 5)
+	_expect(diver_sprite.region_rect.position.x == 5.0 * 362.0, "diver swim final kick frame should use the sixth sprite-sheet cell")
+	_expect(diver_sprite.offset.x > 35.0, "diver swim kick frame should compensate generated sheet forward/back drift")
+	player_scene.call("_set_swim_sheet_frame", 0)
+	player_scene.queue_free()
 	_expect(base_zone.global_position.y > boat_sprite.global_position.y + 150.0, "base zone should sit below the boat hull, not inside the boat sprite")
 	_expect(scene_player.global_position.y >= base_zone.global_position.y, "player should start in the marked moonpool dock below the boat")
 	_expect(base_core.visible, "base dock core should be visible as an extraction marker")
