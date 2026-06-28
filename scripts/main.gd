@@ -131,6 +131,8 @@ const HOLLOW_REEF_TIMING_PERIOD_SECONDS := 3.4
 const GLASSFIN_SWARM_SPACING_PERIOD_SECONDS := 3.0
 const SALVAGE_SILT_TIMING_PERIOD_SECONDS := 2.8
 const OUTER_SHELF_SLACKWATER_PERIOD_SECONDS := 3.2
+const OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD := 0.72
+const OUTER_SHELF_SLACKWATER_EASING_THRESHOLD := 0.42
 const DUSK_TRENCH_MEMORY_MIN_X := 2700.0
 const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 
@@ -922,7 +924,7 @@ func _on_outer_shelf_survey_body_entered(body: Node2D) -> void:
 	if body == player:
 		player_near_outer_shelf_survey = true
 		if status_label != null:
-			status_label.text = "Outer Shelf: read Glass Rim survey."
+			status_label.text = _outer_shelf_slackwater_decision_text(outer_shelf_slackwater_timer)
 		if is_inside_tree():
 			_update_hud()
 
@@ -1184,7 +1186,7 @@ func _try_outer_shelf_survey_interaction() -> bool:
 	run_reached_dusk_trench = true
 	_sync_outer_shelf_survey_state()
 	if status_label != null:
-		status_label.text = "Outer Shelf survey recorded. Choose nearby Kelp Fiber, or return through Mirror/Wide/Hollow."
+		status_label.text = "Outer Shelf survey recorded. Choose nearby Kelp Fiber, return through Mirror/Wide/Hollow, or read the Glass Rim current: %s" % _outer_shelf_slackwater_decision_text(outer_shelf_slackwater_timer)
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -2036,7 +2038,7 @@ func _format_hud_prompt() -> String:
 			prompt = "Tideglass: %s" % _action_label("interact")
 	elif player_near_outer_shelf_survey:
 		if run_outer_shelf_survey_recovered:
-			prompt = "Outer Shelf survey read"
+			prompt = _outer_shelf_slackwater_decision_prompt(outer_shelf_slackwater_timer)
 		else:
 			prompt = "Outer Shelf survey: %s" % _action_label("interact")
 	elif player_near_blackwater_crack:
@@ -2453,18 +2455,50 @@ func _update_outer_shelf_slackwater_timing_cue(delta: float) -> void:
 
 	outer_shelf_slackwater_timer = fposmod(outer_shelf_slackwater_timer + delta, OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
 	var cue_alpha := _outer_shelf_slackwater_alpha(outer_shelf_slackwater_timer)
+	var window_ratio := _outer_shelf_slackwater_window_ratio(outer_shelf_slackwater_timer)
+	var tick_a_alpha := 0.09 + window_ratio * 0.13
+	var tick_b_alpha := 0.22 - window_ratio * 0.08
 	if wake != null:
-		wake.color = Color(0.72, 0.66, 1.0, cue_alpha)
+		wake.color = Color(0.7, 0.67 + window_ratio * 0.08, 1.0, cue_alpha)
 	if window != null:
-		window.color = Color(0.96, 0.72, 1.0, minf(0.16, cue_alpha + 0.03))
+		window.color = Color(0.9 + window_ratio * 0.08, 0.68 + window_ratio * 0.04, 1.0, minf(0.2, cue_alpha + 0.05))
 	if tick_a != null:
-		tick_a.color = Color(1.0, 0.84, 0.98, minf(0.22, cue_alpha + 0.07))
+		tick_a.color = Color(1.0, 0.84, 0.98, tick_a_alpha)
 	if tick_b != null:
-		tick_b.color = Color(0.9, 0.78, 1.0, minf(0.19, cue_alpha + 0.045))
+		tick_b.color = Color(0.9, 0.78, 1.0, tick_b_alpha)
 
 func _outer_shelf_slackwater_alpha(timer_seconds: float) -> float:
+	return 0.065 + _outer_shelf_slackwater_window_ratio(timer_seconds) * 0.08
+
+func _outer_shelf_slackwater_window_ratio(timer_seconds: float) -> float:
 	var phase := sin((timer_seconds / OUTER_SHELF_SLACKWATER_PERIOD_SECONDS) * TAU)
-	return 0.065 + (phase + 1.0) * 0.04
+	return (phase + 1.0) * 0.5
+
+func _outer_shelf_slackwater_decision_state(timer_seconds: float) -> String:
+	var window_ratio := _outer_shelf_slackwater_window_ratio(timer_seconds)
+	if window_ratio >= OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD:
+		return "open"
+	if window_ratio >= OUTER_SHELF_SLACKWATER_EASING_THRESHOLD:
+		return "easing"
+	return "surging"
+
+func _outer_shelf_slackwater_decision_prompt(timer_seconds: float) -> String:
+	match _outer_shelf_slackwater_decision_state(timer_seconds):
+		"open":
+			return "Glass Rim slackwater: cross now or bank cargo"
+		"easing":
+			return "Glass Rim current easing: wait, cross, or turn back"
+		_:
+			return "Glass Rim surge: turn back or spend oxygen waiting"
+
+func _outer_shelf_slackwater_decision_text(timer_seconds: float) -> String:
+	match _outer_shelf_slackwater_decision_state(timer_seconds):
+		"open":
+			return "Glass Rim slackwater is open: cross now or bank cargo."
+		"easing":
+			return "Glass Rim current is easing: wait for the pale window, cross, or turn back."
+		_:
+			return "Glass Rim current is surging: turn back or spend oxygen waiting."
 
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
