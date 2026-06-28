@@ -63,7 +63,7 @@ Visual tasks should be delayed when they only decorate a tiny landmark, add more
 
 ## Recommended Issue Order
 
-1. Build the Safe Shallows exploration shell with authored walls, chambers, and cave pockets. Current first pass: remove the misleading shallow upper-water blockers and start a larger visible reef blockout with matching collision.
+1. Build the Safe Shallows exploration shell with authored walls, chambers, and cave pockets. Current first passes: remove the misleading shallow upper-water blockers, start a larger visible reef blockout with matching collision, and add first left/right chamber framing masses.
 2. Add starter survival resource node families with temporary readable art.
 3. Place resource pockets inside the shell so collection teaches exploration.
 4. Tie one surface upgrade or night choice to starter resources.

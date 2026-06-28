@@ -497,6 +497,14 @@ polygon = PackedVector2Array(420, 1460, 1140, 1340, 1840, 1480, 2500, 1760, 2560
 color = Color(0.02, 0.06, 0.068, 0.96)
 polygon = PackedVector2Array(-160, 1120, 360, 1030, 860, 1190, 980, 1460, 610, 1640, 40, 1540, -160, 1360)
 
+[node name="BlockoutLeftChamberCeiling" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.016, 0.052, 0.062, 0.98)
+polygon = PackedVector2Array(140, 1010, 520, 928, 960, 1020, 1080, 1162, 832, 1232, 520, 1114, 186, 1170)
+
+[node name="BlockoutRightChamberShelf" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.014, 0.048, 0.058, 0.98)
+polygon = PackedVector2Array(2180, 1110, 3040, 1012, 3940, 1178, 4240, 1434, 3890, 1584, 3020, 1432, 2240, 1328)
+
 [node name="TerrainCollision" type="StaticBody2D" parent="Area01ArtSlice"]
 
 [node name="ShallowLeftWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
@@ -527,6 +535,12 @@ polygon = PackedVector2Array(420, 1460, 1140, 1340, 1840, 1480, 2500, 1760, 2560
 
 [node name="BlockoutWestCaveShelfCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
 polygon = PackedVector2Array(-160, 1120, 360, 1030, 860, 1190, 980, 1460, 610, 1640, 40, 1540, -160, 1360)
+
+[node name="BlockoutLeftChamberCeilingCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(140, 1010, 520, 928, 960, 1020, 1080, 1162, 832, 1232, 520, 1114, 186, 1170)
+
+[node name="BlockoutRightChamberShelfCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(2180, 1110, 3040, 1012, 3940, 1178, 4240, 1434, 3890, 1584, 3020, 1432, 2240, 1328)
 
 [node name="TerrainVisualEdges" type="Node2D" parent="Area01ArtSlice"]
 
@@ -570,6 +584,14 @@ polygon = PackedVector2Array(420, 1460, 1140, 1340, 1840, 1480, 2500, 1760, 2440
 [node name="BlockoutWestCaveShelfLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
 color = Color(0.42, 0.58, 0.46, 0.64)
 polygon = PackedVector2Array(-160, 1120, 360, 1030, 860, 1190, 958, 1450, 900, 1500, 822, 1256, 352, 1110, -120, 1196)
+
+[node name="BlockoutLeftChamberCeilingLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.42, 0.6, 0.48, 0.66)
+polygon = PackedVector2Array(140, 1010, 520, 928, 960, 1020, 1080, 1162, 1012, 1192, 944, 1084, 524, 1000, 178, 1064)
+
+[node name="BlockoutRightChamberShelfLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.42, 0.6, 0.48, 0.66)
+polygon = PackedVector2Array(2180, 1110, 3040, 1012, 3940, 1178, 4240, 1434, 4140, 1472, 3880, 1262, 3040, 1088, 2218, 1178)
 
 [node name="ShallowLeftLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
 visible = false

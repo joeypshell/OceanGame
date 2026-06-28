@@ -32,10 +32,12 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #689: replace the tiny-room priority with a larger readable Area 01 blockout skeleton and remove invisible-feeling blockers.
-2. Re-evaluate #675-#678 after #689; keep only the parts that support the larger playable map.
-3. Continue visual direction work only where it makes walls, caves, ledges, resources, scan targets, and open water clearer inside the larger shell.
-4. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #690: expand the first map into readable left/right chambers with matching collision truth.
+2. #691: place starter survival resources inside the larger shell so collection teaches exploration.
+3. #692: add cave-mouth affordances without exact route locators.
+4. #693: validate the larger level skeleton before returning to more visual polish.
+5. Re-evaluate #675-#678 after the skeleton validation; keep only the parts that support the larger playable map.
+6. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -65,6 +67,7 @@ Primary planning docs:
 - #687 added dedicated Area 01 blocking-rim visuals that trace existing wall and ledge collision so players can see where terrain blocks movement before bumping into it.
 - #688 restored Glassfin Swarm readability with dark body outlines and brighter clustered fish shapes while preserving its passive, scan-only, non-colliding behavior.
 - #689 removed the misleading shallow upper-water blockers, disabled their collision, and started a larger Area 01 blockout with visible solid reef masses and matching collision/lip reads.
+- #690 added left/right chamber framing masses with matching collision and visible lips so Area 01 starts reading less like one tiny room and more like a larger level skeleton.
 
 ## Current Readability Rules
 
