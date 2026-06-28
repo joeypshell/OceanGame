@@ -8,11 +8,13 @@ OceanGame is a 2D alien-ocean survival expedition roguelite. Each expedition sta
 
 North-star filter: every expedition should force a survival tradeoff. Bring back what keeps you alive tonight, what makes future dives safer, or what unlocks a remembered deeper place. Prefer player-visible loop progress over more route breadth until the survival day rhythm works.
 
+Loop direction under review: the next survival-loop shape is a daylight multi-dive expedition day. A top-level sun-to-moon timer would become the day budget; oxygen would become a tactical sortie budget that can be refilled by surfacing; cargo would only bank at the ship through a fast offload action; night would own upgrades, crafting, lab analysis, and Emergency Week resolution. Planning note: `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`.
+
 ## Active Milestone
 
-Area 02 Glass Rim Expansion.
+Playable Exploration Skeleton With Visual Readability.
 
-The first Outer Shelf payoff slice is implemented and staged, but evidence shows the area can still read sparse and dark. The active goal is now to turn Outer Shelf / Glass Rim into a small expedition arc: the player reaches a wider shelf, learns a timing/current read, chooses between cargo and knowledge, extracts, and understands one smarter thing to try tomorrow.
+The next milestone is no longer a narrow landmark-by-landmark expansion. The active goal is to turn the first dive space into a Safe Shallows-style playable framework: a wider side-view area with reef walls, chambers, cave mouths, resource pockets, and early survival/resource goals. Visual polish remains active, but it should now make the level bones clearer and more inviting instead of polishing isolated artifacts.
 
 Primary planning docs:
 
@@ -24,16 +26,21 @@ Primary planning docs:
 - `docs/planning/AREA_02_LARGER_ROUTE_PROGRESS_2026_06_27.md`
 - `docs/planning/AREA_02_OUTER_SHELF_EVIDENCE_2026_06_27.md`
 - `docs/planning/AREA_02_GLASS_RIM_EXPANSION_2026_06_28.md`
+- `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`
+- `docs/planning/PLAYABLE_EXPLORATION_SKELETON_2026_06_28.md`
 
 ## Immediate Issue Order
 
-1. #659: strengthen Outer Shelf terrain readability as a larger place.
-2. #660: add one Glass Rim timing-current decision.
-3. #661: make Glass Ray Drifter teach the Glass Rim read.
-4. #662: add one beyond-rim cargo-vs-knowledge payoff choice.
-5. #663: reflect Glass Rim choices in surface result memory.
-6. #664: refresh deterministic evidence after Glass Rim changes.
-7. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #679: build the Safe Shallows exploration shell with authored walls, side-to-side lanes, chambers, and cave pockets.
+2. #680: add starter survival resource families: scrap/iron, driftwood or fiber, glass/quartz, food, and water.
+3. #681: place those resources inside readable pockets so exploration teaches collection.
+4. #682: tie one surface upgrade or night choice to starter resources.
+5. #683: apply the reef visual kit to the larger shell rather than isolated landmarks.
+6. #684 and #670: compact the survival objective, route/status, scan, and alert HUD around the new exploration loop.
+7. #671-#677: continue visual direction work only where it supports the larger shell.
+8. #685: add deterministic captures for the exploration shell.
+9. #678: compare against the visual reference after the larger shell exists.
+10. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -63,10 +70,11 @@ Primary planning docs:
 
 ## Still Deferred
 
-- Local clutter or readability work that does not block survival-loop playtesting.
+- Local clutter or readability work that does not make the playable level skeleton clearer.
 - Starting with a bulky submarine-scale avatar; compact vehicles belong to later upgrades.
 - Broader mobile/controller work beyond preserving semantic input guardrails.
 - Final art overhaul, large UI reskin, broad visual regression suite, or golden-image infrastructure.
+- Daylight multi-dive implementation until the timer/offload plan is split into small issues with tests.
 
 ## Stable Guardrails
 
