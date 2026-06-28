@@ -65,38 +65,38 @@ const RUN_SUMMARY_COMPACT_BOTTOM := 314.0
 const RUN_SUMMARY_TALL_BOTTOM := 624.0
 const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
 const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
-const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(330.0, 176.0))
-const CARGO_PANEL_RECT := Rect2(Vector2(440.0, 16.0), Vector2(400.0, 78.0))
-const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(1010.0, 16.0), Vector2(254.0, 132.0))
-const DIVE_INFO_RECT := Rect2(Vector2(16.0, 540.0), Vector2(720.0, 150.0))
+const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(330.0, 162.0))
+const CARGO_PANEL_RECT := Rect2(Vector2(456.0, 16.0), Vector2(368.0, 78.0))
+const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(994.0, 16.0), Vector2(270.0, 132.0))
+const DIVE_INFO_RECT := Rect2(Vector2(16.0, 196.0), Vector2(340.0, 126.0))
 const OXYGEN_WARNING_RECT := Rect2(Vector2(16.0, 456.0), Vector2(300.0, 68.0))
 const ACTIVE_HUD_CONTENT_LEFT := 28.0
 const ACTIVE_HUD_CONTENT_RIGHT := 720.0
 const HUD_SINGLE_ROW_HEIGHT := 26.0
 const ACTIVE_HUD_LABEL_RECTS := {
-	"oxygen": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 26.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
-	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 74.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
-	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 116.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
-	"cargo": Rect2(Vector2(458.0, 24.0), Vector2(170.0, HUD_SINGLE_ROW_HEIGHT)),
-	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 148.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
-	"scan": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 552.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
-	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 594.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
-	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 636.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
+	"oxygen": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 28.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
+	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 78.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
+	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 118.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
+	"cargo": Rect2(Vector2(488.0, 56.0), Vector2(84.0, HUD_SINGLE_ROW_HEIGHT)),
+	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 144.0), Vector2(286.0, HUD_SINGLE_ROW_HEIGHT)),
+	"scan": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 214.0), Vector2(308.0, HUD_SINGLE_ROW_HEIGHT)),
+	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 252.0), Vector2(308.0, HUD_SINGLE_ROW_HEIGHT)),
+	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 290.0), Vector2(308.0, HUD_SINGLE_ROW_HEIGHT)),
 }
-const OXYGEN_BAR_BACK_RECT := Rect2(Vector2(28.0, 56.0), Vector2(250.0, 10.0))
-const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 56.0), Vector2(250.0, 10.0))
-const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 104.0), Vector2(250.0, 8.0))
-const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 104.0), Vector2(250.0, 8.0))
-const CARGO_SLOT_ACTIVE_POSITION := Vector2(636.0, 48.0)
+const OXYGEN_BAR_BACK_RECT := Rect2(Vector2(28.0, 58.0), Vector2(272.0, 10.0))
+const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 58.0), Vector2(272.0, 10.0))
+const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 106.0), Vector2(272.0, 8.0))
+const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 106.0), Vector2(272.0, 8.0))
+const CARGO_SLOT_ACTIVE_POSITION := Vector2(600.0, 50.0)
 const SURVIVAL_NEED_LABEL_RECTS := {
-	"food": Rect2(Vector2(1046.0, 30.0), Vector2(182.0, 22.0)),
-	"water": Rect2(Vector2(1046.0, 70.0), Vector2(182.0, 22.0)),
-	"power": Rect2(Vector2(1046.0, 110.0), Vector2(182.0, 22.0)),
+	"food": Rect2(Vector2(1040.0, 28.0), Vector2(190.0, 22.0)),
+	"water": Rect2(Vector2(1040.0, 68.0), Vector2(190.0, 22.0)),
+	"power": Rect2(Vector2(1040.0, 108.0), Vector2(190.0, 22.0)),
 }
 const SURVIVAL_NEED_BAR_BACK_RECTS := {
-	"food": Rect2(Vector2(1046.0, 54.0), Vector2(178.0, 8.0)),
-	"water": Rect2(Vector2(1046.0, 94.0), Vector2(178.0, 8.0)),
-	"power": Rect2(Vector2(1046.0, 134.0), Vector2(178.0, 8.0)),
+	"food": Rect2(Vector2(1040.0, 52.0), Vector2(196.0, 8.0)),
+	"water": Rect2(Vector2(1040.0, 92.0), Vector2(196.0, 8.0)),
+	"power": Rect2(Vector2(1040.0, 132.0), Vector2(196.0, 8.0)),
 }
 const DIVE_STATUS_MAX_CHARS := 72
 const SURVIVAL_NEED_BAR_DISPLAY_MAX := 5.0
@@ -1990,7 +1990,7 @@ func _format_hud_prompt() -> String:
 		else:
 			prompt = "Leave moonpool, then return"
 	else:
-		prompt = "Explore, bank at base"
+		prompt = "Explore | Bank at base"
 
 	if dive_session.result == DiveSessionScript.Result.DIVING:
 		prompt += " | %s" % _format_burst_thruster_prompt()
@@ -3403,7 +3403,7 @@ func _update_hud() -> void:
 	]
 	base_direction_label.text = _format_base_direction()
 	_update_oxygen_feedback()
-	cargo_label.text = "Cargo: %d / %d" % [
+	cargo_label.text = "%d / %d" % [
 		dive_session.current_cargo.size(),
 		dive_session.cargo_limit
 	]
@@ -3501,9 +3501,9 @@ func _update_survival_needs_panel(is_visible: bool) -> void:
 	if not is_visible:
 		return
 
-	food_need_label.text = "Food %d" % survival_state.food
-	water_need_label.text = "Water %d" % survival_state.water
-	power_need_label.text = "Power %d" % survival_state.power
+	food_need_label.text = "FOOD %d / %d" % [survival_state.food, int(SURVIVAL_NEED_BAR_DISPLAY_MAX)]
+	water_need_label.text = "WATER %d / %d" % [survival_state.water, int(SURVIVAL_NEED_BAR_DISPLAY_MAX)]
+	power_need_label.text = "POWER %d / %d" % [survival_state.power, int(SURVIVAL_NEED_BAR_DISPLAY_MAX)]
 	_set_bar_fill_width(food_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["food"], clampf(float(survival_state.food) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
 	_set_bar_fill_width(water_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["water"], clampf(float(survival_state.water) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
 	_set_bar_fill_width(power_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["power"], clampf(float(survival_state.power) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
@@ -3842,7 +3842,7 @@ func _format_burst_thruster_prompt() -> String:
 	if burst_thruster_cooldown_remaining > 0.0:
 		return "Burst: %ds cooldown" % ceili(burst_thruster_cooldown_remaining)
 
-	return "%s: burst -%d" % [_action_label("burst_thruster"), ceili(burst_thruster_oxygen_cost)]
+	return "%s burst -%d" % [_action_label("burst_thruster"), ceili(burst_thruster_oxygen_cost)]
 
 func _format_decoy_pulse_prompt() -> String:
 	if progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
@@ -4877,7 +4877,7 @@ func _format_oxygen_label(current_oxygen: float, maximum_oxygen: float) -> Strin
 	elif state == "low":
 		suffix = "  LOW"
 
-	return "O2: %d / %d%s" % [ceili(current_oxygen), ceili(maximum_oxygen), suffix]
+	return "OXYGEN: %d / %d%s" % [ceili(current_oxygen), ceili(maximum_oxygen), suffix]
 
 func _oxygen_warning_text(state: String) -> String:
 	if state == "critical":

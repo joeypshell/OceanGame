@@ -5087,7 +5087,7 @@ func _test_prompt_formatter_guard_coverage() -> void:
 	_expect(main._format_ready_panel_summary().contains("%s begins." % interact_label), "ready summary should derive its start label from the prompt helper")
 	_expect(main._format_upgrade_menu_title(2, 7).contains("%s select" % vertical_label), "upgrade title should derive selection labels from the prompt helper")
 	_expect(main._format_next_expedition_prompt().contains("press %s" % restart_label), "next expedition prompt should derive restart labels from the prompt helper")
-	_expect(main._format_burst_thruster_prompt().begins_with("%s: burst" % burst_label), "burst prompt should derive its label from the prompt helper")
+	_expect(main._format_burst_thruster_prompt().begins_with("%s burst" % burst_label), "burst prompt should derive its label from the prompt helper")
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks decoy.")
 	main.progression_state.purchased_upgrades[DecoyPulseUpgrade.id] = true
 	_expect(main._format_decoy_pulse_prompt() == "%s: decoy ready" % decoy_label, "decoy prompt should derive its ready label from the prompt helper")
@@ -5462,7 +5462,7 @@ func _test_compact_dive_hud_helpers() -> void:
 		main._format_decoy_pulse_prompt(),
 	]
 	_expect(combined_prompt.length() <= 72, "combined Burst and Decoy active prompt should stay compact")
-	_expect(combined_prompt.contains("Space: burst"), "combined active prompt should keep the Space command visible")
+	_expect(combined_prompt.contains("Space burst"), "combined active prompt should keep the Space command visible")
 	_expect(combined_prompt.contains("F: decoy ready"), "combined active prompt should keep the Decoy command compact")
 	_expect(not combined_prompt.contains("Playtest data:"), "combined active prompt should not expose debug telemetry")
 
@@ -5478,7 +5478,7 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(main.call("_oxygen_state", 10.0, 40.0) == "low", "oxygen helper should mark 25 percent oxygen as low")
 	_expect(main.call("_oxygen_state", 4.0, 40.0) == "critical", "oxygen helper should mark 10 percent oxygen as critical")
 	_expect(main.call("_format_oxygen_label", 10.0, 40.0).contains("LOW"), "oxygen label should carry low state inline")
-	_expect(main.call("_format_oxygen_label", 40.0, 40.0).begins_with("O2:"), "oxygen label should use compact active HUD copy")
+	_expect(main.call("_format_oxygen_label", 40.0, 40.0).begins_with("OXYGEN:"), "oxygen label should use instrument-style active HUD copy")
 	_expect(main.call("_oxygen_warning_text", "critical").contains("RETURN TO BASE"), "critical warning should emphasize the return route")
 	main.free()
 
@@ -5530,7 +5530,7 @@ func _test_active_hud_final_polish_regression() -> void:
 	_expect(not survival_panel.visible, "raw scene should start with the active survival panel hidden")
 	_expect(not dive_info_panel.visible, "raw scene should start with the dive info panel hidden")
 	_expect(run_panel.visible, "raw scene should keep the surface panel visible")
-	_expect(oxygen_label.text.begins_with("O2:"), "active dive should use compact oxygen label")
+	_expect(oxygen_label.text.begins_with("OXYGEN:"), "active dive should use instrument-style oxygen label")
 	_expect(scan_target_label.text.begins_with("Scan:"), "active dive should use compact scan label")
 	_expect(prompt_label.text.length() <= 72, "active prompt should stay short after HUD final polish")
 

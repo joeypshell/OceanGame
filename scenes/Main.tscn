@@ -51,36 +51,40 @@ radius = 92.0
 radius = 96.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_panel"]
-bg_color = Color(0.025, 0.075, 0.095, 0.74)
+bg_color = Color(0.008, 0.035, 0.05, 0.86)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.36, 0.78, 0.9, 0.58)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+border_color = Color(0.26, 0.82, 0.96, 0.72)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 content_margin_left = 12.0
 content_margin_top = 10.0
 content_margin_right = 12.0
 content_margin_bottom = 10.0
+shadow_color = Color(0, 0.012, 0.02, 0.58)
+shadow_size = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_warning_panel"]
-bg_color = Color(0.11, 0.055, 0.035, 0.78)
+bg_color = Color(0.12, 0.055, 0.025, 0.9)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0.62, 0.28, 0.72)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+border_color = Color(1, 0.72, 0.3, 0.86)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 content_margin_left = 12.0
 content_margin_top = 10.0
 content_margin_right = 12.0
 content_margin_bottom = 10.0
+shadow_color = Color(0, 0.012, 0.02, 0.54)
+shadow_size = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_surface_panel"]
 bg_color = Color(0.018, 0.055, 0.07, 0.9)
@@ -3112,20 +3116,33 @@ visible = false
 offset_left = 16.0
 offset_top = 16.0
 offset_right = 346.0
-offset_bottom = 192.0
+offset_bottom = 178.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
 
 [node name="CargoPanel" type="Panel" parent="HUD"]
 visible = false
-offset_left = 440.0
+offset_left = 456.0
 offset_top = 16.0
-offset_right = 840.0
+offset_right = 824.0
 offset_bottom = 94.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
 
+[node name="CargoTitle" type="Label" parent="HUD/CargoPanel"]
+offset_left = 148.0
+offset_top = 4.0
+offset_right = 220.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0.82, 0.96, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
+theme_override_font_sizes/font_size = 15
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+text = "CARGO"
+horizontal_alignment = 1
+
 [node name="SurvivalNeedsPanel" type="Panel" parent="HUD"]
 visible = false
-offset_left = 1010.0
+offset_left = 994.0
 offset_top = 16.0
 offset_right = 1264.0
 offset_bottom = 148.0
@@ -3149,37 +3166,37 @@ text = "Dive down from the surface boat, then return to extract"
 
 [node name="Oxygen" type="Label" parent="HUD"]
 offset_left = 28.0
-offset_top = 26.0
+offset_top = 28.0
 offset_right = 314.0
-offset_bottom = 52.0
+offset_bottom = 54.0
 theme_override_colors/font_color = Color(0.93, 0.98, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
 theme_override_font_sizes/font_size = 18
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-text = "O2: 30 / 30"
+text = "OXYGEN: 30 / 30"
 
 [node name="OxygenBarBack" type="ColorRect" parent="HUD"]
 visible = false
 offset_left = 28.0
-offset_top = 56.0
-offset_right = 278.0
-offset_bottom = 66.0
-color = Color(0.025, 0.055, 0.064, 0.92)
+offset_top = 58.0
+offset_right = 300.0
+offset_bottom = 68.0
+color = Color(0.012, 0.028, 0.036, 0.96)
 
 [node name="OxygenBarFill" type="ColorRect" parent="HUD"]
 visible = false
 offset_left = 28.0
-offset_top = 56.0
-offset_right = 278.0
-offset_bottom = 66.0
-color = Color(0.22, 0.94, 1, 0.86)
+offset_top = 58.0
+offset_right = 300.0
+offset_bottom = 68.0
+color = Color(0.18, 0.92, 1, 0.94)
 
 [node name="Depth" type="Label" parent="HUD"]
 offset_left = 28.0
-offset_top = 74.0
+offset_top = 78.0
 offset_right = 314.0
-offset_bottom = 100.0
+offset_bottom = 104.0
 theme_override_colors/font_color = Color(0.8, 0.93, 0.98, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
 theme_override_font_sizes/font_size = 16
@@ -3190,24 +3207,24 @@ text = "Depth: 0m | Best: 0m"
 [node name="DepthBarBack" type="ColorRect" parent="HUD"]
 visible = false
 offset_left = 28.0
-offset_top = 104.0
-offset_right = 278.0
-offset_bottom = 112.0
-color = Color(0.025, 0.055, 0.064, 0.82)
+offset_top = 106.0
+offset_right = 300.0
+offset_bottom = 114.0
+color = Color(0.012, 0.028, 0.036, 0.92)
 
 [node name="DepthBarFill" type="ColorRect" parent="HUD"]
 visible = false
 offset_left = 28.0
-offset_top = 104.0
+offset_top = 106.0
 offset_right = 54.0
-offset_bottom = 112.0
-color = Color(0.18, 0.68, 1, 0.66)
+offset_bottom = 114.0
+color = Color(0.16, 0.64, 1, 0.82)
 
 [node name="BaseDirection" type="Label" parent="HUD"]
 offset_left = 28.0
-offset_top = 116.0
+offset_top = 118.0
 offset_right = 314.0
-offset_bottom = 142.0
+offset_bottom = 144.0
 theme_override_colors/font_color = Color(0.74, 0.96, 0.92, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
 theme_override_font_sizes/font_size = 15
@@ -3216,19 +3233,19 @@ theme_override_constants/shadow_offset_y = 1
 text = "Base: here"
 
 [node name="Cargo" type="Label" parent="HUD"]
-offset_left = 458.0
-offset_top = 24.0
-offset_right = 628.0
-offset_bottom = 50.0
+offset_left = 488.0
+offset_top = 56.0
+offset_right = 572.0
+offset_bottom = 82.0
 theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
 theme_override_font_sizes/font_size = 18
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-text = "Cargo: 0 / 3"
+text = "0 / 3"
 
 [node name="CargoSlots" type="Node2D" parent="HUD"]
-position = Vector2(636, 48)
+position = Vector2(600, 50)
 
 [node name="Slot1" type="ColorRect" parent="HUD/CargoSlots"]
 offset_right = 26.0
@@ -3289,9 +3306,9 @@ text = "Upgrade: Oxygen Tank I costs Kelp x2, Shell x1, Glow x1"
 
 [node name="Discoveries" type="Label" parent="HUD"]
 offset_left = 28.0
-offset_top = 148.0
+offset_top = 144.0
 offset_right = 314.0
-offset_bottom = 174.0
+offset_bottom = 170.0
 theme_override_colors/font_color = Color(0.68, 0.9, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
 theme_override_font_sizes/font_size = 16
@@ -3302,43 +3319,43 @@ text = "Discoveries: 0 / 3"
 [node name="DiveInfoPanel" type="Panel" parent="HUD"]
 visible = false
 offset_left = 16.0
-offset_top = 540.0
-offset_right = 736.0
-offset_bottom = 690.0
+offset_top = 196.0
+offset_right = 356.0
+offset_bottom = 322.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
 
 [node name="Status" type="Label" parent="HUD"]
 offset_left = 28.0
-offset_top = 636.0
-offset_right = 720.0
-offset_bottom = 662.0
+offset_top = 290.0
+offset_right = 336.0
+offset_bottom = 316.0
 theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 15
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "Dive status: active"
 
 [node name="ExtractionPrompt" type="Label" parent="HUD"]
 offset_left = 28.0
-offset_top = 594.0
-offset_right = 720.0
-offset_bottom = 620.0
+offset_top = 252.0
+offset_right = 336.0
+offset_bottom = 278.0
 theme_override_colors/font_color = Color(0.82, 0.95, 0.96, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 15
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "At base: E/Enter extract"
 
 [node name="ScanTarget" type="Label" parent="HUD"]
 offset_left = 28.0
-offset_top = 552.0
-offset_right = 720.0
-offset_bottom = 578.0
+offset_top = 214.0
+offset_right = 336.0
+offset_bottom = 240.0
 theme_override_colors/font_color = Color(0.7, 0.92, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 15
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "Scan: none nearby"
@@ -3354,7 +3371,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_hud_warning_panel")
 [node name="OxygenWarning" type="Label" parent="HUD/OxygenWarningPanel"]
 offset_left = 16.0
 offset_top = 10.0
-offset_right = 326.0
+offset_right = 284.0
 offset_bottom = 58.0
 theme_override_colors/font_color = Color(1, 0.88, 0.68, 1)
 theme_override_colors/font_shadow_color = Color(0.06, 0.02, 0.01, 0.95)
@@ -3366,81 +3383,81 @@ autowrap_mode = 2
 
 [node name="FoodNeed" type="Label" parent="HUD"]
 visible = false
-offset_left = 1046.0
-offset_top = 30.0
-offset_right = 1228.0
-offset_bottom = 52.0
+offset_left = 1040.0
+offset_top = 28.0
+offset_right = 1230.0
+offset_bottom = 50.0
 theme_override_colors/font_color = Color(1, 0.75, 0.28, 1)
 theme_override_font_sizes/font_size = 15
-text = "Food 3"
+text = "FOOD 3 / 5"
 
 [node name="FoodNeedBarBack" type="ColorRect" parent="HUD"]
 visible = false
-offset_left = 1046.0
-offset_top = 54.0
-offset_right = 1224.0
-offset_bottom = 62.0
-color = Color(0.025, 0.055, 0.064, 0.88)
+offset_left = 1040.0
+offset_top = 52.0
+offset_right = 1236.0
+offset_bottom = 60.0
+color = Color(0.012, 0.028, 0.036, 0.94)
 
 [node name="FoodNeedBarFill" type="ColorRect" parent="HUD"]
 visible = false
-offset_left = 1046.0
-offset_top = 54.0
+offset_left = 1040.0
+offset_top = 52.0
 offset_right = 1153.0
-offset_bottom = 62.0
-color = Color(1, 0.48, 0.12, 0.86)
+offset_bottom = 60.0
+color = Color(1, 0.49, 0.12, 0.94)
 
 [node name="WaterNeed" type="Label" parent="HUD"]
 visible = false
-offset_left = 1046.0
-offset_top = 70.0
-offset_right = 1228.0
-offset_bottom = 92.0
+offset_left = 1040.0
+offset_top = 68.0
+offset_right = 1230.0
+offset_bottom = 90.0
 theme_override_colors/font_color = Color(0.42, 0.9, 1, 1)
 theme_override_font_sizes/font_size = 15
-text = "Water 3"
+text = "WATER 3 / 5"
 
 [node name="WaterNeedBarBack" type="ColorRect" parent="HUD"]
 visible = false
-offset_left = 1046.0
-offset_top = 94.0
-offset_right = 1224.0
-offset_bottom = 102.0
-color = Color(0.025, 0.055, 0.064, 0.88)
+offset_left = 1040.0
+offset_top = 92.0
+offset_right = 1236.0
+offset_bottom = 100.0
+color = Color(0.012, 0.028, 0.036, 0.94)
 
 [node name="WaterNeedBarFill" type="ColorRect" parent="HUD"]
 visible = false
-offset_left = 1046.0
-offset_top = 94.0
+offset_left = 1040.0
+offset_top = 92.0
 offset_right = 1153.0
-offset_bottom = 102.0
-color = Color(0.2, 0.84, 1, 0.86)
+offset_bottom = 100.0
+color = Color(0.19, 0.86, 1, 0.94)
 
 [node name="PowerNeed" type="Label" parent="HUD"]
 visible = false
-offset_left = 1046.0
-offset_top = 110.0
-offset_right = 1228.0
-offset_bottom = 132.0
+offset_left = 1040.0
+offset_top = 108.0
+offset_right = 1230.0
+offset_bottom = 130.0
 theme_override_colors/font_color = Color(1, 0.92, 0.24, 1)
 theme_override_font_sizes/font_size = 15
-text = "Power 3"
+text = "POWER 3 / 5"
 
 [node name="PowerNeedBarBack" type="ColorRect" parent="HUD"]
 visible = false
-offset_left = 1046.0
-offset_top = 134.0
-offset_right = 1224.0
-offset_bottom = 142.0
-color = Color(0.025, 0.055, 0.064, 0.88)
+offset_left = 1040.0
+offset_top = 132.0
+offset_right = 1236.0
+offset_bottom = 140.0
+color = Color(0.012, 0.028, 0.036, 0.94)
 
 [node name="PowerNeedBarFill" type="ColorRect" parent="HUD"]
 visible = false
-offset_left = 1046.0
-offset_top = 134.0
+offset_left = 1040.0
+offset_top = 132.0
 offset_right = 1153.0
-offset_bottom = 142.0
-color = Color(1, 0.86, 0.12, 0.86)
+offset_bottom = 140.0
+color = Color(1, 0.86, 0.12, 0.94)
 
 [node name="RecentExpeditionLog" type="Label" parent="HUD"]
 offset_left = 24.0
