@@ -100,6 +100,50 @@ export async function stageExpandedRoute(page) {
   });
 }
 
+export async function stageArea01SurfaceEntry(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "area01_surface_entry";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "area01_surface_entry",
+  });
+}
+
+export async function stageArea01LeftShelfCave(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "area01_left_shelf_cave";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "area01_left_shelf_cave",
+  });
+}
+
+export async function stageArea01RightShelfPocket(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "area01_right_shelf_pocket";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "area01_right_shelf_pocket",
+  });
+}
+
+export async function stageArea01CentralDrop(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "area01_central_drop";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "area01_central_drop",
+  });
+}
+
 export async function stageEastShelfPocketPing(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "east_shelf_pocket_ping";

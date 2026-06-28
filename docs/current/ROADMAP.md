@@ -32,11 +32,10 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #685: add deterministic captures for the playable exploration slice.
-2. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
-3. #678: compare against the visual reference after the slice has real wall/ledge modules.
-4. Resume route expansion only after the first room reads as a playable place rather than a diagram.
-5. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #671-#677: continue visual direction work only where it supports the slice or the larger playable shell.
+2. #678: compare against the visual reference after the slice has real wall/ledge modules.
+3. Resume route expansion only after the first room reads as a playable place rather than a diagram.
+4. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -58,6 +57,7 @@ Primary planning docs:
 - #683 added reusable reef-wall and resource-pocket visual modules to the Area 01 shell walls, starter ledges, and resource pockets.
 - #684/#670 replaced the active route/status text stack with one compact `SURVIVAL ROUTE` objective card, contextual scan card behavior, and reserved prompt/status rows.
 - #682 added `Water Filter I`, a first starter-material upgrade that spends `Driftwood` and `Quartz Glass` for an immediate `+1 Water` reserve so shallow resource pockets feed the Emergency Week loop.
+- #685 added a cheap targeted Area 01 Playwright capture workflow for `area01-surface-entry`, `area01-left-shelf-cave`, `area01-right-shelf-pocket`, and `area01-central-drop`.
 
 ## Current Readability Rules
 
@@ -97,3 +97,9 @@ git diff --check
 ```
 
 Use visual/export/Playwright captures only when a visible scene, HUD, camera, or layout change needs evidence.
+
+For the current Area 01 shell, prefer the targeted command before manual screenshot wandering:
+
+```powershell
+npm run test:area01-shell-captures
+```

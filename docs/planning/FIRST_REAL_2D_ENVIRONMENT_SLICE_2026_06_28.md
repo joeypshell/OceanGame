@@ -28,6 +28,7 @@ This layer stack is the contract for replacing placeholder polygons with reusabl
 - The main shell walls, starter ledges, and resource pockets now use reusable reef-wall and resource-pocket visual modules. The modules add denser silhouettes, ledge lips, algae/coral flecks, and subdued cargo beds while preserving the existing collision and resource behavior.
 - The active HUD now frames the room with one compact `SURVIVAL ROUTE` objective card, contextual scan card visibility, and clipped prompt/status rows instead of paragraph-like route/status blocks.
 - `Water Filter I` now spends `Driftwood x1` and `Quartz Glass x1` for an immediate `+1 Water` reserve, tying the first starter material pockets to Emergency Week survival instead of leaving them as decorative cargo.
+- A targeted Area 01 shell capture suite now stages `area01-surface-entry`, `area01-left-shelf-cave`, `area01-right-shelf-pocket`, and `area01-central-drop` through web debug commands and Playwright screenshots.
 
 ## Acceptance
 
@@ -42,9 +43,24 @@ At normal 1280x720 play scale:
 
 ## Next Work
 
-1. Add deterministic captures for the playable exploration slice.
-2. Add one passive scan target or existing scan target placement inside the slice only if it improves the room's teachable focus.
+1. Add one passive scan target or existing scan target placement inside the slice only if it improves the room's teachable focus.
+2. Continue visual direction issues only where they make this first room easier to parse.
 3. Keep route expansion paused until the slice reads like a playable room rather than a diagram.
+
+## Capture Workflow
+
+Use this targeted command before manual wandering when reviewing Area 01 shell changes:
+
+```powershell
+npm run test:area01-shell-captures
+```
+
+The stable capture names are:
+
+- `area01-surface-entry`
+- `area01-left-shelf-cave`
+- `area01-right-shelf-pocket`
+- `area01-central-drop`
 
 ## Guardrails
 

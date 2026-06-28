@@ -11,6 +11,8 @@
     "test:visual:existing": "playwright test --config tests/playwright/playwright.config.mjs",
     "test:lower-route-smoke": "npm run web:export && playwright test --config tests/playwright/lower-route-smoke.config.mjs",
     "test:lower-route-smoke:existing": "playwright test --config tests/playwright/lower-route-smoke.config.mjs",
+    "test:area01-shell-captures": "npm run web:export && playwright test --config tests/playwright/area01-shell-captures.config.mjs",
+    "test:area01-shell-captures:existing": "playwright test --config tests/playwright/area01-shell-captures.config.mjs",
     "test:visual:mobile-like": "npm run web:export && playwright test --config tests/playwright/mobile-landscape.config.mjs",
     "test:visual:mobile-like:existing": "playwright test --config tests/playwright/mobile-landscape.config.mjs"
   },

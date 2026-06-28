@@ -1400,6 +1400,61 @@ func _stage_debug_oxygen_visual_review(target_ratio: float, label: String) -> vo
 	status_label.text = "Debug review: %s oxygen staged." % label
 	_update_hud()
 
+func _stage_debug_area01_shell_visual_review(stage: String) -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var target_position := Vector2(720.0, 940.0)
+	var status := "Debug review: Area 01 central drop staged."
+	match stage:
+		"surface_entry":
+			var supply_cache := get_node_or_null("SurvivalSupplyCache") as Node2D
+			if supply_cache != null:
+				target_position = supply_cache.global_position + Vector2(-120.0, -70.0)
+			else:
+				target_position = Vector2(374.0, 368.0)
+			status = "Debug review: Area 01 surface entry staged."
+		"left_shelf_cave":
+			var left_cave := get_node_or_null("Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket") as Node2D
+			if left_cave != null:
+				target_position = left_cave.global_position + Vector2(30.0, -48.0)
+			else:
+				target_position = Vector2(386.0, 956.0)
+			status = "Debug review: Area 01 left shelf and cave pocket staged."
+		"right_shelf_pocket":
+			var right_shelf := get_node_or_null("Area01ArtSlice/GameplayObjects/RightShelfResourcePocket") as Node2D
+			if right_shelf != null:
+				target_position = right_shelf.global_position + Vector2(-70.0, -64.0)
+			else:
+				target_position = Vector2(1014.0, 786.0)
+			status = "Debug review: Area 01 right shelf resource pocket staged."
+		"central_drop":
+			target_position = Vector2(720.0, 940.0)
+		_:
+			return
+
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	player = staged_player
+	player.global_position = target_position
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	dive_session.has_left_base = true
+	dive_session.oxygen = dive_session.max_oxygen
+	visual_smoke_route_stage = "area01_%s" % stage
+	status_label.text = status
+	_update_depth()
+	_update_hud()
+
 func _stage_debug_expanded_route_visual_review() -> void:
 	if not OS.has_feature("web"):
 		return
@@ -1981,6 +2036,14 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_oxygen_visual_review(0.20, "low")
 		"oxygen_critical":
 			_stage_debug_oxygen_visual_review(0.08, "critical")
+		"area01_surface_entry":
+			_stage_debug_area01_shell_visual_review("surface_entry")
+		"area01_left_shelf_cave":
+			_stage_debug_area01_shell_visual_review("left_shelf_cave")
+		"area01_right_shelf_pocket":
+			_stage_debug_area01_shell_visual_review("right_shelf_pocket")
+		"area01_central_drop":
+			_stage_debug_area01_shell_visual_review("central_drop")
 		"expanded_east_shelf_route":
 			_stage_debug_expanded_route_visual_review()
 		"east_shelf_pocket_ping":
