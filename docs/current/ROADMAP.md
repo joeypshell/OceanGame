@@ -49,6 +49,7 @@ Primary planning docs:
 - Locked/future route promises should use darker mouths, quieter seals, and low-alpha glints.
 - Return-current and timing support should stay lower-opacity than recoverable objects.
 - Labels should be sparse and reserved for compact place names or honest locked/open states.
+- Active HUD copy must use reserved stats/prompt/status rows; long commands or feedback should clip or be shortened instead of wrapping into neighboring text.
 - Do not solve confusion by adding more bright shapes, exact locators, checklists, minimaps, or route graphs.
 
 ## Deferred Until Survival Loop Is Playable

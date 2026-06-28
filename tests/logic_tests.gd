@@ -5207,6 +5207,7 @@ func _test_compact_dive_hud_helpers() -> void:
 	var scan_target_label: Label = main_scene.get_node("HUD/ScanTarget")
 	var prompt_label: Label = main_scene.get_node("HUD/ExtractionPrompt")
 	var status_label: Label = main_scene.get_node("HUD/Status")
+	var cargo_label: Label = main_scene.get_node("HUD/Cargo")
 	var cargo_slot_4: ColorRect = main_scene.get_node("HUD/CargoSlots/Slot4")
 	var cargo_slot_nodes: Array[ColorRect] = [
 		main_scene.get_node("HUD/CargoSlots/Slot1"),
@@ -5223,13 +5224,20 @@ func _test_compact_dive_hud_helpers() -> void:
 	main_scene.cargo_slot_nodes = cargo_slot_nodes
 	main_scene.cargo_slot_icon_nodes = cargo_slot_icon_nodes
 	main_scene.dive_session.cargo_limit = 3
+	main_scene.call("_apply_active_hud_layout")
 	main_scene.call("_update_cargo_slots")
+	_expect(_control_rect(active_panel).encloses(_control_rect(cargo_label)), "active Cargo label should stay inside the compact stats panel")
 	_expect(discoveries_label.offset_top >= active_panel.offset_top, "active Discoveries label should stay inside the compact stats panel")
 	_expect(discoveries_label.offset_bottom <= active_panel.offset_bottom, "active Discoveries label should not spill below the compact stats panel")
+	_expect(not _controls_overlap(cargo_label, discoveries_label), "active Cargo and Discoveries rows should not overlap")
 	_expect(dive_info_panel.offset_top > active_panel.offset_bottom, "dive info panel should remain below compact stats content")
 	_expect(scan_target_label.offset_top >= dive_info_panel.offset_top, "scan target should stay inside the dive info panel")
 	_expect(status_label.offset_bottom <= dive_info_panel.offset_bottom, "status text should stay inside the dive info panel")
+	_expect(not _controls_overlap(scan_target_label, prompt_label), "scan target and active prompt rows should not overlap")
 	_expect(prompt_label.offset_bottom <= status_label.offset_top, "prompt and status should not overlap")
+	_expect(not _controls_overlap(prompt_label, status_label), "active prompt and status rows should remain physically separated")
+	_expect(prompt_label.autowrap_mode == TextServer.AUTOWRAP_OFF, "active prompt should clip within its reserved row instead of wrapping into status")
+	_expect(status_label.autowrap_mode == TextServer.AUTOWRAP_OFF, "active status should clip within its reserved row instead of wrapping into nearby HUD text")
 	_expect(not cargo_slot_4.visible, "fourth cargo slot should stay hidden before Cargo Rack I")
 	main_scene.dive_session.cargo_limit = 4
 	main_scene.call("_update_cargo_slots")
@@ -5270,6 +5278,15 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(main.call("_format_oxygen_label", 40.0, 40.0).begins_with("O2:"), "oxygen label should use compact active HUD copy")
 	_expect(main.call("_oxygen_warning_text", "critical").contains("RETURN TO BASE"), "critical warning should emphasize the return route")
 	main.free()
+
+func _control_rect(control: Control) -> Rect2:
+	return Rect2(
+		Vector2(control.offset_left, control.offset_top),
+		Vector2(control.offset_right - control.offset_left, control.offset_bottom - control.offset_top)
+	)
+
+func _controls_overlap(first: Control, second: Control) -> bool:
+	return _control_rect(first).intersects(_control_rect(second), true)
 
 func _test_active_hud_final_polish_regression() -> void:
 	var main := MainScript.new()

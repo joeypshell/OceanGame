@@ -65,6 +65,22 @@ const RUN_SUMMARY_COMPACT_BOTTOM := 314.0
 const RUN_SUMMARY_TALL_BOTTOM := 624.0
 const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
 const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
+const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(560.0, 176.0))
+const DIVE_INFO_RECT := Rect2(Vector2(16.0, 204.0), Vector2(720.0, 136.0))
+const ACTIVE_HUD_CONTENT_LEFT := 28.0
+const ACTIVE_HUD_CONTENT_RIGHT := 720.0
+const HUD_SINGLE_ROW_HEIGHT := 26.0
+const ACTIVE_HUD_LABEL_RECTS := {
+	"oxygen": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 28.0), Vector2(328.0, HUD_SINGLE_ROW_HEIGHT)),
+	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 62.0), Vector2(328.0, HUD_SINGLE_ROW_HEIGHT)),
+	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 96.0), Vector2(328.0, HUD_SINGLE_ROW_HEIGHT)),
+	"cargo": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 130.0), Vector2(150.0, HUD_SINGLE_ROW_HEIGHT)),
+	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 162.0), Vector2(328.0, HUD_SINGLE_ROW_HEIGHT)),
+	"scan": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 216.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
+	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 254.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
+	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 296.0), Vector2(692.0, HUD_SINGLE_ROW_HEIGHT)),
+}
+const CARGO_SLOT_ACTIVE_POSITION := Vector2(184.0, 130.0)
 const DIVE_STATUS_MAX_CHARS := 72
 const ECHO_LENS_PULSE_DURATION := 1.2
 const EAST_SHELF_SURGE_PERIOD_SECONDS := 2.4
@@ -3199,6 +3215,7 @@ func _update_hud() -> void:
 	_update_scan_target_feedback()
 	_update_run_panel()
 	_update_upgrade_menu()
+	_apply_active_hud_layout()
 	var is_diving := _active_hud_visible_for_result(dive_session.result)
 	var has_surface_panel := _surface_hud_visible_for_result(dive_session.result)
 	hint_label.visible = false
@@ -3238,6 +3255,39 @@ func _update_hud() -> void:
 	prompt_label.text = _format_hud_prompt()
 
 	_publish_visual_smoke_state()
+
+func _apply_active_hud_layout() -> void:
+	_set_control_rect(active_stats_panel, ACTIVE_STATS_RECT)
+	_set_control_rect(dive_info_panel, DIVE_INFO_RECT)
+	_set_control_rect(oxygen_label, ACTIVE_HUD_LABEL_RECTS["oxygen"])
+	_set_control_rect(depth_label, ACTIVE_HUD_LABEL_RECTS["depth"])
+	_set_control_rect(base_direction_label, ACTIVE_HUD_LABEL_RECTS["base"])
+	_set_control_rect(cargo_label, ACTIVE_HUD_LABEL_RECTS["cargo"])
+	_set_control_rect(discoveries_label, ACTIVE_HUD_LABEL_RECTS["discoveries"])
+	_set_control_rect(scan_target_label, ACTIVE_HUD_LABEL_RECTS["scan"])
+	_set_control_rect(prompt_label, ACTIVE_HUD_LABEL_RECTS["prompt"])
+	_set_control_rect(status_label, ACTIVE_HUD_LABEL_RECTS["status"])
+	cargo_slots_root.position = CARGO_SLOT_ACTIVE_POSITION
+
+	var bounded_labels: Array[Label] = [
+		oxygen_label,
+		depth_label,
+		base_direction_label,
+		cargo_label,
+		discoveries_label,
+		scan_target_label,
+		prompt_label,
+		status_label,
+	]
+	for label in bounded_labels:
+		label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		label.clip_text = true
+
+func _set_control_rect(control: Control, rect: Rect2) -> void:
+	control.offset_left = rect.position.x
+	control.offset_top = rect.position.y
+	control.offset_right = rect.position.x + rect.size.x
+	control.offset_bottom = rect.position.y + rect.size.y
 
 func _publish_visual_smoke_state() -> void:
 	if not OS.has_feature("web"):
