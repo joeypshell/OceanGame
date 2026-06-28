@@ -67,11 +67,11 @@ const RUN_SUMMARY_TALL_BOTTOM := 624.0
 const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
 const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
 const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(272.0, 116.0))
-const CARGO_PANEL_RECT := Rect2(Vector2(510.0, 16.0), Vector2(260.0, 56.0))
+const CARGO_PANEL_RECT := Rect2(Vector2(516.0, 14.0), Vector2(248.0, 48.0))
 const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(1036.0, 16.0), Vector2(228.0, 106.0))
 const DIVE_INFO_RECT := Rect2(Vector2(16.0, 148.0), Vector2(292.0, 104.0))
 const SCAN_CARD_RECT := Rect2(Vector2(948.0, 220.0), Vector2(260.0, 106.0))
-const TOOL_BELT_PANEL_RECT := Rect2(Vector2(460.0, 638.0), Vector2(360.0, 62.0))
+const TOOL_BELT_PANEL_RECT := Rect2(Vector2(486.0, 648.0), Vector2(308.0, 56.0))
 const MINIMAP_PANEL_RECT := Rect2(Vector2(1052.0, 548.0), Vector2(188.0, 140.0))
 const OXYGEN_WARNING_RECT := Rect2(Vector2(16.0, 594.0), Vector2(230.0, 70.0))
 const ACTIVE_HUD_CONTENT_LEFT := 28.0
@@ -81,7 +81,7 @@ const ACTIVE_HUD_LABEL_RECTS := {
 	"oxygen": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 28.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
 	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 68.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
 	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 96.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
-	"cargo": Rect2(Vector2(536.0, 44.0), Vector2(58.0, HUD_SINGLE_ROW_HEIGHT)),
+	"cargo": Rect2(Vector2(716.0, 38.0), Vector2(40.0, HUD_SINGLE_ROW_HEIGHT)),
 	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 108.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
 	"scan": Rect2(Vector2(964.0, 252.0), Vector2(224.0, HUD_SINGLE_ROW_HEIGHT)),
 	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 204.0), Vector2(260.0, HUD_SINGLE_ROW_HEIGHT)),
@@ -96,7 +96,7 @@ const OXYGEN_BAR_BACK_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
 const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
 const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
 const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
-const CARGO_SLOT_ACTIVE_POSITION := Vector2(606.0, 37.0)
+const CARGO_SLOT_ACTIVE_POSITION := Vector2(566.0, 32.0)
 const SURVIVAL_NEED_LABEL_RECTS := {
 	"food": Rect2(Vector2(1070.0, 28.0), Vector2(140.0, 18.0)),
 	"water": Rect2(Vector2(1070.0, 60.0), Vector2(140.0, 18.0)),
@@ -4059,23 +4059,23 @@ func _cargo_slot_states(resource_ids: Array[String], capacity: int, visible_slot
 func _cargo_slot_color(state: String) -> Color:
 	match state:
 		"kelp_fiber":
-			return Color(0.36, 0.86, 0.5, 0.95)
+			return Color(0.14, 0.42, 0.24, 0.72)
 		"shell_fragments":
-			return Color(0.94, 0.76, 0.46, 0.95)
+			return Color(0.46, 0.34, 0.16, 0.72)
 		"glow_plankton":
-			return Color(0.84, 0.98, 0.28, 0.95)
+			return Color(0.38, 0.52, 0.12, 0.76)
 		"food_supply":
-			return Color(0.92, 0.64, 0.34, 0.95)
+			return Color(0.46, 0.25, 0.1, 0.72)
 		"water_supply":
-			return Color(0.32, 0.78, 0.98, 0.95)
+			return Color(0.1, 0.32, 0.46, 0.72)
 		"power_supply":
-			return Color(0.88, 0.88, 0.34, 0.95)
+			return Color(0.42, 0.38, 0.1, 0.72)
 		"hidden":
 			return Color(0.0, 0.0, 0.0, 0.0)
 		"locked":
-			return Color(0.012, 0.025, 0.032, 0.26)
+			return Color(0.012, 0.025, 0.032, 0.22)
 		_:
-			return Color(0.035, 0.1, 0.13, 0.56)
+			return Color(0.055, 0.16, 0.19, 0.5)
 
 func _cargo_slot_icon_polygon(state: String) -> PackedVector2Array:
 	match state:
@@ -4157,17 +4157,17 @@ func _tool_belt_state(tool_id: String) -> String:
 func _tool_slot_color(state: String) -> Color:
 	match state:
 		"active":
-			return Color(0.08, 0.38, 0.42, 0.72)
+			return Color(0.06, 0.36, 0.42, 0.68)
 		"ready":
-			return Color(0.025, 0.095, 0.12, 0.62)
+			return Color(0.018, 0.075, 0.095, 0.5)
 		"cooldown":
-			return Color(0.11, 0.1, 0.045, 0.64)
+			return Color(0.09, 0.08, 0.035, 0.54)
 		"spent":
-			return Color(0.075, 0.075, 0.09, 0.52)
+			return Color(0.05, 0.055, 0.065, 0.44)
 		"locked":
-			return Color(0.018, 0.026, 0.034, 0.42)
+			return Color(0.012, 0.02, 0.028, 0.34)
 		_:
-			return Color(0.02, 0.03, 0.04, 0.42)
+			return Color(0.014, 0.024, 0.032, 0.34)
 
 func _tool_key_color(state: String) -> Color:
 	match state:
