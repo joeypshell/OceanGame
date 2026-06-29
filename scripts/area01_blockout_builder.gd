@@ -2,18 +2,19 @@ class_name Area01BlockoutBuilder
 extends RefCounted
 
 const SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_blockout_source_map_v1.json"
-const WALL_FACE_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_face_tile_v1.svg")
-const WALL_LIP_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_top_lip_v1.svg")
-const WALL_UNDERSIDE_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_underside_shadow_v1.svg")
 const WALL_CORNER_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_corner_cap_v1.svg")
 const WALL_CRACK_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_crack_decal_v1.svg")
 const WALL_KELP_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_kelp_decal_v1.svg")
 const WALL_CORAL_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_coral_decal_v1.svg")
-const SOLID_COLOR := Color(0.008, 0.035, 0.042, 1.0)
-const LIP_COLOR := Color(0.35, 0.62, 0.58, 0.08)
+const SOLID_COLOR := Color(0.018, 0.084, 0.09, 0.96)
+const LIP_COLOR := Color(0.35, 0.68, 0.62, 0.12)
+const TOP_EDGE_COLOR := Color(0.54, 0.78, 0.68, 0.46)
+const SIDE_EDGE_COLOR := Color(0.17, 0.42, 0.44, 0.28)
+const UNDER_EDGE_COLOR := Color(0.0, 0.012, 0.02, 0.36)
+const INTERNAL_PLANE_COLOR := Color(0.08, 0.22, 0.22, 0.18)
+const STRATA_LIGHT_COLOR := Color(0.22, 0.42, 0.38, 0.2)
+const STRATA_DARK_COLOR := Color(0.0, 0.02, 0.026, 0.24)
 const WALL_DRESSING_LAYER_NAME := "SourceMapWallDressing"
-const WALL_DRESSING_STEP := 440.0
-const WALL_DRESSING_MAX_TILES := 8
 
 var last_error := ""
 
@@ -130,19 +131,14 @@ func _apply_wall_dressing(scene_root: Node, terrain: Dictionary) -> void:
 	if bounds.size.x <= 0.0 or bounds.size.y <= 0.0:
 		return
 
-	var tile_count := clampi(int(ceil(maxf(bounds.size.x, bounds.size.y) / WALL_DRESSING_STEP)), 1, WALL_DRESSING_MAX_TILES)
-	for index in range(tile_count):
-		var t := 0.5
-		if tile_count > 1:
-			t = float(index) / float(tile_count - 1)
+	var group := Node2D.new()
+	group.name = "%sWallDressing" % _pascal_case_id(terrain_id)
+	group.z_index = 3
+	dressing_layer.add_child(group)
 
-		var tile := _create_wall_dressing_tile(index)
-		tile.name = "%sWallDressing%02d" % [_pascal_case_id(terrain_id), index + 1]
-		tile.position = _wall_dressing_position(bounds, t)
-		tile.scale = _wall_dressing_scale(bounds, index)
-		tile.rotation_degrees = _wall_dressing_rotation(bounds, index)
-		tile.z_index = 3
-		dressing_layer.add_child(tile)
+	_add_continuous_wall_planes(group, bounds)
+	_add_edge_bands(group, points, bounds)
+	_add_sparse_wall_decals(group, terrain_id, bounds)
 
 func _wall_dressing_layer(scene_root: Node) -> Node2D:
 	var parent := scene_root.get_node_or_null("Area01ArtSlice/TerrainVisualEdges") as Node2D
@@ -159,38 +155,98 @@ func _wall_dressing_layer(scene_root: Node) -> Node2D:
 	parent.add_child(layer)
 	return layer
 
-func _wall_dressing_position(bounds: Rect2, t: float) -> Vector2:
-	if bounds.size.x >= bounds.size.y:
-		var inset_x := minf(160.0, bounds.size.x * 0.18)
-		return Vector2(lerpf(bounds.position.x + inset_x, bounds.end.x - inset_x, t), bounds.position.y + bounds.size.y * 0.45)
+func _add_continuous_wall_planes(group: Node2D, bounds: Rect2) -> void:
+	if bounds.size.x > 260.0:
+		_add_strata_band(group, "UpperRockStrataBand", bounds, 0.2, 0.12, STRATA_LIGHT_COLOR, -18.0)
+		_add_strata_band(group, "MidShadowStrataBand", bounds, 0.48, 0.16, STRATA_DARK_COLOR, 26.0)
+		_add_strata_band(group, "LowerRockStrataBand", bounds, 0.72, 0.12, STRATA_LIGHT_COLOR.darkened(0.35), -12.0)
 
-	var inset_y := minf(140.0, bounds.size.y * 0.18)
-	return Vector2(bounds.position.x + bounds.size.x * 0.52, lerpf(bounds.position.y + inset_y, bounds.end.y - inset_y, t))
+	var top_plane_height := clampf(bounds.size.y * 0.38, 24.0, 90.0)
+	var top_plane := Polygon2D.new()
+	top_plane.name = "ContinuousTopPlane"
+	top_plane.color = INTERNAL_PLANE_COLOR
+	top_plane.polygon = PackedVector2Array([
+		bounds.position + Vector2(20.0, 12.0),
+		Vector2(bounds.end.x - 24.0, bounds.position.y + 6.0),
+		Vector2(bounds.end.x - 70.0, bounds.position.y + top_plane_height),
+		Vector2(bounds.position.x + 62.0, bounds.position.y + top_plane_height + 10.0),
+	])
+	group.add_child(top_plane)
 
-func _wall_dressing_scale(bounds: Rect2, index: int) -> Vector2:
-	var horizontal := bounds.size.x >= bounds.size.y
-	var base_scale := Vector2(0.85, 0.46) if horizontal else Vector2(0.58, 0.62)
-	var pulse := 1.0 + (0.08 if index % 2 == 0 else -0.05)
-	return base_scale * pulse
+	var under_plane := Polygon2D.new()
+	under_plane.name = "ContinuousUndersidePlane"
+	under_plane.color = Color(0.0, 0.01, 0.018, 0.22)
+	under_plane.polygon = PackedVector2Array([
+		Vector2(bounds.position.x + 28.0, bounds.end.y - top_plane_height * 0.7),
+		Vector2(bounds.end.x - 58.0, bounds.end.y - top_plane_height * 0.55),
+		bounds.end - Vector2(28.0, 16.0),
+		Vector2(bounds.position.x + 56.0, bounds.end.y - 12.0),
+	])
+	group.add_child(under_plane)
 
-func _wall_dressing_rotation(bounds: Rect2, index: int) -> float:
-	if bounds.size.x >= bounds.size.y:
-		return -3.0 if index % 2 == 0 else 2.0
-	return 86.0 if index % 2 == 0 else 94.0
+func _add_strata_band(group: Node2D, node_name: String, bounds: Rect2, y_fraction: float, height_fraction: float, color: Color, slant: float) -> void:
+	var inset := clampf(bounds.size.x * 0.08, 34.0, 130.0)
+	var band_height := clampf(bounds.size.y * height_fraction, 18.0, 64.0)
+	var y := bounds.position.y + bounds.size.y * y_fraction
+	var band := Polygon2D.new()
+	band.name = node_name
+	band.color = color
+	band.polygon = PackedVector2Array([
+		Vector2(bounds.position.x + inset, y),
+		Vector2(bounds.end.x - inset * 0.75, y + slant),
+		Vector2(bounds.end.x - inset * 1.35, y + band_height + slant * 0.45),
+		Vector2(bounds.position.x + inset * 1.4, y + band_height),
+	])
+	group.add_child(band)
 
-func _create_wall_dressing_tile(index: int) -> Node2D:
-	var tile := Node2D.new()
-	tile.add_child(_wall_sprite("FaceTileSprite", WALL_FACE_TEXTURE, Vector2.ZERO, Vector2.ONE, 0.78))
-	tile.add_child(_wall_sprite("TopLipSprite", WALL_LIP_TEXTURE, Vector2(0.0, -24.0), Vector2.ONE, 0.86))
-	tile.add_child(_wall_sprite("UndersideShadowSprite", WALL_UNDERSIDE_TEXTURE, Vector2(0.0, 42.0), Vector2.ONE, 0.72))
-	tile.add_child(_wall_sprite("CrackDecalSprite", WALL_CRACK_TEXTURE, Vector2(-42.0 if index % 2 == 0 else 52.0, 0.0), Vector2(0.48, 0.48), 0.72))
-	if index % 3 == 0:
-		tile.add_child(_wall_sprite("KelpDecalSprite", WALL_KELP_TEXTURE, Vector2(-82.0, -18.0), Vector2(0.46, 0.46), 0.78))
-	elif index % 3 == 1:
-		tile.add_child(_wall_sprite("CoralDecalSprite", WALL_CORAL_TEXTURE, Vector2(76.0, 20.0), Vector2(0.5, 0.5), 0.76))
-	else:
-		tile.add_child(_wall_sprite("CornerCapSprite", WALL_CORNER_TEXTURE, Vector2(126.0, 10.0), Vector2(0.52, 0.52), 0.68))
-	return tile
+func _add_edge_bands(group: Node2D, points: PackedVector2Array, bounds: Rect2) -> void:
+	var center := bounds.get_center()
+	for index in range(points.size()):
+		var start := points[index]
+		var finish := points[(index + 1) % points.size()]
+		var edge := finish - start
+		if edge.length() < 70.0:
+			continue
+
+		var midpoint := (start + finish) * 0.5
+		if absf(edge.x) >= absf(edge.y):
+			if midpoint.y <= center.y:
+				_add_edge_band(group, "ReadableTopEdgeBand", start, finish, Vector2(0.0, _edge_band_width(bounds)), TOP_EDGE_COLOR)
+			else:
+				_add_edge_band(group, "UndersideShadowBand", start, finish, Vector2(0.0, -_edge_band_width(bounds) * 0.85), UNDER_EDGE_COLOR)
+		elif absf(edge.y) > absf(edge.x) * 1.25:
+			var side_dir := 1.0 if midpoint.x < center.x else -1.0
+			_add_edge_band(group, "SideWallBand", start, finish, Vector2(side_dir * _edge_band_width(bounds) * 0.8, 0.0), SIDE_EDGE_COLOR)
+
+func _add_edge_band(group: Node2D, node_name: String, start: Vector2, finish: Vector2, offset: Vector2, color: Color) -> void:
+	var band := Polygon2D.new()
+	band.name = node_name
+	band.color = color
+	band.polygon = PackedVector2Array([start, finish, finish + offset, start + offset])
+	group.add_child(band)
+
+func _edge_band_width(bounds: Rect2) -> float:
+	return clampf(minf(bounds.size.x, bounds.size.y) * 0.2, 18.0, 44.0)
+
+func _add_sparse_wall_decals(group: Node2D, terrain_id: String, bounds: Rect2) -> void:
+	if bounds.size.x < 180.0 or bounds.size.y < 90.0:
+		return
+
+	var checksum := 0
+	for index in range(terrain_id.length()):
+		checksum += terrain_id.unicode_at(index)
+
+	var decal_position := bounds.position + Vector2(bounds.size.x * 0.34, bounds.size.y * 0.42)
+	var decal_scale := Vector2(0.34, 0.34)
+	match checksum % 4:
+		0:
+			group.add_child(_wall_sprite("SparseCrackDecalSprite", WALL_CRACK_TEXTURE, decal_position, decal_scale, 0.42))
+		1:
+			group.add_child(_wall_sprite("SparseKelpDecalSprite", WALL_KELP_TEXTURE, decal_position + Vector2(-18.0, -18.0), Vector2(0.28, 0.28), 0.42))
+		2:
+			group.add_child(_wall_sprite("SparseCoralDecalSprite", WALL_CORAL_TEXTURE, decal_position + Vector2(22.0, 8.0), Vector2(0.32, 0.32), 0.4))
+		_:
+			group.add_child(_wall_sprite("SparseCornerCapSprite", WALL_CORNER_TEXTURE, bounds.position + bounds.size * 0.72, Vector2(0.3, 0.3), 0.34))
 
 func _wall_sprite(sprite_name: String, texture: Texture2D, position: Vector2, scale: Vector2, alpha: float) -> Sprite2D:
 	var sprite := Sprite2D.new()
