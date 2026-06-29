@@ -34,8 +34,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Validate Godot project
-        run: godot --headless --path . --quit-after 1
+      - name: Import Godot project
+        run: godot --headless --path . --editor --quit
 
       - name: Run logic tests
         run: godot --headless --path . --script res://tests/logic_tests.gd
