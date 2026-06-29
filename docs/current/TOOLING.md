@@ -52,6 +52,35 @@ Current desktop scenarios capture surface ready, active dive, extraction result,
 
 The optional mobile-like landscape smoke uses a separate Playwright config at `tests/playwright/mobile-landscape.config.mjs`. It captures surface ready, active dive, lower-route pressure-gate, active low oxygen, active critical oxygen, staged Wreck Echo route, staged Wreck Echo result-readback, and no-debug Wreck Echo result player-facing views at `960x540` with device scale factor `2`, storing local artifacts under `test-results/playwright-mobile-like/`. This is safe-area evidence for future phone landscape work, not touch-control implementation or mobile support certification.
 
+## GitHub Pages Web Demo
+
+The project has a GitHub Actions deployment workflow at `.github/workflows/deploy-github-pages.yml`. It runs on pushes to the current default project branch, `codex/setup-agentic-workflow`, and can also be started manually from the Actions tab.
+
+Deployment flow:
+
+1. Set up Godot 4.7.
+2. Launch the project headlessly.
+3. Run deterministic logic tests.
+4. Export the `Web` preset to `exports/web/index.html`.
+5. Upload `exports/web/` as a GitHub Pages artifact.
+6. Deploy to GitHub Pages.
+
+Expected tester URL after Pages is enabled and the first workflow succeeds:
+
+```text
+https://joeypshell.github.io/OceanGame/
+```
+
+Local preflight:
+
+```powershell
+npm run web:export
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier quick
+git diff --check
+```
+
+Do not commit `exports/`; the workflow generates the deployable web build from source.
+
 ## Tiered Verification Runner
 
 Use `scripts/test.ps1` as the default validation dispatcher so Codex and humans can choose the cheapest useful test tier instead of running screenshot/export checks for every issue.
