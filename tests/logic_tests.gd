@@ -3698,9 +3698,14 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	var background_mid := main.get_node("Area01ArtSlice/BackgroundMid") as Node2D
 	var foreground_decor := main.get_node("Area01ArtSlice/ForegroundDecor") as Node2D
 	var platform_kit := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit") as Node2D
+	var wall_dressing_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/SourceMapWallDressing") as Node2D
 	_expect(not background_mid.visible, "Area 01 builder should hide old mid-background wall-like shapes during wall-map rescue")
 	_expect(not foreground_decor.visible, "Area 01 builder should hide foreground dressing during wall-map rescue")
 	_expect(not platform_kit.visible, "Area 01 builder should hide old decorative platform overlays during wall-map rescue")
+	_expect(wall_dressing_layer != null, "Area 01 builder should add source-map-driven wall dressing")
+	if wall_dressing_layer != null:
+		_expect(wall_dressing_layer.get_child_count() >= solid_terrain.size(), "Area 01 wall dressing should add reusable visual pieces for source-map walls")
+		_expect(not _node_tree_contains_collision(wall_dressing_layer), "Area 01 wall dressing should not add collision ownership")
 	main.free()
 
 func _test_area_01_starter_resource_pocket_placement() -> void:
@@ -3757,6 +3762,16 @@ func _area01_enabled_collision_polygons(main: Node) -> Array[CollisionPolygon2D]
 func _point_inside_any_collision(global_point: Vector2, collisions: Array[CollisionPolygon2D]) -> bool:
 	for collision in collisions:
 		if Geometry2D.is_point_in_polygon(collision.to_local(global_point), collision.polygon):
+			return true
+
+	return false
+
+func _node_tree_contains_collision(node: Node) -> bool:
+	if node is CollisionPolygon2D or node is CollisionShape2D:
+		return true
+
+	for child in node.get_children():
+		if _node_tree_contains_collision(child):
 			return true
 
 	return false
