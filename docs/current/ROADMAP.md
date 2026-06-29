@@ -31,13 +31,15 @@ Primary planning docs:
 - `docs/planning/AREA_01_BLOCKOUT_SOURCE_MAP_2026_06_28.md`
 - `docs/planning/FIRST_REAL_2D_ENVIRONMENT_SLICE_2026_06_28.md`
 - `docs/planning/AREA_01_SKELETON_VALIDATION_2026_06_28.md`
+- `docs/planning/AREA_01_AUTHORITATIVE_WALL_MAP_2026_06_29.md`
 
 ## Immediate Issue Order
 
 1. Playtest the expanded Area 01 footprint at normal scale and record whether west, right, and deep lanes feel reachable, readable, and large enough for the next content pass.
-2. Re-evaluate #675 and #677 as focused readability/visual-support issues after normal play validates the larger blockout.
-3. Keep #676 and #678 deferred until Area 01 has enough footprint to judge ambience and screenshot comparison honestly.
-4. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+2. Keep Area 01 wall truth source-map driven: visible wall polygon, collision polygon, and rim polygon must come from the same wall-map entry before more visual polish resumes.
+3. Re-evaluate #675 and #677 as focused readability/visual-support issues after normal play validates the larger blockout.
+4. Keep #676 and #678 deferred until Area 01 has enough footprint to judge ambience and screenshot comparison honestly.
+5. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -75,6 +77,7 @@ Primary planning docs:
 - #692 added source-map-backed cave-mouth affordances so reachable openings, solid reef, and quiet future seals read differently without exact route markers, labels, new interiors, or new collision.
 - #693 validated the larger Area 01 skeleton and decided one more level-bones pass is needed before broad visual polish; #697 is now the next active issue.
 - #697 expanded Area 01 with far-west, mid-crossing, deep-spine, and far-right blockout terrain; added matching collision and lip reads; updated the source-map lanes; and added deterministic capture states for the expanded footprint.
+- A source-map-driven Area 01 wall builder now applies the same authored polygon to visible walls, collision, and rims so the first playable shell can stop drifting between art and blockers.
 
 ## Current Readability Rules
 
@@ -86,6 +89,7 @@ Primary planning docs:
 - Active HUD copy must use reserved stats/prompt/status rows; long commands or feedback should clip or be shortened instead of wrapping into neighboring text.
 - Area 01 collision boundaries must be readable as terrain lips/rims before contact; do not leave invisible or random-feeling blockers in normal play.
 - Area 01 collision, terrain, pockets, and scannables must map to `docs/planning/maps/area_01_blockout_source_map_v1.json`, or the source map must be updated before the scene changes.
+- During Area 01 wall rescue, do not hand-place separate wall visuals, collision, or lips; they must be generated from the same source-map polygon.
 - Passive creature scan targets need visible silhouettes or outlines at normal play scale; scan labels should confirm the target, not be the only way to perceive it.
 - Do not spend another batch polishing a tiny room if the level bones still do not support wider exploration. Block out readable map scale first, then decorate.
 - Do not solve confusion by adding more bright shapes, exact locators, checklists, minimaps, or route graphs.

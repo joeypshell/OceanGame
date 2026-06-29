@@ -16,6 +16,7 @@ const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_fo
 const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
 const MainScript := preload("res://scripts/main.gd")
 const Area01SourceMapOverlayScript := preload("res://scripts/area01_source_map_overlay.gd")
+const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -90,6 +91,7 @@ func _initialize() -> void:
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
 	_run("Area 01 first art slice scene contract", _test_area_01_first_art_slice_scene_contract)
 	_run("Area 01 source map contract", _test_area_01_source_map_contract)
+	_run("Area 01 authoritative wall builder", _test_area_01_authoritative_wall_builder)
 	_run("Area 01 source map debug overlay", _test_area_01_source_map_debug_overlay)
 	_run("Area 01 starter resource pocket placement", _test_area_01_starter_resource_pocket_placement)
 	_run("Area 01 cave mouth affordances", _test_area_01_cave_mouth_affordances)
@@ -3654,6 +3656,53 @@ func _test_area_01_source_map_debug_overlay() -> void:
 	_expect(not overlay.visible, "Area 01 source-map overlay should hide through debug control")
 	overlay.free()
 
+func _test_area_01_authoritative_wall_builder() -> void:
+	var main := MainScene.instantiate()
+	var builder := Area01BlockoutBuilderScript.new()
+	_expect(builder.build(main), "Area 01 blockout builder should apply source-map wall authority: %s" % builder.last_error)
+	if not builder.last_error.is_empty():
+		main.free()
+		return
+
+	var source_map := _load_area01_source_map_for_tests()
+	var solid_terrain: Array = source_map.get("solid_terrain", [])
+	var collisions: Array[CollisionPolygon2D] = []
+	for terrain in solid_terrain:
+		if typeof(terrain) != TYPE_DICTIONARY:
+			_expect(false, "Area 01 authoritative wall entry should be a dictionary")
+			continue
+		var terrain_entry := terrain as Dictionary
+		var terrain_id := String(terrain_entry.get("id", "unknown"))
+		var expected_polygon := _points_from_source_map_json(terrain_entry.get("polygon", []))
+		var visible := main.get_node_or_null(String(terrain_entry.get("visible_path", ""))) as Polygon2D
+		var collision := main.get_node_or_null(String(terrain_entry.get("collision_path", ""))) as CollisionPolygon2D
+		var lip := main.get_node_or_null(String(terrain_entry.get("lip_path", ""))) as Polygon2D
+		_expect(expected_polygon.size() >= 3, "Area 01 source-map wall should define an authoritative polygon: %s" % terrain_id)
+		_expect(visible != null and visible.visible, "Area 01 generated wall visual should be visible: %s" % terrain_id)
+		_expect(collision != null and not collision.disabled, "Area 01 generated wall collision should be enabled: %s" % terrain_id)
+		_expect(lip != null and lip.visible, "Area 01 generated wall lip should be visible: %s" % terrain_id)
+		if visible != null and collision != null and lip != null:
+			_expect(_packed_points_match(visible.polygon, expected_polygon), "Area 01 wall visual should exactly match source-map polygon: %s" % terrain_id)
+			_expect(_packed_points_match(collision.polygon, expected_polygon), "Area 01 wall collision should exactly match source-map polygon: %s" % terrain_id)
+			_expect(_packed_points_match(lip.polygon, expected_polygon), "Area 01 wall lip should exactly match source-map polygon: %s" % terrain_id)
+			collisions.append(collision)
+
+	for open_point in [
+		Vector2(760.0, 720.0),
+		Vector2(998.0, 820.0),
+		Vector2(1500.0, 900.0),
+		Vector2(3040.0, 840.0),
+	]:
+		_expect(not _point_inside_any_collision(open_point, collisions), "reported Area 01 open water should not contain a hidden generated blocker: %s" % open_point)
+
+	var background_mid := main.get_node("Area01ArtSlice/BackgroundMid") as Node2D
+	var foreground_decor := main.get_node("Area01ArtSlice/ForegroundDecor") as Node2D
+	var platform_kit := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit") as Node2D
+	_expect(not background_mid.visible, "Area 01 builder should hide old mid-background wall-like shapes during wall-map rescue")
+	_expect(not foreground_decor.visible, "Area 01 builder should hide foreground dressing during wall-map rescue")
+	_expect(not platform_kit.visible, "Area 01 builder should hide old decorative platform overlays during wall-map rescue")
+	main.free()
+
 func _test_area_01_starter_resource_pocket_placement() -> void:
 	var main := MainScene.instantiate()
 	var left_shallow := main.get_node("Area01ArtSlice/GameplayObjects/LeftShallowResourcePocket") as Node2D
@@ -3711,6 +3760,32 @@ func _point_inside_any_collision(global_point: Vector2, collisions: Array[Collis
 			return true
 
 	return false
+
+func _load_area01_source_map_for_tests() -> Dictionary:
+	var file := FileAccess.open("res://docs/planning/maps/area_01_blockout_source_map_v1.json", FileAccess.READ)
+	if file == null:
+		return {}
+	var parsed = JSON.parse_string(file.get_as_text())
+	if typeof(parsed) != TYPE_DICTIONARY:
+		return {}
+	return parsed as Dictionary
+
+func _points_from_source_map_json(value: Variant) -> PackedVector2Array:
+	var points := PackedVector2Array()
+	if not value is Array:
+		return points
+	for item in value:
+		if item is Array and item.size() >= 2:
+			points.append(Vector2(float(item[0]), float(item[1])))
+	return points
+
+func _packed_points_match(actual: PackedVector2Array, expected: PackedVector2Array) -> bool:
+	if actual.size() != expected.size():
+		return false
+	for index in range(actual.size()):
+		if actual[index].distance_to(expected[index]) > 0.01:
+			return false
+	return true
 
 func _test_area_01_cave_mouth_affordances() -> void:
 	var main := MainScene.instantiate()

@@ -11,6 +11,7 @@ const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
 const Area01SourceMapOverlayScript := preload("res://scripts/area01_source_map_overlay.gd")
+const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -519,6 +520,9 @@ var area01_source_map_overlay: Area01SourceMapOverlay = null
 var recent_expedition_log: Array[Dictionary] = []
 
 func _ready() -> void:
+	var area01_build := Area01BlockoutBuilderScript.new()
+	if not area01_build.build(self):
+		push_warning("Area 01 blockout authority failed: %s" % area01_build.last_error)
 	_ensure_area01_source_map_overlay()
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
 	base_zone.body_exited.connect(_on_base_zone_body_exited)
@@ -4028,6 +4032,18 @@ func _publish_visual_smoke_state() -> void:
 		"salvage_pocket_open": progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID),
 		"route_stage": visual_smoke_route_stage,
 	}
+	var area01_wall := get_node_or_null("Area01ArtSlice/TerrainBackWalls/BlockoutEastReefMass") as Polygon2D
+	var area01_lip := get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutEastReefLip") as Polygon2D
+	if area01_wall != null and area01_lip != null:
+		state["area01_wall_authority"] = {
+			"wall_alpha": area01_wall.color.a,
+			"wall_red": area01_wall.color.r,
+			"wall_green": area01_wall.color.g,
+			"wall_blue": area01_wall.color.b,
+			"lip_alpha": area01_lip.color.a,
+			"wall_points": area01_wall.polygon.size(),
+			"lip_points": area01_lip.polygon.size(),
+		}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
 
 func _active_hud_visible_for_result(result: int) -> bool:

@@ -5,6 +5,7 @@
 Area 01 now needs a source-of-truth blockout contract before more cave, route, or polish work. Recent playtests exposed the core problem: terrain, collision, resource pockets, and scannables are not yet governed by one map rule, so players can see wall-looking shapes that do not block, hit blockers that do not read as walls, and notice interactables that appear inaccessible.
 
 The source map lives at `docs/planning/maps/area_01_blockout_source_map_v1.json`.
+The generated review map lives at `docs/planning/maps/area_01_wall_collision_authority_map_v1.svg`.
 
 This is a developer planning and validation artifact. It is not an in-game minimap, checklist, or exact locator system.
 
