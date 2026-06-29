@@ -2,6 +2,13 @@ class_name Area01BlockoutBuilder
 extends RefCounted
 
 const SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_blockout_source_map_v1.json"
+const WALL_FACE_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_face_tile_v1.svg")
+const WALL_LIP_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_top_lip_v1.svg")
+const WALL_UNDERSIDE_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_underside_shadow_v1.svg")
+const WALL_CORNER_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_corner_cap_v1.svg")
+const WALL_CRACK_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_crack_decal_v1.svg")
+const WALL_KELP_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_kelp_decal_v1.svg")
+const WALL_CORAL_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_coral_decal_v1.svg")
 const SOLID_COLOR := Color(0.008, 0.035, 0.042, 1.0)
 const LIP_COLOR := Color(0.35, 0.62, 0.58, 0.08)
 const WALL_DRESSING_LAYER_NAME := "SourceMapWallDressing"
@@ -173,75 +180,26 @@ func _wall_dressing_rotation(bounds: Rect2, index: int) -> float:
 
 func _create_wall_dressing_tile(index: int) -> Node2D:
 	var tile := Node2D.new()
-
-	var dark_face := Polygon2D.new()
-	dark_face.name = "DarkReefFace"
-	dark_face.color = Color(0.01, 0.045, 0.052, 0.52)
-	dark_face.polygon = PackedVector2Array([
-		Vector2(-150.0, -28.0),
-		Vector2(-72.0, -50.0),
-		Vector2(74.0, -42.0),
-		Vector2(148.0, -8.0),
-		Vector2(108.0, 42.0),
-		Vector2(-118.0, 38.0),
-	])
-	tile.add_child(dark_face)
-
-	var lip := Polygon2D.new()
-	lip.name = "ReadableReefLip"
-	lip.color = Color(0.36, 0.65, 0.56, 0.34)
-	lip.polygon = PackedVector2Array([
-		Vector2(-132.0, -28.0),
-		Vector2(-56.0, -44.0),
-		Vector2(74.0, -34.0),
-		Vector2(132.0, -8.0),
-		Vector2(98.0, 6.0),
-		Vector2(18.0, -16.0),
-		Vector2(-66.0, -14.0),
-		Vector2(-122.0, -4.0),
-	])
-	tile.add_child(lip)
-
-	var under_shadow := Polygon2D.new()
-	under_shadow.name = "UndersideShadow"
-	under_shadow.color = Color(0.0, 0.01, 0.018, 0.42)
-	under_shadow.polygon = PackedVector2Array([
-		Vector2(-108.0, 12.0),
-		Vector2(-22.0, -2.0),
-		Vector2(90.0, 8.0),
-		Vector2(116.0, 28.0),
-		Vector2(44.0, 38.0),
-		Vector2(-96.0, 34.0),
-	])
-	tile.add_child(under_shadow)
-
-	var algae := Polygon2D.new()
-	algae.name = "SmallAlgaeAccent"
-	algae.color = Color(0.22, 0.56, 0.26, 0.26)
-	algae.polygon = _algae_polygon(index)
-	tile.add_child(algae)
-
+	tile.add_child(_wall_sprite("FaceTileSprite", WALL_FACE_TEXTURE, Vector2.ZERO, Vector2.ONE, 0.78))
+	tile.add_child(_wall_sprite("TopLipSprite", WALL_LIP_TEXTURE, Vector2(0.0, -24.0), Vector2.ONE, 0.86))
+	tile.add_child(_wall_sprite("UndersideShadowSprite", WALL_UNDERSIDE_TEXTURE, Vector2(0.0, 42.0), Vector2.ONE, 0.72))
+	tile.add_child(_wall_sprite("CrackDecalSprite", WALL_CRACK_TEXTURE, Vector2(-42.0 if index % 2 == 0 else 52.0, 0.0), Vector2(0.48, 0.48), 0.72))
+	if index % 3 == 0:
+		tile.add_child(_wall_sprite("KelpDecalSprite", WALL_KELP_TEXTURE, Vector2(-82.0, -18.0), Vector2(0.46, 0.46), 0.78))
+	elif index % 3 == 1:
+		tile.add_child(_wall_sprite("CoralDecalSprite", WALL_CORAL_TEXTURE, Vector2(76.0, 20.0), Vector2(0.5, 0.5), 0.76))
+	else:
+		tile.add_child(_wall_sprite("CornerCapSprite", WALL_CORNER_TEXTURE, Vector2(126.0, 10.0), Vector2(0.52, 0.52), 0.68))
 	return tile
 
-func _algae_polygon(index: int) -> PackedVector2Array:
-	if index % 2 == 0:
-		return PackedVector2Array([
-			Vector2(-44.0, -22.0),
-			Vector2(-36.0, -54.0),
-			Vector2(-26.0, -18.0),
-			Vector2(-12.0, -42.0),
-			Vector2(-8.0, -8.0),
-			Vector2(-48.0, -6.0),
-		])
-
-	return PackedVector2Array([
-		Vector2(48.0, -18.0),
-		Vector2(58.0, -46.0),
-		Vector2(68.0, -14.0),
-		Vector2(82.0, -36.0),
-		Vector2(88.0, -4.0),
-		Vector2(46.0, 0.0),
-	])
+func _wall_sprite(sprite_name: String, texture: Texture2D, position: Vector2, scale: Vector2, alpha: float) -> Sprite2D:
+	var sprite := Sprite2D.new()
+	sprite.name = sprite_name
+	sprite.texture = texture
+	sprite.position = position
+	sprite.scale = scale
+	sprite.modulate = Color(1.0, 1.0, 1.0, alpha)
+	return sprite
 
 func _pascal_case_id(value: String) -> String:
 	var result := ""

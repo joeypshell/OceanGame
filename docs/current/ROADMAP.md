@@ -32,6 +32,7 @@ Primary planning docs:
 - `docs/planning/FIRST_REAL_2D_ENVIRONMENT_SLICE_2026_06_28.md`
 - `docs/planning/AREA_01_SKELETON_VALIDATION_2026_06_28.md`
 - `docs/planning/AREA_01_AUTHORITATIVE_WALL_MAP_2026_06_29.md`
+- `docs/planning/AREA_01_MODULAR_WALL_ART_SYSTEM_2026_06_29.md`
 
 ## Immediate Issue Order
 

@@ -3706,6 +3706,11 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	if wall_dressing_layer != null:
 		_expect(wall_dressing_layer.get_child_count() >= solid_terrain.size(), "Area 01 wall dressing should add reusable visual pieces for source-map walls")
 		_expect(not _node_tree_contains_collision(wall_dressing_layer), "Area 01 wall dressing should not add collision ownership")
+		var first_wall_dressing := wall_dressing_layer.get_child(0)
+		var face_sprite := first_wall_dressing.find_child("FaceTileSprite", true, false) as Sprite2D
+		var lip_sprite := first_wall_dressing.find_child("TopLipSprite", true, false) as Sprite2D
+		_expect(face_sprite != null and face_sprite.texture != null, "Area 01 wall dressing should use the modular reef wall face sprite")
+		_expect(lip_sprite != null and lip_sprite.texture != null, "Area 01 wall dressing should use the modular reef wall lip sprite")
 	main.free()
 
 func _test_area_01_starter_resource_pocket_placement() -> void:
