@@ -30,12 +30,14 @@ Primary planning docs:
 - `docs/planning/PLAYABLE_EXPLORATION_SKELETON_2026_06_28.md`
 - `docs/planning/AREA_01_BLOCKOUT_SOURCE_MAP_2026_06_28.md`
 - `docs/planning/FIRST_REAL_2D_ENVIRONMENT_SLICE_2026_06_28.md`
+- `docs/planning/AREA_01_SKELETON_VALIDATION_2026_06_28.md`
 
 ## Immediate Issue Order
 
-1. #693: validate the larger level skeleton before returning to more visual polish.
-2. Re-evaluate #675-#678 after the skeleton validation; keep only the parts that support the larger playable map.
-3. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #697: expand Area 01 into a larger multi-screen blockout before broad visual polish.
+2. Re-evaluate #675 and #677 as focused readability/visual-support issues after the larger blockout expands.
+3. Keep #676 and #678 deferred until Area 01 has enough footprint to judge ambience and screenshot comparison honestly.
+4. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -71,6 +73,7 @@ Primary planning docs:
 - #695 added a developer-only Area 01 source-map overlay toggle so playable lanes, mapped collision, pockets, resources, scannables, and scan range can be inspected without manual screenshot guessing.
 - #696 moved Area 01 pocket anchors and starter spawn points out of enabled collision, widened the left world bound to remove an invisible clamp, and aligned the source-map lanes with the current larger shell.
 - #692 added source-map-backed cave-mouth affordances so reachable openings, solid reef, and quiet future seals read differently without exact route markers, labels, new interiors, or new collision.
+- #693 validated the larger Area 01 skeleton and decided one more level-bones pass is needed before broad visual polish; #697 is now the next active issue.
 
 ## Current Readability Rules
 

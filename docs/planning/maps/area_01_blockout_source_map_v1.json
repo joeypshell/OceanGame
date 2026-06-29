@@ -251,8 +251,9 @@
     }
   ],
   "next_implementation_order": [
-    "#693: Validate the larger skeleton after the source map, blockers, and cave-mouth affordances are corrected.",
-    "Re-evaluate visual-direction issues only after skeleton validation confirms the larger playable map reads honestly."
+    "#697: Expand Area 01 into a larger multi-screen blockout before broad visual polish.",
+    "Re-evaluate #675 and #677 only after the larger playable map can carry focused visual support.",
+    "Keep #676 and #678 deferred until Area 01 has enough footprint for honest ambience and screenshot-comparison work."
   ],
   "non_goals": [
     "No final art pass.",
