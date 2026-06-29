@@ -7,6 +7,43 @@
     "camera_intent": "Side-view dive map with surface entry above, wider exploration left/right, and deeper routes below.",
     "note": "Coordinates are approximate planning anchors. Scene node paths are authoritative for current implementation checks."
   },
+  "map_pipeline": {
+    "map_mode": "side_scroll_mode",
+    "visual_model": "parallax_layers plus source-map terrain chunks",
+    "runtime_object_model": "platform_objects plus interactive_scene_objects plus scene_hooks",
+    "collision_model": "precise_shapes",
+    "engine_target": "project-native Godot scene",
+    "rule": "Foreground playable terrain is built from source-map polygons. Parallax, lighting, plants, crystals, cave glows, pickups, and scan affordances are separate non-colliding visuals unless explicitly listed as triggers or pickups."
+  },
+  "terrain_chunk_library": [
+    {
+      "id": "solid_wall_mass",
+      "role": "Large reef boundary or ceiling/floor mass.",
+      "visual_strategy": "single filled Polygon2D using the approved reef texture, continuous internal planes, readable edge bands, and sparse decals",
+      "collision_strategy": "one simplified CollisionPolygon2D using the same source-map polygon",
+      "repeat_policy": "reuse the visual treatment per polygon; do not stamp isolated rectangular wall sprites across the mass"
+    },
+    {
+      "id": "ledge_strip",
+      "role": "Shelf edge, floor, or overhang that frames a playable water lane.",
+      "visual_strategy": "same filled source-map polygon plus stronger top or underside edge band",
+      "collision_strategy": "same source-map polygon, simplified enough for CharacterBody2D movement",
+      "repeat_policy": "extend by source-map polygon points, not by generating one image per ledge"
+    },
+    {
+      "id": "cave_mouth_affordance",
+      "role": "Readable opening, quiet future seal, or non-colliding route affordance.",
+      "visual_strategy": "separate scene object under GameplayObjects; no player-blocking collision unless promoted to solid terrain first",
+      "collision_strategy": "none by default; triggers use Area2D and must not masquerade as solid terrain"
+    },
+    {
+      "id": "decorative_depth",
+      "role": "Plants, crystals, background rock, light shafts, and parallax depth.",
+      "visual_strategy": "separate non-colliding visuals behind or in front of terrain",
+      "collision_strategy": "none",
+      "repeat_policy": "may repeat freely as dressing only if opacity stays below terrain and cargo readability"
+    }
+  ],
   "known_playtest_defects": [
     {
       "id": "reported_right_wall_swim_through",
@@ -96,7 +133,7 @@
     {
       "id": "left_solid_wall",
       "role": "Primary left reef boundary.",
-      "polygon": [[-900, 440], [260, 440], [260, 620], [-900, 620]],
+      "polygon": [[-900, 430], [-620, 470], [-280, 440], [40, 470], [260, 440], [260, 620], [-80, 590], [-420, 640], [-900, 610]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/LeftSolidWall",
       "collision_path": "Area01ArtSlice/TerrainCollision/LeftWallCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/LeftWallBlockingRim"
@@ -104,7 +141,7 @@
     {
       "id": "right_solid_wall",
       "role": "Primary right reef boundary.",
-      "polygon": [[980, 440], [4480, 440], [4480, 640], [980, 620]],
+      "polygon": [[980, 430], [1480, 470], [1980, 430], [2500, 465], [3140, 435], [3760, 470], [4480, 440], [4480, 650], [3920, 620], [3260, 675], [2700, 610], [2200, 660], [1660, 620], [980, 635]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/RightSolidWall",
       "collision_path": "Area01ArtSlice/TerrainCollision/RightWallCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightWallBlockingRim"
@@ -112,7 +149,7 @@
     {
       "id": "left_starter_ledge",
       "role": "First left shelf terrain under the surface entry.",
-      "polygon": [[-900, 1020], [220, 1020], [340, 1240], [-900, 1280]],
+      "polygon": [[-900, 1030], [-460, 980], [-40, 1010], [220, 1040], [340, 1240], [-120, 1210], [-520, 1300], [-900, 1270]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/LeftStarterLedge",
       "collision_path": "Area01ArtSlice/TerrainCollision/LeftLedgeCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/LeftLedgeBlockingLip"
@@ -120,7 +157,7 @@
     {
       "id": "right_starter_ledge",
       "role": "First right shelf terrain under the surface entry.",
-      "polygon": [[240, 1260], [1040, 1280], [1280, 1440], [280, 1480]],
+      "polygon": [[240, 1260], [620, 1225], [1040, 1280], [1280, 1440], [900, 1470], [520, 1430], [280, 1480]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/RightStarterLedge",
       "collision_path": "Area01ArtSlice/TerrainCollision/RightLedgeCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RightLedgeBlockingLip"
@@ -128,7 +165,7 @@
     {
       "id": "blockout_east_reef_mass",
       "role": "Large right-side blockout mass that should frame a reachable lane, not hide a blocker.",
-      "polygon": [[1100, 640], [2880, 660], [2880, 820], [1100, 800]],
+      "polygon": [[1100, 625], [1460, 665], [1840, 620], [2280, 670], [2880, 640], [2880, 820], [2440, 790], [2060, 830], [1680, 790], [1320, 825], [1100, 795]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutEastReefMass",
       "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutEastReefCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutEastReefLip"
@@ -136,7 +173,7 @@
     {
       "id": "blockout_lower_basin_floor",
       "role": "Lower basin terrain boundary.",
-      "polygon": [[1100, 1180], [2880, 1160], [2880, 1320], [1100, 1360]],
+      "polygon": [[1100, 1190], [1560, 1145], [2080, 1190], [2520, 1155], [2880, 1190], [2880, 1330], [2380, 1310], [1900, 1365], [1420, 1325], [1100, 1370]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutLowerBasinFloor",
       "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutLowerBasinCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutLowerBasinLip"
@@ -144,7 +181,7 @@
     {
       "id": "blockout_west_cave_shelf",
       "role": "Left-side shelf framing a future cave pocket.",
-      "polygon": [[-900, 620], [-620, 620], [-640, 1020], [-900, 1020]],
+      "polygon": [[-900, 610], [-600, 630], [-650, 780], [-600, 940], [-640, 1020], [-900, 1020]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutWestCaveShelf",
       "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutWestCaveShelfCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutWestCaveShelfLip"
@@ -152,7 +189,7 @@
     {
       "id": "blockout_left_chamber_ceiling",
       "role": "Top boundary for the left chamber lane.",
-      "polygon": [[120, 640], [360, 620], [420, 880], [220, 980]],
+      "polygon": [[120, 650], [360, 620], [460, 760], [420, 900], [220, 980], [180, 820]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutLeftChamberCeiling",
       "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutLeftChamberCeilingCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutLeftChamberCeilingLip"
@@ -160,7 +197,7 @@
     {
       "id": "blockout_right_chamber_shelf",
       "role": "Right chamber shelf and upper lane boundary.",
-      "polygon": [[3900, 700], [4480, 820], [4480, 1420], [3900, 1260]],
+      "polygon": [[3900, 700], [4260, 780], [4480, 830], [4480, 1430], [4200, 1370], [3900, 1260], [3980, 1040]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutRightChamberShelf",
       "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutRightChamberShelfCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutRightChamberShelfLip"
@@ -168,7 +205,7 @@
     {
       "id": "blockout_far_west_shelf",
       "role": "Far-west terrain boundary that frames a second leftward chamber.",
-      "polygon": [[-900, 1280], [-240, 1220], [120, 1340], [120, 1560], [-900, 1560]],
+      "polygon": [[-900, 1280], [-560, 1240], [-240, 1220], [120, 1340], [80, 1560], [-420, 1530], [-900, 1560]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutFarWestShelfMass",
       "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutFarWestShelfCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutFarWestShelfLip"
@@ -176,7 +213,7 @@
     {
       "id": "blockout_mid_crossing_ceiling",
       "role": "Mid-map ceiling mass that frames an open crossing toward the far-right chamber.",
-      "polygon": [[300, 1420], [900, 1320], [1020, 1540], [360, 1660]],
+      "polygon": [[300, 1420], [620, 1350], [900, 1320], [1020, 1540], [720, 1605], [360, 1660]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutMidCrossingCeiling",
       "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutMidCrossingCeilingCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutMidCrossingCeilingLip"
@@ -184,7 +221,7 @@
     {
       "id": "blockout_deep_spine_floor",
       "role": "Deep spine floor mass that frames the downward continuation.",
-      "polygon": [[980, 1540], [2800, 1500], [3000, 2200], [900, 2200]],
+      "polygon": [[980, 1540], [1500, 1490], [2040, 1530], [2800, 1500], [3000, 2200], [2320, 2170], [1680, 2220], [900, 2200]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutDeepSpineFloor",
       "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutDeepSpineFloorCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutDeepSpineFloorLip"
@@ -192,7 +229,7 @@
     {
       "id": "blockout_far_right_pocket_wall",
       "role": "Far-right wall mass that gives the right chamber a readable boundary.",
-      "polygon": [[2880, 1160], [3900, 1260], [4300, 1540], [3060, 1460]],
+      "polygon": [[2880, 1160], [3300, 1200], [3900, 1260], [4300, 1540], [3660, 1490], [3060, 1460]],
       "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutFarRightPocketWall",
       "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutFarRightPocketWallCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutFarRightPocketWallLip"
@@ -301,6 +338,10 @@
     {
       "id": "background_shape_must_not_block_player",
       "rule": "Background, lighting, parallax, and dressing shapes may not own player-blocking collision."
+    },
+    {
+      "id": "foreground_terrain_uses_chunk_library",
+      "rule": "Foreground playable terrain must use the source-map terrain chunk library: filled terrain polygons, simplified matching collision, continuous edge treatment, and no rectangular sprite stamping as the primary wall read."
     },
     {
       "id": "scannables_must_be_reachable_nonblocking_or_future_locked",

@@ -6,7 +6,7 @@ Every morning the alien ocean changes. Dive from a fragile research boat, scan w
 
 Short form:
 
-Guide a small diver through seeded alien-ocean expedition days where every descent asks whether to bring back what keeps the base alive tonight, what makes future dives safer, or what unlocks the deeper mystery.
+Guide a small diver through seeded alien-ocean expedition days where daylight, oxygen, and cargo space force choices about what to bring back before nightfall: what keeps the base alive tonight, what makes future dives safer, or what unlocks the deeper mystery.
 
 ## Player Role
 
@@ -27,11 +27,11 @@ The fantasy should be instantly legible:
 
 ## Expedition Length
 
-Target a short-session loop: a single expedition should be readable in a few minutes, with quick restart and clear extraction payoff. Longer sessions come from chaining expeditions, not from one huge uninterrupted ocean.
+Target a short-session loop: a single expedition day should be readable in a few minutes, with quick ship offloads, clear nightfall payoff, and fast transition into upgrades or the next day. Longer sessions come from chaining expedition days, not from one huge uninterrupted ocean.
 
 ## Emotional Arc
 
-Each expedition should start calm and promising, become tense as oxygen, cargo, and predator risk accumulate, then resolve with either relief at extraction or a clear lesson from failure. The best moments should happen when the player sees a deeper opportunity and consciously chooses whether it is worth the return risk.
+Each expedition day should start calm and promising, become tense as daylight, oxygen, cargo, and predator risk accumulate, then resolve with either relief at the ship/night phase or a clear lesson from failure. The best moments should happen when the player sees a deeper opportunity and consciously chooses whether it is worth the remaining daylight and return risk.
 
 ## Why Start Another Expedition
 
@@ -63,7 +63,9 @@ The current prototype is intentionally small, but the intended long-term dive sp
 The surface phase should feel emotionally different from the ocean without becoming a management sim:
 
 - oxygen pressure stops,
-- cargo and scans are counted,
+- open surface can refill oxygen once the daylight loop supports it,
+- the ship/moonpool banks carried cargo through one fast offload action,
+- cargo and scans are counted at the ship and night screen,
 - lab analysis clarifies what was learned,
 - upgrades and locked-route promises are surfaced,
 - survival supplies are consumed overnight and consequences are shown,
@@ -71,6 +73,8 @@ The surface phase should feel emotionally different from the ocean without becom
 - the ocean condition shifts.
 
 This is the game's answer to a second loop: relief, analysis, upgrade, and changed opportunity.
+
+The planned daylight loop makes the ship different from generic surface water. Surfacing gives air; returning to the ship banks supplies and opens the night/upgrades phase. See `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`.
 
 ## Distinction
 

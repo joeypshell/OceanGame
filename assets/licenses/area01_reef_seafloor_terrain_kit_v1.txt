@@ -1,0 +1,14 @@
+Asset: Area 01 reef/seafloor terrain kit v1
+Asset path: assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v1.png
+Frame path: assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v1_frames/
+Source path: assets/source/sprites/environment/area01_reef_seafloor_terrain_kit_v1_raw.png
+Prompt path: assets/source/sprites/environment/area01_reef_seafloor_terrain_kit_v1.prompt.txt
+Pipeline metadata: assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v1.pipeline-meta.json
+Creator/tool: OpenAI image generation through Codex generate2dsprite workflow
+License or usage basis: user-generated project asset for OceanGame prototype
+Source URL: none
+Date added: 2026-06-29
+Prompt summary: 4x4 modular pixel-inspired underwater reef/seafloor terrain kit with magenta background, based on Area 01 source-map style references.
+Post-processing: Magenta chroma-key cleanup, largest-component frame extraction, centering, and QC through generate2dsprite.py.
+Intended use: Prototype/production-candidate visual kit for source-map-driven Area 01 terrain art.
+Restrictions: Review before runtime wiring. This art does not define collision, gameplay state, resource placement, or authoritative level topology.

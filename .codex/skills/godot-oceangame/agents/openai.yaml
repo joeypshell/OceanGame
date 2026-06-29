@@ -1,0 +1,4 @@
+interface:
+  display_name: "Godot OceanGame"
+  short_description: "Work on Godot scenes/scripts"
+  default_prompt: "Use $godot-oceangame for OceanGame Godot scene, script, resource, input, or editor/MCP work."

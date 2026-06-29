@@ -1,0 +1,23 @@
+Create a 4x4 sprite atlas for a side-view 2D underwater exploration game terrain kit. Use case: modular reef/seafloor terrain kit. Style: polished modern pixel-inspired 2D game art, dark teal/blue underwater reef, readable organic stone, subtle cyan rim lighting, sparse tiny coral/kelp accents only where useful. Background: perfectly flat solid #FF00FF chroma-key in every empty area, no shadows on the background, no gradients, no transparent background. No text, no labels, no UI, no arrows, no numbers, no visible grid lines, no borders.
+
+The atlas must be exactly 4 rows by 4 columns, equal invisible cells, generous magenta padding inside each cell. Each cell is a separate reusable terrain piece, not a full scene. Keep pieces smaller and flatter than a full platform chunk so they can be fitted together over authored Polygon2D terrain.
+
+Cell plan, left to right, top to bottom:
+Row 1 cell 1: seamless dark reef wall fill swatch, organic rounded rock/coral nodules, no ledge edge, no top surface, suitable to clip inside large polygons.
+Row 1 cell 2: shallow seafloor top lip left cap, low horizontal strip with natural left end, bright rim only along top, dark underside.
+Row 1 cell 3: shallow seafloor top lip middle repeat, low horizontal strip tileable left/right, same thickness as caps, minimal decoration.
+Row 1 cell 4: shallow seafloor top lip right cap, matching left cap and middle repeat.
+Row 2 cell 1: cave ceiling underside left cap, low horizontal underside strip with hanging dark reef teeth, natural left end.
+Row 2 cell 2: cave ceiling underside middle repeat, tileable left/right, darker than seafloor top, small stalactite-like reef teeth.
+Row 2 cell 3: cave ceiling underside right cap, matching ceiling pieces.
+Row 2 cell 4: cave-mouth arch rim segment, curved dark rim piece that can frame an opening, not a full gate.
+Row 3 cell 1: vertical wall edge top cap, narrow vertical strip top end, matching reef stones.
+Row 3 cell 2: vertical wall edge middle repeat, narrow vertical strip tileable up/down, not a full wall column.
+Row 3 cell 3: vertical wall edge bottom cap, narrow vertical strip bottom end.
+Row 3 cell 4: diagonal slope edge trim about 30 degrees, thin rocky rim strip with dark underside, not a huge triangular platform.
+Row 4 cell 1: inside corner trim where ceiling meets wall, compact corner-only piece.
+Row 4 cell 2: outside corner trim for protruding shelf, compact corner-only piece.
+Row 4 cell 3: thin interior ledge strip, narrow low ledge, tileable horizontally, dark underside.
+Row 4 cell 4: deep floor lip strip, darker blue low horizontal strip with subtle cyan rim and less plant detail.
+
+Critical constraints: no full rectangular wall blocks except the fill swatch; no giant platform chunks; no black background; no scene composition; no player/submarine/fish/resources/gates/HUD. All sprites must remain fully inside their cell with flat #FF00FF around them. Related strips must share height, lighting direction, palette, and edge thickness so they can visually connect.

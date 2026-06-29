@@ -1,0 +1,4 @@
+interface:
+  display_name: "OceanGame Project"
+  short_description: "Load OceanGame repo context"
+  default_prompt: "Use $oceangame-project to work in the OceanGame repository with the right docs, commands, and boundaries."

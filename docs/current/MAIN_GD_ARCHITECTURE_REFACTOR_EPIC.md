@@ -17,7 +17,7 @@ Reduce `scripts/main.gd` into smaller, well-named modules with stable responsibi
 
 ## Current Findings
 
-`scripts/main.gd` is currently about 4,788 lines. It is the vertical-slice scene script, but it has grown beyond scene composition into many mixed responsibilities:
+`scripts/main.gd` is currently about 4,804 lines. It is the vertical-slice scene script, but it has grown beyond scene composition into many mixed responsibilities:
 
 - Scene wiring and node references for nearly every authored route, pickup, marker, HUD panel, and debug staging node.
 - Expedition lifecycle orchestration: start, extract, fail, restart, prepare next run, resolve night, reset local save.
@@ -133,6 +133,30 @@ Only introduce these files when a child issue extracts a real responsibility and
 - Tests should target extracted pure logic where practical and keep scene-level checks for Godot node wiring.
 - Avoid circular dependencies. If a helper needs to call back into `main.gd`, the extraction is probably not ready.
 
+## Testing Requirement
+
+Every refactor issue must include a test plan.
+
+For each extracted presenter, service, controller, or helper:
+
+- Add unit tests for pure logic, formatting, state transitions, and decision rules.
+- Prefer tests against the extracted module instead of testing behavior indirectly through `main.gd`.
+- If the extracted code formats HUD text, route labels, survival summaries, scan feedback, upgrade text, cargo summaries, result summaries, debug output, or warning messages, add direct tests for representative inputs and expected outputs.
+- If the extracted code coordinates state changes, add tests for important state transitions.
+- If behavior already has coverage, move or adapt the existing tests so they target the new module.
+- If unit testing is not practical because the code is tightly bound to Godot scene nodes, document that in the issue and add the smallest useful smoke/regression test instead.
+- Do not accept "manual tested only" for logic that can reasonably be unit-tested.
+- Do not refactor behavior without either preserving existing coverage or adding new coverage.
+- Do not claim tests passed unless they actually ran.
+
+Every child issue must report the exact commands run and results:
+
+- Run the existing quick tier from the README or package scripts when runtime code changes: `powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier quick`.
+- Run any new unit tests added for the extraction.
+- Run Godot headless smoke tests if available through the quick tier.
+- Run `git diff --check`.
+- For documentation-only architecture issues, run `powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier docs`.
+
 ## Issue Plan
 
 ### Parent Epic
@@ -149,9 +173,9 @@ Out of scope: Direct refactor implementation in the epic issue itself.
 
 Files likely touched: `docs/current/MAIN_GD_ARCHITECTURE_REFACTOR_EPIC.md`, `AGENTS.md`, child issue files as implemented later.
 
-Acceptance criteria: Parent issue links to this document and child issues; child work remains independently reviewable.
+Acceptance criteria: Parent issue links to this document and child issues; every child issue includes a test plan; child work remains independently reviewable.
 
-Verification steps: Docs tier for the planning issue; quick tier for child issues that touch runtime code.
+Testing / verification: Docs tier for the planning issue; quick tier plus direct extracted-module tests for child issues that touch runtime code. Do not claim tests passed unless they actually ran.
 
 Risk level: Low for planning; medium across the full epic.
 

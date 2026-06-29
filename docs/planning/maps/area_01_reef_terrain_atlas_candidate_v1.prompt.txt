@@ -1,0 +1,7 @@
+Use case: stylized-concept
+Asset type: 2D game terrain sprite atlas for a side-view underwater exploration game
+Primary request: Create a reusable clean-HD reef terrain atlas that can skin side-view cave walls and shelves, matching the polished underwater screenshot style: dark blue-green layered stone, cyan rim highlights, hand-painted reef ledges, subtle kelp/coral/crystal accents.
+Style/medium: clean hand-painted HD 2D game asset style, not pixel art, crisp readable silhouettes, low texture noise, controlled underwater blue/cyan lighting.
+Composition/framing: one atlas sheet on a perfectly flat solid #FF00FF chroma-key background. Arrange six separated assets with generous magenta padding, no visible cell borders: 1) wide horizontal ledge top strip with irregular stone top and dark underside, 2) repeatable middle ledge strip, 3) right/left ledge end cap pair, 4) vertical wall side strip, 5) underside shadow strip with stalactite-like rock teeth, 6) compact coral/kelp/crystal decal cluster. Each asset should be isolated and not touching another asset.
+Materials/textures: layered basalt-like underwater reef rock, dark teal stone plates, cyan edge glow, subtle cracks, sparse sea growth, no UI.
+Constraints: solid #FF00FF background only, no gradients in background, no text, no labels, no arrows, no UI, no borders, no player, no creatures. Assets must be reusable modular terrain chunks that can fit together visually as ledges and cave walls. Keep silhouettes simple enough for collision to remain separate.

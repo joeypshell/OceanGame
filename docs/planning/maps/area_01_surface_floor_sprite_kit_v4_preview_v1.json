@@ -1,0 +1,566 @@
+{
+  "schema_version": 1,
+  "id": "area_01_surface_floor_sprite_kit_v3_preview_v1",
+  "status": "planning_preview_not_runtime_wired",
+  "geometry_source": "docs/planning/maps/area_01_runtime_source_map_v2.json",
+  "kit_manifest": "docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json",
+  "full_preview": "docs/planning/maps/area_01_surface_floor_sprite_kit_v4_preview_v1.png",
+  "camera_crop_preview": "docs/planning/maps/area_01_surface_floor_sprite_kit_v4_camera_crop_v1.png",
+  "clean_full_preview": "docs/planning/maps/area_01_surface_floor_sprite_kit_v4_clean_preview_v1.png",
+  "clean_camera_crop_preview": "docs/planning/maps/area_01_surface_floor_sprite_kit_v4_clean_camera_crop_v1.png",
+  "runtime_policy": {
+    "wire_status": "not wired",
+    "sprites_define_collision": false,
+    "collision_source": "area_01_runtime_source_map_v2.json promoted candidate geometry; current playable runtime still uses area_01_blockout_source_map_v1.json until explicit Godot builder promotion"
+  },
+  "render_policy": {
+    "terrain_fill": "reef_wall_fill_material clipped to each source-map terrain polygon",
+    "edge_trims": "kit ledge, vertical, diagonal, ceiling, thin ledge, and deep-floor sprites placed along polygon edges",
+    "hooks": "scene hooks drawn as translucent planning overlays, not sprite-kit terrain",
+    "objects": "ship, gates, vent, pickups, scans remain schematic because this pass only applies the structural terrain kit"
+  },
+  "full_summary": {
+    "terrain_count": 13,
+    "edge_sprite_instances": 258,
+    "placements": [
+      {
+        "terrain_id": "surface_shelf_west",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 14,
+          "vertical": 0,
+          "diagonal": 0
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "ship_shelf_left",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 10,
+          "vertical": 0,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "ship_shelf_right",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 14,
+          "vertical": 0,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "mid_seafloor_shelf",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 18,
+          "vertical": 4,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "east_seafloor_shelf",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 26,
+          "vertical": 4,
+          "diagonal": 0
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "starter_kelp_left_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 8,
+          "vertical": 2,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "starter_shell_divider",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 6,
+          "vertical": 0,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "shell_reef_inner_ledges",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 12,
+          "vertical": 0,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "thermal_vent_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 20,
+          "vertical": 0,
+          "diagonal": 6
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "blue_chimney_west_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 7,
+          "vertical": 10,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "blue_chimney_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 22,
+          "vertical": 0,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "pressure_wreck_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 8,
+          "vertical": 5,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "future_exit_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 16,
+          "vertical": 4,
+          "diagonal": 0
+        },
+        "preview_only": true
+      }
+    ]
+  },
+  "camera_crop_summary": {
+    "terrain_count": 13,
+    "edge_sprite_instances": 267,
+    "placements": [
+      {
+        "terrain_id": "surface_shelf_west",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 14,
+          "vertical": 2,
+          "diagonal": 0
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "ship_shelf_left",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 10,
+          "vertical": 0,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "ship_shelf_right",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 14,
+          "vertical": 0,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "mid_seafloor_shelf",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 18,
+          "vertical": 4,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "east_seafloor_shelf",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 26,
+          "vertical": 4,
+          "diagonal": 0
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "starter_kelp_left_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 8,
+          "vertical": 2,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "starter_shell_divider",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 6,
+          "vertical": 0,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "shell_reef_inner_ledges",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 12,
+          "vertical": 0,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "thermal_vent_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 20,
+          "vertical": 2,
+          "diagonal": 6
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "blue_chimney_west_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 7,
+          "vertical": 10,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "blue_chimney_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 22,
+          "vertical": 0,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "pressure_wreck_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 8,
+          "vertical": 7,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "future_exit_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 17,
+          "vertical": 6,
+          "diagonal": 0
+        },
+        "preview_only": true
+      }
+    ]
+  },
+  "clean_full_summary": {
+    "terrain_count": 13,
+    "edge_sprite_instances": 258,
+    "placements": [
+      {
+        "terrain_id": "surface_shelf_west",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 14,
+          "vertical": 0,
+          "diagonal": 0
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "ship_shelf_left",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 10,
+          "vertical": 0,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "ship_shelf_right",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 14,
+          "vertical": 0,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "mid_seafloor_shelf",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 18,
+          "vertical": 4,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "east_seafloor_shelf",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 26,
+          "vertical": 4,
+          "diagonal": 0
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "starter_kelp_left_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 8,
+          "vertical": 2,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "starter_shell_divider",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 6,
+          "vertical": 0,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "shell_reef_inner_ledges",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 12,
+          "vertical": 0,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "thermal_vent_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 20,
+          "vertical": 0,
+          "diagonal": 6
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "blue_chimney_west_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 7,
+          "vertical": 10,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "blue_chimney_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 22,
+          "vertical": 0,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "pressure_wreck_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 8,
+          "vertical": 5,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "future_exit_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 16,
+          "vertical": 4,
+          "diagonal": 0
+        },
+        "preview_only": true
+      }
+    ]
+  },
+  "clean_camera_crop_summary": {
+    "terrain_count": 13,
+    "edge_sprite_instances": 267,
+    "placements": [
+      {
+        "terrain_id": "surface_shelf_west",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 14,
+          "vertical": 2,
+          "diagonal": 0
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "ship_shelf_left",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 10,
+          "vertical": 0,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "ship_shelf_right",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 14,
+          "vertical": 0,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "mid_seafloor_shelf",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 18,
+          "vertical": 4,
+          "diagonal": 2
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "east_seafloor_shelf",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 26,
+          "vertical": 4,
+          "diagonal": 0
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "starter_kelp_left_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 8,
+          "vertical": 2,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "starter_shell_divider",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 6,
+          "vertical": 0,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "shell_reef_inner_ledges",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 12,
+          "vertical": 0,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "thermal_vent_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 20,
+          "vertical": 2,
+          "diagonal": 6
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "blue_chimney_west_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 7,
+          "vertical": 10,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "blue_chimney_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 22,
+          "vertical": 0,
+          "diagonal": 4
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "pressure_wreck_wall",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 8,
+          "vertical": 7,
+          "diagonal": 8
+        },
+        "preview_only": true
+      },
+      {
+        "terrain_id": "future_exit_floor",
+        "fill_asset": "reef_wall_fill_material",
+        "edge_counts": {
+          "horizontal": 17,
+          "vertical": 6,
+          "diagonal": 0
+        },
+        "preview_only": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,752 @@
+{
+  "schema_version": 1,
+  "id": "area_01_map_truth_comparison_v1",
+  "date": "2026-06-29",
+  "status": "comparison_only_not_runtime_wired",
+  "decision_context": {
+    "accepted_visual_geometry_direction": "docs/planning/maps/area_01_surface_floor_geometry_v1.json",
+    "accepted_visual_terrain_kit": "docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json",
+    "current_runtime_authority": "docs/planning/maps/area_01_blockout_source_map_v1.json",
+    "high_level_surface_reference": "docs/planning/maps/area_01_surface_floor_source_map_v1.json"
+  },
+  "pipeline_contract": {
+    "map_mode": "side_scroll_mode",
+    "visual_model": "parallax_layers plus source-map terrain chunks",
+    "runtime_object_model": "platform_objects plus interactive_scene_objects plus foreground_occluders plus scene_hooks",
+    "collision_model": "precise_shapes plus trigger_zones",
+    "rule": "Do not infer collision from generated art; solid terrain, collision, visible fills, and rim trims must derive from the same source-map polygons."
+  },
+  "source_counts": {
+    "runtime_blockout": {
+      "solid_terrain": 13,
+      "playable_water_lanes": 11,
+      "resource_pockets": 6,
+      "cave_mouth_affordances": 3
+    },
+    "accepted_surface_floor": {
+      "solid_terrain": 13,
+      "regions": 8,
+      "cave_mouths": 6,
+      "sprite_placements": 8,
+      "scene_hooks": 12
+    }
+  },
+  "source_extents": {
+    "runtime_blockout_solid_terrain": {
+      "min_x": -900,
+      "min_y": 430,
+      "max_x": 4480,
+      "max_y": 2220,
+      "width": 5380,
+      "height": 1790
+    },
+    "accepted_surface_floor_solid_terrain": {
+      "min_x": -900,
+      "min_y": 488,
+      "max_x": 4600,
+      "max_y": 2400,
+      "width": 5500,
+      "height": 1912
+    },
+    "runtime_blockout_playable_lanes": {
+      "min_x": -680,
+      "min_y": 260,
+      "max_x": 3780,
+      "max_y": 1580,
+      "width": 4460,
+      "height": 1320
+    },
+    "accepted_surface_floor_regions": {
+      "min_x": -900,
+      "min_y": 0,
+      "max_x": 4600,
+      "max_y": 2320,
+      "width": 5500,
+      "height": 2320
+    }
+  },
+  "runtime_blockout_terrain": [
+    {
+      "id": "left_solid_wall",
+      "role": "Primary left reef boundary.",
+      "vertices": 9,
+      "bounds": {
+        "min_x": -900,
+        "min_y": 430,
+        "max_x": 260,
+        "max_y": 640,
+        "width": 1160,
+        "height": 210
+      },
+      "area": 188400.0
+    },
+    {
+      "id": "right_solid_wall",
+      "role": "Primary right reef boundary.",
+      "vertices": 14,
+      "bounds": {
+        "min_x": 980,
+        "min_y": 430,
+        "max_x": 4480,
+        "max_y": 675,
+        "width": 3500,
+        "height": 245
+      },
+      "area": 653700.0
+    },
+    {
+      "id": "left_starter_ledge",
+      "role": "First left shelf terrain under the surface entry.",
+      "vertices": 8,
+      "bounds": {
+        "min_x": -900,
+        "min_y": 980,
+        "max_x": 340,
+        "max_y": 1300,
+        "width": 1240,
+        "height": 320
+      },
+      "area": 290400.0
+    },
+    {
+      "id": "right_starter_ledge",
+      "role": "First right shelf terrain under the surface entry.",
+      "vertices": 7,
+      "bounds": {
+        "min_x": 240,
+        "min_y": 1225,
+        "max_x": 1280,
+        "max_y": 1480,
+        "width": 1040,
+        "height": 255
+      },
+      "area": 183300.0
+    },
+    {
+      "id": "blockout_east_reef_mass",
+      "role": "Large right-side blockout mass that should frame a reachable lane, not hide a blocker.",
+      "vertices": 11,
+      "bounds": {
+        "min_x": 1100,
+        "min_y": 620,
+        "max_x": 2880,
+        "max_y": 830,
+        "width": 1780,
+        "height": 210
+      },
+      "area": 285550.0
+    },
+    {
+      "id": "blockout_lower_basin_floor",
+      "role": "Lower basin terrain boundary.",
+      "vertices": 10,
+      "bounds": {
+        "min_x": 1100,
+        "min_y": 1145,
+        "max_x": 2880,
+        "max_y": 1370,
+        "width": 1780,
+        "height": 225
+      },
+      "area": 296650.0
+    },
+    {
+      "id": "blockout_west_cave_shelf",
+      "role": "Left-side shelf framing a future cave pocket.",
+      "vertices": 6,
+      "bounds": {
+        "min_x": -900,
+        "min_y": 610,
+        "max_x": -600,
+        "max_y": 1020,
+        "width": 300,
+        "height": 410
+      },
+      "area": 110650.0
+    },
+    {
+      "id": "blockout_left_chamber_ceiling",
+      "role": "Top boundary for the left chamber lane.",
+      "vertices": 6,
+      "bounds": {
+        "min_x": 120,
+        "min_y": 620,
+        "max_x": 460,
+        "max_y": 980,
+        "width": 340,
+        "height": 360
+      },
+      "area": 79900.0
+    },
+    {
+      "id": "blockout_right_chamber_shelf",
+      "role": "Right chamber shelf and upper lane boundary.",
+      "vertices": 7,
+      "bounds": {
+        "min_x": 3900,
+        "min_y": 700,
+        "max_x": 4480,
+        "max_y": 1430,
+        "width": 580,
+        "height": 730
+      },
+      "area": 320600.0
+    },
+    {
+      "id": "blockout_far_west_shelf",
+      "role": "Far-west terrain boundary that frames a second leftward chamber.",
+      "vertices": 7,
+      "bounds": {
+        "min_x": -900,
+        "min_y": 1220,
+        "max_x": 120,
+        "max_y": 1560,
+        "width": 1020,
+        "height": 340
+      },
+      "area": 289300.0
+    },
+    {
+      "id": "blockout_mid_crossing_ceiling",
+      "role": "Mid-map ceiling mass that frames an open crossing toward the far-right chamber.",
+      "vertices": 6,
+      "bounds": {
+        "min_x": 300,
+        "min_y": 1320,
+        "max_x": 1020,
+        "max_y": 1660,
+        "width": 720,
+        "height": 340
+      },
+      "area": 163250.0
+    },
+    {
+      "id": "blockout_deep_spine_floor",
+      "role": "Deep spine floor mass that frames the downward continuation.",
+      "vertices": 8,
+      "bounds": {
+        "min_x": 900,
+        "min_y": 1490,
+        "max_x": 3000,
+        "max_y": 2220,
+        "width": 2100,
+        "height": 730
+      },
+      "area": 1340200.0
+    },
+    {
+      "id": "blockout_far_right_pocket_wall",
+      "role": "Far-right wall mass that gives the right chamber a readable boundary.",
+      "vertices": 6,
+      "bounds": {
+        "min_x": 2880,
+        "min_y": 1160,
+        "max_x": 4300,
+        "max_y": 1540,
+        "width": 1420,
+        "height": 380
+      },
+      "area": 296800.0
+    }
+  ],
+  "accepted_surface_floor_terrain": [
+    {
+      "id": "surface_shelf_west",
+      "role": "Left continuous seafloor segment framing starter and shell routes.",
+      "vertices": 10,
+      "bounds": {
+        "min_x": -900,
+        "min_y": 488,
+        "max_x": -250,
+        "max_y": 716,
+        "width": 650,
+        "height": 228
+      },
+      "area": 124335.0
+    },
+    {
+      "id": "ship_shelf_left",
+      "role": "Seafloor lip left of the ship moonpool and starter hole.",
+      "vertices": 11,
+      "bounds": {
+        "min_x": -255,
+        "min_y": 494,
+        "max_x": 360,
+        "max_y": 718,
+        "width": 615,
+        "height": 224
+      },
+      "area": 110620.0
+    },
+    {
+      "id": "ship_shelf_right",
+      "role": "Seafloor lip right of the starter hole leading toward Shell Reef.",
+      "vertices": 11,
+      "bounds": {
+        "min_x": 760,
+        "min_y": 495,
+        "max_x": 1585,
+        "max_y": 765,
+        "width": 825,
+        "height": 270
+      },
+      "area": 174725.0
+    },
+    {
+      "id": "mid_seafloor_shelf",
+      "role": "Central seafloor segment between Shell Reef and pressure routes.",
+      "vertices": 13,
+      "bounds": {
+        "min_x": 1750,
+        "min_y": 492,
+        "max_x": 2845,
+        "max_y": 828,
+        "width": 1095,
+        "height": 336
+      },
+      "area": 288532.5
+    },
+    {
+      "id": "east_seafloor_shelf",
+      "role": "Right seafloor segment above pressure wreck branch.",
+      "vertices": 15,
+      "bounds": {
+        "min_x": 3040,
+        "min_y": 492,
+        "max_x": 4600,
+        "max_y": 842,
+        "width": 1560,
+        "height": 350
+      },
+      "area": 431905.0
+    },
+    {
+      "id": "starter_kelp_left_wall",
+      "role": "Left wall/floor of starter kelp hole.",
+      "vertices": 11,
+      "bounds": {
+        "min_x": -625,
+        "min_y": 676,
+        "max_x": 120,
+        "max_y": 1100,
+        "width": 745,
+        "height": 424
+      },
+      "area": 227632.5
+    },
+    {
+      "id": "starter_shell_divider",
+      "role": "Terrain divider between starter hole and Shell Reef bank cave.",
+      "vertices": 9,
+      "bounds": {
+        "min_x": 650,
+        "min_y": 650,
+        "max_x": 1205,
+        "max_y": 1130,
+        "width": 555,
+        "height": 480
+      },
+      "area": 196190.0
+    },
+    {
+      "id": "shell_reef_inner_ledges",
+      "role": "Small navigational shelves inside Shell Reef bank cave.",
+      "vertices": 8,
+      "bounds": {
+        "min_x": 780,
+        "min_y": 1005,
+        "max_x": 1510,
+        "max_y": 1190,
+        "width": 730,
+        "height": 185
+      },
+      "area": 100340.0
+    },
+    {
+      "id": "thermal_vent_floor",
+      "role": "Floor mass around thermal vent pocket.",
+      "vertices": 14,
+      "bounds": {
+        "min_x": 1180,
+        "min_y": 1355,
+        "max_x": 2770,
+        "max_y": 1725,
+        "width": 1590,
+        "height": 370
+      },
+      "area": 456590.0
+    },
+    {
+      "id": "blue_chimney_west_wall",
+      "role": "West wall framing deeper Blue Chimney descent.",
+      "vertices": 10,
+      "bounds": {
+        "min_x": 470,
+        "min_y": 1215,
+        "max_x": 1120,
+        "max_y": 2200,
+        "width": 650,
+        "height": 985
+      },
+      "area": 518125.0
+    },
+    {
+      "id": "blue_chimney_floor",
+      "role": "Lower Blue Chimney floor and future exit approach.",
+      "vertices": 10,
+      "bounds": {
+        "min_x": 860,
+        "min_y": 2115,
+        "max_x": 3110,
+        "max_y": 2400,
+        "width": 2250,
+        "height": 285
+      },
+      "area": 498525.0
+    },
+    {
+      "id": "pressure_wreck_wall",
+      "role": "Right branch wall enclosing the pressure wreck pocket.",
+      "vertices": 11,
+      "bounds": {
+        "min_x": 3860,
+        "min_y": 760,
+        "max_x": 4600,
+        "max_y": 1500,
+        "width": 740,
+        "height": 740
+      },
+      "area": 408500.0
+    },
+    {
+      "id": "future_exit_floor",
+      "role": "Lower-right future route floor around locked exit.",
+      "vertices": 8,
+      "bounds": {
+        "min_x": 2865,
+        "min_y": 2015,
+        "max_x": 4540,
+        "max_y": 2400,
+        "width": 1675,
+        "height": 385
+      },
+      "area": 605100.0
+    }
+  ],
+  "runtime_blockout_lanes": [
+    {
+      "id": "surface_entry_lane",
+      "role": "Boat/moonpool entry and extraction approach.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 420,
+        "min_y": 260,
+        "max_x": 860,
+        "max_y": 440,
+        "width": 440,
+        "height": 180
+      },
+      "area": 66600.0
+    },
+    {
+      "id": "central_drop_lane",
+      "role": "Primary vertical descent spine from surface toward the first deeper decision space.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 360,
+        "min_y": 360,
+        "max_x": 1100,
+        "max_y": 1320,
+        "width": 740,
+        "height": 960
+      },
+      "area": 633600.0
+    },
+    {
+      "id": "left_shallow_shelf_lane",
+      "role": "Early left-side resource teaching route.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 220,
+        "min_y": 610,
+        "max_x": 650,
+        "max_y": 900,
+        "width": 430,
+        "height": 290
+      },
+      "area": 87350.0
+    },
+    {
+      "id": "left_chamber_lane",
+      "role": "Wider left-side chamber that should feel like explorable map, not a tiny pocket.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 360,
+        "min_y": 830,
+        "max_x": 960,
+        "max_y": 1080,
+        "width": 600,
+        "height": 250
+      },
+      "area": 107000.0
+    },
+    {
+      "id": "right_shelf_lane",
+      "role": "Early right-side shelf route with room to approach resource pockets.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 860,
+        "min_y": 690,
+        "max_x": 1240,
+        "max_y": 940,
+        "width": 380,
+        "height": 250
+      },
+      "area": 67300.0
+    },
+    {
+      "id": "right_chamber_lane",
+      "role": "Right-side chamber route for starter material spread and future cave-mouth affordances.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 2860,
+        "min_y": 760,
+        "max_x": 3300,
+        "max_y": 930,
+        "width": 440,
+        "height": 170
+      },
+      "area": 65300.0
+    },
+    {
+      "id": "lower_basin_lane",
+      "role": "Lower central basin that hints at deeper route progression without becoming exact-route guidance.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 860,
+        "min_y": 1120,
+        "max_x": 1680,
+        "max_y": 1340,
+        "width": 820,
+        "height": 220
+      },
+      "area": 178200.0
+    },
+    {
+      "id": "far_west_chamber_lane",
+      "role": "Leftward exploration chamber that makes Area 01 feel wider than one starter pocket.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": -680,
+        "min_y": 640,
+        "max_x": 260,
+        "max_y": 1080,
+        "width": 940,
+        "height": 440
+      },
+      "area": 349400.0
+    },
+    {
+      "id": "mid_crossing_lane",
+      "role": "Open-water crossing between starter shelves and the farther right chamber.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 1180,
+        "min_y": 760,
+        "max_x": 2460,
+        "max_y": 1080,
+        "width": 1280,
+        "height": 320
+      },
+      "area": 375000.0
+    },
+    {
+      "id": "far_right_chamber_lane",
+      "role": "Far-right chamber approach that should be reachable at normal camera scale.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 2860,
+        "min_y": 720,
+        "max_x": 3780,
+        "max_y": 1080,
+        "width": 920,
+        "height": 360
+      },
+      "area": 285600.0
+    },
+    {
+      "id": "deep_spine_lane",
+      "role": "Deeper continuation spine that gives Area 01 a visible downward next-run hypothesis.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 1180,
+        "min_y": 1240,
+        "max_x": 2420,
+        "max_y": 1580,
+        "width": 1240,
+        "height": 340
+      },
+      "area": 375400.0
+    }
+  ],
+  "accepted_surface_floor_regions": [
+    {
+      "id": "open_surface_water",
+      "role": "Free horizontal surface band for oxygen recovery and choosing the next dive hole.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": -900,
+        "min_y": 0,
+        "max_x": 4600,
+        "max_y": 520,
+        "width": 5500,
+        "height": 520
+      },
+      "area": 2860000.0
+    },
+    {
+      "id": "surface_seafloor",
+      "role": "Readable terrain horizon below open ocean; cave mouths cut through it.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": -900,
+        "min_y": 500,
+        "max_x": 4600,
+        "max_y": 900,
+        "width": 5500,
+        "height": 400
+      },
+      "area": 2200000.0
+    },
+    {
+      "id": "starter_kelp_cave",
+      "role": "Small safe cave under the ship-side seafloor for first resources and fast turnaround.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 80,
+        "min_y": 620,
+        "max_x": 720,
+        "max_y": 1040,
+        "width": 640,
+        "height": 420
+      },
+      "area": 229400.0
+    },
+    {
+      "id": "shell_reef_bank_cave",
+      "role": "First wider resource/banking route that teaches cargo return pressure.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 520,
+        "min_y": 780,
+        "max_x": 2000,
+        "max_y": 1260,
+        "width": 1480,
+        "height": 480
+      },
+      "area": 538800.0
+    },
+    {
+      "id": "thermal_vent_pocket",
+      "role": "Central medium-depth hazard/reward pocket.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 1380,
+        "min_y": 1120,
+        "max_x": 2520,
+        "max_y": 1580,
+        "width": 1140,
+        "height": 460
+      },
+      "area": 483700.0
+    },
+    {
+      "id": "blue_chimney_route",
+      "role": "Deeper vertical route with return-current support and higher-value materials.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 960,
+        "min_y": 1420,
+        "max_x": 3000,
+        "max_y": 2200,
+        "width": 2040,
+        "height": 780
+      },
+      "area": 1399800.0
+    },
+    {
+      "id": "pressure_wreck_branch",
+      "role": "Right-side medium branch with wreck promise and pressure gate.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 3040,
+        "min_y": 760,
+        "max_x": 4400,
+        "max_y": 1360,
+        "width": 1360,
+        "height": 600
+      },
+      "area": 742800.0
+    },
+    {
+      "id": "future_deep_exit",
+      "role": "Deepest locked exit that hints at later route expansion.",
+      "vertices": 4,
+      "bounds": {
+        "min_x": 2920,
+        "min_y": 1700,
+        "max_x": 4540,
+        "max_y": 2320,
+        "width": 1620,
+        "height": 620
+      },
+      "area": 1004400.0
+    }
+  ],
+  "semantic_comparison": [
+    {
+      "topic": "surface oxygen",
+      "runtime_blockout": "Models a boat/moonpool surface-entry lane and central descent spine.",
+      "accepted_surface_floor": "Models an open horizontal surface-water band across the full stage plus a separate oxygen refill hook.",
+      "reconciliation": "The promoted map should use the accepted open-surface rule, while preserving ship/moonpool banking as a separate offload hook."
+    },
+    {
+      "topic": "terrain topology",
+      "runtime_blockout": "Uses rescue-pass wall masses and water lanes to make current collision readable.",
+      "accepted_surface_floor": "Uses continuous seafloor shelf segments with cave holes and named cave systems below.",
+      "reconciliation": "Use accepted surface-floor terrain as the base for runtime v2; retire direct blockout wall topology after migration."
+    },
+    {
+      "topic": "interaction model",
+      "runtime_blockout": "Uses resource pockets, cave-mouth affordances, and validation rules.",
+      "accepted_surface_floor": "Uses explicit scene_hooks for oxygen, offload, cave entrances, hazards, gates, pickups, scans, and return currents.",
+      "reconciliation": "Promoted runtime source should use explicit scene_hooks and preserve relevant blockout defect-prevention validation rules."
+    },
+    {
+      "topic": "runtime wiring",
+      "runtime_blockout": "Contains existing visible_path, collision_path, and lip_path fields for current runtime builder nodes.",
+      "accepted_surface_floor": "Contains visual/collision/rim strategies but no current scene node paths because it is not runtime-wired.",
+      "reconciliation": "The next implementation pass needs a builder or conversion layer that creates visible terrain, collision, rim trims, and Area2D hooks from accepted geometry."
+    }
+  ],
+  "recommended_next_artifact": {
+    "path": "docs/planning/maps/area_01_runtime_source_map_v2.json",
+    "purpose": "Single promoted source of truth that merges accepted surface-floor geometry with runtime-ready builder metadata and validation rules.",
+    "should_include": [
+      "solid_terrain polygons copied from accepted surface-floor geometry",
+      "scene_hooks copied from accepted surface-floor geometry",
+      "runtime builder naming or node-generation templates",
+      "validation rules inherited from both current blockout and accepted geometry",
+      "terrain kit manifest pointer",
+      "explicit statement that sprites do not define collision"
+    ]
+  },
+  "must_not_do": [
+    "Do not wire the v3 preview PNG as a baked runtime map.",
+    "Do not keep runtime collision on the old blockout while showing the accepted surface-floor terrain art.",
+    "Do not hand-place visual walls that are not generated from the promoted source polygons.",
+    "Do not infer cave-mouth blockers or routes from sprite pixels."
+  ],
+  "source_reference_topology_rule": "The full water surface must remain open horizontally. The first major solid boundary is the seafloor shelf below the surface. Exploration complexity lives beneath that shelf through authored holes, caves, pockets, gates, and return currents.",
+  "terrain_kit_status": "review_asset_not_runtime_wired"
+}

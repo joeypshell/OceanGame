@@ -1,0 +1,4 @@
+interface:
+  display_name: "OceanGame Release"
+  short_description: "Verify release readiness"
+  default_prompt: "Use $oceangame-release to prepare or verify an OceanGame release, demo, web export, or publishable checkpoint."

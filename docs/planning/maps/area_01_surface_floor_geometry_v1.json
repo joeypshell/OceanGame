@@ -1,0 +1,493 @@
+{
+  "schema_version": 1,
+  "map_id": "area_01_surface_floor_geometry_v1",
+  "purpose": "Candidate Godot-coordinate source geometry for an Area 01 side-view map pipeline: open surface water over a continuous seafloor with cave holes, explicit terrain polygons, sprite/object placements, collision roles, and scene hooks. This is not wired into the playable Main scene yet.",
+  "runtime_authority": false,
+  "geometry_revision": {
+    "id": "organic_source_geometry_pass_2026_06_29",
+    "reason": "The prior candidate proved the sprite pipeline but kept too many rectangular shelf-box silhouettes. This pass keeps the same topology and cave-mouth ownership while revising solid terrain into larger irregular reef polygons before any runtime wiring.",
+    "repeatable_steps": [
+      "Start from the authoritative source map and identify solid masses, playable water lanes, cave mouths, and hooks.",
+      "Author foreground solid masses as explicit polygons in Godot-like coordinates; do not infer them from pixels.",
+      "Keep cave-mouth centers open and represent locks or hazards as separate scene hooks.",
+      "Render a planning preview by clipping terrain fill and edge trims to these polygons.",
+      "Only after review, generate Godot Polygon2D, StaticBody2D/CollisionPolygon2D, Sprite2D trims, and Area2D hooks from the same geometry data."
+    ],
+    "runtime_policy": "planning-only; area_01_blockout_source_map_v1.json remains the current runtime collision authority until explicit promotion"
+  },
+  "coordinate_space": {
+    "units": "Godot 2D scene pixels",
+    "origin": "Area 01 planning world coordinates; y increases downward; surface water starts near y=0.",
+    "stage_canvas": [5200, 2600],
+    "camera_viewport": [1280, 720],
+    "conversion": "Hand-authored from docs/planning/maps/area_01_surface_floor_source_map_v1.png topology into Godot-like world coordinates. Do not infer collision from source PNG pixels.",
+    "runtime_authority": "planning-only candidate; docs/planning/maps/area_01_blockout_source_map_v1.json remains current runtime collision authority until this file is promoted."
+  },
+  "pipeline": {
+    "map_mode": "side_scroll_mode",
+    "visual_model": "parallax_layers plus source-map terrain chunks",
+    "runtime_object_model": "platform_objects plus interactive_scene_objects plus foreground_occluders plus scene_hooks",
+    "collision_model": "precise_shapes plus trigger_zones",
+    "engine_target": "project-native Godot",
+    "representation": {
+      "terrain_fill": "Polygon2D",
+      "solid_collision": "StaticBody2D with CollisionPolygon2D child using the same source polygon",
+      "terrain_trims": "Sprite2D placements for rim strips, cave-mouth frames, props, gates, resources, and decor",
+      "triggers": "Area2D with explicit polygon points"
+    }
+  },
+  "topology": {
+    "open_surface_rule": "The full top of the level remains open water for oxygen recovery.",
+    "banking_rule": "Ship/moonpool offload is a separate hook from oxygen surface refill.",
+    "seafloor_rule": "A continuous seafloor shelf sits under open water, with visible cave mouths cut through it.",
+    "route_rule": "Route complexity lives below the seafloor through named cave regions with depth, hazard, gate, resource, and return-current support."
+  },
+  "regions": [
+    {
+      "id": "open_surface_water",
+      "display_name": "Open Surface Water",
+      "role": "Free horizontal surface band for oxygen recovery and choosing the next dive hole.",
+      "kind": "open_surface",
+      "approx_polygon": [[-900, 0], [4600, 0], [4600, 520], [-900, 520]],
+      "connects_to": ["starter_kelp_cave", "shell_reef_bank_cave", "thermal_vent_pocket", "blue_chimney_route", "pressure_wreck_branch"],
+      "status": "planned"
+    },
+    {
+      "id": "surface_seafloor",
+      "display_name": "Area 01 Seafloor Shelf",
+      "role": "Readable terrain horizon below open ocean; cave mouths cut through it.",
+      "kind": "seafloor",
+      "approx_polygon": [[-900, 500], [4600, 500], [4600, 900], [-900, 900]],
+      "connects_to": ["open_surface_water"],
+      "status": "planned"
+    },
+    {
+      "id": "starter_kelp_cave",
+      "display_name": "Starter Kelp Hole",
+      "role": "Small safe cave under the ship-side seafloor for first resources and fast turnaround.",
+      "kind": "cave",
+      "approx_polygon": [[80, 620], [620, 620], [720, 1000], [120, 1040]],
+      "connects_to": ["open_surface_water", "shell_reef_bank_cave"],
+      "status": "planned"
+    },
+    {
+      "id": "shell_reef_bank_cave",
+      "display_name": "Shell Reef Bank Cave",
+      "role": "First wider resource/banking route that teaches cargo return pressure.",
+      "kind": "cave",
+      "approx_polygon": [[520, 840], [1780, 780], [2000, 1180], [700, 1260]],
+      "connects_to": ["starter_kelp_cave", "thermal_vent_pocket", "blue_chimney_route"],
+      "status": "planned"
+    },
+    {
+      "id": "thermal_vent_pocket",
+      "display_name": "Thermal Vent Pocket",
+      "role": "Central medium-depth hazard/reward pocket.",
+      "kind": "pocket",
+      "approx_polygon": [[1450, 1120], [2460, 1120], [2520, 1560], [1380, 1580]],
+      "connects_to": ["shell_reef_bank_cave", "blue_chimney_route"],
+      "status": "planned"
+    },
+    {
+      "id": "blue_chimney_route",
+      "display_name": "Blue Chimney Route",
+      "role": "Deeper vertical route with return-current support and higher-value materials.",
+      "kind": "cave",
+      "approx_polygon": [[980, 1420], [2660, 1420], [3000, 2140], [960, 2200]],
+      "connects_to": ["shell_reef_bank_cave", "thermal_vent_pocket", "future_deep_exit"],
+      "status": "planned"
+    },
+    {
+      "id": "pressure_wreck_branch",
+      "display_name": "Pressure Wreck Branch",
+      "role": "Right-side medium branch with wreck promise and pressure gate.",
+      "kind": "pocket",
+      "approx_polygon": [[3100, 760], [4300, 760], [4400, 1320], [3040, 1360]],
+      "connects_to": ["open_surface_water", "future_deep_exit"],
+      "status": "planned"
+    },
+    {
+      "id": "future_deep_exit",
+      "display_name": "Future Deep Exit",
+      "role": "Deepest locked exit that hints at later route expansion.",
+      "kind": "locked_promise",
+      "approx_polygon": [[2920, 1700], [4540, 1700], [4540, 2320], [2920, 2320]],
+      "connects_to": ["blue_chimney_route", "pressure_wreck_branch"],
+      "status": "future_locked"
+    }
+  ],
+  "solid_terrain": [
+    {
+      "id": "surface_shelf_west",
+      "role": "Left continuous seafloor segment framing starter and shell routes.",
+      "polygon": [[-900, 510], [-760, 488], [-600, 515], [-440, 498], [-250, 510], [-255, 650], [-360, 684], [-520, 716], [-720, 705], [-900, 675]],
+      "visual_strategy": "Polygon2D reef fill plus top rim strip and sparse kelp/coral Sprite2D placements",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Sprite2D/Polygon2D cyan lip along upper playable edge",
+      "blocks_player": true
+    },
+    {
+      "id": "ship_shelf_left",
+      "role": "Seafloor lip left of the ship moonpool and starter hole.",
+      "polygon": [[-250, 510], [-95, 494], [85, 518], [210, 498], [360, 516], [350, 636], [245, 672], [105, 718], [-70, 700], [-225, 676], [-255, 620]],
+      "visual_strategy": "Polygon2D reef fill plus moonpool-adjacent rim",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Readable edge band around moonpool approach",
+      "blocks_player": true
+    },
+    {
+      "id": "ship_shelf_right",
+      "role": "Seafloor lip right of the starter hole leading toward Shell Reef.",
+      "polygon": [[760, 515], [930, 496], [1130, 514], [1320, 495], [1550, 520], [1585, 660], [1485, 714], [1320, 744], [1130, 765], [930, 718], [780, 650]],
+      "visual_strategy": "Polygon2D reef fill plus top rim strip",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Cyan lip on playable top and cave-entry underside",
+      "blocks_player": true
+    },
+    {
+      "id": "mid_seafloor_shelf",
+      "role": "Central seafloor segment between Shell Reef and pressure routes.",
+      "polygon": [[1750, 518], [1950, 492], [2180, 515], [2410, 496], [2620, 520], [2800, 505], [2845, 720], [2730, 770], [2550, 805], [2350, 828], [2150, 790], [1950, 760], [1780, 682]],
+      "visual_strategy": "Polygon2D reef fill plus sparse crystals and rim strips",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Thin cyan lip on top/underside playable edges",
+      "blocks_player": true
+    },
+    {
+      "id": "east_seafloor_shelf",
+      "role": "Right seafloor segment above pressure wreck branch.",
+      "polygon": [[3040, 512], [3290, 492], [3560, 517], [3820, 500], [4110, 520], [4380, 498], [4600, 510], [4600, 820], [4410, 842], [4210, 812], [3970, 770], [3720, 748], [3460, 792], [3220, 762], [3040, 710]],
+      "visual_strategy": "Polygon2D reef fill plus top rim and right-branch mouth frame",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Rim trims around the pressure wreck hole",
+      "blocks_player": true
+    },
+    {
+      "id": "starter_kelp_left_wall",
+      "role": "Left wall/floor of starter kelp hole.",
+      "polygon": [[-240, 676], [-80, 715], [70, 740], [120, 1000], [-60, 1068], [-260, 1100], [-430, 1030], [-545, 900], [-625, 730], [-520, 705], [-380, 690]],
+      "visual_strategy": "Polygon2D cave wall fill with kelp decor Sprite2D placements",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Cave-mouth trim where it borders playable water",
+      "blocks_player": true
+    },
+    {
+      "id": "starter_shell_divider",
+      "role": "Terrain divider between starter hole and Shell Reef bank cave.",
+      "polygon": [[780, 650], [920, 705], [1120, 742], [1205, 935], [1180, 1080], [980, 1130], [760, 1110], [650, 960], [675, 820]],
+      "visual_strategy": "Polygon2D cave wall fill with strong entry rim",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Rim strips along starter and Shell Reef openings",
+      "blocks_player": true
+    },
+    {
+      "id": "shell_reef_inner_ledges",
+      "role": "Small navigational shelves inside Shell Reef bank cave.",
+      "polygon": [[780, 1040], [970, 1012], [1190, 1026], [1425, 1005], [1510, 1124], [1350, 1168], [1100, 1190], [875, 1170]],
+      "visual_strategy": "Narrow ledge strip with edge trim; collision matches polygon",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Top lip strip; no hidden blocker past visual edge",
+      "blocks_player": true
+    },
+    {
+      "id": "thermal_vent_floor",
+      "role": "Floor mass around thermal vent pocket.",
+      "polygon": [[1180, 1430], [1390, 1370], [1650, 1358], [1885, 1398], [2150, 1380], [2420, 1355], [2610, 1420], [2770, 1610], [2580, 1690], [2300, 1725], [1980, 1688], [1690, 1705], [1390, 1648], [1180, 1588]],
+      "visual_strategy": "Warm vent floor reef fill, vent props remain separate Sprite2D placements",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Warm/cyan lip around pocket floor",
+      "blocks_player": true
+    },
+    {
+      "id": "blue_chimney_west_wall",
+      "role": "West wall framing deeper Blue Chimney descent.",
+      "polygon": [[720, 1215], [950, 1260], [1120, 1280], [1095, 1530], [1040, 1780], [1060, 2195], [520, 2200], [500, 1900], [470, 1640], [560, 1420]],
+      "visual_strategy": "Tall cave wall fill with vertical rim strips",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Vertical cave rim toward playable descent",
+      "blocks_player": true
+    },
+    {
+      "id": "blue_chimney_floor",
+      "role": "Lower Blue Chimney floor and future exit approach.",
+      "polygon": [[1040, 2200], [1320, 2160], [1640, 2185], [1970, 2140], [2300, 2165], [2650, 2115], [3000, 2140], [3110, 2380], [860, 2400], [900, 2280]],
+      "visual_strategy": "Deep floor fill with darker underside and mineral Sprite2D placements",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Low deep-water floor lip",
+      "blocks_player": true
+    },
+    {
+      "id": "pressure_wreck_wall",
+      "role": "Right branch wall enclosing the pressure wreck pocket.",
+      "polygon": [[3860, 760], [4100, 790], [4360, 775], [4600, 825], [4600, 1500], [4380, 1488], [4200, 1410], [3940, 1320], [3990, 1150], [3930, 1000], [4040, 840]],
+      "visual_strategy": "Cave wall fill with wreck chunks and pressure gate as separate Sprite2D placements",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Cave mouth and locked-route rim trims",
+      "blocks_player": true
+    },
+    {
+      "id": "future_exit_floor",
+      "role": "Lower-right future route floor around locked exit.",
+      "polygon": [[2920, 2070], [3260, 2025], [3620, 2050], [4010, 2015], [4540, 2035], [4540, 2400], [2880, 2400], [2865, 2220]],
+      "visual_strategy": "Quiet locked-route floor fill; locked gate stays separate",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Subdued future-locked edge treatment",
+      "blocks_player": true
+    }
+  ],
+  "cave_mouths": [
+    {
+      "id": "starter_kelp_hole",
+      "from_region": "open_surface_water",
+      "to_region": "starter_kelp_cave",
+      "entrance_polygon": [[360, 500], [760, 500], [760, 700], [360, 700]],
+      "readability_role": "Visible first opening under the ship-side seafloor.",
+      "collision_rule": "No blocking collision across the center of this entrance.",
+      "scene_hook": "starter_kelp_hole_trigger"
+    },
+    {
+      "id": "shell_reef_bank_hole",
+      "from_region": "open_surface_water",
+      "to_region": "shell_reef_bank_cave",
+      "entrance_polygon": [[1550, 500], [1750, 500], [1760, 720], [1600, 720]],
+      "readability_role": "Second hole into the wider Shell Reef banking route.",
+      "collision_rule": "No blocking collision across the entrance center.",
+      "scene_hook": "shell_reef_bank_hole_trigger"
+    },
+    {
+      "id": "thermal_vent_drop",
+      "from_region": "shell_reef_bank_cave",
+      "to_region": "thermal_vent_pocket",
+      "entrance_polygon": [[1680, 1180], [2180, 1180], [2180, 1420], [1680, 1420]],
+      "readability_role": "Central drop into the vent pocket.",
+      "collision_rule": "Collision frames the drop; center remains navigable.",
+      "scene_hook": "thermal_vent_drop_trigger"
+    },
+    {
+      "id": "blue_chimney_hole",
+      "from_region": "shell_reef_bank_cave",
+      "to_region": "blue_chimney_route",
+      "entrance_polygon": [[1020, 1240], [1320, 1240], [1320, 1480], [1020, 1480]],
+      "readability_role": "Deeper vertical route from Shell Reef toward Blue Chimney.",
+      "collision_rule": "No hidden wall across descent center.",
+      "scene_hook": "blue_chimney_hole_trigger"
+    },
+    {
+      "id": "pressure_wreck_hole",
+      "from_region": "open_surface_water",
+      "to_region": "pressure_wreck_branch",
+      "entrance_polygon": [[2800, 500], [3040, 500], [3040, 760], [2800, 760]],
+      "readability_role": "Right-side opening toward pressure wreck branch.",
+      "collision_rule": "Gate collision belongs to the pressure gate hook, not the terrain hole.",
+      "scene_hook": "pressure_wreck_hole_trigger"
+    },
+    {
+      "id": "future_deep_exit_hole",
+      "from_region": "blue_chimney_route",
+      "to_region": "future_deep_exit",
+      "entrance_polygon": [[2660, 1740], [2920, 1740], [2920, 2060], [2660, 2060]],
+      "readability_role": "Deep future route promise.",
+      "collision_rule": "Future lock is explicit gate hook, not inferred terrain collision.",
+      "scene_hook": "future_deep_exit_trigger"
+    }
+  ],
+  "sprite_placements": [
+    {
+      "id": "surface_ship_moonpool",
+      "asset_family": "base_ship_moonpool",
+      "position": [560, 260],
+      "rotation_degrees": 0,
+      "scale": [1, 1],
+      "z_index": 5,
+      "collision_role": "decorative"
+    },
+    {
+      "id": "starter_kelp_decor",
+      "asset_family": "kelp_coral_cluster",
+      "position": [310, 820],
+      "rotation_degrees": 0,
+      "scale": [1, 1],
+      "z_index": 3,
+      "collision_role": "none"
+    },
+    {
+      "id": "shell_reef_decor",
+      "asset_family": "shell_reef_cluster",
+      "position": [1120, 1030],
+      "rotation_degrees": 0,
+      "scale": [1, 1],
+      "z_index": 3,
+      "collision_role": "none"
+    },
+    {
+      "id": "thermal_vent_stack",
+      "asset_family": "thermal_vent_piece",
+      "position": [1900, 1340],
+      "rotation_degrees": 0,
+      "scale": [1, 1],
+      "z_index": 4,
+      "collision_role": "none"
+    },
+    {
+      "id": "blue_chimney_crystals",
+      "asset_family": "blue_crystal_cluster",
+      "position": [1660, 2100],
+      "rotation_degrees": 0,
+      "scale": [1, 1],
+      "z_index": 4,
+      "collision_role": "none"
+    },
+    {
+      "id": "pressure_wreck_chunk",
+      "asset_family": "wreck_chunk",
+      "position": [3920, 1060],
+      "rotation_degrees": -12,
+      "scale": [1, 1],
+      "z_index": 4,
+      "collision_role": "none"
+    },
+    {
+      "id": "pressure_gate_sprite",
+      "asset_family": "pressure_gate",
+      "position": [3200, 860],
+      "rotation_degrees": 0,
+      "scale": [1, 1],
+      "z_index": 6,
+      "collision_role": "decorative"
+    },
+    {
+      "id": "future_locked_gate_sprite",
+      "asset_family": "future_locked_gate",
+      "position": [4260, 2160],
+      "rotation_degrees": 0,
+      "scale": [1, 1],
+      "z_index": 6,
+      "collision_role": "decorative"
+    }
+  ],
+  "scene_hooks": [
+    {
+      "id": "surface_oxygen_refill_zone",
+      "type": "oxygen",
+      "region_id": "open_surface_water",
+      "shape": "polygon",
+      "points": [[-900, 0], [4600, 0], [4600, 220], [-900, 220]],
+      "owner": "future oxygen/surface system",
+      "status": "planned"
+    },
+    {
+      "id": "ship_offload_zone",
+      "type": "offload",
+      "region_id": "open_surface_water",
+      "shape": "polygon",
+      "points": [[380, 140], [760, 140], [760, 460], [380, 460]],
+      "owner": "future ship/moonpool offload Area2D",
+      "status": "planned"
+    },
+    {
+      "id": "starter_kelp_hole_trigger",
+      "type": "cave_entrance",
+      "region_id": "starter_kelp_cave",
+      "shape": "polygon",
+      "points": [[360, 500], [760, 500], [760, 700], [360, 700]],
+      "owner": "future cave entrance metadata",
+      "status": "planned"
+    },
+    {
+      "id": "shell_reef_bank_hole_trigger",
+      "type": "cave_entrance",
+      "region_id": "shell_reef_bank_cave",
+      "shape": "polygon",
+      "points": [[1550, 500], [1750, 500], [1760, 720], [1600, 720]],
+      "owner": "future cave entrance metadata",
+      "status": "planned"
+    },
+    {
+      "id": "thermal_vent_hazard_zone",
+      "type": "hazard",
+      "region_id": "thermal_vent_pocket",
+      "shape": "polygon",
+      "points": [[1740, 1220], [2060, 1220], [2160, 1560], [1620, 1560]],
+      "owner": "future thermal hazard/readability Area2D",
+      "status": "planned"
+    },
+    {
+      "id": "blue_chimney_return_current",
+      "type": "return_current",
+      "region_id": "blue_chimney_route",
+      "shape": "polygon",
+      "points": [[1260, 1560], [1780, 1480], [1900, 1640], [1340, 1780]],
+      "owner": "future visual return-current Area2D",
+      "status": "planned"
+    },
+    {
+      "id": "pressure_wreck_gate",
+      "type": "gate",
+      "region_id": "pressure_wreck_branch",
+      "shape": "polygon",
+      "points": [[3160, 760], [3240, 760], [3240, 1100], [3160, 1100]],
+      "owner": "future pressure gate Area2D/interactable",
+      "status": "planned"
+    },
+    {
+      "id": "future_deep_exit_gate",
+      "type": "gate",
+      "region_id": "future_deep_exit",
+      "shape": "polygon",
+      "points": [[4160, 2020], [4380, 2020], [4380, 2320], [4160, 2320]],
+      "owner": "future locked exit Area2D/interactable",
+      "status": "future_locked"
+    },
+    {
+      "id": "starter_supply_pickup_zone",
+      "type": "pickup",
+      "region_id": "starter_kelp_cave",
+      "shape": "polygon",
+      "points": [[260, 780], [520, 780], [520, 980], [260, 980]],
+      "owner": "future authored spawn candidates",
+      "status": "planned"
+    },
+    {
+      "id": "shell_reef_material_pickup_zone",
+      "type": "pickup",
+      "region_id": "shell_reef_bank_cave",
+      "shape": "polygon",
+      "points": [[940, 980], [1460, 980], [1460, 1240], [940, 1240]],
+      "owner": "future authored spawn candidates",
+      "status": "planned"
+    },
+    {
+      "id": "thermal_vent_scan_zone",
+      "type": "scan",
+      "region_id": "thermal_vent_pocket",
+      "shape": "polygon",
+      "points": [[1680, 1180], [2220, 1180], [2220, 1580], [1680, 1580]],
+      "owner": "future scan target Area2D",
+      "status": "planned"
+    },
+    {
+      "id": "pressure_wreck_scan_zone",
+      "type": "scan",
+      "region_id": "pressure_wreck_branch",
+      "shape": "polygon",
+      "points": [[3600, 920], [4300, 920], [4300, 1300], [3600, 1300]],
+      "owner": "future scan target Area2D",
+      "status": "planned"
+    }
+  ],
+  "camera_bounds": {
+    "planned_world_rect": [-900, 0, 5500, 2500],
+    "first_review_crop": [-150, 300, 2600, 1546],
+    "notes": "Use camera-scale previews to verify wall readability before promotion to Main.tscn."
+  },
+  "validation_rules": [
+    "Open surface spans the full top of the map and is not blocked by terrain collision.",
+    "Ship offload zone is separate from oxygen refill zone.",
+    "Every solid terrain entry has Polygon2D visual, CollisionPolygon2D collision, and rim/lip strategy.",
+    "Every cave mouth has a matching cave_entrance scene hook and no blocker across the entrance center.",
+    "Current pickup and scan zones sit inside reachable planned regions.",
+    "Future locked gates are explicit Area2D/interactable hooks and must not be inferred from pixels.",
+    "Parallax backgrounds, lights, plants, crystals, and background rock do not own player-blocking collision.",
+    "This file must be promoted intentionally before it replaces area_01_blockout_source_map_v1.json as runtime authority."
+  ]
+}

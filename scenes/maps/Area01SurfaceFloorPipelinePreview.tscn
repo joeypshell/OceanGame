@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://area01surfacefloorpipeline"]
+
+[ext_resource type="Script" path="res://scripts/area01_surface_floor_pipeline_preview.gd" id="1_preview"]
+
+[node name="Area01SurfaceFloorPipelinePreview" type="Node2D"]
+script = ExtResource("1_preview")
+geometry_path = "res://docs/planning/maps/area_01_surface_floor_geometry_v1.json"
+show_scene_hooks = true
+show_collision_shapes = true

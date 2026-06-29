@@ -11,7 +11,7 @@ Related model:
 
 ## Intent
 
-The intended game loop is closer to "Subnautica as short roguelite expeditions" than to one fixed solved map or a fully regenerated procedural ocean. Each dive is a seeded expedition day: the player launches from the surface base with persistent upgrades and knowledge, revisits recognizable ocean geography, adapts to the current expedition's active conditions, extracts whatever they can safely bring back, then uses the results to prepare for future expeditions.
+The intended game loop is closer to "Subnautica as short roguelite expeditions" than to one fixed solved map or a fully regenerated procedural ocean. Each expedition day starts from the surface base with persistent upgrades and knowledge, revisits recognizable ocean geography, adapts to the current expedition's active conditions, makes one or more dives within the daylight budget, banks whatever the player brings back to the ship, then uses night to prepare for future expeditions.
 
 The design shorthand is:
 
@@ -26,10 +26,11 @@ Every morning the alien ocean changes. Dive, scan, and survive long enough to br
 The long-term expedition day should read as:
 
 1. Morning report: show the current ocean condition, one partial opportunity hint, and the current practical objective.
-2. Dive: gather, scan, observe creatures, manage oxygen/cargo, and decide whether to bank or push deeper.
-3. Return or failure: stop oxygen pressure, resolve cargo, preserve durable knowledge, and summarize the most important lesson.
-4. Evening lab analysis: turn scans, failures, and discoveries into upgrade clues, region knowledge, or mystery hints.
-5. Sleep/ocean shift: advance the expedition seed and condition so tomorrow feels familiar but changed.
+2. Daylight dive loop: gather, scan, observe creatures, manage oxygen/cargo, surface for air, and decide whether to return to the ship to bank or push again.
+3. Ship offload: one fast ship/moonpool action banks carried supplies and resources; surfacing away from the ship restores oxygen only.
+4. Nightfall: end the day, resolve banked cargo and base needs, preserve durable knowledge, and summarize the most important lesson.
+5. Evening lab analysis: turn scans, failures, and discoveries into upgrade clues, region knowledge, crafting requirements, or mystery hints.
+6. Sleep/ocean shift: advance the expedition seed and condition so tomorrow feels familiar but changed.
 
 The surface phase should be relief and analysis, not restaurant/base management. It exists to create the next reason to dive.
 
@@ -38,9 +39,12 @@ The surface phase should be relief and analysis, not restaurant/base management.
 - Start from the surface boat/lab with persistent upgrades, banked resources, scan knowledge, and unlocked equipment.
 - Preserve recognizable regions, landmarks, depth identities, route promises, and safe return orientation.
 - Randomize or vary resource nodes, creature positions, hazards, currents, visibility, temporary entrances, and special discoveries within readable depth-band and authored-candidate rules.
-- Dive downward, make oxygen/cargo/risk decisions, and extract before failure.
-- Bank extracted cargo; lose carried cargo on failure; keep scans, banked resources, upgrades, and long-term knowledge.
+- Dive downward, make oxygen/cargo/risk/daylight decisions, and return before failure or nightfall.
+- Surface for oxygen when the future daylight loop supports it; return to the ship to bank cargo.
+- Bank ship-offloaded cargo; lose carried cargo on failure; keep scans, banked resources, upgrades, and long-term knowledge.
 - Use between-expedition progression to reach deeper bands, survive more dangerous routes, and identify better opportunities on future dives.
+
+Detailed daylight-loop planning lives in `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`.
 
 ## Variation Layers
 

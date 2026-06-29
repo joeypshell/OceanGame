@@ -1,0 +1,4 @@
+interface:
+  display_name: "OceanGame Gameplay Loop"
+  short_description: "Work on expedition gameplay"
+  default_prompt: "Use $oceangame-gameplay-loop for OceanGame expedition, progression, scan, upgrade, route, or predator work."

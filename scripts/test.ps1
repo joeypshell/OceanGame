@@ -67,6 +67,9 @@ switch ($Tier) {
 		Invoke-Step "MCP context self-test" {
 			node .mcp/oceangame-context-server.mjs --self-test
 		}
+		Invoke-Step "Area 01 runtime source map validation" {
+			node tools/validate-area01-runtime-source-map.mjs
+		}
 		Invoke-Step "Whitespace check" {
 			git diff --check
 		}
@@ -99,6 +102,9 @@ switch ($Tier) {
 		}
 		Invoke-Step "MCP context self-test" {
 			node .mcp/oceangame-context-server.mjs --self-test
+		}
+		Invoke-Step "Area 01 runtime source map validation" {
+			node tools/validate-area01-runtime-source-map.mjs
 		}
 		Invoke-Step "Desktop Playwright export and visual smoke" {
 			npm.cmd run test:visual

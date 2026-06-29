@@ -1,0 +1,4 @@
+interface:
+  display_name: "OceanGame Sprite Map Pipeline"
+  short_description: "Turn uploaded maps into editable Godot terrain data"
+  default_prompt: "Use $oceangame-sprite-map-pipeline to convert an uploaded OceanGame map/reference into source-map geometry, modular terrain sprites, preview composites, collision polygons, and scene-hook data."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "OceanGame Bugfix"
+  short_description: "Diagnose and fix bugs"
+  default_prompt: "Use $oceangame-bugfix to reproduce, fix, and verify an OceanGame bug."

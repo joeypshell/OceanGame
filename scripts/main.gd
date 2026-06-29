@@ -562,6 +562,7 @@ func _ready() -> void:
 		predator.contacted.connect(_on_predator_contacted)
 	_load_progression()
 	_prepare_next_run()
+	_sync_debug_oxygen_mode()
 	_sync_discovery_reveals()
 	_sync_salvage_pocket_open_state()
 	_sync_area01_source_map_overlay()
@@ -1316,18 +1317,26 @@ func _cycle_surface_tab(direction: int) -> void:
 
 func _toggle_debug_telemetry() -> void:
 	show_debug_telemetry = not show_debug_telemetry
+	_sync_debug_oxygen_mode()
 	_sync_area01_source_map_overlay()
-	status_label.text = "Debug telemetry: %s." % ("shown" if show_debug_telemetry else "hidden")
+	status_label.text = "Debug telemetry: %s%s." % [
+		"shown" if show_debug_telemetry else "hidden",
+		" | unlimited oxygen" if show_debug_telemetry else "",
+	]
 	_update_hud()
 
 func _toggle_area01_source_map_overlay() -> void:
 	show_area01_source_map_overlay = not show_area01_source_map_overlay
 	if show_area01_source_map_overlay:
 		show_debug_telemetry = true
+	_sync_debug_oxygen_mode()
 	_ensure_area01_source_map_overlay()
 	_sync_area01_source_map_overlay()
 	status_label.text = "Area 01 source map overlay: %s." % ("shown" if show_area01_source_map_overlay else "hidden")
 	_update_hud()
+
+func _sync_debug_oxygen_mode() -> void:
+	dive_session.unlimited_oxygen = show_debug_telemetry
 
 func _ensure_area01_source_map_overlay() -> void:
 	if area01_source_map_overlay != null and is_instance_valid(area01_source_map_overlay):
@@ -2304,7 +2313,7 @@ func _try_burst_thruster() -> void:
 		_update_hud()
 		return
 
-	if dive_session.oxygen <= burst_thruster_oxygen_cost:
+	if not dive_session.unlimited_oxygen and dive_session.oxygen <= burst_thruster_oxygen_cost:
 		status_label.text = "Burst Thruster needs more than %d oxygen." % ceili(burst_thruster_oxygen_cost)
 		_update_hud()
 		return
@@ -2313,7 +2322,7 @@ func _try_burst_thruster() -> void:
 	player.burst(burst_direction, burst_thruster_force)
 	dive_session.drain_oxygen(burst_thruster_oxygen_cost)
 	burst_thruster_cooldown_remaining = burst_thruster_cooldown_seconds
-	status_label.text = "Burst Thruster: -%d oxygen. Cooldown started." % ceili(burst_thruster_oxygen_cost)
+	status_label.text = "Burst Thruster: %s Cooldown started." % ("debug oxygen unchanged." if dive_session.unlimited_oxygen else "-%d oxygen." % ceili(burst_thruster_oxygen_cost))
 	_update_hud()
 
 func _apply_upgrade_effect(effect_id: String) -> void:

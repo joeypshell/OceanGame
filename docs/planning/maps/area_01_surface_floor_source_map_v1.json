@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "map_id": "area_01_surface_floor_source_map_v1",
+  "visual_reference": "docs/planning/maps/area_01_surface_floor_source_map_v1.png",
+  "prompt": "docs/planning/maps/area_01_surface_floor_source_map_v1.prompt.txt",
+  "purpose": "First-level source reference for an open-surface ocean over a continuous seafloor with dive holes into cave systems. This is a planning/source-truth artifact, not an in-game minimap.",
+  "topology_rule": "The full water surface must remain open horizontally. The first major solid boundary is the seafloor shelf below the surface. Exploration complexity lives beneath that shelf through authored holes, caves, pockets, gates, and return currents.",
+  "pipeline": {
+    "map_mode": "side_scroll_mode",
+    "visual_model": "source-map reference now; future parallax scenery plus explicit foreground terrain chunks",
+    "runtime_object_model": "platform_objects plus interactive_scene_objects plus scene_hooks",
+    "collision_model": "precise_shapes plus trigger_zones",
+    "engine_target": "project-native Godot"
+  },
+  "surface_layer": {
+    "id": "open_surface_water",
+    "role": "Free-swim surface band used for oxygen recovery, ship return, and choosing the next dive hole.",
+    "must_remain_open_from_left_edge_to_right_edge": true,
+    "runtime_hooks": [
+      "oxygen_refill_at_surface",
+      "surface_navigation",
+      "ship_offload_and_relaunch"
+    ],
+    "non_goals": [
+      "No closed cave ceiling at the top of the map.",
+      "No required tunnel path to reach the ship from open water."
+    ]
+  },
+  "seafloor_layer": {
+    "id": "continuous_seafloor_shelf",
+    "role": "Primary readable terrain horizon below the open ocean. It creates entrances into the first-level cave network.",
+    "collision_policy": "The seafloor shelf should be one or more explicit solid terrain polygons with matching visible rim/lip and CollisionPolygon2D shapes.",
+    "entrance_policy": "Every cave mouth cut through the seafloor must be visibly open, navigable, and backed by explicit scene hooks or collision data."
+  },
+  "cave_systems": [
+    {
+      "id": "starter_kelp_hole",
+      "role": "Small shallow cave directly under the ship-side seafloor for first resources and safe turnaround.",
+      "depth_complexity": "shallow_simple",
+      "loop_pressure": "low oxygen pressure, teaches dive-return rhythm"
+    },
+    {
+      "id": "shell_reef_bank_hole",
+      "role": "Left/mid cave used to teach returning to the surface and ship after collecting cargo.",
+      "depth_complexity": "shallow_branching",
+      "loop_pressure": "inventory pressure and route memory"
+    },
+    {
+      "id": "thermal_vent_hole",
+      "role": "Central lower pocket with environmental hazard/reward tension.",
+      "depth_complexity": "medium_pocket",
+      "loop_pressure": "health and oxygen awareness"
+    },
+    {
+      "id": "blue_chimney_hole",
+      "role": "Deeper vertical route with return-current affordance and higher-value materials.",
+      "depth_complexity": "deep_vertical",
+      "loop_pressure": "oxygen planning and escape route recognition"
+    },
+    {
+      "id": "pressure_wreck_hole",
+      "role": "Right-side route ending in a wreck promise and pressure gate.",
+      "depth_complexity": "medium_locked_branch",
+      "loop_pressure": "upgrade curiosity without exact quest-marker behavior"
+    },
+    {
+      "id": "future_deep_exit",
+      "role": "Deepest locked exit that hints at later route expansion.",
+      "depth_complexity": "future_locked",
+      "loop_pressure": "long-term progression promise"
+    }
+  ],
+  "marker_policy": {
+    "common_minerals": "Teach safe early collection near shallow holes.",
+    "rare_minerals": "Pull the player slightly deeper or farther from the nearest exit.",
+    "exotic_minerals": "Signal deeper or gated value without overpowering safety reads.",
+    "scan_targets": "Must be reachable in current-run areas or clearly tied to locked promises.",
+    "pressure_gates": "Use explicit Area2D/interactable hooks and visible gate art; do not imply collision by icon alone.",
+    "one_way_gates": "Only use where return flow is readable through another route or current.",
+    "return_currents": "Place near deeper branches to support surfacing for oxygen and ship offload."
+  },
+  "implementation_rules": [
+    "Do not derive collision by sampling the generated PNG.",
+    "When promoted to runtime, redraw seafloor and cave boundaries as source-map polygons in Godot coordinates.",
+    "Keep open surface movement separate from cave exploration pressure.",
+    "Surface return should refill oxygen; banking cargo still requires reaching the ship/moonpool and pressing the offload action.",
+    "Use the map to place cave entrances, route complexity, gates, and rewards before adding decorative terrain art.",
+    "This artifact can guide a future replacement of area_01_blockout_source_map_v1.json, but it does not override that runtime authority yet."
+  ]
+}

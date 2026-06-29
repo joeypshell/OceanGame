@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "map_id": "area_01_surface_floor_geometry_v1",
+  "purpose": "Object-layer companion data for the Area 01 side-scroll map pipeline. These entries describe editable Godot object intent; they do not grant gameplay behavior until wired by an implementation pass.",
+  "runtime_authority": false,
+  "source_geometry": "docs/planning/maps/area_01_surface_floor_geometry_v1.json",
+  "parallax_layers": [
+    {
+      "id": "sky_surface",
+      "role": "Surface sky/waterline band above the ocean.",
+      "render_order": -100,
+      "scroll_factor": [0.05, 0.0],
+      "source_status": "placeholder_visual"
+    },
+    {
+      "id": "far_reef_silhouettes",
+      "role": "Distant non-colliding reef shelves and towers.",
+      "render_order": -90,
+      "scroll_factor": [0.18, 0.05],
+      "source_status": "placeholder_visual"
+    },
+    {
+      "id": "mid_water_rays",
+      "role": "Soft underwater light shafts and depth haze.",
+      "render_order": -80,
+      "scroll_factor": [0.35, 0.1],
+      "source_status": "placeholder_visual"
+    },
+    {
+      "id": "near_back_rock",
+      "role": "Non-colliding near-background rock mass behind foreground terrain.",
+      "render_order": -20,
+      "scroll_factor": [0.65, 0.2],
+      "source_status": "placeholder_visual"
+    }
+  ],
+  "object_layers": [
+    {
+      "id": "terrain_visuals",
+      "godot_parent": "TerrainVisuals",
+      "object_type": "Polygon2D",
+      "source": "solid_terrain",
+      "role": "Filled reef/seafloor silhouettes."
+    },
+    {
+      "id": "terrain_collision",
+      "godot_parent": "TerrainCollision",
+      "object_type": "StaticBody2D/CollisionPolygon2D",
+      "source": "solid_terrain",
+      "role": "Player-blocking collision matching terrain source polygons."
+    },
+    {
+      "id": "terrain_rims",
+      "godot_parent": "TerrainRims",
+      "object_type": "Sprite2D or Polygon2D",
+      "source": "solid_terrain rim_strategy",
+      "role": "Readable cave/seafloor edges and lips."
+    },
+    {
+      "id": "sprite_props",
+      "godot_parent": "SpriteProps",
+      "object_type": "Sprite2D",
+      "source": "sprite_placements",
+      "role": "Ship, decor, resources, wreck pieces, gates, and trim sprites."
+    },
+    {
+      "id": "scene_hooks",
+      "godot_parent": "SceneHooks",
+      "object_type": "Area2D/CollisionPolygon2D",
+      "source": "scene_hooks",
+      "role": "Oxygen, offload, cave entrances, pickups, scans, hazards, pressure gates, return currents, and route triggers."
+    }
+  ],
+  "asset_families": [
+    {
+      "id": "reef_wall_fill",
+      "classification": "collision_bearing_object",
+      "recommended_strategy": "Polygon2D fill with optional texture; do not use square prop packs."
+    },
+    {
+      "id": "seafloor_rim_strip",
+      "classification": "tileset_or_strip_piece",
+      "recommended_strategy": "platform_strip_1x4 or curve-following Sprite2D segments."
+    },
+    {
+      "id": "cave_mouth_frame",
+      "classification": "wide_or_long_object",
+      "recommended_strategy": "one_by_one or custom_wide_pack; must align to cave mouth polygons."
+    },
+    {
+      "id": "kelp_coral_cluster",
+      "classification": "compact_prop",
+      "recommended_strategy": "prop_pack_3x3 after terrain geometry is accepted."
+    },
+    {
+      "id": "mineral_resource_nodes",
+      "classification": "compact_prop",
+      "recommended_strategy": "prop_pack_3x3 with transparent output and separate pickup Area2D hooks."
+    },
+    {
+      "id": "pressure_gate",
+      "classification": "collision_bearing_object",
+      "recommended_strategy": "one_by_one; explicit Area2D gate hook owns behavior."
+    }
+  ],
+  "implementation_notes": [
+    "Do not cut collision from the source PNG or preview PNG.",
+    "Do not use stage-reference art as runtime background.",
+    "Do not attach resource, scan, pressure, predator, oxygen, or progression logic to Sprite2D nodes.",
+    "Runtime promotion should generate or edit Godot scene nodes from the source geometry JSON."
+  ]
+}

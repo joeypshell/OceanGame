@@ -1,0 +1,23 @@
+Use the layout guide image just shown as a layout-only reference. Use it only to understand the 4 rows, 4 columns, equal invisible cell slots, centering, spacing, and safe padding. Do not reproduce the guide: no visible boxes, no safe-area rectangles, no center marks, no labels, no borders, no guide background.
+
+Use the underwater reef/cave preview image shown before the layout guide as the visual style reference: dark teal reef mass, blue-green underwater palette, readable rocky shelf lips, organic cave wall texture, subtle cyan highlights, dark undercuts, sparse coral/kelp accents. Create a 4x4 tileset-like sprite atlas for a side-view underwater reef/seafloor game. Pixel-inspired modern 2D game art, crisp readable shapes, organic rock clusters, not flat rectangles, not noisy. Background must be 100% solid flat magenta #FF00FF in every empty area. No text, no labels, no UI, no arrows, no numbers, no borders or frames between cells.
+
+Exact 4x4 cell plan, left to right, top to bottom:
+Row 1 cell 1: seamless dark reef wall fill tile, organic rounded rock/coral nodules, no distinct ledge edge.
+Row 1 cell 2: seafloor top lip LEFT CAP, flat-ish playable top edge, dark underside, organic left end.
+Row 1 cell 3: seafloor top lip MIDDLE REPEAT segment, same height and style, tileable horizontally.
+Row 1 cell 4: seafloor top lip RIGHT CAP, matching the left cap and middle repeat.
+Row 2 cell 1: cave ceiling underside LEFT CAP, dark hanging rock underside, stalactite-like reef teeth.
+Row 2 cell 2: cave ceiling underside MIDDLE REPEAT, tileable horizontally.
+Row 2 cell 3: cave ceiling underside RIGHT CAP.
+Row 2 cell 4: vertical wall edge repeat segment, side-view rocky wall trim, tileable vertically.
+Row 3 cell 1: vertical wall TOP CAP.
+Row 3 cell 2: vertical wall MIDDLE REPEAT, same width and style as top cap.
+Row 3 cell 3: vertical wall BOTTOM CAP.
+Row 3 cell 4: diagonal slope edge trim, about 30 degrees, rocky top highlight and dark lower mass.
+Row 4 cell 1: inside corner cap where ceiling meets vertical wall.
+Row 4 cell 2: outside corner cap for protruding shelf corner.
+Row 4 cell 3: thin interior ledge strip, narrow shelf top and dark underside.
+Row 4 cell 4: deep floor lip strip, darker blue deep-water floor edge with subtle cyan rim.
+
+Every sprite must fit fully inside its cell with magenta margin on all sides. Keep consistent scale across related strips. Make strip pieces visually able to connect: matching rock color, edge height, lighting direction, and texture density. Do not include player, submarine, fish, pickups, gates, icons, minimap, HUD, text, or full-scene background. Output only the sprite atlas.

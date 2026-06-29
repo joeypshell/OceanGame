@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "map_id": "area_01_terrain_art_kit_requirements_v1",
+  "purpose": "Requirements for generating a reusable Area 01 terrain art kit from current source maps. This is planning data only and does not wire art or collision into runtime.",
+  "runtime_authority": false,
+  "source_inputs": {
+    "surface_floor_topology": "docs/planning/maps/area_01_surface_floor_source_map_v1.json",
+    "candidate_geometry": "docs/planning/maps/area_01_surface_floor_geometry_v1.json",
+    "current_runtime_wall_authority": "docs/planning/maps/area_01_blockout_source_map_v1.json",
+    "object_layer_companion": "data/maps/area_01_surface_floor_objects_v1.json",
+    "modular_wall_plan": "docs/planning/AREA_01_MODULAR_WALL_ART_SYSTEM_2026_06_29.md"
+  },
+  "pipeline_axes": {
+    "map_mode": "side_scroll_mode",
+    "visual_model": "parallax_layers plus source-map terrain chunks",
+    "runtime_object_model": "platform_objects plus interactive_scene_objects plus foreground_occluders plus scene_hooks",
+    "collision_model": "precise_shapes plus trigger_zones",
+    "engine_target": "project-native Godot",
+    "art_style": "pixel_inspired underwater reef/cave art with readable silhouettes and layered depth"
+  },
+  "stage_context": {
+    "source_stage_canvas": [5200, 2600],
+    "camera_viewport": [1280, 720],
+    "topology_rule": "Open surface water over a continuous seafloor shelf with cave mouths leading into authored route pockets.",
+    "collision_rule": "Collision must be generated from source-map polygons, never from generated image pixels."
+  },
+  "asset_families": [
+    {
+      "id": "sky_surface",
+      "category": "parallax_scenery",
+      "priority": "required",
+      "classification": "scenery_only",
+      "source_map_drivers": ["open_surface_water"],
+      "generation_strategy": "wide scenery layer or repeatable strip",
+      "runtime_role": "Sprite2D or ParallaxLayer background",
+      "collision_role": "none",
+      "repeat_policy": "horizontal_repeat_allowed",
+      "anchor": "top_left",
+      "acceptance": [
+        "Shows surface/waterline without implying a ceiling blocker.",
+        "Contains no pickups, gates, hazards, route icons, or foreground terrain."
+      ]
+    },
+    {
+      "id": "far_reef_silhouettes",
+      "category": "parallax_scenery",
+      "priority": "required",
+      "classification": "scenery_only",
+      "source_map_drivers": ["open_surface_water", "surface_seafloor"],
+      "generation_strategy": "wide scenery layer",
+      "runtime_role": "Sprite2D or ParallaxLayer background",
+      "collision_role": "none",
+      "repeat_policy": "horizontal_repeat_allowed",
+      "anchor": "top_left",
+      "acceptance": [
+        "Creates depth behind foreground terrain.",
+        "Cannot be mistaken for a foreground collision boundary at camera scale."
+      ]
+    },
+    {
+      "id": "mid_water_rays",
+      "category": "parallax_scenery",
+      "priority": "required",
+      "classification": "scenery_only",
+      "source_map_drivers": ["open_surface_water"],
+      "generation_strategy": "wide transparent overlay or shader-friendly texture",
+      "runtime_role": "Sprite2D or ColorRect/TextureRect overlay",
+      "collision_role": "none",
+      "repeat_policy": "no_collision_no_trigger",
+      "anchor": "top_left",
+      "acceptance": [
+        "Adds underwater light shafts and depth haze.",
+        "Does not obscure terrain lips, cave mouths, pickups, or scan targets."
+      ]
+    },
+    {
+      "id": "reef_wall_fill_material",
+      "category": "structural_terrain",
+      "priority": "required",
+      "classification": "tileset_or_strip_piece",
+      "source_map_drivers": [
+        "surface_shelf_west",
+        "ship_shelf_left",
+        "ship_shelf_right",
+        "mid_seafloor_shelf",
+        "east_seafloor_shelf",
+        "starter_kelp_left_wall",
+        "starter_shell_divider",
+        "shell_reef_inner_ledges",
+        "thermal_vent_floor",
+        "blue_chimney_west_wall",
+        "blue_chimney_floor",
+        "pressure_wreck_wall",
+        "future_exit_floor"
+      ],
+      "generation_strategy": "seamless fill texture or atlas fill region",
+      "runtime_role": "Texture applied to Polygon2D terrain fill or repeated Sprite2D fill",
+      "collision_role": "visual_matches_solid_polygon",
+      "repeat_policy": "tile_inside_polygon",
+      "anchor": "polygon_local_space",
+      "acceptance": [
+        "Reads as organic reef/cave mass, not flat gray shape.",
+        "Tiles without obvious square stamping at 1280x720 camera scale.",
+        "Does not define collision independently."
+      ]
+    },
+    {
+      "id": "seafloor_top_lip_strip",
+      "category": "structural_terrain",
+      "priority": "required",
+      "classification": "tileset_or_strip_piece",
+      "source_map_drivers": [
+        "surface_shelf_west",
+        "ship_shelf_left",
+        "ship_shelf_right",
+        "mid_seafloor_shelf",
+        "east_seafloor_shelf"
+      ],
+      "generation_strategy": "platform_strip_1x4",
+      "runtime_role": "Sprite2D strip following top playable edges",
+      "collision_role": "matches_solid_edge_visual_only",
+      "repeat_policy": "left_cap_middle_repeat_right_cap_plus_slope_variant",
+      "anchor": "top_edge_center",
+      "acceptance": [
+        "Clearly marks the open-water side of the continuous seafloor.",
+        "Left/middle/right pieces fit seamlessly.",
+        "Can follow long shelves without looking like repeated rectangular stamps."
+      ]
+    },
+    {
+      "id": "cave_ceiling_underside_strip",
+      "category": "structural_terrain",
+      "priority": "required",
+      "classification": "tileset_or_strip_piece",
+      "source_map_drivers": [
+        "starter_shell_divider",
+        "shell_reef_inner_ledges",
+        "thermal_vent_floor",
+        "blue_chimney_west_wall",
+        "pressure_wreck_wall"
+      ],
+      "generation_strategy": "platform_strip_1x4",
+      "runtime_role": "Sprite2D strip following underside/overhang edges",
+      "collision_role": "matches_solid_edge_visual_only",
+      "repeat_policy": "left_cap_middle_repeat_right_cap_plus_corner_variant",
+      "anchor": "underside_edge_center",
+      "acceptance": [
+        "Makes overhangs and ceilings read as solid.",
+        "Does not visually close navigable cave mouths."
+      ]
+    },
+    {
+      "id": "vertical_wall_edge_strip",
+      "category": "structural_terrain",
+      "priority": "required",
+      "classification": "tileset_or_strip_piece",
+      "source_map_drivers": [
+        "starter_kelp_left_wall",
+        "starter_shell_divider",
+        "blue_chimney_west_wall",
+        "pressure_wreck_wall"
+      ],
+      "generation_strategy": "platform_strip_1x4 or custom vertical strip",
+      "runtime_role": "Sprite2D strip following vertical wall edges",
+      "collision_role": "matches_solid_edge_visual_only",
+      "repeat_policy": "top_cap_middle_repeat_bottom_cap_plus_junction_variant",
+      "anchor": "edge_center",
+      "acceptance": [
+        "Makes descent shafts and side walls readable.",
+        "Can be mirrored left/right without obvious lighting errors."
+      ]
+    },
+    {
+      "id": "diagonal_slope_edge_strip",
+      "category": "structural_terrain",
+      "priority": "required",
+      "classification": "tileset_or_strip_piece",
+      "source_map_drivers": [
+        "surface_shelf_west",
+        "ship_shelf_right",
+        "mid_seafloor_shelf",
+        "blue_chimney_floor",
+        "future_exit_floor"
+      ],
+      "generation_strategy": "custom_wide_pack with slope variants",
+      "runtime_role": "Sprite2D strip or segmented trim along sloped polygon edges",
+      "collision_role": "matches_solid_edge_visual_only",
+      "repeat_policy": "short_segment_repeat_with_angle_metadata",
+      "anchor": "edge_center",
+      "acceptance": [
+        "Supports irregular source-map polygons without forcing grid-square terrain.",
+        "Keeps sloped playable boundaries visually honest."
+      ]
+    },
+    {
+      "id": "corner_cap_set",
+      "category": "structural_terrain",
+      "priority": "required",
+      "classification": "tileset_or_strip_piece",
+      "source_map_drivers": [
+        "all solid_terrain entries with concave or protruding corners"
+      ],
+      "generation_strategy": "custom_wide_pack or small atlas",
+      "runtime_role": "Sprite2D cap pieces at trim junctions",
+      "collision_role": "decorative_matches_solid_corner",
+      "repeat_policy": "place_by_corner_type",
+      "anchor": "corner_point",
+      "acceptance": [
+        "Hides seams between top lips, vertical walls, and underside strips.",
+        "Does not introduce fake protrusions beyond source collision."
+      ]
+    },
+    {
+      "id": "thin_ledge_strip",
+      "category": "structural_terrain",
+      "priority": "required",
+      "classification": "tileset_or_strip_piece",
+      "source_map_drivers": ["shell_reef_inner_ledges"],
+      "generation_strategy": "platform_strip_1x4",
+      "runtime_role": "Sprite2D narrow ledge top/underside",
+      "collision_role": "matches_solid_edge_visual_only",
+      "repeat_policy": "left_cap_middle_repeat_right_cap_plus_small_slope",
+      "anchor": "top_edge_center",
+      "acceptance": [
+        "Reads as small interior shelf, not as cargo or scan target.",
+        "Does not make narrow lanes look blocked."
+      ]
+    },
+    {
+      "id": "starter_kelp_mouth_frame",
+      "category": "cave_mouth_frame",
+      "priority": "required",
+      "classification": "collision_bearing_object",
+      "source_map_drivers": ["starter_kelp_hole", "starter_kelp_left_wall", "starter_shell_divider"],
+      "generation_strategy": "one_by_one",
+      "runtime_role": "Sprite2D trim group aligned to cave mouth polygon",
+      "collision_role": "visual_only_center_must_remain_open",
+      "repeat_policy": "unique_scaled_to_mouth",
+      "anchor": "mouth_center",
+      "acceptance": [
+        "Reads as the first safe dive hole.",
+        "Clearly leaves the navigable entrance open."
+      ]
+    },
+    {
+      "id": "shell_reef_mouth_frame",
+      "category": "cave_mouth_frame",
+      "priority": "required",
+      "classification": "wide_or_long_object",
+      "source_map_drivers": ["shell_reef_bank_hole", "starter_shell_divider", "shell_reef_inner_ledges"],
+      "generation_strategy": "one_by_one or custom_wide_pack",
+      "runtime_role": "Sprite2D trim group aligned to cave mouth polygon",
+      "collision_role": "visual_only_center_must_remain_open",
+      "repeat_policy": "unique_scaled_to_mouth",
+      "anchor": "mouth_center",
+      "acceptance": [
+        "Reads as a wider banking route entrance.",
+        "Supports shell/coral identity without hiding resource pockets."
+      ]
+    },
+    {
+      "id": "thermal_vent_drop_frame",
+      "category": "cave_mouth_frame",
+      "priority": "required",
+      "classification": "wide_or_long_object",
+      "source_map_drivers": ["thermal_vent_drop", "thermal_vent_floor"],
+      "generation_strategy": "one_by_one",
+      "runtime_role": "Sprite2D trim group plus warm vent color cues",
+      "collision_role": "visual_only_center_must_remain_open",
+      "repeat_policy": "unique_scaled_to_mouth",
+      "anchor": "drop_center",
+      "acceptance": [
+        "Communicates a deeper hazard/reward pocket.",
+        "Does not look like a locked gate."
+      ]
+    },
+    {
+      "id": "blue_chimney_mouth_frame",
+      "category": "cave_mouth_frame",
+      "priority": "required",
+      "classification": "wide_or_long_object",
+      "source_map_drivers": ["blue_chimney_hole", "blue_chimney_west_wall", "blue_chimney_floor"],
+      "generation_strategy": "one_by_one",
+      "runtime_role": "Sprite2D trim group with blue crystal/deep-route cues",
+      "collision_role": "visual_only_center_must_remain_open",
+      "repeat_policy": "unique_scaled_to_mouth",
+      "anchor": "mouth_center",
+      "acceptance": [
+        "Reads as deeper vertical route.",
+        "Works with return-current visual without becoming clutter."
+      ]
+    },
+    {
+      "id": "pressure_wreck_mouth_frame",
+      "category": "cave_mouth_frame",
+      "priority": "required",
+      "classification": "wide_or_long_object",
+      "source_map_drivers": ["pressure_wreck_hole", "pressure_wreck_wall"],
+      "generation_strategy": "one_by_one",
+      "runtime_role": "Sprite2D trim group with wreck/pressure cues",
+      "collision_role": "visual_only_center_must_remain_open",
+      "repeat_policy": "unique_scaled_to_mouth",
+      "anchor": "mouth_center",
+      "acceptance": [
+        "Reads as a branch toward a wreck and pressure gate.",
+        "Does not make the whole branch look unreachable unless the gate hook owns that state."
+      ]
+    },
+    {
+      "id": "future_exit_locked_frame",
+      "category": "cave_mouth_frame",
+      "priority": "required",
+      "classification": "collision_bearing_object",
+      "source_map_drivers": ["future_deep_exit_hole", "future_exit_floor", "future_deep_exit_gate"],
+      "generation_strategy": "one_by_one",
+      "runtime_role": "Sprite2D quiet locked-route frame",
+      "collision_role": "visual_only_gate_behavior_owned_by_area2d",
+      "repeat_policy": "unique_scaled_to_mouth",
+      "anchor": "gate_center",
+      "acceptance": [
+        "Reads as future-locked and quieter than current objectives.",
+        "Does not look like cargo, a pickup, or an active scan reward."
+      ]
+    },
+    {
+      "id": "starter_kelp_cluster",
+      "category": "route_dressing",
+      "priority": "required",
+      "classification": "compact_prop",
+      "source_map_drivers": ["starter_kelp_decor", "starter_kelp_cave"],
+      "generation_strategy": "prop_pack_3x3",
+      "runtime_role": "Sprite2D decorative prop placements",
+      "collision_role": "none",
+      "repeat_policy": "small_variant_pack",
+      "anchor": "bottom_center",
+      "acceptance": [
+        "Creates safe shallow route identity.",
+        "Never hides cave-mouth openings or current-run pickups."
+      ]
+    },
+    {
+      "id": "shell_reef_cluster",
+      "category": "route_dressing",
+      "priority": "required",
+      "classification": "compact_prop",
+      "source_map_drivers": ["shell_reef_decor", "shell_reef_bank_cave"],
+      "generation_strategy": "prop_pack_3x3",
+      "runtime_role": "Sprite2D decorative prop placements",
+      "collision_role": "none",
+      "repeat_policy": "small_variant_pack",
+      "anchor": "bottom_center",
+      "acceptance": [
+        "Creates Shell Reef identity without turning shells into false pickups.",
+        "Stays visually lower priority than cargo resources."
+      ]
+    },
+    {
+      "id": "thermal_vent_stack",
+      "category": "route_dressing",
+      "priority": "required",
+      "classification": "tall_or_large_object",
+      "source_map_drivers": ["thermal_vent_stack", "thermal_vent_hazard_zone", "thermal_vent_floor"],
+      "generation_strategy": "one_by_one",
+      "runtime_role": "Sprite2D vent prop plus optional visual-only bubbles/glow",
+      "collision_role": "hazard_behavior_owned_by_area2d",
+      "repeat_policy": "unique_or_small_variant_set",
+      "anchor": "bottom_center",
+      "acceptance": [
+        "Reads as environmental hazard/reward area.",
+        "Hazard state remains owned by Area2D, not sprite pixels."
+      ]
+    },
+    {
+      "id": "blue_chimney_crystal_cluster",
+      "category": "route_dressing",
+      "priority": "required",
+      "classification": "compact_prop",
+      "source_map_drivers": ["blue_chimney_crystals", "blue_chimney_route"],
+      "generation_strategy": "prop_pack_3x3",
+      "runtime_role": "Sprite2D decorative and material-read props",
+      "collision_role": "none",
+      "repeat_policy": "small_variant_pack",
+      "anchor": "bottom_center",
+      "acceptance": [
+        "Creates deep-route visual identity.",
+        "Does not replace actual pickup resource sprites."
+      ]
+    },
+    {
+      "id": "pressure_wreck_chunks",
+      "category": "route_dressing",
+      "priority": "required",
+      "classification": "wide_or_long_object",
+      "source_map_drivers": ["pressure_wreck_chunk", "pressure_wreck_branch"],
+      "generation_strategy": "one_by_one or custom_wide_pack",
+      "runtime_role": "Sprite2D wreck silhouettes/debris",
+      "collision_role": "none_or_explicit_if_later_promoted",
+      "repeat_policy": "small_custom_set",
+      "anchor": "center",
+      "acceptance": [
+        "Reads as wreck promise and route landmark.",
+        "Does not create fake blockers unless source-map collision says so."
+      ]
+    },
+    {
+      "id": "pressure_gate",
+      "category": "gate",
+      "priority": "required",
+      "classification": "collision_bearing_object",
+      "source_map_drivers": ["pressure_gate_sprite", "pressure_wreck_gate"],
+      "generation_strategy": "one_by_one",
+      "runtime_role": "Sprite2D gate visual aligned to gate Area2D",
+      "collision_role": "gate_behavior_owned_by_area2d",
+      "repeat_policy": "unique",
+      "anchor": "center",
+      "acceptance": [
+        "Reads as lock/constraint, not cargo.",
+        "Its blocking state is controlled by explicit gate data."
+      ]
+    },
+    {
+      "id": "return_current_visual",
+      "category": "route_affordance",
+      "priority": "required",
+      "classification": "wide_or_long_object",
+      "source_map_drivers": ["blue_chimney_return_current"],
+      "generation_strategy": "one_by_one or short animated strip later",
+      "runtime_role": "Sprite2D or GPUParticles2D visual for current path",
+      "collision_role": "return_current_behavior_owned_by_area2d",
+      "repeat_policy": "segment_repeat_allowed",
+      "anchor": "flow_centerline",
+      "acceptance": [
+        "Reads as movement/flow support, not a resource or gate.",
+        "Does not obscure the cave path."
+      ]
+    },
+    {
+      "id": "resource_and_scan_pack",
+      "category": "resources_and_scans",
+      "priority": "required",
+      "classification": "compact_prop",
+      "source_map_drivers": [
+        "starter_supply_pickup_zone",
+        "shell_reef_material_pickup_zone",
+        "thermal_vent_scan_zone",
+        "pressure_wreck_scan_zone"
+      ],
+      "generation_strategy": "prop_pack_3x3",
+      "runtime_role": "Sprite2D visuals paired with separate pickup/scan Area2D hooks",
+      "collision_role": "none",
+      "repeat_policy": "small_variant_pack",
+      "anchor": "center",
+      "acceptance": [
+        "Cargo resources read differently from scan targets.",
+        "Future promises are visually quieter than current-run resources.",
+        "Sprites stay small enough to preserve exploration scale."
+      ]
+    }
+  ],
+  "generation_order": [
+    "reef_wall_fill_material",
+    "seafloor_top_lip_strip",
+    "cave_ceiling_underside_strip",
+    "vertical_wall_edge_strip",
+    "diagonal_slope_edge_strip",
+    "corner_cap_set",
+    "thin_ledge_strip",
+    "cave_mouth_frame assets",
+    "route_dressing prop packs",
+    "resource_and_scan_pack",
+    "parallax_scenery layers"
+  ],
+  "validation_rules": [
+    "Every solid terrain polygon can be skinned with fill plus readable rim/lip assets.",
+    "Every cave mouth frame leaves the navigable center visually open.",
+    "No generated preview or background image becomes runtime collision authority.",
+    "Collision remains generated from source-map polygons.",
+    "Parallax layers contain no runtime-controlled objects.",
+    "Square prop packs are used only for compact decorative/resource props.",
+    "Terrain strips, cave frames, gates, and wreck chunks are one-by-one, strip, or custom-wide assets.",
+    "At 1280x720 camera scale, foreground solid terrain is distinguishable from background parallax.",
+    "Current-run resources, scans, future locks, and decorative props have distinct visual reads."
+  ],
+  "next_pipeline_step": "Use generate2dsprite to create the first terrain kit assets from these requirements, then compose a preview over docs/planning/maps/area_01_surface_floor_geometry_v1.json before runtime wiring."
+}

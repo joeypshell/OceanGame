@@ -1,0 +1,4 @@
+interface:
+  display_name: "OceanGame Art Pipeline"
+  short_description: "Manage OceanGame art assets"
+  default_prompt: "Use $oceangame-art-pipeline for OceanGame sprites, source/export assets, provenance, or visual-scene wiring."

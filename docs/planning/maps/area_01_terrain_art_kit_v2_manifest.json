@@ -1,0 +1,151 @@
+{
+  "id": "area_01_terrain_art_kit_v2",
+  "date": "2026-06-29",
+  "status": "review_asset_not_runtime_wired",
+  "atlas": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2.png",
+  "source": "assets/source/sprites/environment/area01_reef_seafloor_terrain_kit_v2_raw.png",
+  "prompt": "assets/source/sprites/environment/area01_reef_seafloor_terrain_kit_v2.prompt.txt",
+  "pipeline_meta": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2.pipeline-meta.json",
+  "frame_directory": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames",
+  "grid": {
+    "rows": 4,
+    "cols": 4,
+    "cell_size_px": 313,
+    "order": "row_major"
+  },
+  "runtime_policy": {
+    "sprites_define_collision": false,
+    "collision_source": "authoritative Area 01 wall/source maps with simplified CollisionPolygon2D shapes",
+    "wire_status": "do_not_wire_until_source_map_preview_is_approved"
+  },
+  "cells": [
+    {
+      "index": 1,
+      "row": 1,
+      "col": 1,
+      "id": "reef_wall_fill_material",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-1.png",
+      "intended_use": "large dark reef mass fill clipped inside solid blockers"
+    },
+    {
+      "index": 2,
+      "row": 1,
+      "col": 2,
+      "id": "seafloor_top_lip_left_cap",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-2.png",
+      "intended_use": "left end of a playable seafloor ledge"
+    },
+    {
+      "index": 3,
+      "row": 1,
+      "col": 3,
+      "id": "seafloor_top_lip_middle_repeat",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-3.png",
+      "intended_use": "repeatable middle segment for playable seafloor ledges"
+    },
+    {
+      "index": 4,
+      "row": 1,
+      "col": 4,
+      "id": "seafloor_top_lip_right_cap",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-4.png",
+      "intended_use": "right end of a playable seafloor ledge"
+    },
+    {
+      "index": 5,
+      "row": 2,
+      "col": 1,
+      "id": "cave_ceiling_underside_left_cap",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-5.png",
+      "intended_use": "left end of an overhead cave ceiling visual"
+    },
+    {
+      "index": 6,
+      "row": 2,
+      "col": 2,
+      "id": "cave_ceiling_underside_middle_repeat",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-6.png",
+      "intended_use": "repeatable overhead cave ceiling visual"
+    },
+    {
+      "index": 7,
+      "row": 2,
+      "col": 3,
+      "id": "cave_ceiling_underside_right_cap",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-7.png",
+      "intended_use": "right end of an overhead cave ceiling visual"
+    },
+    {
+      "index": 8,
+      "row": 2,
+      "col": 4,
+      "id": "cave_mouth_arch_rim_segment",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-8.png",
+      "intended_use": "curved cave-mouth rim segment for framing authored openings"
+    },
+    {
+      "index": 9,
+      "row": 3,
+      "col": 1,
+      "id": "vertical_wall_top_cap",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-9.png",
+      "intended_use": "top cap for vertical reef wall columns"
+    },
+    {
+      "index": 10,
+      "row": 3,
+      "col": 2,
+      "id": "vertical_wall_middle_repeat",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-10.png",
+      "intended_use": "repeatable body for vertical reef wall columns"
+    },
+    {
+      "index": 11,
+      "row": 3,
+      "col": 3,
+      "id": "vertical_wall_bottom_cap",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-11.png",
+      "intended_use": "bottom cap for vertical reef wall columns"
+    },
+    {
+      "index": 12,
+      "row": 3,
+      "col": 4,
+      "id": "diagonal_slope_edge_trim",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-12.png",
+      "intended_use": "sloped reef trim for angled wall/source-map segments"
+    },
+    {
+      "index": 13,
+      "row": 4,
+      "col": 1,
+      "id": "inside_corner_cap",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-13.png",
+      "intended_use": "inside corner where ceiling and vertical wall meet"
+    },
+    {
+      "index": 14,
+      "row": 4,
+      "col": 2,
+      "id": "outside_corner_cap",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-14.png",
+      "intended_use": "outside corner for protruding shelf geometry"
+    },
+    {
+      "index": 15,
+      "row": 4,
+      "col": 3,
+      "id": "thin_interior_ledge_strip",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-15.png",
+      "intended_use": "narrow interior ledge strip for small shelves and details"
+    },
+    {
+      "index": 16,
+      "row": 4,
+      "col": 4,
+      "id": "deep_floor_lip_strip",
+      "frame": "assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v2_frames/area01_terrain_kit_v2-16.png",
+      "intended_use": "dark deep-water floor lip for lower passages"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "map_id": "area_01_sprite_map_pipeline_preview_v1",
+  "purpose": "Planning manifest for applying the OceanGame sprite-map pipeline to Area 01 previews without changing runtime gameplay or collision.",
+  "runtime_authority": false,
+  "request_classification": "reference_only_plus_geometry_review",
+  "source_inputs": {
+    "current_runtime_wall_authority": "docs/planning/maps/area_01_blockout_source_map_v1.json",
+    "surface_floor_topology_reference": "docs/planning/maps/area_01_surface_floor_source_map_v1.json",
+    "surface_floor_visual_reference": "docs/planning/maps/area_01_surface_floor_source_map_v1.png",
+    "polished_art_target": "docs/planning/maps/area_01_source_map_polished_terrain_concept_v1.png"
+  },
+  "produced_artifacts": {
+    "full_authoritative_preview": "docs/planning/maps/area_01_authoritative_wall_map_art_preview_v2.png",
+    "camera_crop_preview": "docs/planning/maps/area_01_authoritative_wall_map_art_camera_crop_v2.png",
+    "geometry_overlay_preview": "docs/planning/maps/area_01_authoritative_wall_map_art_geometry_overlay_v2.png"
+  },
+  "coordinate_space": {
+    "units": "Godot 2D scene pixels for the source map; preview PNG pixels for rendered review images",
+    "origin": "Source polygons come from area_01_blockout_source_map_v1.json using Main.tscn world-coordinate planning anchors.",
+    "conversion": "Preview renderer scales and offsets source-map world coordinates into 2400x1200 review images.",
+    "runtime_authority": "The preview images are not runtime authority. Collision must remain explicit source-map/Godot geometry."
+  },
+  "topology": {
+    "current_status": "The current runtime-authoritative blockout map is wider than the original starter pocket but still uses angular blockout wall slabs.",
+    "target_status": "The surface-floor reference should become the future source geometry: open water surface over a continuous seafloor with cave holes and deeper branches.",
+    "recommendation": "Revise or replace the current blockout source-map JSON before wiring sprite art into Godot."
+  },
+  "representation_plan": {
+    "solid_terrain": "Polygon2D fills plus CollisionPolygon2D using the same named source polygons.",
+    "terrain_art": "Reusable Sprite2D rim trims, cave-mouth frames, edge highlights, decor clusters, and optional terrain fill texture.",
+    "triggers": "Area2D scene hooks for oxygen surface, ship offload, cave entrances, pickups, scans, gates, hazards, and return currents.",
+    "tilemap": "Deferred unless a layer is genuinely grid-friendly or decorative."
+  },
+  "validation_notes": [
+    "Do not infer collision from preview PNG pixels.",
+    "Every runtime solid terrain entry must have visible terrain, rim/lip, and matching collision.",
+    "Surface oxygen refill and ship cargo offload must remain separate hooks.",
+    "Cave mouths must not have blocking collision across the navigable entrance.",
+    "Current-run pickups and scans must be reachable or explicitly marked future-locked."
+  ],
+  "next_pipeline_step": "Create an Area 01 surface-floor geometry source-map JSON in Godot world coordinates before runtime sprite wiring."
+}

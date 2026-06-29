@@ -10,6 +10,7 @@ var cargo_limit := 3
 var has_left_base := false
 var current_depth := 0.0
 var result := Result.DIVING
+var unlimited_oxygen := false
 
 func reset(new_max_oxygen: float) -> void:
 	max_oxygen = new_max_oxygen
@@ -24,6 +25,8 @@ func start() -> void:
 
 func drain_oxygen(amount: float) -> void:
 	if result != Result.DIVING:
+		return
+	if unlimited_oxygen:
 		return
 
 	oxygen = maxf(0.0, oxygen - amount)

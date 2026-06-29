@@ -9,6 +9,7 @@ The repair is intentionally simple:
 - `docs/planning/maps/area_01_blockout_source_map_v1.json` owns the current Area 01 wall polygons.
 - `scripts/area01_blockout_builder.gd` applies each wall polygon to the visible wall, the collision polygon, and the readable rim at runtime.
 - Older Area 01 wall-like dressing is hidden during this rescue pass so collision truth is readable before decoration resumes.
+- `docs/planning/maps/area_01_surface_floor_source_map_v1.png` is the higher-level first-level reference for the desired open-surface, continuous-seafloor, cave-hole topology; it is not runtime collision authority until converted back into `area_01_blockout_source_map_v1.json`.
 
 ## Simple Wall Map
 

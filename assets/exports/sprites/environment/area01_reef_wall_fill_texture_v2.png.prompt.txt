@@ -1,0 +1,3 @@
+Prompt: Clean HD 2D side-view underwater reef terrain texture tile for a game. Seamless/tileable horizontally and vertically, designed for filling irregular cave wall polygons. Style: polished underwater exploration game, dark blue-green stone, subtle layered rock plates, soft cyan edge highlights, occasional tiny coral/kelp hints embedded in the rock, no UI, no characters, no labels, no large individual platforms, no black background. Readable at small scale, low noise, painterly but game-ready. Square 1024x1024.
+
+Source: AI-generated image copied from C:\Users\pirat\.codex\generated_images\019efc4f-4685-77d1-ad73-9a5c11715ccf\ig_0f5b6ff9872a2263016a4215b75988819bb997ef75eed3d994.png.

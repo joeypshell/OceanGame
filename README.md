@@ -49,6 +49,7 @@ The active milestone is `Survival Expedition Loop Prototype`. Route/content expa
 - `docs/archive/ROADMAP_HISTORY_2026_06_27.md`: historical roadmap and issue-batch record from before roadmap compaction.
 - `docs/planning/AREA_01_READABILITY_RESCUE_2026_06_27.md`: active readability milestone plan.
 - `docs/planning/AREA_01_READABILITY_EVIDENCE_2026_06_27.md`: current readability evidence and next-work decision.
+- `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`: planned daylight timer, surface oxygen refill, ship offload, and night-upgrade loop.
 - `docs/planning/GAME_VISION.md`: compact design anchor.
 - `docs/planning/CORE_LOOP_RULES.md`: core loop and system rules.
 - `docs/planning/DAILY_RUNS.md`: seeded expedition guidance.

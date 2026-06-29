@@ -1,0 +1,4 @@
+interface:
+  display_name: "OceanGame Frontend QA"
+  short_description: "Verify visual readability"
+  default_prompt: "Use $oceangame-frontend-qa to verify OceanGame HUD, route readability, screenshots, or Godot Web visual smoke."

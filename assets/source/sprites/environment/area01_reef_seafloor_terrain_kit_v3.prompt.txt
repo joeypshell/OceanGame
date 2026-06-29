@@ -1,0 +1,23 @@
+Create a 4x4 transparent-sprite-ready atlas for a side-view 2D underwater exploration game terrain kit. This is not a scene. It is a modular kit for building large continuous reef cave walls from authored polygons. Style: polished modern pixel-inspired 2D game art, dark blue/teal underwater reef, comparable to high-quality side-scroller ocean cave terrain: readable layered stone, cyan rim light, subtle moss/kelp/coral accents, deep shadowed undersides. Background must be perfectly flat solid #FF00FF chroma-key in all empty areas. No transparency. No text, no labels, no UI, no grid lines, no borders, no player, no fish, no resources, no full scene.
+
+Atlas constraints: exactly 4 rows by 4 columns, equal invisible cells with generous magenta padding. Each sprite must stay inside its cell. Pieces must be smaller modular components that can be repeated, capped, clipped, and layered over Polygon2D terrain. Avoid big standalone rectangular platform chunks. Avoid isolated giant blocks. Use consistent palette, lighting direction, thickness, and scale across all pieces.
+
+Cell plan left to right, top to bottom:
+1: seamless low-contrast reef wall fill texture swatch only, rounded rock/coral nodules, no top lip, no hard outer edge, no plants, should tile/clipped inside large terrain polygons without visible wallpaper seams.
+2: shallow seafloor top rim left cap, thin low rocky lip, natural left end, bright cyan top edge, dark underside.
+3: shallow seafloor top rim middle repeat, thin horizontal strip, tileable left/right, same height as caps, minimal distinctive features.
+4: shallow seafloor top rim right cap, matching cell 2 and 3.
+5: cave ceiling underside left cap, thin underside lip with small dark reef teeth, natural left end.
+6: cave ceiling underside middle repeat, tileable left/right, darker than top rim, small irregular hanging teeth.
+7: cave ceiling underside right cap, matching cell 5 and 6.
+8: cave-mouth curved inner rim segment, compact curved trim for framing openings, not a full arch gate.
+9: vertical wall edge top cap, narrow side rim top end, no full column.
+10: vertical wall edge middle repeat, narrow vertical side trim tileable up/down, no full column, dark center with cyan edge.
+11: vertical wall edge bottom cap, narrow side rim bottom end.
+12: diagonal slope edge trim, thin rocky rim about 30 degrees, tileable-looking, dark underside.
+13: inside corner trim where ceiling meets wall, compact corner-only piece.
+14: outside corner trim for protruding shelf, compact corner-only piece.
+15: thin interior ledge strip, narrow low ledge tileable horizontally, subdued.
+16: deep floor lip strip, dark low horizontal rim, sparse detail, less bright than shallow top rim.
+
+Critical visual goal: when repeated across a large polygonal cave map, the kit should look like continuous natural reef terrain, not stamped platform sprites. Fill should be subtle; ledges and rims carry readability. Keep all empty space #FF00FF.

@@ -28,43 +28,43 @@
 <text x="696.2" y="445.8" fill="#bff7ff" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">deep_spine_lane</text>
 </g>
 <g opacity="0.98">
-<polygon points="12.7,82.8 308.0,82.8 308.0,150.5 12.7,150.5" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="160.4" y="116.6" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">left_solid_wall</text>
-<polygon points="491.3,82.8 1382.2,82.8 1382.2,158.0 491.3,150.5" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="936.7" y="118.5" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">right_solid_wall</text>
-<polygon points="12.7,301.0 297.8,301.0 328.4,383.8 12.7,398.8" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="162.9" y="346.1" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">left_starter_ledge</text>
-<polygon points="302.9,391.3 506.5,398.8 567.6,459.0 313.1,474.1" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="422.5" y="430.8" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">right_starter_ledge</text>
-<polygon points="521.8,158.0 974.9,165.5 974.9,225.7 521.8,218.2" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="748.4" y="191.9" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_east_reef_mass</text>
-<polygon points="521.8,361.2 974.9,353.7 974.9,413.9 521.8,428.9" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="748.4" y="389.4" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_lower_basin_floor</text>
-<polygon points="12.7,150.5 84.0,150.5 78.9,301.0 12.7,301.0" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="47.1" y="225.7" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_west_cave_shelf</text>
-<polygon points="272.4,158.0 333.5,150.5 348.7,248.3 297.8,285.9" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="313.1" y="210.7" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_left_chamber_ceiling</text>
-<polygon points="1234.5,180.6 1382.2,225.7 1382.2,451.5 1234.5,391.3" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="1308.4" y="312.3" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_right_chamber_shelf</text>
-<polygon points="12.7,398.8 180.7,376.2 272.4,421.4 272.4,504.2 12.7,504.2" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="150.2" y="441.0" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_far_west_shelf</text>
-<polygon points="318.2,451.5 470.9,413.9 501.5,496.6 333.5,541.8" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="406.0" y="475.9" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_mid_crossing_ceiling</text>
-<polygon points="491.3,496.6 954.5,481.6 1005.5,745.0 470.9,745.0" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="730.5" y="617.0" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_deep_spine_floor</text>
-<polygon points="974.9,353.7 1234.5,391.3 1336.4,496.6 1020.7,466.5" fill="#051012" stroke="#ff553d" stroke-width="2"/>
-<text x="1141.6" y="427.0" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_far_right_pocket_wall</text>
+<polygon points="12.7,79.0 84.0,94.1 170.5,82.8 252.0,94.1 308.0,82.8 308.0,150.5 221.5,139.2 134.9,158.0 12.7,146.7" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="167.2" y="114.1" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">left_solid_wall</text>
+<polygon points="491.3,79.0 618.5,94.1 745.8,79.0 878.2,92.2 1041.1,80.9 1198.9,94.1 1382.2,82.8 1382.2,161.8 1239.6,150.5 1071.6,171.2 929.1,146.7 801.8,165.5 664.4,150.5 491.3,156.1" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="924.0" y="121.7" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">right_solid_wall</text>
+<polygon points="12.7,304.8 124.7,285.9 231.6,297.2 297.8,308.5 328.4,383.8 211.3,372.5 109.5,406.3 12.7,395.0" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="166.1" y="344.3" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">left_starter_ledge</text>
+<polygon points="302.9,391.3 399.6,378.1 506.5,398.8 567.6,459.0 470.9,470.3 374.2,455.2 313.1,474.1" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="419.3" y="432.4" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">right_starter_ledge</text>
+<polygon points="521.8,152.4 613.5,167.4 710.2,150.5 822.2,169.3 974.9,158.0 974.9,225.7 862.9,214.5 766.2,229.5 669.5,214.5 577.8,227.6 521.8,216.3" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="728.7" y="193.2" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_east_reef_mass</text>
+<polygon points="521.8,365.0 638.9,348.0 771.3,365.0 883.3,351.8 974.9,365.0 974.9,417.6 847.6,410.1 725.5,430.8 603.3,415.7 521.8,432.7" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="746.3" y="390.2" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_lower_basin_floor</text>
+<polygon points="12.7,146.7 89.1,154.3 76.4,210.7 89.1,270.9 78.9,301.0 12.7,301.0" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="59.8" y="230.8" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_west_cave_shelf</text>
+<polygon points="272.4,161.8 333.5,150.5 358.9,203.2 348.7,255.8 297.8,285.9 287.6,225.7" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="316.5" y="213.8" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_left_chamber_ceiling</text>
+<polygon points="1234.5,180.6 1326.2,210.7 1382.2,229.5 1382.2,455.2 1310.9,432.7 1234.5,391.3 1254.9,308.5" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="1303.6" y="315.5" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_right_chamber_shelf</text>
+<polygon points="12.7,398.8 99.3,383.8 180.7,376.2 272.4,421.4 262.2,504.2 134.9,492.9 12.7,504.2" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="139.3" y="440.2" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_far_west_shelf</text>
+<polygon points="318.2,451.5 399.6,425.1 470.9,413.9 501.5,496.6 425.1,521.1 333.5,541.8" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="408.1" y="475.0" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_mid_crossing_ceiling</text>
+<polygon points="491.3,496.6 623.6,477.8 761.1,492.9 954.5,481.6 1005.5,745.0 832.4,733.7 669.5,752.5 470.9,745.0" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="726.1" y="615.6" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_deep_spine_floor</text>
+<polygon points="974.9,353.7 1081.8,368.7 1234.5,391.3 1336.4,496.6 1173.5,477.8 1020.7,466.5" fill="#051012" stroke="#ff553d" stroke-width="2"/>
+<text x="1137.0" y="425.8" fill="#ffd5cc" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">blockout_far_right_pocket_wall</text>
 </g>
 <g stroke="#43606f" stroke-width="1" stroke-dasharray="5 8" opacity="0.5">
-<line x1="0" y1="-82.8" x2="1400" y2="-82.8"/>
-<text x="10" y="-86.8" fill="#9fb6c2" font-family="Arial, sans-serif" font-size="12">0m</text>
-<line x1="0" y1="105.3" x2="1400" y2="105.3"/>
-<text x="10" y="101.3" fill="#9fb6c2" font-family="Arial, sans-serif" font-size="12">50m</text>
-<line x1="0" y1="293.5" x2="1400" y2="293.5"/>
-<text x="10" y="289.5" fill="#9fb6c2" font-family="Arial, sans-serif" font-size="12">100m</text>
-<line x1="0" y1="481.6" x2="1400" y2="481.6"/>
-<text x="10" y="477.6" fill="#9fb6c2" font-family="Arial, sans-serif" font-size="12">150m</text>
-<line x1="0" y1="669.7" x2="1400" y2="669.7"/>
-<text x="10" y="665.7" fill="#9fb6c2" font-family="Arial, sans-serif" font-size="12">200m</text>
+<line x1="0" y1="22.6" x2="1400" y2="22.6"/>
+<text x="10" y="18.6" fill="#9fb6c2" font-family="Arial, sans-serif" font-size="12">0m</text>
+<line x1="0" y1="97.8" x2="1400" y2="97.8"/>
+<text x="10" y="93.8" fill="#9fb6c2" font-family="Arial, sans-serif" font-size="12">50m</text>
+<line x1="0" y1="248.3" x2="1400" y2="248.3"/>
+<text x="10" y="244.3" fill="#9fb6c2" font-family="Arial, sans-serif" font-size="12">100m</text>
+<line x1="0" y1="398.8" x2="1400" y2="398.8"/>
+<text x="10" y="394.8" fill="#9fb6c2" font-family="Arial, sans-serif" font-size="12">150m</text>
+<line x1="0" y1="549.3" x2="1400" y2="549.3"/>
+<text x="10" y="545.3" fill="#9fb6c2" font-family="Arial, sans-serif" font-size="12">200m</text>
 </g>
 </svg>

@@ -1,7 +1,9 @@
 class_name Area01SourceMapOverlay
 extends Node2D
 
-const SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_blockout_source_map_v1.json"
+const RUNTIME_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_runtime_source_map_v2.json"
+const LEGACY_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_blockout_source_map_v1.json"
+const SOURCE_MAP_PATH := RUNTIME_SOURCE_MAP_PATH
 const LANE_COLOR := Color(0.0, 0.9, 1.0, 0.12)
 const LANE_EDGE_COLOR := Color(0.0, 0.95, 1.0, 0.72)
 const COLLISION_COLOR := Color(1.0, 0.18, 0.08, 0.18)
@@ -10,11 +12,16 @@ const POCKET_COLOR := Color(0.25, 1.0, 0.52, 0.86)
 const RESOURCE_COLOR := Color(0.2, 1.0, 0.85, 0.92)
 const SCANNABLE_COLOR := Color(1.0, 0.76, 0.18, 0.92)
 const SCAN_RADIUS_COLOR := Color(0.95, 0.95, 0.25, 0.42)
+const HOOK_COLOR := Color(0.95, 0.74, 0.2, 0.16)
+const HOOK_EDGE_COLOR := Color(0.95, 0.74, 0.2, 0.62)
+const FUTURE_HOOK_COLOR := Color(0.9, 0.22, 0.38, 0.16)
+const FUTURE_HOOK_EDGE_COLOR := Color(0.9, 0.22, 0.38, 0.62)
 
 @export var scan_range := 120.0
 
 var source_map: Dictionary = {}
 var load_error := ""
+var loaded_source_map_path := ""
 
 func _ready() -> void:
 	name = "Area01SourceMapOverlay"
@@ -33,25 +40,38 @@ func set_debug_visible(enabled: bool) -> void:
 func load_source_map() -> bool:
 	source_map = {}
 	load_error = ""
-	var file := FileAccess.open(SOURCE_MAP_PATH, FileAccess.READ)
-	if file == null:
-		load_error = "missing source map"
-		return false
+	for path in [RUNTIME_SOURCE_MAP_PATH, LEGACY_SOURCE_MAP_PATH]:
+		var file := FileAccess.open(path, FileAccess.READ)
+		if file == null:
+			continue
 
-	var parsed = JSON.parse_string(file.get_as_text())
-	if typeof(parsed) != TYPE_DICTIONARY:
-		load_error = "source map parse failed"
-		return false
+		var parsed = JSON.parse_string(file.get_as_text())
+		if typeof(parsed) != TYPE_DICTIONARY:
+			load_error = "source map parse failed: %s" % path
+			return false
 
-	source_map = parsed as Dictionary
-	queue_redraw()
-	return true
+		source_map = parsed as Dictionary
+		loaded_source_map_path = path
+		queue_redraw()
+		return true
+
+	load_error = "missing source map"
+	return false
 
 func source_map_summary() -> Dictionary:
+	var lanes := (source_map.get("playable_water_lanes", []) as Array).size()
+	if lanes == 0:
+		lanes = (source_map.get("regions", []) as Array).size()
+	var pockets := (source_map.get("resource_pockets", []) as Array).size()
+	if pockets == 0:
+		for hook in source_map.get("scene_hooks", []):
+			if typeof(hook) == TYPE_DICTIONARY and String((hook as Dictionary).get("type", "")) == "pickup":
+				pockets += 1
 	return {
-		"lanes": (source_map.get("playable_water_lanes", []) as Array).size(),
+		"lanes": lanes,
 		"solids": (source_map.get("solid_terrain", []) as Array).size(),
-		"pockets": (source_map.get("resource_pockets", []) as Array).size(),
+		"pockets": pockets,
+		"hooks": (source_map.get("scene_hooks", []) as Array).size(),
 		"rules": (source_map.get("validation_rules", []) as Array).size(),
 	}
 
@@ -62,6 +82,7 @@ func _draw() -> void:
 	_draw_playable_lanes()
 	_draw_mapped_collision()
 	_draw_resource_pockets()
+	_draw_scene_hooks()
 	_draw_runtime_scan_radius()
 	_draw_runtime_targets()
 
@@ -81,8 +102,7 @@ func _draw_mapped_collision() -> void:
 	for solid in solids:
 		if typeof(solid) != TYPE_DICTIONARY:
 			continue
-		var path := String((solid as Dictionary).get("collision_path", ""))
-		var collision := get_node_or_null("../%s" % path) as CollisionPolygon2D
+		var collision := _collision_for_solid(solid as Dictionary)
 		if collision == null or collision.disabled:
 			continue
 		var points := PackedVector2Array()
@@ -105,6 +125,33 @@ func _draw_resource_pockets() -> void:
 		var position := to_local(node.global_position)
 		_draw_cross(position, POCKET_COLOR, 18.0, 2.0)
 		draw_arc(position, 28.0, 0.0, TAU, 32, POCKET_COLOR, 2.0)
+
+func _draw_scene_hooks() -> void:
+	var hooks: Array = source_map.get("scene_hooks", [])
+	for hook in hooks:
+		if typeof(hook) != TYPE_DICTIONARY:
+			continue
+		var hook_data := hook as Dictionary
+		var points := _points_from_json(hook_data.get("points", []))
+		if points.size() < 3:
+			continue
+		var is_future := String(hook_data.get("status", "")) == "future_locked"
+		draw_colored_polygon(points, FUTURE_HOOK_COLOR if is_future else HOOK_COLOR)
+		draw_polyline(_closed_points(points), FUTURE_HOOK_EDGE_COLOR if is_future else HOOK_EDGE_COLOR, 1.5)
+
+func _collision_for_solid(solid: Dictionary) -> CollisionPolygon2D:
+	var path := String(solid.get("collision_path", ""))
+	if not path.is_empty():
+		return get_node_or_null("../%s" % path) as CollisionPolygon2D
+
+	var runtime_generation: Variant = solid.get("runtime_generation", {})
+	if not runtime_generation is Dictionary:
+		return null
+	var runtime := runtime_generation as Dictionary
+	var collision_name := String(runtime.get("collision_polygon2d_name", ""))
+	if collision_name.is_empty():
+		return null
+	return get_node_or_null("../Area01ArtSlice/RuntimeSourceCollision/%s" % collision_name) as CollisionPolygon2D
 
 func _draw_runtime_scan_radius() -> void:
 	var player := get_tree().get_first_node_in_group("player") as Node2D

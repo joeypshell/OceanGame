@@ -16,6 +16,14 @@ This index points future work to the active source of truth without making `docs
 - `docs/planning/AREA_01_READABILITY_RESCUE_2026_06_27.md`: current readability milestone.
 - `docs/planning/AREA_01_READABILITY_EVIDENCE_2026_06_27.md`: deterministic evidence and readability decision record.
 - `docs/planning/AREA_01_BLUE_HOLE_ATLAS_2026_06_27.md`: Area 01 map/atlas planning context.
+- `docs/planning/AREA_01_SURFACE_FLOOR_SOURCE_MAP_2026_06_29.md`: open-surface-over-continuous-seafloor topology source reference.
+- `docs/planning/AREA_01_SURFACE_FLOOR_SPRITE_KIT_PREVIEW_2026_06_29.md`: source-geometry-to-terrain-kit preview status.
+- `docs/planning/AREA_01_TERRAIN_ART_KIT_V4_2026_06_29.md`: current repeatable terrain-kit candidate and runtime review pipeline.
+- `docs/planning/AREA_01_TERRAIN_ART_KIT_V3_2026_06_29.md`: prior terrain-kit candidate retained for comparison.
+- `docs/planning/AREA_01_MAP_TRUTH_RECONCILIATION_2026_06_29.md`: comparison between current runtime blockout authority and accepted source-floor runtime-v2 direction.
+- `docs/planning/AREA_01_RUNTIME_SOURCE_MAP_V2_2026_06_29.md`: promoted runtime-source candidate and repeatable generation process before Godot builder wiring.
+- `docs/planning/AREA_01_ORGANIC_GEOMETRY_PIPELINE_PASS_2026_06_29.md`: repeatable organic geometry pass and next gate before runtime terrain wiring.
+- `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`: proposed daylight timer, surface oxygen, ship offload, night upgrade, and pause-slate loop.
 
 ## Historical Roadmap Archive
 
@@ -33,6 +41,7 @@ This index points future work to the active source of truth without making `docs
 - `docs/planning/GAME_VISION.md`
 - `docs/planning/CORE_LOOP_RULES.md`
 - `docs/planning/DAILY_RUNS.md`
+- `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`

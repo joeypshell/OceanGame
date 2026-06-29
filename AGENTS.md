@@ -61,14 +61,42 @@ Record durable decisions, blockers, commit hashes, and verification results in i
 
 For broad features, write a compact plan under `docs/planning/` before implementation. Split the plan into small issues that one agent can complete and verify. Use an integration branch only when multiple issues must be reviewed together before merging.
 
-## Architecture Refactor Guardrails
+## Main.gd Architecture Guardrail
 
-- Do not add new unrelated responsibilities to `scripts/main.gd`; it should trend toward scene composition, signal wiring, and high-level orchestration.
-- Before adding logic to `main.gd`, check whether it belongs in an existing state/model class, presenter, service, controller, or focused helper.
-- Keep UI formatting separate from durable gameplay state. Presenters may format/render state, but they should not own progression, survival, cargo, or save rules.
-- Keep state/model classes independent of Godot scene nodes and UI controls.
-- Prefer small extraction issues over broad rewrites. Every refactor issue must preserve existing behavior unless the issue explicitly says otherwise.
+`scripts/main.gd` is being decomposed into smaller modules. Do not add unrelated new responsibilities to `scripts/main.gd`.
+
+When changing behavior currently touched by `main.gd`, consider whether the logic belongs in an extracted presenter, service, controller, helper, or state/model class.
+
+Preferred direction:
+
+- UI text, label formatting, warning copy, and compact HUD/status summaries belong in presenter/helper modules.
+- Durable gameplay state belongs in state/model classes such as `DiveSession`, `ProgressionState`, and `SurvivalState`.
+- Save/load coordination belongs in a save service.
+- Route setup and route metadata helpers belong in route-focused services/helpers.
+- Debug/dev staging belongs in debug-focused helpers.
+- `main.gd` should primarily handle scene composition, node wiring, signal wiring, and high-level orchestration.
+
+Do not create circular dependencies. Do not move code just for neatness. Every extraction must reduce complexity, clarify ownership, improve testability, or reduce future agent context load.
+
+## Refactor Testing Guardrail
+
+When extracting code from `scripts/main.gd`, agents must add or preserve tests for the extracted behavior.
+
+- Prefer small, direct unit tests against the new module.
+- Do not move logic into a new file without proving behavior is preserved through tests or clearly documenting why only smoke/manual verification is possible.
+- Do not accept "manual tested only" for logic that can reasonably be unit-tested.
+- Preserve existing behavior unless the issue explicitly says otherwise.
 - Use `docs/current/MAIN_GD_ARCHITECTURE_REFACTOR_EPIC.md` as the active decomposition plan for `main.gd`.
+
+Every refactor issue must report:
+
+- files changed
+- responsibility extracted
+- tests added or updated
+- verification commands run
+- exact command results
+- lines removed or simplified in `scripts/main.gd`, where practical
+- any behavior intentionally left unchanged
 
 ## Verification Commands
 

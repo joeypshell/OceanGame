@@ -1,0 +1,21 @@
+Asset: Area 01 reef/seafloor terrain kit v3
+Date: 2026-06-29
+Status: prototype/planning asset, not runtime wired
+
+Source:
+- assets/source/sprites/environment/area01_reef_seafloor_terrain_kit_v3_raw.png
+- assets/source/sprites/environment/area01_reef_seafloor_terrain_kit_v3.prompt.txt
+
+Processed exports:
+- assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v3.png
+- assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v3_frames/
+- assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v3.pipeline-meta.json
+
+Generation:
+- Created with the built-in image generation flow through the generate2dsprite workflow.
+- Postprocessed with generate2dsprite chroma-key cleanup and frame extraction.
+
+Usage:
+- Use as the current Area 01 terrain-art review candidate.
+- Collision must remain authored from source-map geometry and Godot collision polygons, not inferred from these sprite pixels.
+- Do not wire into runtime scenes until the source-map preview is approved.

@@ -2,13 +2,24 @@
 
 ## Decision
 
-Area 01 walls should use a source-map-driven modular sprite dressing system, not bespoke full-wall images.
+Area 01 walls should use a source-map-driven terrain-chunk system, not bespoke full-wall images and not repeated rectangular stamp sprites as the main wall read.
 
 The source map remains the authority for terrain:
 
 - `docs/planning/maps/area_01_blockout_source_map_v1.json` owns solid wall polygons.
+- `docs/planning/maps/area_01_runtime_source_map_v2.json` is the current runtime validation source for generated visible terrain, collision, rims, hooks, and semantic trim segments.
 - `Area01BlockoutBuilder` applies the same polygon to visible wall fill, collision, and collision-read lip.
-- `Area01BlockoutBuilder` also creates `Area01ArtSlice/TerrainVisualEdges/SourceMapWallDressing` and places reusable wall sprites from the same solid terrain entries.
+- `Area01BlockoutBuilder` also creates `Area01ArtSlice/TerrainVisualEdges/SourceMapTerrainAccents` and adds continuous inset/depth planes, edge bands, sparse decals, and source-map-authored semantic trim sprites from the same solid terrain entries.
+
+The implementation pipeline is:
+
+- `map_mode`: `side_scroll_mode`
+- `visual_model`: parallax depth plus source-map terrain chunks
+- `runtime_object_model`: platform objects, interactive scene objects, and scene hooks
+- `collision_model`: precise simplified shapes
+- `engine_target`: project-native Godot scene
+
+This intentionally defers a Godot `TileMapLayer`/autotile conversion. A TileMap can be useful later if the level editor workflow needs grid-stamped terrain, but the current screenshot target needs irregular natural shelves and caves first.
 
 ## Current Modular Sprite Kit
 
@@ -19,6 +30,7 @@ Runtime exports live in `assets/exports/sprites/environment/`.
 Current first-pass pieces:
 
 - `area01_reef_wall_face_tile_v1.svg`
+- `area01_reef_wall_fill_texture_v2.png`
 - `area01_reef_wall_top_lip_v1.svg`
 - `area01_reef_wall_underside_shadow_v1.svg`
 - `area01_reef_wall_corner_cap_v1.svg`
@@ -26,30 +38,43 @@ Current first-pass pieces:
 - `area01_reef_wall_kelp_decal_v1.svg`
 - `area01_reef_wall_coral_decal_v1.svg`
 
-These are intentionally small repeatable pieces. They are not collision and do not define level shape.
+These are support/decal/fill pieces. They are not collision and do not define level shape. The primary wall read now comes from filled source-map polygons plus continuous terrain planes and edge bands.
 
 ## How This Avoids One Sprite Per Wall
 
-Each wall polygon gets repeated wall-dressing groups. A group combines:
+Each wall polygon gets a generated terrain-accent group. A group combines:
 
-- a dark reef face tile;
-- a readable top lip;
-- an underside shadow;
-- an occasional crack, kelp, coral, or corner decal.
+- a textured filled wall polygon;
+- a collision polygon with exactly the same source-map points;
+- a readable lip/rim polygon with exactly the same source-map points;
+- continuous inset/depth planes derived from the same polygon;
+- top/side/underside edge bands;
+- semantic `trim_segments` from the source map, such as `top_lip`, `underside`, `vertical_wall`, and `deep_floor_lip`;
+- semantic material bands: tapered lit shelf faces, thin top-edge glow, overhang occlusion, and side-wall occlusion derived from those same trim segments;
+- cap-aware trim placement: `top_lip` and `underside` use left cap, middle repeat, and right cap sprites; `vertical_wall` uses top cap, middle repeat, and bottom cap sprites; single-piece roles such as `deep_floor_lip` and `diagonal_slope` remain sparse repeat strips;
+- generated blend bands behind each semantic trim so sprite detail sits in a local cap/shadow bed instead of looking pasted on top of the wall body;
+- occasional crack, kelp, coral, or corner decals.
 
-That lets one long ceiling, one shelf edge, or one vertical wall reuse the same small pieces at different positions, scales, and rotations. Future art can replace these SVGs with painted PNG tiles or atlas regions without changing collision ownership.
+That lets one long ceiling, one shelf edge, or one vertical wall reuse the same treatment without implying that rectangular sprites define collision. Future art can replace the fill texture, decals, or edge materials with painted PNG tiles or atlas regions without changing collision ownership.
 
 ## Guardrails
 
 - Do not hand-place collision to match art.
 - Do not hand-place unrelated wall art that implies blockers.
 - Do not generate a unique full-wall sprite for every source-map polygon.
+- Do not make repeated rectangular sprites the main terrain silhouette.
+- Do not infer terrain sprite placement from arbitrary polygon edge angles. A terrain sprite should only appear when the source map explicitly names the terrain role it serves.
+- Do not darken the terrain fill so much that the approved rock material disappears. Source-map terrain should read as solid, but the player must still see rock texture, bevel light, and overhang shadow.
+- Do not use large rectangular lighting overlays on shelf faces. Broad lighting bands should taper along the authored edge so they read as beveling, not UI-like panels.
+- Do not place only middle/repeat sprites on authored terrain edges. If an art-kit role has caps, the builder must place start cap, middle repeat, and end cap sprites so strips read as modular terrain rather than random stickers.
+- Do not render semantic trim sprites directly on bare polygon fill; add a role-specific blend band first, then the sprite trim at lower opacity.
+- Keep semantic trim coverage sparse enough that it clarifies ledges, undersides, walls, and deep floor boundaries without becoming a noisy wallpaper layer.
 - If a wall shape changes, update the source map first, then let the builder regenerate collision/visuals/dressing.
-- Decorative sprites may clarify wall texture, but collision and playable lanes must remain readable from the source-map fill and rim.
+- Decorative sprites may clarify wall texture, but collision and playable lanes must remain readable from the source-map fill, continuous planes, and rim.
 
 ## Next Steps
 
-1. Improve the primitive art quality while preserving the same filenames or adding versioned replacements.
-2. Apply the sprite dressing more selectively so large flat walls read as continuous terrain rather than obvious repeated stamps.
-3. Dress the remaining Area 01 source-map walls after normal play confirms the larger blockout lanes.
+1. Improve the primitive art quality while preserving the semantic trim roles and adding versioned replacements.
+2. Blend the filled polygon body, edge bands, and trim sprites so shelves look like continuous natural reef rather than a polygon with strips on top.
+3. Use staged captures to review each semantic role in context before adding more route content.
 4. Consider a later atlas or TileSet only after the source-map pipeline proves stable.

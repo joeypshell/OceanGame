@@ -6,6 +6,7 @@ Area 01 now needs a source-of-truth blockout contract before more cave, route, o
 
 The source map lives at `docs/planning/maps/area_01_blockout_source_map_v1.json`.
 The generated review map lives at `docs/planning/maps/area_01_wall_collision_authority_map_v1.svg`.
+The first-level surface/seafloor reference lives at `docs/planning/maps/area_01_surface_floor_source_map_v1.png`, with topology metadata in `docs/planning/maps/area_01_surface_floor_source_map_v1.json`.
 
 This is a developer planning and validation artifact. It is not an in-game minimap, checklist, or exact locator system.
 
@@ -13,10 +14,29 @@ This is a developer planning and validation artifact. It is not an in-game minim
 
 - Playable water lanes: the open movement spaces the diver should understand as explorable water.
 - Solid terrain: every current Area 01 blocker that must have matching visible wall art, enabled collision, and a readable rim/lip.
+- Terrain chunk library: the reusable wall/ledge/cave/decor roles that determine how foreground terrain becomes Godot runtime objects.
 - Nonblocking background policy: broad parallax, lighting, and old shallow shapes that must not create invisible walls.
 - Resource pockets: the places where starter resources should teach left, right, and downward movement.
 - Scannable and interactable policy: current-run targets must be reachable; future-locked promises must be quieter and honest.
 - Validation rules: the checklist tests and debug overlays should enforce before more content is added.
+
+## Current Stage Pipeline
+
+Area 01 is treated as a `side_scroll_mode` stage:
+
+- parallax, lighting, plants, crystals, and background rock are visual-only depth;
+- foreground playable terrain is built from source-map polygons;
+- each solid terrain polygon drives the visible fill, readable rim/lip, and `CollisionPolygon2D`;
+- pickups, scans, cave mouths, return zones, and other interactions stay separate scene objects;
+- `Area2D` is reserved for triggers, scans, pickups, and offload zones, not blocking terrain.
+
+This is intentionally not a final TileMap workflow yet. The current priority is natural shelf/cave silhouettes with trustworthy collision. A TileMap/autotile conversion can happen later only if it improves editing speed without making the level feel grid-based.
+
+## Surface/Floor Reference
+
+The first-level map should read as open water above a continuous seafloor with explorable holes below it. `area_01_surface_floor_source_map_v1.png` is the current visual reference for that topology.
+
+This reference does not replace the current runtime collision source yet. If a future implementation adopts it, the seafloor, cave mouths, and cave boundaries must be converted into explicit source-map polygons rather than inferred from image pixels.
 
 ## Why This Exists
 

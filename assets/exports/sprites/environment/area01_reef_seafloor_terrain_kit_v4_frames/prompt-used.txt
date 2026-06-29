@@ -1,0 +1,13 @@
+Use case: stylized-concept
+Asset type: OceanGame modular 2D terrain sprite atlas
+Primary request: Create a clean HD side-view underwater reef terrain sprite atlas for a Godot 2D exploration game.
+Sheet layout: exactly 4 columns x 4 rows of separate modular terrain pieces on a perfectly flat solid #FF00FF chroma-key background. No visible grid lines, no borders, no labels, no text, no UI, no characters, no fish, no full map, no background scene.
+Style/medium: polished hand-painted HD 2D game terrain, readable from gameplay distance, dark blue-green reef rock, cyan rim highlights, subtle purple/blue coral accents, organic layered stone plates, similar polish target to a modern underwater side-scroller.
+Composition: each cell contains one isolated terrain module centered with generous magenta padding. Every piece has a clean outer silhouette and flat joining seams where it is meant to tile. Same palette, lighting direction, thickness, and scale across all cells.
+Required cells, row major:
+Row 1: large reef wall fill material patch; seafloor top lip left cap; seafloor top lip middle repeat with flat left/right joins; seafloor top lip right cap.
+Row 2: cave ceiling underside left cap; cave ceiling underside middle repeat with flat left/right joins; cave ceiling underside right cap; cave mouth arch rim segment.
+Row 3: vertical reef wall top cap; vertical reef wall middle repeat with flat top/bottom joins; vertical reef wall bottom cap; diagonal slope edge trim.
+Row 4: inside corner cap; outside corner cap; thin interior ledge strip; deep floor lip strip.
+Important tiling constraints: middle repeat cells must have matching left/right or top/bottom edges so they can be placed repeatedly without looking like separate stamps. Cap cells must visually connect to the repeat cells. Top lip pieces should have a lit readable playable ledge top and darker underside. Ceiling pieces should read as overhead cave underside, darker than seafloor tops. Vertical pieces should read as side walls, not horizontal platforms.
+Containment: the entire subject must fit fully inside each cell; no piece may cross a cell edge; leave magenta margin on all four sides; no shadows or glow outside the cell that would interfere with chroma-key removal. Background must be uniform #FF00FF with no gradients, texture, or lighting variation.
