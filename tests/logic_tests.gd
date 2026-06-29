@@ -3544,6 +3544,18 @@ func _test_area_01_source_map_contract() -> void:
 		_expect(rule_ids.has(id), "Area 01 source map should include validation rule %s" % id)
 
 	var main := MainScene.instantiate()
+	var player_instance := PlayerScene.instantiate() as CharacterBody2D
+	var player_world_bounds: Rect2 = player_instance.get("world_bounds")
+	for lane in lanes:
+		if typeof(lane) != TYPE_DICTIONARY:
+			continue
+		var lane_points: Array = (lane as Dictionary).get("approx_polygon", [])
+		for point in lane_points:
+			if point is Array and point.size() >= 2:
+				_expect(player_world_bounds.has_point(Vector2(float(point[0]), float(point[1]))), "player world bounds should contain source-map playable lane point")
+	player_instance.free()
+
+	var area01_collisions := _area01_enabled_collision_polygons(main)
 	for terrain in solid_terrain:
 		if typeof(terrain) != TYPE_DICTIONARY:
 			_expect(false, "Area 01 solid terrain entries should be dictionaries")
@@ -3568,7 +3580,10 @@ func _test_area_01_source_map_contract() -> void:
 			continue
 		var pocket_entry := pocket as Dictionary
 		var pocket_path := String(pocket_entry.get("scene_path", ""))
-		_expect(main.get_node_or_null(pocket_path) != null, "Area 01 source map resource pocket should exist: %s" % pocket_path)
+		var pocket_node := main.get_node_or_null(pocket_path) as Node2D
+		_expect(pocket_node != null, "Area 01 source map resource pocket should exist: %s" % pocket_path)
+		if pocket_node != null:
+			_expect(not _point_inside_any_collision(pocket_node.global_position, area01_collisions), "Area 01 source map resource pocket should not sit inside enabled terrain collision: %s" % pocket_path)
 	main.free()
 
 func _test_area_01_source_map_debug_overlay() -> void:
@@ -3611,6 +3626,7 @@ func _test_area_01_starter_resource_pocket_placement() -> void:
 		var candidate := main.get_node(path) as SpawnPoint
 		var pocket := pocket_checks[path] as Node2D
 		_expect(candidate.global_position.distance_to(pocket.global_position) <= 130.0, "starter resource candidate should sit inside its readable art-slice pocket: %s" % path)
+		_expect(not _point_inside_any_collision(candidate.global_position, _area01_enabled_collision_polygons(main)), "starter resource candidate should not spawn inside enabled Area 01 terrain collision: %s" % path)
 
 	var food_a := main.get_node("StarterResourceCandidates/FoodSupply/A") as SpawnPoint
 	var water_a := main.get_node("StarterResourceCandidates/WaterSupply/A") as SpawnPoint
@@ -3621,6 +3637,25 @@ func _test_area_01_starter_resource_pocket_placement() -> void:
 	_expect(quartz_a.global_position.y > food_a.global_position.y, "quartz should sit deeper than the first food pocket")
 	_expect(shell_b.global_position.y > water_a.global_position.y, "shell material should sit deeper than the first water pocket")
 	main.free()
+
+func _area01_enabled_collision_polygons(main: Node) -> Array[CollisionPolygon2D]:
+	var collisions: Array[CollisionPolygon2D] = []
+	var terrain_collision := main.get_node_or_null("Area01ArtSlice/TerrainCollision")
+	if terrain_collision == null:
+		return collisions
+
+	for child in terrain_collision.get_children():
+		if child is CollisionPolygon2D and not (child as CollisionPolygon2D).disabled:
+			collisions.append(child as CollisionPolygon2D)
+
+	return collisions
+
+func _point_inside_any_collision(global_point: Vector2, collisions: Array[CollisionPolygon2D]) -> bool:
+	for collision in collisions:
+		if Geometry2D.is_point_in_polygon(collision.to_local(global_point), collision.polygon):
+			return true
+
+	return false
 
 func _test_area_01_reusable_reef_visual_kit() -> void:
 	var main := MainScene.instantiate()
@@ -6292,7 +6327,7 @@ func _test_expanded_region_world_bounds() -> void:
 	_expect(is_equal_approx(clamped_outer_shelf.y, 3380.0), "world clamp should keep the first Outer Shelf footprint vertically playable")
 
 	var clamped_left := player.clamp_position_to_world_bounds(Vector2(-80.0, 900.0))
-	_expect(is_equal_approx(clamped_left.x, player.world_bounds.position.x), "world clamp should preserve the left edge of the main column")
+	_expect(is_equal_approx(clamped_left.x, -80.0), "world clamp should keep the planned left-side Area 01 lane playable")
 	player.free()
 
 	var main_scene := MainScene.instantiate()

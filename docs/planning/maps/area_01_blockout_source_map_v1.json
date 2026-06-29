@@ -28,43 +28,43 @@
     {
       "id": "surface_entry_lane",
       "role": "Boat/moonpool entry and extraction approach.",
-      "approx_polygon": [[-80, -70], [180, -70], [190, 210], [-95, 210]],
+      "approx_polygon": [[500, 260], [800, 260], [860, 440], [420, 440]],
       "must_remain_open": true
     },
     {
       "id": "central_drop_lane",
       "role": "Primary vertical descent spine from surface toward the first deeper decision space.",
-      "approx_polygon": [[-70, 100], [110, 95], [140, 900], [-160, 900]],
+      "approx_polygon": [[430, 360], [1010, 360], [1100, 1320], [360, 1320]],
       "must_remain_open": true
     },
     {
       "id": "left_shallow_shelf_lane",
       "role": "Early left-side resource teaching route.",
-      "approx_polygon": [[-640, 160], [-120, 140], [-135, 470], [-690, 470]],
+      "approx_polygon": [[220, 650], [590, 610], [650, 850], [340, 900]],
       "must_remain_open": true
     },
     {
       "id": "left_chamber_lane",
       "role": "Wider left-side chamber that should feel like explorable map, not a tiny pocket.",
-      "approx_polygon": [[-820, 420], [-160, 390], [-120, 820], [-840, 850]],
+      "approx_polygon": [[360, 850], [900, 830], [960, 1010], [500, 1080]],
       "must_remain_open": true
     },
     {
       "id": "right_shelf_lane",
       "role": "Early right-side shelf route with room to approach resource pockets.",
-      "approx_polygon": [[110, 160], [700, 150], [740, 500], [115, 510]],
+      "approx_polygon": [[860, 720], [1160, 690], [1240, 900], [940, 940]],
       "must_remain_open": true
     },
     {
       "id": "right_chamber_lane",
       "role": "Right-side chamber route for starter material spread and future cave-mouth affordances.",
-      "approx_polygon": [[120, 430], [900, 390], [940, 840], [90, 860]],
+      "approx_polygon": [[2860, 760], [3260, 780], [3300, 930], [2880, 930]],
       "must_remain_open": true
     },
     {
       "id": "lower_basin_lane",
       "role": "Lower central basin that hints at deeper route progression without becoming exact-route guidance.",
-      "approx_polygon": [[-300, 760], [560, 730], [650, 1040], [-410, 1050]],
+      "approx_polygon": [[860, 1120], [1680, 1120], [1680, 1340], [880, 1340]],
       "must_remain_open": true
     }
   ],
