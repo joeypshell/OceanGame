@@ -133,6 +133,39 @@ export async function stageArea01RightShelfPocket(page) {
   });
 }
 
+export async function stageArea01WestChamber(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "area01_west_chamber";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "area01_west_chamber",
+  });
+}
+
+export async function stageArea01RightChamber(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "area01_right_chamber";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "area01_right_chamber",
+  });
+}
+
+export async function stageArea01DeepSpine(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "area01_deep_spine";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "area01_deep_spine",
+  });
+}
+
 export async function stageArea01CentralDrop(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "area01_central_drop";

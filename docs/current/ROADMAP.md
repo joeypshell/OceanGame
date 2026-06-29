@@ -34,8 +34,8 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #697: expand Area 01 into a larger multi-screen blockout before broad visual polish.
-2. Re-evaluate #675 and #677 as focused readability/visual-support issues after the larger blockout expands.
+1. Playtest the expanded Area 01 footprint at normal scale and record whether west, right, and deep lanes feel reachable, readable, and large enough for the next content pass.
+2. Re-evaluate #675 and #677 as focused readability/visual-support issues after normal play validates the larger blockout.
 3. Keep #676 and #678 deferred until Area 01 has enough footprint to judge ambience and screenshot comparison honestly.
 4. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
@@ -74,6 +74,7 @@ Primary planning docs:
 - #696 moved Area 01 pocket anchors and starter spawn points out of enabled collision, widened the left world bound to remove an invisible clamp, and aligned the source-map lanes with the current larger shell.
 - #692 added source-map-backed cave-mouth affordances so reachable openings, solid reef, and quiet future seals read differently without exact route markers, labels, new interiors, or new collision.
 - #693 validated the larger Area 01 skeleton and decided one more level-bones pass is needed before broad visual polish; #697 is now the next active issue.
+- #697 expanded Area 01 with far-west, mid-crossing, deep-spine, and far-right blockout terrain; added matching collision and lip reads; updated the source-map lanes; and added deterministic capture states for the expanded footprint.
 
 ## Current Readability Rules
 

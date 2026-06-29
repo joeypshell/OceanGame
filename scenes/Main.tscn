@@ -505,6 +505,22 @@ polygon = PackedVector2Array(140, 1010, 520, 928, 960, 1020, 1080, 1162, 832, 12
 color = Color(0.014, 0.048, 0.058, 0.98)
 polygon = PackedVector2Array(2180, 1110, 3040, 1012, 3940, 1178, 4240, 1434, 3890, 1584, 3020, 1432, 2240, 1328)
 
+[node name="BlockoutFarWestShelfMass" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.016, 0.052, 0.064, 0.98)
+polygon = PackedVector2Array(-780, 760, -430, 672, -92, 760, -12, 958, -352, 1104, -760, 1002)
+
+[node name="BlockoutMidCrossingCeiling" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.012, 0.044, 0.056, 0.96)
+polygon = PackedVector2Array(1260, 624, 1900, 540, 2520, 684, 2460, 838, 1900, 742, 1300, 856)
+
+[node name="BlockoutDeepSpineFloor" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.014, 0.046, 0.058, 0.98)
+polygon = PackedVector2Array(1180, 1540, 1960, 1458, 2760, 1620, 2800, 2036, 1980, 2140, 1280, 1960)
+
+[node name="BlockoutFarRightPocketWall" type="Polygon2D" parent="Area01ArtSlice/TerrainBackWalls"]
+color = Color(0.012, 0.044, 0.056, 0.98)
+polygon = PackedVector2Array(3300, 716, 4100, 820, 4480, 1100, 4380, 1340, 3920, 1160, 3300, 984)
+
 [node name="TerrainCollision" type="StaticBody2D" parent="Area01ArtSlice"]
 
 [node name="ShallowLeftWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
@@ -541,6 +557,18 @@ polygon = PackedVector2Array(140, 1010, 520, 928, 960, 1020, 1080, 1162, 832, 12
 
 [node name="BlockoutRightChamberShelfCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
 polygon = PackedVector2Array(2180, 1110, 3040, 1012, 3940, 1178, 4240, 1434, 3890, 1584, 3020, 1432, 2240, 1328)
+
+[node name="BlockoutFarWestShelfCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(-780, 760, -430, 672, -92, 760, -12, 958, -352, 1104, -760, 1002)
+
+[node name="BlockoutMidCrossingCeilingCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(1260, 624, 1900, 540, 2520, 684, 2460, 838, 1900, 742, 1300, 856)
+
+[node name="BlockoutDeepSpineFloorCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(1180, 1540, 1960, 1458, 2760, 1620, 2800, 2036, 1980, 2140, 1280, 1960)
+
+[node name="BlockoutFarRightPocketWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
+polygon = PackedVector2Array(3300, 716, 4100, 820, 4480, 1100, 4380, 1340, 3920, 1160, 3300, 984)
 
 [node name="TerrainVisualEdges" type="Node2D" parent="Area01ArtSlice"]
 
@@ -592,6 +620,22 @@ polygon = PackedVector2Array(140, 1010, 520, 928, 960, 1020, 1080, 1162, 1012, 1
 [node name="BlockoutRightChamberShelfLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
 color = Color(0.42, 0.6, 0.48, 0.66)
 polygon = PackedVector2Array(2180, 1110, 3040, 1012, 3940, 1178, 4240, 1434, 4140, 1472, 3880, 1262, 3040, 1088, 2218, 1178)
+
+[node name="BlockoutFarWestShelfLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.42, 0.6, 0.48, 0.64)
+polygon = PackedVector2Array(-780, 760, -430, 672, -92, 760, -20, 948, -92, 982, -440, 746, -736, 826)
+
+[node name="BlockoutMidCrossingCeilingLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.42, 0.6, 0.48, 0.62)
+polygon = PackedVector2Array(1260, 624, 1900, 540, 2520, 684, 2480, 746, 1900, 622, 1304, 694)
+
+[node name="BlockoutDeepSpineFloorLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.42, 0.58, 0.46, 0.64)
+polygon = PackedVector2Array(1180, 1540, 1960, 1458, 2760, 1620, 2780, 1706, 1960, 1532, 1228, 1606)
+
+[node name="BlockoutFarRightPocketWallLip" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries"]
+color = Color(0.42, 0.6, 0.48, 0.64)
+polygon = PackedVector2Array(3300, 716, 4100, 820, 4480, 1100, 4440, 1180, 4080, 902, 3320, 784)
 
 [node name="ShallowLeftLitEdge" type="Polygon2D" parent="Area01ArtSlice/TerrainVisualEdges"]
 visible = false

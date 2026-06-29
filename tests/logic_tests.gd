@@ -3356,6 +3356,10 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/TerrainBackWalls/BlockoutWestCaveShelf",
 		"Area01ArtSlice/TerrainBackWalls/BlockoutLeftChamberCeiling",
 		"Area01ArtSlice/TerrainBackWalls/BlockoutRightChamberShelf",
+		"Area01ArtSlice/TerrainBackWalls/BlockoutFarWestShelfMass",
+		"Area01ArtSlice/TerrainBackWalls/BlockoutMidCrossingCeiling",
+		"Area01ArtSlice/TerrainBackWalls/BlockoutDeepSpineFloor",
+		"Area01ArtSlice/TerrainBackWalls/BlockoutFarRightPocketWall",
 		"Area01ArtSlice/TerrainCollision",
 		"Area01ArtSlice/TerrainCollision/ShallowLeftWallCollision",
 		"Area01ArtSlice/TerrainCollision/ShallowRightWallCollision",
@@ -3366,6 +3370,10 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/TerrainCollision/BlockoutWestCaveShelfCollision",
 		"Area01ArtSlice/TerrainCollision/BlockoutLeftChamberCeilingCollision",
 		"Area01ArtSlice/TerrainCollision/BlockoutRightChamberShelfCollision",
+		"Area01ArtSlice/TerrainCollision/BlockoutFarWestShelfCollision",
+		"Area01ArtSlice/TerrainCollision/BlockoutMidCrossingCeilingCollision",
+		"Area01ArtSlice/TerrainCollision/BlockoutDeepSpineFloorCollision",
+		"Area01ArtSlice/TerrainCollision/BlockoutFarRightPocketWallCollision",
 		"Area01ArtSlice/TerrainVisualEdges",
 		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries",
 		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/ShallowLeftBlockingRim",
@@ -3379,6 +3387,10 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutWestCaveShelfLip",
 		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutLeftChamberCeilingLip",
 		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutRightChamberShelfLip",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutFarWestShelfLip",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutMidCrossingCeilingLip",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutDeepSpineFloorLip",
+		"Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutFarRightPocketWallLip",
 		"Area01ArtSlice/TerrainVisualEdges/ShallowLeftLitEdge",
 		"Area01ArtSlice/TerrainVisualEdges/ShallowRightLitEdge",
 		"Area01ArtSlice/TerrainVisualEdges/LeftLedgeLitEdge",
@@ -3430,11 +3442,19 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	var blockout_west_cave := main.get_node("Area01ArtSlice/TerrainBackWalls/BlockoutWestCaveShelf") as Polygon2D
 	var blockout_left_chamber := main.get_node("Area01ArtSlice/TerrainBackWalls/BlockoutLeftChamberCeiling") as Polygon2D
 	var blockout_right_chamber := main.get_node("Area01ArtSlice/TerrainBackWalls/BlockoutRightChamberShelf") as Polygon2D
+	var blockout_far_west := main.get_node("Area01ArtSlice/TerrainBackWalls/BlockoutFarWestShelfMass") as Polygon2D
+	var blockout_mid_crossing := main.get_node("Area01ArtSlice/TerrainBackWalls/BlockoutMidCrossingCeiling") as Polygon2D
+	var blockout_deep_spine := main.get_node("Area01ArtSlice/TerrainBackWalls/BlockoutDeepSpineFloor") as Polygon2D
+	var blockout_far_right := main.get_node("Area01ArtSlice/TerrainBackWalls/BlockoutFarRightPocketWall") as Polygon2D
 	var blockout_east_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutEastReefCollision") as CollisionPolygon2D
 	var blockout_lower_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutLowerBasinCollision") as CollisionPolygon2D
 	var blockout_west_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutWestCaveShelfCollision") as CollisionPolygon2D
 	var blockout_left_chamber_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutLeftChamberCeilingCollision") as CollisionPolygon2D
 	var blockout_right_chamber_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutRightChamberShelfCollision") as CollisionPolygon2D
+	var blockout_far_west_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutFarWestShelfCollision") as CollisionPolygon2D
+	var blockout_mid_crossing_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutMidCrossingCeilingCollision") as CollisionPolygon2D
+	var blockout_deep_spine_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutDeepSpineFloorCollision") as CollisionPolygon2D
+	var blockout_far_right_collision := main.get_node("Area01ArtSlice/TerrainCollision/BlockoutFarRightPocketWallCollision") as CollisionPolygon2D
 	var far_center := main.get_node("Area01ArtSlice/BackgroundFar/FarCenterDepthPocket") as Polygon2D
 	var far_open_water := main.get_node("Area01ArtSlice/OceanParallaxBackground/FarOpenWaterPocket") as Polygon2D
 	var mid_center_plate := main.get_node("Area01ArtSlice/OceanParallaxBackground/MidCenterBackPlate") as Polygon2D
@@ -3452,6 +3472,10 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	var blockout_west_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutWestCaveShelfLip") as Polygon2D
 	var blockout_left_chamber_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutLeftChamberCeilingLip") as Polygon2D
 	var blockout_right_chamber_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutRightChamberShelfLip") as Polygon2D
+	var blockout_far_west_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutFarWestShelfLip") as Polygon2D
+	var blockout_mid_crossing_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutMidCrossingCeilingLip") as Polygon2D
+	var blockout_deep_spine_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutDeepSpineFloorLip") as Polygon2D
+	var blockout_far_right_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutFarRightPocketWallLip") as Polygon2D
 	var left_platform_mass := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/MainShelfMass") as Polygon2D
 	var left_platform_lip := main.get_node("Area01ArtSlice/TerrainVisualEdges/LeftShelfPlatformKit/TopLitLip") as Polygon2D
 	var dressing_crystal := main.get_node("Area01ArtSlice/ForegroundDecor/LeftShelfDressing/DimCrystalA") as Polygon2D
@@ -3466,6 +3490,8 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	_expect(not blockout_east_collision.disabled and not blockout_lower_collision.disabled and not blockout_west_collision.disabled, "larger Area 01 blockout collision should stay enabled only where matching terrain is visible")
 	_expect(blockout_left_chamber.color.a >= 0.9 and blockout_right_chamber.color.a >= 0.9, "new Area 01 chamber masses should read as solid reef terrain")
 	_expect(not blockout_left_chamber_collision.disabled and not blockout_right_chamber_collision.disabled, "new Area 01 chamber collision should stay enabled only where matching terrain is visible")
+	_expect(blockout_far_west.color.a >= 0.9 and blockout_mid_crossing.color.a >= 0.9 and blockout_deep_spine.color.a >= 0.9 and blockout_far_right.color.a >= 0.9, "expanded multi-screen Area 01 masses should read as solid reef terrain")
+	_expect(not blockout_far_west_collision.disabled and not blockout_mid_crossing_collision.disabled and not blockout_deep_spine_collision.disabled and not blockout_far_right_collision.disabled, "expanded Area 01 terrain collision should stay enabled only where matching terrain is visible")
 	_expect(far_center.color.a < left_wall.color.a, "background pocket should sit behind solid terrain in opacity hierarchy")
 	_expect(far_open_water.color.a < left_wall.color.a, "parallax open-water pockets should stay quieter than solid terrain")
 	_expect(mid_center_plate.color.a > far_open_water.color.a, "mid parallax plates should be slightly stronger than far open-water pockets")
@@ -3477,6 +3503,7 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	_expect(left_ledge_blocking_lip.color.a >= 0.6 and right_ledge_blocking_lip.color.a >= 0.6, "ledge collision lips should show where the player will bump")
 	_expect(blockout_east_lip.color.a >= 0.6 and blockout_lower_lip.color.a >= 0.6 and blockout_west_lip.color.a >= 0.6, "larger blockout terrain should expose visible lips before the player collides")
 	_expect(blockout_left_chamber_lip.color.a >= 0.6 and blockout_right_chamber_lip.color.a >= 0.6, "new Area 01 chamber terrain should expose visible lips before the player collides")
+	_expect(blockout_far_west_lip.color.a >= 0.6 and blockout_mid_crossing_lip.color.a >= 0.6 and blockout_deep_spine_lip.color.a >= 0.6 and blockout_far_right_lip.color.a >= 0.6, "expanded multi-screen terrain should expose visible lips before the player collides")
 	_expect(left_wall_blocking_rim.color.a < left_wall.color.a and right_wall_blocking_rim.color.a < right_wall.color.a, "collision rims should clarify terrain without replacing the solid mass")
 	_expect(collision_read_boundaries.find_child("CollisionShape2D", true, false) == null, "collision-read boundary visuals should not add extra hidden collision")
 	_expect(left_platform_mass.color.a >= 0.8, "platform kit shelf masses should read as solid reef rather than route overlays")
@@ -3519,11 +3546,24 @@ func _test_area_01_source_map_contract() -> void:
 	var cave_mouth_affordances: Array = source_map.get("cave_mouth_affordances", [])
 	var validation_rules: Array = source_map.get("validation_rules", [])
 	var known_defects: Array = source_map.get("known_playtest_defects", [])
-	_expect(lanes.size() >= 6, "Area 01 source map should define enough playable lanes for a larger shell")
-	_expect(solid_terrain.size() >= 8, "Area 01 source map should define current solid terrain blockers")
+	_expect(lanes.size() >= 10, "Area 01 source map should define enough playable lanes for a multi-screen shell")
+	_expect(solid_terrain.size() >= 12, "Area 01 source map should define current solid terrain blockers across the expanded shell")
 	_expect(resource_pockets.size() >= 6, "Area 01 source map should define starter resource pockets")
 	_expect(cave_mouth_affordances.size() >= 3, "Area 01 source map should define cave-mouth affordances separately from resource pockets")
 	_expect(validation_rules.size() >= 6, "Area 01 source map should define validation rules")
+	var lane_min_x := INF
+	var lane_max_x := -INF
+	var lane_max_y := -INF
+	for lane in lanes:
+		if typeof(lane) != TYPE_DICTIONARY:
+			continue
+		for point in (lane as Dictionary).get("approx_polygon", []):
+			if point is Array and point.size() >= 2:
+				lane_min_x = minf(lane_min_x, float(point[0]))
+				lane_max_x = maxf(lane_max_x, float(point[0]))
+				lane_max_y = maxf(lane_max_y, float(point[1]))
+	_expect(lane_min_x <= -650.0 and lane_max_x >= 3700.0, "Area 01 source map should span multiple screens left-to-right")
+	_expect(lane_max_y >= 1540.0, "Area 01 source map should include a deeper continuation lane")
 
 	var defect_ids: Array[String] = []
 	for defect in known_defects:

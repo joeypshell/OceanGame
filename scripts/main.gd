@@ -1463,6 +1463,19 @@ func _stage_debug_area01_shell_visual_review(stage: String) -> void:
 			else:
 				target_position = Vector2(1014.0, 786.0)
 			status = "Debug review: Area 01 right shelf resource pocket staged."
+		"west_chamber":
+			target_position = Vector2(-360.0, 870.0)
+			status = "Debug review: Area 01 west chamber staged."
+		"right_chamber":
+			var right_chamber := get_node_or_null("Area01ArtSlice/GameplayObjects/RightChamberResourcePocket") as Node2D
+			if right_chamber != null:
+				target_position = right_chamber.global_position + Vector2(-60.0, -58.0)
+			else:
+				target_position = Vector2(3000.0, 820.0)
+			status = "Debug review: Area 01 far-right chamber staged."
+		"deep_spine":
+			target_position = Vector2(1480.0, 1330.0)
+			status = "Debug review: Area 01 deep spine staged."
 		"central_drop":
 			target_position = Vector2(720.0, 940.0)
 		_:
@@ -2071,6 +2084,12 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_area01_shell_visual_review("left_shelf_cave")
 		"area01_right_shelf_pocket":
 			_stage_debug_area01_shell_visual_review("right_shelf_pocket")
+		"area01_west_chamber":
+			_stage_debug_area01_shell_visual_review("west_chamber")
+		"area01_right_chamber":
+			_stage_debug_area01_shell_visual_review("right_chamber")
+		"area01_deep_spine":
+			_stage_debug_area01_shell_visual_review("deep_spine")
 		"area01_central_drop":
 			_stage_debug_area01_shell_visual_review("central_drop")
 		"expanded_east_shelf_route":
@@ -3953,7 +3972,8 @@ func _update_minimap(is_visible: bool) -> void:
 	var depth_ratio := clampf(dive_session.current_depth / DEPTH_RAIL_MAX_DISPLAY_DEPTH, 0.0, 1.0)
 	var horizontal_ratio := 0.5
 	if player != null:
-		horizontal_ratio = clampf((player.global_position.x - 160.0) / 2200.0, 0.0, 1.0)
+		var bounds: Rect2 = player.get("world_bounds")
+		horizontal_ratio = clampf((player.global_position.x - bounds.position.x) / bounds.size.x, 0.0, 1.0)
 	minimap_player_marker.position = Vector2(94.0 + (horizontal_ratio - 0.5) * 78.0, 34.0 + depth_ratio * 76.0)
 
 func _set_bar_fill_width(fill: ColorRect, base_rect: Rect2, ratio: float) -> void:

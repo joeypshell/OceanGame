@@ -66,6 +66,30 @@
       "role": "Lower central basin that hints at deeper route progression without becoming exact-route guidance.",
       "approx_polygon": [[860, 1120], [1680, 1120], [1680, 1340], [880, 1340]],
       "must_remain_open": true
+    },
+    {
+      "id": "far_west_chamber_lane",
+      "role": "Leftward exploration chamber that makes Area 01 feel wider than one starter pocket.",
+      "approx_polygon": [[-680, 640], [180, 660], [260, 1020], [-620, 1080]],
+      "must_remain_open": true
+    },
+    {
+      "id": "mid_crossing_lane",
+      "role": "Open-water crossing between starter shelves and the farther right chamber.",
+      "approx_polygon": [[1180, 760], [2400, 780], [2460, 1060], [1180, 1080]],
+      "must_remain_open": true
+    },
+    {
+      "id": "far_right_chamber_lane",
+      "role": "Far-right chamber approach that should be reachable at normal camera scale.",
+      "approx_polygon": [[2860, 720], [3700, 760], [3780, 1080], [2880, 1060]],
+      "must_remain_open": true
+    },
+    {
+      "id": "deep_spine_lane",
+      "role": "Deeper continuation spine that gives Area 01 a visible downward next-run hypothesis.",
+      "approx_polygon": [[1180, 1240], [2360, 1260], [2420, 1540], [1180, 1580]],
+      "must_remain_open": true
     }
   ],
   "solid_terrain": [
@@ -131,6 +155,34 @@
       "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutRightChamberShelf",
       "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutRightChamberShelfCollision",
       "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutRightChamberShelfLip"
+    },
+    {
+      "id": "blockout_far_west_shelf",
+      "role": "Far-west terrain boundary that frames a second leftward chamber.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutFarWestShelfMass",
+      "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutFarWestShelfCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutFarWestShelfLip"
+    },
+    {
+      "id": "blockout_mid_crossing_ceiling",
+      "role": "Mid-map ceiling mass that frames an open crossing toward the far-right chamber.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutMidCrossingCeiling",
+      "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutMidCrossingCeilingCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutMidCrossingCeilingLip"
+    },
+    {
+      "id": "blockout_deep_spine_floor",
+      "role": "Deep spine floor mass that frames the downward continuation.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutDeepSpineFloor",
+      "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutDeepSpineFloorCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutDeepSpineFloorLip"
+    },
+    {
+      "id": "blockout_far_right_pocket_wall",
+      "role": "Far-right wall mass that gives the right chamber a readable boundary.",
+      "visible_path": "Area01ArtSlice/TerrainBackWalls/BlockoutFarRightPocketWall",
+      "collision_path": "Area01ArtSlice/TerrainCollision/BlockoutFarRightPocketWallCollision",
+      "lip_path": "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutFarRightPocketWallLip"
     }
   ],
   "nonblocking_background_policy": [
@@ -251,8 +303,7 @@
     }
   ],
   "next_implementation_order": [
-    "#697: Expand Area 01 into a larger multi-screen blockout before broad visual polish.",
-    "Re-evaluate #675 and #677 only after the larger playable map can carry focused visual support.",
+    "Validate the expanded Area 01 blockout from normal play before resuming #675 and #677.",
     "Keep #676 and #678 deferred until Area 01 has enough footprint for honest ambience and screenshot-comparison work."
   ],
   "non_goals": [
