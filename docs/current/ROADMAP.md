@@ -33,10 +33,9 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. #692: add cave-mouth affordances without exact route locators, only after collision and reachability are trustworthy.
-2. #693: validate the larger level skeleton before returning to more visual polish.
-3. Re-evaluate #675-#678 after the skeleton validation; keep only the parts that support the larger playable map.
-4. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. #693: validate the larger level skeleton before returning to more visual polish.
+2. Re-evaluate #675-#678 after the skeleton validation; keep only the parts that support the larger playable map.
+3. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
 
 ## Completed In This Readability Rescue
 
@@ -71,6 +70,7 @@ Primary planning docs:
 - #694 created the Area 01 blockout source map and validation contract so walls, playable water lanes, resource pockets, and scannable reachability can be checked before more content expands the level.
 - #695 added a developer-only Area 01 source-map overlay toggle so playable lanes, mapped collision, pockets, resources, scannables, and scan range can be inspected without manual screenshot guessing.
 - #696 moved Area 01 pocket anchors and starter spawn points out of enabled collision, widened the left world bound to remove an invisible clamp, and aligned the source-map lanes with the current larger shell.
+- #692 added source-map-backed cave-mouth affordances so reachable openings, solid reef, and quiet future seals read differently without exact route markers, labels, new interiors, or new collision.
 
 ## Current Readability Rules
 

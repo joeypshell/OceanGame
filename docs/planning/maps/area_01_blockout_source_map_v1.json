@@ -187,6 +187,29 @@
       "current_role": "Right chamber starter material spread."
     }
   ],
+  "cave_mouth_affordances": [
+    {
+      "id": "left_cave_mouth",
+      "scene_path": "Area01ArtSlice/GameplayObjects/CaveMouthAffordances/LeftCaveMouth",
+      "lane_id": "left_chamber_lane",
+      "state": "reachable_opening",
+      "role": "Readable left-side opening near the starter cave/material pocket without exact route-locator behavior."
+    },
+    {
+      "id": "right_chamber_mouth",
+      "scene_path": "Area01ArtSlice/GameplayObjects/CaveMouthAffordances/RightChamberMouth",
+      "lane_id": "right_chamber_lane",
+      "state": "reachable_opening",
+      "role": "Readable right-side chamber entrance that distinguishes open water from solid reef edge."
+    },
+    {
+      "id": "lower_basin_future_seal",
+      "scene_path": "Area01ArtSlice/GameplayObjects/CaveMouthAffordances/LowerBasinFutureSeal",
+      "lane_id": "lower_basin_lane",
+      "state": "future_locked",
+      "role": "Quiet future-depth promise that should read as lower priority than current reachable openings."
+    }
+  ],
   "scannable_and_interactable_policy": {
     "current_run_targets": "Must be reachable from a playable water lane and visually separated from solid terrain.",
     "future_locked_promises": "May sit beyond visible blockers only if marked as locked/future and rendered quieter than current goals.",
@@ -221,13 +244,15 @@
     {
       "id": "resource_pockets_teach_movement",
       "rule": "Starter pockets should be spread across left, right, and deeper lanes so resources teach the room layout instead of clustering in one tiny area."
+    },
+    {
+      "id": "cave_mouths_are_affordances_not_locators",
+      "rule": "Cave mouths should distinguish openings from solid terrain without adding exact arrows, checklist markers, minimap behavior, or label-only comprehension."
     }
   ],
   "next_implementation_order": [
-    "#695: Add a debug overlay that can show mapped lanes, solids, collision, pockets, and future-locked targets.",
-    "#696: Rebuild the current shell against this source map and fix the reported right-wall, left-invisible-stop, and inaccessible-scannable defects.",
-    "#692: Resume cave-mouth affordances only after collision and reachability are trustworthy.",
-    "#693: Validate the larger skeleton after the source map and blockers are corrected."
+    "#693: Validate the larger skeleton after the source map, blockers, and cave-mouth affordances are corrected.",
+    "Re-evaluate visual-direction issues only after skeleton validation confirms the larger playable map reads honestly."
   ],
   "non_goals": [
     "No final art pass.",

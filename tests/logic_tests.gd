@@ -92,6 +92,7 @@ func _initialize() -> void:
 	_run("Area 01 source map contract", _test_area_01_source_map_contract)
 	_run("Area 01 source map debug overlay", _test_area_01_source_map_debug_overlay)
 	_run("Area 01 starter resource pocket placement", _test_area_01_starter_resource_pocket_placement)
+	_run("Area 01 cave mouth affordances", _test_area_01_cave_mouth_affordances)
 	_run("Area 01 reusable reef visual kit", _test_area_01_reusable_reef_visual_kit)
 	_run("east shelf spur branch scene contract", _test_east_shelf_spur_branch_scene_contract)
 	_run("landmark region identity metadata", _test_landmark_region_identity_metadata)
@@ -3506,6 +3507,7 @@ func _test_area_01_source_map_contract() -> void:
 		"playable_water_lanes",
 		"solid_terrain",
 		"resource_pockets",
+		"cave_mouth_affordances",
 		"validation_rules",
 	]
 	for key in required_keys:
@@ -3514,11 +3516,13 @@ func _test_area_01_source_map_contract() -> void:
 	var lanes: Array = source_map.get("playable_water_lanes", [])
 	var solid_terrain: Array = source_map.get("solid_terrain", [])
 	var resource_pockets: Array = source_map.get("resource_pockets", [])
+	var cave_mouth_affordances: Array = source_map.get("cave_mouth_affordances", [])
 	var validation_rules: Array = source_map.get("validation_rules", [])
 	var known_defects: Array = source_map.get("known_playtest_defects", [])
 	_expect(lanes.size() >= 6, "Area 01 source map should define enough playable lanes for a larger shell")
 	_expect(solid_terrain.size() >= 8, "Area 01 source map should define current solid terrain blockers")
 	_expect(resource_pockets.size() >= 6, "Area 01 source map should define starter resource pockets")
+	_expect(cave_mouth_affordances.size() >= 3, "Area 01 source map should define cave-mouth affordances separately from resource pockets")
 	_expect(validation_rules.size() >= 6, "Area 01 source map should define validation rules")
 
 	var defect_ids: Array[String] = []
@@ -3540,6 +3544,7 @@ func _test_area_01_source_map_contract() -> void:
 		"blocking_collision_requires_visible_solid_and_lip",
 		"reachable_interactables_must_be_in_lane_or_marked_future_locked",
 		"background_shape_must_not_block_player",
+		"cave_mouths_are_affordances_not_locators",
 	]:
 		_expect(rule_ids.has(id), "Area 01 source map should include validation rule %s" % id)
 
@@ -3584,6 +3589,16 @@ func _test_area_01_source_map_contract() -> void:
 		_expect(pocket_node != null, "Area 01 source map resource pocket should exist: %s" % pocket_path)
 		if pocket_node != null:
 			_expect(not _point_inside_any_collision(pocket_node.global_position, area01_collisions), "Area 01 source map resource pocket should not sit inside enabled terrain collision: %s" % pocket_path)
+
+	for affordance in cave_mouth_affordances:
+		if typeof(affordance) != TYPE_DICTIONARY:
+			_expect(false, "Area 01 cave-mouth affordance entries should be dictionaries")
+			continue
+		var affordance_entry := affordance as Dictionary
+		var affordance_path := String(affordance_entry.get("scene_path", ""))
+		var affordance_state := String(affordance_entry.get("state", ""))
+		_expect(main.get_node_or_null(affordance_path) is Node2D, "Area 01 source map cave-mouth affordance should exist: %s" % affordance_path)
+		_expect(["reachable_opening", "future_locked"].has(affordance_state), "Area 01 cave-mouth affordance should name an honest reachability state: %s" % affordance_path)
 	main.free()
 
 func _test_area_01_source_map_debug_overlay() -> void:
@@ -3656,6 +3671,32 @@ func _point_inside_any_collision(global_point: Vector2, collisions: Array[Collis
 			return true
 
 	return false
+
+func _test_area_01_cave_mouth_affordances() -> void:
+	var main := MainScene.instantiate()
+	var root := main.get_node("Area01ArtSlice/GameplayObjects/CaveMouthAffordances") as Node2D
+	var left_mouth := root.get_node("LeftCaveMouth") as Node2D
+	var right_mouth := root.get_node("RightChamberMouth") as Node2D
+	var future_seal := root.get_node("LowerBasinFutureSeal") as Node2D
+	var left_shadow := left_mouth.get_node("MouthShadow") as Polygon2D
+	var left_wash := left_mouth.get_node("EntryWaterWash") as Polygon2D
+	var left_rim := left_mouth.get_node("UpperRim") as Polygon2D
+	var right_shadow := right_mouth.get_node("MouthShadow") as Polygon2D
+	var right_wash := right_mouth.get_node("EntryWaterWash") as Polygon2D
+	var future_mouth := future_seal.get_node("SealMouth") as Polygon2D
+	var future_veil := future_seal.get_node("PressureVeil") as Polygon2D
+	var future_bars := future_seal.get_node("SealBars") as Polygon2D
+	var future_glint := future_seal.get_node("FutureGlint") as Polygon2D
+	_expect(root.find_child("CollisionShape2D", true, false) == null, "Area 01 cave-mouth affordances should not add hidden collision")
+	_expect(root.find_child("CollisionPolygon2D", true, false) == null, "Area 01 cave-mouth affordances should not add player blockers")
+	_expect(root.find_child("Label", true, false) == null, "Area 01 cave-mouth affordances should not rely on labels for comprehension")
+	_expect(left_shadow.color.a >= 0.6 and right_shadow.color.a >= 0.55, "reachable cave mouths should use dark negative space so openings read apart from solid reef")
+	_expect(left_wash.color.a <= 0.16 and right_wash.color.a <= 0.14, "reachable cave-mouth water washes should stay subtle instead of becoming route arrows")
+	_expect(left_rim.color.a > left_wash.color.a, "reachable cave-mouth rims should frame the opening more clearly than the water wash")
+	_expect(future_mouth.color.a < left_shadow.color.a, "future sealed mouth should be quieter than current reachable cave openings")
+	_expect(future_veil.color.a < left_wash.color.a and future_bars.color.a < left_rim.color.a, "future route promise should stay lower priority than current cave affordances")
+	_expect(future_glint.color.a < left_rim.color.a, "future glint should invite curiosity without reading as a collectible")
+	main.free()
 
 func _test_area_01_reusable_reef_visual_kit() -> void:
 	var main := MainScene.instantiate()

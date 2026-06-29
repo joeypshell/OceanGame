@@ -655,6 +655,67 @@ scale = Vector2(0.58, 0.5)
 
 [node name="GameplayObjects" type="Node2D" parent="Area01ArtSlice"]
 
+[node name="CaveMouthAffordances" type="Node2D" parent="Area01ArtSlice/GameplayObjects"]
+z_index = 2
+
+[node name="LeftCaveMouth" type="Node2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances"]
+position = Vector2(610, 872)
+
+[node name="MouthShadow" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/LeftCaveMouth"]
+color = Color(0.002, 0.018, 0.034, 0.64)
+polygon = PackedVector2Array(-112, -54, 18, -82, 142, -20, 134, 76, 10, 112, -130, 54)
+
+[node name="EntryWaterWash" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/LeftCaveMouth"]
+color = Color(0.1, 0.62, 0.72, 0.14)
+polygon = PackedVector2Array(-96, -32, 14, -54, 108, -10, 92, 48, -4, 70, -112, 34)
+
+[node name="UpperRim" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/LeftCaveMouth"]
+color = Color(0.42, 0.62, 0.5, 0.38)
+polygon = PackedVector2Array(-104, -48, 20, -76, 136, -18, 112, 2, 18, -40, -88, -18)
+
+[node name="LowerRim" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/LeftCaveMouth"]
+color = Color(0.34, 0.5, 0.42, 0.28)
+polygon = PackedVector2Array(-118, 46, 10, 86, 126, 58, 94, 78, 0, 106, -130, 66)
+
+[node name="RightChamberMouth" type="Node2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances"]
+position = Vector2(2918, 812)
+scale = Vector2(-1, 1)
+
+[node name="MouthShadow" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/RightChamberMouth"]
+color = Color(0.002, 0.018, 0.034, 0.6)
+polygon = PackedVector2Array(-132, -48, 12, -84, 156, -12, 148, 74, 22, 112, -154, 50)
+
+[node name="EntryWaterWash" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/RightChamberMouth"]
+color = Color(0.1, 0.62, 0.72, 0.12)
+polygon = PackedVector2Array(-114, -26, 12, -58, 120, -10, 104, 46, 4, 72, -136, 32)
+
+[node name="UpperRim" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/RightChamberMouth"]
+color = Color(0.42, 0.62, 0.5, 0.34)
+polygon = PackedVector2Array(-126, -42, 16, -78, 150, -12, 124, 8, 14, -38, -104, -12)
+
+[node name="LowerRim" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/RightChamberMouth"]
+color = Color(0.34, 0.5, 0.42, 0.24)
+polygon = PackedVector2Array(-136, 44, 16, 88, 142, 56, 108, 78, 6, 106, -154, 64)
+
+[node name="LowerBasinFutureSeal" type="Node2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances"]
+position = Vector2(1508, 1310)
+
+[node name="SealMouth" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/LowerBasinFutureSeal"]
+color = Color(0.002, 0.014, 0.03, 0.5)
+polygon = PackedVector2Array(-98, -48, 22, -72, 126, -18, 112, 74, -4, 104, -126, 42)
+
+[node name="PressureVeil" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/LowerBasinFutureSeal"]
+color = Color(0.12, 0.28, 0.58, 0.09)
+polygon = PackedVector2Array(-128, -66, 34, -100, 158, -12, 138, 112, -20, 138, -154, 50)
+
+[node name="SealBars" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/LowerBasinFutureSeal"]
+color = Color(0.42, 0.78, 0.9, 0.18)
+polygon = PackedVector2Array(-54, -14, -30, -44, -10, 34, -34, 60, 18, -52, 38, -20, 20, 46, 58, -26, 82, 2, 46, 62)
+
+[node name="FutureGlint" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects/CaveMouthAffordances/LowerBasinFutureSeal"]
+color = Color(0.7, 0.92, 1, 0.2)
+polygon = PackedVector2Array(8, -24, 22, -4, 46, 0, 22, 8, 8, 28, -6, 8, -30, 0, -6, -4)
+
 [node name="CargoPocketGlow" type="Polygon2D" parent="Area01ArtSlice/GameplayObjects"]
 color = Color(0.1, 0.84, 1, 0.22)
 polygon = PackedVector2Array(252, 766, 292, 738, 342, 752, 364, 800, 326, 838, 270, 826, 236, 792)
