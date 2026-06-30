@@ -4229,6 +4229,7 @@ func _test_area_01_authoritative_wall_builder() -> void:
 		_expect(_effective_canvas_z(water_cutout_layer) < player_visual_z, "Area 01 playable-water cutouts should render behind the diver")
 	if water_edge_layer != null:
 		_expect(_effective_canvas_z(water_edge_layer) < player_visual_z, "Area 01 hidden water edge diagnostics should stay behind the diver")
+		_expect(water_edge_layer.find_child("*SpriteRimTrims", true, false) == null, "Area 01 should not scatter generated water-edge sprite trim chunks across cave silhouettes")
 	for water_value in playable_water_regions:
 		if typeof(water_value) != TYPE_DICTIONARY:
 			_expect(false, "Area 01 playable water entry should be a dictionary")
@@ -4323,9 +4324,8 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	_expect(first_generated_wall != null, "Area 01 generated source-map terrain should include a terrain-domain Polygon2D")
 	if first_generated_wall != null:
 		_expect(first_generated_wall.color.a >= 0.9, "Area 01 generated source-map terrain should read as solid wall/floor, not translucent background dressing")
-		_expect(first_generated_wall.color.r >= 0.4 and first_generated_wall.color.g >= 0.7, "Area 01 generated terrain should keep the approved rock texture visible instead of over-darkening it")
-		_expect(first_generated_wall.texture != null, "Area 01 solid wall polygons should use the approved reef fill texture")
-		_expect(first_generated_wall.uv.size() == first_generated_wall.polygon.size(), "Area 01 textured wall polygons should define matching UVs")
+		_expect(first_generated_wall.texture == null, "Area 01 continuous terrain domain should not stretch a wall texture across the full source-map mass")
+		_expect(first_generated_wall.color.r <= 0.08 and first_generated_wall.color.g <= 0.16, "Area 01 continuous terrain domain should stay a quiet deep reef mass until proper cave sprites are placed")
 	main.free()
 
 func _test_area_01_starter_resource_pocket_placement() -> void:
