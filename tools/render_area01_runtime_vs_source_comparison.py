@@ -273,20 +273,43 @@ def render_runtime_map(
         if isinstance(poly, list):
             draw.line(renderer.polygon(poly) + [renderer.polygon(poly)[0]], fill=(76, 150, 190, 70), width=2)
 
+    terrain_domain = runtime_map.get("terrain_domain", {})
+    if isinstance(terrain_domain, dict) and isinstance(terrain_domain.get("polygon"), list):
+        drawn = renderer.polygon(terrain_domain["polygon"])
+        draw.polygon(drawn, fill=(142, 144, 145, 235), outline=(18, 18, 18, 255))
+        draw.line(drawn + [drawn[0]], fill=(0, 0, 0, 255), width=4)
+
+    for water in runtime_map.get("playable_water_regions", []):
+        poly = water.get("polygon", [])
+        if not isinstance(poly, list) or not poly:
+            continue
+        drawn = renderer.polygon(poly)
+        if water.get("kind") == "open_surface":
+            fill = (187, 230, 255, 80)
+            outline = (42, 136, 190, 160)
+            width = 2
+        else:
+            fill = (246, 252, 255, 248)
+            outline = (0, 0, 0, 255)
+            width = 4
+        draw.polygon(drawn, fill=fill, outline=outline)
+        draw.line(drawn + [drawn[0]], fill=outline, width=width)
+        if with_labels and water.get("carves_collision"):
+            cx, cy = centroid(poly)
+            px, py = renderer.point((cx, cy))
+            label = water.get("id", "")
+            bbox = draw.textbbox((px, py), label, font=small_font)
+            draw.rectangle([bbox[0] - 3, bbox[1] - 2, bbox[2] + 3, bbox[3] + 2], fill=(245, 245, 245, 190))
+            draw.text((px, py), label, fill=(20, 20, 20, 255), font=small_font)
+
     for terrain in runtime_map.get("solid_terrain", []):
+        if terrain.get("runtime_generation", {}).get("visual_role") != "collision_partition":
+            continue
         poly = terrain.get("polygon", [])
         if not poly:
             continue
         drawn = renderer.polygon(poly)
-        draw.polygon(drawn, fill=(142, 144, 145, 235), outline=(18, 18, 18, 255))
-        draw.line(drawn + [drawn[0]], fill=(0, 0, 0, 255), width=4)
-        if with_labels:
-            cx, cy = centroid(poly)
-            px, py = renderer.point((cx, cy))
-            label = terrain.get("id", "")
-            bbox = draw.textbbox((px, py), label, font=small_font)
-            draw.rectangle([bbox[0] - 3, bbox[1] - 2, bbox[2] + 3, bbox[3] + 2], fill=(245, 245, 245, 190))
-            draw.text((px, py), label, fill=(20, 20, 20, 255), font=small_font)
+        draw.line(drawn + [drawn[0]], fill=(220, 60, 40, 45), width=1)
 
     hook_colors = {
         "oxygen": (71, 208, 240, 95),
@@ -351,8 +374,8 @@ def render_runtime_map(
     legend_y = 54
     draw.rectangle([legend_x, legend_y, size[0] - 16, legend_y + 118], fill=(255, 255, 255, 225), outline=(0, 0, 0, 180), width=1)
     legend = [
-        ("gray/black", "runtime solid terrain + collision"),
-        ("cyan", "oxygen surface / water space"),
+        ("gray/black", "continuous generated terrain domain"),
+        ("cyan", "oxygen surface / carved water"),
         ("red", "gates or hazards"),
         ("green/blue", "hooks + live placements"),
         ("purple", "return current hooks"),
@@ -413,13 +436,15 @@ def main() -> None:
         "source_image_size": list(source_image.size),
         "counts": {
             "solid_terrain": len(runtime_map.get("solid_terrain", [])),
+            "playable_water_regions": len(runtime_map.get("playable_water_regions", [])),
             "cave_mouths": len(runtime_map.get("cave_mouths", [])),
             "scene_hooks": len(runtime_map.get("scene_hooks", [])),
             "sprite_placements": len(runtime_map.get("sprite_placements", [])),
             "scene_targets": len(scene_targets),
         },
+        "generation_model": runtime_map.get("generation_model", {}),
     }
-    SUMMARY_OUT.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    SUMMARY_OUT.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(SIDE_BY_SIDE_OUT)
     print(CURRENT_OUT)
     print(SUMMARY_OUT)

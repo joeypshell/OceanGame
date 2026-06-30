@@ -98,6 +98,7 @@ Primary planning docs:
 - Area 01 collision boundaries must be readable as terrain lips/rims before contact; do not leave invisible or random-feeling blockers in normal play.
 - Area 01 collision, terrain, pockets, scannables, and route hooks must map to `docs/planning/maps/area_01_runtime_source_map_v3.json`, or the runtime source map must be updated before the scene changes.
 - During Area 01 wall rescue, do not hand-place separate wall visuals, collision, or lips; they must be generated from the same source-map polygon.
+- Area 01 runtime v3 is playable-water-first: update the source PNG trace and cave-mouth geometry, regenerate v3, and let generated collision partitions fill terrain around it. Do not hand-author isolated `solid_terrain` chunks as the primary map source.
 - Passive creature scan targets need visible silhouettes or outlines at normal play scale; scan labels should confirm the target, not be the only way to perceive it.
 - Do not spend another batch polishing a tiny room if the level bones still do not support wider exploration. Block out readable map scale first, then decorate.
 - Do not solve confusion by adding more bright shapes, exact locators, checklists, minimaps, or route graphs.

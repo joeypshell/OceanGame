@@ -3801,9 +3801,13 @@ func _test_area_01_source_map_contract() -> void:
 	_expect(String(source_map.get("status", "")) == "active_runtime_surface_floor_geometry_collision_authority", "Area 01 runtime source map should be marked as the active surface-floor geometry/collision authority")
 	var required_keys := [
 		"schema_version",
+		"generation_model",
 		"coordinate_space",
 		"pipeline",
 		"runtime_generation_contract",
+		"terrain_domain",
+		"playable_water_regions",
+		"playable_water_trace",
 		"regions",
 		"solid_terrain",
 		"cave_mouths",
@@ -3815,10 +3819,14 @@ func _test_area_01_source_map_contract() -> void:
 		_expect(source_map.has(key), "Area 01 source map should include %s" % key)
 
 	var regions: Array = source_map.get("regions", [])
+	var playable_water_regions: Array = source_map.get("playable_water_regions", [])
 	var solid_terrain: Array = source_map.get("solid_terrain", [])
 	var cave_mouths: Array = source_map.get("cave_mouths", [])
 	var scene_hooks: Array = source_map.get("scene_hooks", [])
 	var validation_rules: Array = source_map.get("validation_rules", [])
+	var generation_model: Dictionary = source_map.get("generation_model", {})
+	var playable_water_trace: Dictionary = source_map.get("playable_water_trace", {})
+	var terrain_domain: Dictionary = source_map.get("terrain_domain", {})
 	var coordinate_space: Dictionary = source_map.get("coordinate_space", {})
 	var pipeline: Dictionary = source_map.get("pipeline", {})
 	var runtime_contract: Dictionary = source_map.get("runtime_generation_contract", {})
@@ -3829,10 +3837,30 @@ func _test_area_01_source_map_contract() -> void:
 	_expect(String(pipeline.get("map_mode", "")) == "side_scroll_mode", "Area 01 source map should declare the side-scroll map mode")
 	_expect(String(pipeline.get("collision_model", "")).contains("precise_shapes"), "Area 01 source map should declare precise collision shapes")
 	_expect(String(pipeline.get("runtime_object_model", "")).contains("platform_objects"), "Area 01 source map should separate platform/runtime objects from background art")
-	_expect(String(runtime_contract.get("collision_source", "")).contains("solid_terrain"), "Area 01 runtime contract should name source-map terrain polygons as collision source")
+	_expect(String(generation_model.get("strategy", "")) == "playable_water_first", "Area 01 runtime source map should generate from playable water first")
+	_expect(String(generation_model.get("primary_source", "")).contains("area_01_playable_water_trace_v1"), "Area 01 runtime source map should use the source PNG trace as the primary cave topology source")
+	_expect(String(playable_water_trace.get("status", "")) == "generated_source_png_playable_water_trace", "Area 01 runtime source map should include generated playable-water trace metadata")
+	_expect(int(playable_water_trace.get("region_count", 0)) >= 6, "Area 01 runtime source map should include traced cave/corridor water regions")
+	_expect(String(generation_model.get("solid_terrain_policy", "")).contains("Do not copy hand-authored solid_terrain"), "Area 01 runtime source map should reject hand-authored solid chunks as primary design source")
+	_expect(String(runtime_contract.get("collision_source", "")).contains("playable_water_regions"), "Area 01 runtime contract should name playable-water-derived collision source")
 	_expect(not bool(terrain_kit.get("sprites_define_collision", true)), "Area 01 terrain sprites should not define collision")
+	_expect((terrain_domain.get("polygon", []) as Array).size() >= 3, "Area 01 runtime source map should define one continuous terrain domain")
+	_expect(playable_water_regions.size() >= 12, "Area 01 runtime source map should define playable water regions and cave mouths")
+	var traced_source_region_ids: Array[String] = []
+	for water in playable_water_regions:
+		if typeof(water) != TYPE_DICTIONARY:
+			continue
+		var trace_water_entry := water as Dictionary
+		if String(trace_water_entry.get("source", "")) != "area_01_playable_water_trace_v1.playable_water_regions.polygon":
+			continue
+		for source_region_id in trace_water_entry.get("source_region_ids", []):
+			var source_region := String(source_region_id)
+			if not traced_source_region_ids.has(source_region):
+				traced_source_region_ids.append(source_region)
+	for required_region_id in ["starter_kelp_cave", "shell_reef_bank_cave", "thermal_vent_pocket", "blue_chimney_route", "pressure_wreck_branch", "future_deep_exit"]:
+		_expect(traced_source_region_ids.has(required_region_id), "Area 01 traced playable-water source should cover %s" % required_region_id)
 	_expect(regions.size() >= 8, "Area 01 runtime source map should define the planned regions")
-	_expect(solid_terrain.size() >= 13, "Area 01 runtime source map should define current solid terrain blockers")
+	_expect(solid_terrain.size() >= 20, "Area 01 runtime source map should define generated solid collision partitions")
 	_expect(cave_mouths.size() >= 6, "Area 01 runtime source map should define cave mouths separately from terrain")
 	_expect(scene_hooks.size() >= 12, "Area 01 runtime source map should define trigger/debug hooks")
 	_expect(validation_rules.size() >= 12, "Area 01 source map should define validation rules")
@@ -3864,6 +3892,11 @@ func _test_area_01_source_map_contract() -> void:
 		"open_surface_must_span_stage",
 		"ship_offload_is_not_surface_oxygen",
 		"placements_must_not_overlap_solid_terrain",
+		"playable_water_regions_are_primary_source",
+		"playable_water_trace_required",
+		"runtime_solids_generated_from_playable_water",
+		"terrain_domain_must_be_continuous_under_surface",
+		"topology_parity_render_required",
 		"do_not_bake_preview_png",
 	]:
 		_expect(rule_ids.has(id), "Area 01 source map should include validation rule %s" % id)
@@ -3890,17 +3923,40 @@ func _test_area_01_source_map_contract() -> void:
 	var builder := Area01BlockoutBuilderScript.new()
 	_expect(builder.build(main), "Area 01 runtime source map should build generated terrain: %s" % builder.last_error)
 
-	var terrain_with_trims := 0
+	var terrain_domain_runtime: Dictionary = terrain_domain.get("runtime_generation", {})
+	var terrain_domain_node := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/%s" % String(terrain_domain_runtime.get("visible_polygon2d_name", "")))
+	_expect(terrain_domain_node is Polygon2D, "Area 01 source map should build one continuous terrain-domain visual")
+	var carved_water_count := 0
+	for water in playable_water_regions:
+		if typeof(water) != TYPE_DICTIONARY:
+			_expect(false, "Area 01 playable water entries should be dictionaries")
+			continue
+		var water_entry := water as Dictionary
+		var water_runtime: Dictionary = water_entry.get("runtime_generation", {})
+		var water_cutout := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/RuntimeSourceWaterCutouts/%s" % String(water_runtime.get("visible_polygon2d_name", "")))
+		var water_edge := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourceWaterEdges/%s" % String(water_runtime.get("edge_line2d_name", "")))
+		_expect(water_cutout is Polygon2D, "Area 01 playable water should build a cutout Polygon2D: %s" % String(water_entry.get("id", "")))
+		_expect(water_edge is Line2D, "Area 01 playable water should build an edge Line2D: %s" % String(water_entry.get("id", "")))
+		if bool(water_entry.get("carves_collision", false)):
+			carved_water_count += 1
+	_expect(carved_water_count >= 6, "Area 01 source map should carve cave/pocket water out of the continuous terrain domain")
+
+	var generated_collision_partitions := 0
 	for terrain in solid_terrain:
 		if typeof(terrain) != TYPE_DICTIONARY:
 			_expect(false, "Area 01 solid terrain entries should be dictionaries")
 			continue
 		var terrain_entry := terrain as Dictionary
 		var terrain_id := String(terrain_entry.get("id", "unknown"))
+		var runtime_generation: Variant = terrain_entry.get("runtime_generation", {})
+		_expect(runtime_generation is Dictionary, "Area 01 solid terrain should include runtime generation metadata: %s" % terrain_id)
+		if not runtime_generation is Dictionary:
+			continue
+		var runtime := runtime_generation as Dictionary
+		_expect(String(runtime.get("visual_role", "")) == "collision_partition", "Area 01 solid terrain should be generated collision partitions: %s" % terrain_id)
+		generated_collision_partitions += 1
 		var trim_segments: Variant = terrain_entry.get("trim_segments", [])
 		if trim_segments is Array:
-			if (trim_segments as Array).size() > 0:
-				terrain_with_trims += 1
 			for trim_value in trim_segments:
 				_expect(trim_value is Dictionary, "Area 01 terrain trim segments should be dictionaries: %s" % terrain_id)
 				if not trim_value is Dictionary:
@@ -3909,20 +3965,11 @@ func _test_area_01_source_map_contract() -> void:
 				_expect(trim.has("id"), "Area 01 terrain trim segment should have an id: %s" % terrain_id)
 				_expect(["top_lip", "underside", "deep_floor_lip", "vertical_wall", "diagonal_slope"].has(String(trim.get("type", ""))), "Area 01 terrain trim segment should have a semantic type: %s" % terrain_id)
 				_expect(trim.get("start", []) is Array and trim.get("end", []) is Array, "Area 01 terrain trim segment should define explicit start/end points: %s" % terrain_id)
-		var runtime_generation: Variant = terrain_entry.get("runtime_generation", {})
-		_expect(runtime_generation is Dictionary, "Area 01 solid terrain should include runtime generation metadata: %s" % terrain_id)
-		if not runtime_generation is Dictionary:
-			continue
-		var runtime := runtime_generation as Dictionary
-		var visible_node := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/%s" % String(runtime.get("visible_polygon2d_name", "")))
 		var collision_node := main.get_node_or_null("Area01ArtSlice/RuntimeSourceCollision/%s" % String(runtime.get("collision_polygon2d_name", "")))
-		var lip_node := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/%s" % String(runtime.get("rim_container_name", "")))
-		_expect(visible_node is Polygon2D, "Area 01 source map visible terrain should exist as Polygon2D: %s" % terrain_id)
 		_expect(collision_node is CollisionPolygon2D, "Area 01 source map collision should exist as CollisionPolygon2D: %s" % terrain_id)
-		_expect(lip_node is Polygon2D, "Area 01 source map lip/rim should exist as Polygon2D: %s" % terrain_id)
 		if collision_node is CollisionPolygon2D:
 			_expect(not (collision_node as CollisionPolygon2D).disabled, "Area 01 mapped blocker collision should stay enabled: %s" % terrain_id)
-	_expect(terrain_with_trims >= solid_terrain.size(), "Area 01 solid terrain should have explicit semantic trim coverage instead of inferred sprite placement")
+	_expect(generated_collision_partitions == solid_terrain.size(), "Area 01 solid terrain should all be generated collision partitions from playable water")
 
 	for hook in scene_hooks:
 		if typeof(hook) != TYPE_DICTIONARY:
@@ -4147,8 +4194,47 @@ func _test_area_01_authoritative_wall_builder() -> void:
 		return
 
 	var source_map := _load_area01_source_map_for_tests()
+	var terrain_domain: Dictionary = source_map.get("terrain_domain", {})
+	var playable_water_regions: Array = source_map.get("playable_water_regions", [])
 	var solid_terrain: Array = source_map.get("solid_terrain", [])
 	var collisions: Array[CollisionPolygon2D] = []
+
+	var terrain_domain_runtime: Dictionary = terrain_domain.get("runtime_generation", {})
+	var expected_domain_polygon := _points_from_source_map_json(terrain_domain.get("polygon", []))
+	var terrain_domain_node := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/%s" % String(terrain_domain_runtime.get("visible_polygon2d_name", ""))) as Polygon2D
+	_expect(expected_domain_polygon.size() >= 3, "Area 01 terrain domain should define one continuous source-map polygon")
+	_expect(terrain_domain_node != null and terrain_domain_node.visible, "Area 01 builder should render one continuous terrain-domain visual")
+	if terrain_domain_node != null:
+		_expect(_packed_points_match(terrain_domain_node.polygon, expected_domain_polygon), "Area 01 terrain-domain visual should exactly match the source-map terrain domain")
+
+	var water_cutout_layer := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/RuntimeSourceWaterCutouts") as Node2D
+	var water_edge_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourceWaterEdges") as Node2D
+	var carved_water_count := 0
+	_expect(water_cutout_layer != null, "Area 01 builder should render playable-water cutouts over the continuous terrain domain")
+	_expect(water_edge_layer != null, "Area 01 builder should render playable-water boundary edges")
+	for water_value in playable_water_regions:
+		if typeof(water_value) != TYPE_DICTIONARY:
+			_expect(false, "Area 01 playable water entry should be a dictionary")
+			continue
+		var water_entry := water_value as Dictionary
+		var water_id := String(water_entry.get("id", "unknown"))
+		var runtime_generation: Variant = water_entry.get("runtime_generation", {})
+		_expect(runtime_generation is Dictionary, "Area 01 playable water should define runtime generation metadata: %s" % water_id)
+		if not runtime_generation is Dictionary:
+			continue
+		var runtime := runtime_generation as Dictionary
+		var cutout: Polygon2D = null
+		if water_cutout_layer != null:
+			cutout = water_cutout_layer.get_node_or_null(String(runtime.get("visible_polygon2d_name", ""))) as Polygon2D
+		var edge: Line2D = null
+		if water_edge_layer != null:
+			edge = water_edge_layer.get_node_or_null(String(runtime.get("edge_line2d_name", ""))) as Line2D
+		_expect(cutout != null and cutout.visible, "Area 01 playable water cutout should be visible: %s" % water_id)
+		_expect(edge != null and edge.visible, "Area 01 playable water edge should be visible: %s" % water_id)
+		if bool(water_entry.get("carves_collision", false)):
+			carved_water_count += 1
+	_expect(carved_water_count >= 6, "Area 01 runtime map should carve traced cave/corridor water from the continuous terrain mass")
+
 	for terrain in solid_terrain:
 		if typeof(terrain) != TYPE_DICTIONARY:
 			_expect(false, "Area 01 authoritative wall entry should be a dictionary")
@@ -4161,17 +4247,16 @@ func _test_area_01_authoritative_wall_builder() -> void:
 		if not runtime_generation is Dictionary:
 			continue
 		var runtime := runtime_generation as Dictionary
+		_expect(String(runtime.get("visual_role", "")) == "collision_partition", "Area 01 generated solid entry should be a collision partition, not a visible terrain chunk: %s" % terrain_id)
 		var visible := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/%s" % String(runtime.get("visible_polygon2d_name", ""))) as Polygon2D
 		var collision := main.get_node_or_null("Area01ArtSlice/RuntimeSourceCollision/%s" % String(runtime.get("collision_polygon2d_name", ""))) as CollisionPolygon2D
 		var lip := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/%s" % String(runtime.get("rim_container_name", ""))) as Polygon2D
 		_expect(expected_polygon.size() >= 3, "Area 01 source-map wall should define an authoritative polygon: %s" % terrain_id)
-		_expect(visible != null and visible.visible, "Area 01 generated wall visual should be visible: %s" % terrain_id)
+		_expect(visible == null, "Area 01 generated collision partitions should not render as separate floating wall visuals: %s" % terrain_id)
 		_expect(collision != null and not collision.disabled, "Area 01 generated wall collision should be enabled: %s" % terrain_id)
-		_expect(lip != null and lip.visible, "Area 01 generated wall lip should be visible: %s" % terrain_id)
-		if visible != null and collision != null and lip != null:
-			_expect(_packed_points_match(visible.polygon, expected_polygon), "Area 01 wall visual should exactly match source-map polygon: %s" % terrain_id)
+		_expect(lip == null, "Area 01 generated collision partitions should not render separate wall lips: %s" % terrain_id)
+		if collision != null:
 			_expect(_packed_points_match(collision.polygon, expected_polygon), "Area 01 wall collision should exactly match source-map polygon: %s" % terrain_id)
-			_expect(_packed_points_match(lip.polygon, expected_polygon), "Area 01 wall lip should exactly match source-map polygon: %s" % terrain_id)
 			collisions.append(collision)
 
 	var legacy_collision_root := main.get_node("Area01ArtSlice/TerrainCollision") as StaticBody2D
@@ -4210,42 +4295,24 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	_expect(water_light_shafts.modulate.a <= 0.25, "Area 01 light shafts should stay secondary to collision-source terrain")
 	_expect(wall_dressing_layer == null, "Area 01 builder should not keep the old shape-dressing layer")
 	_expect(tile_terrain_layer == null, "Area 01 builder should not render rectangular atlas tiles over arbitrary wall polygons")
-	_expect(terrain_accent_layer != null, "Area 01 builder should add source-map-driven terrain accent edges")
 	if terrain_accent_layer != null:
-		_expect(terrain_accent_layer.get_child_count() >= solid_terrain.size(), "Area 01 terrain accents should add one accent group per source-map wall")
 		_expect(not _node_tree_contains_collision(terrain_accent_layer), "Area 01 terrain accents should not add collision ownership")
-		_expect(terrain_accent_layer.find_child("ContinuousInsetPlane", true, false) is Polygon2D, "Area 01 terrain accents should create continuous chunk planes instead of only repeated sprite stamps")
-		_expect(terrain_accent_layer.find_child("ContinuousDepthShadowPlane", true, false) is Polygon2D, "Area 01 terrain accents should create continuous depth planes from the source-map polygon")
-		_expect(terrain_accent_layer.find_child("SemanticTopLipBlend*", true, false) is Polygon2D, "Area 01 terrain accents should blend source-map-authored top lip trims into the terrain body")
-		_expect(terrain_accent_layer.find_child("SemanticTopLipBroadLitFace*", true, false) is Polygon2D, "Area 01 top lip accents should add a broader lit shelf face behind trim sprites")
-		_expect(terrain_accent_layer.find_child("SemanticTopLipEdgeGlow*", true, false) is Polygon2D, "Area 01 top lip accents should add a thin edge glow for readable playable boundaries")
-		_expect(terrain_accent_layer.find_child("SemanticUndersideBlend*", true, false) is Polygon2D, "Area 01 terrain accents should blend source-map-authored underside trims into the terrain body")
-		_expect(terrain_accent_layer.find_child("SemanticOverhangOcclusionBlend*", true, false) is Polygon2D, "Area 01 underside accents should add overhang occlusion so ceilings do not read like top ledges")
-		_expect(terrain_accent_layer.find_child("SemanticVerticalWallBlend*", true, false) is Polygon2D, "Area 01 terrain accents should blend source-map-authored vertical wall trims into the terrain body")
-		_expect(terrain_accent_layer.find_child("SemanticVerticalWallOcclusionBlend*", true, false) is Polygon2D, "Area 01 vertical wall accents should add side occlusion to distinguish walls from playable water")
-		_expect(terrain_accent_layer.find_child("SemanticDeepFloorLipBlend*", true, false) is Polygon2D, "Area 01 terrain accents should blend source-map-authored deep floor trims into the terrain body")
-		_expect(terrain_accent_layer.find_child("SemanticTopLipTrim*", true, false) is Sprite2D, "Area 01 terrain accents should use source-map-authored top lip sprite trims")
-		_expect(terrain_accent_layer.find_child("SemanticUndersideTrim*", true, false) is Sprite2D, "Area 01 terrain accents should use source-map-authored underside sprite trims")
-		_expect(terrain_accent_layer.find_child("SemanticVerticalWallTrim*", true, false) is Sprite2D, "Area 01 terrain accents should use source-map-authored vertical wall sprite trims")
-		_expect(terrain_accent_layer.find_child("SemanticDeepFloorLipTrim*", true, false) is Sprite2D, "Area 01 terrain accents should use source-map-authored deep floor lip sprite trims")
-		_expect(terrain_accent_layer.find_child("SemanticTopLipTrimStartCap", true, false) is Sprite2D, "Area 01 top lip trims should place start cap sprites from the terrain kit")
-		_expect(terrain_accent_layer.find_child("SemanticTopLipTrimMiddle*", true, false) is Sprite2D, "Area 01 top lip trims should place repeatable middle sprites from the terrain kit")
-		_expect(terrain_accent_layer.find_child("SemanticTopLipTrimEndCap", true, false) is Sprite2D, "Area 01 top lip trims should place end cap sprites from the terrain kit")
-		_expect(terrain_accent_layer.find_child("SemanticVerticalWallTrimStartCap", true, false) is Sprite2D, "Area 01 vertical wall trims should place top cap sprites from the terrain kit")
-		_expect(terrain_accent_layer.find_child("SemanticVerticalWallTrimMiddle*", true, false) is Sprite2D, "Area 01 vertical wall trims should place repeatable middle sprites from the terrain kit")
-		_expect(terrain_accent_layer.find_child("SemanticVerticalWallTrimEndCap", true, false) is Sprite2D, "Area 01 vertical wall trims should place bottom cap sprites from the terrain kit")
 		_expect(terrain_accent_layer.find_child("VerticalWallMiddleTrim*", true, false) == null, "Area 01 terrain accents should not auto-place vertical wall trims without semantic source-map segments")
 		_expect(terrain_accent_layer.find_child("DiagonalSlopeTrim*", true, false) == null, "Area 01 terrain accents should not auto-place slope trims without semantic source-map segments")
 	var generated_terrain := main.get_node("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain") as Node2D
-	var first_generated_wall := generated_terrain.get_child(0) as Polygon2D
-	_expect(first_generated_wall.color.a >= 0.9, "Area 01 generated source-map terrain should read as solid wall/floor, not translucent background dressing")
-	_expect(first_generated_wall.color.r >= 0.4 and first_generated_wall.color.g >= 0.7, "Area 01 generated terrain should keep the approved rock texture visible instead of over-darkening it")
-	_expect(first_generated_wall.texture != null, "Area 01 solid wall polygons should use the approved reef fill texture")
-	_expect(first_generated_wall.uv.size() == first_generated_wall.polygon.size(), "Area 01 textured wall polygons should define matching UVs")
+	var first_generated_wall := terrain_domain_node
+	_expect(first_generated_wall != null, "Area 01 generated source-map terrain should include a terrain-domain Polygon2D")
+	if first_generated_wall != null:
+		_expect(first_generated_wall.color.a >= 0.9, "Area 01 generated source-map terrain should read as solid wall/floor, not translucent background dressing")
+		_expect(first_generated_wall.color.r >= 0.4 and first_generated_wall.color.g >= 0.7, "Area 01 generated terrain should keep the approved rock texture visible instead of over-darkening it")
+		_expect(first_generated_wall.texture != null, "Area 01 solid wall polygons should use the approved reef fill texture")
+		_expect(first_generated_wall.uv.size() == first_generated_wall.polygon.size(), "Area 01 textured wall polygons should define matching UVs")
 	main.free()
 
 func _test_area_01_starter_resource_pocket_placement() -> void:
 	var main := MainScene.instantiate()
+	var builder := Area01BlockoutBuilderScript.new()
+	_expect(builder.build(main), "Area 01 starter resource placement test should use runtime source-map collision: %s" % builder.last_error)
 	var left_shallow := main.get_node("Area01ArtSlice/GameplayObjects/LeftShallowResourcePocket") as Node2D
 	var right_shelf := main.get_node("Area01ArtSlice/GameplayObjects/RightShelfResourcePocket") as Node2D
 	var left_cave := main.get_node("Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket") as Node2D

@@ -1,8 +1,12 @@
 # Area 01 Runtime V2 Visual/Collision Review - 2026-06-29
 
+Superseded on 2026-06-30 by `docs/planning/maps/area_01_runtime_source_map_v3.json`.
+
+This review remains useful as evidence for the earlier v2 promotion, but v2 is no longer the current Area 01 runtime authority.
+
 ## Decision
 
-Accept `docs/planning/maps/area_01_runtime_source_map_v2.json` as the current Area 01 geometry/collision source for runtime validation.
+Accepted `docs/planning/maps/area_01_runtime_source_map_v2.json` as the Area 01 geometry/collision source for the 2026-06-29 validation pass.
 
 This is not an acceptance of final terrain art polish. The staged captures show that visible generated terrain, collision-source outlines, and traversal space are now driven from the same source-map candidate, but the presentation still needs a focused visual cleanup pass before content expansion resumes.
 
@@ -67,6 +71,6 @@ Completed a bounded terrain presentation pass after the staged review:
 
 ## Next Step
 
-Review the refreshed staged captures, then expand semantic sprite/trim segments in `area_01_runtime_source_map_v2.json` only where the source map explicitly identifies what terrain role the sprite piece is serving.
+For current Area 01 work, update `area_01_surface_floor_geometry_v1.json`, regenerate `area_01_runtime_source_map_v3.json`, and refresh the runtime-vs-source side-by-side render.
 
 Do not add new route content, creatures, upgrades, resources, or promises until the source-map terrain remains readable in the same staged capture suite.

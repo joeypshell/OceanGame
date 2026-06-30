@@ -31,7 +31,9 @@ This layout supports the daylight multi-dive loop:
 
 ## Collision Rule
 
-Do not infer collision from the generated PNG. The promoted runtime source is `docs/planning/maps/area_01_runtime_source_map_v3.json`, generated from the surface-floor source and Godot-coordinate geometry. The seafloor and cave boundaries are explicit source-map polygons with matching visible terrain, rim/lip art, and `CollisionPolygon2D` shapes.
+Do not bake the generated PNG into runtime collision or art. The promoted runtime source is `docs/planning/maps/area_01_runtime_source_map_v3.json`, generated from `docs/planning/maps/area_01_playable_water_trace_v1.json` plus Godot-coordinate cave-mouth, placement, and hook geometry.
+
+The primary Area 01 topology source is playable water: open surface, source-PNG-traced cave corridors/pockets, and cave mouths. Runtime v3 generates one continuous undersea `terrain_domain` visual and collision-only `solid_terrain` partitions around those water shapes. Do not treat hand-authored solid chunks as the primary design source.
 
 `docs/planning/maps/area_01_blockout_source_map_v1.json` is historical/fallback context only. It no longer owns current runtime collision truth.
 

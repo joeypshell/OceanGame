@@ -1,10 +1,14 @@
 # Area 01 Runtime Source Map V2 - 2026-06-29
 
+Superseded on 2026-06-30 by `docs/planning/maps/area_01_runtime_source_map_v3.json`.
+
+Keep this file as a historical record of the first runtime-source promotion. Do not use v2 as the current Area 01 runtime authority.
+
 ## Decision
 
-`docs/planning/maps/area_01_runtime_source_map_v2.json` is the promoted Area 01 runtime-source authority for geometry and collision.
+`docs/planning/maps/area_01_runtime_source_map_v2.json` was the promoted Area 01 runtime-source authority for geometry and collision on 2026-06-29.
 
-`Main.tscn` calls `scripts/area01_blockout_builder.gd`, and the builder creates Area 01 terrain visuals, collision, rims, and nonblocking validation hooks from this file. The legacy `docs/planning/maps/area_01_blockout_source_map_v1.json` remains only as a fallback load path if runtime v2 cannot be loaded.
+The current runtime source is v3, which treats playable water/cave corridors as the primary source and generates collision partitions from one continuous terrain domain.
 
 ## Inputs
 
@@ -70,7 +74,7 @@ Do not place terrain sprites by eyeballing screen coordinates in `Main.tscn`. Th
 
 ## Source-Of-Truth Rule
 
-For runtime v2, the intended invariant is:
+For historical runtime v2, the intended invariant was:
 
 ```text
 source polygon == visible terrain polygon == collision polygon source == rim/trim placement source
@@ -91,6 +95,6 @@ The first Godot builder promotion pass is implemented:
 
 The staged visual/collision review is now recorded in `docs/planning/AREA_01_RUNTIME_V2_VISUAL_COLLISION_REVIEW_2026_06_29.md`.
 
-Runtime v2 is accepted as the current geometry/collision source for validation, with a visual watchlist. The next step is terrain presentation cleanup against this same source map, not new content.
+Runtime v2 was accepted for its original validation pass, then superseded by runtime v3 after the full-map topology mismatch was identified. Current map edits should update v3's playable-water source geometry and regenerate the runtime map.
 
 Do not add new route content, creatures, upgrades, or resources during this promotion pass.

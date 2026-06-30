@@ -71,6 +71,8 @@ func load_source_map() -> bool:
 func source_map_summary() -> Dictionary:
 	var lanes := (source_map.get("playable_water_lanes", []) as Array).size()
 	if lanes == 0:
+		lanes = (source_map.get("playable_water_regions", []) as Array).size()
+	if lanes == 0:
 		lanes = (source_map.get("regions", []) as Array).size()
 	var pockets := (source_map.get("resource_pockets", []) as Array).size()
 	if pockets == 0:
@@ -102,14 +104,18 @@ func _draw() -> void:
 
 func _draw_playable_lanes() -> void:
 	var lanes: Array = source_map.get("playable_water_lanes", [])
+	if lanes.is_empty():
+		lanes = source_map.get("playable_water_regions", [])
 	for lane in lanes:
 		if typeof(lane) != TYPE_DICTIONARY:
 			continue
-		var points := _points_from_json((lane as Dictionary).get("approx_polygon", []))
+		var lane_data := lane as Dictionary
+		var points := _points_from_json(lane_data.get("approx_polygon", lane_data.get("polygon", [])))
 		if points.size() < 3:
 			continue
 		draw_colored_polygon(points, LANE_COLOR)
-		draw_polyline(_closed_points(points), LANE_EDGE_COLOR, 2.0)
+		var edge_color := FUTURE_HOOK_EDGE_COLOR if String(lane_data.get("status", "")) == "future_locked" else LANE_EDGE_COLOR
+		draw_polyline(_closed_points(points), edge_color, 2.0)
 
 func _draw_mapped_collision() -> void:
 	var solids: Array = source_map.get("solid_terrain", [])

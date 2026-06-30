@@ -4,18 +4,19 @@ Date: 2026-06-29
 
 ## Decision
 
-The Area 01 terrain kit has been applied to the existing candidate surface-floor geometry as a non-runtime preview.
+The Area 01 terrain kit was applied to the earlier candidate surface-floor geometry as a non-runtime preview.
 
 The v4 terrain-kit/source-floor direction has been accepted for map-truth reconciliation and is runtime-wired for source-map review.
 
-This pass does not wire sprites into `scenes/Main.tscn`, change collision, promote `area_01_surface_floor_geometry_v1.json` to runtime authority, or replace the current playable map.
+This pass does not define current runtime topology. Current Area 01 topology is `docs/planning/maps/area_01_runtime_source_map_v3.json`, generated from playable-water regions carved through one continuous terrain domain.
 
 Update: the runtime review path now uses `area_01_terrain_art_kit_v4`, which supersedes v3 with clearer cap/repeat/wall module roles. Earlier v1/v2/v3 outputs remain useful comparison artifacts, but v4 is the current terrain-art path.
 
 ## Outputs
 
 - Renderer: `tools/render_area01_surface_floor_sprite_kit_preview.py`
-- Current geometry source: `docs/planning/maps/area_01_runtime_source_map_v2.json`
+- Historical preview geometry source: `docs/planning/maps/area_01_runtime_source_map_v2.json`
+- Current runtime topology source: `docs/planning/maps/area_01_runtime_source_map_v3.json`
 - Current kit manifest: `docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json`
 - Current annotated full preview: `docs/planning/maps/area_01_surface_floor_sprite_kit_v4_preview_v1.png`
 - Current annotated camera crop: `docs/planning/maps/area_01_surface_floor_sprite_kit_v4_camera_crop_v1.png`
@@ -42,10 +43,10 @@ Historical comparison outputs:
 
 The first preview exposed a geometry problem: the original candidate source-map polygons were too rectangular and shelf-box-like for the target visual direction. The organic revision improves that. V3 improves the terrain kit by treating fill as low-contrast material and ledge/ceiling/side sprites as trims, but the preview is still not final-quality terrain art.
 
-The next useful pass is Godot builder promotion:
+The original next useful pass was Godot builder promotion. That pass has been superseded by runtime v3's water-shape-first model:
 
-- load `docs/planning/maps/area_01_runtime_source_map_v2.json`;
-- generate terrain visuals, collision, rims, and `Area2D` hooks from that one file;
+- load `docs/planning/maps/area_01_runtime_source_map_v3.json`;
+- generate continuous terrain-domain visuals, playable-water cutouts, collision partitions, rims, and `Area2D` hooks from that one file;
 - preserve relevant defect-prevention validation rules from the current blockout map during implementation checks;
 - keep collision generated from simplified polygons, not from sprite pixels;
 - keep sprite trims as visual dressing, not gameplay truth;
@@ -56,11 +57,11 @@ See `docs/planning/AREA_01_MAP_TRUTH_RECONCILIATION_2026_06_29.md` for the accep
 
 ## Runtime Recommendation
 
-Use this direction for the eventual runtime implementation:
+Use this art direction with the current runtime implementation:
 
-- `Polygon2D` for source-map terrain fills;
+- `Polygon2D` for the continuous terrain-domain fill and playable-water cutout visuals;
 - `Sprite2D` for rim strips, caps, cave-mouth frames, props, resources, gates, and decor;
-- `StaticBody2D` plus `CollisionPolygon2D` for terrain collision;
+- `StaticBody2D` plus `CollisionPolygon2D` for generated terrain collision partitions;
 - `Area2D` for oxygen, offload, pickups, scans, gates, hazards, return currents, and route triggers.
 
 Do not switch the main terrain pipeline to `MeshInstance2D` now. Consider `MeshInstance2D` later only for targeted fill-rate optimization after profiling, especially for large alpha-heavy decorations on mobile/web.

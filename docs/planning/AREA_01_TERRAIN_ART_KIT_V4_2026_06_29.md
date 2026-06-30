@@ -1,6 +1,6 @@
 # Area 01 Terrain Art Kit V4 - 2026-06-29
 
-`area_01_terrain_art_kit_v4` is the current Area 01 terrain-art kit for runtime source-map review.
+`area_01_terrain_art_kit_v4` is the current Area 01 terrain-art kit for runtime source-map review. Current topology comes from `docs/planning/maps/area_01_runtime_source_map_v3.json`.
 
 ## Outputs
 
@@ -20,9 +20,9 @@ V4 improves the kit by making cap, repeat, ceiling, vertical wall, slope, and fl
 
 ## Runtime Policy
 
-- Use `Polygon2D` terrain fills from `docs/planning/maps/area_01_runtime_source_map_v2.json`.
+- Use `Polygon2D` terrain-domain fills and playable-water cutout visuals from `docs/planning/maps/area_01_runtime_source_map_v3.json`.
 - Use `Sprite2D` terrain trims from the v4 frame directory.
-- Use `StaticBody2D` and `CollisionPolygon2D` from the same source-map polygons.
+- Use `StaticBody2D` and `CollisionPolygon2D` partitions generated from `terrain_domain - playable_water_regions`.
 - Do not infer collision, pickups, gates, cave entrances, or route logic from sprite pixels.
 - Do not wire the atlas as a baked level image.
 
@@ -33,5 +33,5 @@ V4 improves the kit by making cap, repeat, ceiling, vertical wall, slope, and fl
 3. Remove disconnected components smaller than 1000 pixels from extracted frames if grid drift creates tiny cross-cell fragments.
 4. Rebuild `area01_reef_seafloor_terrain_kit_v4.png` from cleaned frames.
 5. Update `docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json`.
-6. Point `docs/planning/maps/area_01_runtime_source_map_v2.json` at the accepted manifest and frame directory.
+6. Point `docs/planning/maps/area_01_runtime_source_map_v3.json` at the accepted manifest and frame directory.
 7. Validate with quick logic tests, shell captures, docs tests, and `git diff --check`.

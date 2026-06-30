@@ -11,6 +11,8 @@ Use this contract when creating or changing OceanGame source-map geometry files.
   "purpose": "Short source-truth statement.",
   "coordinate_space": {},
   "topology": {},
+  "terrain_domain": {},
+  "playable_water_regions": [],
   "regions": [],
   "solid_terrain": [],
   "cave_mouths": [],
@@ -47,7 +49,32 @@ Each region should include:
 
 ## Solid Terrain
 
-Each solid terrain entry should include:
+For Area 01 runtime v3, solid terrain is generated from playable water rather than authored directly:
+
+```json
+{
+  "playable_water_trace": {
+    "source": "docs/planning/maps/area_01_playable_water_trace_v1.json"
+  },
+  "terrain_domain": {
+    "id": "continuous_undersea_terrain_domain",
+    "polygon": [[0, 500], [1000, 500], [1000, 2000], [0, 2000]]
+  },
+  "playable_water_regions": [
+    {
+      "id": "source_trace_shell_reef_bank",
+      "source": "area_01_playable_water_trace_v1.playable_water_regions.polygon",
+      "source_region_ids": ["shell_reef_bank_cave", "blue_chimney_route"],
+      "polygon": [[100, 700], [500, 700], [600, 1000], [120, 1100]],
+      "carves_collision": true
+    }
+  ]
+}
+```
+
+Generated `solid_terrain` entries may be collision-only partitions if their `runtime_generation.visual_role` is `collision_partition`. Do not hand-author those partitions as the design source.
+
+For non-generated terrain entries, each solid terrain entry should include:
 
 ```json
 {

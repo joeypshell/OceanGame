@@ -1,20 +1,21 @@
 {
   "schema_version": 1,
   "id": "area_01_map_truth_comparison_v1",
-  "date": "2026-06-29",
-  "status": "comparison_only_not_runtime_wired",
+  "date": "2026-06-30",
+  "status": "historical_comparison_runtime_v3_supersedes_sparse_blockout",
   "decision_context": {
     "accepted_visual_geometry_direction": "docs/planning/maps/area_01_surface_floor_geometry_v1.json",
     "accepted_visual_terrain_kit": "docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json",
-    "current_runtime_authority": "docs/planning/maps/area_01_blockout_source_map_v1.json",
+    "historical_runtime_blockout": "docs/planning/maps/area_01_blockout_source_map_v1.json",
+    "current_runtime_authority": "docs/planning/maps/area_01_runtime_source_map_v3.json",
     "high_level_surface_reference": "docs/planning/maps/area_01_surface_floor_source_map_v1.json"
   },
   "pipeline_contract": {
     "map_mode": "side_scroll_mode",
-    "visual_model": "parallax_layers plus source-map terrain chunks",
+    "visual_model": "parallax_layers plus continuous terrain_domain with playable-water cave cutouts",
     "runtime_object_model": "platform_objects plus interactive_scene_objects plus foreground_occluders plus scene_hooks",
-    "collision_model": "precise_shapes plus trigger_zones",
-    "rule": "Do not infer collision from generated art; solid terrain, collision, visible fills, and rim trims must derive from the same source-map polygons."
+    "collision_model": "generated solid partitions from terrain_domain minus playable_water_regions plus trigger_zones",
+    "rule": "Do not infer collision from generated art; terrain visuals, playable-water cutouts, collision partitions, and rim trims must derive from the same source-map polygons."
   },
   "source_counts": {
     "runtime_blockout": {
@@ -24,7 +25,7 @@
       "cave_mouth_affordances": 3
     },
     "accepted_surface_floor": {
-      "solid_terrain": 13,
+      "solid_terrain": 18,
       "regions": 8,
       "cave_mouths": 6,
       "sprite_placements": 8,
@@ -43,9 +44,9 @@
     "accepted_surface_floor_solid_terrain": {
       "min_x": -900,
       "min_y": 488,
-      "max_x": 4600,
+      "max_x": 4660,
       "max_y": 2400,
-      "width": 5500,
+      "width": 5560,
       "height": 1912
     },
     "runtime_blockout_playable_lanes": {
@@ -419,6 +420,76 @@
       "area": 408500.0
     },
     {
+      "id": "pressure_wreck_inner_ceiling",
+      "role": "Interior ceiling mass that closes the pressure wreck branch into a cave-like pocket without blocking the gate or scan zone.",
+      "vertices": 7,
+      "bounds": {
+        "min_x": 3280,
+        "min_y": 760,
+        "max_x": 3860,
+        "max_y": 1040,
+        "width": 580,
+        "height": 280
+      },
+      "area": 121700.0
+    },
+    {
+      "id": "pressure_wreck_lower_shelf",
+      "role": "Lower shelf mass under the pressure wreck pocket that frames the branch floor while leaving the pocket water navigable.",
+      "vertices": 9,
+      "bounds": {
+        "min_x": 2940,
+        "min_y": 1270,
+        "max_x": 3980,
+        "max_y": 1605,
+        "width": 1040,
+        "height": 335
+      },
+      "area": 267525.0
+    },
+    {
+      "id": "future_exit_ceiling",
+      "role": "Deep right ceiling mass above the future exit lane so the lower route reads as a corridor instead of blank open water.",
+      "vertices": 10,
+      "bounds": {
+        "min_x": 3060,
+        "min_y": 1535,
+        "max_x": 4540,
+        "max_y": 1810,
+        "width": 1480,
+        "height": 275
+      },
+      "area": 327350.0
+    },
+    {
+      "id": "future_exit_endcap_wall",
+      "role": "Solid right-side cave endcap behind the locked future gate so the corridor does not read as open ocean.",
+      "vertices": 6,
+      "bounds": {
+        "min_x": 4390,
+        "min_y": 1765,
+        "max_x": 4660,
+        "max_y": 2070,
+        "width": 270,
+        "height": 305
+      },
+      "area": 67987.5
+    },
+    {
+      "id": "future_exit_left_pillar",
+      "role": "Left pillar framing the future deep exit corridor while keeping the future exit trigger open.",
+      "vertices": 6,
+      "bounds": {
+        "min_x": 2860,
+        "min_y": 1740,
+        "max_x": 3130,
+        "max_y": 2120,
+        "width": 270,
+        "height": 380
+      },
+      "area": 83900.0
+    },
+    {
       "id": "future_exit_floor",
       "role": "Lower-right future route floor around locked exit.",
       "vertices": 8,
@@ -706,36 +777,37 @@
   "semantic_comparison": [
     {
       "topic": "surface oxygen",
-      "runtime_blockout": "Models a boat/moonpool surface-entry lane and central descent spine.",
+      "runtime_blockout": "Historical blockout modeled a boat/moonpool surface-entry lane and central descent spine.",
       "accepted_surface_floor": "Models an open horizontal surface-water band across the full stage plus a separate oxygen refill hook.",
-      "reconciliation": "The promoted map should use the accepted open-surface rule, while preserving ship/moonpool banking as a separate offload hook."
+      "reconciliation": "Runtime v3 uses the accepted open-surface rule, while preserving ship/moonpool banking as a separate offload hook."
     },
     {
       "topic": "terrain topology",
-      "runtime_blockout": "Uses rescue-pass wall masses and water lanes to make current collision readable.",
+      "runtime_blockout": "Historical blockout used separate wall masses and water lanes, which read as floating chunks in open water.",
       "accepted_surface_floor": "Uses continuous seafloor shelf segments with cave holes and named cave systems below.",
-      "reconciliation": "Use accepted surface-floor terrain as the base for runtime v2; retire direct blockout wall topology after migration."
+      "reconciliation": "Runtime v3 derives topology from source-PNG-traced playable_water_regions carved through one terrain_domain; generated solid_terrain entries are collision partitions only."
     },
     {
       "topic": "interaction model",
-      "runtime_blockout": "Uses resource pockets, cave-mouth affordances, and validation rules.",
+      "runtime_blockout": "Historical blockout used resource pockets, cave-mouth affordances, and validation rules.",
       "accepted_surface_floor": "Uses explicit scene_hooks for oxygen, offload, cave entrances, hazards, gates, pickups, scans, and return currents.",
-      "reconciliation": "Promoted runtime source should use explicit scene_hooks and preserve relevant blockout defect-prevention validation rules."
+      "reconciliation": "Runtime v3 uses explicit scene_hooks and preserves relevant blockout defect-prevention validation rules."
     },
     {
       "topic": "runtime wiring",
-      "runtime_blockout": "Contains existing visible_path, collision_path, and lip_path fields for current runtime builder nodes.",
-      "accepted_surface_floor": "Contains visual/collision/rim strategies but no current scene node paths because it is not runtime-wired.",
-      "reconciliation": "The next implementation pass needs a builder or conversion layer that creates visible terrain, collision, rim trims, and Area2D hooks from accepted geometry."
+      "runtime_blockout": "Historical blockout contained visible_path, collision_path, and lip_path fields for hand-authored runtime builder nodes.",
+      "accepted_surface_floor": "Contains visual/collision/rim strategies plus named scene hooks and object placement intent.",
+      "reconciliation": "Runtime v3 generator creates terrain_domain visuals, playable-water cutouts, collision partitions, and Area2D hooks from accepted geometry."
     }
   ],
   "recommended_next_artifact": {
-    "path": "docs/planning/maps/area_01_runtime_source_map_v2.json",
-    "purpose": "Single promoted source of truth that merges accepted surface-floor geometry with runtime-ready builder metadata and validation rules.",
+    "path": "docs/planning/maps/area_01_runtime_source_map_v3.json",
+    "purpose": "Single promoted source of truth that turns accepted playable-water geometry into deterministic runtime terrain, collision, hooks, and previews.",
     "should_include": [
-      "solid_terrain polygons copied from accepted surface-floor geometry",
-      "scene_hooks copied from accepted surface-floor geometry",
-      "runtime builder naming or node-generation templates",
+      "continuous terrain_domain copied from source-map domain policy",
+      "playable_water_regions generated from the source PNG trace and cave mouths",
+      "solid_terrain collision partitions generated from terrain_domain minus playable_water_regions",
+      "scene_hooks copied from accepted source geometry",
       "validation rules inherited from both current blockout and accepted geometry",
       "terrain kit manifest pointer",
       "explicit statement that sprites do not define collision"
@@ -744,9 +816,9 @@
   "must_not_do": [
     "Do not wire the v3 preview PNG as a baked runtime map.",
     "Do not keep runtime collision on the old blockout while showing the accepted surface-floor terrain art.",
-    "Do not hand-place visual walls that are not generated from the promoted source polygons.",
+    "Do not hand-place visual walls or primary solid chunks that are not generated from the promoted source polygons.",
     "Do not infer cave-mouth blockers or routes from sprite pixels."
   ],
   "source_reference_topology_rule": "The full water surface must remain open horizontally. The first major solid boundary is the seafloor shelf below the surface. Exploration complexity lives beneath that shelf through authored holes, caves, pockets, gates, and return currents.",
-  "terrain_kit_status": "review_asset_not_runtime_wired"
+  "terrain_kit_status": "runtime_wired_for_area01_source_map_review"
 }

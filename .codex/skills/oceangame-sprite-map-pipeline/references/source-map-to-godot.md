@@ -22,7 +22,7 @@ Prefer this split:
 - `CollisionPolygon2D`: simplified solid collision that matches each real terrain mass.
 - `Sprite2D`: visual trims, cave rims, terrain edge caps, wreck pieces, gates, resources, plants, and decorations.
 - `Area2D`: oxygen refill, ship offload, pickups, scan targets, cave entrances, gates, hazards, return currents, and route triggers.
-- JSON: named source-map truth for regions, solids, cave mouths, object placements, and validation rules.
+- JSON: named source-map truth for regions, terrain domain, playable-water shapes, generated solids, cave mouths, object placements, and validation rules.
 
 Use `TileMapLayer` only when a layer is truly tile-like: repeated background details, grid-friendly decoration, destructible tiles, or a deliberately tiled terrain pass.
 
@@ -42,10 +42,12 @@ For the first-level map:
 
 1. Source geometry:
    - `open_surface_water`
-   - `seafloor_solid_polygons`
+   - source PNG playable-water trace (`area_01_playable_water_trace_v1.json`)
+   - `terrain_domain`
+   - `playable_water_regions`
    - `cave_mouths`
-   - `cave_water_regions`
-   - `collision_edges`
+   - generated `solid_terrain` collision partitions
+   - `water_edge` / collision-edge cues
    - `resource_spawns`
    - `scan_targets`
    - `gates`
@@ -67,9 +69,11 @@ For the first-level map:
 
 3. Godot builder:
    - read JSON;
-   - create visual terrain nodes;
-   - create `StaticBody2D` terrain bodies;
-   - create `CollisionPolygon2D` children;
+   - treat source-PNG trace polygons as the Area 01 cave/corridor/pocket topology source;
+   - create continuous terrain-domain visual nodes;
+   - create playable-water cutout and edge nodes;
+   - create `StaticBody2D` terrain body;
+   - create generated `CollisionPolygon2D` partition children;
    - place sprite objects;
    - create `Area2D` hooks;
    - attach existing scripts/resources only where ownership already belongs.

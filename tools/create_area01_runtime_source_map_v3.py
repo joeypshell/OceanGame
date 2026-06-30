@@ -14,7 +14,19 @@ COMPARISON_PATH = ROOT / "docs/planning/maps/area_01_map_truth_comparison_v1.jso
 TERRAIN_KIT_MANIFEST_PATH = ROOT / "docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json"
 SURFACE_SOURCE_PATH = ROOT / "docs/planning/maps/area_01_surface_floor_source_map_v1.json"
 SURFACE_OBJECTS_PATH = ROOT / "data/maps/area_01_surface_floor_objects_v1.json"
+PLAYABLE_WATER_TRACE_PATH = ROOT / "docs/planning/maps/area_01_playable_water_trace_v1.json"
 OUTPUT_PATH = ROOT / "docs/planning/maps/area_01_runtime_source_map_v3.json"
+GRID_CELL_SIZE = 80
+TERRAIN_DOMAIN = {
+    "id": "continuous_undersea_terrain_domain",
+    "role": "Continuous solid seafloor mass below the open surface. Playable cave water is carved out of this domain.",
+    "polygon": [[-900, 500], [4660, 500], [4660, 2440], [-900, 2440]],
+    "visual_strategy": "One Polygon2D terrain fill for the continuous undersea mass, with water cutout overlays for caves and mouths.",
+    "collision_strategy": "Generated CollisionPolygon2D partitions from this domain minus playable_water_regions.",
+    "rim_strategy": "Water-region edge Line2D cues; no per-partition visual seams.",
+    "blocks_player": True,
+}
+CARVING_REGION_KINDS = {"cave", "pocket", "locked_promise"}
 
 SEMANTIC_TRIM_SEGMENTS: dict[str, list[dict[str, Any]]] = {
     "surface_shelf_west": [
@@ -498,6 +510,324 @@ def copy_entry(entry: dict[str, Any]) -> dict[str, Any]:
     return copy.deepcopy(entry)
 
 
+def polygon_bounds(points: list[list[float]]) -> dict[str, float]:
+    xs = [float(point[0]) for point in points]
+    ys = [float(point[1]) for point in points]
+    return {
+        "min_x": min(xs),
+        "max_x": max(xs),
+        "min_y": min(ys),
+        "max_y": max(ys),
+    }
+
+
+def point_in_polygon(point: tuple[float, float], polygon: list[list[float]]) -> bool:
+    inside = False
+    x, y = point
+    previous = len(polygon) - 1
+    for index, current_point in enumerate(polygon):
+        current_x, current_y = float(current_point[0]), float(current_point[1])
+        previous_x, previous_y = float(polygon[previous][0]), float(polygon[previous][1])
+        crosses = (current_y > y) != (previous_y > y) and x < (
+            (previous_x - current_x) * (y - current_y) / (previous_y - current_y) + current_x
+        )
+        if crosses:
+            inside = not inside
+        previous = index
+    return inside
+
+
+def point_in_rect(point: list[float], rect: tuple[float, float, float, float]) -> bool:
+    x, y = float(point[0]), float(point[1])
+    x0, y0, x1, y1 = rect
+    return x0 <= x <= x1 and y0 <= y <= y1
+
+
+def _orientation(
+    a: tuple[float, float],
+    b: tuple[float, float],
+    c: tuple[float, float],
+) -> float:
+    return (b[1] - a[1]) * (c[0] - b[0]) - (b[0] - a[0]) * (c[1] - b[1])
+
+
+def _on_segment(
+    a: tuple[float, float],
+    b: tuple[float, float],
+    c: tuple[float, float],
+) -> bool:
+    return (
+        min(a[0], c[0]) <= b[0] <= max(a[0], c[0])
+        and min(a[1], c[1]) <= b[1] <= max(a[1], c[1])
+    )
+
+
+def segments_intersect(
+    a: tuple[float, float],
+    b: tuple[float, float],
+    c: tuple[float, float],
+    d: tuple[float, float],
+) -> bool:
+    o1 = _orientation(a, b, c)
+    o2 = _orientation(a, b, d)
+    o3 = _orientation(c, d, a)
+    o4 = _orientation(c, d, b)
+    epsilon = 0.0001
+    if abs(o1) < epsilon and _on_segment(a, c, b):
+        return True
+    if abs(o2) < epsilon and _on_segment(a, d, b):
+        return True
+    if abs(o3) < epsilon and _on_segment(c, a, d):
+        return True
+    if abs(o4) < epsilon and _on_segment(c, b, d):
+        return True
+    return (o1 > 0) != (o2 > 0) and (o3 > 0) != (o4 > 0)
+
+
+def cell_intersects_polygon(
+    rect: tuple[float, float, float, float],
+    polygon: list[list[float]],
+) -> bool:
+    x0, y0, x1, y1 = rect
+    cell_points = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+    center = ((x0 + x1) * 0.5, (y0 + y1) * 0.5)
+    if point_in_polygon(center, polygon):
+        return True
+    if any(point_in_polygon(point, polygon) for point in cell_points):
+        return True
+    if any(point_in_rect(point, rect) for point in polygon):
+        return True
+
+    cell_edges = list(zip(cell_points, cell_points[1:] + cell_points[:1]))
+    poly_points = [(float(point[0]), float(point[1])) for point in polygon]
+    poly_edges = list(zip(poly_points, poly_points[1:] + poly_points[:1]))
+    return any(segments_intersect(a, b, c, d) for a, b in cell_edges for c, d in poly_edges)
+
+
+def runtime_terrain_domain_entry() -> dict[str, Any]:
+    domain = copy_entry(TERRAIN_DOMAIN)
+    domain["runtime_generation"] = {
+        "visible_polygon2d_name": "ContinuousUnderseaTerrainDomain",
+        "water_cutout_layer_name": "RuntimeSourceWaterCutouts",
+        "edge_line_layer_name": "RuntimeSourceWaterEdges",
+        "visual_role": "continuous_terrain_domain",
+        "source": "terrain_domain polygon",
+        "sprites_define_collision": False,
+    }
+    return domain
+
+
+def runtime_playable_water_region(
+    entry_id: str,
+    role: str,
+    kind: str,
+    polygon: list[list[float]],
+    source_path: str,
+    source_region_id: str,
+    status: str,
+    carves_collision: bool,
+    connects_to: list[str] | None = None,
+    source_region_ids: list[str] | None = None,
+) -> dict[str, Any]:
+    node_name = pascal_case(entry_id)
+    region_ids = source_region_ids or ([source_region_id] if source_region_id else [])
+    return {
+        "id": entry_id,
+        "role": role,
+        "kind": kind,
+        "polygon": copy.deepcopy(polygon),
+        "source": source_path,
+        "source_region_id": source_region_id,
+        "source_region_ids": region_ids,
+        "status": status,
+        "connects_to": connects_to or [],
+        "carves_collision": carves_collision,
+        "runtime_generation": {
+            "visible_polygon2d_name": f"{node_name}WaterCutout",
+            "edge_line2d_name": f"{node_name}WaterEdge",
+            "visual_role": "playable_water_cutout",
+            "collision_effect": "subtract_from_terrain_domain" if carves_collision else "open_surface_reference_only",
+            "sprites_define_collision": False,
+        },
+    }
+
+
+def runtime_playable_water_regions(
+    geometry: dict[str, Any],
+    playable_water_trace: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    water_regions: list[dict[str, Any]] = []
+    for region in geometry["regions"]:
+        kind = str(region.get("kind", ""))
+        if kind != "open_surface":
+            continue
+        region_id = str(region["id"])
+        water_regions.append(
+            runtime_playable_water_region(
+                f"{region_id}_water",
+                str(region.get("role", region.get("display_name", region_id))),
+                kind,
+                region["approx_polygon"],
+                "regions.approx_polygon",
+                region_id,
+                str(region.get("status", "planned")),
+                False,
+                [str(value) for value in region.get("connects_to", [])],
+            )
+        )
+
+    if playable_water_trace is not None:
+        for traced_region in playable_water_trace.get("playable_water_regions", []):
+            source_region_ids = [str(value) for value in traced_region.get("source_region_ids", [])]
+            source_region_id = source_region_ids[0] if source_region_ids else ""
+            water_regions.append(
+                runtime_playable_water_region(
+                    str(traced_region["id"]),
+                    str(traced_region.get("role", traced_region.get("display_name", traced_region["id"]))),
+                    str(traced_region.get("kind", "source_png_trace")),
+                    traced_region["polygon"],
+                    "area_01_playable_water_trace_v1.playable_water_regions.polygon",
+                    source_region_id,
+                    str(traced_region.get("status", "planned")),
+                    bool(traced_region.get("carves_terrain_collision", True)),
+                    source_region_ids,
+                    source_region_ids,
+                )
+            )
+    else:
+        for region in geometry["regions"]:
+            kind = str(region.get("kind", ""))
+            if kind not in CARVING_REGION_KINDS:
+                continue
+            region_id = str(region["id"])
+            water_regions.append(
+                runtime_playable_water_region(
+                    f"{region_id}_water",
+                    str(region.get("role", region.get("display_name", region_id))),
+                    kind,
+                    region["approx_polygon"],
+                    "regions.approx_polygon",
+                    region_id,
+                    str(region.get("status", "planned")),
+                    True,
+                    [str(value) for value in region.get("connects_to", [])],
+                )
+            )
+
+    for cave_mouth in geometry["cave_mouths"]:
+        mouth_id = str(cave_mouth["id"])
+        target_region = str(cave_mouth.get("to_region", ""))
+        status = "future_locked" if target_region == "future_deep_exit" else str(cave_mouth.get("status", "planned"))
+        water_regions.append(
+            runtime_playable_water_region(
+                f"{mouth_id}_water",
+                str(cave_mouth.get("readability_role", f"{mouth_id} playable cave-mouth water.")),
+                "cave_mouth",
+                cave_mouth["entrance_polygon"],
+                "cave_mouths.entrance_polygon",
+                target_region,
+                status,
+                True,
+                [str(cave_mouth.get("from_region", "")), target_region],
+            )
+        )
+
+    return water_regions
+
+
+def generated_collision_partition_entry(
+    rect: dict[str, float],
+    index: int,
+    carving_region_ids: list[str],
+) -> dict[str, Any]:
+    terrain_id = f"generated_solid_partition_{index:03d}"
+    node_name = pascal_case(terrain_id)
+    polygon = [
+        [round(rect["x0"], 3), round(rect["y0"], 3)],
+        [round(rect["x1"], 3), round(rect["y0"], 3)],
+        [round(rect["x1"], 3), round(rect["y1"], 3)],
+        [round(rect["x0"], 3), round(rect["y1"], 3)],
+    ]
+    return {
+        "id": terrain_id,
+        "role": "Generated collision partition for the continuous terrain domain outside playable water.",
+        "polygon": polygon,
+        "visual_strategy": "Collision-only partition; continuous terrain_domain and playable_water_regions own the visible mass/cutout read.",
+        "collision_strategy": "CollisionPolygon2D from deterministic water-shape carve grid.",
+        "rim_strategy": "No per-partition rim; water-region edge cues own readable cave boundaries.",
+        "blocks_player": True,
+        "generation_source": {
+            "algorithm": "terrain_domain_minus_playable_water_grid_v1",
+            "terrain_domain": TERRAIN_DOMAIN["id"],
+            "cell_size": GRID_CELL_SIZE,
+            "carved_playable_water_regions": carving_region_ids,
+        },
+        "runtime_generation": {
+            "visual_role": "collision_partition",
+            "collision_static_body2d_name": "RuntimeSourceCollision",
+            "collision_polygon2d_name": f"{node_name}Collision",
+            "collision_points_source": "this polygon",
+            "sprites_define_collision": False,
+        },
+    }
+
+
+def generated_collision_partitions(water_regions: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    domain_bounds = polygon_bounds(TERRAIN_DOMAIN["polygon"])
+    carve_regions = [entry for entry in water_regions if entry.get("carves_collision")]
+    carve_polygons = [entry["polygon"] for entry in carve_regions]
+    carving_region_ids = [str(entry["id"]) for entry in carve_regions]
+
+    rows: list[list[dict[str, float]]] = []
+    y = domain_bounds["min_y"]
+    while y < domain_bounds["max_y"]:
+        y1 = min(y + GRID_CELL_SIZE, domain_bounds["max_y"])
+        row_runs: list[dict[str, float]] = []
+        current_run: dict[str, float] | None = None
+        x = domain_bounds["min_x"]
+        while x < domain_bounds["max_x"]:
+            x1 = min(x + GRID_CELL_SIZE, domain_bounds["max_x"])
+            rect = (x, y, x1, y1)
+            is_water = any(cell_intersects_polygon(rect, polygon) for polygon in carve_polygons)
+            if not is_water and current_run is None:
+                current_run = {"x0": x, "x1": x1, "y0": y, "y1": y1}
+            elif not is_water and current_run is not None:
+                current_run["x1"] = x1
+            elif is_water and current_run is not None:
+                row_runs.append(current_run)
+                current_run = None
+            x = x1
+        if current_run is not None:
+            row_runs.append(current_run)
+        rows.append(row_runs)
+        y = y1
+
+    rectangles: list[dict[str, float]] = []
+    active: dict[tuple[float, float], dict[str, float]] = {}
+    for row in rows:
+        next_active: dict[tuple[float, float], dict[str, float]] = {}
+        used_keys: set[tuple[float, float]] = set()
+        for run in row:
+            key = (run["x0"], run["x1"])
+            if key in active and abs(active[key]["y1"] - run["y0"]) < 0.001:
+                active[key]["y1"] = run["y1"]
+                next_active[key] = active[key]
+                used_keys.add(key)
+            else:
+                next_active[key] = copy.deepcopy(run)
+        for key, rect in active.items():
+            if key not in used_keys:
+                rectangles.append(rect)
+        active = next_active
+    rectangles.extend(active.values())
+
+    rectangles.sort(key=lambda item: (item["y0"], item["x0"], item["y1"], item["x1"]))
+    return [
+        generated_collision_partition_entry(rect, index + 1, carving_region_ids)
+        for index, rect in enumerate(rectangles)
+    ]
+
+
 def runtime_terrain_entry(entry: dict[str, Any]) -> dict[str, Any]:
     terrain = copy_entry(entry)
     node_name = pascal_case(entry["id"])
@@ -586,7 +916,51 @@ def merge_validation_rules(
     merged["placements_must_not_overlap_solid_terrain"] = (
         "Resource pickups, fish, scannables, gates, hazards, and route hooks must be placed in playable water regions, not inside solid terrain polygons."
     )
+    merged["playable_water_regions_are_primary_source"] = (
+        "Area 01 runtime topology must treat playable_water_regions and cave_mouths as the primary geometry input; hand-authored solid chunks are not the design source."
+    )
+    merged["playable_water_trace_required"] = (
+        "Area 01 cave/corridor/pocket playable-water regions must be regenerated from docs/planning/maps/area_01_surface_floor_source_map_v1.png through area_01_playable_water_trace_v1.json before runtime v3 is regenerated."
+    )
+    merged["runtime_solids_generated_from_playable_water"] = (
+        "Runtime solid_terrain entries must be deterministic collision partitions generated from terrain_domain minus playable_water_regions."
+    )
+    merged["terrain_domain_must_be_continuous_under_surface"] = (
+        "The undersea terrain domain must remain one continuous mass below the open surface, with caves represented as carved playable-water holes."
+    )
+    merged["topology_parity_render_required"] = (
+        "Area 01 map-truth changes must refresh the runtime-vs-source side-by-side render so sparse floating terrain cannot be mistaken for source parity."
+    )
     return [{"id": key, "rule": value} for key, value in merged.items()]
+
+
+def runtime_comparison_summary() -> list[dict[str, str]]:
+    return [
+        {
+            "topic": "surface oxygen",
+            "source_truth": "Open horizontal surface-water band spans the full stage above the seafloor.",
+            "runtime_v3": "Keeps the surface water open and treats ship/moonpool banking as explicit hooks, not enclosing cave topology.",
+            "parity_result": "Matched at topology level.",
+        },
+        {
+            "topic": "terrain topology",
+            "source_truth": "Continuous gray undersea terrain mass with white playable cave corridors and pockets carved through it.",
+            "runtime_v3": "Builds one terrain_domain visual and generates collision partitions from terrain_domain minus source-PNG-traced playable_water_regions.",
+            "parity_result": "Matched at topology level; generated partitions are collision implementation details, not primary design chunks.",
+        },
+        {
+            "topic": "interaction model",
+            "source_truth": "Resources, oxygen/offload, cave entrances, gates, hazards, scans, and return currents are explicit map hooks.",
+            "runtime_v3": "Carries scene_hooks, sprite_placements, cave_mouths, and validation metadata forward from accepted geometry.",
+            "parity_result": "Matched for source-driven placement rules; runtime visuals remain blockout-quality art.",
+        },
+        {
+            "topic": "runtime wiring",
+            "source_truth": "Future uploaded/source maps must become editable Godot geometry deterministically.",
+            "runtime_v3": "Generator owns terrain_domain, playable_water_regions, solid collision partitions, hook metadata, and preview renders.",
+            "parity_result": "Matched for deterministic source-to-runtime generation.",
+        },
+    ]
 
 
 def main() -> None:
@@ -596,11 +970,14 @@ def main() -> None:
     terrain_kit = load_json(TERRAIN_KIT_MANIFEST_PATH)
     surface_source = load_json(SURFACE_SOURCE_PATH)
     surface_objects = load_json(SURFACE_OBJECTS_PATH)
+    playable_water_trace = load_json(PLAYABLE_WATER_TRACE_PATH) if PLAYABLE_WATER_TRACE_PATH.exists() else None
+    playable_water = runtime_playable_water_regions(geometry, playable_water_trace)
+    solid_partitions = generated_collision_partitions(playable_water)
     coordinate_space = copy_entry(geometry["coordinate_space"])
     coordinate_space["runtime_authority"] = (
         "Current Area 01 geometry/collision authority. Main.tscn calls Area01BlockoutBuilder, "
         "which builds runtime terrain, collision, rims, and validation hooks from this file; "
-        "this runtime v3 file is promoted from the uploaded surface-floor source map and its Godot-coordinate geometry."
+        "this runtime v3 file is generated from playable-water regions carved through one continuous terrain domain."
     )
     coordinate_space["source_visual_reference"] = str(SURFACE_SOURCE_PATH.relative_to(ROOT)).replace("\\", "/")
 
@@ -619,16 +996,30 @@ def main() -> None:
             "surface_floor_source_reference": str(SURFACE_SOURCE_PATH.relative_to(ROOT)).replace("\\", "/"),
             "accepted_geometry": str(ACCEPTED_GEOMETRY_PATH.relative_to(ROOT)).replace("\\", "/"),
             "surface_floor_object_layer": str(SURFACE_OBJECTS_PATH.relative_to(ROOT)).replace("\\", "/"),
+            "playable_water_trace": str(PLAYABLE_WATER_TRACE_PATH.relative_to(ROOT)).replace("\\", "/"),
             "legacy_runtime_blockout": str(CURRENT_BLOCKOUT_PATH.relative_to(ROOT)).replace("\\", "/"),
             "map_truth_comparison": str(COMPARISON_PATH.relative_to(ROOT)).replace("\\", "/"),
             "terrain_kit_manifest": str(TERRAIN_KIT_MANIFEST_PATH.relative_to(ROOT)).replace("\\", "/"),
         },
+        "generation_model": {
+            "strategy": "playable_water_first",
+            "primary_source": "area_01_playable_water_trace_v1 playable-water polygons plus cave_mouths.entrance_polygon from area_01_surface_floor_geometry_v1.json",
+            "terrain_policy": "Generate solid collision partitions from terrain_domain minus playable_water_regions.",
+            "solid_terrain_policy": "Do not copy hand-authored solid_terrain chunks as the primary design source.",
+            "grid_cell_size": GRID_CELL_SIZE,
+            "determinism": "Same input geometry produces the same terrain_domain, playable_water_regions, generated solid partitions, hook metadata, and preview renders.",
+        },
+        "playable_water_trace": {
+            "source": str(PLAYABLE_WATER_TRACE_PATH.relative_to(ROOT)).replace("\\", "/"),
+            "status": playable_water_trace.get("status", "missing") if playable_water_trace else "missing",
+            "region_count": len(playable_water_trace.get("playable_water_regions", [])) if playable_water_trace else 0,
+        },
         "promotion_decision": {
             "accepted_direction": "area_01_surface_floor_source_map_v1 plus area_01_surface_floor_geometry_v1 plus area_01_terrain_art_kit_v4",
             "current_runtime_replaced_when": "Main.tscn calls the Godot builder, which creates visible terrain, collision, rims, and nonblocking debug hooks from this file during startup.",
-            "old_blockout_policy": "area_01_blockout_source_map_v1.json is historical fallback material only; runtime v3 is the current geometry/collision source.",
+            "old_blockout_policy": "area_01_blockout_source_map_v1.json and accepted_geometry.solid_terrain are historical/reference material only; runtime v3 derives topology from playable water carved through the terrain domain.",
             "user_visible_acceptance": surface_source.get("topology_rule", ""),
-            "comparison_summary": comparison["semantic_comparison"],
+            "comparison_summary": runtime_comparison_summary(),
         },
         "coordinate_space": coordinate_space,
         "pipeline": geometry["pipeline"],
@@ -642,15 +1033,17 @@ def main() -> None:
         "runtime_generation_contract": {
             "terrain_fill_node": "Polygon2D",
             "solid_collision_nodes": ["StaticBody2D", "CollisionPolygon2D"],
-            "terrain_trim_node": "Sprite2D",
+            "terrain_trim_node": "Line2D or Sprite2D",
             "trigger_node": "Area2D",
             "hook_collision_node": "CollisionPolygon2D",
-            "collision_source": "solid_terrain polygon points and scene_hooks points",
+            "collision_source": "generated solid_terrain collision partitions from terrain_domain minus playable_water_regions, plus scene_hooks points",
             "visual_source": "terrain kit manifest plus generated props, not preview PNG pixels",
-            "rule": "visible terrain polygon == collision polygon source == rim/trim placement source for every solid terrain entry",
+            "rule": "continuous terrain_domain visual plus playable_water_regions cutouts are the topology read; generated solid_terrain partitions own blocking collision only.",
         },
+        "terrain_domain": runtime_terrain_domain_entry(),
+        "playable_water_regions": playable_water,
         "regions": [copy_entry(entry) for entry in geometry["regions"]],
-        "solid_terrain": [runtime_terrain_entry(entry) for entry in geometry["solid_terrain"]],
+        "solid_terrain": solid_partitions,
         "cave_mouths": [copy_entry(entry) for entry in geometry["cave_mouths"]],
         "sprite_placements": [copy_entry(entry) for entry in geometry["sprite_placements"]],
         "object_layer": copy_entry(surface_objects),

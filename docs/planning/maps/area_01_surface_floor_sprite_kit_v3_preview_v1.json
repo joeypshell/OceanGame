@@ -3,6 +3,7 @@
   "id": "area_01_surface_floor_sprite_kit_v3_preview_v1",
   "status": "planning_preview_not_runtime_wired",
   "geometry_source": "docs/planning/maps/area_01_runtime_source_map_v2.json",
+  "current_runtime_topology_source": "docs/planning/maps/area_01_runtime_source_map_v3.json",
   "kit_manifest": "docs/planning/maps/area_01_terrain_art_kit_v3_manifest.json",
   "full_preview": "docs/planning/maps/area_01_surface_floor_sprite_kit_v3_preview_v1.png",
   "camera_crop_preview": "docs/planning/maps/area_01_surface_floor_sprite_kit_v3_camera_crop_v1.png",
@@ -11,7 +12,7 @@
   "runtime_policy": {
     "wire_status": "not wired",
     "sprites_define_collision": false,
-    "collision_source": "area_01_runtime_source_map_v2.json promoted candidate geometry; current playable runtime still uses area_01_blockout_source_map_v1.json until explicit Godot builder promotion"
+    "collision_source": "Historical preview input was area_01_runtime_source_map_v2.json; current collision source is area_01_runtime_source_map_v3.json generated partitions from terrain_domain minus playable_water_regions"
   },
   "render_policy": {
     "terrain_fill": "reef_wall_fill_material clipped to each source-map terrain polygon",

@@ -9,19 +9,28 @@
   ],
   "runtime_render_bounds": [
     -1066.8,
-    -96.0,
+    -97.60000000000001,
     4826.8,
-    2496.0
+    2537.6
   ],
   "source_image_size": [
     1536,
     1024
   ],
   "counts": {
-    "solid_terrain": 18,
+    "solid_terrain": 73,
+    "playable_water_regions": 13,
     "cave_mouths": 6,
     "scene_hooks": 16,
     "sprite_placements": 8,
     "scene_targets": 82
+  },
+  "generation_model": {
+    "strategy": "playable_water_first",
+    "primary_source": "area_01_playable_water_trace_v1 playable-water polygons plus cave_mouths.entrance_polygon from area_01_surface_floor_geometry_v1.json",
+    "terrain_policy": "Generate solid collision partitions from terrain_domain minus playable_water_regions.",
+    "solid_terrain_policy": "Do not copy hand-authored solid_terrain chunks as the primary design source.",
+    "grid_cell_size": 80,
+    "determinism": "Same input geometry produces the same terrain_domain, playable_water_regions, generated solid partitions, hook metadata, and preview renders."
   }
 }

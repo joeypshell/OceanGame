@@ -40,7 +40,9 @@ Keep copied screenshots and prompt files as provenance or preview artifacts, not
 Before generating sprites or editing Godot, create or update source-map geometry:
 
 - named regions;
-- solid terrain polygons;
+- a continuous terrain-domain polygon;
+- playable-water/cave/corridor/pocket polygons;
+- generated solid-collision partition policy;
 - cave mouth entrance polygons;
 - non-colliding background regions;
 - sprite/object placements;
@@ -50,8 +52,10 @@ Before generating sprites or editing Godot, create or update source-map geometry
 For Area 01, prefer the current runtime path:
 
 - source geometry: `docs/planning/maps/area_01_surface_floor_geometry_v1.json` or accepted successor;
-- generator: `tools/create_area01_runtime_source_map_v2.py`;
-- runtime source map: `docs/planning/maps/area_01_runtime_source_map_v2.json`;
+- playable-water trace: `docs/planning/maps/area_01_playable_water_trace_v1.json`;
+- trace generator: `tools/trace_area01_playable_water_from_source.py`;
+- generator: `tools/create_area01_runtime_source_map_v3.py`;
+- runtime source map: `docs/planning/maps/area_01_runtime_source_map_v3.json`;
 - validator: `tools/validate-area01-runtime-source-map.mjs`.
 
 Do not hand-edit generated runtime source-map JSON when a generator owns the output.
@@ -102,7 +106,8 @@ Apply the sprite kit to the source-map geometry in a preview artifact before run
 
 The preview must show:
 
-- solid terrain filled from polygons;
+- continuous terrain domain filled from source geometry;
+- playable-water cutouts carved through the domain;
 - edge-role trims placed only on matching source-map trim segments;
 - cave mouth frames that do not block entrances;
 - props/resources/gates separate from collision;
@@ -116,21 +121,26 @@ Wire into Godot only after the preview passes review.
 
 Implementation rules:
 
-- `Polygon2D` renders solid terrain fill.
-- `CollisionPolygon2D` blocks player movement from the same source polygons.
+- `Polygon2D` renders the continuous terrain-domain fill and playable-water cutouts.
+- `CollisionPolygon2D` blocks player movement from generated solid partitions derived from the playable-water source.
 - `Sprite2D` renders trims, props, resources, gates, and decor.
 - `Area2D` owns triggers for oxygen, offload, pickups, scans, cave entrances, gates, hazards, and return currents.
 - Visual nodes do not own gameplay state.
 - Sprites never define collision.
 
-For Area 01 terrain trims, update `SEMANTIC_TRIM_SEGMENTS` in `tools/create_area01_runtime_source_map_v2.py`.
+For Area 01 topology, update the source map or playable-water trace, run `tools/trace_area01_playable_water_from_source.py`, then regenerate with `tools/create_area01_runtime_source_map_v3.py`.
 
 ### 7. Validation
 
 Use the cheapest validation tier that proves the change:
 
 ```powershell
+# Use `python` or the Codex bundled Python if the current shell has no Python on PATH.
+python tools/trace_area01_playable_water_from_source.py
+python tools/create_area01_runtime_source_map_v3.py
+python tools/render_area01_runtime_vs_source_comparison.py
 node tools/validate-area01-runtime-source-map.mjs
+node tools/validate-area01-runtime-placements.mjs
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier docs
 git diff --check
 ```

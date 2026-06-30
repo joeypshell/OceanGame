@@ -8,7 +8,7 @@ This repository keeps project-specific Codex skills in `.codex/skills/`. They ar
 - `$oceangame-gameplay-loop`: gameplay behavior and loop work involving expeditions, oxygen, cargo, scans, upgrades, seeded variation, predators, pressure gates, result memory, and progression.
 - `$oceangame-frontend-qa`: visual readability and browser/export verification for HUD, panels, route communication, screenshots, and Playwright smoke checks.
 - `$oceangame-art-pipeline`: art asset work covering source/export/provenance files, runtime sprites, fallback visuals, and scene wiring.
-- `$oceangame-sprite-map-pipeline`: source-map-to-Godot workflow for turning uploaded/reference maps into reusable sprite kits, geometry JSON, preview composites, collision polygons, and scene hooks without treating a baked image as the runtime level.
+- `$oceangame-sprite-map-pipeline`: source-map-to-Godot workflow for turning uploaded/reference maps into reusable sprite kits, geometry JSON, playable-water-first terrain domains, preview composites, generated collision partitions, and scene hooks without treating a baked image as the runtime level.
 - `$oceangame-release`: release, demo, web export, PR closeout, or publishable-checkpoint verification.
 - `$oceangame-bugfix`: focused bug reproduction, diagnosis, fix, and verification workflow.
 - `$godot-oceangame`: Godot-specific scene, node, GDScript, resource, input map, test, and optional Godot AI MCP workflow.

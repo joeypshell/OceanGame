@@ -25,9 +25,13 @@ def load_json(path: Path) -> dict[str, Any]:
 
 def bounds(geometry: dict[str, Any]) -> tuple[float, float, float, float]:
     points: list[list[float]] = []
-    for entry in geometry["solid_terrain"]:
+    if geometry.get("terrain_domain"):
+        points.extend(geometry["terrain_domain"]["polygon"])
+    for entry in geometry.get("playable_water_regions", []):
         points.extend(entry["polygon"])
-    for entry in geometry["regions"]:
+    for entry in geometry.get("solid_terrain", []):
+        points.extend(entry["polygon"])
+    for entry in geometry.get("regions", []):
         points.extend(entry["approx_polygon"])
     min_x = min(point[0] for point in points) - 180
     min_y = min(point[1] for point in points) - 80
@@ -262,9 +266,19 @@ def draw_terrain_with_kit(
     deep_lip = sprites["deep_floor_lip_strip"]
     thin_lip = sprites["thin_interior_ledge_strip"]
 
-    for terrain in geometry["solid_terrain"]:
+    if geometry.get("terrain_domain") and geometry.get("playable_water_regions"):
+        terrain = geometry["terrain_domain"]
         polygon = [tr(point) for point in terrain["polygon"]]
         mask = polygon_mask(size, polygon)
+        mask_draw = ImageDraw.Draw(mask)
+        carved_regions = [
+            region
+            for region in geometry["playable_water_regions"]
+            if region.get("carves_terrain_collision", True)
+        ]
+        for region in carved_regions:
+            mask_draw.polygon([tr(point) for point in region["polygon"]], fill=0)
+
         xs = [point[0] for point in polygon]
         ys = [point[1] for point in polygon]
         bbox = (min(xs), min(ys), max(xs), max(ys))
@@ -279,31 +293,25 @@ def draw_terrain_with_kit(
 
         edge_layer = Image.new("RGBA", size, (0, 0, 0, 0))
         edge_counts = {"horizontal": 0, "vertical": 0, "diagonal": 0}
-        centroid_y = sum(point[1] for point in terrain["polygon"]) / len(terrain["polygon"])
-        points = terrain["polygon"]
-        pixel_points = polygon
-        for index, start_world in enumerate(points):
-            end_world = points[(index + 1) % len(points)]
-            start = pixel_points[index]
-            end = pixel_points[(index + 1) % len(pixel_points)]
-            edge_kind = classify_edge(start_world, end_world)
-            edge_mid_world_y = (start_world[1] + end_world[1]) * 0.5
-            line_draw = ImageDraw.Draw(edge_layer, "RGBA")
-            line_draw.line([start, end], fill=(4, 36, 45, 182), width=max(3, int(14 * scale)))
-            line_draw.line([start, end], fill=(106, 234, 223, 52), width=max(1, int(3 * scale)))
+        for region in carved_regions:
+            points = region["polygon"]
+            pixel_points = [tr(point) for point in points]
+            for index, start_world in enumerate(points):
+                end_world = points[(index + 1) % len(points)]
+                start = pixel_points[index]
+                end = pixel_points[(index + 1) % len(pixel_points)]
+                edge_kind = classify_edge(start_world, end_world)
+                line_draw = ImageDraw.Draw(edge_layer, "RGBA")
+                line_draw.line([start, end], fill=(4, 36, 45, 182), width=max(3, int(14 * scale)))
+                line_draw.line([start, end], fill=(106, 234, 223, 52), width=max(1, int(3 * scale)))
 
-            if edge_kind == "horizontal":
-                if edge_mid_world_y <= centroid_y:
-                    sprite = deep_lip if "deep" in terrain["id"] or "future" in terrain["id"] else lip_middle
+                if edge_kind == "horizontal":
+                    sprite = deep_lip if region.get("kind") in {"locked_promise"} else lip_middle
+                    added = tile_edge(edge_layer, fade_sprite(sprite, 0.34), start, end, max(72, int(176 * scale)), rotate_to_edge=True)
+                elif edge_kind == "vertical":
+                    added = tile_vertical_edge(edge_layer, fade_sprite(vertical_mid, 0.25), start, end, max(84, int(190 * scale)))
                 else:
-                    sprite = ceiling_mid if "shelf" not in terrain["id"] else thin_lip
-                added = tile_edge(edge_layer, fade_sprite(sprite, 0.36), start, end, max(72, int(176 * scale)), rotate_to_edge=True)
-                edge_counts[edge_kind] += added
-            elif edge_kind == "vertical":
-                added = tile_vertical_edge(edge_layer, fade_sprite(vertical_mid, 0.27), start, end, max(84, int(190 * scale)))
-                edge_counts[edge_kind] += added
-            else:
-                added = tile_edge(edge_layer, fade_sprite(slope, 0.26), start, end, max(72, int(160 * scale)), rotate_to_edge=True)
+                    added = tile_edge(edge_layer, fade_sprite(slope, 0.24), start, end, max(72, int(160 * scale)), rotate_to_edge=True)
                 edge_counts[edge_kind] += added
 
         terrain_layer.alpha_composite(edge_layer)
@@ -314,8 +322,65 @@ def draw_terrain_with_kit(
                 "fill_asset": "reef_wall_fill_material",
                 "edge_counts": edge_counts,
                 "preview_only": True,
+                "water_cutouts": len(carved_regions),
+                "collision_partitions": len(geometry.get("solid_terrain", [])),
             }
         )
+    else:
+        for terrain in geometry["solid_terrain"]:
+            polygon = [tr(point) for point in terrain["polygon"]]
+            mask = polygon_mask(size, polygon)
+            xs = [point[0] for point in polygon]
+            ys = [point[1] for point in polygon]
+            bbox = (min(xs), min(ys), max(xs), max(ys))
+
+            base = Image.new("RGBA", size, (0, 0, 0, 0))
+            ImageDraw.Draw(base, "RGBA").polygon(polygon, fill=(2, 18, 25, 252))
+            clipped_alpha_composite(terrain_layer, base, mask)
+
+            fill_width = max(64, int(172 * scale))
+            texture = tile_fill(size, mask, bbox, fill_sprite, fill_width, 0.13)
+            terrain_layer.alpha_composite(texture)
+
+            edge_layer = Image.new("RGBA", size, (0, 0, 0, 0))
+            edge_counts = {"horizontal": 0, "vertical": 0, "diagonal": 0}
+            centroid_y = sum(point[1] for point in terrain["polygon"]) / len(terrain["polygon"])
+            points = terrain["polygon"]
+            pixel_points = polygon
+            for index, start_world in enumerate(points):
+                end_world = points[(index + 1) % len(points)]
+                start = pixel_points[index]
+                end = pixel_points[(index + 1) % len(pixel_points)]
+                edge_kind = classify_edge(start_world, end_world)
+                edge_mid_world_y = (start_world[1] + end_world[1]) * 0.5
+                line_draw = ImageDraw.Draw(edge_layer, "RGBA")
+                line_draw.line([start, end], fill=(4, 36, 45, 182), width=max(3, int(14 * scale)))
+                line_draw.line([start, end], fill=(106, 234, 223, 52), width=max(1, int(3 * scale)))
+
+                if edge_kind == "horizontal":
+                    if edge_mid_world_y <= centroid_y:
+                        sprite = deep_lip if "deep" in terrain["id"] or "future" in terrain["id"] else lip_middle
+                    else:
+                        sprite = ceiling_mid if "shelf" not in terrain["id"] else thin_lip
+                    added = tile_edge(edge_layer, fade_sprite(sprite, 0.36), start, end, max(72, int(176 * scale)), rotate_to_edge=True)
+                    edge_counts[edge_kind] += added
+                elif edge_kind == "vertical":
+                    added = tile_vertical_edge(edge_layer, fade_sprite(vertical_mid, 0.27), start, end, max(84, int(190 * scale)))
+                    edge_counts[edge_kind] += added
+                else:
+                    added = tile_edge(edge_layer, fade_sprite(slope, 0.26), start, end, max(72, int(160 * scale)), rotate_to_edge=True)
+                    edge_counts[edge_kind] += added
+
+            terrain_layer.alpha_composite(edge_layer)
+            total_edge_sprites += sum(edge_counts.values())
+            placement_summary.append(
+                {
+                    "terrain_id": terrain["id"],
+                    "fill_asset": "reef_wall_fill_material",
+                    "edge_counts": edge_counts,
+                    "preview_only": True,
+                }
+            )
 
     shadow = terrain_layer.filter(ImageFilter.GaussianBlur(3))
     shadow_alpha = shadow.getchannel("A").point(lambda p: int(p * 0.26))
@@ -325,15 +390,23 @@ def draw_terrain_with_kit(
 
     edge_mask = Image.new("L", size, 0)
     mask_draw = ImageDraw.Draw(edge_mask)
-    for terrain in geometry["solid_terrain"]:
-        mask_draw.polygon([tr(point) for point in terrain["polygon"]], fill=255)
+    if geometry.get("terrain_domain") and geometry.get("playable_water_regions"):
+        mask_draw.polygon([tr(point) for point in geometry["terrain_domain"]["polygon"]], fill=255)
+        for region in geometry["playable_water_regions"]:
+            if region.get("carves_terrain_collision", True):
+                mask_draw.polygon([tr(point) for point in region["polygon"]], fill=0)
+    else:
+        for terrain in geometry["solid_terrain"]:
+            mask_draw.polygon([tr(point) for point in terrain["polygon"]], fill=255)
     edge = edge_mask.filter(ImageFilter.FIND_EDGES)
     edge_layer = Image.new("RGBA", size, (90, 240, 238, 0))
     edge_layer.putalpha(edge.point(lambda p: min(52, p)))
     img.alpha_composite(edge_layer)
 
     return {
-        "terrain_count": len(geometry["solid_terrain"]),
+        "terrain_count": 1 if geometry.get("terrain_domain") else len(geometry["solid_terrain"]),
+        "collision_partition_count": len(geometry.get("solid_terrain", [])),
+        "playable_water_region_count": len(geometry.get("playable_water_regions", [])),
         "edge_sprite_instances": total_edge_sprites,
         "placements": placement_summary,
     }
@@ -410,7 +483,7 @@ def main() -> None:
     metadata = {
         "schema_version": 1,
         "id": "area_01_surface_floor_sprite_kit_v3_preview_v1",
-        "status": "runtime_v2_preview_from_active_source_map",
+        "status": "runtime_v3_preview_from_active_source_map",
         "geometry_source": str(GEOMETRY_PATH.relative_to(ROOT)).replace("\\", "/"),
         "kit_manifest": str(KIT_MANIFEST_PATH.relative_to(ROOT)).replace("\\", "/"),
         "full_preview": str(OUTPUT_PATH.relative_to(ROOT)).replace("\\", "/"),
@@ -418,13 +491,13 @@ def main() -> None:
         "clean_full_preview": str(CLEAN_OUTPUT_PATH.relative_to(ROOT)).replace("\\", "/"),
         "clean_camera_crop_preview": str(CLEAN_CROP_PATH.relative_to(ROOT)).replace("\\", "/"),
         "runtime_policy": {
-            "wire_status": "wired through Area01BlockoutBuilder",
+            "wire_status": "wired through Area01BlockoutBuilder from runtime v3 water-shape-first source",
             "sprites_define_collision": False,
-            "collision_source": "area_01_runtime_source_map_v3.json active geometry/collision authority; area_01_blockout_source_map_v1.json remains only as a fallback load path"
+            "collision_source": "area_01_runtime_source_map_v3.json generated partitions from terrain_domain minus playable_water_regions"
         },
         "render_policy": {
-            "terrain_fill": "reef_wall_fill_material clipped to each source-map terrain polygon",
-            "edge_trims": "kit ledge, vertical, diagonal, ceiling, thin ledge, and deep-floor sprites placed along polygon edges",
+            "terrain_fill": "reef_wall_fill_material applied to source-map terrain geometry for preview only",
+            "edge_trims": "kit ledge, vertical, diagonal, ceiling, thin ledge, and deep-floor sprites placed from source geometry where supported",
             "hooks": "scene hooks drawn as translucent planning overlays, not sprite-kit terrain",
             "objects": "ship, gates, vent, pickups, scans remain schematic because this pass only applies the structural terrain kit"
         },

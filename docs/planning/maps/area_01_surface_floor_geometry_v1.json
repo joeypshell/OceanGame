@@ -321,7 +321,7 @@
       "id": "pressure_wreck_hole",
       "from_region": "open_surface_water",
       "to_region": "pressure_wreck_branch",
-      "entrance_polygon": [[2800, 500], [3040, 500], [3040, 760], [2800, 760]],
+      "entrance_polygon": [[2800, 500], [3100, 500], [3100, 920], [2860, 920]],
       "readability_role": "Right-side opening toward pressure wreck branch.",
       "collision_rule": "Gate collision belongs to the pressure gate hook, not the terrain hole.",
       "scene_hook": "pressure_wreck_hole_trigger"
@@ -349,7 +349,7 @@
     {
       "id": "starter_kelp_decor",
       "asset_family": "kelp_coral_cluster",
-      "position": [310, 820],
+      "position": [280, 820],
       "rotation_degrees": 0,
       "scale": [1, 1],
       "z_index": 3,
@@ -376,7 +376,7 @@
     {
       "id": "blue_chimney_crystals",
       "asset_family": "blue_crystal_cluster",
-      "position": [1660, 2100],
+      "position": [1540, 1980],
       "rotation_degrees": 0,
       "scale": [1, 1],
       "z_index": 4,
@@ -394,7 +394,7 @@
     {
       "id": "pressure_gate_sprite",
       "asset_family": "pressure_gate",
-      "position": [3200, 860],
+      "position": [3080, 840],
       "rotation_degrees": 0,
       "scale": [1, 1],
       "z_index": 6,
@@ -403,7 +403,7 @@
     {
       "id": "future_locked_gate_sprite",
       "asset_family": "future_locked_gate",
-      "position": [4260, 1920],
+      "position": [4280, 2240],
       "rotation_degrees": 0,
       "scale": [1, 1],
       "z_index": 6,
@@ -461,7 +461,7 @@
       "type": "return_current",
       "region_id": "blue_chimney_route",
       "shape": "polygon",
-      "points": [[1120, 1660], [1500, 1700], [1500, 1900], [1120, 1880]],
+      "points": [[1400, 1840], [1640, 1880], [1640, 2060], [1400, 2040]],
       "owner": "future visual return-current Area2D",
       "status": "planned"
     },
@@ -479,7 +479,7 @@
       "type": "gate",
       "region_id": "future_deep_exit",
       "shape": "polygon",
-      "points": [[4160, 1800], [4380, 1800], [4380, 2020], [4160, 2020]],
+      "points": [[4180, 2160], [4380, 2160], [4380, 2320], [4180, 2320]],
       "owner": "future locked exit Area2D/interactable",
       "status": "future_locked"
     },
@@ -488,7 +488,7 @@
       "type": "pickup",
       "region_id": "starter_kelp_cave",
       "shape": "polygon",
-      "points": [[260, 780], [520, 780], [520, 980], [260, 980]],
+      "points": [[400, 610], [680, 610], [680, 700], [400, 700]],
       "owner": "future authored spawn candidates",
       "status": "planned"
     },

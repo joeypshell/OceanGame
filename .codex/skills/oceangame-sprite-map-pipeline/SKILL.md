@@ -55,10 +55,11 @@ For Area 01, preserve this topology unless the user explicitly changes direction
    - Use `TileMapLayer` only for genuinely grid-friendly or repeated decorative layers. Do not force organic cave silhouettes into a tile grid unless the user accepts a tiled look.
 
 3. Author source data before scene work.
-   - Create or update geometry JSON with named regions, cave mouths, solid polygons, collision roles, sprite placements, trigger zones, and validation rules.
+   - Create or update geometry JSON with named regions, cave-mouth polygons, terrain domain, collision roles, sprite placements, trigger zones, and validation rules; for Area 01, traced playable-water cave/corridor polygons live in `docs/planning/maps/area_01_playable_water_trace_v1.json`.
    - Keep source coordinates explicit and document any conversion from reference pixels to Godot world coordinates.
    - Do not infer collision by sampling a generated PNG.
-   - For Area 01 runtime edits, update the generator and generated runtime source map rather than hand-editing runtime JSON.
+   - For Area 01 runtime edits, update the source PNG/trace, `area_01_surface_floor_geometry_v1.json`, the generator, and the generated runtime source map rather than hand-editing runtime JSON.
+   - Area 01 runtime v3 is playable-water-first: `terrain_domain` is the continuous undersea solid mass, source-PNG-traced `playable_water_regions` carve cave/corridor/pocket water through it, and `solid_terrain` entries are generated collision partitions rather than hand-authored design chunks.
 
 4. Build or update the sprite kit.
    - Separate terrain fills, edge/rim strips, cave mouth trims, props, pickups, gates, hazards, and wreck pieces.
@@ -73,13 +74,15 @@ For Area 01, preserve this topology unless the user explicitly changes direction
 
 6. Implement in Godot.
    - Generate or edit scene nodes from source-map data.
-   - Ensure each solid terrain region has matching visible terrain, readable rim/lip, and collision polygon.
-   - For Area 01 terrain trims, update `SEMANTIC_TRIM_SEGMENTS` in `tools/create_area01_runtime_source_map_v2.py`; do not eyeball trim sprites into `Main.tscn`.
+   - Ensure the continuous terrain domain, playable-water cutouts, water-edge cues, generated collision partitions, and scene hooks all derive from the source-map data.
+   - For Area 01 topology, run `tools/trace_area01_playable_water_from_source.py`, then regenerate with `tools/create_area01_runtime_source_map_v3.py`; do not eyeball blockers, rims, or trim sprites into `Main.tscn`.
    - Keep gameplay state in scripts/resources, not in visual-only nodes or image filenames.
 
 7. Validate.
    - Parse changed JSON.
    - Run `node tools/validate-area01-runtime-source-map.mjs` when Area 01 runtime source geometry or trim roles change.
+   - Run `node tools/validate-area01-runtime-placements.mjs` before accepting Area 01 map changes that affect terrain, cave mouths, resources, fish, scan targets, gates, hazards, or hooks.
+   - Run `tools/render_area01_runtime_vs_source_comparison.py` after Area 01 topology changes and review the side-by-side artifact for open-surface/continuous-terrain/cave-cutout parity.
    - Run `git diff --check` for touched files.
    - For scene/script/resource changes, run the Godot headless launch from `$godot-oceangame`.
    - Run logic tests when gameplay state or source-map validation changes.

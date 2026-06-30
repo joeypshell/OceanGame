@@ -6,17 +6,17 @@ Area 01 walls should use a source-map-driven terrain-chunk system, not bespoke f
 
 The source map remains the authority for terrain:
 
-- `docs/planning/maps/area_01_blockout_source_map_v1.json` owns solid wall polygons.
-- `docs/planning/maps/area_01_runtime_source_map_v2.json` is the current runtime validation source for generated visible terrain, collision, rims, hooks, and semantic trim segments.
-- `Area01BlockoutBuilder` applies the same polygon to visible wall fill, collision, and collision-read lip.
-- `Area01BlockoutBuilder` also creates `Area01ArtSlice/TerrainVisualEdges/SourceMapTerrainAccents` and adds continuous inset/depth planes, edge bands, sparse decals, and source-map-authored semantic trim sprites from the same solid terrain entries.
+- `docs/planning/maps/area_01_runtime_source_map_v3.json` owns the current runtime topology.
+- `docs/planning/maps/area_01_blockout_source_map_v1.json` and `area_01_runtime_source_map_v2.json` are historical reference/fallback artifacts only.
+- `Area01BlockoutBuilder` creates one continuous terrain-domain visual plus playable-water cutout/edge visuals from the runtime source map.
+- `Area01BlockoutBuilder` generates blocking collision partitions from `terrain_domain - playable_water_regions`; those partitions are not the primary visual map.
 
 The implementation pipeline is:
 
 - `map_mode`: `side_scroll_mode`
-- `visual_model`: parallax depth plus source-map terrain chunks
+- `visual_model`: parallax depth plus continuous terrain domain with carved playable-water cave cutouts
 - `runtime_object_model`: platform objects, interactive scene objects, and scene hooks
-- `collision_model`: precise simplified shapes
+- `collision_model`: generated solid partitions plus precise trigger shapes
 - `engine_target`: project-native Godot scene
 
 This intentionally defers a Godot `TileMapLayer`/autotile conversion. A TileMap can be useful later if the level editor workflow needs grid-stamped terrain, but the current screenshot target needs irregular natural shelves and caves first.
@@ -38,16 +38,16 @@ Current first-pass pieces:
 - `area01_reef_wall_kelp_decal_v1.svg`
 - `area01_reef_wall_coral_decal_v1.svg`
 
-These are support/decal/fill pieces. They are not collision and do not define level shape. The primary wall read now comes from filled source-map polygons plus continuous terrain planes and edge bands.
+These are support/decal/fill pieces. They are not collision and do not define level shape. The primary wall read now comes from the filled continuous terrain-domain visual plus source-map water-edge cues.
 
 ## How This Avoids One Sprite Per Wall
 
-Each wall polygon gets a generated terrain-accent group. A group combines:
+The terrain-domain source gets generated terrain-accent groups. Those groups combine:
 
-- a textured filled wall polygon;
-- a collision polygon with exactly the same source-map points;
-- a readable lip/rim polygon with exactly the same source-map points;
-- continuous inset/depth planes derived from the same polygon;
+- a textured filled continuous terrain-domain polygon;
+- generated collision partitions derived from the same terrain-domain and playable-water source;
+- readable water-edge/rim cues from source-map cutout edges;
+- continuous inset/depth planes derived from the same source geometry;
 - top/side/underside edge bands;
 - semantic `trim_segments` from the source map, such as `top_lip`, `underside`, `vertical_wall`, and `deep_floor_lip`;
 - semantic material bands: tapered lit shelf faces, thin top-edge glow, overhang occlusion, and side-wall occlusion derived from those same trim segments;

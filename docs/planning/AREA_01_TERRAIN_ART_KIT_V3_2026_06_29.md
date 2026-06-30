@@ -24,7 +24,8 @@ This is still a planning/source-map asset pass only. It does not change `scenes/
 - Clean full preview: `docs/planning/maps/area_01_surface_floor_sprite_kit_v3_clean_preview_v1.png`
 - Clean camera crop: `docs/planning/maps/area_01_surface_floor_sprite_kit_v3_clean_camera_crop_v1.png`
 - Preview metadata: `docs/planning/maps/area_01_surface_floor_sprite_kit_v3_preview_v1.json`
-- Promoted runtime-source candidate: `docs/planning/maps/area_01_runtime_source_map_v2.json`
+- Historical runtime-source candidate used for this preview: `docs/planning/maps/area_01_runtime_source_map_v2.json`
+- Current runtime topology source: `docs/planning/maps/area_01_runtime_source_map_v3.json`
 
 ## What Changed From Earlier Passes
 
@@ -57,7 +58,7 @@ Do not infer blockers from generated images, alpha masks, or sprite pixels. Runt
 
 ## Current Assessment
 
-V3 is good enough to use as the visual direction for the next promoted Area 01 runtime source map. It is not final production art.
+V3 proved the role-based visual direction, but it has been superseded by v4 art-kit work and runtime v3 topology. It is not final production art.
 
 Known remaining gaps:
 
@@ -69,10 +70,11 @@ Known remaining gaps:
 
 ## Next Gate
 
-Before runtime promotion:
+For current runtime topology work:
 
-- review the v3 clean camera crop at normal play scale generated from `area_01_runtime_source_map_v2.json`;
+- review the v4/v3 art-kit crops only as historical terrain-art references;
+- update playable-water source geometry and regenerate `area_01_runtime_source_map_v3.json`;
 - create route-specific cave-mouth frames and foreground dressing props;
-- then build the Godot scene generator from the same source geometry.
+- keep the Godot scene generator source-driven from the same v3 geometry.
 
 The runtime target remains `Polygon2D`/terrain fill plus `Sprite2D` trims and props, with `StaticBody2D`/`CollisionPolygon2D` blockers and `Area2D` interaction zones.
