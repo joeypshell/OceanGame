@@ -7808,10 +7808,18 @@ func _test_player_idle_and_thrust_visual_states() -> void:
 	var idle_bubble: Polygon2D = player.get_node("VisualRoot/IdleBubble")
 	var thrust_flare: Polygon2D = player.get_node("VisualRoot/ThrustFlare")
 	var bubble_trail: Polygon2D = player.get_node("VisualRoot/BubbleTrail")
+	var focal_halo: Polygon2D = player.get_node("VisualRoot/FocalHalo")
+	var nose_light: Polygon2D = player.get_node("VisualRoot/NoseLight")
 	var swim_sprite: Sprite2D = player.get_node("VisualRoot/SubSpriteAnchor/SubSprite")
 
 	player.call("_sync_movement_visuals", 0.1, false)
 	_expect(player.scale == Vector2.ONE, "visual motion state should not modify the physics/player root")
+	_expect(focal_halo.visible and focal_halo.z_index < 0, "idle state should keep a subtle player focal halo behind the diver")
+	_expect(nose_light.visible and nose_light.z_index < 0, "idle state should keep the nose light behind interaction glows")
+	var idle_nose_alpha := nose_light.color.a
+	var idle_halo_alpha := focal_halo.color.a
+	_expect(idle_nose_alpha <= 0.23, "idle nose light should stay subtle and not wash out cargo glows")
+	_expect(idle_halo_alpha <= 0.13, "idle player halo should stay quieter than active interaction glows")
 	_expect(idle_bubble.visible, "idle state should show the idle bubble treatment")
 	_expect(not thrust_flare.visible, "idle state should hide the thrust flare")
 	_expect(bubble_trail.color.a < 0.3, "idle state should keep the bubble trail subtle")
@@ -7823,6 +7831,9 @@ func _test_player_idle_and_thrust_visual_states() -> void:
 	_expect(player.get_node("VisualRoot").scale.x == -1.0, "moving visual state should work while facing left")
 	_expect(not idle_bubble.visible, "moving state should hide the idle bubble treatment")
 	_expect(thrust_flare.visible, "moving state should show the thrust flare")
+	_expect(nose_light.color.a > idle_nose_alpha, "moving state should strengthen the forward focal light")
+	_expect(focal_halo.color.a >= idle_halo_alpha, "moving state should preserve the local focal halo")
+	_expect(nose_light.polygon[2].x > 120.0, "nose light should project ahead of the diver rather than become a small marker")
 	_expect(bubble_trail.color.a > 0.4, "moving state should strengthen the bubble trail")
 	_expect(swim_sprite.region_rect.position.x > 0.0, "moving state should advance the diver swim-sheet frame")
 

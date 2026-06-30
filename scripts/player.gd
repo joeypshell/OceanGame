@@ -27,6 +27,8 @@ const SWIM_SHEET_FRAME_OFFSETS := [
 @onready var _bubble_trail: Polygon2D = get_node_or_null("VisualRoot/BubbleTrail")
 @onready var _idle_bubble: Polygon2D = get_node_or_null("VisualRoot/IdleBubble")
 @onready var _thrust_flare: Polygon2D = get_node_or_null("VisualRoot/ThrustFlare")
+@onready var _focal_halo: Polygon2D = get_node_or_null("VisualRoot/FocalHalo")
+@onready var _nose_light: Polygon2D = get_node_or_null("VisualRoot/NoseLight")
 @onready var _swim_sprite: Sprite2D = get_node_or_null("VisualRoot/SubSpriteAnchor/SubSprite")
 
 func _ready() -> void:
@@ -90,6 +92,20 @@ func _set_facing_sign(next_sign: float) -> void:
 func _sync_movement_visuals(delta: float, is_moving: bool) -> void:
 	_visual_motion_time += delta
 	var pulse := 0.5 + 0.5 * sin(_visual_motion_time * 8.0)
+
+	if _focal_halo == null:
+		_focal_halo = get_node_or_null("VisualRoot/FocalHalo")
+	if _focal_halo != null:
+		_focal_halo.visible = true
+		_focal_halo.scale = Vector2.ONE * (0.94 + (0.08 if is_moving else 0.04) * pulse)
+		_focal_halo.color = Color(0.46, 0.95, 1.0, 0.10 + (0.04 if is_moving else 0.02) * pulse)
+
+	if _nose_light == null:
+		_nose_light = get_node_or_null("VisualRoot/NoseLight")
+	if _nose_light != null:
+		_nose_light.visible = true
+		_nose_light.scale = Vector2(1.0 + (0.08 if is_moving else 0.03) * pulse, 0.9 + 0.08 * pulse)
+		_nose_light.color = Color(0.7, 1.0, 0.95, 0.18 + (0.1 if is_moving else 0.04) * pulse)
 
 	if _bubble_trail == null:
 		_bubble_trail = get_node_or_null("VisualRoot/BubbleTrail")

@@ -12,6 +12,11 @@ script = ExtResource("1_player_script")
 
 [node name="VisualRoot" type="Node2D" parent="."]
 
+[node name="FocalHalo" type="Polygon2D" parent="VisualRoot"]
+z_index = -2
+color = Color(0.46, 0.95, 1, 0.12)
+polygon = PackedVector2Array(-18, -24, 12, -30, 38, -18, 48, 0, 38, 18, 12, 30, -18, 24, -32, 0)
+
 [node name="BubbleTrail" type="Polygon2D" parent="VisualRoot"]
 color = Color(0.72, 0.96, 1, 0.28)
 polygon = PackedVector2Array(-26, -5, -20, -12, -13, -5, -20, 2, -44, 4, -38, -2, -31, 4, -38, 10, -62, -7, -56, -14, -49, -7, -56, 0)
@@ -80,8 +85,9 @@ color = Color(0.18, 0.34, 0.42, 1)
 polygon = PackedVector2Array(-4, -26, 4, -26, 4, -36, 12, -40, 16, -36, 8, -32, 8, -24)
 
 [node name="NoseLight" type="Polygon2D" parent="VisualRoot"]
-color = Color(0.7, 1, 0.95, 0.22)
-polygon = PackedVector2Array(24, -8, 84, 0, 24, 8)
+z_index = -1
+color = Color(0.7, 1, 0.95, 0.2)
+polygon = PackedVector2Array(18, -12, 126, -34, 160, 0, 126, 34, 18, 12)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_player")
