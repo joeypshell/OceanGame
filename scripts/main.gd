@@ -63,7 +63,8 @@ const RESOURCE_CLUSTER_PATTERNS := [
 const SURFACE_TAB_RESULT := 0
 const SURFACE_TAB_UPGRADES := 1
 const SURFACE_TAB_LOG := 2
-const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log"]
+const SURFACE_TAB_NIGHT := 3
+const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log", "Night"]
 const KEYBOARD_ACTION_LABELS := {
 	"interact": "E/Enter",
 	"restart_dive": "R",
@@ -863,7 +864,7 @@ func _try_extract() -> void:
 	last_completed_survival_day = survival_state.current_day
 	_resolve_night_after_result()
 	dive_session.clear_cargo()
-	surface_tab_index = SURFACE_TAB_RESULT
+	surface_tab_index = SURFACE_TAB_NIGHT
 	last_result_summary = _format_extraction_result_summary(extracted_count, banked_resources, banked_survival_supplies)
 	upgrade_menu_feedback = "Deposited %d cargo item(s).%s%s\n%s" % [
 		extracted_count,
@@ -873,7 +874,7 @@ func _try_extract() -> void:
 	]
 	_record_recent_expedition("Extracted", extracted_count)
 	_save_progression()
-	status_label.text = "Dive complete: extracted safely with %d oxygen." % ceili(dive_session.oxygen)
+	status_label.text = "Night phase: food, water, and power resolved."
 	_update_hud()
 
 func _bank_extracted_cargo(extracted_cargo: Array[String]) -> Array[String]:
@@ -4489,10 +4490,8 @@ func _advance_daylight_timer(delta: float) -> void:
 func _handle_daylight_expired() -> void:
 	daylight_nightfall_announced = true
 	daylight_elapsed_seconds = maxf(daylight_elapsed_seconds, daylight_duration_seconds)
-	# Full night transition is intentionally deferred; for now nightfall clamps the day HUD
-	# and warns the player to bank at the ship instead of killing the run or spending oxygen.
 	if status_label != null:
-		status_label.text = "Nightfall reached: return to ship before the night phase."
+		status_label.text = "Nightfall reached: return to ship to start night."
 
 func _set_daylight_progress_for_debug(progress_ratio: float) -> void:
 	var clamped_progress := clampf(progress_ratio, 0.0, 1.0)
@@ -4646,7 +4645,10 @@ func _update_run_panel() -> void:
 		run_summary_label.text = _format_run_summary(_format_ready_panel_summary(), "ready")
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
 		run_panel.visible = true
-		if surface_tab_index == SURFACE_TAB_UPGRADES:
+		if surface_tab_index == SURFACE_TAB_NIGHT:
+			run_title_label.text = _format_expedition_day_title("Night")
+			run_summary_label.text = _format_run_summary(_format_night_phase_summary(), "night")
+		elif surface_tab_index == SURFACE_TAB_UPGRADES:
 			run_title_label.text = "Surface Upgrade Bay"
 			run_summary_label.text = _format_run_summary("Banked:%s\n%s choose; %s buys.\n%s" % [
 				_format_banked_resources(),
@@ -5547,7 +5549,7 @@ func _format_expedition_ready_status() -> String:
 func _format_expedition_day_title(suffix: String) -> String:
 	if survival_state.chapter_complete:
 		return "Base Stabilized %s" % suffix
-	var display_day := last_completed_survival_day if suffix.begins_with("Result") and last_completed_survival_day > 0 else survival_state.current_day
+	var display_day := last_completed_survival_day if (suffix.begins_with("Result") or suffix == "Night") and last_completed_survival_day > 0 else survival_state.current_day
 	return "Emergency Week Day %d/%d %s" % [
 		display_day,
 		survival_state.max_days,
@@ -5600,6 +5602,36 @@ func _format_night_report_block() -> String:
 		return ""
 
 	return "Night Report:\n%s\n" % last_night_report
+
+func _format_night_phase_summary() -> String:
+	var lines: Array[String] = [
+		_format_completed_expedition_line("Night"),
+	]
+	var report := _format_night_report_block().strip_edges()
+	if not report.is_empty():
+		lines.append(report)
+	lines.append(survival_state.status_line())
+	lines.append("Banked materials:%s" % _format_banked_resources())
+	lines.append(_format_night_build_choice_line())
+	lines.append(_format_next_expedition_prompt())
+	return "\n".join(lines)
+
+func _format_night_build_choice_line() -> String:
+	for upgrade in upgrade_definitions:
+		if progression_state.has_upgrade(upgrade.id):
+			continue
+		if _upgrade_missing_discovery(upgrade) != "":
+			continue
+		if _upgrade_missing_upgrade(upgrade) != "":
+			continue
+		if progression_state.can_afford(upgrade.resource_cost):
+			return "Build choice: %s ready in Upgrades." % upgrade.display_name
+
+	var progress := _format_upgrade_progress_callout()
+	var prefix := "Upgrade progress: "
+	if progress.begins_with(prefix):
+		progress = progress.substr(prefix.length())
+	return "Build choice: %s" % progress
 
 func _format_condition_briefing() -> String:
 	if current_expedition_condition.is_empty():

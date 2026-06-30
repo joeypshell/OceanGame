@@ -63,6 +63,7 @@ func _initialize() -> void:
 	_run("health damage and vent failure", _test_health_damage_and_vent_failure)
 	_run("surface oxygen refill isolation", _test_surface_oxygen_refill_isolation)
 	_run("ship offload repeat daylight sortie", _test_ship_offload_repeat_daylight_sortie)
+	_run("night phase end day and upgrade choice", _test_night_phase_end_day_and_upgrade_choice)
 	_run("debug unlimited oxygen", _test_debug_unlimited_oxygen)
 	_run("survival night consumption", _test_survival_night_consumption)
 	_run("survival collapse and reset", _test_survival_collapse_and_reset)
@@ -344,7 +345,7 @@ func _test_ship_offload_repeat_daylight_sortie() -> void:
 	main.player_in_base = true
 	main.daylight_elapsed_seconds = 123.0
 	main.daylight_nightfall_announced = false
-	var starting_day := main.survival_state.current_day
+	var starting_day: int = main.survival_state.current_day
 	var starting_water := main.survival_state.water
 	var starting_power := main.survival_state.power
 
@@ -369,6 +370,49 @@ func _test_ship_offload_repeat_daylight_sortie() -> void:
 	_expect(not bool(main.call("_try_ship_offload")), "nightfall should stop daylight offload and leave night-start handling separate")
 	_expect(main.dive_session.current_cargo == ["driftwood"], "rejected nightfall offload should leave carried cargo untouched")
 	main.free()
+
+func _test_night_phase_end_day_and_upgrade_choice() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.start()
+	main.player_in_base = true
+	main.dive_session.has_left_base = true
+	main.daylight_nightfall_announced = true
+	main.dive_session.current_cargo.append("driftwood")
+	main.dive_session.current_cargo.append("quartz_glass")
+	main.dive_session.current_cargo.append("food_supply")
+	main.dive_session.current_cargo.append("power_supply")
+	var starting_day: int = main.survival_state.current_day
+
+	main.call("_try_extract")
+
+	_expect(main.dive_session.result == DiveSessionScript.Result.EXTRACTED, "returning to ship after nightfall should end the day")
+	_expect(main.surface_tab_index == main.SURFACE_TAB_NIGHT, "successful end-of-day extraction should open the Night tab")
+	_expect(main.last_completed_survival_day == starting_day, "night phase should remember the completed survival day")
+	_expect(main.survival_state.current_day == starting_day + 1, "night resolution should prepare tomorrow")
+	_expect(main.survival_state.food == SurvivalStateScript.STARTING_NEED, "banked food/fish should pay tonight's food cost")
+	_expect(main.survival_state.power == SurvivalStateScript.STARTING_NEED, "banked power should pay tonight's power cost")
+	_expect(main.survival_state.water == SurvivalStateScript.STARTING_NEED - 1, "missing water should show as a clear night consequence")
+	var night_summary: String = main.call("_format_night_phase_summary")
+	_expect(night_summary.contains("Night Report"), "Night tab should show the night report")
+	_expect(night_summary.contains("Power -1"), "Night tab should name power resolution")
+	_expect(night_summary.contains("Base needs: Food"), "Night tab should show current base needs")
+	_expect(night_summary.contains("Build choice: Water Filter I ready"), "Night tab should point to a compact build choice")
+
+	main.surface_tab_index = main.SURFACE_TAB_UPGRADES
+	main.selected_upgrade_index = 0
+	main.call("_try_purchase_selected_upgrade")
+
+	_expect(main.progression_state.has_upgrade(WaterFilterUpgrade.id), "night upgrade choice should purchase Water Filter I")
+	_expect(main.progression_state.resource_count("driftwood") == 0, "night upgrade should spend driftwood")
+	_expect(main.progression_state.resource_count("quartz_glass") == 0, "night upgrade should spend quartz glass")
+	_expect(main.survival_state.water == SurvivalStateScript.STARTING_NEED, "Water Filter I should restore one water reserve during night")
+	_expect(main.upgrade_menu_feedback.contains("Purchased Water Filter I"), "night purchase feedback should confirm the build choice")
+
+	main.call("_restart_dive")
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "restart after night should prepare the next day")
+	_expect(main.survival_state.current_day == starting_day + 1, "restart after night should keep tomorrow's day number")
+	main.queue_free()
 
 func _test_debug_unlimited_oxygen() -> void:
 	var session := DiveSessionScript.new()
@@ -6184,12 +6228,14 @@ func _test_surface_summary_tabs() -> void:
 	_expect(not main._surface_tabs_enabled(), "surface tabs should be hidden before extraction")
 	main.dive_session.extract()
 	_expect(main._surface_tabs_enabled(), "surface tabs should be available after extraction")
-	_expect(main._format_surface_tabs() == "[Result]  Upgrades  Log", "surface tabs should mark the result view by default")
+	_expect(main._format_surface_tabs() == "[Result]  Upgrades  Log  Night", "surface tabs should mark the result view by default")
 	main.surface_tab_index = main.SURFACE_TAB_UPGRADES
-	_expect(main._format_surface_tabs() == "Result  [Upgrades]  Log", "surface tabs should mark the upgrade view")
+	_expect(main._format_surface_tabs() == "Result  [Upgrades]  Log  Night", "surface tabs should mark the upgrade view")
 	_expect(main._format_upgrade_menu_title(1, 7) == "Upgrade Bay (1/7) - Up/Down select", "upgrade bay title should keep selection controls visible")
 	main.surface_tab_index = main.SURFACE_TAB_LOG
-	_expect(main._format_surface_tabs() == "Result  Upgrades  [Log]", "surface tabs should mark the log view")
+	_expect(main._format_surface_tabs() == "Result  Upgrades  [Log]  Night", "surface tabs should mark the log view")
+	main.surface_tab_index = main.SURFACE_TAB_NIGHT
+	_expect(main._format_surface_tabs() == "Result  Upgrades  Log  [Night]", "surface tabs should mark the night view")
 	main.free()
 
 func _test_keyboard_action_prompt_labels() -> void:
@@ -6546,8 +6592,8 @@ func _test_daylight_timer_hud() -> void:
 
 	scene.call("_advance_daylight_timer", scene.daylight_duration_seconds)
 	_expect(scene.daylight_nightfall_announced, "daylight expiration should announce nightfall")
-	_expect(scene.dive_session.result == DiveSessionScript.Result.DIVING, "timer expiration placeholder should not fail the dive before night phase exists")
-	_expect(scene.status_label.text.contains("Nightfall"), "timer expiration placeholder should tell the player nightfall happened")
+	_expect(scene.dive_session.result == DiveSessionScript.Result.DIVING, "timer expiration should keep the dive active until the player returns to ship")
+	_expect(scene.status_label.text.contains("start night"), "timer expiration should tell the player to return and start night")
 	scene.queue_free()
 
 func _test_compact_dive_hud_helpers() -> void:
