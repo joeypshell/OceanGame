@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -57,6 +57,7 @@ test.describe("OceanGame Area 01 shell captures", () => {
         expected_route_area_label_policy: captureState.expected_route_area_label_policy,
         reason: captureState.reason,
       });
+      assertPlayerVisibleInCapture(result);
       evidence.push({
         id: captureState.id,
         stage_command: captureState.stage_command,
@@ -84,6 +85,24 @@ test.describe("OceanGame Area 01 shell captures", () => {
     await writeEvidenceReport(testInfo, manifest, sourceMap, evidence);
   });
 });
+
+function assertPlayerVisibleInCapture(result) {
+  const playerState = result.visualState.player_visual_state ?? {};
+  expect(playerState.available, `${result.capture}: player visual state`).toBe(true);
+  expect(playerState.player_visible, `${result.capture}: player node visible`).toBe(true);
+  expect(playerState.visual_root_visible, `${result.capture}: player visual root visible`).toBe(true);
+  expect(playerState.sprite_visible, `${result.capture}: player sprite visible`).toBe(true);
+  expect(playerState.sprite_has_texture, `${result.capture}: player sprite texture loaded`).toBe(true);
+  expect(playerState.visual_effective_z, `${result.capture}: player actor z band`).toBeGreaterThanOrEqual(20);
+
+  if (result.capture === "area01-surface-entry") {
+    expect(playerState.screen_x, "surface-entry diver should not sit under the left HUD").toBeGreaterThan(360);
+    expect(playerState.screen_y, "surface-entry diver should be below the top HUD").toBeGreaterThan(280);
+    expect(playerState.screen_y, "surface-entry diver should not sit under the toolbelt").toBeLessThan(
+      result.viewport.height - 120,
+    );
+  }
+}
 
 async function readManifest() {
   return readJson(manifestUrl);

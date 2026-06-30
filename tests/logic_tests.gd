@@ -4210,8 +4210,19 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	var water_cutout_layer := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/RuntimeSourceWaterCutouts") as Node2D
 	var water_edge_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourceWaterEdges") as Node2D
 	var carved_water_count := 0
+	var art_slice := main.get_node("Area01ArtSlice") as CanvasItem
+	var player_visual_root := main.get_node("Player/VisualRoot") as CanvasItem
+	var player_visual_z := _effective_canvas_z(player_visual_root)
+	_expect(player_visual_z >= 20, "player visual should render in an actor band above world art")
+	_expect(art_slice.z_index <= -20, "Area 01 art slice should stay below actors so generated terrain cannot cover the diver")
+	if terrain_domain_node != null:
+		_expect(_effective_canvas_z(terrain_domain_node) < player_visual_z, "Area 01 terrain domain should render behind the diver")
 	_expect(water_cutout_layer != null, "Area 01 builder should render playable-water cutouts over the continuous terrain domain")
 	_expect(water_edge_layer != null, "Area 01 builder should render playable-water boundary edges")
+	if water_cutout_layer != null:
+		_expect(_effective_canvas_z(water_cutout_layer) < player_visual_z, "Area 01 playable-water cutouts should render behind the diver")
+	if water_edge_layer != null:
+		_expect(_effective_canvas_z(water_edge_layer) < player_visual_z, "Area 01 water edge cues should render behind the diver")
 	for water_value in playable_water_regions:
 		if typeof(water_value) != TYPE_DICTIONARY:
 			_expect(false, "Area 01 playable water entry should be a dictionary")
@@ -4377,6 +4388,21 @@ func _point_inside_any_collision(global_point: Vector2, collisions: Array[Collis
 			return true
 
 	return false
+
+func _effective_canvas_z(node: Node) -> int:
+	var effective_z := 0
+	var current: Node = node
+	var include_parent_z := true
+	while current != null:
+		if current is CanvasItem:
+			var canvas_item := current as CanvasItem
+			if include_parent_z:
+				effective_z += canvas_item.z_index
+				include_parent_z = canvas_item.z_as_relative
+			else:
+				break
+		current = current.get_parent()
+	return effective_z
 
 func _node_tree_contains_collision(node: Node) -> bool:
 	if node is CollisionPolygon2D or node is CollisionShape2D:

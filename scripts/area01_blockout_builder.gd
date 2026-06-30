@@ -37,6 +37,7 @@ const GENERATED_RIM_LAYER_NAME := "RuntimeSourceRims"
 const GENERATED_HOOK_LAYER_NAME := "RuntimeSourceHooks"
 const GENERATED_WATER_CUTOUT_LAYER_NAME := "RuntimeSourceWaterCutouts"
 const GENERATED_WATER_EDGE_LAYER_NAME := "RuntimeSourceWaterEdges"
+const AREA01_ART_SLICE_Z_INDEX := -20
 const REEF_TEXTURE_UV_SCALE := 0.84
 const FAR_BACKGROUND_AUTHORITY_ALPHA := 0.06
 const PARALLAX_BACKGROUND_AUTHORITY_ALPHA := 0.08
@@ -139,6 +140,8 @@ func _prepare_area01_for_authority(scene_root: Node) -> void:
 
 	var art_slice := scene_root.get_node_or_null("Area01ArtSlice")
 	if art_slice != null:
+		if art_slice is CanvasItem:
+			(art_slice as CanvasItem).z_index = AREA01_ART_SLICE_Z_INDEX
 		_remove_child_if_present(art_slice, GENERATED_COLLISION_BODY_NAME)
 		_remove_child_if_present(art_slice, GENERATED_HOOK_LAYER_NAME)
 

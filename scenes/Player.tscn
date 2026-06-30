@@ -8,6 +8,7 @@ radius = 9.0
 height = 28.0
 
 [node name="Player" type="CharacterBody2D"]
+z_index = 20
 script = ExtResource("1_player_script")
 
 [node name="VisualRoot" type="Node2D" parent="."]

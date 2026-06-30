@@ -1828,9 +1828,9 @@ func _stage_debug_area01_shell_visual_review(stage: String) -> void:
 		"surface_entry":
 			var supply_cache := get_node_or_null("SurvivalSupplyCache") as Node2D
 			if supply_cache != null:
-				target_position = supply_cache.global_position + Vector2(-120.0, -70.0)
+				target_position = supply_cache.global_position + Vector2(220.0, -10.0)
 			else:
-				target_position = Vector2(374.0, 368.0)
+				target_position = Vector2(714.0, 428.0)
 			status = "Debug review: Area 01 surface entry staged."
 		"left_shelf_cave":
 			var left_cave := get_node_or_null("Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket") as Node2D
@@ -4646,6 +4646,7 @@ func _publish_visual_smoke_state() -> void:
 	state["area01_cue_family_counts"] = area01_cue_report.get("families", {})
 	state["area01_cue_family_warnings"] = area01_cue_report.get("warnings", [])
 	state["area01_capture_camera"] = _area01_overlay_camera_state()
+	state["player_visual_state"] = _player_visual_smoke_state()
 	var area01_wall := get_node_or_null("Area01ArtSlice/TerrainBackWalls/BlockoutEastReefMass") as Polygon2D
 	var area01_lip := get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutEastReefLip") as Polygon2D
 	if area01_wall != null and area01_lip != null:
@@ -4660,11 +4661,61 @@ func _publish_visual_smoke_state() -> void:
 		}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
 
+func _player_visual_smoke_state() -> Dictionary:
+	if player == null:
+		return {"available": false}
+
+	var visual_root := player.get_node_or_null("VisualRoot") as CanvasItem
+	var sprite := player.get_node_or_null("VisualRoot/SubSpriteAnchor/SubSprite") as Sprite2D
+	var screen_position := _scan_reticle_screen_position(player.global_position)
+	var player_canvas := player as CanvasItem
+	var sprite_region := Rect2()
+	var sprite_alpha := 0.0
+	var sprite_has_texture := false
+	if sprite != null:
+		sprite_region = sprite.region_rect
+		sprite_alpha = sprite.modulate.a
+		sprite_has_texture = sprite.texture != null
+
+	return {
+		"available": true,
+		"world_x": roundi(player.global_position.x),
+		"world_y": roundi(player.global_position.y),
+		"screen_x": roundi(screen_position.x),
+		"screen_y": roundi(screen_position.y),
+		"player_visible": player_canvas.visible,
+		"visual_root_visible": visual_root != null and visual_root.visible,
+		"sprite_visible": sprite != null and sprite.visible,
+		"sprite_has_texture": sprite_has_texture,
+		"sprite_alpha": sprite_alpha,
+		"sprite_region_x": roundi(sprite_region.position.x),
+		"sprite_region_y": roundi(sprite_region.position.y),
+		"sprite_region_width": roundi(sprite_region.size.x),
+		"sprite_region_height": roundi(sprite_region.size.y),
+		"player_z": player_canvas.z_index,
+		"visual_effective_z": _effective_canvas_z(visual_root),
+	}
+
 func _area01_visual_smoke_camera_region() -> Rect2:
 	var visible_rect := get_viewport_rect()
 	var top_left := get_canvas_transform().affine_inverse() * visible_rect.position
 	var bottom_right := get_canvas_transform().affine_inverse() * visible_rect.end
 	return Rect2(top_left, bottom_right - top_left).abs()
+
+func _effective_canvas_z(node: Node) -> int:
+	var effective_z := 0
+	var current: Node = node
+	var include_parent_z := true
+	while current != null:
+		if current is CanvasItem:
+			var canvas_item := current as CanvasItem
+			if include_parent_z:
+				effective_z += canvas_item.z_index
+				include_parent_z = canvas_item.z_as_relative
+			else:
+				break
+		current = current.get_parent()
+	return effective_z
 
 func _active_hud_visible_for_result(result: int) -> bool:
 	return result == DiveSessionScript.Result.DIVING
