@@ -64,6 +64,9 @@ switch ($Tier) {
 		Invoke-Step "Area 01 runtime placement validation" {
 			node tools/validate-area01-runtime-placements.mjs
 		}
+		Invoke-Step "Area 01 playable-water framing validation" {
+			node tools/validate-area01-playable-water-framing.mjs
+		}
 		Invoke-Step "Whitespace check" {
 			git diff --check
 		}
@@ -78,6 +81,9 @@ switch ($Tier) {
 		}
 		Invoke-Step "Area 01 runtime placement validation" {
 			node tools/validate-area01-runtime-placements.mjs
+		}
+		Invoke-Step "Area 01 playable-water framing validation" {
+			node tools/validate-area01-playable-water-framing.mjs
 		}
 		Invoke-Step "Whitespace check" {
 			git diff --check
@@ -120,6 +126,9 @@ switch ($Tier) {
 		}
 		Invoke-Step "Area 01 runtime placement validation" {
 			node tools/validate-area01-runtime-placements.mjs
+		}
+		Invoke-Step "Area 01 playable-water framing validation" {
+			node tools/validate-area01-playable-water-framing.mjs
 		}
 		Invoke-Step "Desktop Playwright export and visual smoke" {
 			npm.cmd run test:visual

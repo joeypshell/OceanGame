@@ -28,6 +28,92 @@ TERRAIN_DOMAIN = {
 }
 CARVING_REGION_KINDS = {"cave", "pocket", "locked_promise"}
 
+CAMERA_REVIEW_POINTS: list[dict[str, Any]] = [
+    {
+        "id": "surface_entry_open_water",
+        "display_name": "Surface entry open water",
+        "region_id": "open_surface_water",
+        "kind": "intentional_open_surface",
+        "focus": [520, 300],
+        "camera_size": [1200, 680],
+        "expected_water_region_ids": ["open_surface_water_water"],
+        "requires_terrain_framing": False,
+        "side_band_size": 140,
+        "max_top_band_solid_ratio": 0.02,
+        "note": "This view is allowed to read as open ocean because it sits above the seafloor terrain domain.",
+    },
+    {
+        "id": "starter_kelp_cave_frame",
+        "display_name": "Starter kelp cave framing",
+        "region_id": "starter_kelp_cave",
+        "kind": "framed_cave_region",
+        "focus": [80, 850],
+        "camera_size": [1200, 680],
+        "expected_water_region_ids": ["source_trace_starter_kelp_pocket"],
+        "requires_terrain_framing": True,
+        "side_band_size": 140,
+        "min_solid_area_ratio": 0.1,
+        "min_framed_sides": 2,
+        "min_side_solid_ratio": 0.12,
+    },
+    {
+        "id": "shell_reef_bank_cave_frame",
+        "display_name": "Shell reef bank cave framing",
+        "region_id": "shell_reef_bank_cave",
+        "kind": "framed_cave_region",
+        "focus": [1200, 1040],
+        "camera_size": [1200, 680],
+        "expected_water_region_ids": ["source_trace_shell_reef_bank"],
+        "requires_terrain_framing": True,
+        "side_band_size": 140,
+        "min_solid_area_ratio": 0.1,
+        "min_framed_sides": 2,
+        "min_side_solid_ratio": 0.12,
+    },
+    {
+        "id": "central_drop_thermal_vent_frame",
+        "display_name": "Central drop / thermal vent framing",
+        "region_id": "thermal_vent_pocket",
+        "kind": "framed_cave_region",
+        "focus": [1900, 1320],
+        "camera_size": [1200, 680],
+        "expected_water_region_ids": ["source_trace_thermal_vent_corridor", "thermal_vent_drop_water"],
+        "requires_terrain_framing": True,
+        "side_band_size": 140,
+        "min_solid_area_ratio": 0.1,
+        "min_framed_sides": 2,
+        "min_side_solid_ratio": 0.12,
+    },
+    {
+        "id": "pressure_wreck_branch_frame",
+        "display_name": "Pressure wreck branch framing",
+        "region_id": "pressure_wreck_branch",
+        "kind": "framed_cave_region",
+        "focus": [3820, 1000],
+        "camera_size": [1200, 680],
+        "expected_water_region_ids": ["source_trace_pressure_wreck_branch"],
+        "requires_terrain_framing": True,
+        "side_band_size": 140,
+        "min_solid_area_ratio": 0.1,
+        "min_framed_sides": 2,
+        "min_side_solid_ratio": 0.12,
+    },
+    {
+        "id": "future_deep_exit_frame",
+        "display_name": "Future deep exit framing",
+        "region_id": "future_deep_exit",
+        "kind": "framed_cave_region",
+        "focus": [4240, 2220],
+        "camera_size": [1200, 680],
+        "expected_water_region_ids": ["source_trace_future_exit_room"],
+        "requires_terrain_framing": True,
+        "side_band_size": 140,
+        "min_solid_area_ratio": 0.1,
+        "min_framed_sides": 2,
+        "min_side_solid_ratio": 0.12,
+    },
+]
+
 SEMANTIC_TRIM_SEGMENTS: dict[str, list[dict[str, Any]]] = {
     "surface_shelf_west": [
         {
@@ -931,6 +1017,9 @@ def merge_validation_rules(
     merged["topology_parity_render_required"] = (
         "Area 01 map-truth changes must refresh the runtime-vs-source side-by-side render so sparse floating terrain cannot be mistaken for source parity."
     )
+    merged["camera_review_points_require_underwater_framing"] = (
+        "Representative cave/pocket camera review points below the seafloor must have nearby solid terrain framing; only the open surface review point may read as intentionally unframed open water."
+    )
     return [{"id": key, "rule": value} for key, value in merged.items()]
 
 
@@ -1049,6 +1138,7 @@ def main() -> None:
         "object_layer": copy_entry(surface_objects),
         "scene_hooks": runtime_scene_hooks(geometry),
         "camera_bounds": copy_entry(geometry["camera_bounds"]),
+        "camera_review_points": [copy_entry(entry) for entry in CAMERA_REVIEW_POINTS],
         "validation_rules": merge_validation_rules(blockout, geometry),
         "migration_plan": [
             {

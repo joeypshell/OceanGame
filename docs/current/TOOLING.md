@@ -101,8 +101,8 @@ powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier full
 
 Tier guidance:
 
-- `quick`: Godot headless launch, logic tests, Area 01 source truth validation, Area 01 placement validation, and `git diff --check`. Use for most gameplay/code changes.
-- `docs`: MCP context self-test, Area 01 runtime source-map validation, Area 01 placement validation, and `git diff --check`. Use for docs, planning, and MCP resource changes.
+- `quick`: Godot headless launch, logic tests, Area 01 source truth validation, Area 01 placement validation, Area 01 playable-water framing validation, and `git diff --check`. Use for most gameplay/code changes.
+- `docs`: MCP context self-test, Area 01 runtime source-map validation, Area 01 placement validation, Area 01 playable-water framing validation, and `git diff --check`. Use for docs, planning, and MCP resource changes.
 - `visual`: desktop Playwright visual smoke against the existing export. Use after HUD, UI, camera, route, or art changes when the Web export already exists.
 - `mobile-like`: mobile-like Playwright smoke against the existing export. Use only for mobile-like safe-area, HUD, panel, or route-layout questions.
 - `full`: Godot checks, MCP self-test, Web export, desktop visual smoke, mobile-like visual smoke, and `git diff --check`. Reserve for milestone closeout, export/tooling changes, or major visual/camera route changes.
@@ -123,7 +123,9 @@ Run it directly from the repository root when changing Area 01 terrain, collisio
 & "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --headless --path . --script res://tests/area01_source_truth_validation.gd
 ```
 
-It is also part of the `quick` and `full` test tiers. Keep using the Node source-map validators for static JSON and authored placement checks; this Godot validator covers the instantiated runtime scene after the blockout builder runs.
+It is also part of the `quick` and `full` test tiers. Keep using the Node source-map validators for static JSON, authored placement checks, and playable-water camera-region framing; this Godot validator covers the instantiated runtime scene after the blockout builder runs.
+
+`tools/validate-area01-playable-water-framing.mjs` reads the generated `camera_review_points` in runtime v3. The surface-entry point is allowed to read as open water above the seafloor, but underwater cave/pocket review points must sit inside carved playable water and have enough nearby solid terrain in the camera region to reject the "blank open ocean beside a cave" failure mode.
 
 For full-map topology review, refresh the side-by-side render after changing Area 01 source geometry:
 
@@ -133,6 +135,7 @@ For full-map topology review, refresh the side-by-side render after changing Are
 & "C:\Users\pirat\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" .\tools\render_area01_runtime_vs_source_comparison.py
 node .\tools\validate-area01-runtime-source-map.mjs
 node .\tools\validate-area01-runtime-placements.mjs
+node .\tools\validate-area01-playable-water-framing.mjs
 ```
 
 The renderer writes `docs/planning/maps/area_01_current_godot_runtime_map_2026_06_30.png`, `docs/planning/maps/area_01_runtime_vs_source_side_by_side_2026_06_30.png`, and matching JSON metadata. Treat those as topology evidence; Playwright captures remain camera-scale browser evidence.

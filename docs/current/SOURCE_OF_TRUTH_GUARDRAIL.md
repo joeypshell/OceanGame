@@ -24,6 +24,7 @@ For any issue that changes visible terrain, collision, source maps, route hooks,
 - For Area 01 topology changes, update `docs/planning/maps/area_01_surface_floor_source_map_v1.png` or `docs/planning/maps/area_01_surface_floor_geometry_v1.json` as appropriate, regenerate `area_01_playable_water_trace_v1.json`, regenerate `area_01_runtime_source_map_v3.json`, and refresh `docs/planning/maps/area_01_runtime_vs_source_side_by_side_2026_06_30.png`.
 - Run `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier docs` for docs/workflow changes.
 - Run the targeted Area 01 capture command when the change is visual or capture-state related: `npm.cmd run test:area01-shell-captures`.
+- Run `node .\tools\validate-area01-playable-water-framing.mjs` before closing source-map issues that could make planned cave/pocket camera regions read as mostly blank open water.
 
 ## Drift Checks
 
@@ -31,4 +32,5 @@ For any issue that changes visible terrain, collision, source maps, route hooks,
 - If GAMEPLAY describes a system as implemented but no code or tests support it, move that text to planning or label it as planning direction.
 - If Area 01 collision, visible walls, rim/lip reads, hooks, or resource pockets move, update or validate the runtime source map before closing.
 - If Area 01 renders as sparse floating solid chunks in mostly open water, do not accept it as source-map parity. Runtime topology must show open surface over continuous terrain with carved cave/corridor/pocket water.
+- If an underwater Area 01 review view has no nearby terrain framing, treat that as source-map/runtime drift even if polygon ownership checks pass. The open surface is the only intentionally unframed water band.
 - If a report says source-map/runtime/harness/docs signatures changed, include the reason in the issue comment.

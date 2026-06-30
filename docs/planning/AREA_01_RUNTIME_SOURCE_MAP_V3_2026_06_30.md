@@ -30,6 +30,7 @@ The current v3 runtime geometry no longer treats hand-authored `solid_terrain` c
 - Ship/moonpool offload is separate from the full-width surface oxygen refill band.
 - Resource, fish, scan, gate, hazard, and return-current placements must remain outside solid terrain.
 - The pressure-wreck and future-exit reads depend on playable-water/cave-mouth source shapes carved out of the continuous terrain domain, not open-world edges or screenshot-only art.
+- `camera_review_points` define representative camera-scale checks. The surface-entry point is intentionally open; underwater cave/pocket points must have nearby solid terrain framing so blank ocean views cannot pass as source-map parity.
 
 ## Visual Evidence
 
@@ -49,8 +50,9 @@ The Area 01 shell capture manifest still includes `area01-future-exit` for camer
 & 'C:\Users\pirat\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' tools\render_area01_runtime_vs_source_comparison.py
 & 'C:\Users\pirat\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe' tools\validate-area01-runtime-source-map.mjs
 & 'C:\Users\pirat\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe' tools\validate-area01-runtime-placements.mjs
+& 'C:\Users\pirat\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe' tools\validate-area01-playable-water-framing.mjs
 ```
 
 ## Guardrail
 
-Any Area 01 terrain, cave-mouth, playable-water region, pickup, fish, scan, gate, hazard, return-current, capture-state, or route-hook change should update the source PNG, trace, or `area_01_surface_floor_geometry_v1.json` as appropriate, regenerate v3, refresh the side-by-side render when topology changed, and rerun the validators before closing the issue.
+Any Area 01 terrain, cave-mouth, playable-water region, camera review point, pickup, fish, scan, gate, hazard, return-current, capture-state, or route-hook change should update the source PNG, trace, or `area_01_surface_floor_geometry_v1.json` as appropriate, regenerate v3, refresh the side-by-side render when topology changed, and rerun the validators before closing the issue.
