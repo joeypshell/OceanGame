@@ -416,6 +416,35 @@ def runtime_hook_entry(entry: dict[str, Any]) -> dict[str, Any]:
     return hook
 
 
+def runtime_scene_hooks(geometry: dict[str, Any]) -> list[dict[str, Any]]:
+    hooks = [runtime_hook_entry(entry) for entry in geometry["scene_hooks"]]
+    existing_hook_ids = {entry["id"] for entry in hooks}
+
+    for cave_mouth in geometry["cave_mouths"]:
+        scene_hook_id = cave_mouth.get("scene_hook", "")
+        if not scene_hook_id or scene_hook_id in existing_hook_ids:
+            continue
+
+        region_id = cave_mouth.get("to_region", cave_mouth.get("from_region", ""))
+        status = "future_locked" if region_id == "future_deep_exit" else "planned"
+        hooks.append(
+            runtime_hook_entry(
+                {
+                    "id": scene_hook_id,
+                    "type": "cave_entrance",
+                    "region_id": region_id,
+                    "shape": "polygon",
+                    "points": copy.deepcopy(cave_mouth.get("entrance_polygon", [])),
+                    "owner": "future cave entrance metadata",
+                    "status": status,
+                }
+            )
+        )
+        existing_hook_ids.add(scene_hook_id)
+
+    return hooks
+
+
 def merge_validation_rules(
     blockout: dict[str, Any],
     geometry: dict[str, Any],
@@ -444,17 +473,24 @@ def main() -> None:
     blockout = load_json(CURRENT_BLOCKOUT_PATH)
     comparison = load_json(COMPARISON_PATH)
     terrain_kit = load_json(TERRAIN_KIT_MANIFEST_PATH)
+    coordinate_space = copy_entry(geometry["coordinate_space"])
+    coordinate_space["runtime_authority"] = (
+        "Current Area 01 geometry/collision authority. Main.tscn calls Area01BlockoutBuilder, "
+        "which builds runtime terrain, collision, rims, and validation hooks from this file; "
+        "area_01_blockout_source_map_v1.json is retained only as a fallback load path."
+    )
 
     output = {
         "schema_version": 1,
         "map_id": "area_01_runtime_source_map_v2",
         "date": "2026-06-29",
-        "status": "runtime_visual_collision_reviewed_with_watchlist",
+        "status": "active_runtime_geometry_collision_authority_with_visual_watchlist",
         "purpose": (
-            "Single promoted Area 01 source-map candidate for runtime v2. This merges the accepted "
+            "Single promoted Area 01 source map for runtime v2. This merges the accepted "
             "surface-floor geometry direction with runtime builder metadata, explicit scene hooks, "
-            "terrain-kit references, and defect-prevention validation rules. It is now the preferred "
-            "Area01BlockoutBuilder input for validation, with the legacy blockout map kept as fallback."
+            "terrain-kit references, and defect-prevention validation rules. It is the active "
+            "Area01BlockoutBuilder input for geometry/collision validation, with the legacy blockout "
+            "map kept only as a fallback load path."
         ),
         "source_inputs": {
             "accepted_geometry": str(ACCEPTED_GEOMETRY_PATH.relative_to(ROOT)).replace("\\", "/"),
@@ -464,11 +500,11 @@ def main() -> None:
         },
         "promotion_decision": {
             "accepted_direction": "area_01_surface_floor_geometry_v1 plus area_01_terrain_art_kit_v4",
-            "current_runtime_replaced_when": "The Godot builder now creates visible terrain, collision, rims, and nonblocking debug hooks from this file for validation.",
-            "old_blockout_policy": "area_01_blockout_source_map_v1.json remains available as the fallback if this file cannot be loaded; runtime v2 is accepted as the current geometry/collision source after staged visual/collision review, with final terrain-art polish still tracked separately.",
+            "current_runtime_replaced_when": "Main.tscn calls the Godot builder, which creates visible terrain, collision, rims, and nonblocking debug hooks from this file during startup.",
+            "old_blockout_policy": "area_01_blockout_source_map_v1.json remains available only as the fallback if this file cannot be loaded; runtime v2 is the current geometry/collision source, with final terrain-art polish still tracked separately.",
             "comparison_summary": comparison["semantic_comparison"],
         },
-        "coordinate_space": geometry["coordinate_space"],
+        "coordinate_space": coordinate_space,
         "pipeline": geometry["pipeline"],
         "topology": geometry["topology"],
         "terrain_kit": {
@@ -491,7 +527,7 @@ def main() -> None:
         "solid_terrain": [runtime_terrain_entry(entry) for entry in geometry["solid_terrain"]],
         "cave_mouths": [copy_entry(entry) for entry in geometry["cave_mouths"]],
         "sprite_placements": [copy_entry(entry) for entry in geometry["sprite_placements"]],
-        "scene_hooks": [runtime_hook_entry(entry) for entry in geometry["scene_hooks"]],
+        "scene_hooks": runtime_scene_hooks(geometry),
         "camera_bounds": copy_entry(geometry["camera_bounds"]),
         "validation_rules": merge_validation_rules(blockout, geometry),
         "migration_plan": [
@@ -512,8 +548,8 @@ def main() -> None:
             },
             {
                 "step": 4,
-                "task": "Only after validation, mark this file as runtime authority and retire direct use of the old blockout map.",
-                "status": "watchlist",
+                "task": "Mark this file as runtime authority and retain the old blockout map only as a fallback load path.",
+                "status": "complete",
             },
         ],
         "non_goals": [
@@ -524,7 +560,7 @@ def main() -> None:
         ],
     }
 
-    OUTPUT_PATH.write_text(json.dumps(output, indent=2), encoding="utf-8")
+    OUTPUT_PATH.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(OUTPUT_PATH)
 
 

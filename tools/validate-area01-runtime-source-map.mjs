@@ -68,6 +68,53 @@ function distancePointToPolygonEdge(point, polygon) {
   return best;
 }
 
+function pointInPolygon(point, polygon) {
+  let inside = false;
+  for (
+    let index = 0, previous = polygon.length - 1;
+    index < polygon.length;
+    previous = index++
+  ) {
+    const currentPoint = polygon[index];
+    const previousPoint = polygon[previous];
+    const crosses =
+      currentPoint[1] > point[1] !== previousPoint[1] > point[1] &&
+      point[0] <
+        ((previousPoint[0] - currentPoint[0]) * (point[1] - currentPoint[1])) /
+          (previousPoint[1] - currentPoint[1]) +
+          currentPoint[0];
+    if (crosses) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+function polygonCenter(polygon) {
+  const totals = polygon.reduce(
+    (accumulator, point) => [accumulator[0] + point[0], accumulator[1] + point[1]],
+    [0, 0],
+  );
+  return [totals[0] / polygon.length, totals[1] / polygon.length];
+}
+
+function polygonBounds(points) {
+  return points.reduce(
+    (bounds, point) => ({
+      minX: Math.min(bounds.minX, point[0]),
+      maxX: Math.max(bounds.maxX, point[0]),
+      minY: Math.min(bounds.minY, point[1]),
+      maxY: Math.max(bounds.maxY, point[1]),
+    }),
+    {
+      minX: Infinity,
+      maxX: -Infinity,
+      minY: Infinity,
+      maxY: -Infinity,
+    },
+  );
+}
+
 function trimLength(segment) {
   return Math.hypot(
     segment.end[0] - segment.start[0],
@@ -82,9 +129,24 @@ if (sourceMap.map_id !== "area_01_runtime_source_map_v2") {
   fail(`unexpected map_id ${sourceMap.map_id}`);
 }
 
+if (sourceMap.status !== "active_runtime_geometry_collision_authority_with_visual_watchlist") {
+  fail(`unexpected status ${sourceMap.status}`);
+}
+
+const runtimeAuthority = String(
+  sourceMap.coordinate_space?.runtime_authority ?? "",
+).toLowerCase();
+if (
+  runtimeAuthority.includes("planning-only") ||
+  !runtimeAuthority.includes("current area 01 geometry/collision authority")
+) {
+  fail("coordinate_space.runtime_authority must identify runtime v2 as the current Area 01 authority");
+}
+
 const terrainIds = new Set();
 const trimIds = new Set();
 let trimCount = 0;
+const terrainPolygons = [];
 
 for (const terrain of sourceMap.solid_terrain) {
   if (!terrain || typeof terrain !== "object") {
@@ -103,6 +165,8 @@ for (const terrain of sourceMap.solid_terrain) {
   if (terrain.polygon.length < 3 || !terrain.polygon.every(isPoint)) {
     fail(`${terrain.id} polygon must contain at least three numeric points`);
   }
+
+  terrainPolygons.push({ id: terrain.id, polygon: terrain.polygon });
 
   if (!terrain.runtime_generation || typeof terrain.runtime_generation !== "object") {
     fail(`${terrain.id} is missing runtime_generation metadata`);
@@ -154,6 +218,71 @@ for (const terrain of sourceMap.solid_terrain) {
   }
 }
 
+assertArray(sourceMap.scene_hooks, "scene_hooks must be an array");
+const hooksById = new Map();
+for (const hook of sourceMap.scene_hooks) {
+  if (!hook || typeof hook !== "object" || typeof hook.id !== "string") {
+    fail("scene_hooks entries must be objects with ids");
+  }
+  if (hooksById.has(hook.id)) {
+    fail(`duplicate scene hook id ${hook.id}`);
+  }
+  assertArray(hook.points, `${hook.id} points must be an array`);
+  if (hook.points.length < 3 || !hook.points.every(isPoint)) {
+    fail(`${hook.id} must contain at least three numeric points`);
+  }
+  hooksById.set(hook.id, hook);
+}
+
+const surfaceHook = hooksById.get("surface_oxygen_refill_zone");
+if (!surfaceHook || surfaceHook.type !== "oxygen") {
+  fail("surface_oxygen_refill_zone oxygen hook is required");
+}
+const surfaceBounds = polygonBounds(surfaceHook.points);
+if (surfaceBounds.minX > -850 || surfaceBounds.maxX < 4500 || surfaceBounds.maxY > 260) {
+  fail("surface oxygen hook must keep the full top water surface open");
+}
+
+const offloadHook = hooksById.get("ship_offload_zone");
+if (!offloadHook || offloadHook.type !== "offload") {
+  fail("ship_offload_zone offload hook is required");
+}
+if (offloadHook.id === surfaceHook.id) {
+  fail("ship offload and oxygen refill hooks must stay separate");
+}
+
+for (const terrain of terrainPolygons) {
+  const bounds = polygonBounds(terrain.polygon);
+  if (bounds.minY <= surfaceBounds.maxY) {
+    fail(`${terrain.id} overlaps the open-surface oxygen band`);
+  }
+}
+
+assertArray(sourceMap.cave_mouths, "cave_mouths must be an array");
+for (const caveMouth of sourceMap.cave_mouths) {
+  if (!caveMouth || typeof caveMouth !== "object") {
+    fail("cave_mouths entries must be objects");
+  }
+  const caveId = caveMouth.id ?? "unknown";
+  const sceneHook = caveMouth.scene_hook;
+  if (!sceneHook || !hooksById.has(sceneHook)) {
+    fail(`${caveId} must reference an existing scene hook`);
+  }
+  assertArray(caveMouth.entrance_polygon, `${caveId} entrance_polygon must be an array`);
+  if (
+    caveMouth.entrance_polygon.length < 3 ||
+    !caveMouth.entrance_polygon.every(isPoint)
+  ) {
+    fail(`${caveId} entrance_polygon must contain at least three numeric points`);
+  }
+  const center = polygonCenter(caveMouth.entrance_polygon);
+  for (const terrain of terrainPolygons) {
+    if (pointInPolygon(center, terrain.polygon)) {
+      fail(`${caveId} entrance center is blocked by ${terrain.id}`);
+    }
+  }
+}
+
 console.log(
-  `PASS Area 01 runtime source map validation: ${terrainIds.size} terrain polygons, ${trimCount} semantic trim segments.`,
+  `PASS Area 01 runtime source map validation: ${terrainIds.size} terrain polygons, ${trimCount} semantic trim segments, ${hooksById.size} scene hooks.`,
 );

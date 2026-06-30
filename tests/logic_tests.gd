@@ -3573,6 +3573,7 @@ func _test_area_01_source_map_contract() -> void:
 		return
 
 	var source_map := parsed as Dictionary
+	_expect(String(source_map.get("status", "")) == "active_runtime_geometry_collision_authority_with_visual_watchlist", "Area 01 runtime source map should be marked as the active geometry/collision authority")
 	var required_keys := [
 		"schema_version",
 		"coordinate_space",
@@ -3593,9 +3594,13 @@ func _test_area_01_source_map_contract() -> void:
 	var cave_mouths: Array = source_map.get("cave_mouths", [])
 	var scene_hooks: Array = source_map.get("scene_hooks", [])
 	var validation_rules: Array = source_map.get("validation_rules", [])
+	var coordinate_space: Dictionary = source_map.get("coordinate_space", {})
 	var pipeline: Dictionary = source_map.get("pipeline", {})
 	var runtime_contract: Dictionary = source_map.get("runtime_generation_contract", {})
 	var terrain_kit: Dictionary = source_map.get("terrain_kit", {})
+	var runtime_authority := String(coordinate_space.get("runtime_authority", "")).to_lower()
+	_expect(runtime_authority.contains("current area 01 geometry/collision authority"), "Area 01 source map should identify runtime v2 as the current authority")
+	_expect(not runtime_authority.contains("planning-only"), "Area 01 source map should not still describe runtime v2 as planning-only")
 	_expect(String(pipeline.get("map_mode", "")) == "side_scroll_mode", "Area 01 source map should declare the side-scroll map mode")
 	_expect(String(pipeline.get("collision_model", "")).contains("precise_shapes"), "Area 01 source map should declare precise collision shapes")
 	_expect(String(pipeline.get("runtime_object_model", "")).contains("platform_objects"), "Area 01 source map should separate platform/runtime objects from background art")
@@ -3634,6 +3639,24 @@ func _test_area_01_source_map_contract() -> void:
 		"do_not_bake_preview_png",
 	]:
 		_expect(rule_ids.has(id), "Area 01 source map should include validation rule %s" % id)
+
+	var hooks_by_id := {}
+	for hook in scene_hooks:
+		if typeof(hook) == TYPE_DICTIONARY:
+			hooks_by_id[String((hook as Dictionary).get("id", ""))] = hook
+	_expect(hooks_by_id.has("surface_oxygen_refill_zone"), "Area 01 source map should define the full-width surface oxygen hook")
+	_expect(hooks_by_id.has("ship_offload_zone"), "Area 01 source map should define the separate ship offload hook")
+	if hooks_by_id.has("surface_oxygen_refill_zone") and hooks_by_id.has("ship_offload_zone"):
+		var oxygen_hook := hooks_by_id["surface_oxygen_refill_zone"] as Dictionary
+		var offload_hook := hooks_by_id["ship_offload_zone"] as Dictionary
+		_expect(String(oxygen_hook.get("type", "")) == "oxygen", "surface hook should be typed as oxygen")
+		_expect(String(offload_hook.get("type", "")) == "offload", "ship hook should be typed as offload")
+		_expect(String(oxygen_hook.get("id", "")) != String(offload_hook.get("id", "")), "oxygen refill and ship offload should remain separate hooks")
+	for cave_mouth in cave_mouths:
+		if typeof(cave_mouth) != TYPE_DICTIONARY:
+			continue
+		var scene_hook_id := String((cave_mouth as Dictionary).get("scene_hook", ""))
+		_expect(hooks_by_id.has(scene_hook_id), "Area 01 cave mouth should reference an existing generated scene hook: %s" % String((cave_mouth as Dictionary).get("id", "")))
 
 	var main := MainScene.instantiate()
 	var builder := Area01BlockoutBuilderScript.new()
@@ -3736,6 +3759,15 @@ func _test_area_01_authoritative_wall_builder() -> void:
 			_expect(_packed_points_match(collision.polygon, expected_polygon), "Area 01 wall collision should exactly match source-map polygon: %s" % terrain_id)
 			_expect(_packed_points_match(lip.polygon, expected_polygon), "Area 01 wall lip should exactly match source-map polygon: %s" % terrain_id)
 			collisions.append(collision)
+
+	var legacy_collision_root := main.get_node("Area01ArtSlice/TerrainCollision") as StaticBody2D
+	for child in legacy_collision_root.get_children():
+		if child is CollisionPolygon2D:
+			_expect((child as CollisionPolygon2D).disabled, "legacy Area 01 blockout collision should be disabled after runtime-v2 builder promotion: %s" % child.name)
+	var legacy_terrain_root := main.get_node("Area01ArtSlice/TerrainBackWalls") as Node2D
+	for child in legacy_terrain_root.get_children():
+		if child is Polygon2D:
+			_expect(not (child as Polygon2D).visible, "legacy Area 01 blockout terrain should be hidden behind runtime-v2 source terrain: %s" % child.name)
 
 	for open_point in [
 		Vector2(560.0, 620.0),

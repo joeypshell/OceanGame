@@ -410,7 +410,7 @@ def main() -> None:
     metadata = {
         "schema_version": 1,
         "id": "area_01_surface_floor_sprite_kit_v3_preview_v1",
-        "status": "planning_preview_not_runtime_wired",
+        "status": "runtime_v2_preview_from_active_source_map",
         "geometry_source": str(GEOMETRY_PATH.relative_to(ROOT)).replace("\\", "/"),
         "kit_manifest": str(KIT_MANIFEST_PATH.relative_to(ROOT)).replace("\\", "/"),
         "full_preview": str(OUTPUT_PATH.relative_to(ROOT)).replace("\\", "/"),
@@ -418,9 +418,9 @@ def main() -> None:
         "clean_full_preview": str(CLEAN_OUTPUT_PATH.relative_to(ROOT)).replace("\\", "/"),
         "clean_camera_crop_preview": str(CLEAN_CROP_PATH.relative_to(ROOT)).replace("\\", "/"),
         "runtime_policy": {
-            "wire_status": "not wired",
+            "wire_status": "wired through Area01BlockoutBuilder",
             "sprites_define_collision": False,
-            "collision_source": "area_01_runtime_source_map_v2.json promoted candidate geometry; current playable runtime still uses area_01_blockout_source_map_v1.json until explicit Godot builder promotion"
+            "collision_source": "area_01_runtime_source_map_v2.json active geometry/collision authority; area_01_blockout_source_map_v1.json remains only as a fallback load path"
         },
         "render_policy": {
             "terrain_fill": "reef_wall_fill_material clipped to each source-map terrain polygon",
@@ -433,7 +433,7 @@ def main() -> None:
         "clean_full_summary": clean_full_summary,
         "clean_camera_crop_summary": clean_crop_summary
     }
-    METADATA_PATH.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    METADATA_PATH.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(OUTPUT_PATH)
     print(CROP_PATH)
     print(CLEAN_OUTPUT_PATH)

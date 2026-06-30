@@ -6,7 +6,7 @@ The v4 terrain-kit/source-floor direction is accepted as the direction to reconc
 
 This does not mean the v4 preview image is runtime art. It means the next runtime map should be derived from `area_01_surface_floor_geometry_v1.json` plus `area_01_terrain_art_kit_v4_manifest.json`, not from ad hoc wall placement.
 
-Current playable runtime authority remains `docs/planning/maps/area_01_blockout_source_map_v1.json` until a promoted runtime v2 source map and builder pass land.
+2026-06-30 update: the runtime v2 builder pass has landed. Current Area 01 geometry and collision now come from `docs/planning/maps/area_01_runtime_source_map_v2.json`; `docs/planning/maps/area_01_blockout_source_map_v1.json` remains only as a fallback load path and validation-rule source.
 
 ## Step 2 Comparison
 

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "map_id": "area_01_runtime_source_map_v2",
   "date": "2026-06-29",
-  "status": "runtime_visual_collision_reviewed_with_watchlist",
-  "purpose": "Single promoted Area 01 source-map candidate for runtime v2. This merges the accepted surface-floor geometry direction with runtime builder metadata, explicit scene hooks, terrain-kit references, and defect-prevention validation rules. It is now the preferred Area01BlockoutBuilder input for validation, with the legacy blockout map kept as fallback.",
+  "status": "active_runtime_geometry_collision_authority_with_visual_watchlist",
+  "purpose": "Single promoted Area 01 source map for runtime v2. This merges the accepted surface-floor geometry direction with runtime builder metadata, explicit scene hooks, terrain-kit references, and defect-prevention validation rules. It is the active Area01BlockoutBuilder input for geometry/collision validation, with the legacy blockout map kept only as a fallback load path.",
   "source_inputs": {
     "accepted_geometry": "docs/planning/maps/area_01_surface_floor_geometry_v1.json",
     "current_runtime_blockout": "docs/planning/maps/area_01_blockout_source_map_v1.json",
@@ -12,8 +12,8 @@
   },
   "promotion_decision": {
     "accepted_direction": "area_01_surface_floor_geometry_v1 plus area_01_terrain_art_kit_v4",
-    "current_runtime_replaced_when": "The Godot builder now creates visible terrain, collision, rims, and nonblocking debug hooks from this file for validation.",
-    "old_blockout_policy": "area_01_blockout_source_map_v1.json remains available as the fallback if this file cannot be loaded; runtime v2 is accepted as the current geometry/collision source after staged visual/collision review, with final terrain-art polish still tracked separately.",
+    "current_runtime_replaced_when": "Main.tscn calls the Godot builder, which creates visible terrain, collision, rims, and nonblocking debug hooks from this file during startup.",
+    "old_blockout_policy": "area_01_blockout_source_map_v1.json remains available only as the fallback if this file cannot be loaded; runtime v2 is the current geometry/collision source, with final terrain-art polish still tracked separately.",
     "comparison_summary": [
       {
         "topic": "surface oxygen",
@@ -53,7 +53,7 @@
       720
     ],
     "conversion": "Hand-authored from docs/planning/maps/area_01_surface_floor_source_map_v1.png topology into Godot-like world coordinates. Do not infer collision from source PNG pixels.",
-    "runtime_authority": "planning-only candidate; docs/planning/maps/area_01_blockout_source_map_v1.json remains current runtime collision authority until this file is promoted."
+    "runtime_authority": "Current Area 01 geometry/collision authority. Main.tscn calls Area01BlockoutBuilder, which builds runtime terrain, collision, rims, and validation hooks from this file; area_01_blockout_source_map_v1.json is retained only as a fallback load path."
   },
   "pipeline": {
     "map_mode": "side_scroll_mode",
@@ -2473,6 +2473,138 @@
         "owner_system": "future scan target Area2D",
         "blocks_player": false
       }
+    },
+    {
+      "id": "thermal_vent_drop_trigger",
+      "type": "cave_entrance",
+      "region_id": "thermal_vent_pocket",
+      "shape": "polygon",
+      "points": [
+        [
+          1680,
+          1180
+        ],
+        [
+          2180,
+          1180
+        ],
+        [
+          2180,
+          1420
+        ],
+        [
+          1680,
+          1420
+        ]
+      ],
+      "owner": "future cave entrance metadata",
+      "status": "planned",
+      "runtime_generation": {
+        "area2d_name": "ThermalVentDropTriggerArea",
+        "collision_polygon2d_name": "ThermalVentDropTriggerTrigger",
+        "points_source": "this hook points",
+        "owner_system": "future cave entrance metadata",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "blue_chimney_hole_trigger",
+      "type": "cave_entrance",
+      "region_id": "blue_chimney_route",
+      "shape": "polygon",
+      "points": [
+        [
+          1020,
+          1240
+        ],
+        [
+          1320,
+          1240
+        ],
+        [
+          1320,
+          1480
+        ],
+        [
+          1020,
+          1480
+        ]
+      ],
+      "owner": "future cave entrance metadata",
+      "status": "planned",
+      "runtime_generation": {
+        "area2d_name": "BlueChimneyHoleTriggerArea",
+        "collision_polygon2d_name": "BlueChimneyHoleTriggerTrigger",
+        "points_source": "this hook points",
+        "owner_system": "future cave entrance metadata",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "pressure_wreck_hole_trigger",
+      "type": "cave_entrance",
+      "region_id": "pressure_wreck_branch",
+      "shape": "polygon",
+      "points": [
+        [
+          2800,
+          500
+        ],
+        [
+          3040,
+          500
+        ],
+        [
+          3040,
+          760
+        ],
+        [
+          2800,
+          760
+        ]
+      ],
+      "owner": "future cave entrance metadata",
+      "status": "planned",
+      "runtime_generation": {
+        "area2d_name": "PressureWreckHoleTriggerArea",
+        "collision_polygon2d_name": "PressureWreckHoleTriggerTrigger",
+        "points_source": "this hook points",
+        "owner_system": "future cave entrance metadata",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "future_deep_exit_trigger",
+      "type": "cave_entrance",
+      "region_id": "future_deep_exit",
+      "shape": "polygon",
+      "points": [
+        [
+          2660,
+          1740
+        ],
+        [
+          2920,
+          1740
+        ],
+        [
+          2920,
+          2060
+        ],
+        [
+          2660,
+          2060
+        ]
+      ],
+      "owner": "future cave entrance metadata",
+      "status": "future_locked",
+      "runtime_generation": {
+        "area2d_name": "FutureDeepExitTriggerArea",
+        "collision_polygon2d_name": "FutureDeepExitTriggerTrigger",
+        "points_source": "this hook points",
+        "owner_system": "future cave entrance metadata",
+        "blocks_player": false
+      }
     }
   ],
   "camera_bounds": {
@@ -2586,8 +2718,8 @@
     },
     {
       "step": 4,
-      "task": "Only after validation, mark this file as runtime authority and retire direct use of the old blockout map.",
-      "status": "watchlist"
+      "task": "Mark this file as runtime authority and retain the old blockout map only as a fallback load path.",
+      "status": "complete"
     }
   ],
   "non_goals": [
