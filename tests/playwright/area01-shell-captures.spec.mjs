@@ -58,6 +58,8 @@ test.describe("OceanGame Area 01 shell captures", () => {
         reason: captureState.reason,
       });
       assertPlayerVisibleInCapture(result);
+      const visualTruthGate = buildVisualTruthGate(captureState, result);
+      assertVisualTruthGateShape(visualTruthGate, result.capture);
       evidence.push({
         id: captureState.id,
         stage_command: captureState.stage_command,
@@ -72,6 +74,7 @@ test.describe("OceanGame Area 01 shell captures", () => {
           counts: result.visualState.area01_cue_family_counts ?? {},
           warnings: result.visualState.area01_cue_family_warnings ?? [],
         },
+        visual_truth_gate: visualTruthGate,
         artifacts: {
           screenshot: `${captureState.id}.png`,
           metadata: `${captureState.id}.json`,
@@ -104,6 +107,60 @@ function assertPlayerVisibleInCapture(result) {
   }
 }
 
+function buildVisualTruthGate(captureState, result) {
+  const counts = result.visualState.area01_cue_family_counts ?? {};
+  const warnings = result.visualState.area01_cue_family_warnings ?? [];
+  const expectedFamilies = captureState.expected_visible_cue_families ?? [];
+  const missingFamilies = expectedFamilies.filter((family) => Number(counts[family] ?? 0) <= 0);
+  const playerFacing = captureState.toggle_source_map_overlay !== true;
+  const blockerSignals = [];
+
+  for (const warning of warnings) {
+    blockerSignals.push(`cue warning: ${warning}`);
+  }
+
+  for (const family of missingFamilies) {
+    blockerSignals.push(`missing expected cue family: ${family}`);
+  }
+
+  if (playerFacing && !result.screenshot) {
+    blockerSignals.push("missing player-facing screenshot artifact");
+  }
+
+  return {
+    player_facing_capture: playerFacing,
+    automated_gate_passed: blockerSignals.length === 0,
+    closeout_allowed_without_manual_review: false,
+    blocker_signals: blockerSignals,
+    required_review_questions: [
+      "Do cave walls read as natural solid terrain instead of debug collision outlines?",
+      "Is terrain body/fill/texture visible beyond the left and bottom chunks?",
+      "Is solid terrain clearly separated from playable water?",
+      "Is the scan target or prompted resource visually identifiable near the reticle?",
+      "Are horizontal banding and flat placeholder-like polygon artifacts absent?",
+    ],
+  };
+}
+
+function assertVisualTruthGateShape(visualTruthGate, captureName) {
+  expect(
+    Array.isArray(visualTruthGate.required_review_questions),
+    `${captureName}: visual truth review questions`,
+  ).toBe(true);
+  expect(
+    visualTruthGate.required_review_questions.length,
+    `${captureName}: visual truth review question count`,
+  ).toBeGreaterThanOrEqual(5);
+  expect(
+    Array.isArray(visualTruthGate.blocker_signals),
+    `${captureName}: visual truth blocker signals`,
+  ).toBe(true);
+  expect(
+    visualTruthGate.closeout_allowed_without_manual_review,
+    `${captureName}: Area 01 visual closeout requires screenshot review`,
+  ).toBe(false);
+}
+
 async function readManifest() {
   return readJson(manifestUrl);
 }
@@ -114,6 +171,7 @@ async function readJson(url) {
 
 async function writeEvidenceReport(testInfo, manifest, sourceMap, captures) {
   const generatedAt = new Date().toISOString();
+  const visualTruthSummary = buildVisualTruthSummary(captures);
   const report = {
     report_id: "area01_shell_capture_evidence",
     generated_at: generatedAt,
@@ -121,12 +179,14 @@ async function writeEvidenceReport(testInfo, manifest, sourceMap, captures) {
     source_map_revision: manifest.source_map_revision,
     source_map_status: sourceMap.status ?? "unknown",
     capture_count: captures.length,
+    visual_truth_gate_summary: visualTruthSummary,
     change_signatures: await buildChangeSignatures(),
     validation_command_results: [
       {
         command: "npm run test:area01-shell-captures",
         result: "passed",
-        note: "This report is written after all manifest capture state assertions and screenshots complete.",
+        note:
+          "This report is written after capture state assertions and screenshots complete; visual closeout still depends on the visual_truth_gate_summary.",
       },
       {
         command: "git diff --check",
@@ -137,7 +197,13 @@ async function writeEvidenceReport(testInfo, manifest, sourceMap, captures) {
     manual_review_checklist: [
       "Confirm the water surface is fully open in area01-surface-entry.",
       "Confirm terrain walls, rim/lip reads, and collision reads agree with the overlay capture.",
+      "Confirm cave walls read as natural terrain, not debug collision outlines or flat placeholder polygons.",
+      "Confirm terrain fill/texture coverage is visible across central and right-side cave walls, not only left/bottom chunks.",
+      "Confirm solid terrain and playable water remain visually distinct in each player-facing capture.",
+      "Confirm scan targets and prompted resources are visually identifiable near the reticle or prompt.",
+      "Confirm horizontal banding and large untextured flat shapes are absent from primary cave views.",
       "Confirm resources, scannables, and promise cues are in water pockets, not embedded inside solid walls.",
+      "Do not close Area 01 visual/map issues when visual_truth_gate_summary.automated_gate_passed is false or blocker_signals are present.",
       "Compare change_signatures to prior reports: source_map means source truth changed; scene_runtime means Godot scene/scripts changed; docs means documentation-only context changed.",
       "Do not treat these captures as golden images; use them as deterministic review evidence.",
     ],
@@ -150,6 +216,23 @@ async function writeEvidenceReport(testInfo, manifest, sourceMap, captures) {
   await fs.writeFile(markdownPath, renderMarkdownReport(report));
   testInfo.attachments.push({ name: "area01-shell-capture-evidence-json", path: jsonPath, contentType: "application/json" });
   testInfo.attachments.push({ name: "area01-shell-capture-evidence-md", path: markdownPath, contentType: "text/markdown" });
+}
+
+function buildVisualTruthSummary(captures) {
+  const playerFacingCaptures = captures.filter((captureResult) => captureResult.visual_truth_gate.player_facing_capture);
+  const capturesWithBlockers = captures.filter(
+    (captureResult) => captureResult.visual_truth_gate.blocker_signals.length > 0,
+  );
+  return {
+    automated_gate_passed: capturesWithBlockers.length === 0,
+    player_facing_capture_count: playerFacingCaptures.length,
+    captures_with_blockers: capturesWithBlockers.map((captureResult) => captureResult.id),
+    blocker_signals: capturesWithBlockers.flatMap((captureResult) =>
+      captureResult.visual_truth_gate.blocker_signals.map((signal) => `${captureResult.id}: ${signal}`),
+    ),
+    closeout_rule:
+      "Generated screenshots must be opened or attached before closing Area 01 visual/map issues; passing Playwright state assertions alone is not sufficient.",
+  };
 }
 
 async function buildChangeSignatures() {
@@ -206,9 +289,27 @@ function renderMarkdownReport(report) {
     `Source map: ${report.source_map_revision}`,
     `Source map status: ${report.source_map_status}`,
     "",
-    "## Change Signatures",
+    "## Visual Truth Gate",
+    "",
+    `Automated gate passed: ${report.visual_truth_gate_summary.automated_gate_passed}`,
+    `Player-facing captures: ${report.visual_truth_gate_summary.player_facing_capture_count}`,
+    `Captures with blockers: ${report.visual_truth_gate_summary.captures_with_blockers.join(", ") || "none"}`,
+    `Closeout rule: ${report.visual_truth_gate_summary.closeout_rule}`,
     "",
   ];
+
+  if (report.visual_truth_gate_summary.blocker_signals.length > 0) {
+    lines.push("### Blocker Signals", "");
+    for (const blocker of report.visual_truth_gate_summary.blocker_signals) {
+      lines.push(`- ${blocker}`);
+    }
+    lines.push("");
+  }
+
+  lines.push(
+    "## Change Signatures",
+    "",
+  );
 
   for (const [group, signature] of Object.entries(report.change_signatures)) {
     lines.push(`- ${group}: ${signature.sha256}`);
@@ -224,8 +325,12 @@ function renderMarkdownReport(report) {
       `  - source map: ${captureResult.source_map_revision}`,
       `  - cue families: ${familyCounts}`,
       `  - warnings: ${warnings}`,
+      `  - visual truth gate: ${captureResult.visual_truth_gate.automated_gate_passed ? "passed" : "blockers present"}`,
       `  - artifacts: ${captureResult.artifacts.screenshot}, ${captureResult.artifacts.metadata}`,
     );
+    for (const question of captureResult.visual_truth_gate.required_review_questions) {
+      lines.push(`  - review: ${question}`);
+    }
   }
 
   lines.push("", "## Validation", "");
