@@ -18,6 +18,7 @@ const MainScript := preload("res://scripts/main.gd")
 const Area01SourceMapOverlayScript := preload("res://scripts/area01_source_map_overlay.gd")
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
 const Area01SourceTruthValidatorScript := preload("res://scripts/area01_source_truth_validator.gd")
+const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
@@ -113,6 +114,8 @@ func _initialize() -> void:
 	_run("Area 01 source map contract", _test_area_01_source_map_contract)
 	_run("Area 01 source truth validator", _test_area_01_source_truth_validator)
 	_run("Area 01 source truth validator catches drift", _test_area_01_source_truth_validator_catches_drift)
+	_run("Area 01 visual cue contract registry", _test_area_01_visual_cue_contract_registry)
+	_run("Area 01 visual cue diagnostic report", _test_area_01_visual_cue_diagnostic_report)
 	_run("Area 01 surface oxygen hook runtime", _test_area_01_surface_oxygen_hook_runtime)
 	_run("Area 01 authoritative wall builder", _test_area_01_authoritative_wall_builder)
 	_run("Area 01 source map debug overlay", _test_area_01_source_map_debug_overlay)
@@ -3975,6 +3978,65 @@ func _test_area_01_source_truth_validator_catches_drift() -> void:
 		if error.contains("UnmappedDriftCollision"):
 			caught_unowned_collision = true
 	_expect(caught_unowned_collision, "Area 01 source truth validator should catch enabled collision without source-map ownership")
+	main.free()
+
+func _test_area_01_visual_cue_contract_registry() -> void:
+	var contracts: Dictionary = Area01VisualCueContractScript.contracts()
+	for family_id in Area01VisualCueContractScript.required_family_ids():
+		_expect(contracts.has(family_id), "Area 01 visual cue contract should register %s" % family_id)
+		var contract := contracts.get(family_id, {}) as Dictionary
+		for key in [
+			"z_index_min",
+			"z_index_max",
+			"alpha_min",
+			"alpha_max",
+			"color_family",
+			"label_policy",
+			"brighter_than",
+			"quieter_than",
+		]:
+			_expect(contract.has(key), "Area 01 cue family %s should define %s" % [family_id, key])
+		_expect(float(contract.get("alpha_min", 0.0)) <= float(contract.get("alpha_max", -1.0)), "Area 01 cue family %s should have a valid alpha range" % family_id)
+
+	var terrain_contract := contracts[Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN] as Dictionary
+	var rim_contract := contracts[Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP] as Dictionary
+	var pickup_contract := contracts[Area01VisualCueContractScript.FAMILY_RESOURCE_PICKUP] as Dictionary
+	_expect(float(terrain_contract.get("alpha_min", 0.0)) > float(rim_contract.get("alpha_min", 1.0)), "solid terrain should be visually stronger than rim/lip support")
+	_expect(float(pickup_contract.get("alpha_min", 0.0)) > float(rim_contract.get("alpha_min", 1.0)), "resource pickups should stay brighter than rim/lip support")
+
+func _test_area_01_visual_cue_diagnostic_report() -> void:
+	var main := MainScene.instantiate()
+	var builder := Area01BlockoutBuilderScript.new()
+	_expect(builder.build(main), "Area 01 runtime source map should build before visual cue diagnostics: %s" % builder.last_error)
+	var report: Dictionary = Area01VisualCueContractScript.debug_report(main, Rect2(Vector2(-900.0, 0.0), Vector2(5500.0, 2600.0)))
+	var families: Dictionary = report.get("families", {})
+	_expect(int(families.get(Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, 0)) >= 13, "Area 01 cue report should count generated solid terrain nodes")
+	_expect(int(families.get(Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, 0)) >= 13, "Area 01 cue report should count generated terrain rim/lip nodes")
+	_expect(int(families.get(Area01VisualCueContractScript.FAMILY_PASSIVE_BACKGROUND, 0)) >= 1, "Area 01 cue report should count tagged passive background support")
+
+	var cue_parent := Node2D.new()
+	main.add_child(cue_parent)
+	for index in range(7):
+		var bright_cue := Polygon2D.new()
+		bright_cue.name = "BrightReturnCurrentFixture%d" % index
+		bright_cue.polygon = PackedVector2Array([
+			Vector2(0.0, 0.0),
+			Vector2(12.0, 0.0),
+			Vector2(12.0, 12.0),
+			Vector2(0.0, 12.0),
+		])
+		bright_cue.position = Vector2(120.0 + float(index * 18), 120.0)
+		bright_cue.color = Color(0.2, 1.0, 0.7, 0.8)
+		Area01VisualCueContractScript.tag_node(bright_cue, Area01VisualCueContractScript.FAMILY_RETURN_CURRENT, "fixture_%d" % index)
+		cue_parent.add_child(bright_cue)
+
+	var warning_report: Dictionary = Area01VisualCueContractScript.debug_report(main, Rect2(Vector2(0.0, 0.0), Vector2(400.0, 300.0)))
+	var warnings: Array = warning_report.get("warnings", [])
+	var caught_bright_cluster := false
+	for warning in warnings:
+		if String(warning).contains(Area01VisualCueContractScript.FAMILY_RETURN_CURRENT):
+			caught_bright_cluster = true
+	_expect(caught_bright_cluster, "Area 01 cue report should flag too many bright return-current cues in one review region")
 	main.free()
 
 func _test_area_01_surface_oxygen_hook_runtime() -> void:

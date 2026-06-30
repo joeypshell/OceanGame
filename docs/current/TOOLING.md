@@ -117,6 +117,12 @@ Run it directly from the repository root when changing Area 01 terrain, collisio
 
 It is also part of the `quick` and `full` test tiers. Keep using the Node source-map validators for static JSON and authored placement checks; this Godot validator covers the instantiated runtime scene after the blockout builder runs.
 
+## Area 01 Visual Cue Contract
+
+Area 01 visual cue budgets are centralized in `scripts/area01_visual_cue_contract.gd`. The registry names the cue family, intended z-index band, alpha range, color family, label policy, and relative brightness rules for solid terrain, terrain rims/lips, passive atmosphere, return currents, timing/hazard support, resource pickups, knowledge payoffs, locked/future promises, active prompt/status labels, and debug/source-map overlays.
+
+Generated source-map terrain and hooks are tagged with cue-family metadata by `Area01BlockoutBuilder`. Tests can call `Area01VisualCueContract.debug_report(root, camera_region)` to count visible nodes by cue family and warn when a review region has too many bright support cues competing for attention. This report is metadata-based; it does not replace screenshots or image analysis for final visual judgment.
+
 ## MCP Context Server
 
 The first MCP slice is agent workflow support: a small repo-local context server exposes OceanGame source-of-truth docs as MCP resources. It does not control the Godot editor, mutate files, require secrets, or replace the GitHub issue workflow.

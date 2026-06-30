@@ -1,6 +1,7 @@
 class_name Area01BlockoutBuilder
 extends RefCounted
 
+const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
 const RUNTIME_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_runtime_source_map_v2.json"
 const LEGACY_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_blockout_source_map_v1.json"
 const SOURCE_MAP_PATH := RUNTIME_SOURCE_MAP_PATH
@@ -20,8 +21,8 @@ const VERTICAL_MIDDLE_TEXTURE := preload("res://assets/exports/sprites/environme
 const VERTICAL_BOTTOM_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v4_frames/area01_terrain_kit_v4-11.png")
 const DIAGONAL_SLOPE_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v4_frames/area01_terrain_kit_v4-12.png")
 const DEEP_FLOOR_LIP_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_seafloor_terrain_kit_v4_frames/area01_terrain_kit_v4-16.png")
-const SOLID_COLOR := Color(0.42, 0.72, 0.68, 1.0)
-const LIP_COLOR := Color(0.46, 0.82, 0.76, 0.04)
+const SOLID_COLOR := Area01VisualCueContractScript.SOLID_TERRAIN_COLOR
+const LIP_COLOR := Area01VisualCueContractScript.TERRAIN_RIM_COLOR
 const TOP_EDGE_COLOR := Color(0.66, 0.94, 0.82, 0.10)
 const SIDE_EDGE_COLOR := Color(0.06, 0.18, 0.20, 0.08)
 const UNDER_EDGE_COLOR := Color(0.0, 0.012, 0.02, 0.18)
@@ -239,12 +240,14 @@ func _create_generated_solid(terrain_layer: Node2D, collision_root: StaticBody2D
 	visible.texture = REEF_WALL_FILL_TEXTURE
 	visible.visible = true
 	visible.color = SOLID_COLOR
+	Area01VisualCueContractScript.tag_node(visible, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, terrain_id)
 	terrain_layer.add_child(visible)
 
 	var collision := CollisionPolygon2D.new()
 	collision.name = collision_name
 	collision.polygon = points
 	collision.disabled = not bool(terrain.get("blocks_player", true))
+	Area01VisualCueContractScript.tag_node(collision, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, terrain_id)
 	collision_root.add_child(collision)
 
 	var rim := Polygon2D.new()
@@ -252,6 +255,7 @@ func _create_generated_solid(terrain_layer: Node2D, collision_root: StaticBody2D
 	rim.polygon = points
 	rim.visible = true
 	rim.color = LIP_COLOR
+	Area01VisualCueContractScript.tag_node(rim, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, terrain_id)
 	rim_layer.add_child(rim)
 	return true
 
@@ -281,6 +285,7 @@ func _create_generated_hooks(scene_root: Node, source_map: Dictionary) -> void:
 		area.collision_mask = 0
 		area.set_meta(&"area01_hook_id", hook_id)
 		area.set_meta(&"area01_hook_type", String(hook_data.get("type", "")))
+		Area01VisualCueContractScript.tag_node(area, _cue_family_for_hook_type(String(hook_data.get("type", ""))), hook_id)
 		hook_parent.add_child(area)
 
 		var collision := CollisionPolygon2D.new()
@@ -318,11 +323,14 @@ func _apply_solid_terrain(scene_root: Node, terrain: Dictionary) -> bool:
 	visible.texture = REEF_WALL_FILL_TEXTURE
 	visible.visible = true
 	visible.color = SOLID_COLOR
+	Area01VisualCueContractScript.tag_node(visible, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, terrain_id)
 	collision.polygon = points
 	collision.disabled = false
+	Area01VisualCueContractScript.tag_node(collision, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, terrain_id)
 	lip.polygon = points
 	lip.visible = true
 	lip.color = LIP_COLOR
+	Area01VisualCueContractScript.tag_node(lip, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, terrain_id)
 	return true
 
 func _apply_terrain_accents(scene_root: Node, terrain: Dictionary) -> void:
@@ -342,6 +350,7 @@ func _apply_terrain_accents(scene_root: Node, terrain: Dictionary) -> void:
 	var group := Node2D.new()
 	group.name = "%sTerrainAccents" % _pascal_case_id(terrain_id)
 	group.z_index = 4
+	Area01VisualCueContractScript.tag_node(group, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, terrain_id)
 	accent_layer.add_child(group)
 
 	_add_continuous_wall_planes(group, points, bounds)
@@ -374,6 +383,26 @@ func _set_canvas_item_alpha(scene_root: Node, path: String, alpha: float) -> voi
 	var node := scene_root.get_node_or_null(path) as CanvasItem
 	if node != null:
 		node.modulate.a = alpha
+		Area01VisualCueContractScript.tag_node(node, Area01VisualCueContractScript.FAMILY_PASSIVE_BACKGROUND, path)
+
+func _cue_family_for_hook_type(hook_type: String) -> String:
+	match hook_type:
+		"oxygen", "offload":
+			return Area01VisualCueContractScript.FAMILY_ACTIVE_PROMPT_STATUS
+		"return_current":
+			return Area01VisualCueContractScript.FAMILY_RETURN_CURRENT
+		"hazard":
+			return Area01VisualCueContractScript.FAMILY_TIMING_HAZARD_SUPPORT
+		"pickup":
+			return Area01VisualCueContractScript.FAMILY_RESOURCE_PICKUP
+		"scan":
+			return Area01VisualCueContractScript.FAMILY_KNOWLEDGE_PAYOFF
+		"gate":
+			return Area01VisualCueContractScript.FAMILY_LOCKED_PROMISE
+		"cave_entrance":
+			return Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP
+		_:
+			return Area01VisualCueContractScript.FAMILY_DEBUG_SOURCE_MAP_OVERLAY
 
 func _texture_uv_for_points(points: PackedVector2Array, bounds: Rect2) -> PackedVector2Array:
 	var uvs := PackedVector2Array()
