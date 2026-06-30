@@ -16,7 +16,7 @@ import {
 } from "./visual-helpers.mjs";
 
 const manifestUrl = new URL("./area01-capture-manifest.json", import.meta.url);
-const sourceMapUrl = new URL("../../docs/planning/maps/area_01_runtime_source_map_v2.json", import.meta.url);
+const sourceMapUrl = new URL("../../docs/planning/maps/area_01_runtime_source_map_v3.json", import.meta.url);
 const repoRoot = fileURLToPath(new URL("../../", import.meta.url));
 
 const stageHelpers = {
@@ -133,7 +133,7 @@ async function writeEvidenceReport(testInfo, manifest, sourceMap, captures) {
 
 async function buildChangeSignatures() {
   return {
-    source_map: await hashGroup([new URL("../../docs/planning/maps/area_01_runtime_source_map_v2.json", import.meta.url)]),
+    source_map: await hashGroup([new URL("../../docs/planning/maps/area_01_runtime_source_map_v3.json", import.meta.url)]),
     scene_runtime: await hashGroup([
       new URL("../../scenes/Main.tscn", import.meta.url),
       new URL("../../scripts/main.gd", import.meta.url),

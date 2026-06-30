@@ -313,7 +313,7 @@
     {
       "id": "shell_reef_decor",
       "asset_family": "shell_reef_cluster",
-      "position": [1120, 1030],
+      "position": [1240, 960],
       "rotation_degrees": 0,
       "scale": [1, 1],
       "z_index": 3,
@@ -358,7 +358,7 @@
     {
       "id": "future_locked_gate_sprite",
       "asset_family": "future_locked_gate",
-      "position": [4260, 2160],
+      "position": [4260, 1920],
       "rotation_degrees": 0,
       "scale": [1, 1],
       "z_index": 6,
@@ -371,7 +371,7 @@
       "type": "oxygen",
       "region_id": "open_surface_water",
       "shape": "polygon",
-      "points": [[-900, 0], [4600, 0], [4600, 220], [-900, 220]],
+      "points": [[-900, 0], [4600, 0], [4600, 320], [-900, 320]],
       "owner": "future oxygen/surface system",
       "status": "planned"
     },
@@ -416,7 +416,7 @@
       "type": "return_current",
       "region_id": "blue_chimney_route",
       "shape": "polygon",
-      "points": [[1260, 1560], [1780, 1480], [1900, 1640], [1340, 1780]],
+      "points": [[1120, 1660], [1500, 1700], [1500, 1900], [1120, 1880]],
       "owner": "future visual return-current Area2D",
       "status": "planned"
     },
@@ -434,7 +434,7 @@
       "type": "gate",
       "region_id": "future_deep_exit",
       "shape": "polygon",
-      "points": [[4160, 2020], [4380, 2020], [4380, 2320], [4160, 2320]],
+      "points": [[4160, 1800], [4380, 1800], [4380, 2020], [4160, 2020]],
       "owner": "future locked exit Area2D/interactable",
       "status": "future_locked"
     },
@@ -452,7 +452,7 @@
       "type": "pickup",
       "region_id": "shell_reef_bank_cave",
       "shape": "polygon",
-      "points": [[940, 980], [1460, 980], [1460, 1240], [940, 1240]],
+      "points": [[1180, 820], [1560, 820], [1560, 980], [1180, 980]],
       "owner": "future authored spawn candidates",
       "status": "planned"
     },

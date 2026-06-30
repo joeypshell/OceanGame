@@ -10,7 +10,7 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
 
 
 ROOT = Path(__file__).resolve().parents[1]
-GEOMETRY_PATH = ROOT / "docs/planning/maps/area_01_runtime_source_map_v2.json"
+GEOMETRY_PATH = ROOT / "docs/planning/maps/area_01_runtime_source_map_v3.json"
 KIT_MANIFEST_PATH = ROOT / "docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json"
 OUTPUT_PATH = ROOT / "docs/planning/maps/area_01_surface_floor_sprite_kit_v4_preview_v1.png"
 CROP_PATH = ROOT / "docs/planning/maps/area_01_surface_floor_sprite_kit_v4_camera_crop_v1.png"
@@ -420,7 +420,7 @@ def main() -> None:
         "runtime_policy": {
             "wire_status": "wired through Area01BlockoutBuilder",
             "sprites_define_collision": False,
-            "collision_source": "area_01_runtime_source_map_v2.json active geometry/collision authority; area_01_blockout_source_map_v1.json remains only as a fallback load path"
+            "collision_source": "area_01_runtime_source_map_v3.json active geometry/collision authority; area_01_blockout_source_map_v1.json remains only as a fallback load path"
         },
         "render_policy": {
             "terrain_fill": "reef_wall_fill_material clipped to each source-map terrain polygon",

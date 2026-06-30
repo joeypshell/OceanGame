@@ -111,7 +111,7 @@ Set `OCEANGAME_TEST_VERBOSE=1` before running a tier when you need the full unde
 
 ## Area 01 Source Truth Validation
 
-Area 01 has a dedicated Godot-side source-truth validator for runtime terrain/collision/rim drift. It loads `docs/planning/maps/area_01_runtime_source_map_v2.json`, builds the same runtime terrain used by `Main.tscn`, and fails if generated visible terrain, `CollisionPolygon2D` blockers, rim/lip polygons, or source-owned `Area2D` hooks no longer match the source-map IDs and polygons.
+Area 01 has a dedicated Godot-side source-truth validator for runtime terrain/collision/rim drift. It loads `docs/planning/maps/area_01_runtime_source_map_v3.json`, builds the same runtime terrain used by `Main.tscn`, and fails if generated visible terrain, `CollisionPolygon2D` blockers, rim/lip polygons, or source-owned `Area2D` hooks no longer match the source-map IDs and polygons.
 
 Run it directly from the repository root when changing Area 01 terrain, collision, cave entrances, resource/scan hooks, or source-map ownership:
 

@@ -7,7 +7,7 @@ const sourceMapPath = path.join(
   "docs",
   "planning",
   "maps",
-  "area_01_runtime_source_map_v2.json",
+  "area_01_runtime_source_map_v3.json",
 );
 const scenePath = path.join(repoRoot, "scenes", "Main.tscn");
 
@@ -217,7 +217,7 @@ const sourceMap = JSON.parse(fs.readFileSync(sourceMapPath, "utf8"));
 const sceneText = fs.readFileSync(scenePath, "utf8");
 const solids = sourceMap.solid_terrain.filter((solid) => solid.blocks_player !== false);
 
-if (sourceMap.map_id !== "area_01_runtime_source_map_v2") {
+if (sourceMap.map_id !== "area_01_runtime_source_map_v3") {
   fail(`unexpected map_id ${sourceMap.map_id}`);
 }
 

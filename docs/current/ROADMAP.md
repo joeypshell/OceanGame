@@ -96,7 +96,7 @@ Primary planning docs:
 - Labels should be sparse and reserved for compact place names or honest locked/open states.
 - Active HUD copy must use reserved stats/prompt/status rows; long commands or feedback should clip or be shortened instead of wrapping into neighboring text.
 - Area 01 collision boundaries must be readable as terrain lips/rims before contact; do not leave invisible or random-feeling blockers in normal play.
-- Area 01 collision, terrain, pockets, and scannables must map to `docs/planning/maps/area_01_blockout_source_map_v1.json`, or the source map must be updated before the scene changes.
+- Area 01 collision, terrain, pockets, scannables, and route hooks must map to `docs/planning/maps/area_01_runtime_source_map_v3.json`, or the runtime source map must be updated before the scene changes.
 - During Area 01 wall rescue, do not hand-place separate wall visuals, collision, or lips; they must be generated from the same source-map polygon.
 - Passive creature scan targets need visible silhouettes or outlines at normal play scale; scan labels should confirm the target, not be the only way to perceive it.
 - Do not spend another batch polishing a tiny room if the level bones still do not support wider exploration. Block out readable map scale first, then decorate.

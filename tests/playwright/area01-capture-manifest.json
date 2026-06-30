@@ -1,7 +1,7 @@
 {
   "manifest_id": "area01_readability_capture_manifest_v1",
-  "source_map_revision": "area_01_runtime_source_map_v2",
-  "source_map_path": "docs/planning/maps/area_01_runtime_source_map_v2.json",
+  "source_map_revision": "area_01_runtime_source_map_v3",
+  "source_map_path": "docs/planning/maps/area_01_runtime_source_map_v3.json",
   "route_area_label_policy": "Use source-map area IDs and cue-family labels in developer evidence; player-facing captures should avoid exact route locators.",
   "captures": [
     {

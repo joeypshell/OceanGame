@@ -2,9 +2,9 @@
 
 ## Decision
 
-Area 01 now has a candidate `side_scroll_mode` Godot map pipeline bundle for the open-surface-over-continuous-seafloor direction.
+Area 01 now has a promoted `side_scroll_mode` Godot map pipeline bundle for the open-surface-over-continuous-seafloor direction.
 
-This pass creates editable source data and a standalone Godot preview scene. It does not wire the new map into `scenes/Main.tscn`, replace the current runtime collision authority, or use a baked map image as a runtime level.
+The editable source data remains separate from the reference PNG. Runtime v3 wires the map into the Area 01 builder through explicit terrain polygons, collision polygons, trim metadata, and scene hooks; it does not use a baked map image as a runtime level.
 
 ## Pipeline Axes
 
@@ -18,6 +18,8 @@ This pass creates editable source data and a standalone Godot preview scene. It 
 
 - Geometry source: `docs/planning/maps/area_01_surface_floor_geometry_v1.json`
 - Object-layer companion: `data/maps/area_01_surface_floor_objects_v1.json`
+- Runtime authority: `docs/planning/maps/area_01_runtime_source_map_v3.json`
+- Runtime generator: `tools/create_area01_runtime_source_map_v3.py`
 - Godot preview scene: `scenes/maps/Area01SurfaceFloorPipelinePreview.tscn`
 - Preview builder script: `scripts/area01_surface_floor_pipeline_preview.gd`
 - PNG preview renderer: `tools/render_area01_surface_floor_pipeline_preview.py`
@@ -26,9 +28,9 @@ This pass creates editable source data and a standalone Godot preview scene. It 
 
 ## Runtime Status
 
-`docs/planning/maps/area_01_blockout_source_map_v1.json` remains the current runtime wall/collision authority.
+`docs/planning/maps/area_01_runtime_source_map_v3.json` is the current runtime wall/collision authority.
 
-`area_01_surface_floor_geometry_v1.json` is a candidate source-map contract. It should be reviewed and iterated before promotion. Promotion should be explicit and should update `docs/current/GAMEPLAY.md`, `docs/current/ARCHITECTURE.md`, and the affected runtime scene/scripts in the same implementation pass.
+`area_01_surface_floor_geometry_v1.json` remains the editable Godot-coordinate source geometry that feeds runtime v3. `docs/planning/maps/area_01_blockout_source_map_v1.json` is historical/fallback context only.
 
 ## Representation
 
@@ -48,4 +50,4 @@ This pass creates editable source data and a standalone Godot preview scene. It 
 
 ## Next Step
 
-Open `scenes/maps/Area01SurfaceFloorPipelinePreview.tscn` in Godot and review the generated geometry at normal camera scale. If the topology is accepted, the next implementation pass should create or update a builder that consumes `area_01_surface_floor_geometry_v1.json` into the actual Area 01 scene while preserving existing gameplay ownership.
+Review runtime v3 through the source-truth validators and Area 01 capture states. Any terrain, cave-mouth, gate, pickup, scan, or return-current move should update `area_01_surface_floor_geometry_v1.json`, regenerate `area_01_runtime_source_map_v3.json`, and rerun the validators.

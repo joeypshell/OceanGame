@@ -31,13 +31,13 @@ This layout supports the daylight multi-dive loop:
 
 ## Collision Rule
 
-Do not infer collision from the generated PNG. When this map is promoted to runtime, the seafloor and cave boundaries must be converted into explicit source-map polygons with matching visible terrain, rim/lip art, and `CollisionPolygon2D` shapes.
+Do not infer collision from the generated PNG. The promoted runtime source is `docs/planning/maps/area_01_runtime_source_map_v3.json`, generated from the surface-floor source and Godot-coordinate geometry. The seafloor and cave boundaries are explicit source-map polygons with matching visible terrain, rim/lip art, and `CollisionPolygon2D` shapes.
 
-Until that conversion happens, `docs/planning/maps/area_01_blockout_source_map_v1.json` remains the current runtime collision authority.
+`docs/planning/maps/area_01_blockout_source_map_v1.json` is historical/fallback context only. It no longer owns current runtime collision truth.
 
 ## Non-Goals
 
 - No player-facing minimap.
 - No exact route checklist.
 - No final terrain art pass.
-- No runtime scene changes in this document pass.
+- No collision inferred from generated image pixels.

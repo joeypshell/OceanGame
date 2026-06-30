@@ -3787,7 +3787,7 @@ func _test_area_01_first_art_slice_scene_contract() -> void:
 	main.free()
 
 func _test_area_01_source_map_contract() -> void:
-	var file := FileAccess.open("res://docs/planning/maps/area_01_runtime_source_map_v2.json", FileAccess.READ)
+	var file := FileAccess.open("res://docs/planning/maps/area_01_runtime_source_map_v3.json", FileAccess.READ)
 	_expect(file != null, "Area 01 source map JSON should exist")
 	if file == null:
 		return
@@ -3798,7 +3798,7 @@ func _test_area_01_source_map_contract() -> void:
 		return
 
 	var source_map := parsed as Dictionary
-	_expect(String(source_map.get("status", "")) == "active_runtime_geometry_collision_authority_with_visual_watchlist", "Area 01 runtime source map should be marked as the active geometry/collision authority")
+	_expect(String(source_map.get("status", "")) == "active_runtime_surface_floor_geometry_collision_authority", "Area 01 runtime source map should be marked as the active surface-floor geometry/collision authority")
 	var required_keys := [
 		"schema_version",
 		"coordinate_space",
@@ -3824,8 +3824,8 @@ func _test_area_01_source_map_contract() -> void:
 	var runtime_contract: Dictionary = source_map.get("runtime_generation_contract", {})
 	var terrain_kit: Dictionary = source_map.get("terrain_kit", {})
 	var runtime_authority := String(coordinate_space.get("runtime_authority", "")).to_lower()
-	_expect(runtime_authority.contains("current area 01 geometry/collision authority"), "Area 01 source map should identify runtime v2 as the current authority")
-	_expect(not runtime_authority.contains("planning-only"), "Area 01 source map should not still describe runtime v2 as planning-only")
+	_expect(runtime_authority.contains("current area 01 geometry/collision authority"), "Area 01 source map should identify runtime v3 as the current authority")
+	_expect(not runtime_authority.contains("planning-only"), "Area 01 source map should not still describe runtime v3 as planning-only")
 	_expect(String(pipeline.get("map_mode", "")) == "side_scroll_mode", "Area 01 source map should declare the side-scroll map mode")
 	_expect(String(pipeline.get("collision_model", "")).contains("precise_shapes"), "Area 01 source map should declare precise collision shapes")
 	_expect(String(pipeline.get("runtime_object_model", "")).contains("platform_objects"), "Area 01 source map should separate platform/runtime objects from background art")
@@ -3860,7 +3860,10 @@ func _test_area_01_source_map_contract() -> void:
 		"background_shape_must_not_block_player",
 		"foreground_terrain_uses_chunk_library",
 		"cave_mouths_are_affordances_not_locators",
-		"promoted_runtime_v2_single_source",
+		"promoted_runtime_v3_surface_floor_single_source",
+		"open_surface_must_span_stage",
+		"ship_offload_is_not_surface_oxygen",
+		"placements_must_not_overlap_solid_terrain",
 		"do_not_bake_preview_png",
 	]:
 		_expect(rule_ids.has(id), "Area 01 source map should include validation rule %s" % id)
@@ -4097,7 +4100,7 @@ func _test_area_01_source_map_debug_overlay() -> void:
 	var summary := overlay.source_map_summary()
 	_expect(int(summary.get("solids", 0)) >= 13, "Area 01 source-map overlay should expose solid terrain count")
 	_expect(int(summary.get("hooks", 0)) >= 12, "Area 01 source-map overlay should expose hook count")
-	_expect(String(summary.get("map_id", "")) == "area_01_runtime_source_map_v2", "Area 01 source-map overlay should expose current map revision")
+	_expect(String(summary.get("map_id", "")) == "area_01_runtime_source_map_v3", "Area 01 source-map overlay should expose current map revision")
 	overlay.capture_state = "area01-central-drop"
 	overlay.camera_state = "pos 640,420 zoom 0.60"
 	_expect(overlay.capture_state.contains("area01"), "Area 01 source-map overlay should carry capture state for screenshots")
@@ -4174,11 +4177,11 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	var legacy_collision_root := main.get_node("Area01ArtSlice/TerrainCollision") as StaticBody2D
 	for child in legacy_collision_root.get_children():
 		if child is CollisionPolygon2D:
-			_expect((child as CollisionPolygon2D).disabled, "legacy Area 01 blockout collision should be disabled after runtime-v2 builder promotion: %s" % child.name)
+			_expect((child as CollisionPolygon2D).disabled, "legacy Area 01 blockout collision should be disabled after runtime-v3 builder promotion: %s" % child.name)
 	var legacy_terrain_root := main.get_node("Area01ArtSlice/TerrainBackWalls") as Node2D
 	for child in legacy_terrain_root.get_children():
 		if child is Polygon2D:
-			_expect(not (child as Polygon2D).visible, "legacy Area 01 blockout terrain should be hidden behind runtime-v2 source terrain: %s" % child.name)
+			_expect(not (child as Polygon2D).visible, "legacy Area 01 blockout terrain should be hidden behind runtime-v3 source terrain: %s" % child.name)
 
 	for open_point in [
 		Vector2(560.0, 620.0),
@@ -4319,7 +4322,7 @@ func _node_tree_contains_collision(node: Node) -> bool:
 	return false
 
 func _load_area01_source_map_for_tests() -> Dictionary:
-	var file := FileAccess.open("res://docs/planning/maps/area_01_runtime_source_map_v2.json", FileAccess.READ)
+	var file := FileAccess.open("res://docs/planning/maps/area_01_runtime_source_map_v3.json", FileAccess.READ)
 	if file == null:
 		return {}
 	var parsed = JSON.parse_string(file.get_as_text())

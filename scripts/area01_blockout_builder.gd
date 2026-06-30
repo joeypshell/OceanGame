@@ -2,7 +2,7 @@ class_name Area01BlockoutBuilder
 extends RefCounted
 
 const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
-const RUNTIME_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_runtime_source_map_v2.json"
+const RUNTIME_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_runtime_source_map_v3.json"
 const LEGACY_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_blockout_source_map_v1.json"
 const SOURCE_MAP_PATH := RUNTIME_SOURCE_MAP_PATH
 const REEF_WALL_FILL_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_fill_texture_v2.png")

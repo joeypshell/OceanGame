@@ -1,7 +1,7 @@
 class_name Area01SourceTruthValidator
 extends RefCounted
 
-const SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_runtime_source_map_v2.json"
+const SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_runtime_source_map_v3.json"
 const TERRAIN_LAYER_PATH := "Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain"
 const COLLISION_ROOT_PATH := "Area01ArtSlice/RuntimeSourceCollision"
 const LEGACY_COLLISION_ROOT_PATH := "Area01ArtSlice/TerrainCollision"
@@ -44,7 +44,7 @@ func _validate_source_map_data(map: Dictionary) -> void:
 		_add_error("source map is empty")
 		return
 
-	_expect(String(map.get("map_id", "")) == "area_01_runtime_source_map_v2", "source map must be the active runtime v2 map")
+	_expect(String(map.get("map_id", "")) == "area_01_runtime_source_map_v3", "source map must be the active runtime v3 map")
 	var terrain_entries := _array_value(map, "solid_terrain")
 	var scene_hooks := _array_value(map, "scene_hooks")
 	var cave_mouths := _array_value(map, "cave_mouths")

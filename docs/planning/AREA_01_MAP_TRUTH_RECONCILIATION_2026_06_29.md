@@ -6,7 +6,7 @@ The v4 terrain-kit/source-floor direction is accepted as the direction to reconc
 
 This does not mean the v4 preview image is runtime art. It means the next runtime map should be derived from `area_01_surface_floor_geometry_v1.json` plus `area_01_terrain_art_kit_v4_manifest.json`, not from ad hoc wall placement.
 
-2026-06-30 update: the runtime v2 builder pass has landed. Current Area 01 geometry and collision now come from `docs/planning/maps/area_01_runtime_source_map_v2.json`; `docs/planning/maps/area_01_blockout_source_map_v1.json` remains only as a fallback load path and validation-rule source.
+2026-06-30 update: the runtime v3 surface-floor promotion has landed. Current Area 01 geometry and collision now come from `docs/planning/maps/area_01_runtime_source_map_v3.json`; `docs/planning/maps/area_01_blockout_source_map_v1.json` is historical/fallback context only.
 
 ## Step 2 Comparison
 
@@ -48,7 +48,7 @@ The important mismatch is conceptual, not just coordinate drift:
 - The blockout uses resource pockets and affordances.
 - The accepted map uses explicit `scene_hooks`.
 - The blockout has current scene-node paths.
-- The accepted map has no runtime node paths yet because it is still planning geometry.
+- The accepted map now feeds runtime v3 through generated runtime metadata rather than direct hand-authored scene-node paths.
 
 ## Reconciliation Rule
 
@@ -56,7 +56,7 @@ Do not force the accepted source-floor geometry to match the old blockout polygo
 
 Instead, promote a new source-of-truth artifact:
 
-- `docs/planning/maps/area_01_runtime_source_map_v2.json`
+- `docs/planning/maps/area_01_runtime_source_map_v3.json`
 
 That artifact should merge:
 
@@ -75,11 +75,11 @@ That artifact should merge:
 
 ## Next Implementation Step
 
-`area_01_runtime_source_map_v2.json` now exists as the single promoted Area 01 runtime-source candidate.
+`area_01_runtime_source_map_v3.json` now exists as the single promoted Area 01 runtime source.
 
 Supporting generator:
 
-- `tools/create_area01_runtime_source_map_v2.py`
+- `tools/create_area01_runtime_source_map_v3.py`
 
 After that file exists and validates, the Godot implementation pass should generate or update:
 

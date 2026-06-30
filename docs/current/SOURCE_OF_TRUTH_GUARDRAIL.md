@@ -8,7 +8,7 @@ Use this checklist before closing issues that change milestone direction, Area 0
 - `docs/current/GAMEPLAY.md` owns implemented behavior. Planning direction can appear only when clearly labeled as planning; do not describe unimplemented systems as current runtime behavior.
 - `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md` owns the current Subnautica-like day/night planning reset.
 - `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md` owns daylight multi-dive loop details until implementation replaces them in current docs.
-- `docs/planning/maps/area_01_runtime_source_map_v2.json` owns current Area 01 runtime geometry/collision source truth.
+- `docs/planning/maps/area_01_runtime_source_map_v3.json` owns current Area 01 runtime geometry/collision source truth.
 - `tests/playwright/area01-capture-manifest.json` owns deterministic Area 01 shell capture states.
 
 ## Issue Closing Checklist

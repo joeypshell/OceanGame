@@ -7,7 +7,7 @@ const sourceMapPath = path.join(
   "docs",
   "planning",
   "maps",
-  "area_01_runtime_source_map_v2.json",
+  "area_01_runtime_source_map_v3.json",
 );
 
 const allowedTrimTypes = new Set([
@@ -125,11 +125,11 @@ function trimLength(segment) {
 const sourceMap = JSON.parse(fs.readFileSync(sourceMapPath, "utf8"));
 assertArray(sourceMap.solid_terrain, "solid_terrain must be an array");
 
-if (sourceMap.map_id !== "area_01_runtime_source_map_v2") {
+if (sourceMap.map_id !== "area_01_runtime_source_map_v3") {
   fail(`unexpected map_id ${sourceMap.map_id}`);
 }
 
-if (sourceMap.status !== "active_runtime_geometry_collision_authority_with_visual_watchlist") {
+if (sourceMap.status !== "active_runtime_surface_floor_geometry_collision_authority") {
   fail(`unexpected status ${sourceMap.status}`);
 }
 
@@ -140,7 +140,7 @@ if (
   runtimeAuthority.includes("planning-only") ||
   !runtimeAuthority.includes("current area 01 geometry/collision authority")
 ) {
-  fail("coordinate_space.runtime_authority must identify runtime v2 as the current Area 01 authority");
+  fail("coordinate_space.runtime_authority must identify runtime v3 as the current Area 01 authority");
 }
 
 const terrainIds = new Set();
@@ -239,7 +239,7 @@ if (!surfaceHook || surfaceHook.type !== "oxygen") {
   fail("surface_oxygen_refill_zone oxygen hook is required");
 }
 const surfaceBounds = polygonBounds(surfaceHook.points);
-if (surfaceBounds.minX > -850 || surfaceBounds.maxX < 4500 || surfaceBounds.maxY < 300) {
+if (surfaceBounds.minX > -850 || surfaceBounds.maxX < 4500 || surfaceBounds.maxY < 320) {
   fail("surface oxygen hook must keep the full top water surface open");
 }
 
@@ -279,6 +279,33 @@ for (const caveMouth of sourceMap.cave_mouths) {
   for (const terrain of terrainPolygons) {
     if (pointInPolygon(center, terrain.polygon)) {
       fail(`${caveId} entrance center is blocked by ${terrain.id}`);
+    }
+  }
+}
+
+for (const hook of sourceMap.scene_hooks) {
+  const center = polygonCenter(hook.points);
+  for (const terrain of terrainPolygons) {
+    if (pointInPolygon(center, terrain.polygon)) {
+      fail(`${hook.id} ${hook.type} hook center is blocked by ${terrain.id}`);
+    }
+  }
+}
+
+for (const placement of sourceMap.sprite_placements ?? []) {
+  if (!placement || typeof placement !== "object") {
+    fail("sprite_placements entries must be objects");
+  }
+  if (!isPoint(placement.position)) {
+    fail(`${placement.id ?? "unknown sprite"} must include a numeric position`);
+  }
+
+  const collisionRole = String(placement.collision_role ?? "none");
+  if (collisionRole === "none" || collisionRole === "decorative") {
+    for (const terrain of terrainPolygons) {
+      if (pointInPolygon(placement.position, terrain.polygon)) {
+        fail(`${placement.id} sprite placement overlaps solid terrain ${terrain.id}`);
+      }
     }
   }
 }
