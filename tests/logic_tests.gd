@@ -6478,6 +6478,13 @@ func _test_mobile_touch_controls_adapter() -> void:
 		_expect(next_button != null and next_button.text == "NEXT", "touch Next button should map to restart_dive")
 		_expect(controls.get_node_or_null("TouchControlsRoot/MovePad") != null, "touch controls should include a visible movement pad")
 		_expect(controls.get_node_or_null("TouchControlsRoot/MoveKnob") != null, "touch controls should include a visible movement knob")
+		var requested_actions: Array[StringName] = []
+		controls.connect("action_requested", func(action: StringName) -> void:
+			requested_actions.append(action)
+		)
+		scan_button.emit_signal("button_down")
+		use_button.emit_signal("button_down")
+		_expect(requested_actions == [&"scan", &"interact"], "touch action buttons should emit direct semantic gameplay requests")
 	controls.free()
 
 func _control_rect(control: Control) -> Rect2:

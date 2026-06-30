@@ -576,7 +576,19 @@ func _ensure_mobile_touch_controls() -> void:
 		return
 	mobile_touch_controls = MobileTouchControlsScript.new()
 	mobile_touch_controls.name = "MobileTouchControls"
+	mobile_touch_controls.connect("action_requested", Callable(self, "_on_mobile_touch_action_requested"))
 	add_child(mobile_touch_controls)
+
+func _on_mobile_touch_action_requested(action: StringName) -> void:
+	match action:
+		&"interact":
+			_handle_interact_action()
+		&"restart_dive":
+			_restart_dive()
+		&"burst_thruster":
+			_try_burst_thruster()
+		&"scan":
+			_try_scan()
 
 func _process(delta: float) -> void:
 	_consume_visual_smoke_command()
@@ -622,18 +634,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F10:
 		_toggle_area01_source_map_overlay()
 	elif Input.is_action_just_pressed("interact"):
-		if dive_session.result == DiveSessionScript.Result.READY:
-			_start_dive()
-		elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
-			if surface_tab_index == SURFACE_TAB_UPGRADES:
-				_try_purchase_selected_upgrade()
-			else:
-				surface_tab_index = SURFACE_TAB_UPGRADES
-				status_label.text = "Surface view: upgrades."
-				_update_hud()
-		else:
-			if not _try_survival_supply_cache_interaction() and not _try_outer_shelf_survey_interaction() and not _try_rim_glass_reading_interaction() and not _try_tideglass_sample_interaction() and not _try_salvage_manifest_interaction() and not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
-				_try_extract()
+		_handle_interact_action()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
 		_cycle_surface_tab(-1)
 	elif Input.is_action_just_pressed("move_right") and _surface_tabs_enabled():
@@ -648,6 +649,20 @@ func _unhandled_input(_event: InputEvent) -> void:
 		_try_burst_thruster()
 	elif Input.is_action_just_pressed("scan"):
 		_try_scan()
+
+func _handle_interact_action() -> void:
+	if dive_session.result == DiveSessionScript.Result.READY:
+		_start_dive()
+	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
+		if surface_tab_index == SURFACE_TAB_UPGRADES:
+			_try_purchase_selected_upgrade()
+		else:
+			surface_tab_index = SURFACE_TAB_UPGRADES
+			status_label.text = "Surface view: upgrades."
+			_update_hud()
+	else:
+		if not _try_survival_supply_cache_interaction() and not _try_outer_shelf_survey_interaction() and not _try_rim_glass_reading_interaction() and not _try_tideglass_sample_interaction() and not _try_salvage_manifest_interaction() and not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
+			_try_extract()
 
 func _try_extract() -> void:
 	if not dive_session.can_extract(player_in_base):

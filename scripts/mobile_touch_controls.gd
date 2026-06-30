@@ -1,6 +1,8 @@
 extends CanvasLayer
 class_name MobileTouchControls
 
+signal action_requested(action: StringName)
+
 const MOVE_LEFT := &"move_left"
 const MOVE_RIGHT := &"move_right"
 const MOVE_UP := &"move_up"
@@ -126,10 +128,12 @@ func _add_action_button(action: StringName, label: String) -> void:
 	button.add_theme_stylebox_override("normal", _make_button_style(Color(0.02, 0.12, 0.16, 0.48), Color(0.10, 0.86, 0.96, 0.32)))
 	button.add_theme_stylebox_override("hover", _make_button_style(Color(0.04, 0.20, 0.26, 0.58), Color(0.30, 1.0, 1.0, 0.46)))
 	button.add_theme_stylebox_override("pressed", _make_button_style(Color(0.05, 0.56, 0.68, 0.72), Color(0.74, 1.0, 1.0, 0.66)))
-	button.button_down.connect(_set_action.bind(action, true))
-	button.button_up.connect(_set_action.bind(action, false))
+	button.button_down.connect(_request_button_action.bind(action))
 	button_root.add_child(button)
 	action_buttons[action] = button
+
+func _request_button_action(action: StringName) -> void:
+	action_requested.emit(action)
 
 func _make_button_style(fill: Color, border: Color) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
