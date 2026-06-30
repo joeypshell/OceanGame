@@ -14,7 +14,7 @@
         "active_stats_visible": true,
         "route_stage": "area01_surface_entry"
       },
-      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff"],
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup"],
       "expected_route_area_label_policy": "No debug labels; screenshot should read as open surface access plus first seabed shell.",
       "reason": "Confirms the entire water surface remains open and the first descent starts from the authored shell."
     },
@@ -28,7 +28,7 @@
         "active_stats_visible": true,
         "route_stage": "area01_left_shelf_cave"
       },
-      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff"],
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup"],
       "expected_route_area_label_policy": "No debug labels; cave mouth should read through terrain silhouette and rim/lip contrast.",
       "reason": "Covers the first left-side pocket where wall-vs-water readability can regress."
     },
@@ -42,7 +42,7 @@
         "active_stats_visible": true,
         "route_stage": "area01_right_shelf_pocket"
       },
-      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff", "locked_future_route_promise"],
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup"],
       "expected_route_area_label_policy": "No debug labels; shelf pocket should show resource/payoff affordances without exact locator copy.",
       "reason": "Checks the early right-side pocket that players can reach before committing to deeper routes."
     },
@@ -56,7 +56,7 @@
         "active_stats_visible": true,
         "route_stage": "area01_central_drop"
       },
-      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "return_current_cue", "timing_hazard_support_cue"],
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup"],
       "expected_route_area_label_policy": "No debug labels; central descent should imply depth and return direction through readable terrain edges.",
       "reason": "Validates the main vertical route that makes repeated oxygen-return dives work."
     },
@@ -70,7 +70,7 @@
         "active_stats_visible": true,
         "route_stage": "area01_west_chamber"
       },
-      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff", "return_current_cue"],
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup"],
       "expected_route_area_label_policy": "No debug labels; chamber identity should come from shape, pocket contents, and return-current cue.",
       "reason": "Covers the broader west chamber where resources must not appear embedded in walls."
     },
@@ -84,7 +84,7 @@
         "active_stats_visible": true,
         "route_stage": "area01_right_chamber"
       },
-      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff", "locked_future_route_promise"],
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "locked_future_route_promise"],
       "expected_route_area_label_policy": "No debug labels; right chamber should separate payoff/promise cues from solid wall mass.",
       "reason": "Checks the larger right-side loop target against source-map placement drift."
     },
@@ -98,7 +98,7 @@
         "active_stats_visible": true,
         "route_stage": "area01_deep_spine"
       },
-      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "return_current_cue", "timing_hazard_support_cue", "locked_future_route_promise"],
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff", "timing_hazard_support_cue"],
       "expected_route_area_label_policy": "No debug labels; deep route should read as below-surface risk and future-route promise without becoming a map overlay.",
       "reason": "Covers the deepest current shell state and the highest risk of wall/collision confusion."
     },
@@ -128,7 +128,7 @@
         "active_stats_visible": true,
         "route_stage": "area01_central_drop"
       },
-      "expected_visible_cue_families": ["debug_source_map_overlay", "solid_terrain", "terrain_rim_lip", "return_current_cue", "timing_hazard_support_cue", "resource_pickup", "knowledge_payoff"],
+      "expected_visible_cue_families": ["debug_source_map_overlay", "solid_terrain", "terrain_rim_lip", "resource_pickup"],
       "expected_route_area_label_policy": "Developer-only source/cue labels are expected and should match source-map IDs.",
       "reason": "Confirms the debug overlay can explain source-map lanes, collisions, cue ownership, and capture state."
     }

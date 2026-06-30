@@ -37,6 +37,7 @@ func _ready() -> void:
 	name = "Area01SourceMapOverlay"
 	z_index = 120
 	visible = false
+	Area01VisualCueContractScript.tag_node(self, Area01VisualCueContractScript.FAMILY_DEBUG_SOURCE_MAP_OVERLAY, name)
 	load_source_map()
 
 func _process(_delta: float) -> void:

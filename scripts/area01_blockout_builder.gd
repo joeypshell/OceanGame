@@ -56,8 +56,15 @@ const OVERHANG_OCCLUSION_COLOR := Color(0.0, 0.012, 0.018, 0.30)
 const SIDE_OCCLUSION_COLOR := Color(0.0, 0.03, 0.035, 0.22)
 const WATER_CUTOUT_COLOR := Color(0.01, 0.10, 0.16, 0.96)
 const OPEN_SURFACE_WATER_CUTOUT_COLOR := Color(0.05, 0.32, 0.46, 0.18)
-const WATER_EDGE_COLOR := Color(0.70, 0.98, 0.90, 0.24)
-const FUTURE_WATER_EDGE_COLOR := Color(0.90, 0.22, 0.38, 0.26)
+const WATER_EDGE_SHADOW_COLOR := Color(0.0, 0.035, 0.045, 0.34)
+const WATER_EDGE_BODY_COLOR := Color(0.20, 0.42, 0.38, 0.28)
+const WATER_EDGE_COLOR := Color(0.70, 0.98, 0.90, 0.18)
+const FUTURE_WATER_EDGE_COLOR := Color(0.90, 0.22, 0.38, 0.22)
+const HOOK_PICKUP_COLOR := Color(0.16, 1.0, 0.82, 0.88)
+const HOOK_SCAN_COLOR := Color(0.20, 0.86, 1.0, 0.82)
+const HOOK_GATE_COLOR := Color(0.92, 0.24, 0.32, 0.62)
+const HOOK_RETURN_COLOR := Color(0.20, 0.95, 0.68, 0.48)
+const HOOK_HAZARD_COLOR := Color(0.96, 0.68, 0.18, 0.62)
 const LEGACY_ROUTE_VISUAL_ROOTS := [
 	"SafeShallowsExplorationShell",
 	"EastShelfSpur",
@@ -335,11 +342,34 @@ func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer:
 	var edge := Line2D.new()
 	edge.name = edge_name
 	edge.points = _closed_points(points)
-	edge.width = 7.0 if bool(water.get("carves_collision", false)) else 3.0
+	edge.width = 5.0 if bool(water.get("carves_collision", false)) else 3.0
 	edge.default_color = FUTURE_WATER_EDGE_COLOR if String(water.get("status", "")) == "future_locked" else WATER_EDGE_COLOR
 	edge.visible = true
 	Area01VisualCueContractScript.tag_node(edge, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, water_id)
+	_add_water_edge_wall_treatment(water_edge_layer, edge_name, edge.points, bool(water.get("carves_collision", false)))
 	water_edge_layer.add_child(edge)
+
+func _add_water_edge_wall_treatment(water_edge_layer: Node2D, base_name: String, points: PackedVector2Array, carves_collision: bool) -> void:
+	if points.size() < 3:
+		return
+
+	var shadow := Line2D.new()
+	shadow.name = "%sWallShadow" % base_name
+	shadow.points = points
+	shadow.width = 42.0 if carves_collision else 18.0
+	shadow.default_color = WATER_EDGE_SHADOW_COLOR
+	shadow.visible = true
+	Area01VisualCueContractScript.tag_node(shadow, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, base_name)
+	water_edge_layer.add_child(shadow)
+
+	var body := Line2D.new()
+	body.name = "%sReefBody" % base_name
+	body.points = points
+	body.width = 25.0 if carves_collision else 10.0
+	body.default_color = WATER_EDGE_BODY_COLOR
+	body.visible = true
+	Area01VisualCueContractScript.tag_node(body, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, base_name)
+	water_edge_layer.add_child(body)
 
 func _is_collision_partition(terrain: Dictionary) -> bool:
 	var runtime_generation: Variant = terrain.get("runtime_generation", {})
@@ -383,6 +413,11 @@ func _create_generated_hooks(scene_root: Node, source_map: Dictionary) -> void:
 		collision.disabled = true
 		area.add_child(collision)
 
+		var visual := _hook_visual_for_type(String(hook_data.get("type", "")), _polygon_bounds(points).get_center())
+		if visual != null:
+			Area01VisualCueContractScript.tag_node(visual, _cue_family_for_hook_type(String(hook_data.get("type", ""))), hook_id)
+			area.add_child(visual)
+
 func _generated_hook_layer(scene_root: Node) -> Node2D:
 	var art_slice := scene_root.get_node_or_null("Area01ArtSlice") as Node2D
 	if art_slice == null:
@@ -390,6 +425,7 @@ func _generated_hook_layer(scene_root: Node) -> Node2D:
 
 	var layer := Node2D.new()
 	layer.name = GENERATED_HOOK_LAYER_NAME
+	layer.z_index = 6
 	art_slice.add_child(layer)
 	return layer
 
@@ -492,6 +528,69 @@ func _cue_family_for_hook_type(hook_type: String) -> String:
 			return Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP
 		_:
 			return Area01VisualCueContractScript.FAMILY_DEBUG_SOURCE_MAP_OVERLAY
+
+func _hook_visual_for_type(hook_type: String, center: Vector2) -> Polygon2D:
+	var visual := Polygon2D.new()
+	visual.name = "%sVisualCue" % _pascal_case_id(hook_type)
+	visual.position = center
+
+	match hook_type:
+		"pickup":
+			visual.color = HOOK_PICKUP_COLOR
+			visual.polygon = _regular_marker_polygon(10.0, 6)
+		"scan":
+			visual.color = HOOK_SCAN_COLOR
+			visual.polygon = PackedVector2Array([
+				Vector2(0.0, -13.0),
+				Vector2(12.0, 0.0),
+				Vector2(0.0, 13.0),
+				Vector2(-12.0, 0.0),
+			])
+		"gate":
+			visual.color = HOOK_GATE_COLOR
+			visual.polygon = PackedVector2Array([
+				Vector2(-18.0, -7.0),
+				Vector2(18.0, -7.0),
+				Vector2(18.0, 7.0),
+				Vector2(-18.0, 7.0),
+			])
+		"return_current":
+			visual.color = HOOK_RETURN_COLOR
+			visual.polygon = PackedVector2Array([
+				Vector2(-18.0, -4.0),
+				Vector2(2.0, -4.0),
+				Vector2(2.0, -12.0),
+				Vector2(18.0, 0.0),
+				Vector2(2.0, 12.0),
+				Vector2(2.0, 4.0),
+				Vector2(-18.0, 4.0),
+			])
+		"hazard":
+			visual.color = HOOK_HAZARD_COLOR
+			visual.polygon = PackedVector2Array([
+				Vector2(0.0, -16.0),
+				Vector2(5.0, -5.0),
+				Vector2(16.0, 0.0),
+				Vector2(5.0, 5.0),
+				Vector2(0.0, 16.0),
+				Vector2(-5.0, 5.0),
+				Vector2(-16.0, 0.0),
+				Vector2(-5.0, -5.0),
+			])
+		_:
+			return null
+
+	visual.visible = true
+	return visual
+
+func _regular_marker_polygon(radius: float, sides: int) -> PackedVector2Array:
+	var points := PackedVector2Array()
+	if sides < 3:
+		return points
+	for index in range(sides):
+		var angle := TAU * float(index) / float(sides) - PI * 0.5
+		points.append(Vector2(cos(angle), sin(angle)) * radius)
+	return points
 
 func _texture_uv_for_points(points: PackedVector2Array, bounds: Rect2) -> PackedVector2Array:
 	var uvs := PackedVector2Array()

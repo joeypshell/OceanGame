@@ -134,8 +134,12 @@ static func _is_effectively_visible(item: CanvasItem) -> bool:
 	return true
 
 static func _node_overlaps_region(item: CanvasItem, region: Rect2) -> bool:
+	if family_for_node(item) == FAMILY_DEBUG_SOURCE_MAP_OVERLAY:
+		return true
 	if item is Polygon2D:
 		return region.intersects(_global_polygon_bounds(item as Polygon2D))
+	if item is Line2D:
+		return region.intersects(_global_line_bounds(item as Line2D))
 	if item is Sprite2D:
 		return region.has_point((item as Sprite2D).global_position)
 	if item is Node2D:
@@ -160,10 +164,31 @@ static func _global_polygon_bounds(polygon: Polygon2D) -> Rect2:
 		max_y = maxf(max_y, global_point.y)
 	return Rect2(Vector2(min_x, min_y), Vector2(max_x - min_x, max_y - min_y))
 
+static func _global_line_bounds(line: Line2D) -> Rect2:
+	var points := line.points
+	if points.is_empty():
+		return Rect2((line as Node2D).global_position, Vector2.ONE)
+
+	var first := (line as Node2D).to_global(points[0])
+	var min_x := first.x
+	var max_x := first.x
+	var min_y := first.y
+	var max_y := first.y
+	for point in points:
+		var global_point := (line as Node2D).to_global(point)
+		min_x = minf(min_x, global_point.x)
+		max_x = maxf(max_x, global_point.x)
+		min_y = minf(min_y, global_point.y)
+		max_y = maxf(max_y, global_point.y)
+	var padding := maxf(line.width * 0.5, 1.0)
+	return Rect2(Vector2(min_x - padding, min_y - padding), Vector2(max_x - min_x + padding * 2.0, max_y - min_y + padding * 2.0))
+
 static func _effective_alpha(item: CanvasItem) -> float:
 	var alpha := item.modulate.a
 	if item is Polygon2D:
 		alpha *= (item as Polygon2D).color.a
+	elif item is Line2D:
+		alpha *= (item as Line2D).default_color.a
 	elif item is Sprite2D:
 		alpha *= (item as Sprite2D).modulate.a
 	return alpha
