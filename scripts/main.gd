@@ -160,6 +160,7 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @export var oxygen_drain_per_second := 0.95
 @export var collect_oxygen_cost := 1.0
 @export var scan_oxygen_cost := 2.0
+@export var scan_hold_seconds := 1.0
 @export var predator_contact_oxygen_cost := 5.0
 @export var burst_thruster_oxygen_cost := 4.0
 @export var burst_thruster_cooldown_seconds := 4.0
@@ -476,6 +477,9 @@ var current_expedition_condition: Dictionary = {}
 var current_predator_route_id := "none"
 var current_lantern_ray_route_id := "none"
 var current_scan_target: Node = null
+var scan_charge_target: Node = null
+var scan_charge_elapsed := 0.0
+var scan_hold_active := false
 var selected_upgrade_index := 0
 var surface_tab_index := SURFACE_TAB_RESULT
 var upgrade_definitions: Array[UpgradeDefinition] = [
@@ -577,6 +581,7 @@ func _ensure_mobile_touch_controls() -> void:
 	mobile_touch_controls = MobileTouchControlsScript.new()
 	mobile_touch_controls.name = "MobileTouchControls"
 	mobile_touch_controls.connect("action_requested", Callable(self, "_on_mobile_touch_action_requested"))
+	mobile_touch_controls.connect("action_released", Callable(self, "_on_mobile_touch_action_released"))
 	add_child(mobile_touch_controls)
 
 func _on_mobile_touch_action_requested(action: StringName) -> void:
@@ -588,7 +593,11 @@ func _on_mobile_touch_action_requested(action: StringName) -> void:
 		&"burst_thruster":
 			_try_burst_thruster()
 		&"scan":
-			_try_scan()
+			_begin_scan_charge()
+
+func _on_mobile_touch_action_released(action: StringName) -> void:
+	if action == &"scan":
+		_cancel_scan_charge("Scan canceled.")
 
 func _process(delta: float) -> void:
 	_consume_visual_smoke_command()
@@ -606,6 +615,7 @@ func _process(delta: float) -> void:
 	_update_outer_shelf_slackwater_timing_cue(delta)
 	_update_lantern_fry_idle()
 	_update_burst_thruster_cooldown(delta)
+	_update_scan_charge(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
 		_update_scan_target_feedback()
 		return
@@ -648,7 +658,9 @@ func _unhandled_input(_event: InputEvent) -> void:
 	elif Input.is_action_just_pressed("burst_thruster"):
 		_try_burst_thruster()
 	elif Input.is_action_just_pressed("scan"):
-		_try_scan()
+		_begin_scan_charge()
+	elif Input.is_action_just_released("scan"):
+		_cancel_scan_charge("Scan canceled.")
 
 func _handle_interact_action() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
@@ -2379,11 +2391,72 @@ func _apply_upgrade_effect(effect_id: String) -> void:
 		_:
 			push_warning("Unknown upgrade effect: %s" % effect_id)
 
-func _try_scan() -> void:
+func _begin_scan_charge() -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
 		return
 
-	var target := _nearest_scan_target()
+	var target := _scan_target_candidate()
+	if target == null:
+		status_label.text = "No scan target nearby."
+		_update_hud()
+		return
+
+	scan_charge_target = target
+	scan_charge_elapsed = 0.0
+	scan_hold_active = true
+	status_label.text = _format_scan_charge_status(target)
+	_update_hud()
+
+func _cancel_scan_charge(message := "") -> void:
+	if scan_charge_target == null and not scan_hold_active:
+		return
+	scan_charge_target = null
+	scan_charge_elapsed = 0.0
+	scan_hold_active = false
+	if not message.is_empty() and dive_session.result == DiveSessionScript.Result.DIVING:
+		status_label.text = message
+		_update_hud()
+
+func _update_scan_charge(delta: float) -> void:
+	if scan_charge_target == null:
+		return
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		_cancel_scan_charge()
+		return
+	if not scan_hold_active:
+		_cancel_scan_charge("Scan canceled.")
+		return
+	if not _scan_target_still_selectable(scan_charge_target):
+		_cancel_scan_charge("Scan lost: target out of range.")
+		return
+
+	scan_charge_elapsed = minf(scan_hold_seconds, scan_charge_elapsed + delta)
+	if scan_charge_elapsed >= scan_hold_seconds:
+		var completed_target := scan_charge_target
+		scan_charge_target = null
+		scan_charge_elapsed = 0.0
+		scan_hold_active = false
+		_try_scan(completed_target)
+	else:
+		status_label.text = _format_scan_charge_status(scan_charge_target)
+		_update_hud()
+
+func _format_scan_charge_status(target: Node) -> String:
+	var percent := int(roundf(_scan_charge_ratio() * 100.0))
+	return "Scanning %s: %d%%" % [_scan_target_display_name(target), percent]
+
+func _scan_charge_ratio() -> float:
+	if scan_hold_seconds <= 0.0:
+		return 1.0
+	return clampf(scan_charge_elapsed / scan_hold_seconds, 0.0, 1.0)
+
+func _try_scan(requested_target: Node = null) -> void:
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	var target := requested_target if requested_target != null else _nearest_scan_target()
+	if target != null and not _scan_target_still_selectable(target):
+		target = null
 	if target == null:
 		status_label.text = "No scan target nearby."
 		_update_hud()
@@ -5482,7 +5555,10 @@ func _update_scan_target_feedback() -> void:
 			_format_scan_target_discovery_state(current_scan_target).to_upper(),
 			_format_scan_target_type(current_scan_target).to_upper()
 		]
-		scan_card_prompt_label.text = "HOLD %s TO SCAN" % _action_label("scan")
+		if scan_charge_target == current_scan_target:
+			scan_card_prompt_label.text = "SCANNING %d%%" % int(roundf(_scan_charge_ratio() * 100.0))
+		else:
+			scan_card_prompt_label.text = "HOLD %s TO SCAN" % _action_label("scan")
 		_update_scan_reticle_position(current_scan_target)
 
 func _scan_target_candidate() -> Node:

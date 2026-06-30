@@ -188,7 +188,7 @@ Small reusable visual helpers such as `scripts/scan_pulse_visual.gd` may central
 
 ## Future Platform/Input Direction
 
-Mobile and touch-capable web controls now exist as a first-pass input adapter layered over the main scene. They do not own gameplay state; they emit the same semantic action names as keyboard controls. Full landscape mobile packaging, safe-area/layout tuning, and controller support remain future work. See `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`.
+Mobile and touch-point web controls now exist as a first-pass input adapter layered over the main scene. They do not own gameplay state; they emit semantic press/release requests into `main.gd`, which owns held scan timing and gameplay effects. Desktop browsers without touch points keep the overlay hidden. Full landscape mobile packaging, safe-area/layout tuning, and controller support remain future work. See `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`.
 
 ## Testing And Verification
 

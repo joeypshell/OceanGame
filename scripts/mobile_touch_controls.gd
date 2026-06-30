@@ -2,6 +2,7 @@ extends CanvasLayer
 class_name MobileTouchControls
 
 signal action_requested(action: StringName)
+signal action_released(action: StringName)
 
 const MOVE_LEFT := &"move_left"
 const MOVE_RIGHT := &"move_right"
@@ -47,7 +48,7 @@ func _web_touch_available() -> bool:
 	if not OS.has_feature("web") or not Engine.has_singleton("JavaScriptBridge"):
 		return false
 	var bridge := Engine.get_singleton("JavaScriptBridge")
-	var result = bridge.eval("navigator.maxTouchPoints > 0 || 'ontouchstart' in window", true)
+	var result = bridge.eval("navigator.maxTouchPoints > 0", true)
 	return bool(result)
 
 func _input(event: InputEvent) -> void:
@@ -129,11 +130,15 @@ func _add_action_button(action: StringName, label: String) -> void:
 	button.add_theme_stylebox_override("hover", _make_button_style(Color(0.04, 0.20, 0.26, 0.58), Color(0.30, 1.0, 1.0, 0.46)))
 	button.add_theme_stylebox_override("pressed", _make_button_style(Color(0.05, 0.56, 0.68, 0.72), Color(0.74, 1.0, 1.0, 0.66)))
 	button.button_down.connect(_request_button_action.bind(action))
+	button.button_up.connect(_release_button_action.bind(action))
 	button_root.add_child(button)
 	action_buttons[action] = button
 
 func _request_button_action(action: StringName) -> void:
 	action_requested.emit(action)
+
+func _release_button_action(action: StringName) -> void:
+	action_released.emit(action)
 
 func _make_button_style(fill: Color, border: Color) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()

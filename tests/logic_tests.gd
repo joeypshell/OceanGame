@@ -70,6 +70,7 @@ func _initialize() -> void:
 	_run("debug Mirror Kelp evidence staging", _test_debug_mirror_kelp_evidence_staging)
 	_run("debug Outer Shelf evidence staging", _test_debug_outer_shelf_evidence_staging)
 	_run("scanner target resolver", _test_scanner_target_resolver)
+	_run("scan hold timing helper", _test_scan_hold_timing_helper)
 	_run("compact scan marker", _test_compact_scan_marker)
 	_run("Lantern Ray scan behavior", _test_lantern_ray_scan_behavior)
 	_run("Hollow Reef passive creature scan behavior", _test_hollow_reef_passive_creature_scan_behavior)
@@ -858,6 +859,22 @@ func _test_scanner_target_resolver() -> void:
 	farther_a.free()
 	farther_b.free()
 	nearest.free()
+
+func _test_scan_hold_timing_helper() -> void:
+	var main := MainScript.new()
+	var target := _make_scan_target("thermal_vent", "Thermal Vent", Vector2.ZERO)
+	main.scan_hold_seconds = 1.0
+	main.scan_charge_elapsed = 0.35
+
+	_expect(is_equal_approx(main.call("_scan_charge_ratio"), 0.35), "scan hold ratio should report partial progress")
+	_expect(String(main.call("_format_scan_charge_status", target)).contains("Thermal Vent: 35%"), "scan hold status should show target name and progress")
+	main.scan_charge_elapsed = 1.5
+	_expect(is_equal_approx(main.call("_scan_charge_ratio"), 1.0), "scan hold ratio should clamp completed progress")
+	main.scan_hold_seconds = 0.0
+	_expect(is_equal_approx(main.call("_scan_charge_ratio"), 1.0), "scan hold ratio should treat zero-duration scans as complete")
+
+	target.free()
+	main.free()
 
 func _test_compact_scan_marker() -> void:
 	var scannable := ScannableScript.new()
@@ -6482,9 +6499,15 @@ func _test_mobile_touch_controls_adapter() -> void:
 		controls.connect("action_requested", func(action: StringName) -> void:
 			requested_actions.append(action)
 		)
+		var released_actions: Array[StringName] = []
+		controls.connect("action_released", func(action: StringName) -> void:
+			released_actions.append(action)
+		)
 		scan_button.emit_signal("button_down")
 		use_button.emit_signal("button_down")
 		_expect(requested_actions == [&"scan", &"interact"], "touch action buttons should emit direct semantic gameplay requests")
+		scan_button.emit_signal("button_up")
+		_expect(released_actions == [&"scan"], "touch Scan button should emit release so held scanning can cancel")
 	controls.free()
 
 func _control_rect(control: Control) -> Rect2:
