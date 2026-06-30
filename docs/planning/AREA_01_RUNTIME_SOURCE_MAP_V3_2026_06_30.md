@@ -8,7 +8,7 @@ Runtime v3 promotes the uploaded surface-floor plan into explicit Godot data: op
 
 The reference PNG remains a human-readable source image. It is not sampled for collision and is not used as a baked runtime map.
 
-The current v3 runtime geometry also includes explicit pressure-wreck and future-exit corridor framing masses. Those extra solid polygons close the sparse lower-right/right-side gaps that otherwise made the runtime read as blank rectangular water instead of the uploaded surface-floor plan's cave pockets and deeper corridor.
+The current v3 runtime geometry also includes explicit pressure-wreck and future-exit corridor framing masses. Those extra solid polygons close the sparse lower-right/right-side gaps that otherwise made the runtime read as blank rectangular water or open ocean instead of the uploaded surface-floor plan's cave pockets and deeper corridor.
 
 ## Source Chain
 
@@ -26,7 +26,11 @@ The current v3 runtime geometry also includes explicit pressure-wreck and future
 - Scene hooks are generated as inert `Area2D` / `CollisionPolygon2D` metadata until gameplay systems explicitly promote them.
 - Ship/moonpool offload is separate from the full-width surface oxygen refill band.
 - Resource, fish, scan, gate, hazard, and return-current placements must remain outside solid terrain.
-- The lower-right pressure-wreck and future-exit reads depend on authored ceiling, shelf, and pillar polygons, not rectangular filler or screenshot-only art.
+- The lower-right pressure-wreck and future-exit reads depend on authored ceiling, shelf, pillar, and endcap polygons, not rectangular filler, open-world edges, or screenshot-only art.
+
+## Visual Evidence
+
+The Area 01 shell capture manifest includes `area01-future-exit` for the right/deep region that previously read as open ocean. Run `npm.cmd run test:area01-shell-captures` and review the latest `test-results/playwright-area01-shell/**/area01-future-exit.png` plus `area01-shell-capture-evidence.json`. This capture is map-truth framing evidence for the enclosed future-exit corridor, not final terrain art.
 
 ## Regeneration
 

@@ -253,6 +253,15 @@
       "blocks_player": true
     },
     {
+      "id": "future_exit_endcap_wall",
+      "role": "Solid right-side cave endcap behind the locked future gate so the corridor does not read as open ocean.",
+      "polygon": [[4420, 1765], [4660, 1800], [4660, 2070], [4425, 2030], [4390, 1950], [4405, 1850]],
+      "visual_strategy": "Irregular right wall fill behind the future locked gate; the gate hook owns route blocking.",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Vertical endcap trim on the playable corridor side",
+      "blocks_player": true
+    },
+    {
       "id": "future_exit_left_pillar",
       "role": "Left pillar framing the future deep exit corridor while keeping the future exit trigger open.",
       "polygon": [[2920, 1740], [3100, 1760], [3130, 2020], [3020, 2120], [2865, 2080], [2860, 1840]],

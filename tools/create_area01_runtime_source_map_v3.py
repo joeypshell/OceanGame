@@ -407,6 +407,28 @@ SEMANTIC_TRIM_SEGMENTS: dict[str, list[dict[str, Any]]] = {
             "alpha": 0.2,
         },
     ],
+    "future_exit_endcap_wall": [
+        {
+            "id": "future_exit_endcap_wall_inner_face",
+            "type": "vertical_wall",
+            "start": [4405, 1850],
+            "end": [4425, 2030],
+            "offset": [-10, 0],
+            "repeat_spacing": 210,
+            "scale": 0.15,
+            "alpha": 0.28,
+        },
+        {
+            "id": "future_exit_endcap_wall_gate_lip",
+            "type": "diagonal_slope",
+            "start": [4390, 1950],
+            "end": [4425, 2030],
+            "offset": [-8, 0],
+            "repeat_spacing": 180,
+            "scale": 0.14,
+            "alpha": 0.22,
+        },
+    ],
     "future_exit_left_pillar": [
         {
             "id": "future_exit_left_pillar_right_wall",

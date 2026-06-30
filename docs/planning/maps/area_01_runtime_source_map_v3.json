@@ -1972,6 +1972,89 @@
       }
     },
     {
+      "id": "future_exit_endcap_wall",
+      "role": "Solid right-side cave endcap behind the locked future gate so the corridor does not read as open ocean.",
+      "polygon": [
+        [
+          4420,
+          1765
+        ],
+        [
+          4660,
+          1800
+        ],
+        [
+          4660,
+          2070
+        ],
+        [
+          4425,
+          2030
+        ],
+        [
+          4390,
+          1950
+        ],
+        [
+          4405,
+          1850
+        ]
+      ],
+      "visual_strategy": "Irregular right wall fill behind the future locked gate; the gate hook owns route blocking.",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Vertical endcap trim on the playable corridor side",
+      "blocks_player": true,
+      "trim_segments": [
+        {
+          "id": "future_exit_endcap_wall_inner_face",
+          "type": "vertical_wall",
+          "start": [
+            4405,
+            1850
+          ],
+          "end": [
+            4425,
+            2030
+          ],
+          "offset": [
+            -10,
+            0
+          ],
+          "repeat_spacing": 210,
+          "scale": 0.15,
+          "alpha": 0.28
+        },
+        {
+          "id": "future_exit_endcap_wall_gate_lip",
+          "type": "diagonal_slope",
+          "start": [
+            4390,
+            1950
+          ],
+          "end": [
+            4425,
+            2030
+          ],
+          "offset": [
+            -8,
+            0
+          ],
+          "repeat_spacing": 180,
+          "scale": 0.14,
+          "alpha": 0.22
+        }
+      ],
+      "runtime_generation": {
+        "visible_polygon2d_name": "FutureExitEndcapWallTerrain",
+        "collision_static_body2d_name": "FutureExitEndcapWallSolid",
+        "collision_polygon2d_name": "FutureExitEndcapWallCollision",
+        "rim_container_name": "FutureExitEndcapWallRims",
+        "sprite_trim_source": "docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json",
+        "collision_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
       "id": "future_exit_left_pillar",
       "role": "Left pillar framing the future deep exit corridor while keeping the future exit trigger open.",
       "polygon": [
