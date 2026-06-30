@@ -3571,7 +3571,7 @@ func _test_east_shelf_spur_branch_scene_contract() -> void:
 	_expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
 	_expect(blue_chimney_glow_candidate.depth_band == "deep", "Blue Chimney material candidate should preserve deep resource identity")
 	_expect(blue_chimney_glow_candidate.cluster_pattern == "deep_reward", "Blue Chimney material candidate should remain optional deep-reward route pressure")
-	_expect(blue_chimney_glow_candidate.position.distance_to(blue_chimney_pocket.position) <= 72.0, "Blue Chimney material candidate should sit near the lower pocket")
+	_expect(blue_chimney_glow_candidate.position.distance_to(blue_chimney_pocket.position) <= 96.0, "Blue Chimney material candidate should sit near the lower pocket after runtime v3 playable-water re-anchor")
 	_expect(hollow_reef_glow_candidate.target_id == "glow_plankton", "Hollow Reef sheltered pocket should use existing Glow Plankton")
 	_expect(hollow_reef_glow_candidate.depth_band == "deep", "Hollow Reef material candidate should preserve deep resource identity")
 	_expect(hollow_reef_glow_candidate.cluster_pattern == "deep_reward", "Hollow Reef material candidate should stay optional in the deep-reward resource pool")

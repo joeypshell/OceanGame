@@ -127,6 +127,8 @@ It is also part of the `quick` and `full` test tiers. Keep using the Node source
 
 `tools/validate-area01-playable-water-framing.mjs` reads the generated `camera_review_points` in runtime v3. The surface-entry point is allowed to read as open water above the seafloor, but underwater cave/pocket review points must sit inside carved playable water and have enough nearby solid terrain in the camera region to reject the "blank open ocean beside a cave" failure mode.
 
+`tools/validate-area01-runtime-placements.mjs` checks current Area 01 scene-authored pickups, fish, scan targets, spawn candidates, and movement endpoints against runtime v3. Targets inside `camera_bounds.planned_world_rect` must be inside a playable-water region and outside solid terrain. Legacy lower-route targets outside that v3 rect are counted in the summary instead of accepted as current Area 01 placement truth.
+
 For full-map topology review, refresh the side-by-side render after changing Area 01 source geometry:
 
 ```powershell

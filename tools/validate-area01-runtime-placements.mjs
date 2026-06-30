@@ -57,6 +57,35 @@ function solidContainingPoint(point, solids) {
   return solids.find((solid) => pointInPolygon(point, solid.polygon));
 }
 
+function playableWaterContainingPoint(point, playableWaterRegions) {
+  return playableWaterRegions.find((water) => pointInPolygon(point, water.polygon));
+}
+
+function rectFromArray(value) {
+  if (!Array.isArray(value) || value.length !== 4) {
+    return null;
+  }
+  const [x, y, width, height] = value;
+  if (![x, y, width, height].every(Number.isFinite)) {
+    return null;
+  }
+  return {
+    minX: x,
+    minY: y,
+    maxX: x + width,
+    maxY: y + height,
+  };
+}
+
+function pointInRect(point, rect) {
+  return (
+    point.x >= rect.minX &&
+    point.x <= rect.maxX &&
+    point.y >= rect.minY &&
+    point.y <= rect.maxY
+  );
+}
+
 function parseSceneNodes(sceneText) {
   const nodes = [];
   let currentNode = null;
@@ -216,27 +245,48 @@ function collectPlacementTargets(nodes, byPath) {
 const sourceMap = JSON.parse(fs.readFileSync(sourceMapPath, "utf8"));
 const sceneText = fs.readFileSync(scenePath, "utf8");
 const solids = sourceMap.solid_terrain.filter((solid) => solid.blocks_player !== false);
+const playableWaterRegions = sourceMap.playable_water_regions.filter(
+  (water) => water.carves_collision === true || water.kind === "open_surface",
+);
+const plannedWorldRect = rectFromArray(sourceMap.camera_bounds?.planned_world_rect);
 
 if (sourceMap.map_id !== "area_01_runtime_source_map_v3") {
   fail(`unexpected map_id ${sourceMap.map_id}`);
+}
+if (!plannedWorldRect) {
+  fail("camera_bounds.planned_world_rect must be [x, y, width, height]");
 }
 
 const nodes = parseSceneNodes(sceneText);
 const byPath = assignNodePaths(nodes);
 const targets = collectPlacementTargets(nodes, byPath);
 const overlaps = [];
+const waterMisses = [];
+let legacyOutsideRuntimeMapCount = 0;
 
 for (const target of targets) {
+  if (!pointInRect(target.point, plannedWorldRect)) {
+    legacyOutsideRuntimeMapCount += 1;
+    continue;
+  }
+
   const solid = solidContainingPoint(target.point, solids);
   if (solid) {
     overlaps.push(`${target.kind} ${target.id} at ${target.path} (${pointLabel(target.point)}) overlaps ${solid.id}`);
+  }
+  const playableWater = playableWaterContainingPoint(target.point, playableWaterRegions);
+  if (!playableWater) {
+    waterMisses.push(`${target.kind} ${target.id} at ${target.path} (${pointLabel(target.point)}) is outside current Area 01 playable water`);
   }
 }
 
 if (overlaps.length > 0) {
   fail(`\n- ${overlaps.join("\n- ")}`);
 }
+if (waterMisses.length > 0) {
+  fail(`\n- ${waterMisses.join("\n- ")}`);
+}
 
 console.log(
-  `PASS Area 01 runtime placement validation: ${targets.length} authored spawn, pickup, creature, and scan positions are outside solid terrain.`,
+  `PASS Area 01 runtime placement validation: ${targets.length - legacyOutsideRuntimeMapCount} current Area 01 authored spawn, pickup, creature, and scan positions are inside playable water and outside solid terrain; ${legacyOutsideRuntimeMapCount} legacy lower-route targets are outside the runtime v3 planned world rect.`,
 );
