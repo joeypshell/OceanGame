@@ -490,6 +490,7 @@ var salvage_silt_timing_timer := 0.0
 var outer_shelf_slackwater_timer := 0.0
 var daylight_elapsed_seconds := 0.0
 var daylight_nightfall_announced := false
+var daylight_ship_offload_count := 0
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -767,7 +768,34 @@ func _handle_interact_action() -> void:
 			_update_hud()
 	else:
 		if not _try_survival_supply_cache_interaction() and not _try_outer_shelf_survey_interaction() and not _try_rim_glass_reading_interaction() and not _try_tideglass_sample_interaction() and not _try_salvage_manifest_interaction() and not _try_salvage_data_cache_interaction() and not _try_resonance_alcove_interaction() and not _try_hollow_reef_interaction() and not _try_glass_kelp_ledge_interaction() and not _try_blackwater_crack_interaction() and not _try_lantern_silt_nook_interaction() and not _try_blue_chimney_interaction() and not _try_lower_connector_echo_interaction() and not _try_east_shelf_pocket_interaction():
-			_try_extract()
+			if not _try_ship_offload():
+				_try_extract()
+
+func _try_ship_offload() -> bool:
+	if not _can_ship_offload():
+		return false
+
+	var offloaded_cargo := dive_session.current_cargo.duplicate()
+	var offloaded_count := offloaded_cargo.size()
+	var banked_resources := _bank_extracted_cargo(offloaded_cargo)
+	var banked_survival_supplies := _bank_extracted_survival_supplies(offloaded_cargo)
+	dive_session.clear_cargo()
+	dive_session.oxygen = dive_session.max_oxygen
+	daylight_ship_offload_count += 1
+	upgrade_menu_feedback = "Offloaded %d cargo item(s).%s%s\nDaylight continues; dive again when ready." % [
+		offloaded_count,
+		_format_resource_counts(banked_resources),
+		_format_survival_supply_counts(banked_survival_supplies),
+	]
+	if status_label != null:
+		status_label.text = "Ship offload: banked %d cargo item(s). Daylight continues." % offloaded_count
+	_save_progression()
+	if is_inside_tree():
+		_update_hud()
+	return true
+
+func _can_ship_offload() -> bool:
+	return dive_session.result == DiveSessionScript.Result.DIVING and player_in_base and dive_session.has_left_base and not daylight_nightfall_announced and not dive_session.current_cargo.is_empty()
 
 func _try_extract() -> void:
 	if not dive_session.can_extract(player_in_base):
@@ -891,6 +919,7 @@ func _prepare_next_run() -> void:
 	dive_session.cargo_limit = _current_cargo_limit()
 	daylight_elapsed_seconds = 0.0
 	daylight_nightfall_announced = false
+	daylight_ship_offload_count = 0
 	player_in_surface_oxygen_refill = false
 	player_near_survival_supply_cache = false
 	player_near_east_shelf_pocket = false
@@ -1628,6 +1657,40 @@ func _stage_debug_surface_oxygen_refill_visual_review() -> void:
 	_update_depth()
 	_update_hud()
 
+func _stage_debug_ship_offload_visual_review() -> void:
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	player = staged_player
+	var review_base := base_zone
+	if review_base == null:
+		review_base = get_node_or_null("BaseZone") as Area2D
+	if review_base == null:
+		return
+
+	player.global_position = review_base.global_position
+	player.velocity = Vector2.ZERO
+	player_in_base = true
+	player_in_surface_oxygen_refill = true
+	dive_session.has_left_base = true
+	dive_session.oxygen = maxf(1.0, dive_session.max_oxygen * 0.22)
+	dive_session.current_cargo.clear()
+	dive_session.current_cargo.append("driftwood")
+	visual_smoke_route_stage = "ship_offload_complete"
+	_try_ship_offload()
+	visual_smoke_route_stage = "ship_offload_complete"
+	status_label.text = "Debug review: ship offload complete; daylight continues."
+	_update_depth()
+	_update_hud()
+
 func _stage_debug_area01_shell_visual_review(stage: String) -> void:
 	if not OS.has_feature("web"):
 		return
@@ -2285,6 +2348,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_daylight_visual_review(1.0, "nightfall")
 		"surface_oxygen_refill":
 			_stage_debug_surface_oxygen_refill_visual_review()
+		"ship_offload":
+			_stage_debug_ship_offload_visual_review()
 		"area01_surface_entry":
 			_stage_debug_area01_shell_visual_review("surface_entry")
 		"area01_left_shelf_cave":
@@ -2436,7 +2501,12 @@ func _format_hud_prompt() -> String:
 		prompt = "East Shelf Pocket: %s recover signal core" % _action_label("interact")
 	elif player_in_base:
 		if dive_session.has_left_base:
-			prompt = "At ship: %s bank/offload" % _action_label("interact")
+			if _can_ship_offload():
+				prompt = "At ship: %s offload cargo" % _action_label("interact")
+			elif daylight_nightfall_announced:
+				prompt = "At ship: %s start night" % _action_label("interact")
+			else:
+				prompt = "At ship: cargo clear, dive again"
 		else:
 			prompt = "Leave moonpool, then return to bank"
 	elif _is_player_in_surface_oxygen_refill():
@@ -4376,6 +4446,7 @@ func _publish_visual_smoke_state() -> void:
 		"daylight_visible": daylight_panel.visible,
 		"daylight_remaining_percent": roundi(_daylight_remaining_ratio() * 100.0),
 		"daylight_remaining_seconds": ceili(_daylight_remaining_seconds()),
+		"ship_offload_count": daylight_ship_offload_count,
 		"player_in_surface_oxygen_refill": _is_player_in_surface_oxygen_refill(),
 		"surface_oxygen_refill_active": _surface_oxygen_refill_active(),
 		"cargo_count": dive_session.current_cargo.size(),
@@ -5782,7 +5853,12 @@ func _format_active_objective_line() -> String:
 	if dive_session.current_cargo.size() >= dive_session.cargo_limit:
 		objective = "Cargo full: return to bank"
 	elif player_in_base and dive_session.has_left_base:
-		objective = "At ship: bank/offload or dive"
+		if _can_ship_offload():
+			objective = "At ship: offload, then dive"
+		elif daylight_nightfall_announced:
+			objective = "At ship: start night"
+		else:
+			objective = "At ship: dive again"
 	elif player_in_base:
 		objective = "Leave moonpool, gather supplies"
 	elif _is_player_in_surface_oxygen_refill():

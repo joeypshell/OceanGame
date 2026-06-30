@@ -116,6 +116,20 @@ export async function stageSurfaceOxygenRefill(page) {
   });
 }
 
+export async function stageShipOffload(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "ship_offload";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "ship_offload_complete",
+    player_in_base: true,
+    cargo_count: 0,
+    ship_offload_count: 1,
+  });
+}
+
 export async function stageExpandedRoute(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "expanded_east_shelf_route";

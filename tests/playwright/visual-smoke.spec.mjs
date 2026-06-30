@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDaylightState, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOuterShelfSurvey, stageOxygenState, stageSiltVeinFork, stageSurfaceOxygenRefill } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDaylightState, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOuterShelfSurvey, stageOxygenState, stageShipOffload, stageSiltVeinFork, stageSurfaceOxygenRefill } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -317,6 +317,20 @@ test.describe("OceanGame web visual smoke", () => {
       player_in_surface_oxygen_refill: true,
       surface_oxygen_refill_active: true,
       cargo_count: 1,
+    });
+  });
+
+  test("captures ship offload while daylight continues", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageShipOffload(page);
+    await capture(page, testInfo, "ship-offload-repeat-sortie", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "ship_offload_complete",
+      player_in_base: true,
+      cargo_count: 0,
+      ship_offload_count: 1,
     });
   });
 });

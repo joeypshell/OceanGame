@@ -50,6 +50,7 @@ func _initialize() -> void:
 	_run("extraction requirements", _test_extraction_requirements)
 	_run("oxygen failure", _test_oxygen_failure)
 	_run("surface oxygen refill isolation", _test_surface_oxygen_refill_isolation)
+	_run("ship offload repeat daylight sortie", _test_ship_offload_repeat_daylight_sortie)
 	_run("debug unlimited oxygen", _test_debug_unlimited_oxygen)
 	_run("survival night consumption", _test_survival_night_consumption)
 	_run("survival collapse and reset", _test_survival_collapse_and_reset)
@@ -264,7 +265,43 @@ func _test_surface_oxygen_refill_isolation() -> void:
 	_expect(surface_prompt.contains("Surface O2") and surface_prompt.contains("Cargo still carried"), "surface prompt should separate oxygen refill from cargo banking")
 	main.player_in_base = true
 	var ship_prompt: String = main.call("_format_hud_prompt")
-	_expect(ship_prompt.contains("At ship") and ship_prompt.contains("bank/offload"), "ship prompt should remain the cargo banking/offload prompt")
+	_expect(ship_prompt.contains("At ship") and ship_prompt.contains("offload cargo"), "ship prompt should remain the cargo banking/offload prompt")
+	main.free()
+
+func _test_ship_offload_repeat_daylight_sortie() -> void:
+	var main := MainScript.new()
+	main.dive_session.reset(30.0)
+	main.dive_session.start()
+	main.dive_session.oxygen = 6.0
+	main.dive_session.has_left_base = true
+	main.dive_session.current_cargo.append("driftwood")
+	main.dive_session.current_cargo.append("food_supply")
+	main.player_in_base = true
+	main.daylight_elapsed_seconds = 123.0
+	main.daylight_nightfall_announced = false
+	var starting_day := main.survival_state.current_day
+	var starting_water := main.survival_state.water
+	var starting_power := main.survival_state.power
+
+	_expect(bool(main.call("_try_ship_offload")), "ship offload should accept carried cargo during active daylight")
+
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "ship offload should keep the same daylight dive active")
+	_expect(main.dive_session.current_cargo.is_empty(), "ship offload should clear carried inventory")
+	_expect(is_equal_approx(main.dive_session.oxygen, main.dive_session.max_oxygen), "ship offload should leave oxygen ready for the next sortie")
+	_expect(main.progression_state.resource_count("driftwood") == 1, "ship offload should bank resource cargo")
+	_expect(main.survival_state.food == SurvivalStateScript.STARTING_NEED + 1, "ship offload should bank survival supplies without waiting for night")
+	_expect(main.survival_state.water == starting_water and main.survival_state.power == starting_power, "ship offload should only change supplied survival needs")
+	_expect(main.survival_state.current_day == starting_day, "ship offload should not resolve the night or advance the survival day")
+	_expect(is_equal_approx(main.daylight_elapsed_seconds, 123.0), "ship offload should preserve the current daylight timer")
+	_expect(main.daylight_ship_offload_count == 1, "ship offload should count repeated daylight sorties")
+	_expect(main.last_completed_survival_day == 0, "ship offload should not mark the day as completed")
+	var clear_prompt: String = main.call("_format_hud_prompt")
+	_expect(clear_prompt.contains("cargo clear") and clear_prompt.contains("dive again"), "ship prompt should invite another sortie after offload")
+
+	main.dive_session.current_cargo.append("driftwood")
+	main.daylight_nightfall_announced = true
+	_expect(not bool(main.call("_try_ship_offload")), "nightfall should stop daylight offload and leave night-start handling separate")
+	_expect(main.dive_session.current_cargo == ["driftwood"], "rejected nightfall offload should leave carried cargo untouched")
 	main.free()
 
 func _test_debug_unlimited_oxygen() -> void:
