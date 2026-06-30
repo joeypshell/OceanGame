@@ -78,6 +78,7 @@ const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
 const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
 const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(272.0, 116.0))
 const CARGO_PANEL_RECT := Rect2(Vector2(516.0, 14.0), Vector2(248.0, 48.0))
+const DAYLIGHT_PANEL_RECT := Rect2(Vector2(792.0, 14.0), Vector2(216.0, 48.0))
 const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(1036.0, 16.0), Vector2(228.0, 106.0))
 const DIVE_INFO_RECT := Rect2(Vector2(16.0, 148.0), Vector2(292.0, 94.0))
 const SCAN_CARD_RECT := Rect2(Vector2(972.0, 236.0), Vector2(220.0, 88.0))
@@ -113,6 +114,11 @@ const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
 const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
 const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
 const CARGO_SLOT_ACTIVE_POSITION := Vector2(566.0, 32.0)
+const DAYLIGHT_LABEL_RECT := Rect2(Vector2(832.0, 20.0), Vector2(136.0, 18.0))
+const DAYLIGHT_BAR_BACK_RECT := Rect2(Vector2(832.0, 44.0), Vector2(136.0, 8.0))
+const DAYLIGHT_BAR_FILL_RECT := Rect2(Vector2(832.0, 44.0), Vector2(136.0, 8.0))
+const DAYLIGHT_SUN_ICON_POSITION := Vector2(814.0, 39.0)
+const DAYLIGHT_MOON_ICON_POSITION := Vector2(986.0, 39.0)
 const SURVIVAL_NEED_LABEL_RECTS := {
 	"food": Rect2(Vector2(1070.0, 28.0), Vector2(140.0, 18.0)),
 	"water": Rect2(Vector2(1070.0, 60.0), Vector2(140.0, 18.0)),
@@ -152,6 +158,8 @@ const OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD := 0.72
 const OUTER_SHELF_SLACKWATER_EASING_THRESHOLD := 0.42
 const DUSK_TRENCH_MEMORY_MIN_X := 2700.0
 const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
+const DAYLIGHT_NORMAL_COLOR := Color(1.0, 0.78, 0.18, 0.96)
+const DAYLIGHT_DUSK_COLOR := Color(0.82, 0.42, 1.0, 0.94)
 
 @export var max_oxygen := 30.0
 @export var oxygen_tank_1_max_oxygen := 40.0
@@ -172,6 +180,7 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @export var start_position := Vector2(640.0, 260.0)
 @export var surface_y := 120.0
 @export var pixels_per_meter := 10.0
+@export var daylight_duration_seconds := 420.0
 @export var show_debug_telemetry := false
 
 @onready var player: CharacterBody2D = $Player
@@ -180,6 +189,12 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 @onready var bounds_hint_label: Label = $HUD/BoundsHint
 @onready var active_stats_panel: Panel = $HUD/ActiveStatsPanel
 @onready var cargo_panel: Panel = $HUD/CargoPanel
+@onready var daylight_panel: Panel = $HUD/DaylightPanel
+@onready var daylight_label: Label = $HUD/DaylightLabel
+@onready var daylight_bar_back: ColorRect = $HUD/DaylightBarBack
+@onready var daylight_bar_fill: ColorRect = $HUD/DaylightBarFill
+@onready var daylight_sun_icon: Polygon2D = $HUD/DaylightSunIcon
+@onready var daylight_moon_icon: Polygon2D = $HUD/DaylightMoonIcon
 @onready var survival_needs_panel: Panel = $HUD/SurvivalNeedsPanel
 @onready var oxygen_icon: Polygon2D = $HUD/OxygenIcon
 @onready var depth_icon: Polygon2D = $HUD/DepthIcon
@@ -467,6 +482,8 @@ var hollow_reef_timing_timer := 0.0
 var glassfin_swarm_spacing_timer := 0.0
 var salvage_silt_timing_timer := 0.0
 var outer_shelf_slackwater_timer := 0.0
+var daylight_elapsed_seconds := 0.0
+var daylight_nightfall_announced := false
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -620,6 +637,7 @@ func _process(delta: float) -> void:
 		_update_scan_target_feedback()
 		return
 
+	_advance_daylight_timer(delta)
 	dive_session.drain_oxygen(oxygen_drain_per_second * delta)
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		_fail_dive()
@@ -793,6 +811,8 @@ func _prepare_next_run() -> void:
 	current_expedition_condition = ExpeditionConditionScript.condition_for_seed(progression_state.current_run_seed)
 	dive_session.reset(_current_max_oxygen())
 	dive_session.cargo_limit = _current_cargo_limit()
+	daylight_elapsed_seconds = 0.0
+	daylight_nightfall_announced = false
 	player_near_survival_supply_cache = false
 	player_near_east_shelf_pocket = false
 	player_near_lower_connector_echo = false
@@ -1479,6 +1499,16 @@ func _stage_debug_oxygen_visual_review(target_ratio: float, label: String) -> vo
 	status_label.text = "Debug review: %s oxygen staged." % label
 	_update_hud()
 
+func _stage_debug_daylight_visual_review(progress_ratio: float, label: String) -> void:
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	_set_daylight_progress_for_debug(progress_ratio)
+	status_label.text = "Debug review: daylight timer staged at %s." % label
+	_update_hud()
+
 func _stage_debug_area01_shell_visual_review(stage: String) -> void:
 	if not OS.has_feature("web"):
 		return
@@ -2128,6 +2158,12 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_oxygen_visual_review(0.20, "low")
 		"oxygen_critical":
 			_stage_debug_oxygen_visual_review(0.08, "critical")
+		"daylight_morning":
+			_stage_debug_daylight_visual_review(0.15, "morning")
+		"daylight_evening":
+			_stage_debug_daylight_visual_review(0.75, "evening")
+		"daylight_nightfall":
+			_stage_debug_daylight_visual_review(1.0, "nightfall")
 		"area01_surface_entry":
 			_stage_debug_area01_shell_visual_review("surface_entry")
 		"area01_left_shelf_cave":
@@ -3801,6 +3837,7 @@ func _update_hud() -> void:
 	bounds_hint_label.visible = false
 	active_stats_panel.visible = is_diving
 	cargo_panel.visible = is_diving
+	daylight_panel.visible = is_diving
 	survival_needs_panel.visible = is_diving
 	var has_scan_target := is_diving and current_scan_target != null
 	scan_card_panel.visible = has_scan_target
@@ -3817,6 +3854,7 @@ func _update_hud() -> void:
 	base_direction_label.visible = is_diving
 	cargo_label.visible = is_diving
 	cargo_slots_root.visible = is_diving
+	_update_daylight_timer_hud(is_diving)
 	oxygen_label.text = _format_oxygen_label(dive_session.oxygen, dive_session.max_oxygen)
 	depth_label.text = "Depth: %dm | Best: %dm" % [
 		roundi(dive_session.current_depth),
@@ -3862,6 +3900,7 @@ func _apply_active_hud_layout() -> void:
 	_ensure_active_hud_references()
 	_set_control_rect(active_stats_panel, ACTIVE_STATS_RECT)
 	_set_control_rect(cargo_panel, CARGO_PANEL_RECT)
+	_set_control_rect(daylight_panel, DAYLIGHT_PANEL_RECT)
 	_set_control_rect(survival_needs_panel, SURVIVAL_NEEDS_PANEL_RECT)
 	_set_control_rect(dive_info_panel, DIVE_INFO_RECT)
 	_set_control_rect(objective_title_label, DIVE_INFO_LABEL_RECTS["title"])
@@ -3878,6 +3917,9 @@ func _apply_active_hud_layout() -> void:
 	_set_control_rect(depth_bar_fill, DEPTH_BAR_FILL_RECT)
 	_set_control_rect(base_direction_label, ACTIVE_HUD_LABEL_RECTS["base"])
 	_set_control_rect(cargo_label, ACTIVE_HUD_LABEL_RECTS["cargo"])
+	_set_control_rect(daylight_label, DAYLIGHT_LABEL_RECT)
+	_set_control_rect(daylight_bar_back, DAYLIGHT_BAR_BACK_RECT)
+	_set_control_rect(daylight_bar_fill, DAYLIGHT_BAR_FILL_RECT)
 	_set_control_rect(discoveries_label, ACTIVE_HUD_LABEL_RECTS["discoveries"])
 	_set_control_rect(scan_target_label, ACTIVE_HUD_LABEL_RECTS["scan"])
 	_set_control_rect(scan_card_title_label, SCAN_CARD_LABEL_RECTS["title"])
@@ -3907,12 +3949,17 @@ func _apply_active_hud_layout() -> void:
 		_set_control_rect(depth_rail_labels[2], DEPTH_RAIL_LABEL_RECTS["100"])
 	if cargo_slots_root != null:
 		cargo_slots_root.position = CARGO_SLOT_ACTIVE_POSITION
+	if daylight_sun_icon != null:
+		daylight_sun_icon.position = DAYLIGHT_SUN_ICON_POSITION
+	if daylight_moon_icon != null:
+		daylight_moon_icon.position = DAYLIGHT_MOON_ICON_POSITION
 
 	var bounded_labels: Array[Label] = [
 		oxygen_label,
 		depth_label,
 		base_direction_label,
 		cargo_label,
+		daylight_label,
 		discoveries_label,
 		scan_target_label,
 		scan_card_title_label,
@@ -3938,6 +3985,18 @@ func _ensure_active_hud_references() -> void:
 		active_stats_panel = get_node_or_null("HUD/ActiveStatsPanel") as Panel
 	if cargo_panel == null:
 		cargo_panel = get_node_or_null("HUD/CargoPanel") as Panel
+	if daylight_panel == null:
+		daylight_panel = get_node_or_null("HUD/DaylightPanel") as Panel
+	if daylight_label == null:
+		daylight_label = get_node_or_null("HUD/DaylightLabel") as Label
+	if daylight_bar_back == null:
+		daylight_bar_back = get_node_or_null("HUD/DaylightBarBack") as ColorRect
+	if daylight_bar_fill == null:
+		daylight_bar_fill = get_node_or_null("HUD/DaylightBarFill") as ColorRect
+	if daylight_sun_icon == null:
+		daylight_sun_icon = get_node_or_null("HUD/DaylightSunIcon") as Polygon2D
+	if daylight_moon_icon == null:
+		daylight_moon_icon = get_node_or_null("HUD/DaylightMoonIcon") as Polygon2D
 	if survival_needs_panel == null:
 		survival_needs_panel = get_node_or_null("HUD/SurvivalNeedsPanel") as Panel
 	if dive_info_panel == null:
@@ -4087,6 +4146,80 @@ func _update_minimap(is_visible: bool) -> void:
 		horizontal_ratio = clampf((player.global_position.x - bounds.position.x) / bounds.size.x, 0.0, 1.0)
 	minimap_player_marker.position = Vector2(94.0 + (horizontal_ratio - 0.5) * 78.0, 34.0 + depth_ratio * 76.0)
 
+func _advance_daylight_timer(delta: float) -> void:
+	if daylight_duration_seconds <= 0.0 or daylight_nightfall_announced:
+		return
+
+	daylight_elapsed_seconds = minf(daylight_duration_seconds, daylight_elapsed_seconds + maxf(delta, 0.0))
+	if daylight_elapsed_seconds >= daylight_duration_seconds:
+		_handle_daylight_expired()
+
+func _handle_daylight_expired() -> void:
+	daylight_nightfall_announced = true
+	daylight_elapsed_seconds = maxf(daylight_elapsed_seconds, daylight_duration_seconds)
+	# Full night transition is intentionally deferred; for now nightfall clamps the day HUD
+	# and warns the player to bank at the ship instead of killing the run or spending oxygen.
+	if status_label != null:
+		status_label.text = "Nightfall reached: return to ship before the night phase."
+
+func _set_daylight_progress_for_debug(progress_ratio: float) -> void:
+	var clamped_progress := clampf(progress_ratio, 0.0, 1.0)
+	daylight_elapsed_seconds = maxf(0.0, daylight_duration_seconds) * clamped_progress
+	daylight_nightfall_announced = clamped_progress >= 1.0
+
+func _daylight_remaining_seconds() -> float:
+	return maxf(0.0, daylight_duration_seconds - daylight_elapsed_seconds)
+
+func _daylight_remaining_ratio() -> float:
+	if daylight_duration_seconds <= 0.0:
+		return 0.0
+
+	return clampf(_daylight_remaining_seconds() / daylight_duration_seconds, 0.0, 1.0)
+
+func _format_daylight_label() -> String:
+	if _daylight_remaining_seconds() <= 0.0:
+		return "NIGHTFALL"
+
+	var remaining_seconds := ceili(_daylight_remaining_seconds())
+	var minutes := int(remaining_seconds / 60)
+	var seconds := remaining_seconds % 60
+	return "DAYLIGHT %02d:%02d" % [minutes, seconds]
+
+func _daylight_bar_color(remaining_ratio: float) -> Color:
+	if remaining_ratio <= 0.25:
+		return DAYLIGHT_DUSK_COLOR
+
+	return DAYLIGHT_NORMAL_COLOR
+
+func _update_daylight_timer_hud(is_visible: bool) -> void:
+	if daylight_panel != null:
+		daylight_panel.visible = is_visible
+	var daylight_nodes: Array[CanvasItem] = [
+		daylight_label,
+		daylight_bar_back,
+		daylight_bar_fill,
+		daylight_sun_icon,
+		daylight_moon_icon,
+	]
+	for node in daylight_nodes:
+		if node != null:
+			node.visible = is_visible
+
+	if not is_visible:
+		return
+
+	var remaining_ratio := _daylight_remaining_ratio()
+	if daylight_label != null:
+		daylight_label.text = _format_daylight_label()
+		daylight_label.modulate = _daylight_bar_color(remaining_ratio)
+	if daylight_bar_fill != null:
+		daylight_bar_fill.color = _daylight_bar_color(remaining_ratio)
+		_set_bar_fill_width(daylight_bar_fill, DAYLIGHT_BAR_FILL_RECT, remaining_ratio)
+	if daylight_sun_icon != null:
+		daylight_sun_icon.color = Color(1.0, 0.82, 0.22, 0.32 + remaining_ratio * 0.62)
+	if daylight_moon_icon != null:
+		daylight_moon_icon.color = Color(0.72, 0.78, 1.0, 0.34 + (1.0 - remaining_ratio) * 0.58)
+
 func _set_bar_fill_width(fill: ColorRect, base_rect: Rect2, ratio: float) -> void:
 	_set_control_rect(fill, base_rect)
 	fill.offset_right = fill.offset_left + base_rect.size.x * clampf(ratio, 0.0, 1.0)
@@ -4114,6 +4247,9 @@ func _publish_visual_smoke_state() -> void:
 		"max_oxygen": ceili(dive_session.max_oxygen),
 		"depth_meters": roundi(dive_session.current_depth),
 		"best_depth_meters": roundi(progression_state.best_depth_reached),
+		"daylight_visible": daylight_panel.visible,
+		"daylight_remaining_percent": roundi(_daylight_remaining_ratio() * 100.0),
+		"daylight_remaining_seconds": ceili(_daylight_remaining_seconds()),
 		"cargo_count": dive_session.current_cargo.size(),
 		"cargo_limit": dive_session.cargo_limit,
 		"player_in_base": player_in_base,

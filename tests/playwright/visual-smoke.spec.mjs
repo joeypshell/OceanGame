@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOuterShelfSurvey, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDaylightState, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOuterShelfSurvey, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -280,6 +280,28 @@ test.describe("OceanGame web visual smoke", () => {
       oxygen_state: "critical",
       debug_telemetry: false,
       active_stats_visible: true,
+    });
+  });
+
+  test("captures daylight timer progression HUD states", async ({ page }, testInfo) => {
+    await bootGame(page);
+
+    await stageDaylightState(page, "daylight_morning", 85);
+    await capture(page, testInfo, "daylight-timer-morning", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      daylight_visible: true,
+      daylight_remaining_percent: 85,
+    });
+
+    await stageDaylightState(page, "daylight_evening", 25);
+    await capture(page, testInfo, "daylight-timer-evening", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      daylight_visible: true,
+      daylight_remaining_percent: 25,
     });
   });
 });

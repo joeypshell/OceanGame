@@ -141,6 +141,7 @@ func _initialize() -> void:
 	_run("Dusk Trench low-visibility condition nudge", _test_dusk_trench_low_visibility_condition_nudge)
 	_run("Wide Reef Chamber calm-current condition nudge", _test_wide_chamber_calm_current_condition_nudge)
 	_run("Mirror Kelp kelp-bloom condition nudge", _test_mirror_kelp_kelp_bloom_condition_nudge)
+	_run("daylight timer HUD", _test_daylight_timer_hud)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("mobile touch controls adapter", _test_mobile_touch_controls_adapter)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
@@ -6268,6 +6269,60 @@ func _test_mirror_kelp_kelp_bloom_condition_nudge() -> void:
 	var saved: Dictionary = scene.progression_state.to_save_data()
 	_expect(not saved.has("mirror_kelp_condition"), "Mirror Kelp condition nudge should not add durable route state")
 	_expect(not saved.has("kelp_bloom"), "Kelp Bloom should not save active condition state")
+	scene.queue_free()
+
+func _test_daylight_timer_hud() -> void:
+	var main := MainScript.new()
+	main.daylight_duration_seconds = 420.0
+	main.daylight_elapsed_seconds = 0.0
+	_expect(main.call("_format_daylight_label") == "DAYLIGHT 07:00", "fresh daylight timer should show the full day budget")
+
+	main.call("_set_daylight_progress_for_debug", 0.5)
+	_expect(main.call("_format_daylight_label") == "DAYLIGHT 03:30", "daylight debug progress should deterministically set remaining time")
+	_expect(is_equal_approx(main.call("_daylight_remaining_ratio"), 0.5), "daylight remaining ratio should track the strategic day budget")
+
+	main.call("_set_daylight_progress_for_debug", 1.0)
+	_expect(main.call("_format_daylight_label") == "NIGHTFALL", "depleted daylight should show nightfall instead of oxygen-style copy")
+	main.free()
+
+	var scene := MainScene.instantiate()
+	root.add_child(scene)
+	var cargo_panel: Panel = scene.get_node("HUD/CargoPanel")
+	var daylight_panel: Panel = scene.get_node("HUD/DaylightPanel")
+	var survival_panel: Panel = scene.get_node("HUD/SurvivalNeedsPanel")
+	var daylight_label: Label = scene.get_node("HUD/DaylightLabel")
+	var daylight_bar_back: ColorRect = scene.get_node("HUD/DaylightBarBack")
+	var daylight_bar_fill: ColorRect = scene.get_node("HUD/DaylightBarFill")
+	var oxygen_bar_back: ColorRect = scene.get_node("HUD/OxygenBarBack")
+
+	_expect(not daylight_panel.visible, "raw scene should start with the daylight timer hidden")
+	scene.dive_session.start()
+	scene.player_in_base = false
+	scene.call("_ensure_active_hud_references")
+	scene.call("_apply_active_hud_layout")
+	scene.call("_set_daylight_progress_for_debug", 0.25)
+	scene.call("_update_daylight_timer_hud", true)
+	_expect(daylight_panel.visible, "active diving should show the daylight timer")
+	_expect(daylight_label.visible, "active diving should show daylight timer copy")
+	_expect(daylight_label.text == "DAYLIGHT 05:15", "active daylight timer should show remaining day time")
+	_expect(_control_rect(daylight_panel).size == Vector2(216.0, 48.0), "daylight timer should stay compact enough for top HUD space")
+	_expect(daylight_panel.offset_left > cargo_panel.offset_right, "daylight timer should sit apart from the cargo strip")
+	_expect(survival_panel.offset_left > daylight_panel.offset_right, "survival needs should sit apart from the daylight timer")
+	_expect(not _controls_overlap(daylight_panel, cargo_panel), "daylight timer should not overlap cargo")
+	_expect(not _controls_overlap(daylight_panel, survival_panel), "daylight timer should not overlap base needs")
+	_expect(daylight_bar_back.color != oxygen_bar_back.color, "daylight bar should be visually distinct from oxygen")
+	var morning_width := daylight_bar_fill.offset_right - daylight_bar_fill.offset_left
+
+	scene.call("_set_daylight_progress_for_debug", 0.75)
+	scene.call("_update_daylight_timer_hud", true)
+	var evening_width := daylight_bar_fill.offset_right - daylight_bar_fill.offset_left
+	_expect(evening_width < morning_width, "daylight fill should shrink as night approaches")
+	_expect(daylight_label.text == "DAYLIGHT 01:45", "evening daylight staging should show less remaining time")
+
+	scene.call("_advance_daylight_timer", scene.daylight_duration_seconds)
+	_expect(scene.daylight_nightfall_announced, "daylight expiration should announce nightfall")
+	_expect(scene.dive_session.result == DiveSessionScript.Result.DIVING, "timer expiration placeholder should not fail the dive before night phase exists")
+	_expect(scene.status_label.text.contains("Nightfall"), "timer expiration placeholder should tell the player nightfall happened")
 	scene.queue_free()
 
 func _test_compact_dive_hud_helpers() -> void:

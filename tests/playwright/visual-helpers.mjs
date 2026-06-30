@@ -89,6 +89,18 @@ export async function stageOxygenState(page, oxygenState) {
   });
 }
 
+export async function stageDaylightState(page, daylightCommand, remainingPercent) {
+  await page.evaluate((nextCommand) => {
+    window.__oceangameDebugCommand = nextCommand;
+  }, daylightCommand);
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    daylight_visible: true,
+    daylight_remaining_percent: remainingPercent,
+  });
+}
+
 export async function stageExpandedRoute(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "expanded_east_shelf_route";
