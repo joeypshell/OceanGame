@@ -4214,7 +4214,8 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	var player_visual_root := main.get_node("Player/VisualRoot") as CanvasItem
 	var player_visual_z := _effective_canvas_z(player_visual_root)
 	_expect(player_visual_z >= 20, "player visual should render in an actor band above world art")
-	_expect(art_slice.z_index <= -20, "Area 01 art slice should stay below actors so generated terrain cannot cover the diver")
+	_expect(art_slice.z_index >= 0, "Area 01 art slice should stay above opaque ocean backgrounds so cave walls remain visible")
+	_expect(_effective_canvas_z(art_slice) < player_visual_z, "Area 01 art slice should stay below actors so generated terrain cannot cover the diver")
 	if terrain_domain_node != null:
 		_expect(_effective_canvas_z(terrain_domain_node) < player_visual_z, "Area 01 terrain domain should render behind the diver")
 	_expect(water_cutout_layer != null, "Area 01 builder should render playable-water cutouts over the continuous terrain domain")

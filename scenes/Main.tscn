@@ -410,7 +410,7 @@ offset_bottom = 1494.0
 color = Color(0.24, 0.42, 0.74, 0.14)
 
 [node name="Area01ArtSlice" type="Node2D" parent="."]
-z_index = -20
+z_index = 0
 
 [node name="BackgroundFar" type="Node2D" parent="Area01ArtSlice"]
 
