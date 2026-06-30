@@ -10,9 +10,8 @@ const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
-const Area01SourceMapOverlayScript := preload("res://scripts/area01_source_map_overlay.gd")
+const Area01VisualDirectorScript := preload("res://scripts/area01_visual_director.gd")
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
-const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
@@ -574,6 +573,7 @@ var last_completed_survival_day := 0
 var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
 var show_area01_source_map_overlay := false
+var area01_visual_director: Area01VisualDirector = null
 var area01_source_map_overlay: Area01SourceMapOverlay = null
 var mobile_touch_controls: CanvasLayer = null
 var recent_expedition_log: Array[Dictionary] = []
@@ -1584,18 +1584,25 @@ func _sync_debug_oxygen_mode() -> void:
 	dive_session.unlimited_oxygen = show_debug_telemetry
 
 func _ensure_area01_source_map_overlay() -> void:
-	if area01_source_map_overlay != null and is_instance_valid(area01_source_map_overlay):
-		return
+	area01_source_map_overlay = _ensure_area01_visual_director().ensure_source_map_overlay(self)
 
-	area01_source_map_overlay = Area01SourceMapOverlayScript.new()
-	add_child(area01_source_map_overlay)
+func _ensure_area01_visual_director() -> Area01VisualDirector:
+	if area01_visual_director != null and is_instance_valid(area01_visual_director):
+		return area01_visual_director
+
+	area01_visual_director = Area01VisualDirectorScript.new()
+	add_child(area01_visual_director)
+	return area01_visual_director
 
 func _sync_area01_source_map_overlay() -> void:
-	_ensure_area01_source_map_overlay()
-	area01_source_map_overlay.scan_range = scan_range
-	area01_source_map_overlay.capture_state = _area01_overlay_capture_state()
-	area01_source_map_overlay.camera_state = _area01_overlay_camera_state()
-	area01_source_map_overlay.set_debug_visible(show_debug_telemetry and show_area01_source_map_overlay)
+	area01_source_map_overlay = _ensure_area01_visual_director().sync_source_map_overlay(
+		self,
+		scan_range,
+		show_debug_telemetry,
+		show_area01_source_map_overlay,
+		_area01_overlay_capture_state(),
+		_area01_overlay_camera_state()
+	)
 
 func _area01_overlay_capture_state() -> String:
 	if not visual_smoke_route_stage.is_empty():
@@ -4588,7 +4595,7 @@ func _publish_visual_smoke_state() -> void:
 		"result": String(DIVE_RESULT_NAMES.get(dive_session.result, "unknown")),
 		"surface_tab": SURFACE_TAB_NAMES[surface_tab_index].to_lower(),
 		"debug_telemetry": show_debug_telemetry,
-		"area01_source_map_overlay": area01_source_map_overlay != null and area01_source_map_overlay.visible,
+		"area01_source_map_overlay": area01_visual_director != null and area01_visual_director.source_map_overlay_visible(),
 		"oxygen_state": _oxygen_state(dive_session.oxygen, dive_session.max_oxygen),
 		"oxygen": ceili(dive_session.oxygen),
 		"max_oxygen": ceili(dive_session.max_oxygen),
@@ -4630,7 +4637,7 @@ func _publish_visual_smoke_state() -> void:
 		"salvage_pocket_open": progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID),
 		"route_stage": visual_smoke_route_stage,
 	}
-	var area01_cue_report: Dictionary = Area01VisualCueContractScript.debug_report(self, _area01_visual_smoke_camera_region())
+	var area01_cue_report: Dictionary = _ensure_area01_visual_director().cue_debug_report(self, _area01_visual_smoke_camera_region())
 	state["area01_cue_family_counts"] = area01_cue_report.get("families", {})
 	state["area01_cue_family_warnings"] = area01_cue_report.get("warnings", [])
 	state["area01_capture_camera"] = _area01_overlay_camera_state()

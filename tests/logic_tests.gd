@@ -19,6 +19,7 @@ const Area01SourceMapOverlayScript := preload("res://scripts/area01_source_map_o
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
 const Area01SourceTruthValidatorScript := preload("res://scripts/area01_source_truth_validator.gd")
 const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
+const Area01VisualDirectorScript := preload("res://scripts/area01_visual_director.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
@@ -116,6 +117,7 @@ func _initialize() -> void:
 	_run("Area 01 source truth validator catches drift", _test_area_01_source_truth_validator_catches_drift)
 	_run("Area 01 visual cue contract registry", _test_area_01_visual_cue_contract_registry)
 	_run("Area 01 visual cue diagnostic report", _test_area_01_visual_cue_diagnostic_report)
+	_run("Area 01 visual director", _test_area_01_visual_director)
 	_run("Area 01 surface oxygen hook runtime", _test_area_01_surface_oxygen_hook_runtime)
 	_run("Area 01 authoritative wall builder", _test_area_01_authoritative_wall_builder)
 	_run("Area 01 source map debug overlay", _test_area_01_source_map_debug_overlay)
@@ -4113,6 +4115,25 @@ func _test_area_01_source_map_debug_overlay() -> void:
 	overlay.set_debug_visible(false)
 	_expect(not overlay.visible, "Area 01 source-map overlay should hide through debug control")
 	overlay.free()
+
+func _test_area_01_visual_director() -> void:
+	var host := Node2D.new()
+	var director := Area01VisualDirectorScript.new()
+	host.add_child(director)
+	var overlay := director.sync_source_map_overlay(host, 96.0, false, true, "area01-central-drop", "pos 640,420 zoom 0.60")
+	_expect(overlay != null, "Area 01 visual director should create the source-map overlay")
+	_expect(overlay.scan_range == 96.0, "Area 01 visual director should own overlay scan range sync")
+	_expect(overlay.capture_state == "area01-central-drop", "Area 01 visual director should own overlay capture-state sync")
+	_expect(not overlay.visible, "Area 01 visual director should keep overlay hidden until debug is visible")
+
+	director.sync_source_map_overlay(host, 120.0, true, true, "area01-west-chamber", "pos 800,420 zoom 0.60")
+	_expect(director.source_map_overlay_visible(), "Area 01 visual director should expose overlay visibility")
+	_expect(overlay.scan_range == 120.0, "Area 01 visual director should update existing overlay scan range")
+	_expect(overlay.capture_state == "area01-west-chamber", "Area 01 visual director should update existing overlay capture state")
+
+	var report := director.cue_debug_report(host)
+	_expect(report.has("families"), "Area 01 visual director should expose cue-family diagnostics")
+	host.free()
 
 func _test_area_01_authoritative_wall_builder() -> void:
 	var main := MainScene.instantiate()

@@ -125,6 +125,8 @@ It is also part of the `quick` and `full` test tiers. Keep using the Node source
 
 Area 01 visual cue budgets are centralized in `scripts/area01_visual_cue_contract.gd`. The registry names the cue family, intended z-index band, alpha range, color family, label policy, and relative brightness rules for solid terrain, terrain rims/lips, passive atmosphere, return currents, timing/hazard support, resource pickups, knowledge payoffs, locked/future promises, active prompt/status labels, and debug/source-map overlays.
 
+`scripts/area01_visual_director.gd` is the first small Area 01 presentation extraction from `main.gd`. It owns source-map overlay creation/sync and cue-family diagnostic reporting for visual evidence. It does not own durable progression, oxygen, cargo, route unlock truth, resource banking, or core gameplay rules; callers pass it current presentation state through a small API.
+
 Generated source-map terrain and hooks are tagged with cue-family metadata by `Area01BlockoutBuilder`. Tests can call `Area01VisualCueContract.debug_report(root, camera_region)` to count visible nodes by cue family and warn when a review region has too many bright support cues competing for attention. This report is metadata-based; it does not replace screenshots or image analysis for final visual judgment.
 
 During local Godot review, press F10 to show or hide the developer-only Area 01 readability overlay. The overlay also forces debug telemetry on so it stays out of normal play by default. It draws source-map lanes, collision truth, generated hooks, resource/scan markers, cue-family labels, and a compact screenshot summary with map revision, capture/camera state, cue-family counts, unread collision count, and untagged visible-cue count.
