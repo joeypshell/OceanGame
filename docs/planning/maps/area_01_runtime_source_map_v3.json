@@ -1691,6 +1691,370 @@
       }
     },
     {
+      "id": "pressure_wreck_inner_ceiling",
+      "role": "Interior ceiling mass that closes the pressure wreck branch into a cave-like pocket without blocking the gate or scan zone.",
+      "polygon": [
+        [
+          3280,
+          780
+        ],
+        [
+          3500,
+          760
+        ],
+        [
+          3780,
+          790
+        ],
+        [
+          3860,
+          900
+        ],
+        [
+          3760,
+          1040
+        ],
+        [
+          3500,
+          1010
+        ],
+        [
+          3300,
+          940
+        ]
+      ],
+      "visual_strategy": "Cave ceiling fill with underside trim so the branch reads as enclosed terrain instead of open rectangle.",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Underside and diagonal trims around the playable pocket ceiling",
+      "blocks_player": true,
+      "trim_segments": [
+        {
+          "id": "pressure_wreck_inner_ceiling_underside",
+          "type": "underside",
+          "start": [
+            3300,
+            940
+          ],
+          "end": [
+            3760,
+            1040
+          ],
+          "offset": [
+            0,
+            12
+          ],
+          "repeat_spacing": 220,
+          "scale": 0.16,
+          "alpha": 0.28
+        },
+        {
+          "id": "pressure_wreck_inner_ceiling_right_slope",
+          "type": "diagonal_slope",
+          "start": [
+            3860,
+            900
+          ],
+          "end": [
+            3760,
+            1040
+          ],
+          "offset": [
+            8,
+            0
+          ],
+          "repeat_spacing": 200,
+          "scale": 0.14,
+          "alpha": 0.22
+        }
+      ],
+      "runtime_generation": {
+        "visible_polygon2d_name": "PressureWreckInnerCeilingTerrain",
+        "collision_static_body2d_name": "PressureWreckInnerCeilingSolid",
+        "collision_polygon2d_name": "PressureWreckInnerCeilingCollision",
+        "rim_container_name": "PressureWreckInnerCeilingRims",
+        "sprite_trim_source": "docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json",
+        "collision_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "pressure_wreck_lower_shelf",
+      "role": "Lower shelf mass under the pressure wreck pocket that frames the branch floor while leaving the pocket water navigable.",
+      "polygon": [
+        [
+          3000,
+          1320
+        ],
+        [
+          3260,
+          1285
+        ],
+        [
+          3540,
+          1310
+        ],
+        [
+          3860,
+          1270
+        ],
+        [
+          3980,
+          1445
+        ],
+        [
+          3860,
+          1580
+        ],
+        [
+          3500,
+          1605
+        ],
+        [
+          3150,
+          1570
+        ],
+        [
+          2940,
+          1460
+        ]
+      ],
+      "visual_strategy": "Cave floor fill with readable top lip and darker underside.",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Top lip and deep-floor trim along the pocket floor",
+      "blocks_player": true,
+      "trim_segments": [
+        {
+          "id": "pressure_wreck_lower_shelf_top_lip",
+          "type": "top_lip",
+          "start": [
+            3000,
+            1320
+          ],
+          "end": [
+            3860,
+            1270
+          ],
+          "offset": [
+            0,
+            -10
+          ],
+          "repeat_spacing": 240,
+          "scale": 0.18,
+          "alpha": 0.36
+        },
+        {
+          "id": "pressure_wreck_lower_shelf_deep_lip",
+          "type": "deep_floor_lip",
+          "start": [
+            3150,
+            1570
+          ],
+          "end": [
+            3860,
+            1580
+          ],
+          "offset": [
+            0,
+            12
+          ],
+          "repeat_spacing": 250,
+          "scale": 0.16,
+          "alpha": 0.24
+        }
+      ],
+      "runtime_generation": {
+        "visible_polygon2d_name": "PressureWreckLowerShelfTerrain",
+        "collision_static_body2d_name": "PressureWreckLowerShelfSolid",
+        "collision_polygon2d_name": "PressureWreckLowerShelfCollision",
+        "rim_container_name": "PressureWreckLowerShelfRims",
+        "sprite_trim_source": "docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json",
+        "collision_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "future_exit_ceiling",
+      "role": "Deep right ceiling mass above the future exit lane so the lower route reads as a corridor instead of blank open water.",
+      "polygon": [
+        [
+          3060,
+          1600
+        ],
+        [
+          3340,
+          1540
+        ],
+        [
+          3680,
+          1570
+        ],
+        [
+          4060,
+          1535
+        ],
+        [
+          4540,
+          1585
+        ],
+        [
+          4540,
+          1790
+        ],
+        [
+          4180,
+          1810
+        ],
+        [
+          3820,
+          1760
+        ],
+        [
+          3460,
+          1800
+        ],
+        [
+          3120,
+          1745
+        ]
+      ],
+      "visual_strategy": "Deep cave ceiling fill with subdued underside and diagonal trims.",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Subdued underside trim above the future-exit playable lane",
+      "blocks_player": true,
+      "trim_segments": [
+        {
+          "id": "future_exit_ceiling_underside",
+          "type": "underside",
+          "start": [
+            3120,
+            1745
+          ],
+          "end": [
+            4180,
+            1810
+          ],
+          "offset": [
+            0,
+            12
+          ],
+          "repeat_spacing": 260,
+          "scale": 0.16,
+          "alpha": 0.24
+        },
+        {
+          "id": "future_exit_ceiling_right_side",
+          "type": "vertical_wall",
+          "start": [
+            4540,
+            1585
+          ],
+          "end": [
+            4540,
+            1790
+          ],
+          "offset": [
+            10,
+            0
+          ],
+          "repeat_spacing": 220,
+          "scale": 0.15,
+          "alpha": 0.2
+        }
+      ],
+      "runtime_generation": {
+        "visible_polygon2d_name": "FutureExitCeilingTerrain",
+        "collision_static_body2d_name": "FutureExitCeilingSolid",
+        "collision_polygon2d_name": "FutureExitCeilingCollision",
+        "rim_container_name": "FutureExitCeilingRims",
+        "sprite_trim_source": "docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json",
+        "collision_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "future_exit_left_pillar",
+      "role": "Left pillar framing the future deep exit corridor while keeping the future exit trigger open.",
+      "polygon": [
+        [
+          2920,
+          1740
+        ],
+        [
+          3100,
+          1760
+        ],
+        [
+          3130,
+          2020
+        ],
+        [
+          3020,
+          2120
+        ],
+        [
+          2865,
+          2080
+        ],
+        [
+          2860,
+          1840
+        ]
+      ],
+      "visual_strategy": "Vertical cave pillar fill that narrows the lower-right lane without closing the entrance.",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Vertical wall trims on the playable corridor side",
+      "blocks_player": true,
+      "trim_segments": [
+        {
+          "id": "future_exit_left_pillar_right_wall",
+          "type": "vertical_wall",
+          "start": [
+            3100,
+            1760
+          ],
+          "end": [
+            3130,
+            2020
+          ],
+          "offset": [
+            10,
+            0
+          ],
+          "repeat_spacing": 220,
+          "scale": 0.15,
+          "alpha": 0.24
+        },
+        {
+          "id": "future_exit_left_pillar_lower_lip",
+          "type": "deep_floor_lip",
+          "start": [
+            2865,
+            2080
+          ],
+          "end": [
+            3020,
+            2120
+          ],
+          "offset": [
+            0,
+            10
+          ],
+          "repeat_spacing": 180,
+          "scale": 0.14,
+          "alpha": 0.2
+        }
+      ],
+      "runtime_generation": {
+        "visible_polygon2d_name": "FutureExitLeftPillarTerrain",
+        "collision_static_body2d_name": "FutureExitLeftPillarSolid",
+        "collision_polygon2d_name": "FutureExitLeftPillarCollision",
+        "rim_container_name": "FutureExitLeftPillarRims",
+        "sprite_trim_source": "docs/planning/maps/area_01_terrain_art_kit_v4_manifest.json",
+        "collision_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
       "id": "future_exit_floor",
       "role": "Lower-right future route floor around locked exit.",
       "polygon": [

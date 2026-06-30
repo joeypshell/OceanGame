@@ -8,6 +8,7 @@ import {
   capture,
   stageArea01CentralDrop,
   stageArea01DeepSpine,
+  stageArea01FutureExit,
   stageArea01LeftShelfCave,
   stageArea01RightChamber,
   stageArea01RightShelfPocket,
@@ -27,6 +28,7 @@ const stageHelpers = {
   area01_west_chamber: stageArea01WestChamber,
   area01_right_chamber: stageArea01RightChamber,
   area01_deep_spine: stageArea01DeepSpine,
+  area01_future_exit: stageArea01FutureExit,
 };
 
 test.describe("OceanGame Area 01 shell captures", () => {

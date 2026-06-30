@@ -103,6 +103,20 @@
       "reason": "Covers the deepest current shell state and the highest risk of wall/collision confusion."
     },
     {
+      "id": "area01-future-exit",
+      "stage_command": "area01_future_exit",
+      "stage_helper": "stageArea01FutureExit",
+      "expected_state": {
+        "result": "diving",
+        "debug_telemetry": false,
+        "active_stats_visible": true,
+        "route_stage": "area01_future_exit"
+      },
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "locked_future_route_promise"],
+      "expected_route_area_label_policy": "No debug labels; future-exit corridor should read as framed cave water, not a blank rectangular void.",
+      "reason": "Covers the right/deep corridor where sparse runtime geometry previously failed to match the uploaded source-map intent."
+    },
+    {
       "id": "area01-source-map-overlay",
       "stage_command": "area01_central_drop",
       "stage_helper": "stageArea01CentralDrop",

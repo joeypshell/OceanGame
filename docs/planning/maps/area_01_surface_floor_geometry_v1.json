@@ -226,6 +226,42 @@
       "blocks_player": true
     },
     {
+      "id": "pressure_wreck_inner_ceiling",
+      "role": "Interior ceiling mass that closes the pressure wreck branch into a cave-like pocket without blocking the gate or scan zone.",
+      "polygon": [[3280, 780], [3500, 760], [3780, 790], [3860, 900], [3760, 1040], [3500, 1010], [3300, 940]],
+      "visual_strategy": "Cave ceiling fill with underside trim so the branch reads as enclosed terrain instead of open rectangle.",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Underside and diagonal trims around the playable pocket ceiling",
+      "blocks_player": true
+    },
+    {
+      "id": "pressure_wreck_lower_shelf",
+      "role": "Lower shelf mass under the pressure wreck pocket that frames the branch floor while leaving the pocket water navigable.",
+      "polygon": [[3000, 1320], [3260, 1285], [3540, 1310], [3860, 1270], [3980, 1445], [3860, 1580], [3500, 1605], [3150, 1570], [2940, 1460]],
+      "visual_strategy": "Cave floor fill with readable top lip and darker underside.",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Top lip and deep-floor trim along the pocket floor",
+      "blocks_player": true
+    },
+    {
+      "id": "future_exit_ceiling",
+      "role": "Deep right ceiling mass above the future exit lane so the lower route reads as a corridor instead of blank open water.",
+      "polygon": [[3060, 1600], [3340, 1540], [3680, 1570], [4060, 1535], [4540, 1585], [4540, 1790], [4180, 1810], [3820, 1760], [3460, 1800], [3120, 1745]],
+      "visual_strategy": "Deep cave ceiling fill with subdued underside and diagonal trims.",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Subdued underside trim above the future-exit playable lane",
+      "blocks_player": true
+    },
+    {
+      "id": "future_exit_left_pillar",
+      "role": "Left pillar framing the future deep exit corridor while keeping the future exit trigger open.",
+      "polygon": [[2920, 1740], [3100, 1760], [3130, 2020], [3020, 2120], [2865, 2080], [2860, 1840]],
+      "visual_strategy": "Vertical cave pillar fill that narrows the lower-right lane without closing the entrance.",
+      "collision_strategy": "StaticBody2D + CollisionPolygon2D using this polygon",
+      "rim_strategy": "Vertical wall trims on the playable corridor side",
+      "blocks_player": true
+    },
+    {
       "id": "future_exit_floor",
       "role": "Lower-right future route floor around locked exit.",
       "polygon": [[2920, 2070], [3260, 2025], [3620, 2050], [4010, 2015], [4540, 2035], [4540, 2400], [2880, 2400], [2865, 2220]],

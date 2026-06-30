@@ -237,6 +237,17 @@ export async function stageArea01DeepSpine(page) {
   });
 }
 
+export async function stageArea01FutureExit(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "area01_future_exit";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "area01_future_exit",
+  });
+}
+
 export async function stageArea01CentralDrop(page) {
   await page.evaluate(() => {
     window.__oceangameDebugCommand = "area01_central_drop";

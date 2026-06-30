@@ -1859,6 +1859,9 @@ func _stage_debug_area01_shell_visual_review(stage: String) -> void:
 		"deep_spine":
 			target_position = Vector2(1480.0, 1330.0)
 			status = "Debug review: Area 01 deep spine staged."
+		"future_exit":
+			target_position = Vector2(3820.0, 1880.0)
+			status = "Debug review: Area 01 future exit corridor staged."
 		"central_drop":
 			target_position = Vector2(720.0, 940.0)
 		_:
@@ -2485,6 +2488,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_area01_shell_visual_review("right_chamber")
 		"area01_deep_spine":
 			_stage_debug_area01_shell_visual_review("deep_spine")
+		"area01_future_exit":
+			_stage_debug_area01_shell_visual_review("future_exit")
 		"area01_central_drop":
 			_stage_debug_area01_shell_visual_review("central_drop")
 		"expanded_east_shelf_route":
