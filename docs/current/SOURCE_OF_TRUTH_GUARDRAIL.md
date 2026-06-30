@@ -9,7 +9,7 @@ Use this checklist before closing issues that change milestone direction, Area 0
 - `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md` owns the current Subnautica-like day/night planning reset.
 - `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md` owns daylight multi-dive loop details until implementation replaces them in current docs.
 - `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md` governs map-topology workflow. Playable map topology must come from a machine-readable source and deterministic converter/importer, not hand-placed Godot polygons, screenshot interpretation, or arbitrary generated concept images.
-- `docs/planning/maps/area_01_runtime_source_map_v3.json` owns current Area 01 runtime geometry/collision source truth. Its topology model is playable-water-first: one hidden continuous `terrain_domain` reference, `playable_water_regions` from the source PNG trace plus cave mouths, generated visible/colliding `solid_terrain` partitions, generated rims from those same partition polygons, and explicit scene hooks.
+- `data/maps/area_01_source_grid_v1.json` owns current Area 01 topology source truth. `tools/build-area01-map.mjs` deterministically converts it into `data/maps/area_01_runtime_geometry.generated.json`, which Godot consumes for generated terrain/collision/rims/hooks.
 - `tests/playwright/area01-capture-manifest.json` owns deterministic Area 01 shell capture states.
 
 ## Issue Closing Checklist
@@ -22,7 +22,7 @@ For any issue that changes visible terrain, collision, source maps, route hooks,
 - Update `docs/current/PROJECT_INDEX.md` when adding a new active planning anchor or current source-of-truth document.
 - Update `README.md` only when the current milestone or project-doc index changes.
 - Update the Area 01 source map and capture manifest together when capture states or runtime map truth change.
-- For Area 01 topology changes, follow `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md`: update the machine-readable topology source or converter, regenerate runtime geometry, generate source/runtime/diff previews, and only then use Godot/Playwright screenshots as rendering confirmation. Until the source-grid pipeline exists, the current interim v3 process may update `docs/planning/maps/area_01_surface_floor_source_map_v1.png` or `docs/planning/maps/area_01_surface_floor_geometry_v1.json` as appropriate, regenerate `area_01_playable_water_trace_v1.json`, run `tools/build_area01_map.py --write-previews --validate`, and inspect `artifacts/maps/area_01_source_preview.png`, `artifacts/maps/area_01_runtime_preview.png`, and `artifacts/maps/area_01_diff_overlay.png`.
+- For Area 01 topology changes, follow `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md`: update `data/maps/area_01_source_grid_v1.json` or `tools/build-area01-map.mjs`, regenerate runtime geometry with `node .\tools\build-area01-map.mjs --validate --write --previews`, inspect the generated SVG source/runtime/diff previews under `artifacts/maps/`, and only then use Godot/Playwright screenshots as rendering confirmation.
 - Run `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier docs` for docs/workflow changes.
 - Run the targeted Area 01 capture command when the change is visual or capture-state related: `npm.cmd run test:area01-shell-captures`.
 - Run `node .\tools\validate-area01-playable-water-framing.mjs` before closing source-map issues that could make planned cave/pocket camera regions read as mostly blank open water.

@@ -1,5 +1,7 @@
 # Area 01 Surface-Floor Godot Map Pipeline - 2026-06-29
 
+Superseded on 2026-06-30 by the deterministic source-grid pipeline. Current Area 01 topology source truth is `data/maps/area_01_source_grid_v1.json`; current Godot-consumed runtime geometry is `data/maps/area_01_runtime_geometry.generated.json`; regenerate with `node .\tools\build-area01-map.mjs --validate --write --previews`. The PNG/v3 bridge described below is historical context only.
+
 ## Decision
 
 Area 01 now has a promoted `side_scroll_mode` Godot map pipeline bundle for the open-surface-over-continuous-seafloor direction.

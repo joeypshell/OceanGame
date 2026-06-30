@@ -1,0 +1,2338 @@
+{
+  "schema_version": 1,
+  "map_id": "area_01_runtime_geometry_generated",
+  "generated": true,
+  "source": "data/maps/area_01_source_grid_v1.json",
+  "generated_from": "data/maps/area_01_source_grid_v1.json",
+  "generated_by": "tools/build-area01-map.mjs",
+  "source_sha256": "88799e7b18a77cb41e04523806d06a5ee3956bfc3d996d6683141fa812b22ba9",
+  "cell_size": 64,
+  "stage_bounds": [
+    0,
+    0,
+    4096,
+    2304
+  ],
+  "coordinate_space": {
+    "origin": "top_left",
+    "units": "pixels",
+    "cell_size": 64,
+    "width_cells": 64,
+    "height_cells": 36
+  },
+  "source_grid": {
+    "map_id": "area_01",
+    "width": 64,
+    "height": 36,
+    "legend": {
+      "#": "solid_terrain",
+      ".": "playable_water",
+      "~": "open_surface_water"
+    }
+  },
+  "terrain_domain": {
+    "id": "continuous_undersea_terrain_domain",
+    "polygon": [
+      [
+        0,
+        320
+      ],
+      [
+        4096,
+        320
+      ],
+      [
+        4096,
+        2304
+      ],
+      [
+        0,
+        2304
+      ]
+    ],
+    "runtime_generation": {
+      "visual_role": "terrain_domain_reference",
+      "player_facing": false,
+      "visible_polygon2d_name": "ContinuousUnderseaTerrainDomainGuide"
+    }
+  },
+  "playable_water_components": [
+    {
+      "id": "water_component_001",
+      "cell_count": 1252,
+      "bounds_cells": [
+        0,
+        0,
+        64,
+        35
+      ],
+      "world_bounds": [
+        0,
+        0,
+        4096,
+        2240
+      ],
+      "touches_surface": true
+    }
+  ],
+  "playable_water_regions": [
+    {
+      "id": "open_surface_water",
+      "kind": "surface",
+      "status": "current",
+      "carves_collision": true,
+      "source_rect_cells": [
+        0,
+        0,
+        64,
+        5
+      ],
+      "source_sample_cell": [
+        12,
+        3
+      ],
+      "source_component_id": "water_component_001",
+      "cell_count": 320,
+      "polygon": [
+        [
+          0,
+          0
+        ],
+        [
+          4096,
+          0
+        ],
+        [
+          4096,
+          320
+        ],
+        [
+          0,
+          320
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "open_surface_water_reference",
+        "visible_polygon2d_name": "OpenSurfaceWaterWaterCutout",
+        "edge_line2d_name": "OpenSurfaceWaterWaterEdge",
+        "visual_points_source": "source grid playable water region",
+        "collision_carve_source": "source grid playable water cells"
+      }
+    },
+    {
+      "id": "starter_kelp_hole",
+      "kind": "cave",
+      "status": "current",
+      "carves_collision": true,
+      "source_rect_cells": [
+        7,
+        5,
+        11,
+        10
+      ],
+      "source_sample_cell": [
+        12,
+        10
+      ],
+      "source_component_id": "water_component_001",
+      "cell_count": 87,
+      "polygon": [
+        [
+          448,
+          320
+        ],
+        [
+          1152,
+          320
+        ],
+        [
+          1152,
+          960
+        ],
+        [
+          448,
+          960
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "playable_water_reference",
+        "visible_polygon2d_name": "StarterKelpHoleWaterCutout",
+        "edge_line2d_name": "StarterKelpHoleWaterEdge",
+        "visual_points_source": "source grid playable water region",
+        "collision_carve_source": "source grid playable water cells"
+      }
+    },
+    {
+      "id": "shell_reef_route",
+      "kind": "cave",
+      "status": "current",
+      "carves_collision": true,
+      "source_rect_cells": [
+        14,
+        8,
+        23,
+        9
+      ],
+      "source_sample_cell": [
+        25,
+        12
+      ],
+      "source_component_id": "water_component_001",
+      "cell_count": 192,
+      "polygon": [
+        [
+          896,
+          512
+        ],
+        [
+          2368,
+          512
+        ],
+        [
+          2368,
+          1088
+        ],
+        [
+          896,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "playable_water_reference",
+        "visible_polygon2d_name": "ShellReefRouteWaterCutout",
+        "edge_line2d_name": "ShellReefRouteWaterEdge",
+        "visual_points_source": "source grid playable water region",
+        "collision_carve_source": "source grid playable water cells"
+      }
+    },
+    {
+      "id": "thermal_vent_pocket",
+      "kind": "pocket",
+      "status": "current",
+      "carves_collision": true,
+      "source_rect_cells": [
+        29,
+        14,
+        17,
+        8
+      ],
+      "source_sample_cell": [
+        37,
+        18
+      ],
+      "source_component_id": "water_component_001",
+      "cell_count": 132,
+      "polygon": [
+        [
+          1856,
+          896
+        ],
+        [
+          2944,
+          896
+        ],
+        [
+          2944,
+          1408
+        ],
+        [
+          1856,
+          1408
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "playable_water_reference",
+        "visible_polygon2d_name": "ThermalVentPocketWaterCutout",
+        "edge_line2d_name": "ThermalVentPocketWaterEdge",
+        "visual_points_source": "source grid playable water region",
+        "collision_carve_source": "source grid playable water cells"
+      }
+    },
+    {
+      "id": "blue_chimney_route",
+      "kind": "cave",
+      "status": "current",
+      "carves_collision": true,
+      "source_rect_cells": [
+        20,
+        21,
+        24,
+        11
+      ],
+      "source_sample_cell": [
+        31,
+        27
+      ],
+      "source_component_id": "water_component_001",
+      "cell_count": 244,
+      "polygon": [
+        [
+          1280,
+          1344
+        ],
+        [
+          2816,
+          1344
+        ],
+        [
+          2816,
+          2048
+        ],
+        [
+          1280,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "playable_water_reference",
+        "visible_polygon2d_name": "BlueChimneyRouteWaterCutout",
+        "edge_line2d_name": "BlueChimneyRouteWaterEdge",
+        "visual_points_source": "source grid playable water region",
+        "collision_carve_source": "source grid playable water cells"
+      }
+    },
+    {
+      "id": "pressure_wreck_branch",
+      "kind": "branch",
+      "status": "current",
+      "carves_collision": true,
+      "source_rect_cells": [
+        43,
+        5,
+        19,
+        13
+      ],
+      "source_sample_cell": [
+        53,
+        12
+      ],
+      "source_component_id": "water_component_001",
+      "cell_count": 171,
+      "polygon": [
+        [
+          2752,
+          320
+        ],
+        [
+          3968,
+          320
+        ],
+        [
+          3968,
+          1152
+        ],
+        [
+          2752,
+          1152
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "playable_water_reference",
+        "visible_polygon2d_name": "PressureWreckBranchWaterCutout",
+        "edge_line2d_name": "PressureWreckBranchWaterEdge",
+        "visual_points_source": "source grid playable water region",
+        "collision_carve_source": "source grid playable water cells"
+      }
+    },
+    {
+      "id": "future_deep_exit",
+      "kind": "locked_promise",
+      "status": "future_locked",
+      "carves_collision": true,
+      "source_rect_cells": [
+        41,
+        24,
+        23,
+        11
+      ],
+      "source_sample_cell": [
+        58,
+        31
+      ],
+      "source_component_id": "water_component_001",
+      "cell_count": 195,
+      "polygon": [
+        [
+          2624,
+          1536
+        ],
+        [
+          4096,
+          1536
+        ],
+        [
+          4096,
+          2240
+        ],
+        [
+          2624,
+          2240
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "playable_water_reference",
+        "visible_polygon2d_name": "FutureDeepExitWaterCutout",
+        "edge_line2d_name": "FutureDeepExitWaterEdge",
+        "visual_points_source": "source grid playable water region",
+        "collision_carve_source": "source grid playable water cells"
+      }
+    }
+  ],
+  "solid_terrain": [
+    {
+      "id": "generated_grid_solid_001",
+      "source_cells": [
+        0,
+        5,
+        10,
+        3
+      ],
+      "polygon": [
+        [
+          0,
+          320
+        ],
+        [
+          640,
+          320
+        ],
+        [
+          640,
+          512
+        ],
+        [
+          0,
+          512
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          0,
+          5,
+          10,
+          3
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid001Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid001Collision",
+        "rim_container_name": "GeneratedGridSolid001Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_002",
+      "source_cells": [
+        14,
+        5,
+        19,
+        3
+      ],
+      "polygon": [
+        [
+          896,
+          320
+        ],
+        [
+          2112,
+          320
+        ],
+        [
+          2112,
+          512
+        ],
+        [
+          896,
+          512
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          14,
+          5,
+          19,
+          3
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid002Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid002Collision",
+        "rim_container_name": "GeneratedGridSolid002Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_003",
+      "source_cells": [
+        37,
+        5,
+        9,
+        4
+      ],
+      "polygon": [
+        [
+          2368,
+          320
+        ],
+        [
+          2944,
+          320
+        ],
+        [
+          2944,
+          576
+        ],
+        [
+          2368,
+          576
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          37,
+          5,
+          9,
+          4
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid003Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid003Collision",
+        "rim_container_name": "GeneratedGridSolid003Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_004",
+      "source_cells": [
+        50,
+        5,
+        14,
+        4
+      ],
+      "polygon": [
+        [
+          3200,
+          320
+        ],
+        [
+          4096,
+          320
+        ],
+        [
+          4096,
+          576
+        ],
+        [
+          3200,
+          576
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          50,
+          5,
+          14,
+          4
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid004Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid004Collision",
+        "rim_container_name": "GeneratedGridSolid004Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_005",
+      "source_cells": [
+        0,
+        8,
+        7,
+        28
+      ],
+      "polygon": [
+        [
+          0,
+          512
+        ],
+        [
+          448,
+          512
+        ],
+        [
+          448,
+          2304
+        ],
+        [
+          0,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          0,
+          8,
+          7,
+          28
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid005Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid005Collision",
+        "rim_container_name": "GeneratedGridSolid005Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_006",
+      "source_cells": [
+        18,
+        8,
+        2,
+        2
+      ],
+      "polygon": [
+        [
+          1152,
+          512
+        ],
+        [
+          1280,
+          512
+        ],
+        [
+          1280,
+          640
+        ],
+        [
+          1152,
+          640
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          18,
+          8,
+          2,
+          2
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid006Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid006Collision",
+        "rim_container_name": "GeneratedGridSolid006Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_007",
+      "source_cells": [
+        31,
+        8,
+        2,
+        2
+      ],
+      "polygon": [
+        [
+          1984,
+          512
+        ],
+        [
+          2112,
+          512
+        ],
+        [
+          2112,
+          640
+        ],
+        [
+          1984,
+          640
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          31,
+          8,
+          2,
+          2
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid007Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid007Collision",
+        "rim_container_name": "GeneratedGridSolid007Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_008",
+      "source_cells": [
+        37,
+        9,
+        6,
+        4
+      ],
+      "polygon": [
+        [
+          2368,
+          576
+        ],
+        [
+          2752,
+          576
+        ],
+        [
+          2752,
+          832
+        ],
+        [
+          2368,
+          832
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          37,
+          9,
+          6,
+          4
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid008Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid008Collision",
+        "rim_container_name": "GeneratedGridSolid008Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_009",
+      "source_cells": [
+        59,
+        9,
+        5,
+        3
+      ],
+      "polygon": [
+        [
+          3776,
+          576
+        ],
+        [
+          4096,
+          576
+        ],
+        [
+          4096,
+          768
+        ],
+        [
+          3776,
+          768
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          59,
+          9,
+          5,
+          3
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid009Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid009Collision",
+        "rim_container_name": "GeneratedGridSolid009Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_010",
+      "source_cells": [
+        62,
+        12,
+        2,
+        12
+      ],
+      "polygon": [
+        [
+          3968,
+          768
+        ],
+        [
+          4096,
+          768
+        ],
+        [
+          4096,
+          1536
+        ],
+        [
+          3968,
+          1536
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          62,
+          12,
+          2,
+          12
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid010Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid010Collision",
+        "rim_container_name": "GeneratedGridSolid010Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_011",
+      "source_cells": [
+        7,
+        13,
+        1,
+        23
+      ],
+      "polygon": [
+        [
+          448,
+          832
+        ],
+        [
+          512,
+          832
+        ],
+        [
+          512,
+          2304
+        ],
+        [
+          448,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          7,
+          13,
+          1,
+          23
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid011Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid011Collision",
+        "rim_container_name": "GeneratedGridSolid011Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_012",
+      "source_cells": [
+        37,
+        13,
+        4,
+        1
+      ],
+      "polygon": [
+        [
+          2368,
+          832
+        ],
+        [
+          2624,
+          832
+        ],
+        [
+          2624,
+          896
+        ],
+        [
+          2368,
+          896
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          37,
+          13,
+          4,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid012Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid012Collision",
+        "rim_container_name": "GeneratedGridSolid012Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_013",
+      "source_cells": [
+        8,
+        15,
+        6,
+        21
+      ],
+      "polygon": [
+        [
+          512,
+          960
+        ],
+        [
+          896,
+          960
+        ],
+        [
+          896,
+          2304
+        ],
+        [
+          512,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          8,
+          15,
+          6,
+          21
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid013Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid013Collision",
+        "rim_container_name": "GeneratedGridSolid013Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_014",
+      "source_cells": [
+        48,
+        15,
+        1,
+        12
+      ],
+      "polygon": [
+        [
+          3072,
+          960
+        ],
+        [
+          3136,
+          960
+        ],
+        [
+          3136,
+          1728
+        ],
+        [
+          3072,
+          1728
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          48,
+          15,
+          1,
+          12
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid014Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid014Collision",
+        "rim_container_name": "GeneratedGridSolid014Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_015",
+      "source_cells": [
+        22,
+        16,
+        7,
+        5
+      ],
+      "polygon": [
+        [
+          1408,
+          1024
+        ],
+        [
+          1856,
+          1024
+        ],
+        [
+          1856,
+          1344
+        ],
+        [
+          1408,
+          1344
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          22,
+          16,
+          7,
+          5
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid015Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid015Collision",
+        "rim_container_name": "GeneratedGridSolid015Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_016",
+      "source_cells": [
+        46,
+        16,
+        2,
+        11
+      ],
+      "polygon": [
+        [
+          2944,
+          1024
+        ],
+        [
+          3072,
+          1024
+        ],
+        [
+          3072,
+          1728
+        ],
+        [
+          2944,
+          1728
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          46,
+          16,
+          2,
+          11
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid016Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid016Collision",
+        "rim_container_name": "GeneratedGridSolid016Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_017",
+      "source_cells": [
+        14,
+        17,
+        8,
+        8
+      ],
+      "polygon": [
+        [
+          896,
+          1088
+        ],
+        [
+          1408,
+          1088
+        ],
+        [
+          1408,
+          1600
+        ],
+        [
+          896,
+          1600
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          14,
+          17,
+          8,
+          8
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid017Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid017Collision",
+        "rim_container_name": "GeneratedGridSolid017Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_018",
+      "source_cells": [
+        49,
+        18,
+        13,
+        6
+      ],
+      "polygon": [
+        [
+          3136,
+          1152
+        ],
+        [
+          3968,
+          1152
+        ],
+        [
+          3968,
+          1536
+        ],
+        [
+          3136,
+          1536
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          49,
+          18,
+          13,
+          6
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid018Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid018Collision",
+        "rim_container_name": "GeneratedGridSolid018Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_019",
+      "source_cells": [
+        44,
+        20,
+        2,
+        7
+      ],
+      "polygon": [
+        [
+          2816,
+          1280
+        ],
+        [
+          2944,
+          1280
+        ],
+        [
+          2944,
+          1728
+        ],
+        [
+          2816,
+          1728
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          44,
+          20,
+          2,
+          7
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid019Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid019Collision",
+        "rim_container_name": "GeneratedGridSolid019Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_020",
+      "source_cells": [
+        22,
+        21,
+        3,
+        4
+      ],
+      "polygon": [
+        [
+          1408,
+          1344
+        ],
+        [
+          1600,
+          1344
+        ],
+        [
+          1600,
+          1600
+        ],
+        [
+          1408,
+          1600
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          22,
+          21,
+          3,
+          4
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid020Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid020Collision",
+        "rim_container_name": "GeneratedGridSolid020Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_021",
+      "source_cells": [
+        49,
+        24,
+        1,
+        3
+      ],
+      "polygon": [
+        [
+          3136,
+          1536
+        ],
+        [
+          3200,
+          1536
+        ],
+        [
+          3200,
+          1728
+        ],
+        [
+          3136,
+          1728
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          49,
+          24,
+          1,
+          3
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid021Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid021Collision",
+        "rim_container_name": "GeneratedGridSolid021Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_022",
+      "source_cells": [
+        14,
+        25,
+        6,
+        11
+      ],
+      "polygon": [
+        [
+          896,
+          1600
+        ],
+        [
+          1280,
+          1600
+        ],
+        [
+          1280,
+          2304
+        ],
+        [
+          896,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          14,
+          25,
+          6,
+          11
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid022Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid022Collision",
+        "rim_container_name": "GeneratedGridSolid022Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_023",
+      "source_cells": [
+        62,
+        28,
+        2,
+        3
+      ],
+      "polygon": [
+        [
+          3968,
+          1792
+        ],
+        [
+          4096,
+          1792
+        ],
+        [
+          4096,
+          1984
+        ],
+        [
+          3968,
+          1984
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          62,
+          28,
+          2,
+          3
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid023Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid023Collision",
+        "rim_container_name": "GeneratedGridSolid023Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_024",
+      "source_cells": [
+        20,
+        32,
+        21,
+        4
+      ],
+      "polygon": [
+        [
+          1280,
+          2048
+        ],
+        [
+          2624,
+          2048
+        ],
+        [
+          2624,
+          2304
+        ],
+        [
+          1280,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          20,
+          32,
+          21,
+          4
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid024Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid024Collision",
+        "rim_container_name": "GeneratedGridSolid024Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_025",
+      "source_cells": [
+        41,
+        33,
+        17,
+        3
+      ],
+      "polygon": [
+        [
+          2624,
+          2112
+        ],
+        [
+          3712,
+          2112
+        ],
+        [
+          3712,
+          2304
+        ],
+        [
+          2624,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          41,
+          33,
+          17,
+          3
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid025Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid025Collision",
+        "rim_container_name": "GeneratedGridSolid025Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_026",
+      "source_cells": [
+        58,
+        35,
+        6,
+        1
+      ],
+      "polygon": [
+        [
+          3712,
+          2240
+        ],
+        [
+          4096,
+          2240
+        ],
+        [
+          4096,
+          2304
+        ],
+        [
+          3712,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          58,
+          35,
+          6,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid026Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid026Collision",
+        "rim_container_name": "GeneratedGridSolid026Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    }
+  ],
+  "scene_hooks": [
+    {
+      "id": "oxygen_surface",
+      "type": "oxygen",
+      "source_cells": [
+        0,
+        0,
+        64,
+        5
+      ],
+      "world_rect": [
+        0,
+        0,
+        4096,
+        320
+      ],
+      "world_position": [
+        2048,
+        160
+      ],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          4096,
+          0
+        ],
+        [
+          4096,
+          320
+        ],
+        [
+          0,
+          320
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "SurfaceOxygenRefillZoneArea",
+        "collision_polygon2d_name": "SurfaceOxygenRefillZoneTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "ship_offload",
+      "type": "offload",
+      "source_cells": [
+        12,
+        3,
+        1,
+        1
+      ],
+      "world_rect": [
+        768,
+        192,
+        64,
+        64
+      ],
+      "world_position": [
+        800,
+        224
+      ],
+      "points": [
+        [
+          768,
+          192
+        ],
+        [
+          832,
+          192
+        ],
+        [
+          832,
+          256
+        ],
+        [
+          768,
+          256
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "ShipOffloadZoneArea",
+        "collision_polygon2d_name": "ShipOffloadZoneTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "player_start",
+      "type": "player_start",
+      "source_cells": [
+        12,
+        6,
+        1,
+        1
+      ],
+      "world_rect": [
+        768,
+        384,
+        64,
+        64
+      ],
+      "world_position": [
+        800,
+        416
+      ],
+      "points": [
+        [
+          768,
+          384
+        ],
+        [
+          832,
+          384
+        ],
+        [
+          832,
+          448
+        ],
+        [
+          768,
+          448
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "PlayerStartArea",
+        "collision_polygon2d_name": "PlayerStartTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "starter_kelp_fiber",
+      "type": "pickup",
+      "resource": "kelp_fiber",
+      "source_cells": [
+        9,
+        10,
+        1,
+        1
+      ],
+      "world_rect": [
+        576,
+        640,
+        64,
+        64
+      ],
+      "world_position": [
+        608,
+        672
+      ],
+      "points": [
+        [
+          576,
+          640
+        ],
+        [
+          640,
+          640
+        ],
+        [
+          640,
+          704
+        ],
+        [
+          576,
+          704
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "StarterKelpFiberArea",
+        "collision_polygon2d_name": "StarterKelpFiberTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "starter_shell_fragments",
+      "type": "pickup",
+      "resource": "shell_fragments",
+      "source_cells": [
+        16,
+        11,
+        1,
+        1
+      ],
+      "world_rect": [
+        1024,
+        704,
+        64,
+        64
+      ],
+      "world_position": [
+        1056,
+        736
+      ],
+      "points": [
+        [
+          1024,
+          704
+        ],
+        [
+          1088,
+          704
+        ],
+        [
+          1088,
+          768
+        ],
+        [
+          1024,
+          768
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "StarterShellFragmentsArea",
+        "collision_polygon2d_name": "StarterShellFragmentsTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "starter_food_supply",
+      "type": "pickup",
+      "resource": "food_supply",
+      "source_cells": [
+        23,
+        13,
+        1,
+        1
+      ],
+      "world_rect": [
+        1472,
+        832,
+        64,
+        64
+      ],
+      "world_position": [
+        1504,
+        864
+      ],
+      "points": [
+        [
+          1472,
+          832
+        ],
+        [
+          1536,
+          832
+        ],
+        [
+          1536,
+          896
+        ],
+        [
+          1472,
+          896
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "StarterFoodSupplyArea",
+        "collision_polygon2d_name": "StarterFoodSupplyTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "thermal_vent_scan",
+      "type": "scan",
+      "target": "thermal_vent",
+      "source_cells": [
+        37,
+        18,
+        1,
+        1
+      ],
+      "world_rect": [
+        2368,
+        1152,
+        64,
+        64
+      ],
+      "world_position": [
+        2400,
+        1184
+      ],
+      "points": [
+        [
+          2368,
+          1152
+        ],
+        [
+          2432,
+          1152
+        ],
+        [
+          2432,
+          1216
+        ],
+        [
+          2368,
+          1216
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "ThermalVentScanArea",
+        "collision_polygon2d_name": "ThermalVentScanTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "pressure_wreck_scan",
+      "type": "scan",
+      "target": "pressure_wreck_signal",
+      "source_cells": [
+        53,
+        12,
+        1,
+        1
+      ],
+      "world_rect": [
+        3392,
+        768,
+        64,
+        64
+      ],
+      "world_position": [
+        3424,
+        800
+      ],
+      "points": [
+        [
+          3392,
+          768
+        ],
+        [
+          3456,
+          768
+        ],
+        [
+          3456,
+          832
+        ],
+        [
+          3392,
+          832
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "PressureWreckScanArea",
+        "collision_polygon2d_name": "PressureWreckScanTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "pressure_wreck_gate",
+      "type": "gate",
+      "source_cells": [
+        46,
+        13,
+        1,
+        2
+      ],
+      "world_rect": [
+        2944,
+        832,
+        64,
+        128
+      ],
+      "world_position": [
+        2976,
+        896
+      ],
+      "points": [
+        [
+          2944,
+          832
+        ],
+        [
+          3008,
+          832
+        ],
+        [
+          3008,
+          960
+        ],
+        [
+          2944,
+          960
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "PressureWreckGateArea",
+        "collision_polygon2d_name": "PressureWreckGateTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "future_deep_exit_gate",
+      "type": "gate",
+      "source_cells": [
+        58,
+        31,
+        2,
+        1
+      ],
+      "world_rect": [
+        3712,
+        1984,
+        128,
+        64
+      ],
+      "world_position": [
+        3776,
+        2016
+      ],
+      "points": [
+        [
+          3712,
+          1984
+        ],
+        [
+          3840,
+          1984
+        ],
+        [
+          3840,
+          2048
+        ],
+        [
+          3712,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "FutureDeepExitGateArea",
+        "collision_polygon2d_name": "FutureDeepExitGateTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    },
+    {
+      "id": "blue_chimney_return_current",
+      "type": "return_current",
+      "source_cells": [
+        28,
+        24,
+        1,
+        4
+      ],
+      "world_rect": [
+        1792,
+        1536,
+        64,
+        256
+      ],
+      "world_position": [
+        1824,
+        1664
+      ],
+      "points": [
+        [
+          1792,
+          1536
+        ],
+        [
+          1856,
+          1536
+        ],
+        [
+          1856,
+          1792
+        ],
+        [
+          1792,
+          1792
+        ]
+      ],
+      "runtime_generation": {
+        "area2d_name": "BlueChimneyReturnCurrentArea",
+        "collision_polygon2d_name": "BlueChimneyReturnCurrentTrigger",
+        "points_source": "this hook points",
+        "blocks_player": false
+      }
+    }
+  ],
+  "review_points": [
+    {
+      "id": "surface_entry",
+      "source_cell": [
+        12,
+        4
+      ],
+      "world_position": [
+        800,
+        288
+      ]
+    },
+    {
+      "id": "starter_kelp_hole",
+      "source_cell": [
+        12,
+        10
+      ],
+      "world_position": [
+        800,
+        672
+      ]
+    },
+    {
+      "id": "shell_reef_route",
+      "source_cell": [
+        25,
+        12
+      ],
+      "world_position": [
+        1632,
+        800
+      ]
+    },
+    {
+      "id": "central_drop_thermal_vent",
+      "source_cell": [
+        36,
+        17
+      ],
+      "world_position": [
+        2336,
+        1120
+      ]
+    },
+    {
+      "id": "blue_chimney_route",
+      "source_cell": [
+        31,
+        27
+      ],
+      "world_position": [
+        2016,
+        1760
+      ]
+    },
+    {
+      "id": "pressure_wreck_branch",
+      "source_cell": [
+        53,
+        12
+      ],
+      "world_position": [
+        3424,
+        800
+      ]
+    },
+    {
+      "id": "future_deep_exit",
+      "source_cell": [
+        58,
+        31
+      ],
+      "world_position": [
+        3744,
+        2016
+      ]
+    }
+  ],
+  "camera_review_points": [
+    {
+      "id": "surface_entry",
+      "source_cell": [
+        12,
+        4
+      ],
+      "world_position": [
+        800,
+        288
+      ]
+    },
+    {
+      "id": "starter_kelp_hole",
+      "source_cell": [
+        12,
+        10
+      ],
+      "world_position": [
+        800,
+        672
+      ]
+    },
+    {
+      "id": "shell_reef_route",
+      "source_cell": [
+        25,
+        12
+      ],
+      "world_position": [
+        1632,
+        800
+      ]
+    },
+    {
+      "id": "central_drop_thermal_vent",
+      "source_cell": [
+        36,
+        17
+      ],
+      "world_position": [
+        2336,
+        1120
+      ]
+    },
+    {
+      "id": "blue_chimney_route",
+      "source_cell": [
+        31,
+        27
+      ],
+      "world_position": [
+        2016,
+        1760
+      ]
+    },
+    {
+      "id": "pressure_wreck_branch",
+      "source_cell": [
+        53,
+        12
+      ],
+      "world_position": [
+        3424,
+        800
+      ]
+    },
+    {
+      "id": "future_deep_exit",
+      "source_cell": [
+        58,
+        31
+      ],
+      "world_position": [
+        3744,
+        2016
+      ]
+    }
+  ],
+  "validation_contract": {
+    "topology_source": "data/maps/area_01_source_grid_v1.json",
+    "generated_geometry_must_not_be_hand_edited": true,
+    "visible_collision_rim_rule": "visible terrain source == collision source == rim/lip source",
+    "screenshots_are_confirmation_only": true
+  }
+}

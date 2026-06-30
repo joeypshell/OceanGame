@@ -3,7 +3,9 @@ extends Node2D
 
 const Area01SourceTruthValidatorScript := preload("res://scripts/area01_source_truth_validator.gd")
 const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
-const RUNTIME_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_runtime_source_map_v3.json"
+const GENERATED_RUNTIME_GEOMETRY_PATH := "res://data/maps/area_01_runtime_geometry.generated.json"
+const RUNTIME_SOURCE_MAP_PATH := GENERATED_RUNTIME_GEOMETRY_PATH
+const RUNTIME_SOURCE_MAP_V3_PATH := "res://docs/planning/maps/area_01_runtime_source_map_v3.json"
 const LEGACY_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_blockout_source_map_v1.json"
 const SOURCE_MAP_PATH := RUNTIME_SOURCE_MAP_PATH
 const LANE_COLOR := Color(0.0, 0.9, 1.0, 0.12)
@@ -51,7 +53,7 @@ func set_debug_visible(enabled: bool) -> void:
 func load_source_map() -> bool:
 	source_map = {}
 	load_error = ""
-	for path in [RUNTIME_SOURCE_MAP_PATH, LEGACY_SOURCE_MAP_PATH]:
+	for path in [RUNTIME_SOURCE_MAP_PATH, RUNTIME_SOURCE_MAP_V3_PATH, LEGACY_SOURCE_MAP_PATH]:
 		var file := FileAccess.open(path, FileAccess.READ)
 		if file == null:
 			continue

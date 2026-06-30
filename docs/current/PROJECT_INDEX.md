@@ -22,8 +22,8 @@ This index points future work to the active source of truth without making `docs
 - `docs/planning/AREA_01_SURFACE_FLOOR_SPRITE_KIT_PREVIEW_2026_06_29.md`: source-geometry-to-terrain-kit preview status.
 - `docs/planning/AREA_01_TERRAIN_ART_KIT_V4_2026_06_29.md`: current repeatable terrain-kit candidate and runtime review pipeline.
 - `docs/planning/AREA_01_TERRAIN_ART_KIT_V3_2026_06_29.md`: prior terrain-kit candidate retained for comparison.
-- `docs/planning/AREA_01_MAP_TRUTH_RECONCILIATION_2026_06_29.md`: comparison history for the old runtime blockout authority and the accepted source-floor direction that now feeds runtime v3.
-- `docs/planning/AREA_01_RUNTIME_SOURCE_MAP_V3_2026_06_30.md`: current Area 01 runtime geometry/collision authority and regeneration guardrail.
+- `docs/planning/AREA_01_MAP_TRUTH_RECONCILIATION_2026_06_29.md`: comparison history for the old runtime blockout authority and the accepted source-floor direction that led into the generated source-grid pipeline.
+- `docs/planning/AREA_01_RUNTIME_SOURCE_MAP_V3_2026_06_30.md`: historical runtime v3 bridge retained for comparison after the source-grid pipeline superseded it.
 - `docs/planning/AREA_01_RUNTIME_SOURCE_MAP_V2_2026_06_29.md`: historical runtime-source candidate retained for comparison.
 - `docs/planning/AREA_01_ORGANIC_GEOMETRY_PIPELINE_PASS_2026_06_29.md`: repeatable organic geometry pass and next gate before runtime terrain wiring.
 - `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md`: current planning reset for open-surface oxygen, ship offload, daylight timer, health, resource survival, and night build/craft/upgrade flow.

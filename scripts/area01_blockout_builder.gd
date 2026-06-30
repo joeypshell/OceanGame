@@ -2,7 +2,9 @@ class_name Area01BlockoutBuilder
 extends RefCounted
 
 const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
-const RUNTIME_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_runtime_source_map_v3.json"
+const GENERATED_RUNTIME_GEOMETRY_PATH := "res://data/maps/area_01_runtime_geometry.generated.json"
+const RUNTIME_SOURCE_MAP_PATH := GENERATED_RUNTIME_GEOMETRY_PATH
+const RUNTIME_SOURCE_MAP_V3_PATH := "res://docs/planning/maps/area_01_runtime_source_map_v3.json"
 const LEGACY_SOURCE_MAP_PATH := "res://docs/planning/maps/area_01_blockout_source_map_v1.json"
 const SOURCE_MAP_PATH := RUNTIME_SOURCE_MAP_PATH
 const REEF_WALL_FILL_TEXTURE := preload("res://assets/exports/sprites/environment/area01_reef_wall_fill_texture_v2.png")
@@ -104,7 +106,7 @@ func build(scene_root: Node) -> bool:
 	return true
 
 func _load_source_map() -> Dictionary:
-	for path in [RUNTIME_SOURCE_MAP_PATH, LEGACY_SOURCE_MAP_PATH]:
+	for path in [RUNTIME_SOURCE_MAP_PATH, RUNTIME_SOURCE_MAP_V3_PATH, LEGACY_SOURCE_MAP_PATH]:
 		var file := FileAccess.open(path, FileAccess.READ)
 		if file == null:
 			continue
@@ -202,7 +204,7 @@ func _build_generated_runtime(scene_root: Node, source_map: Dictionary) -> bool:
 			return false
 		if not _create_generated_solid(terrain_layer, collision_root, rim_layer, terrain as Dictionary):
 			return false
-		if not _is_collision_partition(terrain as Dictionary):
+		if not _is_generated_solid_partition(terrain as Dictionary):
 			_apply_terrain_accents(scene_root, terrain as Dictionary)
 
 	_create_generated_hooks(scene_root, source_map)
@@ -253,21 +255,19 @@ func _create_generated_solid(terrain_layer: Node2D, collision_root: StaticBody2D
 
 	var runtime_generation: Variant = terrain.get("runtime_generation", {})
 	var runtime: Dictionary = runtime_generation as Dictionary if runtime_generation is Dictionary else {}
-	var is_collision_partition := _is_collision_partition(terrain)
 	var visible_name := String(runtime.get("visible_polygon2d_name", "%sTerrain" % _pascal_case_id(terrain_id)))
 	var collision_name := String(runtime.get("collision_polygon2d_name", "%sCollision" % _pascal_case_id(terrain_id)))
 	var rim_name := String(runtime.get("rim_container_name", "%sRims" % _pascal_case_id(terrain_id)))
 
-	if not is_collision_partition:
-		var visible := Polygon2D.new()
-		visible.name = visible_name
-		visible.polygon = points
-		visible.uv = _texture_uv_for_points(points, _polygon_bounds(points))
-		visible.texture = REEF_WALL_FILL_TEXTURE
-		visible.visible = true
-		visible.color = SOLID_COLOR
-		Area01VisualCueContractScript.tag_node(visible, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, terrain_id)
-		terrain_layer.add_child(visible)
+	var visible := Polygon2D.new()
+	visible.name = visible_name
+	visible.polygon = points
+	visible.uv = _texture_uv_for_points(points, _polygon_bounds(points))
+	visible.texture = REEF_WALL_FILL_TEXTURE
+	visible.visible = true
+	visible.color = SOLID_COLOR
+	Area01VisualCueContractScript.tag_node(visible, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, terrain_id)
+	terrain_layer.add_child(visible)
 
 	var collision := CollisionPolygon2D.new()
 	collision.name = collision_name
@@ -276,14 +276,13 @@ func _create_generated_solid(terrain_layer: Node2D, collision_root: StaticBody2D
 	Area01VisualCueContractScript.tag_node(collision, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, terrain_id)
 	collision_root.add_child(collision)
 
-	if not is_collision_partition:
-		var rim := Polygon2D.new()
-		rim.name = rim_name
-		rim.polygon = points
-		rim.visible = true
-		rim.color = LIP_COLOR
-		Area01VisualCueContractScript.tag_node(rim, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, terrain_id)
-		rim_layer.add_child(rim)
+	var rim := Polygon2D.new()
+	rim.name = rim_name
+	rim.polygon = points
+	rim.visible = true
+	rim.color = LIP_COLOR
+	Area01VisualCueContractScript.tag_node(rim, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, terrain_id)
+	rim_layer.add_child(rim)
 	return true
 
 func _create_generated_source_visuals(terrain_layer: Node2D, rim_layer: Node2D, source_map: Dictionary) -> void:
@@ -323,9 +322,9 @@ func _create_terrain_domain_visual(terrain_layer: Node2D, terrain_domain: Dictio
 	var visible := Polygon2D.new()
 	visible.name = visible_name
 	visible.polygon = points
-	visible.visible = true
+	visible.visible = false
 	visible.color = TERRAIN_DOMAIN_COLOR
-	Area01VisualCueContractScript.tag_node(visible, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, domain_id)
+	Area01VisualCueContractScript.tag_node(visible, Area01VisualCueContractScript.FAMILY_PASSIVE_BACKGROUND, domain_id)
 	terrain_layer.add_child(visible)
 
 func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer: Node2D, player_rim_layer: Node2D, water: Dictionary) -> void:
@@ -343,7 +342,7 @@ func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer:
 	var cutout := Polygon2D.new()
 	cutout.name = visible_name
 	cutout.polygon = points
-	cutout.visible = carves_collision
+	cutout.visible = false
 	cutout.color = OPEN_SURFACE_WATER_CUTOUT_COLOR if water_kind == "open_surface" else WATER_CUTOUT_COLOR
 	Area01VisualCueContractScript.tag_node(cutout, Area01VisualCueContractScript.FAMILY_PASSIVE_BACKGROUND, water_id)
 	water_cutout_layer.add_child(cutout)
@@ -357,7 +356,7 @@ func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer:
 	Area01VisualCueContractScript.tag_node(edge, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, water_id)
 	water_edge_layer.add_child(edge)
 
-	if carves_collision:
+	if carves_collision and bool(runtime.get("player_facing_rim_markers", false)):
 		_add_playable_water_rim_markers(player_rim_layer, "%sPlayerRimSprites" % edge_name, water_id, points, String(water.get("status", "")))
 
 func _add_playable_water_rim_markers(player_rim_layer: Node2D, group_name: String, water_id: String, points: PackedVector2Array, status: String) -> void:
@@ -419,12 +418,13 @@ func _water_rim_marker_rotation(edge: Vector2) -> float:
 		return 0.0
 	return 0.0 if edge.x >= 0.0 else PI
 
-func _is_collision_partition(terrain: Dictionary) -> bool:
+func _is_generated_solid_partition(terrain: Dictionary) -> bool:
 	var runtime_generation: Variant = terrain.get("runtime_generation", {})
 	if not runtime_generation is Dictionary:
 		return false
 	var runtime := runtime_generation as Dictionary
-	return String(runtime.get("visual_role", "")) == "collision_partition"
+	var visual_role := String(runtime.get("visual_role", ""))
+	return visual_role == "generated_solid_partition"
 
 func _create_generated_hooks(scene_root: Node, source_map: Dictionary) -> void:
 	var hook_parent := _generated_hook_layer(scene_root)

@@ -99,10 +99,10 @@ Primary planning docs:
 - Labels should be sparse and reserved for compact place names or honest locked/open states.
 - Active HUD copy must use reserved stats/prompt/status rows; long commands or feedback should clip or be shortened instead of wrapping into neighboring text.
 - Area 01 collision boundaries must be readable as terrain lips/rims before contact; do not leave invisible or random-feeling blockers in normal play.
-- Area 01 collision, terrain, pockets, scannables, and route hooks must map to `docs/planning/maps/area_01_runtime_source_map_v3.json`, or the runtime source map must be updated before the scene changes.
+- Area 01 collision, terrain, pockets, scannables, and route hooks must map to `data/maps/area_01_source_grid_v1.json` through generated `data/maps/area_01_runtime_geometry.generated.json`, or the source grid/converter must be updated before the scene changes.
 - During Area 01 wall rescue, do not hand-place separate wall visuals, collision, or lips; they must be generated from the same source-map polygon.
-- Area 01 runtime v3 is playable-water-first: update the source PNG trace and cave-mouth geometry, regenerate v3, and let generated visible/colliding `solid_terrain` partitions fill terrain around it. Do not hand-author isolated `solid_terrain` chunks as the primary map source, and do not draw a player-facing terrain domain that is not also collision.
-- Future Area 01 topology work should migrate from the interim PNG-trace workflow to the `AGENTIC_MAP_PIPELINE_PRACTICES.md` machine-readable source-grid workflow. Do not use arbitrary generated concept images, screenshots, or hand-placed Godot polygons as collision/topology authority.
+- Area 01 is now source-grid-first: update the machine-readable grid, run `node .\tools\build-area01-map.mjs --validate --write --previews`, and let generated visible/colliding `solid_terrain` partitions fill terrain around playable water. Do not hand-author isolated `solid_terrain` chunks as the primary map source, and do not draw a player-facing terrain domain that is not also collision.
+- Follow `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md` for Area 01 and future map work. Do not use arbitrary generated concept images, screenshots, or hand-placed Godot polygons as collision/topology authority.
 - Passive creature scan targets need visible silhouettes or outlines at normal play scale; scan labels should confirm the target, not be the only way to perceive it.
 - Do not spend another batch polishing a tiny room if the level bones still do not support wider exploration. Block out readable map scale first, then decorate.
 - Do not solve confusion by adding more bright shapes, exact locators, checklists, minimaps, or route graphs.

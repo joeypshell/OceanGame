@@ -201,8 +201,8 @@ tools/build-area01-map.mjs
   ↓
 data/maps/area_01_runtime_geometry.generated.json
   ↓
-artifacts/maps/area_01_source_preview.svg
-artifacts/maps/area_01_runtime_preview.svg
+artifacts/maps/area_01_source_grid_preview.svg
+artifacts/maps/area_01_runtime_geometry_preview.svg
 artifacts/maps/area_01_diff_overlay.svg
   ↓
 scripts/area01_blockout_builder.gd
@@ -445,8 +445,8 @@ Keep `Area01BlockoutBuilder` if useful, but point it at the generated geometry f
 The converter should write previews to ignored artifacts unless repo policy says otherwise:
 
 ```text
-artifacts/maps/area_01_source_preview.svg
-artifacts/maps/area_01_runtime_preview.svg
+artifacts/maps/area_01_source_grid_preview.svg
+artifacts/maps/area_01_runtime_geometry_preview.svg
 artifacts/maps/area_01_diff_overlay.svg
 ```
 

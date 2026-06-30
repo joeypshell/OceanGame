@@ -1,5 +1,7 @@
 # Area 01 Runtime Source Map V3 - 2026-06-30
 
+Superseded later on 2026-06-30 by the deterministic source-grid pipeline. Current Area 01 topology source truth is `data/maps/area_01_source_grid_v1.json`; current Godot-consumed runtime geometry is `data/maps/area_01_runtime_geometry.generated.json`; regenerate with `node .\tools\build-area01-map.mjs --validate --write --previews`. The runtime v3 bridge described below is historical context only.
+
 ## Decision
 
 `docs/planning/maps/area_01_runtime_source_map_v3.json` is the current Area 01 runtime geometry/collision authority.
