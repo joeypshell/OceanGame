@@ -24,6 +24,7 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 
 - `docs/current/` describes implemented behavior.
 - `docs/current/TOOLING.md` describes implemented tooling and MCP support.
+- `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md` governs map, terrain, collision, and source-map work. For map topology, future agents must use a machine-readable map source -> deterministic converter/importer -> generated runtime geometry -> generated source/runtime/diff previews -> Godot builder/importer -> screenshot confirmation. Screenshots, concept art, and generated images may guide visual style, but they do not own collision, walls, routes, hooks, resources, gates, or playable water.
 - `docs/planning/` contains proposals and feature plans that are not yet fully implemented.
 - `docs/archive/` keeps old plans and decisions for reference.
 - GitHub Issues are the active task contract once work is ticketed.
@@ -36,6 +37,7 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 - Prefer existing project patterns over new abstractions.
 - Keep changes scoped to the issue.
 - For gameplay/backlog work, apply the roadmap north-star filter: the change should create curiosity, pressure, payoff, remembered-place progress, meaningful route choice, or a reason to try another expedition; otherwise treat it as tooling/polish and keep it proportional.
+- For map/terrain work, do not visually interpret screenshots or hand-tune Godot polygons as topology fixes. Update the machine-readable source map or converter, regenerate runtime geometry and previews, then use Godot/Playwright screenshots only as final rendering confirmation.
 - If new work appears, create or request a follow-up issue instead of expanding the ticket.
 - Do not revert unrelated user changes.
 - Do not commit generated files, local caches, secrets, or build output.

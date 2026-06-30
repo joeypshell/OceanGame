@@ -10,6 +10,8 @@ North-star filter: every expedition should force a survival tradeoff. Bring back
 
 Loop direction selected for the next planning pass: the game should move toward a compact side-view Subnautica-like day/night survival loop. A top-level sun-to-moon timer is the day budget; oxygen is a tactical sortie budget refilled by open surface water; health is a separate danger meter; cargo banks only at the ship through a fast offload action; night owns building, crafting, upgrades, lab analysis, food/power needs, and tomorrow preparation. Planning notes: `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md` and `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`.
 
+Map and terrain work for that loop is governed by `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md`: machine-readable map source, deterministic converter/importer, generated runtime geometry, generated source/runtime/diff previews, Godot builder/importer, then screenshot confirmation. Concept art and screenshots can guide visual style or final review, but they are not valid topology, collision, route, or hook sources.
+
 ## Active Milestone
 
 Survival Day/Night Loop Recalibration.
@@ -48,6 +50,7 @@ Primary planning docs:
 6. Add a basic health meter and one controlled damage source so health and oxygen read as different survival risks.
 7. Reclassify starter resources into food, power, building material, and research value, then make the night screen consume or use at least food and power.
 8. Return to Area 01 source-map/runtime work only as needed to support open surface, seafloor holes, cave pockets, and repeated surface-to-ship routing.
+9. Implement the deterministic Area 01 source-grid-to-runtime-geometry pipeline before more manual Area 01 polygon rescue or map-content expansion.
 
 ## Completed In This Readability Rescue
 
@@ -98,7 +101,8 @@ Primary planning docs:
 - Area 01 collision boundaries must be readable as terrain lips/rims before contact; do not leave invisible or random-feeling blockers in normal play.
 - Area 01 collision, terrain, pockets, scannables, and route hooks must map to `docs/planning/maps/area_01_runtime_source_map_v3.json`, or the runtime source map must be updated before the scene changes.
 - During Area 01 wall rescue, do not hand-place separate wall visuals, collision, or lips; they must be generated from the same source-map polygon.
-- Area 01 runtime v3 is playable-water-first: update the source PNG trace and cave-mouth geometry, regenerate v3, and let generated collision partitions fill terrain around it. Do not hand-author isolated `solid_terrain` chunks as the primary map source.
+- Area 01 runtime v3 is playable-water-first: update the source PNG trace and cave-mouth geometry, regenerate v3, and let generated visible/colliding `solid_terrain` partitions fill terrain around it. Do not hand-author isolated `solid_terrain` chunks as the primary map source, and do not draw a player-facing terrain domain that is not also collision.
+- Future Area 01 topology work should migrate from the interim PNG-trace workflow to the `AGENTIC_MAP_PIPELINE_PRACTICES.md` machine-readable source-grid workflow. Do not use arbitrary generated concept images, screenshots, or hand-placed Godot polygons as collision/topology authority.
 - Passive creature scan targets need visible silhouettes or outlines at normal play scale; scan labels should confirm the target, not be the only way to perceive it.
 - Do not spend another batch polishing a tiny room if the level bones still do not support wider exploration. Block out readable map scale first, then decorate.
 - Do not solve confusion by adding more bright shapes, exact locators, checklists, minimaps, or route graphs.

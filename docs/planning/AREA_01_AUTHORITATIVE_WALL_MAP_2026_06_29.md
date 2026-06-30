@@ -4,7 +4,9 @@
 
 Area 01 wall geometry is source-map driven. The current blocker is not a content problem; it is a map-truth problem. Players are seeing wall-like shapes, invisible stops, and inaccessible-looking targets when wall visuals, collision, rim art, background dressing, and blockout intent drift apart.
 
-2026-06-30 update: this document's original blockout-map authority has been superseded. Current runtime authority is `docs/planning/maps/area_01_runtime_source_map_v3.json`, generated from source-PNG-traced playable-water regions and cave mouths carved through one continuous terrain domain. `docs/planning/maps/area_01_blockout_source_map_v1.json` is historical/fallback context only.
+2026-06-30 update: this document's original blockout-map authority has been superseded. Current runtime authority is `docs/planning/maps/area_01_runtime_source_map_v3.json`, generated from source-PNG-traced playable-water regions and cave mouths carved through one hidden continuous terrain-domain reference. Generated `solid_terrain` partitions now own visible terrain, blocking collision, and rim/lip reads from the same polygons. `docs/planning/maps/area_01_blockout_source_map_v1.json` is historical/fallback context only.
+
+2026-06-30 process update: future wall-map work is governed by `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md`. Do not repair wall truth by visually interpreting screenshots, hand-placing Godot polygons, or treating generated concept art as collision authority. Update the machine-readable map source or converter, regenerate runtime geometry and previews, then use screenshots as final rendering confirmation.
 
 The original repair was intentionally simple:
 
@@ -38,17 +40,17 @@ This is the current readable blockout shape, not final art:
 
 ## Hard Rule
 
-For every current Area 01 generated collision partition:
+For every current Area 01 generated solid partition:
 
 ```text
-collision polygon == generated solid_terrain partition from terrain_domain minus playable_water_regions
+visible terrain polygon == collision polygon == rim/lip polygon == generated solid_terrain partition from terrain_domain minus playable_water_regions
 ```
 
 For every current Area 01 visual terrain/water read:
 
 ```text
-continuous terrain visual == terrain_domain
-cave/corridor visual cutout == playable_water_regions polygon
+terrain_domain == hidden generation/reference guide only
+playable_water_regions == hidden player-facing cutout guides plus validation/source topology
 scene hook trigger == source-map scene_hooks points
 ```
 

@@ -4,17 +4,19 @@
 
 Area 01 walls should use a source-map-driven terrain-chunk system, not bespoke full-wall images and not repeated rectangular stamp sprites as the main wall read.
 
+Map topology process is governed by `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md`. Wall art can decorate terrain, but future wall/cave/collision topology must come from machine-readable source data and deterministic generated runtime geometry, not screenshots, generated concept images, or hand-placed Godot polygons.
+
 The source map remains the authority for terrain:
 
 - `docs/planning/maps/area_01_runtime_source_map_v3.json` owns the current runtime topology.
 - `docs/planning/maps/area_01_blockout_source_map_v1.json` and `area_01_runtime_source_map_v2.json` are historical reference/fallback artifacts only.
-- `Area01BlockoutBuilder` creates one continuous terrain-domain visual plus playable-water cutout/edge visuals from the runtime source map.
-- `Area01BlockoutBuilder` generates blocking collision partitions from `terrain_domain - playable_water_regions`; those partitions are not the primary visual map.
+- `Area01BlockoutBuilder` creates one hidden terrain-domain guide plus hidden playable-water cutout/edge guides from the runtime source map.
+- `Area01BlockoutBuilder` generates visible/colliding terrain partitions from `terrain_domain - playable_water_regions`; those partitions own the primary runtime terrain read.
 
 The implementation pipeline is:
 
 - `map_mode`: `side_scroll_mode`
-- `visual_model`: parallax depth plus continuous terrain domain with carved playable-water cave cutouts
+- `visual_model`: parallax depth plus generated solid terrain partitions around carved playable-water cave spaces
 - `runtime_object_model`: platform objects, interactive scene objects, and scene hooks
 - `collision_model`: generated solid partitions plus precise trigger shapes
 - `engine_target`: project-native Godot scene
@@ -38,15 +40,15 @@ Current first-pass pieces:
 - `area01_reef_wall_kelp_decal_v1.svg`
 - `area01_reef_wall_coral_decal_v1.svg`
 
-These are support/decal/fill pieces. They are not collision and do not define level shape. The primary wall read now comes from the filled continuous terrain-domain visual plus source-map water-edge cues.
+These are support/decal/fill pieces. They are not collision and do not define level shape. The primary wall read now comes from generated solid partitions whose visible terrain, collision, and rim/lip reads share one source polygon.
 
 ## How This Avoids One Sprite Per Wall
 
 The terrain-domain source gets generated terrain-accent groups. Those groups combine:
 
-- a textured filled continuous terrain-domain polygon;
-- generated collision partitions derived from the same terrain-domain and playable-water source;
-- readable water-edge/rim cues from source-map cutout edges;
+- textured generated solid terrain partition polygons;
+- generated collision and rim/lip reads derived from the same partition polygons;
+- hidden water-edge/rim guides from source-map cutout edges;
 - continuous inset/depth planes derived from the same source geometry;
 - top/side/underside edge bands;
 - semantic `trim_segments` from the source map, such as `top_lip`, `underside`, `vertical_wall`, and `deep_floor_lip`;

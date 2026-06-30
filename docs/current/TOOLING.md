@@ -115,7 +115,9 @@ Set `OCEANGAME_TEST_VERBOSE=1` before running a tier when you need the full unde
 
 Area 01 has a dedicated Godot-side source-truth validator for runtime terrain/collision/rim drift. It loads `docs/planning/maps/area_01_runtime_source_map_v3.json`, builds the same runtime terrain used by `Main.tscn`, and fails if generated visible terrain, `CollisionPolygon2D` blockers, rim/lip polygons, or source-owned `Area2D` hooks no longer match the source-map IDs and polygons.
 
-Runtime v3 is playable-water-first: `tools/trace_area01_playable_water_from_source.py` extracts cave/corridor/pocket water from `area_01_surface_floor_source_map_v1.png`, `area_01_surface_floor_geometry_v1.json` supplies cave mouths and semantic hooks, and `tools/create_area01_runtime_source_map_v3.py` generates one continuous terrain domain plus collision-only solid partitions around those water shapes. Do not hand-edit generated `solid_terrain` partitions to fix map topology.
+Runtime v3 is playable-water-first: `tools/trace_area01_playable_water_from_source.py` extracts cave/corridor/pocket water from `area_01_surface_floor_source_map_v1.png`, `area_01_surface_floor_geometry_v1.json` supplies cave mouths and semantic hooks, and `tools/create_area01_runtime_source_map_v3.py` generates a hidden continuous terrain-domain reference plus visible/colliding solid partitions around those water shapes. Do not hand-edit generated `solid_terrain` partitions to fix map topology.
+
+The governing process for future map work is `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md`. The current PNG-trace path is an interim Area 01 bridge, not permission to use arbitrary screenshots or generated concept images as topology authority. Future topology work should move toward machine-readable source data, deterministic conversion/import, generated runtime geometry, generated source/runtime/diff previews, Godot builder/importer wiring, and screenshot confirmation only after the data/previews validate.
 
 Run it directly from the repository root when changing Area 01 terrain, collision, cave entrances, resource/scan hooks, or source-map ownership:
 
@@ -129,18 +131,14 @@ It is also part of the `quick` and `full` test tiers. Keep using the Node source
 
 `tools/validate-area01-runtime-placements.mjs` checks current Area 01 scene-authored pickups, fish, scan targets, spawn candidates, and movement endpoints against runtime v3. Targets inside `camera_bounds.planned_world_rect` must be inside a playable-water region and outside solid terrain. Legacy lower-route targets outside that v3 rect are counted in the summary instead of accepted as current Area 01 placement truth.
 
-For full-map topology review, refresh the side-by-side render after changing Area 01 source geometry:
+For full-map topology review, use the build wrapper after changing Area 01 source geometry:
 
 ```powershell
 & "C:\Users\pirat\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" .\tools\trace_area01_playable_water_from_source.py
-& "C:\Users\pirat\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" .\tools\create_area01_runtime_source_map_v3.py
-& "C:\Users\pirat\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" .\tools\render_area01_runtime_vs_source_comparison.py
-node .\tools\validate-area01-runtime-source-map.mjs
-node .\tools\validate-area01-runtime-placements.mjs
-node .\tools\validate-area01-playable-water-framing.mjs
+& "C:\Users\pirat\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" .\tools\build_area01_map.py --write-previews --validate
 ```
 
-The renderer writes `docs/planning/maps/area_01_current_godot_runtime_map_2026_06_30.png`, `docs/planning/maps/area_01_runtime_vs_source_side_by_side_2026_06_30.png`, and matching JSON metadata. Treat those as topology evidence; Playwright captures remain camera-scale browser evidence.
+The renderer writes `artifacts/maps/area_01_source_preview.png`, `artifacts/maps/area_01_runtime_preview.png`, `artifacts/maps/area_01_diff_overlay.png`, `docs/planning/maps/area_01_current_godot_runtime_map_2026_06_30.png`, `docs/planning/maps/area_01_runtime_vs_source_side_by_side_2026_06_30.png`, and matching JSON metadata. Treat those as topology evidence; Playwright captures remain camera-scale browser evidence.
 
 ## Area 01 Visual Cue Contract
 

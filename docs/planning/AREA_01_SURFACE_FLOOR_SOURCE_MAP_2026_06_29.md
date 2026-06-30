@@ -7,6 +7,8 @@ Area 01's first-level map should read as open ocean above a continuous seafloor,
 The corrected source reference lives at `docs/planning/maps/area_01_surface_floor_source_map_v1.png`.
 Its topology and marker contract lives at `docs/planning/maps/area_01_surface_floor_source_map_v1.json`.
 
+This source-map package is current Area 01 planning/reference context, but future topology implementation should follow `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md`. The long-term topology source should be machine-readable data that a deterministic converter/importer turns into runtime geometry and previews. The PNG can guide review or trace work, but it must not become collision authority by visual interpretation.
+
 ## Core Layout Rule
 
 The entire water surface is open. The player can surface anywhere for air, then return to the ship/moonpool to offload cargo and immediately dive again.
@@ -33,7 +35,9 @@ This layout supports the daylight multi-dive loop:
 
 Do not bake the generated PNG into runtime collision or art. The promoted runtime source is `docs/planning/maps/area_01_runtime_source_map_v3.json`, generated from `docs/planning/maps/area_01_playable_water_trace_v1.json` plus Godot-coordinate cave-mouth, placement, and hook geometry.
 
-The primary Area 01 topology source is playable water: open surface, source-PNG-traced cave corridors/pockets, and cave mouths. Runtime v3 generates one continuous undersea `terrain_domain` visual and collision-only `solid_terrain` partitions around those water shapes. Do not treat hand-authored solid chunks as the primary design source.
+The primary Area 01 topology source is playable water: open surface, source-PNG-traced cave corridors/pockets, and cave mouths. Runtime v3 keeps the continuous undersea `terrain_domain` as a hidden generation/reference guide, then generates visible/colliding `solid_terrain` partitions around those water shapes. Those generated partitions own terrain fill, collision, and rim/lip reads from the same polygon data. Do not treat hand-authored solid chunks as the primary design source.
+
+For future map edits, prefer editing the machine-readable source map or converter over the PNG trace. Do not ask an agent to infer wall/cave topology from a screenshot or generated concept image.
 
 `docs/planning/maps/area_01_blockout_source_map_v1.json` is historical/fallback context only. It no longer owns current runtime collision truth.
 

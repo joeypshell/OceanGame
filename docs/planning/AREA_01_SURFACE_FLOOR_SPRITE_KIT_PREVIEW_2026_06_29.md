@@ -10,6 +10,8 @@ The v4 terrain-kit/source-floor direction has been accepted for map-truth reconc
 
 This pass does not define current runtime topology. Current Area 01 topology is `docs/planning/maps/area_01_runtime_source_map_v3.json`, generated from playable-water regions carved through one continuous terrain domain.
 
+Future topology work should follow `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md`. This sprite-kit preview can guide wall-art treatment, but generated images, preview PNGs, and screenshots do not define collision, playable water, hooks, routes, resources, scans, hazards, or gates.
+
 Update: the runtime review path now uses `area_01_terrain_art_kit_v4`, which supersedes v3 with clearer cap/repeat/wall module roles. Earlier v1/v2/v3 outputs remain useful comparison artifacts, but v4 is the current terrain-art path.
 
 ## Outputs
@@ -46,7 +48,7 @@ The first preview exposed a geometry problem: the original candidate source-map 
 The original next useful pass was Godot builder promotion. That pass has been superseded by runtime v3's water-shape-first model:
 
 - load `docs/planning/maps/area_01_runtime_source_map_v3.json`;
-- generate continuous terrain-domain visuals, playable-water cutouts, collision partitions, rims, and `Area2D` hooks from that one file;
+- generate hidden terrain-domain/playable-water guides, visible/colliding solid partitions, matching rims, and `Area2D` hooks from that one file;
 - preserve relevant defect-prevention validation rules from the current blockout map during implementation checks;
 - keep collision generated from simplified polygons, not from sprite pixels;
 - keep sprite trims as visual dressing, not gameplay truth;
@@ -59,9 +61,9 @@ See `docs/planning/AREA_01_MAP_TRUTH_RECONCILIATION_2026_06_29.md` for the accep
 
 Use this art direction with the current runtime implementation:
 
-- `Polygon2D` for the continuous terrain-domain fill and playable-water cutout visuals;
+- `Polygon2D` for generated solid terrain partition fill, with hidden terrain-domain/playable-water guides for validation;
 - `Sprite2D` for rim strips, caps, cave-mouth frames, props, resources, gates, and decor;
-- `StaticBody2D` plus `CollisionPolygon2D` for generated terrain collision partitions;
+- `StaticBody2D` plus `CollisionPolygon2D` for generated terrain solid partitions;
 - `Area2D` for oxygen, offload, pickups, scans, gates, hazards, return currents, and route triggers.
 
 Do not switch the main terrain pipeline to `MeshInstance2D` now. Consider `MeshInstance2D` later only for targeted fill-rate optimization after profiling, especially for large alpha-heavy decorations on mobile/web.

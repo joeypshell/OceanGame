@@ -9,6 +9,7 @@ This index points future work to the active source of truth without making `docs
 - `docs/current/ARCHITECTURE.md`: runtime ownership and structure.
 - `docs/current/TOOLING.md`: implemented tooling and MCP support.
 - `docs/current/SOURCE_OF_TRUTH_GUARDRAIL.md`: short checklist for keeping milestone, gameplay, Area 01 source-map, and capture docs aligned.
+- `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md`: governing map-source workflow for deterministic terrain, collision, previews, and screenshot confirmation.
 - `docs/GITHUB_ISSUE_WORKFLOW.md`: issue workflow.
 - `AGENTS.md`: repository operating guide for agents.
 
