@@ -2094,20 +2094,20 @@
         ],
         [
           4600,
-          220
+          320
         ],
         [
           -900,
-          220
+          320
         ]
       ],
-      "owner": "future oxygen/surface system",
-      "status": "planned",
+      "owner": "surface oxygen refill system",
+      "status": "active",
       "runtime_generation": {
         "area2d_name": "SurfaceOxygenRefillZoneArea",
         "collision_polygon2d_name": "SurfaceOxygenRefillZoneTrigger",
         "points_source": "this hook points",
-        "owner_system": "future oxygen/surface system",
+        "owner_system": "surface oxygen refill system",
         "blocks_player": false
       }
     },

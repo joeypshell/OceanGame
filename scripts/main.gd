@@ -119,6 +119,8 @@ const DAYLIGHT_BAR_BACK_RECT := Rect2(Vector2(832.0, 44.0), Vector2(136.0, 8.0))
 const DAYLIGHT_BAR_FILL_RECT := Rect2(Vector2(832.0, 44.0), Vector2(136.0, 8.0))
 const DAYLIGHT_SUN_ICON_POSITION := Vector2(814.0, 39.0)
 const DAYLIGHT_MOON_ICON_POSITION := Vector2(986.0, 39.0)
+const SURFACE_OXYGEN_REFILL_HOOK_PATH := "Area01ArtSlice/RuntimeSourceHooks/SurfaceOxygenRefillZoneArea"
+const PLAYER_COLLISION_MASK := 1
 const SURVIVAL_NEED_LABEL_RECTS := {
 	"food": Rect2(Vector2(1070.0, 28.0), Vector2(140.0, 18.0)),
 	"water": Rect2(Vector2(1070.0, 60.0), Vector2(140.0, 18.0)),
@@ -181,6 +183,8 @@ const DAYLIGHT_DUSK_COLOR := Color(0.82, 0.42, 1.0, 0.94)
 @export var surface_y := 120.0
 @export var pixels_per_meter := 10.0
 @export var daylight_duration_seconds := 420.0
+@export var surface_oxygen_refill_per_second := 18.0
+@export var surface_oxygen_refill_depth := 200.0
 @export var show_debug_telemetry := false
 
 @onready var player: CharacterBody2D = $Player
@@ -456,6 +460,8 @@ var dive_session := DiveSessionScript.new()
 var progression_state := ProgressionStateScript.new()
 var survival_state := SurvivalStateScript.new()
 var player_in_base := true
+var surface_oxygen_refill_zone: Area2D = null
+var player_in_surface_oxygen_refill := false
 var player_near_survival_supply_cache := false
 var player_near_east_shelf_pocket := false
 var player_near_lower_connector_echo := false
@@ -548,6 +554,7 @@ func _ready() -> void:
 		push_warning("Area 01 blockout authority failed: %s" % area01_build.last_error)
 	_ensure_area01_source_map_overlay()
 	_ensure_mobile_touch_controls()
+	_wire_surface_oxygen_refill_zone()
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
 	base_zone.body_exited.connect(_on_base_zone_body_exited)
 	survival_supply_cache_interact_zone.body_entered.connect(_on_survival_supply_cache_body_entered)
@@ -590,6 +597,7 @@ func _ready() -> void:
 	_sync_discovery_reveals()
 	_sync_salvage_pocket_open_state()
 	_sync_area01_source_map_overlay()
+	_sync_surface_oxygen_refill_state_from_position()
 	_update_hud()
 
 func _ensure_mobile_touch_controls() -> void:
@@ -616,6 +624,29 @@ func _on_mobile_touch_action_released(action: StringName) -> void:
 	if action == &"scan":
 		_cancel_scan_charge("Scan canceled.")
 
+func _wire_surface_oxygen_refill_zone() -> void:
+	surface_oxygen_refill_zone = get_node_or_null(SURFACE_OXYGEN_REFILL_HOOK_PATH) as Area2D
+	if surface_oxygen_refill_zone == null:
+		return
+
+	surface_oxygen_refill_zone.monitoring = true
+	surface_oxygen_refill_zone.monitorable = false
+	surface_oxygen_refill_zone.collision_layer = 0
+	surface_oxygen_refill_zone.collision_mask = PLAYER_COLLISION_MASK
+	surface_oxygen_refill_zone.set_meta(&"area01_hook_status", "active_oxygen_refill")
+	for child in surface_oxygen_refill_zone.get_children():
+		if child is CollisionPolygon2D:
+			(child as CollisionPolygon2D).disabled = false
+		elif child is CollisionShape2D:
+			(child as CollisionShape2D).disabled = false
+
+	var entered_callback := Callable(self, "_on_surface_oxygen_refill_zone_body_entered")
+	var exited_callback := Callable(self, "_on_surface_oxygen_refill_zone_body_exited")
+	if not surface_oxygen_refill_zone.body_entered.is_connected(entered_callback):
+		surface_oxygen_refill_zone.body_entered.connect(entered_callback)
+	if not surface_oxygen_refill_zone.body_exited.is_connected(exited_callback):
+		surface_oxygen_refill_zone.body_exited.connect(exited_callback)
+
 func _process(delta: float) -> void:
 	_consume_visual_smoke_command()
 	_update_depth()
@@ -638,11 +669,55 @@ func _process(delta: float) -> void:
 		return
 
 	_advance_daylight_timer(delta)
-	dive_session.drain_oxygen(oxygen_drain_per_second * delta)
+	_update_active_dive_oxygen(delta)
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		_fail_dive()
 	else:
 		_update_hud()
+
+func _update_active_dive_oxygen(delta: float) -> void:
+	if _is_player_in_surface_oxygen_refill():
+		_apply_surface_oxygen_refill(delta)
+		return
+
+	dive_session.drain_oxygen(oxygen_drain_per_second * delta)
+
+func _apply_surface_oxygen_refill(delta: float) -> void:
+	var oxygen_before := dive_session.oxygen
+	dive_session.refill_oxygen(surface_oxygen_refill_per_second * delta)
+	if daylight_nightfall_announced or status_label == null:
+		return
+	if dive_session.oxygen > oxygen_before + 0.01:
+		status_label.text = _surface_oxygen_status_text()
+
+func _surface_oxygen_status_text() -> String:
+	if player_in_base:
+		return "Moonpool: oxygen refilling; bank/offload at the ship."
+	if dive_session.oxygen >= dive_session.max_oxygen:
+		return "Surface oxygen full. Cargo still carried."
+	return "Surface oxygen refilling. Cargo still carried."
+
+func _is_player_in_surface_oxygen_refill() -> bool:
+	if player == null:
+		return player_in_surface_oxygen_refill
+
+	var refill_floor_y := _surface_oxygen_refill_floor_y()
+	if player.global_position.y > refill_floor_y + 24.0:
+		return false
+
+	return player_in_surface_oxygen_refill or player.global_position.y <= refill_floor_y
+
+func _surface_oxygen_refill_active() -> bool:
+	return dive_session.result == DiveSessionScript.Result.DIVING and _is_player_in_surface_oxygen_refill()
+
+func _surface_oxygen_refill_floor_y() -> float:
+	return surface_y + surface_oxygen_refill_depth
+
+func _sync_surface_oxygen_refill_state_from_position() -> void:
+	if player == null:
+		return
+
+	player_in_surface_oxygen_refill = player.global_position.y <= _surface_oxygen_refill_floor_y()
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F3:
@@ -767,6 +842,7 @@ func _start_dive() -> void:
 	dive_session.start()
 	surface_tab_index = SURFACE_TAB_RESULT
 	upgrade_menu_feedback = ""
+	_sync_surface_oxygen_refill_state_from_position()
 	status_label.text = "Dive status: active"
 	_update_hud()
 
@@ -777,6 +853,7 @@ func _restart_dive() -> void:
 	player.global_position = start_position
 	player.velocity = Vector2.ZERO
 	player_in_base = true
+	_sync_surface_oxygen_refill_state_from_position()
 	last_result_summary = ""
 	last_night_report = ""
 	last_completed_survival_day = 0
@@ -794,6 +871,7 @@ func _reset_local_prototype_save() -> void:
 	player.global_position = start_position
 	player.velocity = Vector2.ZERO
 	player_in_base = true
+	_sync_surface_oxygen_refill_state_from_position()
 	last_result_summary = ""
 	last_night_report = ""
 	last_completed_survival_day = 0
@@ -813,6 +891,7 @@ func _prepare_next_run() -> void:
 	dive_session.cargo_limit = _current_cargo_limit()
 	daylight_elapsed_seconds = 0.0
 	daylight_nightfall_announced = false
+	player_in_surface_oxygen_refill = false
 	player_near_survival_supply_cache = false
 	player_near_east_shelf_pocket = false
 	player_near_lower_connector_echo = false
@@ -860,6 +939,20 @@ func _on_base_zone_body_exited(body: Node2D) -> void:
 		player_in_base = false
 		dive_session.has_left_base = true
 		_update_hud()
+
+func _on_surface_oxygen_refill_zone_body_entered(body: Node2D) -> void:
+	if body == player:
+		player_in_surface_oxygen_refill = true
+		if dive_session.result == DiveSessionScript.Result.DIVING and status_label != null:
+			status_label.text = _surface_oxygen_status_text()
+		if is_inside_tree():
+			_update_hud()
+
+func _on_surface_oxygen_refill_zone_body_exited(body: Node2D) -> void:
+	if body == player:
+		player_in_surface_oxygen_refill = false
+		if is_inside_tree():
+			_update_hud()
 
 func _on_east_shelf_pocket_body_entered(body: Node2D) -> void:
 	if body == player:
@@ -1507,6 +1600,32 @@ func _stage_debug_daylight_visual_review(progress_ratio: float, label: String) -
 
 	_set_daylight_progress_for_debug(progress_ratio)
 	status_label.text = "Debug review: daylight timer staged at %s." % label
+	_update_hud()
+
+func _stage_debug_surface_oxygen_refill_visual_review() -> void:
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	player = staged_player
+	player.global_position = Vector2(1600.0, _surface_oxygen_refill_floor_y() - 44.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	player_in_surface_oxygen_refill = true
+	dive_session.has_left_base = true
+	dive_session.oxygen = maxf(1.0, dive_session.max_oxygen * 0.18)
+	dive_session.current_cargo.clear()
+	dive_session.current_cargo.append("driftwood")
+	visual_smoke_route_stage = "surface_oxygen_refill"
+	status_label.text = "Debug review: surface oxygen refill staged."
+	_update_depth()
 	_update_hud()
 
 func _stage_debug_area01_shell_visual_review(stage: String) -> void:
@@ -2164,6 +2283,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_daylight_visual_review(0.75, "evening")
 		"daylight_nightfall":
 			_stage_debug_daylight_visual_review(1.0, "nightfall")
+		"surface_oxygen_refill":
+			_stage_debug_surface_oxygen_refill_visual_review()
 		"area01_surface_entry":
 			_stage_debug_area01_shell_visual_review("surface_entry")
 		"area01_left_shelf_cave":
@@ -2315,11 +2436,16 @@ func _format_hud_prompt() -> String:
 		prompt = "East Shelf Pocket: %s recover signal core" % _action_label("interact")
 	elif player_in_base:
 		if dive_session.has_left_base:
-			prompt = "At base: %s extract" % _action_label("interact")
+			prompt = "At ship: %s bank/offload" % _action_label("interact")
 		else:
-			prompt = "Leave moonpool, then return"
+			prompt = "Leave moonpool, then return to bank"
+	elif _is_player_in_surface_oxygen_refill():
+		if dive_session.oxygen >= dive_session.max_oxygen:
+			prompt = "Surface O2 full | Cargo still carried"
+		else:
+			prompt = "Surface O2 refilling | Cargo still carried"
 	else:
-		prompt = "Explore | Bank at base"
+		prompt = "Explore | Surface for O2 | Ship banks"
 
 	if dive_session.result == DiveSessionScript.Result.DIVING:
 		prompt += " | %s" % _format_burst_thruster_prompt()
@@ -4250,6 +4376,8 @@ func _publish_visual_smoke_state() -> void:
 		"daylight_visible": daylight_panel.visible,
 		"daylight_remaining_percent": roundi(_daylight_remaining_ratio() * 100.0),
 		"daylight_remaining_seconds": ceili(_daylight_remaining_seconds()),
+		"player_in_surface_oxygen_refill": _is_player_in_surface_oxygen_refill(),
+		"surface_oxygen_refill_active": _surface_oxygen_refill_active(),
 		"cargo_count": dive_session.current_cargo.size(),
 		"cargo_limit": dive_session.cargo_limit,
 		"player_in_base": player_in_base,
@@ -5654,9 +5782,11 @@ func _format_active_objective_line() -> String:
 	if dive_session.current_cargo.size() >= dive_session.cargo_limit:
 		objective = "Cargo full: return to bank"
 	elif player_in_base and dive_session.has_left_base:
-		objective = "At base: extract or push out"
+		objective = "At ship: bank/offload or dive"
 	elif player_in_base:
 		objective = "Leave moonpool, gather supplies"
+	elif _is_player_in_surface_oxygen_refill():
+		objective = "Surface: refill O2; ship banks"
 	elif survival_state.food <= 1 or survival_state.water <= 1 or survival_state.power <= 1:
 		objective = "Prioritize food, water, power"
 	elif dive_session.current_cargo.size() > 0:

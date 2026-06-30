@@ -33,6 +33,14 @@ func drain_oxygen(amount: float) -> void:
 	if oxygen <= 0.0:
 		fail()
 
+func refill_oxygen(amount: float) -> void:
+	if result != Result.DIVING:
+		return
+	if amount <= 0.0:
+		return
+
+	oxygen = minf(max_oxygen, oxygen + amount)
+
 func can_extract(player_in_base: bool) -> bool:
 	return result == Result.DIVING and player_in_base and has_left_base
 

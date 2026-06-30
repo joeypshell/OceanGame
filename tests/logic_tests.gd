@@ -49,6 +49,7 @@ func _initialize() -> void:
 	_run("upgraded cargo limit", _test_upgraded_cargo_limit)
 	_run("extraction requirements", _test_extraction_requirements)
 	_run("oxygen failure", _test_oxygen_failure)
+	_run("surface oxygen refill isolation", _test_surface_oxygen_refill_isolation)
 	_run("debug unlimited oxygen", _test_debug_unlimited_oxygen)
 	_run("survival night consumption", _test_survival_night_consumption)
 	_run("survival collapse and reset", _test_survival_collapse_and_reset)
@@ -94,6 +95,7 @@ func _initialize() -> void:
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
 	_run("Area 01 first art slice scene contract", _test_area_01_first_art_slice_scene_contract)
 	_run("Area 01 source map contract", _test_area_01_source_map_contract)
+	_run("Area 01 surface oxygen hook runtime", _test_area_01_surface_oxygen_hook_runtime)
 	_run("Area 01 authoritative wall builder", _test_area_01_authoritative_wall_builder)
 	_run("Area 01 source map debug overlay", _test_area_01_source_map_debug_overlay)
 	_run("Area 01 starter resource pocket placement", _test_area_01_starter_resource_pocket_placement)
@@ -226,6 +228,44 @@ func _test_oxygen_failure() -> void:
 	_expect(session.oxygen == 0.0, "oxygen should clamp to zero")
 	_expect(session.result == DiveSessionScript.Result.FAILED, "oxygen depletion should fail the dive")
 	_expect(session.current_cargo.is_empty(), "oxygen failure should discard current cargo")
+
+func _test_surface_oxygen_refill_isolation() -> void:
+	var session := DiveSessionScript.new()
+	session.reset(30.0)
+	session.start()
+	session.oxygen = 8.0
+	session.has_left_base = true
+	session.current_cargo.append("driftwood")
+
+	session.refill_oxygen(7.0)
+
+	_expect(is_equal_approx(session.oxygen, 15.0), "surface refill should increase oxygen without requiring extraction")
+	_expect(session.result == DiveSessionScript.Result.DIVING, "surface refill should keep the dive active")
+	_expect(session.current_cargo == ["driftwood"], "surface refill should preserve carried cargo")
+	_expect(not session.can_extract(false), "surface refill away from the ship should not become extraction eligible")
+	session.refill_oxygen(100.0)
+	_expect(is_equal_approx(session.oxygen, session.max_oxygen), "surface refill should clamp at max oxygen")
+
+	var main := MainScript.new()
+	main.surface_oxygen_refill_per_second = 6.0
+	main.dive_session.reset(30.0)
+	main.dive_session.start()
+	main.dive_session.oxygen = 9.0
+	main.dive_session.has_left_base = true
+	main.dive_session.current_cargo.append("driftwood")
+	main.player_in_base = false
+	main.player_in_surface_oxygen_refill = true
+	main.call("_update_active_dive_oxygen", 1.0)
+	_expect(is_equal_approx(main.dive_session.oxygen, 15.0), "active dive oxygen tick should refill at open surface")
+	_expect(main.dive_session.current_cargo == ["driftwood"], "active surface refill should not clear carried cargo")
+	_expect(main.progression_state.banked_resources.is_empty(), "active surface refill should not bank resources")
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "active surface refill should not resolve the dive")
+	var surface_prompt: String = main.call("_format_hud_prompt")
+	_expect(surface_prompt.contains("Surface O2") and surface_prompt.contains("Cargo still carried"), "surface prompt should separate oxygen refill from cargo banking")
+	main.player_in_base = true
+	var ship_prompt: String = main.call("_format_hud_prompt")
+	_expect(ship_prompt.contains("At ship") and ship_prompt.contains("bank/offload"), "ship prompt should remain the cargo banking/offload prompt")
+	main.free()
 
 func _test_debug_unlimited_oxygen() -> void:
 	var session := DiveSessionScript.new()
@@ -3712,6 +3752,56 @@ func _test_area_01_source_map_contract() -> void:
 		if area_node != null:
 			_expect(not area_node.monitoring and not area_node.monitorable, "Area 01 generated hooks should stay nonblocking/non-behavioral during validation: %s" % String(hook_entry.get("id", "")))
 	main.free()
+
+func _test_area_01_surface_oxygen_hook_runtime() -> void:
+	var scene := MainScene.instantiate()
+	var builder := Area01BlockoutBuilderScript.new()
+	_expect(builder.build(scene), "Area 01 runtime source map should build before wiring surface oxygen: %s" % builder.last_error)
+	scene.player = scene.get_node("Player") as CharacterBody2D
+	scene.call("_wire_surface_oxygen_refill_zone")
+	var oxygen_area := scene.get_node_or_null("Area01ArtSlice/RuntimeSourceHooks/SurfaceOxygenRefillZoneArea") as Area2D
+	var offload_area := scene.get_node_or_null("Area01ArtSlice/RuntimeSourceHooks/ShipOffloadZoneArea") as Area2D
+	_expect(oxygen_area != null, "live Area 01 scene should include the generated surface oxygen hook")
+	_expect(offload_area != null, "live Area 01 scene should keep the generated ship offload hook separate")
+	if oxygen_area == null or offload_area == null:
+		scene.free()
+		return
+
+	var oxygen_collision := oxygen_area.get_node_or_null("SurfaceOxygenRefillZoneTrigger") as CollisionPolygon2D
+	var offload_collision := offload_area.get_node_or_null("ShipOffloadZoneTrigger") as CollisionPolygon2D
+	_expect(oxygen_area.monitoring, "surface oxygen hook should be promoted to active Area2D monitoring")
+	_expect(not oxygen_area.monitorable, "surface oxygen hook should not become a blocking/monitorable target")
+	_expect(oxygen_area.collision_mask == 1, "surface oxygen hook should monitor the player collision layer")
+	_expect(oxygen_collision != null and not oxygen_collision.disabled, "surface oxygen trigger collision should be enabled for refill detection")
+	_expect(not offload_area.monitoring, "generated ship offload hook should stay inert until ship offload behavior is implemented")
+	_expect(offload_collision != null and offload_collision.disabled, "ship offload hook should not duplicate BaseZone banking")
+	if oxygen_collision != null:
+		var oxygen_bottom := -INF
+		for point in oxygen_collision.polygon:
+			oxygen_bottom = maxf(oxygen_bottom, point.y)
+		_expect(oxygen_bottom >= 320.0, "surface oxygen trigger should reach the current diver surface clamp")
+
+	scene.dive_session.start()
+	scene.dive_session.oxygen = 5.0
+	scene.dive_session.has_left_base = true
+	scene.dive_session.current_cargo.clear()
+	scene.dive_session.current_cargo.append("driftwood")
+	scene.player.global_position = Vector2(1600.0, scene.call("_surface_oxygen_refill_floor_y") - 44.0)
+	scene.player_in_base = false
+	scene.call("_sync_surface_oxygen_refill_state_from_position")
+	var banked_before: int = scene.progression_state.resource_count("driftwood")
+	scene.call("_update_active_dive_oxygen", 1.0)
+	_expect(scene.dive_session.oxygen > 5.0, "surface away from ship should refill oxygen")
+	_expect(scene.dive_session.current_cargo == ["driftwood"], "surface away from ship should leave carried cargo in inventory")
+	_expect(scene.progression_state.resource_count("driftwood") == banked_before, "surface away from ship should not bank resources")
+	_expect(scene.dive_session.result == DiveSessionScript.Result.DIVING, "surface away from ship should keep the active dive running")
+
+	var surface_oxygen: float = scene.dive_session.oxygen
+	scene.player.global_position = Vector2(1600.0, scene.call("_surface_oxygen_refill_floor_y") + 180.0)
+	scene.call("_sync_surface_oxygen_refill_state_from_position")
+	scene.call("_update_active_dive_oxygen", 1.0)
+	_expect(scene.dive_session.oxygen < surface_oxygen, "leaving the surface refill band should resume oxygen drain")
+	scene.free()
 
 func _test_area_01_source_map_debug_overlay() -> void:
 	var overlay := Area01SourceMapOverlayScript.new()

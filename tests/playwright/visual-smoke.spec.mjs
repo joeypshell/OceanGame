@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDaylightState, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOuterShelfSurvey, stageOxygenState, stageSiltVeinFork } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDaylightState, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOuterShelfSurvey, stageOxygenState, stageSiltVeinFork, stageSurfaceOxygenRefill } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -302,6 +302,21 @@ test.describe("OceanGame web visual smoke", () => {
       active_stats_visible: true,
       daylight_visible: true,
       daylight_remaining_percent: 25,
+    });
+  });
+
+  test("captures surface oxygen refill without ship banking", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageSurfaceOxygenRefill(page);
+    await capture(page, testInfo, "surface-oxygen-refill-away-from-ship", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "surface_oxygen_refill",
+      player_in_base: false,
+      player_in_surface_oxygen_refill: true,
+      surface_oxygen_refill_active: true,
+      cargo_count: 1,
     });
   });
 });
