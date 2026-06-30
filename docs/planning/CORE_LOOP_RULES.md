@@ -12,9 +12,9 @@ Survival extension:
 
 Should the player use limited cargo and oxygen on what keeps the base alive tonight, what makes future dives safer, or what unlocks a remembered deeper place?
 
-Daylight extension:
+Selected daylight extension:
 
-Should the player spend the remaining day returning to the ship to bank cargo, surfacing only for oxygen and pushing again, or stopping before nightfall?
+Should the player spend the remaining day surfacing for oxygen, returning to the ship to bank cargo, diving into another seafloor hole, or stopping before nightfall?
 
 ## Compulsion Question
 
@@ -31,6 +31,7 @@ Every expedition should leave at least one reason to start the next:
 Current-dive state should remain temporary:
 
 - oxygen
+- health, once implemented
 - current cargo
 - daylight remaining, once implemented
 - has left base
@@ -62,6 +63,14 @@ Persistent progression does not mean restoring an in-progress dive.
 - A need below 0 collapses the week; restart the week while keeping major knowledge/upgrades where possible.
 - Survival supplies are distinct from upgrade resources and should not appear in the resource bank.
 
+Future Subnautica-like survival direction:
+
+- Food can come from fish, edible kelp, ration caches, or cooked/prepared supplies.
+- Power can come from battery cells, fuel scrap, biofuel, generator parts, or similar compact resources.
+- Building and crafting materials can include wood/driftwood, iron/scrap, shell, quartz/glass, kelp/fiber, and later rare alien materials.
+- Night should consume or check at least Food and Power once the day/night loop is implemented.
+- Do not add a broad crafting tree until fish/food, wood/driftwood, iron/scrap, and power parts have clear first uses.
+
 ## Oxygen Decision Rules
 
 Keep the oxygen model readable:
@@ -73,13 +82,24 @@ Keep the oxygen model readable:
 
 Depth-based oxygen modifiers, ascent drain, and decompression penalties are deferred. Low-oxygen feedback should increase tension through presentation, not hidden mechanics.
 
-Future daylight-loop direction:
+Selected daylight-loop direction:
 
 - Oxygen should become the tactical sortie budget, not the whole expedition-day timer.
-- Surfacing in open water may refill oxygen once implemented.
+- Surfacing in open water should refill oxygen once implemented.
 - Returning to the ship should remain the cargo-banking and night/upgrade access point.
 - Daylight should keep moving while the player is away from the night/upgrade phase, so surfacing is safe but not free.
 - Keep the first implementation small: prove the visible daylight timer before changing oxygen refill rules.
+
+## Health Rules
+
+Health is now part of the target loop, separate from oxygen.
+
+- Oxygen reaching zero fails the underwater sortie because the player cannot breathe.
+- Health reaching zero fails the sortie/player because the diver or vehicle is too damaged.
+- Health damage should come from predators, thermal vents, pressure hazards, collisions, or other explicit dangers.
+- Surfacing should not automatically full-heal by default. Healing should come from ship/night support, food/medkits, crafted equipment, or a clearly authored safe zone.
+- Health feedback must stay visually distinct from low-oxygen feedback.
+- Add health with one controlled damage source before layering in many hazards.
 
 Future feedback rule:
 
@@ -100,19 +120,21 @@ Future daylight-loop cargo direction:
 - Surface water should not bank cargo by itself.
 - The ship/moonpool should provide one fast offload action that banks carried supplies and resources.
 - Limited cargo should make the player choose between tonight's survival supplies, upgrade/crafting materials, and knowledge/sample opportunities.
+- One daylight day should support multiple carry/offload cycles before nightfall.
 - Avoid a grid inventory or cargo-management minigame unless a later issue proves simple slots are not enough.
 
 ## Daylight Timer Rules
 
-The planned daylight timer is the expedition-day budget, not a replacement for oxygen.
+The planned daylight timer is the expedition-day budget, not a replacement for oxygen or health.
 
 - Use a clear top-of-screen sun-to-moon representation.
 - Let the timer create multiple-dive planning pressure: bank now, surface for air and continue, or try one more route before night.
-- Nightfall should move the game into upgrade, crafting, lab analysis, and Emergency Week resolution.
+- Nightfall should move the game into building, crafting, upgrades, lab analysis, food/power resolution, and Emergency Week or successor survival resolution.
 - The first daylight implementation should keep existing oxygen, cargo, save, and upgrade rules unchanged except where explicitly scoped.
-- Health or hull should be added only after daylight and oxygen have distinct roles.
+- Health or hull should be added as a distinct danger meter once the timer/surface/offload skeleton is readable, or earlier only if the slice includes one clearly authored damage source.
 
 Detailed planning: `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`.
+Recalibrated direction: `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md`.
 
 ## Mid-Dive Information Rules
 

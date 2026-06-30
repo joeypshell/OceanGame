@@ -47,6 +47,7 @@ Do not require an issue for:
 - Keep scope tight. If new work appears, create or request a linked follow-up issue.
 - Record durable decisions, blockers, commit hashes, and verification results in issue comments.
 - Update `docs/current/` when accepted gameplay, runtime, architecture, testing, or workflow changes.
+- For milestone, Area 01 source-map, visual-truth, or capture-state changes, use `docs/current/SOURCE_OF_TRUTH_GUARDRAIL.md` before closing the issue.
 
 ## Issue Template
 
@@ -70,6 +71,7 @@ As a <player/developer/reviewer>, I want <capability/fix>, so that <outcome>.
 - `AGENTS.md`
 - `docs/current/ROADMAP.md`
 - `docs/current/GAMEPLAY.md`
+- `docs/current/SOURCE_OF_TRUTH_GUARDRAIL.md`
 
 ## Relevant Code Areas
 

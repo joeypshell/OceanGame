@@ -6,7 +6,7 @@ Every morning the alien ocean changes. Dive from a fragile research boat, scan w
 
 Short form:
 
-Guide a small diver through seeded alien-ocean expedition days where daylight, oxygen, and cargo space force choices about what to bring back before nightfall: what keeps the base alive tonight, what makes future dives safer, or what unlocks the deeper mystery.
+Guide a small diver through compact Subnautica-like alien-ocean expedition days where daylight, oxygen, health, and cargo space force choices about what to bring back before nightfall: food and power for tonight, materials for building and upgrades, or knowledge that unlocks the deeper mystery.
 
 ## Player Role
 
@@ -67,14 +67,14 @@ The surface phase should feel emotionally different from the ocean without becom
 - the ship/moonpool banks carried cargo through one fast offload action,
 - cargo and scans are counted at the ship and night screen,
 - lab analysis clarifies what was learned,
-- upgrades and locked-route promises are surfaced,
-- survival supplies are consumed overnight and consequences are shown,
+- building, crafting, upgrades, and locked-route promises are surfaced,
+- food, power, and other survival supplies are consumed or checked overnight and consequences are shown,
 - the player sleeps or advances to the next expedition day,
 - the ocean condition shifts.
 
 This is the game's answer to a second loop: relief, analysis, upgrade, and changed opportunity.
 
-The planned daylight loop makes the ship different from generic surface water. Surfacing gives air; returning to the ship banks supplies and opens the night/upgrades phase. See `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`.
+The planned daylight loop makes the ship different from generic surface water. Surfacing gives air; returning to the ship banks supplies and opens the night build/upgrades phase. See `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md` and `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md`.
 
 ## Distinction
 

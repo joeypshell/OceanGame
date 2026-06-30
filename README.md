@@ -38,7 +38,7 @@ node .mcp/oceangame-context-server.mjs --self-test
 
 ## Current Milestone
 
-The active milestone is `Survival Expedition Loop Prototype`. Route/content expansion is paused while the core day loop becomes playable: start a day with survival needs and an ocean condition, dive for supplies/cargo/knowledge, extract or fail, resolve the night, and either advance the Emergency Week or collapse and restart it.
+The active milestone is `Survival Day/Night Loop Recalibration`. Route/content expansion is paused while the core Subnautica-like day loop becomes coherent: start a day with survival needs and an ocean condition, dive through open-surface water and seafloor holes, surface for oxygen as often as needed, return to the ship to offload cargo, manage health risk, resolve food/power at night, build or upgrade, then advance the ocean condition.
 
 ## Project Docs
 
@@ -46,10 +46,12 @@ The active milestone is `Survival Expedition Loop Prototype`. Route/content expa
 - `docs/current/GAMEPLAY.md`: implemented behavior.
 - `docs/current/TOOLING.md`: implemented tooling and MCP support.
 - `docs/current/PROJECT_INDEX.md`: index of active docs, planning anchors, and historical roadmap archive.
+- `docs/current/SOURCE_OF_TRUTH_GUARDRAIL.md`: checklist for keeping milestone, gameplay, Area 01 source-map, and capture docs aligned.
 - `docs/archive/ROADMAP_HISTORY_2026_06_27.md`: historical roadmap and issue-batch record from before roadmap compaction.
 - `docs/planning/AREA_01_READABILITY_RESCUE_2026_06_27.md`: active readability milestone plan.
 - `docs/planning/AREA_01_READABILITY_EVIDENCE_2026_06_27.md`: current readability evidence and next-work decision.
 - `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`: planned daylight timer, surface oxygen refill, ship offload, and night-upgrade loop.
+- `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md`: current planning reset for the Subnautica-like day/night survival direction.
 - `docs/planning/GAME_VISION.md`: compact design anchor.
 - `docs/planning/CORE_LOOP_RULES.md`: core loop and system rules.
 - `docs/planning/DAILY_RUNS.md`: seeded expedition guidance.

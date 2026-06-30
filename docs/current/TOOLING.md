@@ -146,6 +146,7 @@ Resources:
 - `oceangame://roadmap`
 - `oceangame://gameplay`
 - `oceangame://tooling`
+- `oceangame://source-of-truth-guardrail`
 - `oceangame://godot-mcp`
 - `oceangame://screenshot-workflow`
 - `oceangame://project-status`

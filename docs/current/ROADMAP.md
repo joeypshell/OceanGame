@@ -8,13 +8,15 @@ OceanGame is a 2D alien-ocean survival expedition roguelite. Each expedition sta
 
 North-star filter: every expedition should force a survival tradeoff. Bring back what keeps you alive tonight, what makes future dives safer, or what unlocks a remembered deeper place. Prefer player-visible loop progress over more route breadth until the survival day rhythm works.
 
-Loop direction under review: the next survival-loop shape is a daylight multi-dive expedition day. A top-level sun-to-moon timer would become the day budget; oxygen would become a tactical sortie budget that can be refilled by surfacing; cargo would only bank at the ship through a fast offload action; night would own upgrades, crafting, lab analysis, and Emergency Week resolution. Planning note: `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`.
+Loop direction selected for the next planning pass: the game should move toward a compact side-view Subnautica-like day/night survival loop. A top-level sun-to-moon timer is the day budget; oxygen is a tactical sortie budget refilled by open surface water; health is a separate danger meter; cargo banks only at the ship through a fast offload action; night owns building, crafting, upgrades, lab analysis, food/power needs, and tomorrow preparation. Planning notes: `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md` and `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`.
 
 ## Active Milestone
 
-First Playable Area 01 Blockout Skeleton.
+Survival Day/Night Loop Recalibration.
 
-The next milestone is a correction pass before more route/content expansion. The prototype has enough working systems to prove the loop shape, but the playable map is still too small and its collision/art relationship has not been trustworthy enough. The active goal is to build a larger Safe Shallows-style Area 01 blockout with obvious open water, visible solid reef boundaries, ledges, cave pockets, resource spaces, and enough room to explore sideways and downward. Visual work remains active only where it makes the larger blockout easier to parse.
+The next milestone is a direction reset before more route/content expansion. The prototype has enough systems to prove a survival day, but current planning is split between older one-oxygen-run assumptions, Area 01 blockout rescue, Emergency Week needs, and newer surface/refill/offload ideas. The active goal is to make the player loop coherent: open surface for oxygen, ship offload for cargo, a visible day timer, health as real danger, resources that matter at night, and a small night build/upgrade phase.
+
+Area 01 blockout work remains important only where it supports the new loop: open surface, continuous seafloor, cave holes, readable ship return, starter resource pockets, and enough shallow/deep contrast to make repeated sorties meaningful.
 
 Primary planning docs:
 
@@ -33,14 +35,19 @@ Primary planning docs:
 - `docs/planning/AREA_01_SKELETON_VALIDATION_2026_06_28.md`
 - `docs/planning/AREA_01_AUTHORITATIVE_WALL_MAP_2026_06_29.md`
 - `docs/planning/AREA_01_MODULAR_WALL_ART_SYSTEM_2026_06_29.md`
+- `docs/planning/AREA_01_SURFACE_FLOOR_SOURCE_MAP_2026_06_29.md`
+- `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md`
 
 ## Immediate Issue Order
 
-1. Playtest the expanded Area 01 footprint at normal scale and record whether west, right, and deep lanes feel reachable, readable, and large enough for the next content pass.
-2. Keep Area 01 wall truth source-map driven: visible wall polygon, collision polygon, and rim polygon must come from the same wall-map entry before more visual polish resumes.
-3. Re-evaluate #675 and #677 as focused readability/visual-support issues after normal play validates the larger blockout.
-4. Keep #676 and #678 deferred until Area 01 has enough footprint to judge ambience and screenshot comparison honestly.
-5. Resume architecture issues #640-#658 only in small slices when they reduce future implementation cost without replacing player-visible progress.
+1. Align docs and open issues around `SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md` so future work stops mixing old one-run assumptions with the new day loop.
+2. Add the visible daylight sun-to-moon timer as a state/display slice before adding more route breadth.
+3. Add open-surface oxygen refill zones that do not bank cargo.
+4. Add one-button ship/moonpool offload so cargo banking is distinct from surfacing.
+5. Allow repeated dive sorties inside one daylight day.
+6. Add a basic health meter and one controlled damage source so health and oxygen read as different survival risks.
+7. Reclassify starter resources into food, power, building material, and research value, then make the night screen consume or use at least food and power.
+8. Return to Area 01 source-map/runtime work only as needed to support open surface, seafloor holes, cave pockets, and repeated surface-to-ship routing.
 
 ## Completed In This Readability Rescue
 
@@ -101,11 +108,12 @@ Primary planning docs:
 - Starting with a bulky submarine-scale avatar; compact vehicles belong to later upgrades.
 - Broader mobile/controller work beyond preserving semantic input guardrails.
 - Final art overhaul, large UI reskin, broad visual regression suite, or golden-image infrastructure.
-- Daylight multi-dive implementation until the timer/offload plan is split into small issues with tests.
+- Route expansion, broad terrain-art polish, and deeper biome growth until the daylight/surface/offload/night loop is playable.
 
 ## Stable Guardrails
 
 - Preserve current gameplay behavior unless an issue explicitly asks for a gameplay change.
+- Before closing milestone, Area 01 source-map, visual-truth, or capture-state issues, use `docs/current/SOURCE_OF_TRUTH_GUARDRAIL.md` to keep README, ROADMAP, GAMEPLAY, planning anchors, source maps, and capture manifests aligned.
 - `DiveSession` owns temporary expedition state.
 - `ProgressionState` owns durable progress.
 - Authored scene data owns route/content placement.

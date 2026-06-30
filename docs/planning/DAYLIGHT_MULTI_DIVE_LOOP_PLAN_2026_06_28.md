@@ -2,6 +2,8 @@
 
 Status: planning direction only. This does not describe implemented behavior yet. `docs/current/GAMEPLAY.md` remains the source of truth for current runtime behavior.
 
+2026-06-30 recalibration: this loop is now the selected planning direction, not just a speculative extension. It should be read with `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md`, which adds the stronger Subnautica-like framing: open surface oxygen, ship-only offload, sun-to-moon daylight, health as a real danger meter, resources such as fish/food, wood/driftwood, iron/scrap, and power parts, and night as the build/craft/upgrade/survival phase.
+
 ## Goal
 
 Clarify the future expedition day loop around one readable daylight budget:
@@ -16,7 +18,7 @@ One expedition day has three nested pressures:
 - Oxygen: the tactical underwater sortie budget. Surfacing refills oxygen, but does not bank cargo unless the player returns to the ship.
 - Cargo space: the inventory pressure. Supplies, resources, and some samples compete for limited carried slots until offloaded at the ship.
 
-Health or hull integrity can become a fourth pressure, but only when danger is active. It should represent predators, hazards, collision, or route danger rather than duplicating the day timer or oxygen timer.
+Health or hull integrity is now the target fourth pressure, added when danger is active. It should represent predators, hazards, collision, pressure, or route danger rather than duplicating the day timer or oxygen timer.
 
 ## Intended Day Flow
 
@@ -25,7 +27,7 @@ Health or hull integrity can become a fourth pressure, but only when danger is a
 3. Surface for air: reaching open surface water refills oxygen, but cargo remains carried and daylight keeps moving.
 4. Return to ship: entering the ship/moonpool lets the player offload carried supplies and resources with one clear button press.
 5. Repeat: the player chooses whether there is time for another push before nightfall.
-6. Nightfall: the day ends. The player reviews banked supplies, resolves base needs, performs upgrades/crafting/lab analysis, and prepares for the next expedition day.
+6. Nightfall: the day ends. The player reviews banked supplies, resolves food/power/base needs, builds or crafts from resources, performs upgrades/lab analysis, and prepares for the next expedition day.
 
 ## Ship Versus Surface Rule
 
@@ -66,10 +68,10 @@ Do not solve planning uncertainty with a full minimap, exact locator, quest chec
 
 Night is the upgrade and resolution phase:
 
-- resolve Emergency Week Food/Water/Power needs from banked supplies,
+- resolve Emergency Week or successor Food/Power/base needs from banked supplies,
 - show consequences for unmet needs,
 - process discoveries and lab analysis,
-- buy or craft upgrades from banked resources and known requirements,
+- build, craft, buy, or upgrade from banked resources and known requirements,
 - select or pin goals for the next day,
 - advance the ocean condition/seed.
 
@@ -84,7 +86,7 @@ Candidate rules for implementation issues to test:
 - Daylight reaches zero while away from the ship: the day ends with whatever was already banked. Unbanked cargo should be lost or heavily penalized unless a later issue proves a better rule.
 - Daylight reaches zero at the ship/night screen: resolve night normally.
 
-Do not introduce multiple new penalties at once. The first slice should prove the daylight/offload rhythm before adding health loss, harsher nightfall penalties, or complex rescue rules.
+Do not introduce multiple new penalties at once. The first slice should prove the daylight/offload rhythm before layering in harsher nightfall penalties, complex rescue rules, or many damage sources.
 
 ## First Implementation Slice
 

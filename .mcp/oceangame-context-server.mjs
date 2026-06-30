@@ -13,6 +13,7 @@ const resources = [
   ["oceangame://roadmap", "docs/current/ROADMAP.md", "Current roadmap"],
   ["oceangame://gameplay", "docs/current/GAMEPLAY.md", "Implemented gameplay"],
   ["oceangame://tooling", "docs/current/TOOLING.md", "Current tooling"],
+  ["oceangame://source-of-truth-guardrail", "docs/current/SOURCE_OF_TRUTH_GUARDRAIL.md", "Source of truth guardrail"],
   ["oceangame://godot-mcp", "docs/current/GODOT_MCP.md", "Godot MCP tooling policy"],
   ["oceangame://screenshot-workflow", "docs/current/SCREENSHOT_WORKFLOW.md", "Screenshot workflow"],
   ["oceangame://project-status", "docs/planning/PROJECT_STATUS_REVIEW_2026_06_25.md", "Project status review"],
@@ -266,6 +267,7 @@ function selfTest() {
   const listedUris = new Set(listed.map((resource) => resource.uri));
   const requiredUris = [
     "oceangame://roadmap",
+    "oceangame://source-of-truth-guardrail",
     "oceangame://expedition-goal-ii",
     "oceangame://backlog-replenishment-after-shell-reef",
     "oceangame://thermal-vent-route-review-2026-06-25",

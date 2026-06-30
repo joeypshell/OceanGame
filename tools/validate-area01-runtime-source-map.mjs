@@ -239,7 +239,7 @@ if (!surfaceHook || surfaceHook.type !== "oxygen") {
   fail("surface_oxygen_refill_zone oxygen hook is required");
 }
 const surfaceBounds = polygonBounds(surfaceHook.points);
-if (surfaceBounds.minX > -850 || surfaceBounds.maxX < 4500 || surfaceBounds.maxY > 260) {
+if (surfaceBounds.minX > -850 || surfaceBounds.maxX < 4500 || surfaceBounds.maxY < 300) {
   fail("surface oxygen hook must keep the full top water surface open");
 }
 

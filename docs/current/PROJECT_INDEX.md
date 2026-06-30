@@ -8,6 +8,7 @@ This index points future work to the active source of truth without making `docs
 - `docs/current/GAMEPLAY.md`: implemented gameplay behavior.
 - `docs/current/ARCHITECTURE.md`: runtime ownership and structure.
 - `docs/current/TOOLING.md`: implemented tooling and MCP support.
+- `docs/current/SOURCE_OF_TRUTH_GUARDRAIL.md`: short checklist for keeping milestone, gameplay, Area 01 source-map, and capture docs aligned.
 - `docs/GITHUB_ISSUE_WORKFLOW.md`: issue workflow.
 - `AGENTS.md`: repository operating guide for agents.
 
@@ -23,6 +24,7 @@ This index points future work to the active source of truth without making `docs
 - `docs/planning/AREA_01_MAP_TRUTH_RECONCILIATION_2026_06_29.md`: comparison between current runtime blockout authority and accepted source-floor runtime-v2 direction.
 - `docs/planning/AREA_01_RUNTIME_SOURCE_MAP_V2_2026_06_29.md`: promoted runtime-source candidate and repeatable generation process before Godot builder wiring.
 - `docs/planning/AREA_01_ORGANIC_GEOMETRY_PIPELINE_PASS_2026_06_29.md`: repeatable organic geometry pass and next gate before runtime terrain wiring.
+- `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md`: current planning reset for open-surface oxygen, ship offload, daylight timer, health, resource survival, and night build/craft/upgrade flow.
 - `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`: proposed daylight timer, surface oxygen, ship offload, night upgrade, and pause-slate loop.
 
 ## Historical Roadmap Archive
@@ -42,6 +44,7 @@ This index points future work to the active source of truth without making `docs
 - `docs/planning/CORE_LOOP_RULES.md`
 - `docs/planning/DAILY_RUNS.md`
 - `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md`
+- `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md`
 - `docs/planning/PROGRESSION_LADDER.md`
 - `docs/planning/PREDATOR_INTERACTION_DIRECTION.md`
 - `docs/planning/FUTURE_PLATFORM_INPUT_TARGETS_2026_06_26.md`
