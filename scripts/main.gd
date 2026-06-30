@@ -1592,7 +1592,22 @@ func _ensure_area01_source_map_overlay() -> void:
 func _sync_area01_source_map_overlay() -> void:
 	_ensure_area01_source_map_overlay()
 	area01_source_map_overlay.scan_range = scan_range
+	area01_source_map_overlay.capture_state = _area01_overlay_capture_state()
+	area01_source_map_overlay.camera_state = _area01_overlay_camera_state()
 	area01_source_map_overlay.set_debug_visible(show_debug_telemetry and show_area01_source_map_overlay)
+
+func _area01_overlay_capture_state() -> String:
+	if not visual_smoke_route_stage.is_empty():
+		return visual_smoke_route_stage
+	return "day %d %s" % [survival_state.current_day, DiveSessionScript.Result.keys()[dive_session.result].to_lower()]
+
+func _area01_overlay_camera_state() -> String:
+	if player == null:
+		return "player camera unavailable"
+	var camera := player.get_node_or_null("Camera2D") as Camera2D
+	if camera == null:
+		return "camera unavailable"
+	return "pos %.0f,%.0f zoom %.2f" % [camera.global_position.x, camera.global_position.y, camera.zoom.x]
 
 func _cycle_debug_condition() -> void:
 	if not show_debug_telemetry:

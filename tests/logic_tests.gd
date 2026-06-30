@@ -4095,6 +4095,19 @@ func _test_area_01_source_map_debug_overlay() -> void:
 	var summary := overlay.source_map_summary()
 	_expect(int(summary.get("solids", 0)) >= 13, "Area 01 source-map overlay should expose solid terrain count")
 	_expect(int(summary.get("hooks", 0)) >= 12, "Area 01 source-map overlay should expose hook count")
+	_expect(String(summary.get("map_id", "")) == "area_01_runtime_source_map_v2", "Area 01 source-map overlay should expose current map revision")
+	overlay.capture_state = "area01-central-drop"
+	overlay.camera_state = "pos 640,420 zoom 0.60"
+	_expect(overlay.capture_state.contains("area01"), "Area 01 source-map overlay should carry capture state for screenshots")
+	_expect(overlay.camera_state.contains("zoom"), "Area 01 source-map overlay should carry camera state for screenshots")
+
+	var main := MainScene.instantiate()
+	var builder := Area01BlockoutBuilderScript.new()
+	_expect(builder.build(main), "Area 01 source-map overlay diagnostic should use built runtime scene: %s" % builder.last_error)
+	var truth_errors: Array[String] = overlay.call("_runtime_truth_errors", main)
+	_expect(truth_errors.is_empty(), "Area 01 source-map overlay diagnostic should see no runtime truth errors: %s" % "\n".join(truth_errors))
+	main.free()
+
 	overlay.set_debug_visible(true)
 	_expect(overlay.visible, "Area 01 source-map overlay should become visible only through debug control")
 	overlay.set_debug_visible(false)

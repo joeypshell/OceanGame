@@ -123,6 +123,8 @@ Area 01 visual cue budgets are centralized in `scripts/area01_visual_cue_contrac
 
 Generated source-map terrain and hooks are tagged with cue-family metadata by `Area01BlockoutBuilder`. Tests can call `Area01VisualCueContract.debug_report(root, camera_region)` to count visible nodes by cue family and warn when a review region has too many bright support cues competing for attention. This report is metadata-based; it does not replace screenshots or image analysis for final visual judgment.
 
+During local Godot review, press F10 to show or hide the developer-only Area 01 readability overlay. The overlay also forces debug telemetry on so it stays out of normal play by default. It draws source-map lanes, collision truth, generated hooks, resource/scan markers, cue-family labels, and a compact screenshot summary with map revision, capture/camera state, cue-family counts, unread collision count, and untagged visible-cue count.
+
 ## MCP Context Server
 
 The first MCP slice is agent workflow support: a small repo-local context server exposes OceanGame source-of-truth docs as MCP resources. It does not control the Godot editor, mutate files, require secrets, or replace the GitHub issue workflow.
