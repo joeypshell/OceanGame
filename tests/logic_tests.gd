@@ -49,6 +49,7 @@ func _initialize() -> void:
 	_run("upgraded cargo limit", _test_upgraded_cargo_limit)
 	_run("extraction requirements", _test_extraction_requirements)
 	_run("oxygen failure", _test_oxygen_failure)
+	_run("health damage and vent failure", _test_health_damage_and_vent_failure)
 	_run("surface oxygen refill isolation", _test_surface_oxygen_refill_isolation)
 	_run("ship offload repeat daylight sortie", _test_ship_offload_repeat_daylight_sortie)
 	_run("debug unlimited oxygen", _test_debug_unlimited_oxygen)
@@ -230,6 +231,57 @@ func _test_oxygen_failure() -> void:
 	_expect(session.result == DiveSessionScript.Result.FAILED, "oxygen depletion should fail the dive")
 	_expect(session.current_cargo.is_empty(), "oxygen failure should discard current cargo")
 
+func _test_health_damage_and_vent_failure() -> void:
+	var session := DiveSessionScript.new()
+	session.reset(30.0, 100.0)
+	session.start()
+	session.oxygen = 18.0
+	session.add_cargo("driftwood")
+
+	session.damage_health(22.0)
+
+	_expect(is_equal_approx(session.health, 78.0), "health damage should reduce health")
+	_expect(is_equal_approx(session.oxygen, 18.0), "health damage should not spend oxygen")
+	_expect(session.current_cargo == ["driftwood"], "nonfatal health damage should preserve carried cargo")
+	_expect(session.result == DiveSessionScript.Result.DIVING, "nonfatal health damage should keep the dive active")
+
+	session.refill_oxygen(20.0)
+	_expect(is_equal_approx(session.oxygen, session.max_oxygen), "oxygen refill should still refill oxygen")
+	_expect(is_equal_approx(session.health, 78.0), "oxygen refill should not heal health")
+
+	session.damage_health(100.0)
+	_expect(session.result == DiveSessionScript.Result.FAILED, "health reaching zero should fail the dive")
+	_expect(session.current_cargo.is_empty(), "health failure should discard carried cargo")
+
+	var main := MainScript.new()
+	main.dive_session.reset(30.0, 100.0)
+	main.dive_session.start()
+	main.dive_session.oxygen = 24.0
+	main.dive_session.current_cargo.append("driftwood")
+	main.thermal_vent_health_damage = 18.0
+	main.call("_apply_health_damage", main.thermal_vent_health_damage, "thermal vent heat")
+	_expect(is_equal_approx(main.dive_session.health, 82.0), "thermal vent damage should reduce health by the configured amount")
+	_expect(is_equal_approx(main.dive_session.oxygen, 24.0), "thermal vent damage should leave oxygen unchanged")
+	_expect(main.run_health_damage_events == 1, "thermal vent damage should count as health damage telemetry")
+	_expect(main.last_health_damage_source == "thermal vent heat", "thermal vent damage should record a distinct source")
+	main.dive_session.current_cargo.append("food_supply")
+	main.call("_apply_health_damage", 200.0, "thermal vent heat")
+	_expect(main.dive_session.result == DiveSessionScript.Result.FAILED, "fatal thermal vent damage should fail the dive")
+	_expect(main.run_failure_cause.contains("health depleted"), "fatal thermal vent damage should record health as the failure cause")
+	_expect(main.call("_format_failure_cause_for_player") == "health depleted", "health failure copy should stay distinct from oxygen failure copy")
+	main.free()
+
+	var scene_main := MainScene.instantiate()
+	root.add_child(scene_main)
+	scene_main.dive_session.start()
+	scene_main.dive_session.oxygen = 19.0
+	scene_main.dive_session.health = scene_main.dive_session.max_health
+	scene_main.call("_on_thermal_vent_hazard_body_entered", scene_main.player)
+	_expect(is_equal_approx(scene_main.dive_session.health, scene_main.dive_session.max_health - scene_main.thermal_vent_health_damage), "scene thermal vent collision should damage health")
+	_expect(is_equal_approx(scene_main.dive_session.oxygen, 19.0), "scene thermal vent collision should not drain oxygen")
+	_expect(scene_main.status_label.text.contains("health damaged"), "scene thermal vent feedback should be distinct from oxygen warning copy")
+	scene_main.queue_free()
+
 func _test_surface_oxygen_refill_isolation() -> void:
 	var session := DiveSessionScript.new()
 	session.reset(30.0)
@@ -273,6 +325,7 @@ func _test_ship_offload_repeat_daylight_sortie() -> void:
 	main.dive_session.reset(30.0)
 	main.dive_session.start()
 	main.dive_session.oxygen = 6.0
+	main.dive_session.health = 64.0
 	main.dive_session.has_left_base = true
 	main.dive_session.current_cargo.append("driftwood")
 	main.dive_session.current_cargo.append("food_supply")
@@ -288,6 +341,7 @@ func _test_ship_offload_repeat_daylight_sortie() -> void:
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "ship offload should keep the same daylight dive active")
 	_expect(main.dive_session.current_cargo.is_empty(), "ship offload should clear carried inventory")
 	_expect(is_equal_approx(main.dive_session.oxygen, main.dive_session.max_oxygen), "ship offload should leave oxygen ready for the next sortie")
+	_expect(is_equal_approx(main.dive_session.health, 64.0), "ship offload should not heal health")
 	_expect(main.progression_state.resource_count("driftwood") == 1, "ship offload should bank resource cargo")
 	_expect(main.survival_state.food == SurvivalStateScript.STARTING_NEED + 1, "ship offload should bank survival supplies without waiting for night")
 	_expect(main.survival_state.water == starting_water and main.survival_state.power == starting_power, "ship offload should only change supplied survival needs")
@@ -6497,8 +6551,10 @@ func _test_compact_dive_hud_helpers() -> void:
 	var tool_belt_panel: Panel = main_scene.get_node("HUD/ToolBeltPanel")
 	var minimap_panel: Panel = main_scene.get_node("HUD/MinimapPanel")
 	var oxygen_bar_fill: ColorRect = main_scene.get_node("HUD/OxygenBarFill")
+	var health_bar_fill: ColorRect = main_scene.get_node("HUD/HealthBarFill")
 	var depth_bar_fill: ColorRect = main_scene.get_node("HUD/DepthBarFill")
 	var oxygen_label: Label = main_scene.get_node("HUD/Oxygen")
+	var health_label: Label = main_scene.get_node("HUD/Health")
 	var depth_label: Label = main_scene.get_node("HUD/Depth")
 	var depth_rail_line: ColorRect = main_scene.get_node("HUD/DepthRailLine")
 	var depth_rail_marker: Polygon2D = main_scene.get_node("HUD/DepthRailMarker")
@@ -6569,13 +6625,14 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(hud_style.shadow_size <= 6, "active HUD shadow should stay tight and game-like")
 	_expect(warning_style.bg_color.a >= 0.6, "oxygen warning should stay stronger than ordinary HUD glass")
 	_expect(oxygen_label.get_theme_font_size("font_size") <= 15, "oxygen value should be compact rather than debug-sized")
+	_expect(health_label.get_theme_font_size("font_size") <= 12, "health value should stay compact inside the active stats panel")
 	_expect(depth_label.get_theme_font_size("font_size") <= 12, "depth value should use compact reference-style type")
 	_expect(discoveries_label.get_theme_font_size("font_size") <= 12, "discoveries count should stay subordinate")
 	_expect(objective_title.get_theme_font_size("font_size") <= 12, "objective title should be a compact HUD label")
 	_expect(objective_line.get_theme_font_size("font_size") <= 12, "objective line should be compact enough for a small route card")
 	_expect(status_label.get_theme_font_size("font_size") <= 13, "status text should be readable without oversized copy")
 	_expect(_control_rect(active_panel).size.x <= 280.0, "active stats panel should keep a compact reference-style width")
-	_expect(_control_rect(active_panel).size.y <= 120.0, "active stats panel should keep a compact reference-style height")
+	_expect(_control_rect(active_panel).size.y <= 160.0, "active stats panel should keep oxygen, health, and depth compact")
 	_expect(_control_rect(cargo_panel).size.x <= 270.0, "cargo strip should be a compact top-center widget, not a wide banner")
 	_expect(_control_rect(cargo_panel).size.y <= 50.0, "cargo strip should stay shallow and avoid wasting top-screen space")
 	_expect(_control_rect(survival_panel).size.x <= 250.0, "survival needs panel should keep a compact reference-style width")
@@ -6598,9 +6655,12 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(power_icon.position.x >= survival_panel.offset_left, "Power icon should stay attached to the compact needs widget")
 	_expect(discoveries_label.offset_top >= active_panel.offset_top, "active Discoveries label should stay inside the compact stats panel")
 	_expect(discoveries_label.offset_bottom <= active_panel.offset_bottom, "active Discoveries label should not spill below the compact stats panel")
+	_expect(_control_rect(active_panel).encloses(_control_rect(health_label)), "Health label should stay inside the compact stats panel")
+	_expect(_control_rect(active_panel).encloses(_control_rect(health_bar_fill)), "Health bar should stay inside the compact stats panel")
 	_expect(cargo_panel.offset_left > active_panel.offset_right, "cargo strip should be separated from the top-left instruments")
 	_expect(survival_panel.offset_left > cargo_panel.offset_right, "survival panel should be separated from the cargo strip")
 	_expect(oxygen_bar_fill.offset_right <= main_scene.get_node("HUD/OxygenBarBack").offset_right, "oxygen fill should stay inside the oxygen bar")
+	_expect(health_bar_fill.offset_right <= main_scene.get_node("HUD/HealthBarBack").offset_right, "health fill should stay inside the health bar")
 	_expect(depth_bar_fill.offset_right <= main_scene.get_node("HUD/DepthBarBack").offset_right, "depth fill should stay inside the depth bar")
 	_expect(dive_info_panel.offset_top > active_panel.offset_bottom, "dive info panel should remain below compact stats content")
 	_expect(_control_rect(scan_card_panel).encloses(_control_rect(scan_target_label)), "scan target should stay inside the dedicated scan card when visible")
@@ -6680,6 +6740,10 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(main.call("_format_oxygen_label", 10.0, 40.0).contains("LOW"), "oxygen label should carry low state inline")
 	_expect(main.call("_format_oxygen_label", 40.0, 40.0).begins_with("OXYGEN:"), "oxygen label should use instrument-style active HUD copy")
 	_expect(main.call("_oxygen_warning_text", "critical").contains("RETURN TO BASE"), "critical warning should emphasize the return route")
+	_expect(main.call("_health_state", 100.0, 100.0) == "normal", "health helper should treat full health as normal")
+	_expect(main.call("_health_state", 30.0, 100.0) == "low", "health helper should mark damaged health as low")
+	_expect(main.call("_health_state", 12.0, 100.0) == "critical", "health helper should mark near-failure health as critical")
+	_expect(main.call("_format_health_label", 30.0, 100.0).contains("LOW"), "health label should carry low state inline")
 	main.free()
 
 func _test_mobile_touch_controls_adapter() -> void:

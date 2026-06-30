@@ -76,27 +76,31 @@ const RUN_SUMMARY_COMPACT_BOTTOM := 314.0
 const RUN_SUMMARY_TALL_BOTTOM := 624.0
 const RUN_PANEL_CONTENT_RIGHT_COMPACT := 442.0
 const RUN_PANEL_CONTENT_RIGHT_TALL := 790.0
-const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(272.0, 116.0))
+const ACTIVE_STATS_RECT := Rect2(Vector2(16.0, 16.0), Vector2(272.0, 154.0))
 const CARGO_PANEL_RECT := Rect2(Vector2(516.0, 14.0), Vector2(248.0, 48.0))
 const DAYLIGHT_PANEL_RECT := Rect2(Vector2(792.0, 14.0), Vector2(216.0, 48.0))
 const SURVIVAL_NEEDS_PANEL_RECT := Rect2(Vector2(1036.0, 16.0), Vector2(228.0, 106.0))
-const DIVE_INFO_RECT := Rect2(Vector2(16.0, 148.0), Vector2(292.0, 94.0))
+const DIVE_INFO_RECT := Rect2(Vector2(16.0, 184.0), Vector2(292.0, 94.0))
 const SCAN_CARD_RECT := Rect2(Vector2(972.0, 236.0), Vector2(220.0, 88.0))
 const TOOL_BELT_PANEL_RECT := Rect2(Vector2(486.0, 648.0), Vector2(308.0, 56.0))
 const MINIMAP_PANEL_RECT := Rect2(Vector2(1052.0, 548.0), Vector2(188.0, 140.0))
 const OXYGEN_WARNING_RECT := Rect2(Vector2(16.0, 594.0), Vector2(230.0, 70.0))
+const OXYGEN_ICON_POSITION := Vector2(18.0, 41.0)
+const HEALTH_ICON_POSITION := Vector2(18.0, 77.0)
+const DEPTH_ICON_POSITION := Vector2(18.0, 113.0)
 const ACTIVE_HUD_CONTENT_LEFT := 28.0
 const ACTIVE_HUD_CONTENT_RIGHT := 720.0
 const HUD_SINGLE_ROW_HEIGHT := 20.0
 const ACTIVE_HUD_LABEL_RECTS := {
 	"oxygen": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 28.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
-	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 68.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
-	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 96.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
+	"health": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 64.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
+	"depth": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 100.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
+	"base": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 128.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
 	"cargo": Rect2(Vector2(716.0, 38.0), Vector2(40.0, HUD_SINGLE_ROW_HEIGHT)),
-	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 108.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
+	"discoveries": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 146.0), Vector2(232.0, HUD_SINGLE_ROW_HEIGHT)),
 	"scan": Rect2(Vector2(986.0, 266.0), Vector2(188.0, HUD_SINGLE_ROW_HEIGHT)),
-	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 194.0), Vector2(260.0, 18.0)),
-	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 218.0), Vector2(260.0, 18.0)),
+	"prompt": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 230.0), Vector2(260.0, 18.0)),
+	"status": Rect2(Vector2(ACTIVE_HUD_CONTENT_LEFT, 254.0), Vector2(260.0, 18.0)),
 }
 const DIVE_INFO_LABEL_RECTS := {
 	"title": Rect2(Vector2(12.0, 10.0), Vector2(260.0, 18.0)),
@@ -111,8 +115,10 @@ const SCAN_RETICLE_SCREEN_MARGIN := 72.0
 const SCAN_TARGET_STICKY_RANGE_BUFFER := 28.0
 const OXYGEN_BAR_BACK_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
 const OXYGEN_BAR_FILL_RECT := Rect2(Vector2(28.0, 52.0), Vector2(232.0, 8.0))
-const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
-const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 6.0))
+const HEALTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 8.0))
+const HEALTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 88.0), Vector2(232.0, 8.0))
+const DEPTH_BAR_BACK_RECT := Rect2(Vector2(28.0, 120.0), Vector2(232.0, 6.0))
+const DEPTH_BAR_FILL_RECT := Rect2(Vector2(28.0, 120.0), Vector2(232.0, 6.0))
 const CARGO_SLOT_ACTIVE_POSITION := Vector2(566.0, 32.0)
 const DAYLIGHT_LABEL_RECT := Rect2(Vector2(832.0, 20.0), Vector2(136.0, 18.0))
 const DAYLIGHT_BAR_BACK_RECT := Rect2(Vector2(832.0, 44.0), Vector2(136.0, 8.0))
@@ -162,12 +168,17 @@ const DUSK_TRENCH_MEMORY_MIN_X := 2700.0
 const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 const DAYLIGHT_NORMAL_COLOR := Color(1.0, 0.78, 0.18, 0.96)
 const DAYLIGHT_DUSK_COLOR := Color(0.82, 0.42, 1.0, 0.94)
+const HEALTH_NORMAL_COLOR := Color(0.42, 1.0, 0.5, 0.94)
+const HEALTH_LOW_COLOR := Color(1.0, 0.72, 0.22, 0.96)
+const HEALTH_CRITICAL_COLOR := Color(1.0, 0.18, 0.16, 0.98)
 
 @export var max_oxygen := 30.0
+@export var max_health := 100.0
 @export var oxygen_tank_1_max_oxygen := 40.0
 @export var base_cargo_limit := 3
 @export var cargo_rack_1_limit := 4
 @export var oxygen_drain_per_second := 0.95
+@export var thermal_vent_health_damage := 18.0
 @export var collect_oxygen_cost := 1.0
 @export var scan_oxygen_cost := 2.0
 @export var scan_hold_seconds := 1.0
@@ -201,10 +212,14 @@ const DAYLIGHT_DUSK_COLOR := Color(0.82, 0.42, 1.0, 0.94)
 @onready var daylight_moon_icon: Polygon2D = $HUD/DaylightMoonIcon
 @onready var survival_needs_panel: Panel = $HUD/SurvivalNeedsPanel
 @onready var oxygen_icon: Polygon2D = $HUD/OxygenIcon
+@onready var health_icon: Polygon2D = $HUD/HealthIcon
 @onready var depth_icon: Polygon2D = $HUD/DepthIcon
 @onready var oxygen_label: Label = $HUD/Oxygen
 @onready var oxygen_bar_back: ColorRect = $HUD/OxygenBarBack
 @onready var oxygen_bar_fill: ColorRect = $HUD/OxygenBarFill
+@onready var health_label: Label = $HUD/Health
+@onready var health_bar_back: ColorRect = $HUD/HealthBarBack
+@onready var health_bar_fill: ColorRect = $HUD/HealthBarFill
 @onready var depth_label: Label = $HUD/Depth
 @onready var depth_bar_back: ColorRect = $HUD/DepthBarBack
 @onready var depth_bar_fill: ColorRect = $HUD/DepthBarFill
@@ -320,6 +335,7 @@ const DAYLIGHT_DUSK_COLOR := Color(0.82, 0.42, 1.0, 0.94)
 @onready var lantern_fry_visual_root: Node2D = $Creatures/LanternFry/FallbackVisual
 @onready var lantern_fry_glow: Polygon2D = $Creatures/LanternFry/FallbackVisual/Glow
 @onready var vent_route_hint: Node2D = $VentRouteHint
+@onready var thermal_vent_hazard: Area2D = $Discoveries/ThermalVent
 @onready var pressure_boundary: Area2D = $PressureLockedWreck/PressureBoundary
 @onready var pressure_shimmer: Polygon2D = $PressureLockedWreck/Visuals/FallbackGeometry/PressureGateVisuals/PressureShimmer
 @onready var pressure_gate_top: Polygon2D = $PressureLockedWreck/Visuals/FallbackGeometry/PressureGateVisuals/PressureGateTop
@@ -522,6 +538,8 @@ var run_collected_resources: Array[String] = []
 var run_collected_survival_supplies: Array[String] = []
 var run_completed_scans: Array[String] = []
 var run_predator_contacts := 0
+var run_health_damage_events := 0
+var last_health_damage_source := ""
 var run_failure_cause := "none"
 var run_echo_lens_echo_fired := false
 var run_wreck_echo_clue_recovered := false
@@ -586,6 +604,8 @@ func _ready() -> void:
 	rim_glass_reading_interact_zone.body_exited.connect(_on_rim_glass_reading_body_exited)
 	tideglass_sample_interact_zone.body_entered.connect(_on_tideglass_sample_body_entered)
 	tideglass_sample_interact_zone.body_exited.connect(_on_tideglass_sample_body_exited)
+	if thermal_vent_hazard != null:
+		thermal_vent_hazard.body_entered.connect(_on_thermal_vent_hazard_body_entered)
 	pressure_boundary.body_entered.connect(_on_pressure_boundary_body_entered)
 	wreck_echo_clue_trigger.body_entered.connect(_on_wreck_echo_clue_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
@@ -720,6 +740,30 @@ func _sync_surface_oxygen_refill_state_from_position() -> void:
 
 	player_in_surface_oxygen_refill = player.global_position.y <= _surface_oxygen_refill_floor_y()
 
+func _apply_health_damage(amount: float, source: String) -> void:
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+	if amount <= 0.0:
+		return
+
+	var health_before := dive_session.health
+	dive_session.damage_health(amount)
+	if dive_session.health >= health_before:
+		return
+
+	run_health_damage_events += 1
+	last_health_damage_source = source
+	if dive_session.result == DiveSessionScript.Result.FAILED:
+		run_failure_cause = "health depleted by %s" % source
+		if is_inside_tree():
+			_fail_dive()
+		return
+
+	if status_label != null:
+		status_label.text = "%s: health damaged; oxygen unchanged." % source.capitalize()
+	if is_inside_tree():
+		_update_hud()
+
 func _unhandled_input(_event: InputEvent) -> void:
 	if _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F3:
 		_toggle_debug_telemetry()
@@ -850,8 +894,9 @@ func _fail_dive() -> void:
 	_record_recent_expedition("Failed", 0)
 	last_completed_survival_day = survival_state.current_day
 	_resolve_night_after_result()
-	last_result_summary = "%s\nCargo lost. Banked resources, upgrades, scans, and best depth kept.\n%s%s\n%s%s%s\n%s\nBest depth: %dm.\n%s%s" % [
+	last_result_summary = "%s\nCause: %s.\nCargo lost. Banked resources, upgrades, scans, and best depth kept.\n%s%s\n%s%s%s\n%s\nBest depth: %dm.\n%s%s" % [
 		_format_completed_expedition_line("Failure"),
+		_format_failure_cause_for_player(),
 		_format_region_memory_callout(),
 		_format_discovery_memory_callout(),
 		_format_route_choice_callout(),
@@ -863,8 +908,18 @@ func _fail_dive() -> void:
 		_format_next_expedition_prompt(),
 	]
 	_save_progression()
-	status_label.text = "Dive failed: oxygen depleted. Cargo lost."
+	status_label.text = "Dive failed: %s. Cargo lost." % _format_failure_cause_for_player()
 	_update_hud()
+
+func _format_failure_cause_for_player() -> String:
+	if run_failure_cause.contains("health depleted"):
+		return "health depleted"
+	if run_failure_cause.contains("thermal vent"):
+		return "thermal vent damage"
+	if run_failure_cause.contains("predator"):
+		return "oxygen depleted after predator contact"
+
+	return "oxygen depleted"
 
 func _start_dive() -> void:
 	dive_session.start()
@@ -915,7 +970,7 @@ func _reset_local_prototype_save() -> void:
 func _prepare_next_run() -> void:
 	progression_state.advance_run()
 	current_expedition_condition = ExpeditionConditionScript.condition_for_seed(progression_state.current_run_seed)
-	dive_session.reset(_current_max_oxygen())
+	dive_session.reset(_current_max_oxygen(), max_health)
 	dive_session.cargo_limit = _current_cargo_limit()
 	daylight_elapsed_seconds = 0.0
 	daylight_nightfall_announced = false
@@ -1619,6 +1674,39 @@ func _stage_debug_oxygen_visual_review(target_ratio: float, label: String) -> vo
 
 	dive_session.oxygen = maxf(1.0, dive_session.max_oxygen * target_ratio)
 	status_label.text = "Debug review: %s oxygen staged." % label
+	_update_hud()
+
+func _stage_debug_health_damage_visual_review() -> void:
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player == null:
+		return
+
+	var vent := thermal_vent_hazard
+	if vent == null:
+		vent = get_node_or_null("Discoveries/ThermalVent") as Area2D
+	if vent == null:
+		return
+
+	player = staged_player
+	player.global_position = vent.global_position + Vector2(96.0, -48.0)
+	player.velocity = Vector2.ZERO
+	player_in_base = false
+	player_in_surface_oxygen_refill = false
+	dive_session.has_left_base = true
+	dive_session.unlimited_oxygen = true
+	dive_session.oxygen = dive_session.max_oxygen
+	dive_session.health = dive_session.max_health
+	visual_smoke_route_stage = "thermal_vent_health_damage"
+	_apply_health_damage(thermal_vent_health_damage, "thermal vent heat")
+	visual_smoke_route_stage = "thermal_vent_health_damage"
+	_update_depth()
 	_update_hud()
 
 func _stage_debug_daylight_visual_review(progress_ratio: float, label: String) -> void:
@@ -2340,6 +2428,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_oxygen_visual_review(0.20, "low")
 		"oxygen_critical":
 			_stage_debug_oxygen_visual_review(0.08, "critical")
+		"health_damage":
+			_stage_debug_health_damage_visual_review()
 		"daylight_morning":
 			_stage_debug_daylight_visual_review(0.15, "morning")
 		"daylight_evening":
@@ -3263,6 +3353,12 @@ func _on_predator_contacted(predator: Node) -> void:
 		status_label.text = "Predator strike: oxygen lost, controls disrupted."
 		_update_hud()
 
+func _on_thermal_vent_hazard_body_entered(body: Node2D) -> void:
+	if body != player:
+		return
+
+	_apply_health_damage(thermal_vent_health_damage, "thermal vent heat")
+
 func _on_pressure_boundary_body_entered(body: Node2D) -> void:
 	if body != player or progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID):
 		return
@@ -4040,10 +4136,14 @@ func _update_hud() -> void:
 	tool_belt_panel.visible = is_diving
 	minimap_panel.visible = is_diving
 	oxygen_icon.visible = is_diving
+	health_icon.visible = is_diving
 	depth_icon.visible = is_diving
 	oxygen_label.visible = is_diving
 	oxygen_bar_back.visible = is_diving
 	oxygen_bar_fill.visible = is_diving
+	health_label.visible = is_diving
+	health_bar_back.visible = is_diving
+	health_bar_fill.visible = is_diving
 	depth_label.visible = is_diving
 	depth_bar_back.visible = is_diving
 	depth_bar_fill.visible = is_diving
@@ -4052,12 +4152,14 @@ func _update_hud() -> void:
 	cargo_slots_root.visible = is_diving
 	_update_daylight_timer_hud(is_diving)
 	oxygen_label.text = _format_oxygen_label(dive_session.oxygen, dive_session.max_oxygen)
+	health_label.text = _format_health_label(dive_session.health, dive_session.max_health)
 	depth_label.text = "Depth: %dm | Best: %dm" % [
 		roundi(dive_session.current_depth),
 		roundi(progression_state.best_depth_reached)
 	]
 	base_direction_label.text = _format_base_direction()
 	_update_oxygen_feedback()
+	_update_health_feedback()
 	cargo_label.text = "%d / %d" % [
 		dive_session.current_cargo.size(),
 		dive_session.cargo_limit
@@ -4108,6 +4210,9 @@ func _apply_active_hud_layout() -> void:
 	_set_control_rect(oxygen_label, ACTIVE_HUD_LABEL_RECTS["oxygen"])
 	_set_control_rect(oxygen_bar_back, OXYGEN_BAR_BACK_RECT)
 	_set_control_rect(oxygen_bar_fill, OXYGEN_BAR_FILL_RECT)
+	_set_control_rect(health_label, ACTIVE_HUD_LABEL_RECTS["health"])
+	_set_control_rect(health_bar_back, HEALTH_BAR_BACK_RECT)
+	_set_control_rect(health_bar_fill, HEALTH_BAR_FILL_RECT)
 	_set_control_rect(depth_label, ACTIVE_HUD_LABEL_RECTS["depth"])
 	_set_control_rect(depth_bar_back, DEPTH_BAR_BACK_RECT)
 	_set_control_rect(depth_bar_fill, DEPTH_BAR_FILL_RECT)
@@ -4138,6 +4243,12 @@ func _apply_active_hud_layout() -> void:
 		water_need_icon.position = SURVIVAL_NEED_ICON_POSITIONS["water"]
 	if power_need_icon != null:
 		power_need_icon.position = SURVIVAL_NEED_ICON_POSITIONS["power"]
+	if oxygen_icon != null:
+		oxygen_icon.position = OXYGEN_ICON_POSITION
+	if health_icon != null:
+		health_icon.position = HEALTH_ICON_POSITION
+	if depth_icon != null:
+		depth_icon.position = DEPTH_ICON_POSITION
 	_set_control_rect(depth_rail_line, DEPTH_RAIL_LINE_RECT)
 	if depth_rail_labels.size() >= 3:
 		_set_control_rect(depth_rail_labels[0], DEPTH_RAIL_LABEL_RECTS["0"])
@@ -4152,6 +4263,7 @@ func _apply_active_hud_layout() -> void:
 
 	var bounded_labels: Array[Label] = [
 		oxygen_label,
+		health_label,
 		depth_label,
 		base_direction_label,
 		cargo_label,
@@ -4215,6 +4327,14 @@ func _ensure_active_hud_references() -> void:
 		oxygen_bar_back = get_node_or_null("HUD/OxygenBarBack") as ColorRect
 	if oxygen_bar_fill == null:
 		oxygen_bar_fill = get_node_or_null("HUD/OxygenBarFill") as ColorRect
+	if health_icon == null:
+		health_icon = get_node_or_null("HUD/HealthIcon") as Polygon2D
+	if health_label == null:
+		health_label = get_node_or_null("HUD/Health") as Label
+	if health_bar_back == null:
+		health_bar_back = get_node_or_null("HUD/HealthBarBack") as ColorRect
+	if health_bar_fill == null:
+		health_bar_fill = get_node_or_null("HUD/HealthBarFill") as ColorRect
 	if depth_label == null:
 		depth_label = get_node_or_null("HUD/Depth") as Label
 	if depth_bar_back == null:
@@ -4279,6 +4399,13 @@ func _update_instrument_bars() -> void:
 	if dive_session.max_oxygen > 0.0:
 		oxygen_ratio = clampf(dive_session.oxygen / dive_session.max_oxygen, 0.0, 1.0)
 	_set_bar_fill_width(oxygen_bar_fill, OXYGEN_BAR_FILL_RECT, oxygen_ratio)
+
+	var health_ratio := 0.0
+	if dive_session.max_health > 0.0:
+		health_ratio = clampf(dive_session.health / dive_session.max_health, 0.0, 1.0)
+	_set_bar_fill_width(health_bar_fill, HEALTH_BAR_FILL_RECT, health_ratio)
+	if health_bar_fill != null:
+		health_bar_fill.color = _health_state_color(_health_state(dive_session.health, dive_session.max_health))
 
 	var depth_ratio := clampf(dive_session.current_depth / 200.0, 0.0, 1.0)
 	_set_bar_fill_width(depth_bar_fill, DEPTH_BAR_FILL_RECT, depth_ratio)
@@ -4441,6 +4568,11 @@ func _publish_visual_smoke_state() -> void:
 		"oxygen_state": _oxygen_state(dive_session.oxygen, dive_session.max_oxygen),
 		"oxygen": ceili(dive_session.oxygen),
 		"max_oxygen": ceili(dive_session.max_oxygen),
+		"health_state": _health_state(dive_session.health, dive_session.max_health),
+		"health": ceili(dive_session.health),
+		"max_health": ceili(dive_session.max_health),
+		"health_damage_events": run_health_damage_events,
+		"last_health_damage_source": last_health_damage_source,
 		"depth_meters": roundi(dive_session.current_depth),
 		"best_depth_meters": roundi(progression_state.best_depth_reached),
 		"daylight_visible": daylight_panel.visible,
@@ -5278,6 +5410,8 @@ func _reset_run_telemetry() -> void:
 	run_collected_survival_supplies.clear()
 	run_completed_scans.clear()
 	run_predator_contacts = 0
+	run_health_damage_events = 0
+	last_health_damage_source = ""
 	run_failure_cause = "none"
 	run_echo_lens_echo_fired = false
 	run_wreck_echo_clue_recovered = false
@@ -5323,7 +5457,7 @@ func _reset_run_telemetry() -> void:
 	_sync_survival_supply_cache_state()
 
 func _format_run_telemetry(result_name: String) -> String:
-	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nLantern Ray route: %s\nCargo collected:%s%s\nScans: %s\nPredator contacts: %d\nOxygen at result: %d / %d\nFailure cause: %s" % [
+	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nLantern Ray route: %s\nCargo collected:%s%s\nScans: %s\nPredator contacts: %d\nHealth damage events: %d\nOxygen at result: %d / %d\nHealth at result: %d / %d\nFailure cause: %s" % [
 		result_name,
 		progression_state.current_run_seed,
 		_format_cluster_pattern(current_resource_cluster_pattern),
@@ -5334,8 +5468,11 @@ func _format_run_telemetry(result_name: String) -> String:
 		_format_survival_supply_counts(run_collected_survival_supplies),
 		_format_scan_ids(run_completed_scans),
 		run_predator_contacts,
+		run_health_damage_events,
 		ceili(dive_session.oxygen),
 		ceili(dive_session.max_oxygen),
+		ceili(dive_session.health),
+		ceili(dive_session.max_health),
 		run_failure_cause
 	]
 
@@ -6057,6 +6194,36 @@ func _format_oxygen_label(current_oxygen: float, maximum_oxygen: float) -> Strin
 
 	return "OXYGEN: %d / %d%s" % [ceili(current_oxygen), ceili(maximum_oxygen), suffix]
 
+func _health_state(current_health: float, maximum_health: float) -> String:
+	if maximum_health <= 0.0:
+		return "normal"
+
+	var health_ratio := current_health / maximum_health
+	if health_ratio <= 0.18:
+		return "critical"
+	if health_ratio <= 0.35:
+		return "low"
+
+	return "normal"
+
+func _format_health_label(current_health: float, maximum_health: float) -> String:
+	var state := _health_state(current_health, maximum_health)
+	var suffix := ""
+	if state == "critical":
+		suffix = "  CRITICAL"
+	elif state == "low":
+		suffix = "  LOW"
+
+	return "HEALTH: %d / %d%s" % [ceili(current_health), ceili(maximum_health), suffix]
+
+func _health_state_color(state: String) -> Color:
+	if state == "critical":
+		return HEALTH_CRITICAL_COLOR
+	if state == "low":
+		return HEALTH_LOW_COLOR
+
+	return HEALTH_NORMAL_COLOR
+
 func _oxygen_warning_text(state: String) -> String:
 	if state == "critical":
 		return "O2 CRITICAL\nRETURN TO BASE"
@@ -6100,6 +6267,30 @@ func _update_oxygen_feedback() -> void:
 		oxygen_warning_label.modulate = oxygen_color
 		oxygen_label.modulate = oxygen_color
 		base_direction_label.modulate = Color(1.0, 0.86, 0.36, 1.0)
+
+func _update_health_feedback() -> void:
+	if health_label == null:
+		return
+
+	health_label.modulate = Color.WHITE
+	health_label.scale = Vector2.ONE
+	if health_icon != null:
+		health_icon.modulate = Color.WHITE
+	if dive_session.result != DiveSessionScript.Result.DIVING or dive_session.max_health <= 0.0:
+		return
+
+	var health_state := _health_state(dive_session.health, dive_session.max_health)
+	var health_color := _health_state_color(health_state)
+	if health_state == "critical":
+		var pulse := 1.0 + 0.07 * absf(sin(Time.get_ticks_msec() / 110.0))
+		health_label.modulate = health_color
+		health_label.scale = Vector2(pulse, pulse)
+		if health_icon != null:
+			health_icon.modulate = health_color
+	elif health_state == "low":
+		health_label.modulate = health_color
+		if health_icon != null:
+			health_icon.modulate = health_color
 
 func _load_progression() -> void:
 	if not FileAccess.file_exists(PROGRESSION_SAVE_PATH):

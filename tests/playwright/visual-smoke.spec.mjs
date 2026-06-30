@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDaylightState, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOuterShelfSurvey, stageOxygenState, stageShipOffload, stageSiltVeinFork, stageSurfaceOxygenRefill } from "./visual-helpers.mjs";
+import { bootGame, capture, holdKey, holdKeys, returnToBaseAndExtract, stageBlackwaterRoute, stageBlueChimneyPayoff, stageBlueChimneyPocket, stageDaylightState, stageDuskTrenchPayoff, stageDuskTrenchPayoffRecovered, stageDuskTrenchRoute, stageEastShelfPocketPing, stageExpandedRoute, stageHealthDamage, stageHollowReefPayoff, stageHollowReefReturn, stageHollowReefRoute, stageLowerConnector, stageOpenHatchResonanceAlcove, stageOuterShelfSurvey, stageOxygenState, stageShipOffload, stageSiltVeinFork, stageSurfaceOxygenRefill } from "./visual-helpers.mjs";
 
 test.describe("OceanGame web visual smoke", () => {
   test("captures deterministic surface, active, result, upgrade, and lower-route views", async ({ page }, testInfo) => {
@@ -280,6 +280,21 @@ test.describe("OceanGame web visual smoke", () => {
       oxygen_state: "critical",
       debug_telemetry: false,
       active_stats_visible: true,
+    });
+  });
+
+  test("captures health damage distinct from oxygen loss", async ({ page }, testInfo) => {
+    await bootGame(page);
+    await stageHealthDamage(page);
+    await capture(page, testInfo, "thermal-vent-health-damage", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      route_stage: "thermal_vent_health_damage",
+      health: 82,
+      max_health: 100,
+      oxygen: 30,
+      health_damage_events: 1,
     });
   });
 

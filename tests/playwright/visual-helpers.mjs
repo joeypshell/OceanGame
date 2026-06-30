@@ -89,6 +89,22 @@ export async function stageOxygenState(page, oxygenState) {
   });
 }
 
+export async function stageHealthDamage(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "health_damage";
+  });
+  await assertVisualState(page, {
+    result: "diving",
+    active_stats_visible: true,
+    route_stage: "thermal_vent_health_damage",
+    health: 82,
+    max_health: 100,
+    oxygen: 30,
+    health_damage_events: 1,
+    last_health_damage_source: "thermal vent heat",
+  });
+}
+
 export async function stageDaylightState(page, daylightCommand, remainingPercent) {
   await page.evaluate((nextCommand) => {
     window.__oceangameDebugCommand = nextCommand;
