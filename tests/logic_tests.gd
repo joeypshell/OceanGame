@@ -4214,6 +4214,7 @@ func _test_area_01_authoritative_wall_builder() -> void:
 
 	var water_cutout_layer := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/RuntimeSourceWaterCutouts") as Node2D
 	var water_edge_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourceWaterEdges") as Node2D
+	var player_rim_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourcePlayerRims") as Node2D
 	var carved_water_count := 0
 	var art_slice := main.get_node("Area01ArtSlice") as CanvasItem
 	var player_visual_root := main.get_node("Player/VisualRoot") as CanvasItem
@@ -4225,11 +4226,14 @@ func _test_area_01_authoritative_wall_builder() -> void:
 		_expect(_effective_canvas_z(terrain_domain_node) < player_visual_z, "Area 01 terrain domain should render behind the diver")
 	_expect(water_cutout_layer != null, "Area 01 builder should render playable-water cutouts over the continuous terrain domain")
 	_expect(water_edge_layer != null, "Area 01 builder should retain hidden playable-water diagnostic edge nodes")
+	_expect(player_rim_layer != null, "Area 01 builder should render subtle player-facing playable-water rim/lip sprite nodes")
 	if water_cutout_layer != null:
 		_expect(_effective_canvas_z(water_cutout_layer) < player_visual_z, "Area 01 playable-water cutouts should render behind the diver")
 	if water_edge_layer != null:
 		_expect(_effective_canvas_z(water_edge_layer) < player_visual_z, "Area 01 hidden water edge diagnostics should stay behind the diver")
 		_expect(water_edge_layer.find_child("*SpriteRimTrims", true, false) == null, "Area 01 should not scatter generated water-edge sprite trim chunks across cave silhouettes")
+	if player_rim_layer != null:
+		_expect(_effective_canvas_z(player_rim_layer) < player_visual_z, "Area 01 player-facing water rim sprites should render behind the diver")
 	for water_value in playable_water_regions:
 		if typeof(water_value) != TYPE_DICTIONARY:
 			_expect(false, "Area 01 playable water entry should be a dictionary")
@@ -4247,11 +4251,29 @@ func _test_area_01_authoritative_wall_builder() -> void:
 		var edge: Line2D = null
 		if water_edge_layer != null:
 			edge = water_edge_layer.get_node_or_null(String(runtime.get("edge_line2d_name", ""))) as Line2D
+		var player_rim_group: Node2D = null
+		var player_rim_line: Line2D = null
+		if player_rim_layer != null:
+			player_rim_group = player_rim_layer.get_node_or_null("%sPlayerRimSprites" % String(runtime.get("edge_line2d_name", ""))) as Node2D
+			player_rim_line = player_rim_layer.get_node_or_null("%sPlayerRim" % String(runtime.get("edge_line2d_name", ""))) as Line2D
 		if bool(water_entry.get("carves_collision", false)):
 			carved_water_count += 1
 			_expect(cutout != null and cutout.visible, "Area 01 carving playable water cutout should be visible cave water: %s" % water_id)
+			_expect(player_rim_line == null, "Area 01 player-facing rim/lip should not be a Line2D debug outline: %s" % water_id)
+			_expect(player_rim_group != null and player_rim_group.visible, "Area 01 carving playable water should have subtle player-facing rim/lip sprite cues: %s" % water_id)
+			if player_rim_group != null:
+				var marker_count := 0
+				for marker in player_rim_group.get_children():
+					_expect(not marker is Line2D, "Area 01 player-facing rim/lip group should not contain Line2D outlines: %s" % water_id)
+					if marker is Sprite2D:
+						marker_count += 1
+						var sprite := marker as Sprite2D
+						_expect(sprite.visible and sprite.modulate.a <= 0.35, "Area 01 rim/lip sprite should stay subtle, not bright debug art: %s" % water_id)
+						_expect(is_equal_approx(absf(sprite.scale.x), absf(sprite.scale.y)), "Area 01 rim/lip sprite should use uniform scale, not stretched sprite pieces: %s" % water_id)
+				_expect(marker_count > 0, "Area 01 carving playable water should use sprite markers for rim/lip cues: %s" % water_id)
 		else:
 			_expect(cutout != null and not cutout.visible, "Area 01 non-carving playable water guide should stay hidden: %s" % water_id)
+			_expect(player_rim_group == null, "Area 01 non-carving playable water should not create a player-facing rim/lip sprite group: %s" % water_id)
 		_expect(edge != null and not edge.visible, "Area 01 playable water diagnostic edge should stay hidden: %s" % water_id)
 	_expect(carved_water_count >= 6, "Area 01 runtime map should carve traced cave/corridor water from the continuous terrain mass")
 

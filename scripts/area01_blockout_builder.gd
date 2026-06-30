@@ -38,6 +38,7 @@ const GENERATED_RIM_LAYER_NAME := "RuntimeSourceRims"
 const GENERATED_HOOK_LAYER_NAME := "RuntimeSourceHooks"
 const GENERATED_WATER_CUTOUT_LAYER_NAME := "RuntimeSourceWaterCutouts"
 const GENERATED_WATER_EDGE_LAYER_NAME := "RuntimeSourceWaterEdges"
+const GENERATED_PLAYER_RIM_LAYER_NAME := "RuntimeSourcePlayerRims"
 const AREA01_ART_SLICE_Z_INDEX := 0
 const REEF_TEXTURE_UV_SCALE := 0.84
 const FAR_BACKGROUND_AUTHORITY_ALPHA := 0.06
@@ -59,6 +60,11 @@ const WATER_CUTOUT_COLOR := Color(0.01, 0.10, 0.16, 0.92)
 const OPEN_SURFACE_WATER_CUTOUT_COLOR := Color(0.05, 0.32, 0.46, 0.0)
 const WATER_EDGE_COLOR := Color(0.70, 0.98, 0.90, 0.0)
 const FUTURE_WATER_EDGE_COLOR := Color(0.90, 0.22, 0.38, 0.0)
+const PLAYER_RIM_MARKER_SCALE := 0.115
+const PLAYER_RIM_MARKER_ALPHA := 0.18
+const FUTURE_PLAYER_RIM_MARKER_ALPHA := 0.22
+const PLAYER_RIM_MARKER_SPACING := 300.0
+const PLAYER_RIM_MARKERS_PER_EDGE := 4
 const HOOK_PICKUP_COLOR := Color(0.16, 1.0, 0.82, 0.88)
 const HOOK_SCAN_COLOR := Color(0.20, 0.86, 1.0, 0.82)
 const HOOK_GATE_COLOR := Color(0.92, 0.24, 0.32, 0.62)
@@ -294,13 +300,17 @@ func _create_generated_source_visuals(terrain_layer: Node2D, rim_layer: Node2D, 
 	var water_edge_layer := Node2D.new()
 	water_edge_layer.name = GENERATED_WATER_EDGE_LAYER_NAME
 	water_edge_layer.z_index = 5
-	Area01VisualCueContractScript.tag_node(water_edge_layer, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, GENERATED_WATER_EDGE_LAYER_NAME)
 	rim_layer.add_child(water_edge_layer)
+
+	var player_rim_layer := Node2D.new()
+	player_rim_layer.name = GENERATED_PLAYER_RIM_LAYER_NAME
+	player_rim_layer.z_index = 5
+	rim_layer.add_child(player_rim_layer)
 
 	for water_value in source_map.get("playable_water_regions", []):
 		if not water_value is Dictionary:
 			continue
-		_create_playable_water_visual(water_cutout_layer, water_edge_layer, water_value as Dictionary)
+		_create_playable_water_visual(water_cutout_layer, water_edge_layer, player_rim_layer, water_value as Dictionary)
 
 func _create_terrain_domain_visual(terrain_layer: Node2D, terrain_domain: Dictionary) -> void:
 	var points := _points_from_json(terrain_domain.get("polygon", []))
@@ -318,7 +328,7 @@ func _create_terrain_domain_visual(terrain_layer: Node2D, terrain_domain: Dictio
 	Area01VisualCueContractScript.tag_node(visible, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, domain_id)
 	terrain_layer.add_child(visible)
 
-func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer: Node2D, water: Dictionary) -> void:
+func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer: Node2D, player_rim_layer: Node2D, water: Dictionary) -> void:
 	var points := _points_from_json(water.get("polygon", []))
 	if points.size() < 3:
 		return
@@ -346,6 +356,68 @@ func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer:
 	edge.visible = false
 	Area01VisualCueContractScript.tag_node(edge, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, water_id)
 	water_edge_layer.add_child(edge)
+
+	if carves_collision:
+		_add_playable_water_rim_markers(player_rim_layer, "%sPlayerRimSprites" % edge_name, water_id, points, String(water.get("status", "")))
+
+func _add_playable_water_rim_markers(player_rim_layer: Node2D, group_name: String, water_id: String, points: PackedVector2Array, status: String) -> void:
+	if points.size() < 3:
+		return
+
+	var group := Node2D.new()
+	group.name = group_name
+	group.z_index = 5
+	player_rim_layer.add_child(group)
+
+	var bounds := _polygon_bounds(points)
+	var center := bounds.get_center()
+	var alpha := FUTURE_PLAYER_RIM_MARKER_ALPHA if status == "future_locked" else PLAYER_RIM_MARKER_ALPHA
+	for index in range(points.size()):
+		var start := points[index]
+		var finish := points[(index + 1) % points.size()]
+		var edge := finish - start
+		var length := edge.length()
+		if length < PLAYER_RIM_MARKER_SPACING * 0.55:
+			continue
+
+		var texture := _water_rim_marker_texture(edge, (start + finish) * 0.5, center)
+		if texture == null:
+			continue
+
+		var count := clampi(int(floor(length / PLAYER_RIM_MARKER_SPACING)), 1, PLAYER_RIM_MARKERS_PER_EDGE)
+		var offset := _water_rim_marker_offset((start + finish) * 0.5, center)
+		for marker_index in range(count):
+			var fraction := float(marker_index + 1) / float(count + 1)
+			var sprite := _wall_sprite(
+				"WaterRimMarker%d_%d" % [index + 1, marker_index + 1],
+				texture,
+				start.lerp(finish, fraction) + offset,
+				Vector2(PLAYER_RIM_MARKER_SCALE, PLAYER_RIM_MARKER_SCALE),
+				alpha
+			)
+			sprite.rotation = _water_rim_marker_rotation(edge)
+			Area01VisualCueContractScript.tag_node(sprite, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, water_id)
+			group.add_child(sprite)
+
+func _water_rim_marker_texture(edge: Vector2, midpoint: Vector2, water_center: Vector2) -> Texture2D:
+	if absf(edge.x) >= absf(edge.y) * 1.35:
+		return CEILING_MIDDLE_TEXTURE if midpoint.y < water_center.y else DEEP_FLOOR_LIP_TEXTURE
+	if absf(edge.y) >= absf(edge.x) * 1.35:
+		return VERTICAL_MIDDLE_TEXTURE
+	return DIAGONAL_SLOPE_TEXTURE
+
+func _water_rim_marker_offset(midpoint: Vector2, water_center: Vector2) -> Vector2:
+	var direction := midpoint - water_center
+	if direction.length() <= 0.0:
+		return Vector2.ZERO
+	return direction.normalized() * 10.0
+
+func _water_rim_marker_rotation(edge: Vector2) -> float:
+	if absf(edge.x) >= absf(edge.y) * 1.35:
+		return 0.0 if edge.x >= 0.0 else PI
+	if absf(edge.y) >= absf(edge.x) * 1.35:
+		return 0.0
+	return 0.0 if edge.x >= 0.0 else PI
 
 func _is_collision_partition(terrain: Dictionary) -> bool:
 	var runtime_generation: Variant = terrain.get("runtime_generation", {})
