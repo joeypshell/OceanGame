@@ -3936,9 +3936,14 @@ func _test_area_01_source_map_contract() -> void:
 		var water_cutout := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/RuntimeSourceWaterCutouts/%s" % String(water_runtime.get("visible_polygon2d_name", "")))
 		var water_edge := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourceWaterEdges/%s" % String(water_runtime.get("edge_line2d_name", "")))
 		_expect(water_cutout is Polygon2D, "Area 01 playable water should build a cutout Polygon2D: %s" % String(water_entry.get("id", "")))
-		_expect(water_edge is Line2D, "Area 01 playable water should build an edge Line2D: %s" % String(water_entry.get("id", "")))
+		_expect(water_edge is Line2D, "Area 01 playable water should build a hidden diagnostic edge Line2D: %s" % String(water_entry.get("id", "")))
 		if bool(water_entry.get("carves_collision", false)):
 			carved_water_count += 1
+			_expect(water_cutout.visible, "Area 01 carving water cutout should be visible cave water, not an outline: %s" % String(water_entry.get("id", "")))
+		else:
+			_expect(not water_cutout.visible, "Area 01 non-carving water guide should stay hidden in normal play: %s" % String(water_entry.get("id", "")))
+		if water_edge is Line2D:
+			_expect(not water_edge.visible, "Area 01 water edge Line2D should stay hidden in normal play: %s" % String(water_entry.get("id", "")))
 	_expect(carved_water_count >= 6, "Area 01 source map should carve cave/pocket water out of the continuous terrain domain")
 
 	var generated_collision_partitions := 0
@@ -4219,11 +4224,11 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	if terrain_domain_node != null:
 		_expect(_effective_canvas_z(terrain_domain_node) < player_visual_z, "Area 01 terrain domain should render behind the diver")
 	_expect(water_cutout_layer != null, "Area 01 builder should render playable-water cutouts over the continuous terrain domain")
-	_expect(water_edge_layer != null, "Area 01 builder should render playable-water boundary edges")
+	_expect(water_edge_layer != null, "Area 01 builder should retain hidden playable-water diagnostic edge nodes")
 	if water_cutout_layer != null:
 		_expect(_effective_canvas_z(water_cutout_layer) < player_visual_z, "Area 01 playable-water cutouts should render behind the diver")
 	if water_edge_layer != null:
-		_expect(_effective_canvas_z(water_edge_layer) < player_visual_z, "Area 01 water edge cues should render behind the diver")
+		_expect(_effective_canvas_z(water_edge_layer) < player_visual_z, "Area 01 hidden water edge diagnostics should stay behind the diver")
 	for water_value in playable_water_regions:
 		if typeof(water_value) != TYPE_DICTIONARY:
 			_expect(false, "Area 01 playable water entry should be a dictionary")
@@ -4241,10 +4246,12 @@ func _test_area_01_authoritative_wall_builder() -> void:
 		var edge: Line2D = null
 		if water_edge_layer != null:
 			edge = water_edge_layer.get_node_or_null(String(runtime.get("edge_line2d_name", ""))) as Line2D
-		_expect(cutout != null and cutout.visible, "Area 01 playable water cutout should be visible: %s" % water_id)
-		_expect(edge != null and edge.visible, "Area 01 playable water edge should be visible: %s" % water_id)
 		if bool(water_entry.get("carves_collision", false)):
 			carved_water_count += 1
+			_expect(cutout != null and cutout.visible, "Area 01 carving playable water cutout should be visible cave water: %s" % water_id)
+		else:
+			_expect(cutout != null and not cutout.visible, "Area 01 non-carving playable water guide should stay hidden: %s" % water_id)
+		_expect(edge != null and not edge.visible, "Area 01 playable water diagnostic edge should stay hidden: %s" % water_id)
 	_expect(carved_water_count >= 6, "Area 01 runtime map should carve traced cave/corridor water from the continuous terrain mass")
 
 	for terrain in solid_terrain:

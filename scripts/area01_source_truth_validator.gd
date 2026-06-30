@@ -83,7 +83,7 @@ func _validate_source_map_data(map: Dictionary) -> void:
 		var runtime_water := _dict_value(water, "runtime_generation", "playable water %s" % water_id)
 		_expect(String(runtime_water.get("visual_role", "")) == "playable_water_cutout", "playable water %s must own a cutout visual role" % water_id)
 		_expect(not String(runtime_water.get("visible_polygon2d_name", "")).is_empty(), "playable water %s must name generated cutout polygon" % water_id)
-		_expect(not String(runtime_water.get("edge_line2d_name", "")).is_empty(), "playable water %s must name generated edge line" % water_id)
+		_expect(not String(runtime_water.get("edge_line2d_name", "")).is_empty(), "playable water %s must name generated diagnostic edge line" % water_id)
 		if bool(water.get("carves_collision", false)):
 			carving_water_count += 1
 
@@ -225,11 +225,16 @@ func _validate_generated_source_visuals(scene_root: Node, map: Dictionary, expec
 			var cutout := scene_root.get_node_or_null("%s/RuntimeSourceWaterCutouts/%s" % [TERRAIN_LAYER_PATH, cutout_name]) as Polygon2D
 			_expect(cutout != null, "playable water %s missing generated cutout Polygon2D %s" % [water_id, cutout_name])
 			if cutout != null:
-				_expect(cutout.visible, "playable water %s cutout must be visible" % water_id)
+				if bool(water.get("carves_collision", false)):
+					_expect(cutout.visible, "playable water %s carving cutout must be visible" % water_id)
+				else:
+					_expect(not cutout.visible, "playable water %s non-carving guide cutout must stay hidden in player-facing runtime" % water_id)
 				_expect(_same_points(cutout.polygon, _points_from_json(water.get("polygon", []))), "playable water %s cutout polygon drifted from source map" % water_id)
 		if not edge_name.is_empty():
 			var edge := scene_root.get_node_or_null("%s/RuntimeSourceWaterEdges/%s" % [RIM_LAYER_PATH, edge_name]) as Line2D
-			_expect(edge != null, "playable water %s missing generated edge Line2D %s" % [water_id, edge_name])
+			_expect(edge != null, "playable water %s missing generated diagnostic edge Line2D %s" % [water_id, edge_name])
+			if edge != null:
+				_expect(not edge.visible, "playable water %s diagnostic edge Line2D must stay hidden in player-facing runtime" % water_id)
 
 func _validate_no_unowned_enabled_collisions(scene_root: Node, expected_collision: Dictionary) -> void:
 	for root_path in [LEGACY_COLLISION_ROOT_PATH, COLLISION_ROOT_PATH]:

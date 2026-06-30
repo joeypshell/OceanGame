@@ -54,12 +54,12 @@ const TOP_FACE_BEVEL_COLOR := Color(0.46, 0.78, 0.66, 0.04)
 const TOP_EDGE_GLOW_COLOR := Color(0.78, 0.98, 0.90, 0.05)
 const OVERHANG_OCCLUSION_COLOR := Color(0.0, 0.012, 0.018, 0.30)
 const SIDE_OCCLUSION_COLOR := Color(0.0, 0.03, 0.035, 0.22)
-const WATER_CUTOUT_COLOR := Color(0.01, 0.10, 0.16, 0.96)
-const OPEN_SURFACE_WATER_CUTOUT_COLOR := Color(0.05, 0.32, 0.46, 0.18)
+const WATER_CUTOUT_COLOR := Color(0.01, 0.10, 0.16, 0.92)
+const OPEN_SURFACE_WATER_CUTOUT_COLOR := Color(0.05, 0.32, 0.46, 0.0)
 const WATER_EDGE_SHADOW_COLOR := Color(0.0, 0.035, 0.045, 0.34)
 const WATER_EDGE_BODY_COLOR := Color(0.20, 0.42, 0.38, 0.28)
-const WATER_EDGE_COLOR := Color(0.70, 0.98, 0.90, 0.18)
-const FUTURE_WATER_EDGE_COLOR := Color(0.90, 0.22, 0.38, 0.22)
+const WATER_EDGE_COLOR := Color(0.70, 0.98, 0.90, 0.0)
+const FUTURE_WATER_EDGE_COLOR := Color(0.90, 0.22, 0.38, 0.0)
 const HOOK_PICKUP_COLOR := Color(0.16, 1.0, 0.82, 0.88)
 const HOOK_SCAN_COLOR := Color(0.20, 0.86, 1.0, 0.82)
 const HOOK_GATE_COLOR := Color(0.92, 0.24, 0.32, 0.62)
@@ -325,6 +325,8 @@ func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer:
 	var points := _points_from_json(water.get("polygon", []))
 	if points.size() < 3:
 		return
+	var water_kind := String(water.get("kind", ""))
+	var carves_collision := bool(water.get("carves_collision", false))
 	var runtime_generation: Variant = water.get("runtime_generation", {})
 	var runtime: Dictionary = runtime_generation as Dictionary if runtime_generation is Dictionary else {}
 	var water_id := String(water.get("id", "playable_water"))
@@ -334,20 +336,20 @@ func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer:
 	var cutout := Polygon2D.new()
 	cutout.name = visible_name
 	cutout.polygon = points
-	cutout.visible = true
-	cutout.color = OPEN_SURFACE_WATER_CUTOUT_COLOR if String(water.get("kind", "")) == "open_surface" else WATER_CUTOUT_COLOR
+	cutout.visible = carves_collision
+	cutout.color = OPEN_SURFACE_WATER_CUTOUT_COLOR if water_kind == "open_surface" else WATER_CUTOUT_COLOR
 	Area01VisualCueContractScript.tag_node(cutout, Area01VisualCueContractScript.FAMILY_PASSIVE_BACKGROUND, water_id)
 	water_cutout_layer.add_child(cutout)
 
 	var edge := Line2D.new()
 	edge.name = edge_name
 	edge.points = _closed_points(points)
-	edge.width = 5.0 if bool(water.get("carves_collision", false)) else 3.0
+	edge.width = 0.0
 	edge.default_color = FUTURE_WATER_EDGE_COLOR if String(water.get("status", "")) == "future_locked" else WATER_EDGE_COLOR
-	edge.visible = true
+	edge.visible = false
 	Area01VisualCueContractScript.tag_node(edge, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, water_id)
-	_add_water_edge_wall_treatment(water_edge_layer, edge_name, edge.points, bool(water.get("carves_collision", false)))
 	water_edge_layer.add_child(edge)
+	_add_water_edge_sprite_trims(water_edge_layer, water_id, points, carves_collision)
 
 func _add_water_edge_wall_treatment(water_edge_layer: Node2D, base_name: String, points: PackedVector2Array, carves_collision: bool) -> void:
 	if points.size() < 3:
@@ -370,6 +372,67 @@ func _add_water_edge_wall_treatment(water_edge_layer: Node2D, base_name: String,
 	body.visible = true
 	Area01VisualCueContractScript.tag_node(body, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, base_name)
 	water_edge_layer.add_child(body)
+
+func _add_water_edge_sprite_trims(water_edge_layer: Node2D, water_id: String, points: PackedVector2Array, carves_collision: bool) -> void:
+	if not carves_collision or points.size() < 3:
+		return
+
+	var group := Node2D.new()
+	group.name = "%sSpriteRimTrims" % _pascal_case_id(water_id)
+	group.z_index = 4
+	Area01VisualCueContractScript.tag_node(group, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, water_id)
+	water_edge_layer.add_child(group)
+
+	var center := _polygon_bounds(points).get_center()
+	for index in range(points.size()):
+		var start := points[index]
+		var finish := points[(index + 1) % points.size()]
+		var edge := finish - start
+		if edge.length() < 140.0:
+			continue
+
+		var midpoint := (start + finish) * 0.5
+		var outward := (midpoint - center).normalized()
+		if outward == Vector2.ZERO:
+			outward = Vector2(0.0, 1.0)
+		var trim_type := _water_edge_trim_type(start, finish, midpoint, center)
+		if trim_type.is_empty():
+			continue
+
+		_add_role_aware_edge_trim(
+			group,
+			"%s%s" % [_pascal_case_id(water_id), _pascal_case_id(trim_type)],
+			trim_type,
+			start,
+			finish,
+			outward * _water_edge_trim_offset(trim_type),
+			TRIM_REPEAT_SPACING,
+			TRIM_BASE_SCALE,
+			_trim_alpha_for_type(trim_type)
+		)
+
+func _water_edge_trim_type(start: Vector2, finish: Vector2, midpoint: Vector2, center: Vector2) -> String:
+	var edge := finish - start
+	if edge.length() <= 0.0:
+		return ""
+	if absf(edge.x) >= absf(edge.y) * 1.35:
+		return "underside" if midpoint.y < center.y else "deep_floor_lip"
+	if absf(edge.y) >= absf(edge.x) * 1.25:
+		return "vertical_wall"
+	return "diagonal_slope"
+
+func _water_edge_trim_offset(trim_type: String) -> float:
+	match trim_type:
+		"underside":
+			return 24.0
+		"deep_floor_lip":
+			return 18.0
+		"vertical_wall":
+			return 20.0
+		"diagonal_slope":
+			return 18.0
+		_:
+			return 16.0
 
 func _is_collision_partition(terrain: Dictionary) -> bool:
 	var runtime_generation: Variant = terrain.get("runtime_generation", {})
