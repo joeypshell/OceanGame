@@ -42,15 +42,16 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-1. Align docs and open issues around `SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md` so future work stops mixing old one-run assumptions with the new day loop.
-2. Add the visible daylight sun-to-moon timer as a state/display slice before adding more route breadth.
-3. Add open-surface oxygen refill zones that do not bank cargo.
-4. Add one-button ship/moonpool offload so cargo banking is distinct from surfacing.
-5. Allow repeated dive sorties inside one daylight day.
-6. Add a basic health meter and one controlled damage source so health and oxygen read as different survival risks.
-7. Reclassify starter resources into food, power, building material, and research value, then make the night screen consume or use at least food and power.
-8. Return to Area 01 source-map/runtime work only as needed to support open surface, seafloor holes, cave pockets, and repeated surface-to-ship routing.
-9. Implement the deterministic Area 01 source-grid-to-runtime-geometry pipeline before more manual Area 01 polygon rescue or map-content expansion.
+The active GitHub batch is now the Survival Day/Night loop, in this order:
+
+1. #735 Add the visible daylight sun-to-moon timer as a state/display slice before adding more route breadth.
+2. #736 Add open-surface oxygen refill zones that do not bank cargo.
+3. #737 Add one-button ship/moonpool offload so cargo banking is distinct from surfacing.
+4. #738 Allow repeated dive sorties inside one daylight day.
+5. #739 Add a basic health meter and one controlled damage source so health and oxygen read as different survival risks.
+6. #740 Make the night screen consume or apply at least banked food and power.
+
+Area 01 source-map/runtime work should resume only where it directly supports open surface, seafloor holes, cave pockets, ship return, or the generated source-grid pipeline. The deterministic Area 01 source-grid-to-runtime-geometry pipeline is already implemented; do not reopen manual polygon rescue or runtime-v3 parity work as the next milestone.
 
 ## Completed In This Readability Rescue
 
@@ -110,6 +111,8 @@ Primary planning docs:
 ## Still Deferred
 
 - Local clutter or readability work that does not make the playable level skeleton clearer.
+- #734 generated Area 01 wall-sprite polish; keep it after the survival day/night loop unless cave-wall readability blocks testing the loop.
+- Broad `main.gd` architecture/refactor batches; reintroduce them only when a specific survival-loop issue is blocked by module size or ownership risk.
 - Starting with a bulky submarine-scale avatar; compact vehicles belong to later upgrades.
 - Broader mobile/controller work beyond preserving semantic input guardrails.
 - Final art overhaul, large UI reskin, broad visual regression suite, or golden-image infrastructure.
