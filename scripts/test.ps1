@@ -58,6 +58,9 @@ switch ($Tier) {
 		Invoke-Step "Godot logic tests" {
 			& $godotCommand --headless --path . --script res://tests/logic_tests.gd
 		}
+		Invoke-Step "Area 01 source truth validation" {
+			& $godotCommand --headless --path . --script res://tests/area01_source_truth_validation.gd
+		}
 		Invoke-Step "Area 01 runtime placement validation" {
 			node tools/validate-area01-runtime-placements.mjs
 		}
@@ -105,6 +108,9 @@ switch ($Tier) {
 		}
 		Invoke-Step "Godot logic tests" {
 			& $godotCommand --headless --path . --script res://tests/logic_tests.gd
+		}
+		Invoke-Step "Area 01 source truth validation" {
+			& $godotCommand --headless --path . --script res://tests/area01_source_truth_validation.gd
 		}
 		Invoke-Step "MCP context self-test" {
 			node .mcp/oceangame-context-server.mjs --self-test

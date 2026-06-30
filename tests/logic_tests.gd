@@ -17,6 +17,7 @@ const ExpeditionConditionScript := preload("res://scripts/expedition_condition.g
 const MainScript := preload("res://scripts/main.gd")
 const Area01SourceMapOverlayScript := preload("res://scripts/area01_source_map_overlay.gd")
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
+const Area01SourceTruthValidatorScript := preload("res://scripts/area01_source_truth_validator.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
@@ -110,6 +111,8 @@ func _initialize() -> void:
 	_run("sprite-ready scene asset slots", _test_sprite_ready_scene_asset_slots)
 	_run("Area 01 first art slice scene contract", _test_area_01_first_art_slice_scene_contract)
 	_run("Area 01 source map contract", _test_area_01_source_map_contract)
+	_run("Area 01 source truth validator", _test_area_01_source_truth_validator)
+	_run("Area 01 source truth validator catches drift", _test_area_01_source_truth_validator_catches_drift)
 	_run("Area 01 surface oxygen hook runtime", _test_area_01_surface_oxygen_hook_runtime)
 	_run("Area 01 authoritative wall builder", _test_area_01_authoritative_wall_builder)
 	_run("Area 01 source map debug overlay", _test_area_01_source_map_debug_overlay)
@@ -3927,6 +3930,51 @@ func _test_area_01_source_map_contract() -> void:
 		_expect(area_node != null, "Area 01 scene hook should create a generated Area2D: %s" % String(hook_entry.get("id", "")))
 		if area_node != null:
 			_expect(not area_node.monitoring and not area_node.monitorable, "Area 01 generated hooks should stay nonblocking/non-behavioral during validation: %s" % String(hook_entry.get("id", "")))
+	main.free()
+
+func _test_area_01_source_truth_validator() -> void:
+	var validator := Area01SourceTruthValidatorScript.new()
+	_expect(validator.load_source_map(), "Area 01 source truth validator should load the runtime source map: %s" % "\n".join(validator.errors))
+	if validator.source_map.is_empty():
+		return
+
+	var data_errors: Array[String] = validator.validate_source_map_data()
+	_expect(data_errors.is_empty(), "Area 01 source truth data validation should pass: %s" % "\n".join(data_errors))
+
+	var main := MainScene.instantiate()
+	var builder := Area01BlockoutBuilderScript.new()
+	_expect(builder.build(main), "Area 01 runtime source map should build before source truth validation: %s" % builder.last_error)
+	var runtime_errors: Array[String] = validator.validate_runtime_scene(main)
+	_expect(runtime_errors.is_empty(), "Area 01 source truth runtime validation should pass: %s" % "\n".join(runtime_errors))
+	main.free()
+
+func _test_area_01_source_truth_validator_catches_drift() -> void:
+	var validator := Area01SourceTruthValidatorScript.new()
+	_expect(validator.load_source_map(), "Area 01 source truth validator should load before broken fixture")
+	if validator.source_map.is_empty():
+		return
+
+	var main := MainScene.instantiate()
+	var builder := Area01BlockoutBuilderScript.new()
+	_expect(builder.build(main), "Area 01 runtime source map should build before broken fixture: %s" % builder.last_error)
+	var collision_root := main.get_node("Area01ArtSlice/RuntimeSourceCollision") as StaticBody2D
+	var rogue_collision := CollisionPolygon2D.new()
+	rogue_collision.name = "UnmappedDriftCollision"
+	rogue_collision.polygon = PackedVector2Array([
+		Vector2(20.0, 20.0),
+		Vector2(80.0, 20.0),
+		Vector2(80.0, 80.0),
+		Vector2(20.0, 80.0),
+	])
+	rogue_collision.disabled = false
+	collision_root.add_child(rogue_collision)
+
+	var errors: Array[String] = validator.validate_runtime_scene(main)
+	var caught_unowned_collision := false
+	for error in errors:
+		if error.contains("UnmappedDriftCollision"):
+			caught_unowned_collision = true
+	_expect(caught_unowned_collision, "Area 01 source truth validator should catch enabled collision without source-map ownership")
 	main.free()
 
 func _test_area_01_surface_oxygen_hook_runtime() -> void:

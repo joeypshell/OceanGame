@@ -95,7 +95,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier full
 
 Tier guidance:
 
-- `quick`: Godot headless launch, logic tests, Area 01 placement validation, and `git diff --check`. Use for most gameplay/code changes.
+- `quick`: Godot headless launch, logic tests, Area 01 source truth validation, Area 01 placement validation, and `git diff --check`. Use for most gameplay/code changes.
 - `docs`: MCP context self-test, Area 01 runtime source-map validation, Area 01 placement validation, and `git diff --check`. Use for docs, planning, and MCP resource changes.
 - `visual`: desktop Playwright visual smoke against the existing export. Use after HUD, UI, camera, route, or art changes when the Web export already exists.
 - `mobile-like`: mobile-like Playwright smoke against the existing export. Use only for mobile-like safe-area, HUD, panel, or route-layout questions.
@@ -104,6 +104,18 @@ Tier guidance:
 The runner prints compact step summaries and leaves detailed tool output to the underlying command only when needed. Prefer `quick` or `docs` unless the issue actually changes visual layout or export tooling.
 
 Set `OCEANGAME_TEST_VERBOSE=1` before running a tier when you need the full underlying command output on success.
+
+## Area 01 Source Truth Validation
+
+Area 01 has a dedicated Godot-side source-truth validator for runtime terrain/collision/rim drift. It loads `docs/planning/maps/area_01_runtime_source_map_v2.json`, builds the same runtime terrain used by `Main.tscn`, and fails if generated visible terrain, `CollisionPolygon2D` blockers, rim/lip polygons, or source-owned `Area2D` hooks no longer match the source-map IDs and polygons.
+
+Run it directly from the repository root when changing Area 01 terrain, collision, cave entrances, resource/scan hooks, or source-map ownership:
+
+```powershell
+& "C:\Program Files\Godot\Godot_v4.7-stable_windows_arm64_console.exe" --headless --path . --script res://tests/area01_source_truth_validation.gd
+```
+
+It is also part of the `quick` and `full` test tiers. Keep using the Node source-map validators for static JSON and authored placement checks; this Godot validator covers the instantiated runtime scene after the blockout builder runs.
 
 ## MCP Context Server
 
