@@ -58,6 +58,9 @@ switch ($Tier) {
 		Invoke-Step "Godot logic tests" {
 			& $godotCommand --headless --path . --script res://tests/logic_tests.gd
 		}
+		Invoke-Step "Area 01 runtime placement validation" {
+			node tools/validate-area01-runtime-placements.mjs
+		}
 		Invoke-Step "Whitespace check" {
 			git diff --check
 		}
@@ -69,6 +72,9 @@ switch ($Tier) {
 		}
 		Invoke-Step "Area 01 runtime source map validation" {
 			node tools/validate-area01-runtime-source-map.mjs
+		}
+		Invoke-Step "Area 01 runtime placement validation" {
+			node tools/validate-area01-runtime-placements.mjs
 		}
 		Invoke-Step "Whitespace check" {
 			git diff --check
@@ -105,6 +111,9 @@ switch ($Tier) {
 		}
 		Invoke-Step "Area 01 runtime source map validation" {
 			node tools/validate-area01-runtime-source-map.mjs
+		}
+		Invoke-Step "Area 01 runtime placement validation" {
+			node tools/validate-area01-runtime-placements.mjs
 		}
 		Invoke-Step "Desktop Playwright export and visual smoke" {
 			npm.cmd run test:visual

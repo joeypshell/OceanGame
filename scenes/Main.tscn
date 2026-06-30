@@ -2934,7 +2934,7 @@ depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
-position = Vector2(1074, 812)
+position = Vector2(620, 760)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_shallow_b"
 target_id = "kelp_fiber"
@@ -2950,7 +2950,7 @@ depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="D" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
-position = Vector2(1030, 830)
+position = Vector2(1320, 930)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_deep_route_a"
 target_id = "kelp_fiber"
@@ -2958,7 +2958,7 @@ depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="E" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
-position = Vector2(980, 830)
+position = Vector2(1450, 920)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_deep_route_b"
 target_id = "kelp_fiber"
@@ -3066,7 +3066,7 @@ cluster_pattern = "deep_reward"
 [node name="GlowPlankton" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
-position = Vector2(1040, 1180)
+position = Vector2(1600, 1200)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_deep_a"
 target_id = "glow_plankton"
@@ -3106,7 +3106,7 @@ depth_band = "deep"
 cluster_pattern = "deep_reward"
 
 [node name="F" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
-position = Vector2(1040, 1340)
+position = Vector2(1180, 1850)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_predator_route_c"
 target_id = "glow_plankton"
@@ -3114,7 +3114,7 @@ depth_band = "deep"
 cluster_pattern = "deep_reward"
 
 [node name="VentA" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
-position = Vector2(900, 1260)
+position = Vector2(1320, 1740)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_vent_pocket_a"
 target_id = "glow_plankton"
@@ -3123,7 +3123,7 @@ cluster_pattern = "deep_reward"
 preferred_condition_id = "thermal_bloom"
 
 [node name="VentB" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
-position = Vector2(1040, 1300)
+position = Vector2(1500, 1780)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_vent_pocket_b"
 target_id = "glow_plankton"
@@ -3132,7 +3132,7 @@ cluster_pattern = "deep_reward"
 preferred_condition_id = "thermal_bloom"
 
 [node name="BlueChimneyA" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
-position = Vector2(2078, 2172)
+position = Vector2(2112, 2148)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_blue_chimney_a"
 target_id = "glow_plankton"
@@ -3242,7 +3242,7 @@ cluster_pattern = "deep_reward"
 [node name="CautiousRightGate" type="Node2D" parent="CreatureRouteCandidates"]
 
 [node name="Start" type="Marker2D" parent="CreatureRouteCandidates/CautiousRightGate"]
-position = Vector2(720, 1580)
+position = Vector2(1320, 1780)
 script = ExtResource("9_spawn_point")
 spawn_id = "start"
 category = "creature"
@@ -3252,7 +3252,7 @@ cluster_pattern = "cautious"
 route_id = "cautious_right_gate"
 
 [node name="End" type="Marker2D" parent="CreatureRouteCandidates/CautiousRightGate"]
-position = Vector2(1040, 1580)
+position = Vector2(1720, 1780)
 script = ExtResource("9_spawn_point")
 spawn_id = "end"
 category = "creature"
@@ -3262,7 +3262,7 @@ cluster_pattern = "cautious"
 route_id = "cautious_right_gate"
 
 [node name="Warning" type="Marker2D" parent="CreatureRouteCandidates/CautiousRightGate"]
-position = Vector2(880, 1580)
+position = Vector2(1520, 1780)
 script = ExtResource("9_spawn_point")
 spawn_id = "warning"
 category = "creature"
@@ -3274,7 +3274,7 @@ route_id = "cautious_right_gate"
 [node name="CautiousLeftGate" type="Node2D" parent="CreatureRouteCandidates"]
 
 [node name="Start" type="Marker2D" parent="CreatureRouteCandidates/CautiousLeftGate"]
-position = Vector2(500, 1640)
+position = Vector2(1160, 1840)
 script = ExtResource("9_spawn_point")
 spawn_id = "start"
 category = "creature"
@@ -3284,7 +3284,7 @@ cluster_pattern = "cautious"
 route_id = "cautious_left_gate"
 
 [node name="End" type="Marker2D" parent="CreatureRouteCandidates/CautiousLeftGate"]
-position = Vector2(760, 1640)
+position = Vector2(1500, 1840)
 script = ExtResource("9_spawn_point")
 spawn_id = "end"
 category = "creature"
@@ -3294,7 +3294,7 @@ cluster_pattern = "cautious"
 route_id = "cautious_left_gate"
 
 [node name="Warning" type="Marker2D" parent="CreatureRouteCandidates/CautiousLeftGate"]
-position = Vector2(630, 1640)
+position = Vector2(1320, 1840)
 script = ExtResource("9_spawn_point")
 spawn_id = "warning"
 category = "creature"
@@ -3306,7 +3306,7 @@ route_id = "cautious_left_gate"
 [node name="DeepRewardUpperGate" type="Node2D" parent="CreatureRouteCandidates"]
 
 [node name="Start" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardUpperGate"]
-position = Vector2(620, 1775)
+position = Vector2(1580, 1900)
 script = ExtResource("9_spawn_point")
 spawn_id = "start"
 category = "creature"
@@ -3316,7 +3316,7 @@ cluster_pattern = "deep_reward"
 route_id = "deep_reward_upper_gate"
 
 [node name="End" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardUpperGate"]
-position = Vector2(1020, 1775)
+position = Vector2(2150, 1900)
 script = ExtResource("9_spawn_point")
 spawn_id = "end"
 category = "creature"
@@ -3326,7 +3326,7 @@ cluster_pattern = "deep_reward"
 route_id = "deep_reward_upper_gate"
 
 [node name="Warning" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardUpperGate"]
-position = Vector2(820, 1775)
+position = Vector2(1860, 1900)
 script = ExtResource("9_spawn_point")
 spawn_id = "warning"
 category = "creature"
@@ -3338,7 +3338,7 @@ route_id = "deep_reward_upper_gate"
 [node name="DeepRewardLowerGate" type="Node2D" parent="CreatureRouteCandidates"]
 
 [node name="Start" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardLowerGate"]
-position = Vector2(820, 1900)
+position = Vector2(1950, 2040)
 script = ExtResource("9_spawn_point")
 spawn_id = "start"
 category = "creature"
@@ -3348,7 +3348,7 @@ cluster_pattern = "deep_reward"
 route_id = "deep_reward_lower_gate"
 
 [node name="End" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardLowerGate"]
-position = Vector2(1130, 1900)
+position = Vector2(2600, 2040)
 script = ExtResource("9_spawn_point")
 spawn_id = "end"
 category = "creature"
@@ -3358,7 +3358,7 @@ cluster_pattern = "deep_reward"
 route_id = "deep_reward_lower_gate"
 
 [node name="Warning" type="Marker2D" parent="CreatureRouteCandidates/DeepRewardLowerGate"]
-position = Vector2(975, 1900)
+position = Vector2(2280, 2040)
 script = ExtResource("9_spawn_point")
 spawn_id = "warning"
 category = "creature"
@@ -3458,7 +3458,7 @@ definition = ExtResource("5_shell_fragments")
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="GlowPlankton" type="Area2D" parent="ResourcePickups"]
-position = Vector2(760, 1490)
+position = Vector2(1180, 1850)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
@@ -3480,7 +3480,7 @@ definition = ExtResource("6_glow_plankton")
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="DeepGlowPlankton" type="Area2D" parent="ResourcePickups"]
-position = Vector2(1040, 1900)
+position = Vector2(2280, 1980)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
@@ -3524,7 +3524,7 @@ polygon = PackedVector2Array(-36, 14, -12, -30, 8, -20, 34, -34, 22, 22, -14, 34
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="QuartzGlass" type="Area2D" parent="ResourcePickups"]
-position = Vector2(1260, 1150)
+position = Vector2(1600, 1200)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("31_quartz_glass")
 
@@ -3576,14 +3576,14 @@ shape = SubResource("CircleShape2D_pickup")
 [node name="Creatures" type="Node2D" parent="."]
 
 [node name="LanternFry" type="Area2D" parent="Creatures"]
-position = Vector2(760, 1510)
+position = Vector2(1340, 1740)
 script = ExtResource("7_scannable")
 discovery_id = "lantern_fry"
 display_name = "Lantern Fry"
 description = "A passive fish that drifts around dim bioluminescent blooms."
 gameplay_fact = "Travels near Glow Plankton."
-move_start = Vector2(720, 1510)
-move_end = Vector2(940, 1510)
+move_start = Vector2(1260, 1740)
+move_end = Vector2(1520, 1740)
 move_speed = 48.0
 
 [node name="SpriteAnchor" type="Node2D" parent="Creatures/LanternFry"]
@@ -3726,7 +3726,7 @@ shape = SubResource("CircleShape2D_pickup")
 [node name="Predators" type="Node2D" parent="."]
 
 [node name="PredatorWarning" type="Node2D" parent="Predators"]
-position = Vector2(850, 1688)
+position = Vector2(1860, 1900)
 
 [node name="WarningRibs" type="Polygon2D" parent="Predators/PredatorWarning"]
 color = Color(1, 0.35, 0.18, 0.1)
@@ -3757,10 +3757,10 @@ color = Color(1, 0.14, 0.12, 0.86)
 polygon = PackedVector2Array(-44, -4, 0, -22, 44, -4, 0, 16)
 
 [node name="GulperEel" type="Area2D" parent="Predators"]
-position = Vector2(680, 1780)
+position = Vector2(1860, 1900)
 script = ExtResource("8_predator")
-patrol_start = Vector2(640, 1780)
-patrol_end = Vector2(1015, 1780)
+patrol_start = Vector2(1580, 1900)
+patrol_end = Vector2(2150, 1900)
 patrol_speed = 92.0
 chase_speed = 165.0
 detect_radius = 190.0

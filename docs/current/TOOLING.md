@@ -95,8 +95,8 @@ powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier full
 
 Tier guidance:
 
-- `quick`: Godot headless launch, logic tests, and `git diff --check`. Use for most gameplay/code changes.
-- `docs`: MCP context self-test and `git diff --check`. Use for docs, planning, and MCP resource changes.
+- `quick`: Godot headless launch, logic tests, Area 01 placement validation, and `git diff --check`. Use for most gameplay/code changes.
+- `docs`: MCP context self-test, Area 01 runtime source-map validation, Area 01 placement validation, and `git diff --check`. Use for docs, planning, and MCP resource changes.
 - `visual`: desktop Playwright visual smoke against the existing export. Use after HUD, UI, camera, route, or art changes when the Web export already exists.
 - `mobile-like`: mobile-like Playwright smoke against the existing export. Use only for mobile-like safe-area, HUD, panel, or route-layout questions.
 - `full`: Godot checks, MCP self-test, Web export, desktop visual smoke, mobile-like visual smoke, and `git diff --check`. Reserve for milestone closeout, export/tooling changes, or major visual/camera route changes.
