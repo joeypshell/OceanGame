@@ -1,0 +1,27 @@
+{
+  "runtime_map": "docs/planning/maps/area_01_runtime_source_map_v3.json",
+  "source_map_image": "docs/planning/maps/area_01_surface_floor_source_map_v1.png",
+  "current_runtime_render": "docs/planning/maps/area_01_current_godot_runtime_map_2026_06_30.png",
+  "side_by_side_render": "docs/planning/maps/area_01_runtime_vs_source_side_by_side_2026_06_30.png",
+  "runtime_canvas": [
+    5200,
+    2600
+  ],
+  "runtime_render_bounds": [
+    -1066.8,
+    -96.0,
+    4826.8,
+    2496.0
+  ],
+  "source_image_size": [
+    1536,
+    1024
+  ],
+  "counts": {
+    "solid_terrain": 18,
+    "cave_mouths": 6,
+    "scene_hooks": 16,
+    "sprite_placements": 8,
+    "scene_targets": 82
+  }
+}
