@@ -12,6 +12,7 @@ const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_fo
 const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
 const Area01SourceMapOverlayScript := preload("res://scripts/area01_source_map_overlay.gd")
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
+const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
@@ -4629,6 +4630,10 @@ func _publish_visual_smoke_state() -> void:
 		"salvage_pocket_open": progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID),
 		"route_stage": visual_smoke_route_stage,
 	}
+	var area01_cue_report: Dictionary = Area01VisualCueContractScript.debug_report(self, _area01_visual_smoke_camera_region())
+	state["area01_cue_family_counts"] = area01_cue_report.get("families", {})
+	state["area01_cue_family_warnings"] = area01_cue_report.get("warnings", [])
+	state["area01_capture_camera"] = _area01_overlay_camera_state()
 	var area01_wall := get_node_or_null("Area01ArtSlice/TerrainBackWalls/BlockoutEastReefMass") as Polygon2D
 	var area01_lip := get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutEastReefLip") as Polygon2D
 	if area01_wall != null and area01_lip != null:
@@ -4642,6 +4647,12 @@ func _publish_visual_smoke_state() -> void:
 			"lip_points": area01_lip.polygon.size(),
 		}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
+
+func _area01_visual_smoke_camera_region() -> Rect2:
+	var visible_rect := get_viewport_rect()
+	var top_left := get_canvas_transform().affine_inverse() * visible_rect.position
+	var bottom_right := get_canvas_transform().affine_inverse() * visible_rect.end
+	return Rect2(top_left, bottom_right - top_left).abs()
 
 func _active_hud_visible_for_result(result: int) -> bool:
 	return result == DiveSessionScript.Result.DIVING

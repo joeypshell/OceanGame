@@ -54,20 +54,24 @@ export async function assertVisualState(page, expected) {
     .toBe("ok");
 }
 
-export async function capture(page, testInfo, name, expectedState = {}) {
+export async function capture(page, testInfo, name, expectedState = {}, evidence = {}) {
   await assertVisualState(page, expectedState);
   const visualState = await page.evaluate(() => window.__oceangameVisualState ?? {});
   const path = testInfo.outputPath(`${name}.png`);
   const metadataPath = testInfo.outputPath(`${name}.json`);
+  const capturedAt = new Date().toISOString();
+  const viewport = page.viewportSize();
   await page.screenshot({ path });
   await fs.writeFile(
     metadataPath,
     `${JSON.stringify(
       {
         capture: name,
+        capturedAt,
         expectedState,
         visualState,
-        viewport: page.viewportSize(),
+        viewport,
+        evidence,
       },
       null,
       2,
@@ -75,6 +79,16 @@ export async function capture(page, testInfo, name, expectedState = {}) {
   );
   testInfo.attachments.push({ name, path, contentType: "image/png" });
   testInfo.attachments.push({ name: `${name}-metadata`, path: metadataPath, contentType: "application/json" });
+  return {
+    capture: name,
+    capturedAt,
+    expectedState,
+    visualState,
+    viewport,
+    screenshot: path,
+    metadata: metadataPath,
+    evidence,
+  };
 }
 
 export async function stageOxygenState(page, oxygenState) {

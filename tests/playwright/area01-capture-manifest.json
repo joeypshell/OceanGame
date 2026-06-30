@@ -1,0 +1,122 @@
+{
+  "manifest_id": "area01_readability_capture_manifest_v1",
+  "source_map_revision": "area_01_runtime_source_map_v2",
+  "source_map_path": "docs/planning/maps/area_01_runtime_source_map_v2.json",
+  "route_area_label_policy": "Use source-map area IDs and cue-family labels in developer evidence; player-facing captures should avoid exact route locators.",
+  "captures": [
+    {
+      "id": "area01-surface-entry",
+      "stage_command": "area01_surface_entry",
+      "stage_helper": "stageArea01SurfaceEntry",
+      "expected_state": {
+        "result": "diving",
+        "debug_telemetry": false,
+        "active_stats_visible": true,
+        "route_stage": "area01_surface_entry"
+      },
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff"],
+      "expected_route_area_label_policy": "No debug labels; screenshot should read as open surface access plus first seabed shell.",
+      "reason": "Confirms the entire water surface remains open and the first descent starts from the authored shell."
+    },
+    {
+      "id": "area01-left-shelf-cave",
+      "stage_command": "area01_left_shelf_cave",
+      "stage_helper": "stageArea01LeftShelfCave",
+      "expected_state": {
+        "result": "diving",
+        "debug_telemetry": false,
+        "active_stats_visible": true,
+        "route_stage": "area01_left_shelf_cave"
+      },
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff"],
+      "expected_route_area_label_policy": "No debug labels; cave mouth should read through terrain silhouette and rim/lip contrast.",
+      "reason": "Covers the first left-side pocket where wall-vs-water readability can regress."
+    },
+    {
+      "id": "area01-right-shelf-pocket",
+      "stage_command": "area01_right_shelf_pocket",
+      "stage_helper": "stageArea01RightShelfPocket",
+      "expected_state": {
+        "result": "diving",
+        "debug_telemetry": false,
+        "active_stats_visible": true,
+        "route_stage": "area01_right_shelf_pocket"
+      },
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff", "locked_future_route_promise"],
+      "expected_route_area_label_policy": "No debug labels; shelf pocket should show resource/payoff affordances without exact locator copy.",
+      "reason": "Checks the early right-side pocket that players can reach before committing to deeper routes."
+    },
+    {
+      "id": "area01-central-drop",
+      "stage_command": "area01_central_drop",
+      "stage_helper": "stageArea01CentralDrop",
+      "expected_state": {
+        "result": "diving",
+        "debug_telemetry": false,
+        "active_stats_visible": true,
+        "route_stage": "area01_central_drop"
+      },
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "return_current_cue", "timing_hazard_support_cue"],
+      "expected_route_area_label_policy": "No debug labels; central descent should imply depth and return direction through readable terrain edges.",
+      "reason": "Validates the main vertical route that makes repeated oxygen-return dives work."
+    },
+    {
+      "id": "area01-west-chamber",
+      "stage_command": "area01_west_chamber",
+      "stage_helper": "stageArea01WestChamber",
+      "expected_state": {
+        "result": "diving",
+        "debug_telemetry": false,
+        "active_stats_visible": true,
+        "route_stage": "area01_west_chamber"
+      },
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff", "return_current_cue"],
+      "expected_route_area_label_policy": "No debug labels; chamber identity should come from shape, pocket contents, and return-current cue.",
+      "reason": "Covers the broader west chamber where resources must not appear embedded in walls."
+    },
+    {
+      "id": "area01-right-chamber",
+      "stage_command": "area01_right_chamber",
+      "stage_helper": "stageArea01RightChamber",
+      "expected_state": {
+        "result": "diving",
+        "debug_telemetry": false,
+        "active_stats_visible": true,
+        "route_stage": "area01_right_chamber"
+      },
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff", "locked_future_route_promise"],
+      "expected_route_area_label_policy": "No debug labels; right chamber should separate payoff/promise cues from solid wall mass.",
+      "reason": "Checks the larger right-side loop target against source-map placement drift."
+    },
+    {
+      "id": "area01-deep-spine",
+      "stage_command": "area01_deep_spine",
+      "stage_helper": "stageArea01DeepSpine",
+      "expected_state": {
+        "result": "diving",
+        "debug_telemetry": false,
+        "active_stats_visible": true,
+        "route_stage": "area01_deep_spine"
+      },
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "return_current_cue", "timing_hazard_support_cue", "locked_future_route_promise"],
+      "expected_route_area_label_policy": "No debug labels; deep route should read as below-surface risk and future-route promise without becoming a map overlay.",
+      "reason": "Covers the deepest current shell state and the highest risk of wall/collision confusion."
+    },
+    {
+      "id": "area01-source-map-overlay",
+      "stage_command": "area01_central_drop",
+      "stage_helper": "stageArea01CentralDrop",
+      "toggle_source_map_overlay": true,
+      "expected_state": {
+        "result": "diving",
+        "debug_telemetry": true,
+        "area01_source_map_overlay": true,
+        "active_stats_visible": true,
+        "route_stage": "area01_central_drop"
+      },
+      "expected_visible_cue_families": ["debug_source_map_overlay", "solid_terrain", "terrain_rim_lip", "return_current_cue", "timing_hazard_support_cue", "resource_pickup", "knowledge_payoff"],
+      "expected_route_area_label_policy": "Developer-only source/cue labels are expected and should match source-map IDs.",
+      "reason": "Confirms the debug overlay can explain source-map lanes, collisions, cue ownership, and capture state."
+    }
+  ]
+}
