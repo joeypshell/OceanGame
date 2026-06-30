@@ -14,9 +14,9 @@ Map and terrain work for that loop is governed by `docs/current/AGENTIC_MAP_PIPE
 
 ## Active Milestone
 
-Survival Day/Night Loop Recalibration.
+Survival Day/Night Loop Closeout.
 
-The next milestone is a direction reset before more route/content expansion. The prototype has enough systems to prove a survival day, but current planning is split between older one-oxygen-run assumptions, Area 01 blockout rescue, Emergency Week needs, and newer surface/refill/offload ideas. The active goal is to make the player loop coherent: open surface for oxygen, ship offload for cargo, a visible day timer, health as real danger, resources that matter at night, and a small night build/upgrade phase.
+The next milestone is to make the implemented survival day understandable in normal play before more route/content expansion. The prototype now has the core pieces for a survival day: open surface oxygen refill, ship offload, a visible day timer, health as real danger, and food/power night resolution. The active goal is to prove the loop as a readable player experience: the player should understand when to surface, when to bank cargo, what night changed, and what to try tomorrow.
 
 Area 01 blockout work remains important only where it supports the new loop: open surface, continuous seafloor, cave holes, readable ship return, starter resource pockets, and enough shallow/deep contrast to make repeated sorties meaningful.
 
@@ -42,14 +42,13 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-The active GitHub batch is now the Survival Day/Night loop, in this order:
+The active GitHub batch is now Survival Day/Night loop closeout, in this order:
 
-1. #735 Add the visible daylight sun-to-moon timer as a state/display slice before adding more route breadth.
-2. #736 Add open-surface oxygen refill zones that do not bank cargo.
-3. #737 Add one-button ship/moonpool offload so cargo banking is distinct from surfacing.
-4. #738 Allow repeated dive sorties inside one daylight day.
-5. #739 Add a basic health meter and one controlled damage source so health and oxygen read as different survival risks.
-6. #740 Make the night screen consume or apply at least banked food and power.
+1. #741 Make a two-sortie day readable end-to-end in normal play.
+2. #742 Add a pauseable expedition slate for needs, cargo, known requirements, and remaining daylight.
+3. #743 Make starter resource roles obvious in collection, offload, and night/result copy.
+4. #744 Make the night result create a clear tomorrow plan.
+5. #745 Define nightfall away from ship as a real day-pressure consequence.
 
 Area 01 source-map/runtime work should resume only where it directly supports open surface, seafloor holes, cave pockets, ship return, or the generated source-grid pipeline. The deterministic Area 01 source-grid-to-runtime-geometry pipeline is already implemented; do not reopen manual polygon rescue or runtime-v3 parity work as the next milestone.
 
@@ -90,6 +89,7 @@ Area 01 source-map/runtime work should resume only where it directly supports op
 - #693 validated the larger Area 01 skeleton and decided one more level-bones pass is needed before broad visual polish; #697 is now the next active issue.
 - #697 expanded Area 01 with far-west, mid-crossing, deep-spine, and far-right blockout terrain; added matching collision and lip reads; updated the source-map lanes; and added deterministic capture states for the expanded footprint.
 - A source-map-driven Area 01 wall builder now applies the same authored polygon to visible walls, collision, and rims so the first playable shell can stop drifting between art and blockers.
+- #735 through #740 were closed as already satisfied by the current implementation: daylight timer, open-surface oxygen refill, daylight ship offload, repeated sorties, health damage/failure, and food/power night resolution are present in code, current docs, and quick-tier tests.
 
 ## Current Readability Rules
 
