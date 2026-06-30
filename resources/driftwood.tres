@@ -6,6 +6,7 @@
 script = ExtResource("1_resource_definition")
 id = "driftwood"
 display_name = "Driftwood"
+resource_category = "Building"
 depth_band = "shallow"
 value = 1
 scan_description = "Salt-worn surface debris caught in reef pockets. Useful for braces, repairs, and low-tech crafting."

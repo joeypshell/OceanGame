@@ -6,6 +6,7 @@
 script = ExtResource("1_resource_definition")
 id = "kelp_fiber"
 display_name = "Kelp Fiber"
+resource_category = "Research"
 depth_band = "shallow"
 value = 1
 scan_description = "Common fiber found near the surface. Useful for early equipment repairs."

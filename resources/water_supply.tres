@@ -6,6 +6,7 @@
 script = ExtResource("1_resource_definition")
 id = "water_supply"
 display_name = "Water Supply"
+resource_category = "Water"
 depth_band = "shallow"
 value = 1
 scan_description = "Condensed fresh-water canister or purifier charge. Banks into the base water need."

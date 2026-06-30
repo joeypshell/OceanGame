@@ -46,7 +46,16 @@ const STARTER_RESOURCE_PICKUP_NAMES := [
 	"QuartzGlass",
 	"FoodSupply",
 	"WaterSupply",
+	"PowerSupply",
 ]
+const RESOURCE_CATEGORY_LABELS := {
+	"kelp_fiber": "Research",
+	"shell_fragments": "Research",
+	"glow_plankton": "Research",
+	"scrap_metal": "Building",
+	"driftwood": "Building",
+	"quartz_glass": "Building",
+}
 const RESOURCE_CLUSTER_PATTERNS := [
 	"cautious",
 	"deep_reward",
@@ -4739,7 +4748,11 @@ func _format_resource_counts(resource_ids: Array[String]) -> String:
 
 	var parts: Array[String] = []
 	for resource_id in counts.keys():
-		parts.append(" %s x%d" % [_display_name_for_resource(resource_id), int(counts[resource_id])])
+		parts.append(" %s: %s x%d" % [
+			_resource_category_label(resource_id),
+			_display_name_for_resource(resource_id),
+			int(counts[resource_id]),
+		])
 
 	return "\n" + "\n".join(parts)
 
@@ -4753,15 +4766,19 @@ func _format_survival_supply_counts(supply_ids: Array[String]) -> String:
 
 	var parts: Array[String] = []
 	for supply_id in counts.keys():
-		parts.append(" %s x%d" % [survival_state.display_name_for_supply(supply_id), int(counts[supply_id])])
+		parts.append(" %s: %s x%d" % [
+			_resource_category_label(supply_id),
+			survival_state.display_name_for_supply(supply_id),
+			int(counts[supply_id]),
+		])
 
 	return "\n" + "\n".join(parts)
 
 func _format_survival_banking_line(banked_survival_supplies: Array[String]) -> String:
 	if banked_survival_supplies.is_empty():
-		return "Survival supplies banked: none."
+		return "Survival needs banked: none."
 
-	return "Survival supplies banked:%s" % _format_survival_supply_counts(banked_survival_supplies)
+	return "Survival needs banked:%s" % _format_survival_supply_counts(banked_survival_supplies)
 
 func _format_cargo_counts_inline(resource_ids: Array[String]) -> String:
 	if resource_ids.is_empty():
@@ -4990,12 +5007,18 @@ func _format_banked_resources() -> String:
 
 	var parts: Array[String] = []
 	for resource_id in progression_state.banked_resources.keys():
-		parts.append(" %s x%d" % [
+		parts.append(" %s: %s x%d" % [
+			_resource_category_label(resource_id),
 			_display_name_for_resource(resource_id),
 			progression_state.resource_count(resource_id)
 		])
 
 	return "\n" + "\n".join(parts)
+
+func _resource_category_label(resource_id: String) -> String:
+	if survival_state.is_supply_id(resource_id):
+		return survival_state.category_name_for_supply(resource_id)
+	return String(RESOURCE_CATEGORY_LABELS.get(resource_id, "Resource"))
 
 func _display_name_for_resource(resource_id: String) -> String:
 	match resource_id:
@@ -5273,7 +5296,7 @@ func _format_scan_progress_callout(prefix: String) -> String:
 
 func _format_extraction_banking_line(extracted_count: int, extracted_cargo: Array[String]) -> String:
 	if extracted_count > 0:
-		return "Banked %d resource(s).%s" % [
+		return "Upgrade/build materials banked: %d.%s" % [
 			extracted_count,
 			_format_resource_counts(extracted_cargo),
 		]

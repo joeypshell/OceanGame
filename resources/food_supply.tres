@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1_resource_definition")
 id = "food_supply"
-display_name = "Food Supply"
+display_name = "Food/Fish Supply"
+resource_category = "Food/Fish"
 depth_band = "shallow"
 value = 1
-scan_description = "Edible sealed ration or harvestable shallow food. Banks into the base food need."
+scan_description = "Edible sealed ration, small fish, or harvestable shallow food. Banks into the base food need."
 upgrade_use = "base survival"

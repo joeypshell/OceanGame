@@ -6,6 +6,7 @@
 script = ExtResource("1_resource_definition")
 id = "quartz_glass"
 display_name = "Quartz Glass"
+resource_category = "Building"
 depth_band = "midwater"
 value = 2
 scan_description = "Clear mineral glass from reef seams. Useful for scanner lenses and lights."

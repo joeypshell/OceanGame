@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://ocean_main_scene"]
+[gd_scene load_steps=51 format=3 uid="uid://ocean_main_scene"]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
@@ -11,6 +11,7 @@
 [ext_resource type="Resource" path="res://resources/quartz_glass.tres" id="31_quartz_glass"]
 [ext_resource type="Resource" path="res://resources/food_supply.tres" id="32_food_supply"]
 [ext_resource type="Resource" path="res://resources/water_supply.tres" id="33_water_supply"]
+[ext_resource type="Resource" path="res://resources/power_supply.tres" id="34_power_supply"]
 [ext_resource type="Script" path="res://scripts/scannable.gd" id="7_scannable"]
 [ext_resource type="Script" path="res://scripts/predator.gd" id="8_predator"]
 [ext_resource type="Script" path="res://scripts/spawn_point.gd" id="9_spawn_point"]
@@ -3237,6 +3238,24 @@ target_id = "water_supply"
 depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
+[node name="PowerSupply" type="Node2D" parent="StarterResourceCandidates"]
+
+[node name="A" type="Marker2D" parent="StarterResourceCandidates/PowerSupply"]
+position = Vector2(506, 772)
+script = ExtResource("9_spawn_point")
+spawn_id = "power_left_pocket_a"
+target_id = "power_supply"
+depth_band = "shallow"
+cluster_pattern = "cautious"
+
+[node name="B" type="Marker2D" parent="StarterResourceCandidates/PowerSupply"]
+position = Vector2(3048, 856)
+script = ExtResource("9_spawn_point")
+spawn_id = "power_right_pocket_a"
+target_id = "power_supply"
+depth_band = "shallow"
+cluster_pattern = "deep_reward"
+
 [node name="CreatureRouteCandidates" type="Node2D" parent="."]
 
 [node name="CautiousRightGate" type="Node2D" parent="CreatureRouteCandidates"]
@@ -3573,6 +3592,23 @@ polygon = PackedVector2Array(0, -42, 34, -14, 28, 30, -2, 44, -34, 18, -28, -18)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/WaterSupply"]
 shape = SubResource("CircleShape2D_pickup")
 
+[node name="PowerSupply" type="Area2D" parent="ResourcePickups"]
+position = Vector2(700, 1030)
+script = ExtResource("3_resource_pickup")
+definition = ExtResource("34_power_supply")
+
+[node name="PowerCell" type="Polygon2D" parent="ResourcePickups/PowerSupply"]
+color = Color(1, 0.9, 0.24, 0.92)
+polygon = PackedVector2Array(-10, -28, 20, -6, 4, -4, 14, 28, -22, 0, -6, 0)
+
+[node name="PowerHalo" type="Polygon2D" parent="ResourcePickups/PowerSupply"]
+z_index = -1
+color = Color(1, 0.92, 0.24, 0.2)
+polygon = PackedVector2Array(0, -42, 34, -12, 26, 32, -6, 44, -34, 10, -24, -22)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourcePickups/PowerSupply"]
+shape = SubResource("CircleShape2D_pickup")
+
 [node name="Creatures" type="Node2D" parent="."]
 
 [node name="LanternFry" type="Area2D" parent="Creatures"]
@@ -3581,7 +3617,7 @@ script = ExtResource("7_scannable")
 discovery_id = "lantern_fry"
 display_name = "Lantern Fry"
 description = "A passive fish that drifts around dim bioluminescent blooms."
-gameplay_fact = "Travels near Glow Plankton."
+gameplay_fact = "Marks where shallow fish can become food; travels near Glow Plankton."
 move_start = Vector2(1260, 1740)
 move_end = Vector2(1520, 1740)
 move_speed = 48.0

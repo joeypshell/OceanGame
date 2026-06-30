@@ -30,6 +30,17 @@ const WaterFilterUpgrade := preload("res://resources/upgrades/water_filter_1.tre
 const PredatorWarningUpgrade := preload("res://resources/upgrades/predator_warning_1.tres")
 const DecoyPulseUpgrade := preload("res://resources/upgrades/decoy_pulse_1.tres")
 const SalvageCutterUpgrade := preload("res://resources/upgrades/salvage_cutter_1.tres")
+const StarterResourceDefinitions := [
+	preload("res://resources/driftwood.tres"),
+	preload("res://resources/food_supply.tres"),
+	preload("res://resources/glow_plankton.tres"),
+	preload("res://resources/kelp_fiber.tres"),
+	preload("res://resources/power_supply.tres"),
+	preload("res://resources/quartz_glass.tres"),
+	preload("res://resources/scrap_metal.tres"),
+	preload("res://resources/shell_fragments.tres"),
+	preload("res://resources/water_supply.tres"),
+]
 
 class DummyScanTarget:
 	extends Node2D
@@ -57,6 +68,7 @@ func _initialize() -> void:
 	_run("survival collapse and reset", _test_survival_collapse_and_reset)
 	_run("survival supply banking isolation", _test_survival_supply_banking_isolation)
 	_run("starter survival resource families", _test_starter_survival_resource_families)
+	_run("resource taxonomy offload copy", _test_resource_taxonomy_offload_copy)
 	_run("survival oxygen penalty", _test_survival_oxygen_penalty)
 	_run("upgrade affordability", _test_upgrade_affordability)
 	_run("progression reset", _test_progression_reset)
@@ -437,17 +449,23 @@ func _test_survival_supply_banking_isolation() -> void:
 
 func _test_starter_survival_resource_families() -> void:
 	var main := MainScript.new()
-	var cargo: Array[String] = ["scrap_metal", "driftwood", "quartz_glass", "food_supply", "water_supply"]
+	var cargo: Array[String] = ["scrap_metal", "driftwood", "quartz_glass", "food_supply", "water_supply", "power_supply"]
 	var resources: Array[String] = main.call("_bank_extracted_cargo", cargo)
 	var supplies: Array[String] = main.call("_bank_extracted_survival_supplies", cargo)
 
 	_expect(resources == ["scrap_metal", "driftwood", "quartz_glass"], "starter crafting materials should bank as upgrade resources")
-	_expect(supplies == ["food_supply", "water_supply"], "starter food and water should bank as survival supplies")
+	_expect(supplies == ["food_supply", "water_supply", "power_supply"], "starter food, water, and power should bank as survival supplies")
 	_expect(main.progression_state.resource_count("scrap_metal") == 1, "scrap metal should appear in the resource bank")
 	_expect(main.progression_state.resource_count("driftwood") == 1, "driftwood should appear in the resource bank")
 	_expect(main.progression_state.resource_count("quartz_glass") == 1, "quartz glass should appear in the resource bank")
 	_expect(main.survival_state.food == 4, "food pickup should increase survival food")
 	_expect(main.survival_state.water == 4, "water pickup should increase survival water")
+	_expect(main.survival_state.power == 4, "power pickup should increase survival power")
+	_expect(main.call("_format_resource_counts", resources).contains("Building: Scrap Metal"), "resource result copy should name building materials")
+	_expect(main.call("_format_survival_supply_counts", supplies).contains("Food/Fish: Food/Fish Supply"), "survival result copy should name the food/fish role")
+	_expect(main.call("_format_survival_supply_counts", supplies).contains("Power: Power Cell"), "survival result copy should name the power role")
+	for definition in StarterResourceDefinitions:
+		_expect(not definition.resource_category.is_empty(), "%s should declare a resource category" % definition.id)
 
 	var scene := MainScene.instantiate()
 	root.add_child(scene)
@@ -457,6 +475,7 @@ func _test_starter_survival_resource_families() -> void:
 		"QuartzGlass": "quartz_glass",
 		"FoodSupply": "food_supply",
 		"WaterSupply": "water_supply",
+		"PowerSupply": "power_supply",
 	}
 	for pickup_name in expected_pickups.keys():
 		var pickup := scene.get_node("ResourcePickups/%s" % pickup_name) as ResourcePickup
@@ -464,6 +483,28 @@ func _test_starter_survival_resource_families() -> void:
 		_expect(pickup.definition.id == String(expected_pickups[pickup_name]), "%s should use the expected resource definition" % pickup_name)
 		_expect(candidate != null, "%s should have at least one authored spawn candidate" % pickup_name)
 	scene.queue_free()
+
+func _test_resource_taxonomy_offload_copy() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.start()
+	main.player_in_base = true
+	main.dive_session.has_left_base = true
+	var mixed_cargo: Array[String] = ["food_supply", "power_supply", "scrap_metal", "kelp_fiber"]
+	main.dive_session.current_cargo = mixed_cargo
+
+	var offloaded := bool(main.call("_try_ship_offload"))
+
+	_expect(offloaded, "ship offload should accept mixed taxonomy cargo")
+	_expect(main.survival_state.food == 4, "food/fish offload should bank survival food")
+	_expect(main.survival_state.power == 4, "power offload should bank survival power")
+	_expect(main.progression_state.resource_count("scrap_metal") == 1, "building offload should bank scrap")
+	_expect(main.progression_state.resource_count("kelp_fiber") == 1, "research offload should bank kelp fiber")
+	_expect(main.upgrade_menu_feedback.contains("Food/Fish: Food/Fish Supply"), "offload copy should label food/fish survival value")
+	_expect(main.upgrade_menu_feedback.contains("Power: Power Cell"), "offload copy should label power survival value")
+	_expect(main.upgrade_menu_feedback.contains("Building: Scrap Metal"), "offload copy should label building value")
+	_expect(main.upgrade_menu_feedback.contains("Research: Kelp Fiber"), "offload copy should label research value")
+	main.queue_free()
 
 func _test_survival_oxygen_penalty() -> void:
 	var main := MainScript.new()
@@ -4023,10 +4064,12 @@ func _test_area_01_starter_resource_pocket_placement() -> void:
 	var pocket_checks := {
 		"StarterResourceCandidates/FoodSupply/A": left_shallow,
 		"StarterResourceCandidates/WaterSupply/A": left_shallow,
+		"StarterResourceCandidates/PowerSupply/A": left_shallow,
 		"StarterResourceCandidates/Driftwood/A": left_shallow,
 		"StarterResourceCandidates/KelpFiber/C": left_shallow,
 		"StarterResourceCandidates/FoodSupply/B": right_chamber,
 		"StarterResourceCandidates/WaterSupply/B": right_chamber,
+		"StarterResourceCandidates/PowerSupply/B": right_chamber,
 		"StarterResourceCandidates/Driftwood/B": right_chamber,
 		"StarterResourceCandidates/ScrapMetal/A": left_chamber,
 		"StarterResourceCandidates/ShellFragments/A": left_cave,
@@ -4043,9 +4086,10 @@ func _test_area_01_starter_resource_pocket_placement() -> void:
 
 	var food_a := main.get_node("StarterResourceCandidates/FoodSupply/A") as SpawnPoint
 	var water_a := main.get_node("StarterResourceCandidates/WaterSupply/A") as SpawnPoint
+	var power_a := main.get_node("StarterResourceCandidates/PowerSupply/A") as SpawnPoint
 	var quartz_a := main.get_node("StarterResourceCandidates/QuartzGlass/A") as SpawnPoint
 	var shell_b := main.get_node("StarterResourceCandidates/ShellFragments/B") as SpawnPoint
-	_expect(food_a.depth_band == "shallow" and water_a.depth_band == "shallow", "survival supply pockets should stay shallow enough to teach early routes")
+	_expect(food_a.depth_band == "shallow" and water_a.depth_band == "shallow" and power_a.depth_band == "shallow", "survival supply pockets should stay shallow enough to teach early routes")
 	_expect(food_a.global_position.x < right_chamber.global_position.x and shell_b.global_position.x > right_shelf.global_position.x, "starter resources should now teach movement from shallow pockets toward the larger right chamber")
 	_expect(quartz_a.global_position.y > food_a.global_position.y, "quartz should sit deeper than the first food pocket")
 	_expect(shell_b.global_position.y > water_a.global_position.y, "shell material should sit deeper than the first water pocket")
@@ -4600,7 +4644,7 @@ func _test_extraction_banking_result_copy() -> void:
 	var main := MainScript.new()
 
 	var cargo: Array[String] = ["kelp_fiber"]
-	_expect(main._format_extraction_banking_line(1, cargo).contains("Banked 1 resource"), "cargo extraction should keep resource banking copy")
+	_expect(main._format_extraction_banking_line(1, cargo).contains("Upgrade/build materials banked: 1"), "cargo extraction should keep resource banking copy")
 	_expect(main._format_extraction_banking_line(1, cargo).contains("Kelp Fiber x1"), "cargo extraction should keep resource counts")
 
 	main.run_completed_scans = ["thermal_vent"]

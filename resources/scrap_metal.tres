@@ -6,6 +6,7 @@
 script = ExtResource("1_resource_definition")
 id = "scrap_metal"
 display_name = "Scrap Metal"
+resource_category = "Building"
 depth_band = "shallow"
 value = 1
 scan_description = "Loose wreck scrap near the shallows. Useful for basic tool housings and repairs."

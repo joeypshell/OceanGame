@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ResourceDefinition" load_steps=2 format=3 uid="uid://power_supply_resource"]
+
+[ext_resource type="Script" path="res://scripts/resource_definition.gd" id="1_resource_definition"]
+
+[resource]
+script = ExtResource("1_resource_definition")
+id = "power_supply"
+display_name = "Power Cell"
+resource_category = "Power"
+depth_band = "shallow"
+value = 1
+scan_description = "Recovered battery cell or charged salvage part. Banks into the base power need."
+upgrade_use = "base survival"

@@ -32,13 +32,24 @@ func is_supply_id(item_id: String) -> bool:
 func display_name_for_supply(item_id: String) -> String:
 	match item_id:
 		SUPPLY_FOOD:
-			return "Food Supply"
+			return "Food/Fish Supply"
 		SUPPLY_WATER:
 			return "Water Supply"
 		SUPPLY_POWER:
 			return "Power Cell"
 		_:
 			return item_id
+
+func category_name_for_supply(item_id: String) -> String:
+	match item_id:
+		SUPPLY_FOOD:
+			return "Food/Fish"
+		SUPPLY_WATER:
+			return "Water"
+		SUPPLY_POWER:
+			return "Power"
+		_:
+			return "Survival"
 
 func short_name_for_supply(item_id: String) -> String:
 	match item_id:

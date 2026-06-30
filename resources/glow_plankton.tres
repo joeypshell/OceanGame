@@ -6,6 +6,7 @@
 script = ExtResource("1_resource_definition")
 id = "glow_plankton"
 display_name = "Glow Plankton"
+resource_category = "Research"
 depth_band = "deep"
 value = 3
 scan_description = "Bioluminescent plankton found deeper down. Valuable, but usually far from safety."

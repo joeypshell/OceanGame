@@ -3,6 +3,7 @@ extends Resource
 
 @export var id: String
 @export var display_name: String
+@export var resource_category: String
 @export var depth_band: String
 @export var value := 1
 @export var scan_description: String
