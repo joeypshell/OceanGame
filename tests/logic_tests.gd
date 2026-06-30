@@ -17,6 +17,7 @@ const ExpeditionConditionScript := preload("res://scripts/expedition_condition.g
 const MainScript := preload("res://scripts/main.gd")
 const Area01SourceMapOverlayScript := preload("res://scripts/area01_source_map_overlay.gd")
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
+const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -140,6 +141,7 @@ func _initialize() -> void:
 	_run("Wide Reef Chamber calm-current condition nudge", _test_wide_chamber_calm_current_condition_nudge)
 	_run("Mirror Kelp kelp-bloom condition nudge", _test_mirror_kelp_kelp_bloom_condition_nudge)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
+	_run("mobile touch controls adapter", _test_mobile_touch_controls_adapter)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
 	_run("expanded region base direction", _test_expanded_region_base_direction)
@@ -6448,6 +6450,35 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(main.call("_format_oxygen_label", 40.0, 40.0).begins_with("OXYGEN:"), "oxygen label should use instrument-style active HUD copy")
 	_expect(main.call("_oxygen_warning_text", "critical").contains("RETURN TO BASE"), "critical warning should emphasize the return route")
 	main.free()
+
+func _test_mobile_touch_controls_adapter() -> void:
+	var main := MainScript.new()
+	main.call("_ensure_mobile_touch_controls")
+	_expect(main.get_node_or_null("MobileTouchControls") != null, "main scene should install a mobile touch input adapter")
+	main.free()
+
+	var controls := MobileTouchControlsScript.new() as CanvasLayer
+	controls.call("_build_controls")
+	if controls != null:
+		var expected_default_visibility := OS.has_feature("mobile") or bool(controls.call("_web_touch_available"))
+		_expect(bool(controls.call("should_show_touch_controls")) == expected_default_visibility, "touch controls should be visible on mobile/web and hidden on desktop")
+		controls.set("force_visible", true)
+		_expect(bool(controls.call("should_show_touch_controls")), "touch controls should support force-visible layout review")
+		var root_node := controls.get_node_or_null("TouchControlsRoot") as Control
+		var action_root := controls.get_node_or_null("TouchControlsRoot/ActionButtons") as Control
+		var scan_button := controls.get_node_or_null("TouchControlsRoot/ActionButtons/ScanButton") as Button
+		var use_button := controls.get_node_or_null("TouchControlsRoot/ActionButtons/InteractButton") as Button
+		var burst_button := controls.get_node_or_null("TouchControlsRoot/ActionButtons/BurstThrusterButton") as Button
+		var next_button := controls.get_node_or_null("TouchControlsRoot/ActionButtons/RestartDiveButton") as Button
+		_expect(root_node != null, "touch controls should own one full-screen root Control")
+		_expect(action_root != null, "touch controls should group action buttons separately from movement")
+		_expect(scan_button != null and scan_button.custom_minimum_size.x >= 48.0, "touch Scan button should meet mobile target sizing")
+		_expect(use_button != null and use_button.text == "USE", "touch Use button should map to interact")
+		_expect(burst_button != null and burst_button.text == "BURST", "touch Burst button should map to burst_thruster")
+		_expect(next_button != null and next_button.text == "NEXT", "touch Next button should map to restart_dive")
+		_expect(controls.get_node_or_null("TouchControlsRoot/MovePad") != null, "touch controls should include a visible movement pad")
+		_expect(controls.get_node_or_null("TouchControlsRoot/MoveKnob") != null, "touch controls should include a visible movement knob")
+	controls.free()
 
 func _control_rect(control: Control) -> Rect2:
 	return Rect2(

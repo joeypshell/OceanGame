@@ -17,6 +17,7 @@ export default defineConfig({
     baseURL: `http://${host}:${port}`,
     viewport: { width: 960, height: 540 },
     deviceScaleFactor: 2,
+    hasTouch: true,
     colorScheme: "dark",
     trace: "retain-on-failure",
     screenshot: "only-on-failure",

@@ -12,6 +12,7 @@ const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_fo
 const ExpeditionConditionScript := preload("res://scripts/expedition_condition.gd")
 const Area01SourceMapOverlayScript := preload("res://scripts/area01_source_map_overlay.gd")
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
+const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -517,6 +518,7 @@ var debug_wreck_echo_review_staged := false
 var visual_smoke_route_stage := ""
 var show_area01_source_map_overlay := false
 var area01_source_map_overlay: Area01SourceMapOverlay = null
+var mobile_touch_controls: CanvasLayer = null
 var recent_expedition_log: Array[Dictionary] = []
 
 func _ready() -> void:
@@ -524,6 +526,7 @@ func _ready() -> void:
 	if not area01_build.build(self):
 		push_warning("Area 01 blockout authority failed: %s" % area01_build.last_error)
 	_ensure_area01_source_map_overlay()
+	_ensure_mobile_touch_controls()
 	base_zone.body_entered.connect(_on_base_zone_body_entered)
 	base_zone.body_exited.connect(_on_base_zone_body_exited)
 	survival_supply_cache_interact_zone.body_entered.connect(_on_survival_supply_cache_body_entered)
@@ -567,6 +570,13 @@ func _ready() -> void:
 	_sync_salvage_pocket_open_state()
 	_sync_area01_source_map_overlay()
 	_update_hud()
+
+func _ensure_mobile_touch_controls() -> void:
+	if mobile_touch_controls != null:
+		return
+	mobile_touch_controls = MobileTouchControlsScript.new()
+	mobile_touch_controls.name = "MobileTouchControls"
+	add_child(mobile_touch_controls)
 
 func _process(delta: float) -> void:
 	_consume_visual_smoke_command()
