@@ -24,6 +24,7 @@ const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const ExpandedRouteVisualStagingServiceScript := preload("res://scripts/debug/expanded_route_visual_staging_service.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
+const HealthFeedbackServiceScript := preload("res://scripts/ui/health_feedback_service.gd")
 const HealthDamageVisualStagingServiceScript := preload("res://scripts/debug/health_damage_visual_staging_service.gd")
 const HollowReefVisualStagingServiceScript := preload("res://scripts/debug/hollow_reef_visual_staging_service.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
@@ -4690,32 +4691,7 @@ func _update_oxygen_feedback() -> void:
 	OxygenFeedbackServiceScript.update_feedback(self)
 
 func _update_health_feedback() -> void:
-	if health_label == null:
-		return
-
-	health_label.modulate = Color.WHITE
-	health_label.scale = Vector2.ONE
-	if health_icon != null:
-		health_icon.modulate = Color.WHITE
-	if dive_session.result != DiveSessionScript.Result.DIVING or dive_session.max_health <= 0.0:
-		return
-
-	var health_state := HudPresenterScript.health_state(dive_session.health, dive_session.max_health)
-	var health_color := HudPresenterScript.health_state_color(health_state)
-	if health_state == "critical":
-		var pulse := 1.0 + 0.07 * absf(sin(Time.get_ticks_msec() / 110.0))
-		health_label.modulate = health_color
-		health_label.scale = Vector2(pulse, pulse)
-		if health_icon != null:
-			health_icon.modulate = health_color
-	elif health_state == "low":
-		health_label.modulate = health_color
-		if health_icon != null:
-			health_icon.modulate = health_color
-	elif _has_recent_health_damage():
-		health_label.modulate = HudPresenterScript.HEALTH_DAMAGED_COLOR
-		if health_icon != null:
-			health_icon.modulate = HudPresenterScript.HEALTH_DAMAGED_COLOR
+	HealthFeedbackServiceScript.update_feedback(self)
 
 func _load_progression() -> void:
 	SaveServiceScript.load_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)

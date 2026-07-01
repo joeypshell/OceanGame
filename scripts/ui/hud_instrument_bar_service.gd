@@ -12,7 +12,7 @@ static func update_bars(host) -> void:
 		health_ratio = clampf(host.dive_session.health / host.dive_session.max_health, 0.0, 1.0)
 	host._set_bar_fill_width(host.health_bar_fill, host.HEALTH_BAR_FILL_RECT, health_ratio)
 	if host.health_bar_fill != null:
-		var health_state := host.HudPresenterScript.health_state(host.dive_session.health, host.dive_session.max_health)
+		var health_state: String = host.HudPresenterScript.health_state(host.dive_session.health, host.dive_session.max_health)
 		host.health_bar_fill.color = host.HudPresenterScript.HEALTH_DAMAGED_COLOR if health_state == "normal" and host._has_recent_health_damage() else host.HudPresenterScript.health_state_color(health_state)
 
 	var depth_ratio := clampf(host.dive_session.current_depth / 200.0, 0.0, 1.0)
