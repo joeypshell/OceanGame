@@ -335,10 +335,10 @@ func _test_surface_oxygen_refill_isolation() -> void:
 	_expect(main.progression_state.banked_resources.is_empty(), "active surface refill should not bank resources")
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "active surface refill should not resolve the dive")
 	var surface_prompt: String = main.call("_format_hud_prompt")
-	_expect(surface_prompt.contains("Surface O2") and surface_prompt.contains("Cargo still carried"), "surface prompt should separate oxygen refill from cargo banking")
+	_expect(surface_prompt.contains("Surface O2") and surface_prompt.contains("Cargo carried") and surface_prompt.contains("Ship banks"), "surface prompt should separate oxygen refill from cargo banking")
 	main.player_in_base = true
 	var ship_prompt: String = main.call("_format_hud_prompt")
-	_expect(ship_prompt.contains("At ship") and ship_prompt.contains("offload cargo"), "ship prompt should remain the cargo banking/offload prompt")
+	_expect(ship_prompt.contains("At ship") and ship_prompt.contains("offload cargo") and ship_prompt.contains("refill O2"), "ship prompt should remain the cargo banking/offload prompt")
 	main.free()
 
 func _test_ship_offload_repeat_daylight_sortie() -> void:
@@ -371,7 +371,8 @@ func _test_ship_offload_repeat_daylight_sortie() -> void:
 	_expect(main.daylight_ship_offload_count == 1, "ship offload should count repeated daylight sorties")
 	_expect(main.last_completed_survival_day == 0, "ship offload should not mark the day as completed")
 	var clear_prompt: String = main.call("_format_hud_prompt")
-	_expect(clear_prompt.contains("cargo clear") and clear_prompt.contains("dive again"), "ship prompt should invite another sortie after offload")
+	_expect(clear_prompt.contains("cargo banked") and clear_prompt.contains("O2 full") and clear_prompt.contains("dive again"), "ship prompt should invite another sortie after offload")
+	_expect(main.upgrade_menu_feedback.contains("Ship offload banked 2 cargo item") and main.upgrade_menu_feedback.contains("Oxygen full"), "ship offload feedback should explain cargo banking, oxygen refill, and continued daylight")
 
 	main.dive_session.current_cargo.append("driftwood")
 	main.daylight_nightfall_announced = true
@@ -390,6 +391,7 @@ func _test_night_phase_end_day_and_upgrade_choice() -> void:
 	main.dive_session.current_cargo.append("quartz_glass")
 	main.dive_session.current_cargo.append("food_supply")
 	main.dive_session.current_cargo.append("power_supply")
+	main.daylight_ship_offload_count = 1
 	var starting_day: int = main.survival_state.current_day
 
 	main.call("_try_extract")
@@ -403,6 +405,7 @@ func _test_night_phase_end_day_and_upgrade_choice() -> void:
 	_expect(main.survival_state.water == SurvivalStateScript.STARTING_NEED - 1, "missing water should show as a clear night consequence")
 	var night_summary: String = main.call("_format_night_phase_summary")
 	_expect(night_summary.contains("Night Report"), "Night tab should show the night report")
+	_expect(night_summary.contains("Daylight closeout") and night_summary.contains("1 ship offload"), "Night tab should preserve the repeated-sortie day context")
 	_expect(night_summary.contains("Power -1"), "Night tab should name power resolution")
 	_expect(night_summary.contains("Base needs: Food"), "Night tab should show current base needs")
 	_expect(night_summary.contains("Build choice: Water Filter I ready"), "Night tab should point to a compact build choice")

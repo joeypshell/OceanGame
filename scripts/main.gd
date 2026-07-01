@@ -724,10 +724,10 @@ func _apply_surface_oxygen_refill(delta: float) -> void:
 
 func _surface_oxygen_status_text() -> String:
 	if player_in_base:
-		return "Moonpool: oxygen refilling; bank/offload at the ship."
+		return "Ship moonpool: oxygen full; offload cargo here."
 	if dive_session.oxygen >= dive_session.max_oxygen:
-		return "Surface oxygen full. Cargo still carried."
-	return "Surface oxygen refilling. Cargo still carried."
+		return "Surface oxygen full. Cargo still carried; ship banks."
+	return "Surface oxygen refilling. Cargo still carried; ship banks."
 
 func _is_player_in_surface_oxygen_refill() -> bool:
 	if player == null:
@@ -837,13 +837,13 @@ func _try_ship_offload() -> bool:
 	dive_session.clear_cargo()
 	dive_session.oxygen = dive_session.max_oxygen
 	daylight_ship_offload_count += 1
-	upgrade_menu_feedback = "Offloaded %d cargo item(s).%s%s\nDaylight continues; dive again when ready." % [
+	upgrade_menu_feedback = "Ship offload banked %d cargo item(s).%s%s\nOxygen full. Daylight continues; dive again when ready." % [
 		offloaded_count,
 		_format_resource_counts(banked_resources),
 		_format_survival_supply_counts(banked_survival_supplies),
 	]
 	if status_label != null:
-		status_label.text = "Ship offload: banked %d cargo item(s). Daylight continues." % offloaded_count
+		status_label.text = "Ship offload: cargo banked, oxygen full. Daylight continues."
 	_save_progression()
 	if is_inside_tree():
 		_update_hud()
@@ -2630,18 +2630,18 @@ func _format_hud_prompt() -> String:
 	elif player_in_base:
 		if dive_session.has_left_base:
 			if _can_ship_offload():
-				prompt = "At ship: %s offload cargo" % _action_label("interact")
+				prompt = "At ship: %s offload cargo, refill O2" % _action_label("interact")
 			elif daylight_nightfall_announced:
-				prompt = "At ship: %s start night" % _action_label("interact")
+				prompt = "At ship: %s start night; resolve needs" % _action_label("interact")
 			else:
-				prompt = "At ship: cargo clear, dive again"
+				prompt = "At ship: cargo banked, O2 full, dive again"
 		else:
 			prompt = "Leave moonpool, then return to bank"
 	elif _is_player_in_surface_oxygen_refill():
 		if dive_session.oxygen >= dive_session.max_oxygen:
-			prompt = "Surface O2 full | Cargo still carried"
+			prompt = "Surface O2 full | Cargo carried | Ship banks"
 		else:
-			prompt = "Surface O2 refilling | Cargo still carried"
+			prompt = "Surface O2 refilling | Cargo carried | Ship banks"
 	else:
 		prompt = "Explore | Surface for O2 | Ship banks"
 
@@ -5699,11 +5699,18 @@ func _format_night_phase_summary() -> String:
 	var report := _format_night_report_block().strip_edges()
 	if not report.is_empty():
 		lines.append(report)
+	lines.append(_format_daylight_closeout_line())
 	lines.append(survival_state.status_line())
 	lines.append("Banked materials:%s" % _format_banked_resources())
 	lines.append(_format_night_build_choice_line())
 	lines.append(_format_next_expedition_prompt())
 	return "\n".join(lines)
+
+func _format_daylight_closeout_line() -> String:
+	if daylight_ship_offload_count > 0:
+		return "Daylight closeout: %d ship offload(s) banked cargo before night; final return resolved base needs." % daylight_ship_offload_count
+
+	return "Daylight closeout: no ship offload before night; final return resolved base needs."
 
 func _format_night_build_choice_line() -> String:
 	for upgrade in upgrade_definitions:
@@ -6135,7 +6142,7 @@ func _format_active_objective_line() -> String:
 		objective = "Cargo full: return to bank"
 	elif player_in_base and dive_session.has_left_base:
 		if _can_ship_offload():
-			objective = "At ship: offload, then dive"
+			objective = "At ship: offload, O2 full"
 		elif daylight_nightfall_announced:
 			objective = "At ship: start night"
 		else:
