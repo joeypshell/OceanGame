@@ -4108,15 +4108,7 @@ func _sync_blackwater_trace_payoff_state() -> void:
 	if halo == null or gem == null or spark == null:
 		return
 
-	if run_blackwater_trace_recovered:
-		halo.color = Color(0.45, 0.78, 1.0, 0.08)
-		gem.color = Color(0.72, 0.98, 1.0, 0.18)
-		spark.visible = false
-	else:
-		halo.color = Color(0.45, 0.78, 1.0, 0.32)
-		gem.color = Color(0.72, 0.98, 1.0, 0.82)
-		spark.color = Color(1.0, 1.0, 0.82, 0.9)
-		spark.visible = true
+	RoutePresenterScript.sync_blackwater_trace_payoff(halo, gem, spark, run_blackwater_trace_recovered)
 
 func _sync_glass_kelp_reading_state() -> void:
 	var halo := glass_kelp_reading_halo
@@ -4131,15 +4123,7 @@ func _sync_glass_kelp_reading_state() -> void:
 	if halo == null or shard == null or spark == null:
 		return
 
-	if run_glass_kelp_reading_recovered:
-		halo.color = Color(0.58, 1.0, 0.84, 0.07)
-		shard.color = Color(0.9, 1.0, 0.68, 0.16)
-		spark.visible = false
-	else:
-		halo.color = Color(0.58, 1.0, 0.84, 0.42)
-		shard.color = Color(0.9, 1.0, 0.68, 0.88)
-		spark.color = Color(1.0, 1.0, 0.82, 0.9)
-		spark.visible = true
+	RoutePresenterScript.sync_glass_kelp_reading_payoff(halo, shard, spark, run_glass_kelp_reading_recovered)
 
 func _sync_hollow_reef_reading_state() -> void:
 	var halo := hollow_reef_reading_halo
@@ -4154,15 +4138,7 @@ func _sync_hollow_reef_reading_state() -> void:
 	if halo == null or shard == null or spark == null:
 		return
 
-	if run_hollow_reef_reading_recovered:
-		halo.color = Color(0.58, 1.0, 0.88, 0.07)
-		shard.color = Color(0.88, 1.0, 0.7, 0.16)
-		spark.visible = false
-	else:
-		halo.color = Color(0.58, 1.0, 0.88, 0.36)
-		shard.color = Color(0.88, 1.0, 0.7, 0.84)
-		spark.color = Color(1.0, 1.0, 0.82, 0.9)
-		spark.visible = true
+	RoutePresenterScript.sync_hollow_reef_reading_payoff(halo, shard, spark, run_hollow_reef_reading_recovered)
 
 func _sync_salvage_data_cache_state() -> void:
 	var halo := salvage_data_cache_halo
@@ -4177,15 +4153,7 @@ func _sync_salvage_data_cache_state() -> void:
 	if halo == null or core == null or spark == null:
 		return
 
-	if run_salvage_data_cache_recovered:
-		halo.color = Color(0.42, 0.82, 1.0, 0.07)
-		core.color = Color(0.72, 0.95, 1.0, 0.18)
-		spark.visible = false
-	else:
-		halo.color = Color(0.42, 0.82, 1.0, 0.22)
-		core.color = Color(0.72, 0.95, 1.0, 0.88)
-		spark.color = Color(0.9, 1.0, 1.0, 0.86)
-		spark.visible = true
+	RoutePresenterScript.sync_salvage_data_cache_payoff(halo, core, spark, run_salvage_data_cache_recovered)
 
 func _sync_salvage_manifest_state() -> void:
 	var halo := salvage_manifest_halo
@@ -4200,15 +4168,7 @@ func _sync_salvage_manifest_state() -> void:
 	if halo == null or core == null or spark == null:
 		return
 
-	if run_salvage_manifest_recovered:
-		halo.color = Color(1.0, 0.68, 0.28, 0.08)
-		core.color = Color(1.0, 0.76, 0.34, 0.18)
-		spark.visible = false
-	else:
-		halo.color = Color(1.0, 0.68, 0.28, 0.22)
-		core.color = Color(1.0, 0.76, 0.34, 0.86)
-		spark.color = Color(1.0, 0.9, 0.5, 0.84)
-		spark.visible = true
+	RoutePresenterScript.sync_salvage_manifest_payoff(halo, core, spark, run_salvage_manifest_recovered)
 
 func _sync_salvage_pocket_open_state() -> void:
 	var hatch := salvage_hatch_panel
@@ -4259,15 +4219,7 @@ func _sync_tideglass_sample_state() -> void:
 	if halo == null or core == null or spark == null:
 		return
 
-	if run_tideglass_sample_recovered:
-		halo.color = Color(0.38, 0.88, 1.0, 0.07)
-		core.color = Color(0.72, 0.96, 1.0, 0.18)
-		spark.visible = false
-	else:
-		halo.color = Color(0.38, 0.88, 1.0, 0.22)
-		core.color = Color(0.72, 0.96, 1.0, 0.88)
-		spark.color = Color(0.9, 1.0, 1.0, 0.86)
-		spark.visible = true
+	RoutePresenterScript.sync_tideglass_sample_payoff(halo, core, spark, run_tideglass_sample_recovered)
 
 func _sync_outer_shelf_survey_state() -> void:
 	var halo := outer_shelf_survey_halo
@@ -4282,15 +4234,7 @@ func _sync_outer_shelf_survey_state() -> void:
 	if halo == null or core == null or spark == null:
 		return
 
-	if run_outer_shelf_survey_recovered:
-		halo.color = Color(0.48, 0.92, 1.0, 0.07)
-		core.color = Color(0.78, 1.0, 0.96, 0.18)
-		spark.visible = false
-	else:
-		halo.color = Color(0.48, 0.92, 1.0, 0.22)
-		core.color = Color(0.78, 1.0, 0.96, 0.86)
-		spark.color = Color(0.95, 1.0, 0.9, 0.86)
-		spark.visible = true
+	RoutePresenterScript.sync_outer_shelf_survey_payoff(halo, core, spark, run_outer_shelf_survey_recovered)
 
 func _sync_rim_glass_reading_state() -> void:
 	var halo := rim_glass_reading_halo
@@ -4305,15 +4249,7 @@ func _sync_rim_glass_reading_state() -> void:
 	if halo == null or core == null or spark == null:
 		return
 
-	if run_rim_glass_reading_recovered:
-		halo.color = Color(0.74, 0.78, 1.0, 0.07)
-		core.color = Color(0.96, 0.9, 1.0, 0.18)
-		spark.visible = false
-	else:
-		halo.color = Color(0.74, 0.78, 1.0, 0.22)
-		core.color = Color(0.96, 0.9, 1.0, 0.86)
-		spark.color = Color(1.0, 0.98, 1.0, 0.86)
-		spark.visible = true
+	RoutePresenterScript.sync_rim_glass_reading_payoff(halo, core, spark, run_rim_glass_reading_recovered)
 
 func _sync_blackwater_crack_gate_state() -> void:
 	var mouth := blackwater_crack_mouth
