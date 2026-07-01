@@ -908,7 +908,7 @@ func _expedition_slate_state() -> Dictionary:
 		"max_health": ceili(dive_session.max_health),
 		"max_oxygen": ceili(dive_session.max_oxygen),
 		"oxygen": ceili(dive_session.oxygen),
-		"route_goal": ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory()),
+		"route_goal": ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), RecentExpeditionLogServiceScript.latest_recent_route_memory(recent_expedition_log)),
 		"slate_label": _action_label("expedition_slate"),
 	}
 
@@ -3073,13 +3073,6 @@ func _format_ready_panel_summary() -> String:
 		lines.append("Debug: F9 resets prototype save.")
 
 	return "\n".join(lines)
-
-func _latest_recent_route_memory() -> String:
-	if recent_expedition_log.is_empty():
-		return ""
-
-	var latest_entry := recent_expedition_log[recent_expedition_log.size() - 1]
-	return String(latest_entry.get("route_memory", ""))
 
 func _update_cargo_slots() -> void:
 	var states := CargoSlotPresenterScript.cargo_slot_states(dive_session.current_cargo, dive_session.cargo_limit, cargo_slot_nodes.size())

@@ -16,6 +16,13 @@ static func format_scan_ids(scan_ids: Array[String]) -> String:
 
 	return ", ".join(parts)
 
+static func latest_recent_route_memory(recent_expedition_log: Array) -> String:
+	if recent_expedition_log.is_empty():
+		return ""
+
+	var latest_entry = recent_expedition_log[recent_expedition_log.size() - 1]
+	return String(latest_entry.get("route_memory", ""))
+
 static func record_recent_expedition(host, result_name: String, banked_cargo_count: int) -> void:
 	host.recent_expedition_log.append({
 		"run_number": host.progression_state.current_run_number,

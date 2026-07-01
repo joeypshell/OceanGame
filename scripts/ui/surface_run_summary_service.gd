@@ -4,6 +4,7 @@ extends RefCounted
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
+const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
@@ -68,7 +69,7 @@ static func format_tomorrow_plan(host) -> String:
 	if not starter_resource_target.is_empty():
 		return starter_resource_target
 
-	var broad_goal: String = ExpeditionGoalFormatterScript.format_goal(host.progression_state, host.upgrade_definitions, host._current_condition_id(), host._latest_recent_route_memory())
+	var broad_goal: String = ExpeditionGoalFormatterScript.format_goal(host.progression_state, host.upgrade_definitions, host._current_condition_id(), RecentExpeditionLogServiceScript.latest_recent_route_memory(host.recent_expedition_log))
 	var goal_prefix := "Goal: "
 	if broad_goal.begins_with(goal_prefix):
 		broad_goal = broad_goal.substr(goal_prefix.length())
