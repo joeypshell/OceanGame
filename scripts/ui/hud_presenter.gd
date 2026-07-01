@@ -116,3 +116,40 @@ static func compact_dive_status(text: String) -> String:
 		return cleaned
 
 	return cleaned.substr(0, DIVE_STATUS_MAX_CHARS - 3).strip_edges() + "..."
+
+
+static func format_active_objective_line(state: Dictionary, max_chars: int) -> String:
+	var objective := "Find supplies, scan, return"
+	if int(state.get("cargo_count", 0)) >= int(state.get("cargo_limit", 0)):
+		objective = "Cargo full: return to bank"
+	elif bool(state.get("player_in_base", false)) and bool(state.get("has_left_base", false)):
+		if bool(state.get("can_ship_offload", false)):
+			objective = "At ship: offload, O2 full"
+		elif bool(state.get("daylight_nightfall_announced", false)):
+			objective = "At ship: start night, Power -1" if bool(state.get("daylight_nightfall_away_from_ship", false)) else "At ship: start night"
+		else:
+			objective = "At ship: dive again"
+	elif bool(state.get("daylight_nightfall_announced", false)):
+		objective = "Nightfall: return to ship"
+	elif bool(state.get("should_warn_late_day_cargo_banking", false)):
+		objective = "Dusk: bank cargo soon"
+	elif bool(state.get("player_in_base", false)):
+		objective = "Leave moonpool, gather supplies"
+	elif bool(state.get("player_in_surface_oxygen_refill", false)):
+		objective = "Surface: O2 only; health stays" if bool(state.get("has_recent_health_damage", false)) else "Surface: refill O2; ship banks"
+	elif bool(state.get("has_recent_health_damage", false)):
+		objective = "Health hit: surface won't heal"
+	elif bool(state.get("survival_need_low", false)):
+		objective = "Prioritize food, water, power"
+	elif int(state.get("cargo_count", 0)) > 0:
+		objective = "Cargo %d/%d: ship or push deeper" % [
+			int(state.get("cargo_count", 0)),
+			int(state.get("cargo_limit", 0)),
+		]
+	elif bool(state.get("has_scan_target", false)):
+		objective = "Scan target or collect cargo"
+
+	if objective.length() <= max_chars:
+		return objective
+
+	return objective.substr(0, max_chars - 3).strip_edges() + "..."

@@ -7835,6 +7835,11 @@ func _test_hud_presenter() -> void:
 	var compact_status := HudPresenterScript.compact_dive_status(long_status)
 	_expect(compact_status.length() <= 72, "compact status should keep active HUD copy within the row")
 	_expect(compact_status.ends_with("..."), "compact status should mark truncated copy")
+	_expect(HudPresenterScript.format_active_objective_line({"cargo_count": 3, "cargo_limit": 3}, 46) == "Cargo full: return to bank", "active objective presenter should prioritize full cargo")
+	_expect(HudPresenterScript.format_active_objective_line({"player_in_base": true, "has_left_base": true, "can_ship_offload": true, "cargo_count": 1, "cargo_limit": 3}, 46) == "At ship: offload, O2 full", "active objective presenter should show ship offload when available")
+	_expect(HudPresenterScript.format_active_objective_line({"player_in_surface_oxygen_refill": true, "has_recent_health_damage": true, "cargo_count": 0, "cargo_limit": 3}, 46) == "Surface: O2 only; health stays", "active objective presenter should not imply surface healing")
+	_expect(HudPresenterScript.format_active_objective_line({"survival_need_low": true, "cargo_count": 0, "cargo_limit": 3}, 46) == "Prioritize food, water, power", "active objective presenter should surface low base needs")
+	_expect(HudPresenterScript.format_active_objective_line({"has_scan_target": true, "cargo_count": 0, "cargo_limit": 3}, 46) == "Scan target or collect cargo", "active objective presenter should fall back to scan target guidance")
 
 func _test_tool_belt_presenter() -> void:
 	_expect(ToolBeltPresenterScript.tool_slot_color("ready") == Color(0.018, 0.075, 0.095, 0.5), "ready tool slot color should stay exact")

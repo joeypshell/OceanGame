@@ -5898,46 +5898,20 @@ func _format_discoveries(compact: bool = false) -> String:
 
 
 func _format_active_objective_line() -> String:
-	var objective := "Find supplies, scan, return"
-	if dive_session.current_cargo.size() >= dive_session.cargo_limit:
-		objective = "Cargo full: return to bank"
-	elif player_in_base and dive_session.has_left_base:
-		if _can_ship_offload():
-			objective = "At ship: offload, O2 full"
-		elif daylight_nightfall_announced:
-			if daylight_nightfall_away_from_ship:
-				objective = "At ship: start night, Power -1"
-			else:
-				objective = "At ship: start night"
-		else:
-			objective = "At ship: dive again"
-	elif daylight_nightfall_announced:
-		objective = "Nightfall: return to ship"
-	elif _should_warn_late_day_cargo_banking():
-		objective = "Dusk: bank cargo soon"
-	elif player_in_base:
-		objective = "Leave moonpool, gather supplies"
-	elif _is_player_in_surface_oxygen_refill():
-		if _has_recent_health_damage():
-			objective = "Surface: O2 only; health stays"
-		else:
-			objective = "Surface: refill O2; ship banks"
-	elif _has_recent_health_damage():
-		objective = "Health hit: surface won't heal"
-	elif survival_state.food <= 1 or survival_state.water <= 1 or survival_state.power <= 1:
-		objective = "Prioritize food, water, power"
-	elif dive_session.current_cargo.size() > 0:
-		objective = "Cargo %d/%d: ship or push deeper" % [
-			dive_session.current_cargo.size(),
-			dive_session.cargo_limit,
-		]
-	elif current_scan_target != null:
-		objective = "Scan target or collect cargo"
-
-	if objective.length() <= ACTIVE_OBJECTIVE_MAX_CHARS:
-		return objective
-
-	return objective.substr(0, ACTIVE_OBJECTIVE_MAX_CHARS - 3).strip_edges() + "..."
+	return HudPresenterScript.format_active_objective_line({
+		"can_ship_offload": _can_ship_offload(),
+		"cargo_count": dive_session.current_cargo.size(),
+		"cargo_limit": dive_session.cargo_limit,
+		"daylight_nightfall_announced": daylight_nightfall_announced,
+		"daylight_nightfall_away_from_ship": daylight_nightfall_away_from_ship,
+		"has_left_base": dive_session.has_left_base,
+		"has_recent_health_damage": _has_recent_health_damage(),
+		"has_scan_target": current_scan_target != null,
+		"player_in_base": player_in_base,
+		"player_in_surface_oxygen_refill": _is_player_in_surface_oxygen_refill(),
+		"should_warn_late_day_cargo_banking": _should_warn_late_day_cargo_banking(),
+		"survival_need_low": survival_state.food <= 1 or survival_state.water <= 1 or survival_state.power <= 1,
+	}, ACTIVE_OBJECTIVE_MAX_CHARS)
 
 func _update_scan_target_feedback() -> void:
 	var next_target := _scan_target_candidate() if dive_session.result == DiveSessionScript.Result.DIVING else null
