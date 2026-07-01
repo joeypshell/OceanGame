@@ -22,6 +22,7 @@ const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_
 const Area01VisualDirectorScript := preload("res://scripts/area01_visual_director.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
+const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
@@ -79,6 +80,7 @@ func _initialize() -> void:
 	_run("upgraded cargo limit", _test_upgraded_cargo_limit)
 	_run("extraction requirements", _test_extraction_requirements)
 	_run("oxygen failure", _test_oxygen_failure)
+	_run("health feedback presenter", _test_health_feedback_presenter)
 	_run("health damage and vent failure", _test_health_damage_and_vent_failure)
 	_run("health damage night resolution copy", _test_health_damage_night_resolution_copy)
 	_run("surface oxygen refill isolation", _test_surface_oxygen_refill_isolation)
@@ -285,6 +287,16 @@ func _test_oxygen_failure() -> void:
 	_expect(session.result == DiveSessionScript.Result.FAILED, "oxygen depletion should fail the dive")
 	_expect(session.current_cargo.is_empty(), "oxygen failure should discard current cargo")
 
+func _test_health_feedback_presenter() -> void:
+	_expect(HealthFeedbackPresenterScript.format_damage_source_short("thermal vent heat") == "Thermal vent", "thermal vent damage source should be compact")
+	_expect(HealthFeedbackPresenterScript.format_damage_source_short("") == "Damage", "empty damage source should fall back safely")
+	_expect(HealthFeedbackPresenterScript.format_damage_status("thermal vent heat", 18.0).contains("-18 health"), "thermal vent damage copy should name the health loss amount")
+	_expect(HealthFeedbackPresenterScript.format_damage_status("thermal vent heat", 18.0).contains("O2 unchanged"), "thermal vent damage copy should stay distinct from oxygen loss")
+	_expect(HealthFeedbackPresenterScript.format_recovery_line(82.0, 100.0).contains("Health: 82/100 returned"), "night health recovery copy should report return health")
+	_expect(HealthFeedbackPresenterScript.format_failure_cause_for_player("health depleted by thermal vent") == "health depleted", "health failure copy should stay distinct from oxygen failure copy")
+	_expect(HealthFeedbackPresenterScript.format_failure_cause_for_player("predator warning ignored") == "oxygen depleted after predator contact", "predator failure copy should preserve oxygen framing")
+	_expect(HealthFeedbackPresenterScript.format_failure_cause_for_player("none") == "oxygen depleted", "unknown failure causes should preserve oxygen fallback")
+
 func _test_health_damage_and_vent_failure() -> void:
 	var session := DiveSessionScript.new()
 	session.reset(30.0, 100.0)
@@ -321,8 +333,6 @@ func _test_health_damage_and_vent_failure() -> void:
 	_expect(main.run_health_damage_events == 1, "thermal vent damage should count as health damage telemetry")
 	_expect(main.last_health_damage_source == "thermal vent heat", "thermal vent damage should record a distinct source")
 	_expect(is_equal_approx(main.last_health_damage_amount, 18.0), "thermal vent damage should record the health loss amount")
-	_expect(main.call("_format_health_damage_status", "thermal vent heat", 18.0).contains("-18 health"), "thermal vent damage copy should name the health loss amount")
-	_expect(main.call("_format_health_damage_status", "thermal vent heat", 18.0).contains("O2 unchanged"), "thermal vent damage copy should stay distinct from oxygen loss")
 	_expect(main.call("_format_active_objective_line").contains("Health hit"), "recent health damage should take over the generic active objective")
 	_expect(main.call("_format_hud_prompt").contains("Surface O2 only"), "recent health damage prompt should say surfacing is oxygen-only")
 	main.player_in_surface_oxygen_refill = true
@@ -331,7 +341,6 @@ func _test_health_damage_and_vent_failure() -> void:
 	main.call("_apply_health_damage", 200.0, "thermal vent heat")
 	_expect(main.dive_session.result == DiveSessionScript.Result.FAILED, "fatal thermal vent damage should fail the dive")
 	_expect(main.run_failure_cause.contains("health depleted"), "fatal thermal vent damage should record health as the failure cause")
-	_expect(main.call("_format_failure_cause_for_player") == "health depleted", "health failure copy should stay distinct from oxygen failure copy")
 	main.free()
 
 	var scene_main := MainScene.instantiate()
