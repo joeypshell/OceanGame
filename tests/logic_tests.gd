@@ -22,6 +22,7 @@ const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_
 const Area01VisualDirectorScript := preload("res://scripts/area01_visual_director.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
+const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -159,6 +160,7 @@ func _initialize() -> void:
 	_run("Hollow Reef cave reading payoff", _test_hollow_reef_cave_reading_payoff)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
+	_run("recent expedition presenter", _test_recent_expedition_presenter)
 	_run("recent expedition log", _test_recent_expedition_log)
 	_run("recent expedition survival memory", _test_recent_expedition_survival_memory)
 	_run("thermal vent scan clue text", _test_thermal_vent_scan_clue_text)
@@ -6431,6 +6433,39 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 	_expect(upgrade_feedback.clip_text, "upgrade feedback should clip instead of drawing outside the panel")
 	main_scene.queue_free()
 	main.free()
+
+func _test_recent_expedition_presenter() -> void:
+	var empty_log := RecentExpeditionPresenterScript.format_recent_expedition_log([], false, {})
+	_expect(empty_log == "Recent Expeditions\nNone yet.", "recent expedition presenter should keep empty-log copy exact")
+
+	var entries: Array[Dictionary] = [{
+		"run_number": 7,
+		"result": "Extracted",
+		"banked_cargo_count": 2,
+		"route_memory": "Outer Shelf",
+		"scans": ["thermal_vent", "unknown_scan"],
+		"predator_contacts": 1,
+		"best_depth": 88,
+		"survival_memory": "banked Food supply",
+		"seed": 1234,
+		"pattern": "Cautious shallows",
+	}]
+	var scan_names := {
+		"thermal_vent": "Thermal Vent",
+	}
+	var log_text := RecentExpeditionPresenterScript.format_recent_expedition_log(entries, false, scan_names)
+	_expect(log_text.contains("#7 Extracted: banked 2, route Outer Shelf"), "recent expedition presenter should include run number, result, banked cargo, and route")
+	_expect(log_text.contains("scans Thermal Vent/unknown_scan"), "recent expedition presenter should use provided scan names with id fallback")
+	_expect(log_text.contains("next Glass Rim timing or cargo"), "recent expedition presenter should keep route tease copy")
+	_expect(log_text.contains("survival banked Food supply"), "recent expedition presenter should append survival memory")
+	_expect(not log_text.contains("seed 1234"), "recent expedition presenter should hide seed without debug telemetry")
+
+	var debug_text := RecentExpeditionPresenterScript.format_recent_expedition_log(entries, true, scan_names)
+	_expect(debug_text.contains("seed 1234, Cautious shallows"), "recent expedition presenter should expose debug telemetry when requested")
+	_expect(RecentExpeditionPresenterScript.format_recent_route_tease("Glass Rim") == "timing, cargo, or return", "Glass Rim route tease should stay exact")
+	_expect(RecentExpeditionPresenterScript.format_recent_route_tease("Shell Reef") == "", "non-tease routes should remain quiet")
+	_expect(RecentExpeditionPresenterScript.format_scan_names_short([], scan_names) == "none", "empty scan lists should stay compact")
+	_expect(RecentExpeditionPresenterScript.string_array_from("bad data").is_empty(), "non-array scan data should be ignored")
 
 func _test_recent_expedition_log() -> void:
 	var main := MainScript.new()

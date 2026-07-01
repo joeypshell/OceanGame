@@ -14,6 +14,7 @@ const Area01VisualDirectorScript := preload("res://scripts/area01_visual_directo
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
+const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -6839,35 +6840,11 @@ func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> 
 		recent_expedition_log.pop_front()
 
 func _format_recent_expedition_log() -> String:
-	if recent_expedition_log.is_empty():
-		return "Recent Expeditions\nNone yet."
-
-	var lines: Array[String] = ["Recent Expeditions"]
-	for entry in recent_expedition_log:
-		var route_memory := String(entry.get("route_memory", "none"))
-		var line := "#%d %s: banked %d, route %s, scans %s, contacts %d, best %dm" % [
-			int(entry.get("run_number", 0)),
-			String(entry.get("result", "Unknown")),
-			int(entry.get("banked_cargo_count", 0)),
-			route_memory,
-			_format_scan_names_short(_string_array_from(entry.get("scans", []))),
-			int(entry.get("predator_contacts", 0)),
-			int(entry.get("best_depth", 0)),
-		]
-		var route_tease := _format_recent_route_tease(route_memory)
-		if not route_tease.is_empty():
-			line += ", next %s" % route_tease
-		var survival_memory := String(entry.get("survival_memory", ""))
-		if not survival_memory.is_empty():
-			line += ", survival %s" % survival_memory
-		if show_debug_telemetry:
-			line += " | seed %d, %s" % [
-				int(entry.get("seed", 0)),
-				String(entry.get("pattern", "unknown")),
-			]
-		lines.append(line)
-
-	return "\n".join(lines)
+	return RecentExpeditionPresenterScript.format_recent_expedition_log(
+		recent_expedition_log,
+		show_debug_telemetry,
+		_recent_expedition_scan_names_by_id()
+	)
 
 func _format_recent_survival_memory(result_name: String, banked_cargo_count: int) -> String:
 	if run_health_damage_events > 0 and dive_session.health < dive_session.max_health:
@@ -6908,34 +6885,13 @@ func _format_supply_names_inline(supply_ids: Array[String]) -> String:
 			names.append(name)
 	return _format_need_list(names)
 
-func _format_recent_route_tease(route_memory: String) -> String:
-	match route_memory:
-		"Glass Rim":
-			return "timing, cargo, or return"
-		"Outer Shelf":
-			return "Glass Rim timing or cargo"
-		_:
-			return ""
+func _recent_expedition_scan_names_by_id() -> Dictionary:
+	var names_by_id := {}
+	for entry in recent_expedition_log:
+		for scan_id in RecentExpeditionPresenterScript.string_array_from(entry.get("scans", [])):
+			names_by_id[scan_id] = _format_discovery_name(scan_id)
 
-func _format_scan_names_short(scan_ids: Array[String]) -> String:
-	if scan_ids.is_empty():
-		return "none"
-
-	var parts: Array[String] = []
-	for scan_id in scan_ids:
-		parts.append(_format_discovery_name(scan_id))
-
-	return "/".join(parts)
-
-func _string_array_from(value: Variant) -> Array[String]:
-	var result: Array[String] = []
-	if not value is Array:
-		return result
-
-	for item in value:
-		result.append(String(item))
-
-	return result
+	return names_by_id
 
 func _format_discoveries(compact: bool = false) -> String:
 	var discoveries := progression_state.scan_discoveries
