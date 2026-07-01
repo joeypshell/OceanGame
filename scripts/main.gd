@@ -50,6 +50,7 @@ const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_prese
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
+const SiltVeinVisualStagingServiceScript := preload("res://scripts/debug/silt_vein_visual_staging_service.gd")
 const SurfaceOxygenVisualStagingServiceScript := preload("res://scripts/debug/surface_oxygen_visual_staging_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
@@ -1986,34 +1987,7 @@ func _stage_debug_blue_chimney_payoff_visual_review() -> void:
 	_update_hud()
 
 func _stage_debug_silt_vein_fork_visual_review() -> void:
-	if not OS.has_feature("web"):
-		return
-
-	var staged_player := player
-	if staged_player == null:
-		staged_player = get_node_or_null("Player") as CharacterBody2D
-	if staged_player == null:
-		return
-
-	var fork := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork") as Node2D
-	if fork == null:
-		return
-
-	if dive_session.result == DiveSessionScript.Result.READY:
-		dive_session.start()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	player = staged_player
-	player.global_position = fork.global_position + Vector2(-16.0, 32.0)
-	player.velocity = Vector2.ZERO
-	player_in_base = false
-	dive_session.has_left_base = true
-	dive_session.oxygen = dive_session.max_oxygen
-	visual_smoke_route_stage = "silt_vein_fork"
-	status_label.text = "Debug review: Silt Vein Fork staged."
-	_update_depth()
-	_update_hud()
+	SiltVeinVisualStagingServiceScript.stage_visual_review(self)
 
 func _stage_debug_blackwater_route_visual_review() -> void:
 	BlackwaterVisualStagingServiceScript.stage_route_visual_review(self)
