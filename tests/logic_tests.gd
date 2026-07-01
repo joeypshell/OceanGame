@@ -3947,9 +3947,11 @@ func _test_area_01_source_map_contract() -> void:
 
 	var terrain_domain_runtime: Dictionary = terrain_domain.get("runtime_generation", {})
 	var terrain_domain_node := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/%s" % String(terrain_domain_runtime.get("visible_polygon2d_name", "")))
-	_expect(terrain_domain_node is Polygon2D, "Area 01 source map should build one hidden continuous terrain-domain guide")
+	_expect(terrain_domain_node is Polygon2D, "Area 01 source map should build one continuous source-owned terrain domain")
 	if terrain_domain_node is Polygon2D:
-		_expect(not (terrain_domain_node as Polygon2D).visible, "Area 01 terrain-domain guide should stay hidden in normal play")
+		var terrain_domain_polygon := terrain_domain_node as Polygon2D
+		_expect(terrain_domain_polygon.visible, "Area 01 terrain domain should render as the continuous seafloor mass")
+		_expect(terrain_domain_polygon.texture != null, "Area 01 terrain domain should share the generated terrain fill texture")
 	var carved_water_count := 0
 	for water in playable_water_regions:
 		if typeof(water) != TYPE_DICTIONARY:
@@ -3963,9 +3965,9 @@ func _test_area_01_source_map_contract() -> void:
 		_expect(water_edge is Line2D, "Area 01 playable water should build a hidden diagnostic edge Line2D: %s" % String(water_entry.get("id", "")))
 		if bool(water_entry.get("carves_collision", false)):
 			carved_water_count += 1
-			_expect(not water_cutout.visible, "Area 01 carving water cutout guide should stay hidden in normal play: %s" % String(water_entry.get("id", "")))
+			_expect(water_cutout.visible, "Area 01 carving water cutout should visibly restore source-grid playable water over the terrain domain: %s" % String(water_entry.get("id", "")))
 		else:
-			_expect(not water_cutout.visible, "Area 01 non-carving water guide should stay hidden in normal play: %s" % String(water_entry.get("id", "")))
+			_expect(water_cutout.visible, "Area 01 non-carving water cutout should remain source-visible for review consistency: %s" % String(water_entry.get("id", "")))
 		if water_edge is Line2D:
 			_expect(not water_edge.visible, "Area 01 water edge Line2D should stay hidden in normal play: %s" % String(water_entry.get("id", "")))
 	_expect(carved_water_count >= 6, "Area 01 generated runtime geometry should carve cave/pocket water out of the continuous terrain domain")
@@ -4244,13 +4246,15 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	var expected_domain_polygon := _points_from_source_map_json(terrain_domain.get("polygon", []))
 	var terrain_domain_node := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/%s" % String(terrain_domain_runtime.get("visible_polygon2d_name", ""))) as Polygon2D
 	_expect(expected_domain_polygon.size() >= 3, "Area 01 terrain domain should define one continuous source-map polygon")
-	_expect(terrain_domain_node != null and not terrain_domain_node.visible, "Area 01 builder should keep the continuous terrain-domain guide hidden")
+	_expect(terrain_domain_node != null and terrain_domain_node.visible, "Area 01 builder should render the continuous terrain-domain mass")
 	if terrain_domain_node != null:
-		_expect(_packed_points_match(terrain_domain_node.polygon, expected_domain_polygon), "Area 01 terrain-domain guide should exactly match the source-map terrain domain")
+		_expect(_packed_points_match(terrain_domain_node.polygon, expected_domain_polygon), "Area 01 terrain-domain visual should exactly match the source-map terrain domain")
+		_expect(terrain_domain_node.texture != null, "Area 01 terrain-domain visual should use the generated reef fill texture")
 
 	var water_cutout_layer := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/RuntimeSourceWaterCutouts") as Node2D
 	var water_edge_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourceWaterEdges") as Node2D
 	var player_rim_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourcePlayerRims") as Node2D
+	var cave_wall_art_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourceCaveWallSprites") as Node2D
 	var carved_water_count := 0
 	var art_slice := main.get_node("Area01ArtSlice") as CanvasItem
 	var player_visual_root := main.get_node("Player/VisualRoot") as CanvasItem
@@ -4260,9 +4264,10 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	_expect(_effective_canvas_z(art_slice) < player_visual_z, "Area 01 art slice should stay below actors so generated terrain cannot cover the diver")
 	if terrain_domain_node != null:
 		_expect(_effective_canvas_z(terrain_domain_node) < player_visual_z, "Area 01 terrain domain should render behind the diver")
-	_expect(water_cutout_layer != null, "Area 01 builder should create hidden playable-water cutout guides")
+	_expect(water_cutout_layer != null, "Area 01 builder should create source-owned playable-water cutouts")
 	_expect(water_edge_layer != null, "Area 01 builder should retain hidden playable-water diagnostic edge nodes")
 	_expect(player_rim_layer != null, "Area 01 builder should retain the generated rim container for solid terrain")
+	_expect(cave_wall_art_layer != null, "Area 01 builder should create generated cave-wall sprite art from playable-water source regions")
 	if water_cutout_layer != null:
 		_expect(_effective_canvas_z(water_cutout_layer) < player_visual_z, "Area 01 playable-water cutouts should render behind the diver")
 	if water_edge_layer != null:
@@ -4270,6 +4275,19 @@ func _test_area_01_authoritative_wall_builder() -> void:
 		_expect(water_edge_layer.find_child("*SpriteRimTrims", true, false) == null, "Area 01 should not scatter generated water-edge sprite trim chunks across cave silhouettes")
 	if player_rim_layer != null:
 		_expect(_effective_canvas_z(player_rim_layer) < player_visual_z, "Area 01 generated rim helpers should render behind the diver")
+	if cave_wall_art_layer != null:
+		_expect(_effective_canvas_z(cave_wall_art_layer) < player_visual_z, "Area 01 generated cave-wall sprites should render behind the diver")
+		_expect(not _node_tree_contains_collision(cave_wall_art_layer), "Area 01 generated cave-wall sprites should not own collision")
+		_expect(cave_wall_art_layer.find_children("*", "Line2D", true, false).is_empty(), "Area 01 generated cave-wall sprites should not add visible or hidden Line2D outlines")
+		_expect(cave_wall_art_layer.find_children("*", "Polygon2D", true, false).is_empty(), "Area 01 generated cave-wall sprite layer should not add rectangular polygon debug boxes")
+		var wall_sprites := cave_wall_art_layer.find_children("*", "Sprite2D", true, false)
+		_expect(wall_sprites.size() >= 24, "Area 01 generated cave-wall sprite layer should add enough edge art to read primary cave corridors")
+		for sprite_node in wall_sprites:
+			var sprite := sprite_node as Sprite2D
+			_expect(sprite != null and sprite.visible and sprite.texture != null, "Area 01 generated cave-wall art should use visible texture sprites")
+			if sprite != null:
+				_expect(absf(absf(sprite.scale.x) - absf(sprite.scale.y)) <= 0.001, "Area 01 generated cave-wall sprites should use uniform scale instead of stretched sprite fragments: %s" % sprite.name)
+				_expect(absf(sprite.scale.x) <= 0.32 and absf(sprite.scale.y) <= 0.32, "Area 01 generated cave-wall sprites should stay trim-sized rather than becoming stretched wall strips: %s" % sprite.name)
 	for water_value in playable_water_regions:
 		if typeof(water_value) != TYPE_DICTIONARY:
 			_expect(false, "Area 01 playable water entry should be a dictionary")
@@ -4292,13 +4310,20 @@ func _test_area_01_authoritative_wall_builder() -> void:
 		if player_rim_layer != null:
 			player_rim_group = player_rim_layer.get_node_or_null("%sPlayerRimSprites" % String(runtime.get("edge_line2d_name", ""))) as Node2D
 			player_rim_line = player_rim_layer.get_node_or_null("%sPlayerRim" % String(runtime.get("edge_line2d_name", ""))) as Line2D
+		var cave_wall_art_group: Node2D = null
+		if cave_wall_art_layer != null:
+			cave_wall_art_group = cave_wall_art_layer.get_node_or_null("%sWallArt" % _pascal_case_id(water_id)) as Node2D
 		if bool(water_entry.get("carves_collision", false)):
 			carved_water_count += 1
-			_expect(cutout != null and not cutout.visible, "Area 01 carving playable water cutout guide should stay hidden in normal play: %s" % water_id)
+			_expect(cutout != null and cutout.visible, "Area 01 carving playable water cutout should visibly carve the continuous terrain domain: %s" % water_id)
 			_expect(player_rim_line == null, "Area 01 player-facing rim/lip should not be a Line2D debug outline: %s" % water_id)
 			_expect(player_rim_group == null, "Area 01 carving playable water should not create separate stretched rim/lip sprite markers: %s" % water_id)
+			if water_id == "open_surface_water":
+				_expect(cave_wall_art_group == null, "Area 01 open surface should stay open water, not receive cave-wall sprite art")
+			else:
+				_expect(cave_wall_art_group != null, "Area 01 carving cave/pocket water should receive generated wall sprite art: %s" % water_id)
 		else:
-			_expect(cutout != null and not cutout.visible, "Area 01 non-carving playable water guide should stay hidden: %s" % water_id)
+			_expect(cutout != null and cutout.visible, "Area 01 non-carving playable water cutout should remain source-visible: %s" % water_id)
 			_expect(player_rim_group == null, "Area 01 non-carving playable water should not create a player-facing rim/lip sprite group: %s" % water_id)
 		_expect(edge != null and not edge.visible, "Area 01 playable water diagnostic edge should stay hidden: %s" % water_id)
 	_expect(carved_water_count >= 6, "Area 01 runtime map should carve traced cave/corridor water from the continuous terrain mass")
@@ -4501,6 +4526,14 @@ func _packed_points_match(actual: PackedVector2Array, expected: PackedVector2Arr
 		if actual[index].distance_to(expected[index]) > 0.01:
 			return false
 	return true
+
+func _pascal_case_id(value: String) -> String:
+	var result := ""
+	for part in value.split("_", false):
+		if part.is_empty():
+			continue
+		result += part.substr(0, 1).to_upper() + part.substr(1)
+	return result
 
 func _test_area_01_cave_mouth_affordances() -> void:
 	var main := MainScene.instantiate()

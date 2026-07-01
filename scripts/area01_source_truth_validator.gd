@@ -58,9 +58,8 @@ func _validate_source_map_data(map: Dictionary) -> void:
 	var terrain_domain := _dict_value(map, "terrain_domain", "source map")
 	_expect(_points_from_json(terrain_domain.get("polygon", [])).size() >= 3, "source map terrain_domain must define one continuous domain polygon")
 	var domain_runtime := _dict_value(terrain_domain, "runtime_generation", "terrain_domain")
-	_expect(String(domain_runtime.get("visual_role", "")) == "terrain_domain_reference", "terrain_domain must be a hidden generation/reference guide, not the player-facing solid terrain")
-	_expect(not String(domain_runtime.get("visible_polygon2d_name", "")).is_empty(), "terrain_domain must name its hidden guide Polygon2D")
-	_expect(not bool(domain_runtime.get("player_facing", true)), "terrain_domain must not be player-facing terrain")
+	_expect(String(domain_runtime.get("visual_role", "")) == "terrain_domain_reference", "terrain_domain must remain the source-derived continuous terrain domain reference")
+	_expect(not String(domain_runtime.get("visible_polygon2d_name", "")).is_empty(), "terrain_domain must name its generated domain Polygon2D")
 	var playable_water_regions := _array_value(map, "playable_water_regions")
 	var terrain_entries := _array_value(map, "solid_terrain")
 	var scene_hooks := _array_value(map, "scene_hooks")
@@ -214,10 +213,11 @@ func _validate_generated_source_visuals(scene_root: Node, map: Dictionary, expec
 	var domain_name := String(domain_runtime.get("visible_polygon2d_name", ""))
 	if not domain_name.is_empty():
 		var domain_visual := scene_root.get_node_or_null("%s/%s" % [TERRAIN_LAYER_PATH, domain_name]) as Polygon2D
-		_expect(domain_visual != null, "terrain_domain missing generated hidden guide Polygon2D %s" % domain_name)
+		expected_visible[domain_name] = String(terrain_domain.get("id", "terrain_domain"))
+		_expect(domain_visual != null, "terrain_domain missing generated continuous terrain Polygon2D %s" % domain_name)
 		if domain_visual != null:
-			_expect(not domain_visual.visible, "terrain_domain guide must stay hidden in player-facing runtime")
-			_expect(_same_points(domain_visual.polygon, _points_from_json(terrain_domain.get("polygon", []))), "terrain_domain guide polygon drifted from source map")
+			_expect(domain_visual.visible, "terrain_domain must render the continuous player-facing terrain mass")
+			_expect(_same_points(domain_visual.polygon, _points_from_json(terrain_domain.get("polygon", []))), "terrain_domain polygon drifted from source map")
 
 	for water_value in _array_value(map, "playable_water_regions"):
 		if not water_value is Dictionary:
@@ -229,9 +229,10 @@ func _validate_generated_source_visuals(scene_root: Node, map: Dictionary, expec
 		var edge_name := String(runtime.get("edge_line2d_name", ""))
 		if not cutout_name.is_empty():
 			var cutout := scene_root.get_node_or_null("%s/RuntimeSourceWaterCutouts/%s" % [TERRAIN_LAYER_PATH, cutout_name]) as Polygon2D
+			expected_visible[cutout_name] = water_id
 			_expect(cutout != null, "playable water %s missing generated cutout Polygon2D %s" % [water_id, cutout_name])
 			if cutout != null:
-				_expect(not cutout.visible, "playable water %s cutout guide must stay hidden in player-facing runtime" % water_id)
+				_expect(cutout.visible, "playable water %s cutout must render the source-driven cave water aperture" % water_id)
 				_expect(_same_points(cutout.polygon, _points_from_json(water.get("polygon", []))), "playable water %s cutout polygon drifted from source map" % water_id)
 		if not edge_name.is_empty():
 			var edge := scene_root.get_node_or_null("%s/RuntimeSourceWaterEdges/%s" % [RIM_LAYER_PATH, edge_name]) as Line2D

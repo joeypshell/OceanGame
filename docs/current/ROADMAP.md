@@ -50,6 +50,8 @@ The Survival Day/Night loop closeout batch was resolved in this order:
 4. #744 Make the night result create a clear tomorrow plan.
 5. #745 Define nightfall away from ship as a real day-pressure consequence.
 
+After the survival-loop closeout, #734 added the first generated Area 01 wall-sprite visual pass: the generated continuous terrain domain now renders as the reef mass, playable-water regions render as source-owned water apertures, and generated cave-wall sprites decorate cave/pocket edges without owning collision.
+
 Area 01 source-map/runtime work should resume only where it directly supports open surface, seafloor holes, cave pockets, ship return, or the generated source-grid pipeline. The deterministic Area 01 source-grid-to-runtime-geometry pipeline is already implemented; do not reopen manual polygon rescue or runtime-v3 parity work as the next milestone.
 
 ## Completed In This Readability Rescue
@@ -91,6 +93,7 @@ Area 01 source-map/runtime work should resume only where it directly supports op
 - A source-map-driven Area 01 wall builder now applies the same authored polygon to visible walls, collision, and rims so the first playable shell can stop drifting between art and blockers.
 - #735 through #740 were closed as already satisfied by the current implementation: daylight timer, open-surface oxygen refill, daylight ship offload, repeated sorties, health damage/failure, and food/power night resolution are present in code, current docs, and quick-tier tests.
 - #741 through #745 closed the current Survival Day/Night loop pass: two-sortie readability, the expedition slate, starter resource role copy, tomorrow-plan result copy, and a deterministic late-return consequence when nightfall catches the player away from the ship.
+- #734 added a generated Area 01 wall-sprite visual pass over the source-grid runtime: continuous source-owned terrain mass, visible playable-water apertures, generated cave-edge sprites, hidden diagnostic Line2D edges, and collision still owned by generated solid partitions.
 
 ## Current Readability Rules
 
@@ -112,7 +115,6 @@ Area 01 source-map/runtime work should resume only where it directly supports op
 ## Still Deferred
 
 - Local clutter or readability work that does not make the playable level skeleton clearer.
-- #734 generated Area 01 wall-sprite polish; keep it after the survival day/night loop unless cave-wall readability blocks testing the loop.
 - Broad `main.gd` architecture/refactor batches; reintroduce them only when a specific survival-loop issue is blocked by module size or ownership risk.
 - Starting with a bulky submarine-scale avatar; compact vehicles belong to later upgrades.
 - Broader mobile/controller work beyond preserving semantic input guardrails.

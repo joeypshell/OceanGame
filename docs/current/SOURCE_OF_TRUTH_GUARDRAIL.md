@@ -9,7 +9,7 @@ Use this checklist before closing issues that change milestone direction, Area 0
 - `docs/planning/SUBNAUTICA_DAY_NIGHT_RECALIBRATION_2026_06_30.md` owns the current Subnautica-like day/night planning reset.
 - `docs/planning/DAYLIGHT_MULTI_DIVE_LOOP_PLAN_2026_06_28.md` owns daylight multi-dive loop details until implementation replaces them in current docs.
 - `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES.md` governs map-topology workflow. Playable map topology must come from a machine-readable source and deterministic converter/importer, not hand-placed Godot polygons, screenshot interpretation, or arbitrary generated concept images.
-- `data/maps/area_01_source_grid_v1.json` owns current Area 01 topology source truth. `tools/build-area01-map.mjs` deterministically converts it into `data/maps/area_01_runtime_geometry.generated.json`, which Godot consumes for generated terrain/collision/rims/hooks.
+- `data/maps/area_01_source_grid_v1.json` owns current Area 01 topology source truth. `tools/build-area01-map.mjs` deterministically converts it into `data/maps/area_01_runtime_geometry.generated.json`, which Godot consumes for generated terrain, collision, rims, water apertures, hooks, and source-derived wall-sprite placement.
 - `tests/playwright/area01-capture-manifest.json` owns deterministic Area 01 shell capture states.
 
 ## Issue Closing Checklist
@@ -32,7 +32,7 @@ For any issue that changes visible terrain, collision, source maps, route hooks,
 - If README, ROADMAP, and GAMEPLAY name different active milestones, fix that before closing the issue.
 - If GAMEPLAY describes a system as implemented but no code or tests support it, move that text to planning or label it as planning direction.
 - If Area 01 collision, visible walls, rim/lip reads, hooks, or resource pockets move, update or validate the runtime source map before closing.
-- If Area 01 visible terrain and enabled collision come from different polygons, treat it as source-map/runtime drift even when both sets of polygons are internally valid.
+- If Area 01 blocking terrain/rim reads and enabled collision come from different polygons, treat it as source-map/runtime drift even when both sets of polygons are internally valid. Visible continuous terrain-domain mass, playable-water apertures, and wall sprites may decorate the same source-map topology, but they must not own or imply different collision.
 - If Area 01 renders as sparse floating solid chunks in mostly open water, do not accept it as source-map parity. Runtime topology must show open surface over continuous terrain with carved cave/corridor/pocket water.
 - If an underwater Area 01 review view has no nearby terrain framing, treat that as source-map/runtime drift even if polygon ownership checks pass. The open surface is the only intentionally unframed water band.
 - If a map task asks Codex to make topology match a screenshot or generated image, reframe it as a machine-readable source-map task before editing. Pretty images can guide art style only; they are not collision, wall, route, resource, scan, hazard, gate, return-current, or review-point authority.

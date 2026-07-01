@@ -8,10 +8,11 @@ Map topology process is governed by `docs/current/AGENTIC_MAP_PIPELINE_PRACTICES
 
 The source map remains the authority for terrain:
 
-- `docs/planning/maps/area_01_runtime_source_map_v3.json` owns the current runtime topology.
-- `docs/planning/maps/area_01_blockout_source_map_v1.json` and `area_01_runtime_source_map_v2.json` are historical reference/fallback artifacts only.
-- `Area01BlockoutBuilder` creates one hidden terrain-domain guide plus hidden playable-water cutout/edge guides from the runtime source map.
-- `Area01BlockoutBuilder` generates visible/colliding terrain partitions from `terrain_domain - playable_water_regions`; those partitions own the primary runtime terrain read.
+- `data/maps/area_01_source_grid_v1.json` owns the current topology.
+- `tools/build-area01-map.mjs` generates `data/maps/area_01_runtime_geometry.generated.json` from that source grid.
+- `docs/planning/maps/area_01_runtime_source_map_v3.json`, `docs/planning/maps/area_01_blockout_source_map_v1.json`, and `area_01_runtime_source_map_v2.json` are historical reference/fallback artifacts only.
+- `Area01BlockoutBuilder` renders the generated terrain domain as the continuous source-owned reef mass, renders generated playable-water regions as visible water apertures over that mass, and keeps generated water-edge `Line2D` nodes hidden as diagnostics.
+- `Area01BlockoutBuilder` generates colliding terrain partitions from the generated runtime geometry. Those partitions own collision, while the continuous domain, water apertures, rims, and cave-wall sprites provide the normal-play terrain read.
 
 The implementation pipeline is:
 
@@ -48,7 +49,8 @@ The terrain-domain source gets generated terrain-accent groups. Those groups com
 
 - textured generated solid terrain partition polygons;
 - generated collision and rim/lip reads derived from the same partition polygons;
-- hidden water-edge/rim guides from source-map cutout edges;
+- visible water apertures and hidden diagnostic water-edge guides from source-map cutout edges;
+- generated cave-wall sprite groups from source-owned playable-water aperture edges;
 - continuous inset/depth planes derived from the same source geometry;
 - top/side/underside edge bands;
 - semantic `trim_segments` from the source map, such as `top_lip`, `underside`, `vertical_wall`, and `deep_floor_lip`;
@@ -65,7 +67,7 @@ That lets one long ceiling, one shelf edge, or one vertical wall reuse the same 
 - Do not hand-place unrelated wall art that implies blockers.
 - Do not generate a unique full-wall sprite for every source-map polygon.
 - Do not make repeated rectangular sprites the main terrain silhouette.
-- Do not infer terrain sprite placement from arbitrary polygon edge angles. A terrain sprite should only appear when the source map explicitly names the terrain role it serves.
+- Do not infer terrain sprite placement from screenshots, generated concept art, or arbitrary scene polygons. A terrain sprite should only appear when it is derived from source-owned terrain or playable-water aperture geometry.
 - Do not darken the terrain fill so much that the approved rock material disappears. Source-map terrain should read as solid, but the player must still see rock texture, bevel light, and overhang shadow.
 - Do not use large rectangular lighting overlays on shelf faces. Broad lighting bands should taper along the authored edge so they read as beveling, not UI-like panels.
 - Do not place only middle/repeat sprites on authored terrain edges. If an art-kit role has caps, the builder must place start cap, middle repeat, and end cap sprites so strips read as modular terrain rather than random stickers.
