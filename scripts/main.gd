@@ -6017,38 +6017,7 @@ func _format_base_direction() -> String:
 	if direction_player == null:
 		return "Base: here"
 
-	var delta := direction_player.global_position - start_position
-	if delta.length() < 48.0:
-		return "Base: here"
-
-	var directions := PackedStringArray()
-	if delta.y > 48.0:
-		directions.append("up")
-	elif delta.y < -48.0:
-		directions.append("below")
-
-	if delta.x > 96.0:
-		directions.append("left")
-	elif delta.x < -96.0:
-		directions.append("right")
-
-	var direction_text := "-".join(directions)
-	if direction_text.is_empty():
-		direction_text = "nearby"
-
-	var route_hint := ""
-	if delta.x > 4000.0 and delta.y > 2500.0:
-		route_hint = " via Mirror/Wide/Hollow"
-	elif delta.x > 3000.0 and delta.y > 2500.0:
-		route_hint = " via Hollow/Dusk/Blackwater"
-	elif delta.x > 2200.0 and delta.y > 2400.0:
-		route_hint = " via Dusk/Blackwater"
-	elif delta.x > 2100.0 and delta.y > 2400.0:
-		route_hint = " via Blackwater/Silt/Blue"
-	elif delta.x > 1500.0 and delta.y > 2100.0:
-		route_hint = " via Silt/Blue"
-
-	return "Base: %s %.0fm%s" % [direction_text, delta.length() / pixels_per_meter, route_hint]
+	return HudPresenterScript.format_base_direction(direction_player.global_position, start_position, pixels_per_meter)
 
 
 

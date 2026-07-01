@@ -7840,6 +7840,9 @@ func _test_hud_presenter() -> void:
 	_expect(HudPresenterScript.format_active_objective_line({"player_in_surface_oxygen_refill": true, "has_recent_health_damage": true, "cargo_count": 0, "cargo_limit": 3}, 46) == "Surface: O2 only; health stays", "active objective presenter should not imply surface healing")
 	_expect(HudPresenterScript.format_active_objective_line({"survival_need_low": true, "cargo_count": 0, "cargo_limit": 3}, 46) == "Prioritize food, water, power", "active objective presenter should surface low base needs")
 	_expect(HudPresenterScript.format_active_objective_line({"has_scan_target": true, "cargo_count": 0, "cargo_limit": 3}, 46) == "Scan target or collect cargo", "active objective presenter should fall back to scan target guidance")
+	_expect(HudPresenterScript.format_base_direction(Vector2.ZERO, Vector2.ZERO, 40.0) == "Base: here", "base direction presenter should show nearby base copy")
+	_expect(HudPresenterScript.format_base_direction(Vector2(400.0, 400.0), Vector2.ZERO, 40.0).begins_with("Base: up-left"), "base direction presenter should name broad return direction")
+	_expect(HudPresenterScript.format_base_direction(Vector2(4300.0, 2700.0), Vector2.ZERO, 40.0).contains("via Mirror/Wide/Hollow"), "base direction presenter should preserve far-route hint copy")
 
 func _test_tool_belt_presenter() -> void:
 	_expect(ToolBeltPresenterScript.tool_slot_color("ready") == Color(0.018, 0.075, 0.095, 0.5), "ready tool slot color should stay exact")
