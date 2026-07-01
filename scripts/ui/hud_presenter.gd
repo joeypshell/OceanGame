@@ -11,6 +11,9 @@ const HEALTH_NORMAL_COLOR := Color(0.42, 1.0, 0.5, 0.94)
 const HEALTH_DAMAGED_COLOR := Color(1.0, 0.5, 0.26, 0.96)
 const HEALTH_LOW_COLOR := Color(1.0, 0.72, 0.22, 0.96)
 const HEALTH_CRITICAL_COLOR := Color(1.0, 0.18, 0.16, 0.98)
+const DAYLIGHT_DUSK_RATIO := 0.25
+const DAYLIGHT_NORMAL_COLOR := Color(1.0, 0.78, 0.18, 0.96)
+const DAYLIGHT_DUSK_COLOR := Color(0.82, 0.42, 1.0, 0.94)
 
 static func oxygen_state(current_oxygen: float, maximum_oxygen: float) -> String:
 	if maximum_oxygen <= 0.0:
@@ -85,6 +88,23 @@ static func health_state_color(state: String) -> Color:
 		return HEALTH_LOW_COLOR
 
 	return HEALTH_NORMAL_COLOR
+
+
+static func format_daylight_label(remaining_seconds: float) -> String:
+	if remaining_seconds <= 0.0:
+		return "NIGHTFALL"
+
+	var rounded_remaining := ceili(remaining_seconds)
+	var minutes := int(rounded_remaining / 60)
+	var seconds := rounded_remaining % 60
+	return "DAYLIGHT %02d:%02d" % [minutes, seconds]
+
+
+static func daylight_bar_color(remaining_ratio: float) -> Color:
+	if remaining_ratio <= DAYLIGHT_DUSK_RATIO:
+		return DAYLIGHT_DUSK_COLOR
+
+	return DAYLIGHT_NORMAL_COLOR
 
 
 static func compact_dive_status(text: String) -> String:
