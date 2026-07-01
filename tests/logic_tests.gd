@@ -5200,8 +5200,19 @@ func _test_next_expedition_framing() -> void:
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("bank Power supply soon"), "low base needs should produce a non-critical supply plan")
 	_expect(main._format_dawn_priority_line().contains("bank Power supply soon"), "dawn priority should call out low base needs before route goals")
+	main._refresh_carried_tomorrow_intention()
+	main.survival_state.power = 3
+	main.progression_state.banked_resources = {
+		"driftwood": 1,
+		"quartz_glass": 1,
+	}
+	prompt = main._format_next_expedition_prompt()
+	_expect(prompt.contains("bank Power supply soon"), "next expedition prompt should carry the confirmed night intention into tomorrow")
+	_expect(main._format_dawn_priority_line().contains("bank Power supply soon"), "dawn priority should keep the carried night intention instead of recomputing immediately")
+	main.carried_tomorrow_intention = ""
 
 	main.survival_state.power = 3
+	main.progression_state.banked_resources.clear()
 	main.run_outer_shelf_survey_recovered = true
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("Glass Rim timing") and prompt.contains("Outer Shelf cargo"), "remembered place should produce a broad route plan when needs/builds are stable")
@@ -6799,6 +6810,10 @@ func _test_surface_summary_tabs() -> void:
 	_expect(not ready_summary.contains("Goal:"), "ready panel should not show a second generic goal line")
 	_expect(not ready_summary.contains("Survival F"), "ready panel should not use cryptic survival abbreviations")
 	_expect(not ready_summary.contains("F9"), "ready panel should hide prototype reset copy when debug telemetry is off")
+	main.carried_tomorrow_intention = "bank Power supply soon to protect tomorrow's oxygen."
+	var carried_ready_summary := main._format_ready_panel_summary()
+	_expect(carried_ready_summary.contains("Day priority: bank Power supply soon"), "ready panel should carry the confirmed night intention into the next day")
+	main.carried_tomorrow_intention = ""
 	main.show_debug_telemetry = true
 	_expect(main._format_ready_panel_summary().contains("F9 resets prototype save"), "ready panel may expose reset copy when debug telemetry is on")
 	main.show_debug_telemetry = false
@@ -7225,6 +7240,7 @@ func _test_expedition_slate_context() -> void:
 	main.dive_session.current_depth = 77.0
 	main.dive_session.cargo_limit = 3
 	main.dive_session.current_cargo = ["food_supply", "driftwood"]
+	main.carried_tomorrow_intention = "bank Power supply soon to protect tomorrow's oxygen."
 
 	var slate: String = main.call("_format_expedition_slate_text")
 	_expect(slate.contains("DAYLIGHT 03:30") and slate.contains("50% daylight left"), "slate should show remaining daylight context")
@@ -7232,6 +7248,7 @@ func _test_expedition_slate_context() -> void:
 	_expect(slate.contains("Cargo: 2 / 3 carried") and slate.contains("Food") and slate.contains("Wood"), "slate should show carried cargo and capacity")
 	_expect(slate.contains("Base needs: Food") and slate.contains("Tonight: Food -1, Water -1, Power -1."), "slate should show night needs before the player returns")
 	_expect(slate.contains("Known build:"), "slate should expose known build or upgrade context")
+	_expect(slate.contains("Day plan: bank Power supply soon"), "slate should carry the broad next-day intention without adding checklist progress")
 	_expect(slate.contains("Route goal:"), "slate should preserve the current expedition goal")
 	_expect(slate.contains("surface for O2") and slate.contains("ship banks cargo"), "slate should help decide whether to keep diving or bank cargo")
 	_expect(slate.contains("Tab closes") and slate.contains("pressure is paused"), "slate should explain its active-dive pause rule")

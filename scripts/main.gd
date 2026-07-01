@@ -537,6 +537,7 @@ var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
 var last_result_summary := ""
 var upgrade_menu_feedback := ""
+var carried_tomorrow_intention := ""
 var night_build_completed_this_surface := false
 var current_resource_cluster_pattern := "cautious"
 var current_expedition_condition: Dictionary = {}
@@ -896,6 +897,7 @@ func _format_expedition_slate_text() -> String:
 		"Base needs: %s" % survival_state.status_line(),
 		"Tonight: Food -1, Water -1, Power -1.",
 		_format_night_build_choice_line().replace("Build choice:", "Known build:"),
+		"Day plan: %s" % _format_current_tomorrow_intention(),
 		"Route goal: %s" % route_goal,
 		"Decision: surface for O2, ship banks cargo, return before nightfall.",
 		"%s closes. Active pressure is paused while open." % _action_label("expedition_slate"),
@@ -1086,6 +1088,7 @@ func _resolve_night_after_result() -> void:
 	if _should_report_health_recovery_after_result():
 		night_lines.append(_format_health_recovery_line())
 	last_night_report = "\n".join(night_lines)
+	_refresh_carried_tomorrow_intention()
 
 func _try_craft_night_power_patch() -> bool:
 	if dive_session.result != DiveSessionScript.Result.EXTRACTED or surface_tab_index != SURFACE_TAB_NIGHT:
@@ -1108,6 +1111,7 @@ func _try_craft_night_power_patch() -> bool:
 	night_build_completed_this_surface = true
 	var result_line := "Night build: Power Patch spent Scrap Metal x1. Power +%d for tomorrow." % NIGHT_POWER_PATCH_POWER_GAIN
 	_append_night_report_line(result_line)
+	_refresh_carried_tomorrow_intention()
 	_set_night_build_feedback(result_line)
 	_save_progression()
 	return true
@@ -1178,6 +1182,8 @@ func _format_failure_cause_for_player() -> String:
 
 func _start_dive() -> void:
 	_close_expedition_slate()
+	if carried_tomorrow_intention.strip_edges().is_empty():
+		_refresh_carried_tomorrow_intention()
 	dive_session.start()
 	surface_tab_index = SURFACE_TAB_RESULT
 	upgrade_menu_feedback = ""
@@ -1189,7 +1195,10 @@ func _restart_dive() -> void:
 	_close_expedition_slate()
 	if survival_state.chapter_failed:
 		survival_state.reset_chapter()
+		carried_tomorrow_intention = ""
 	_prepare_next_run()
+	if carried_tomorrow_intention.strip_edges().is_empty():
+		_refresh_carried_tomorrow_intention()
 	player.global_position = start_position
 	player.velocity = Vector2.ZERO
 	player_in_base = true
@@ -1218,6 +1227,7 @@ func _reset_local_prototype_save() -> void:
 	last_night_report = ""
 	last_completed_survival_day = 0
 	upgrade_menu_feedback = ""
+	carried_tomorrow_intention = ""
 	night_build_completed_this_surface = false
 	surface_tab_index = SURFACE_TAB_RESULT
 	selected_upgrade_index = 0
@@ -3073,9 +3083,10 @@ func _try_purchase_selected_upgrade() -> void:
 
 	if UpgradePurchaseScript.purchase(progression_state, upgrade):
 		_apply_upgrade_effect(upgrade.effect_id)
+		_refresh_carried_tomorrow_intention()
 		upgrade_menu_feedback = "Purchased %s. Next: %s" % [
 			upgrade.display_name,
-			_format_tomorrow_plan(),
+			_format_current_tomorrow_intention(),
 		]
 		_save_progression()
 		status_label.text = "Purchased %s." % upgrade.display_name
@@ -6134,7 +6145,7 @@ func _format_next_expedition_prompt() -> String:
 	return "Next: press %s for Expedition %d; %s" % [
 		_action_label("restart_dive"),
 		progression_state.current_run_number + 1,
-		_format_tomorrow_plan(),
+		_format_current_tomorrow_intention(),
 	]
 
 func _format_tomorrow_plan() -> String:
@@ -6168,8 +6179,18 @@ func _format_tomorrow_plan() -> String:
 
 	return broad_goal
 
+func _refresh_carried_tomorrow_intention() -> void:
+	carried_tomorrow_intention = _format_tomorrow_plan()
+
+func _format_current_tomorrow_intention() -> String:
+	var carried := carried_tomorrow_intention.strip_edges()
+	if not carried.is_empty():
+		return carried
+
+	return _format_tomorrow_plan()
+
 func _format_dawn_priority_line() -> String:
-	return "Day priority: %s" % _format_tomorrow_plan()
+	return "Day priority: %s" % _format_current_tomorrow_intention()
 
 func _format_starter_resource_target() -> String:
 	if progression_state.has_upgrade(WATER_FILTER_UPGRADE_ID):
