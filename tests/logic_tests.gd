@@ -281,6 +281,8 @@ func _test_health_damage_and_vent_failure() -> void:
 	main.dive_session.reset(30.0, 100.0)
 	main.dive_session.start()
 	main.dive_session.oxygen = 24.0
+	main.dive_session.has_left_base = true
+	main.player_in_base = false
 	main.dive_session.current_cargo.append("driftwood")
 	main.thermal_vent_health_damage = 18.0
 	main.call("_apply_health_damage", main.thermal_vent_health_damage, "thermal vent heat")
@@ -288,6 +290,13 @@ func _test_health_damage_and_vent_failure() -> void:
 	_expect(is_equal_approx(main.dive_session.oxygen, 24.0), "thermal vent damage should leave oxygen unchanged")
 	_expect(main.run_health_damage_events == 1, "thermal vent damage should count as health damage telemetry")
 	_expect(main.last_health_damage_source == "thermal vent heat", "thermal vent damage should record a distinct source")
+	_expect(is_equal_approx(main.last_health_damage_amount, 18.0), "thermal vent damage should record the health loss amount")
+	_expect(main.call("_format_health_damage_status", "thermal vent heat", 18.0).contains("-18 health"), "thermal vent damage copy should name the health loss amount")
+	_expect(main.call("_format_health_damage_status", "thermal vent heat", 18.0).contains("O2 unchanged"), "thermal vent damage copy should stay distinct from oxygen loss")
+	_expect(main.call("_format_active_objective_line").contains("Health hit"), "recent health damage should take over the generic active objective")
+	_expect(main.call("_format_hud_prompt").contains("Surface O2 only"), "recent health damage prompt should say surfacing is oxygen-only")
+	main.player_in_surface_oxygen_refill = true
+	_expect(main.call("_format_active_objective_line").contains("O2 only"), "surface objective after damage should not imply healing")
 	main.dive_session.current_cargo.append("food_supply")
 	main.call("_apply_health_damage", 200.0, "thermal vent heat")
 	_expect(main.dive_session.result == DiveSessionScript.Result.FAILED, "fatal thermal vent damage should fail the dive")
@@ -303,7 +312,10 @@ func _test_health_damage_and_vent_failure() -> void:
 	scene_main.call("_on_thermal_vent_hazard_body_entered", scene_main.player)
 	_expect(is_equal_approx(scene_main.dive_session.health, scene_main.dive_session.max_health - scene_main.thermal_vent_health_damage), "scene thermal vent collision should damage health")
 	_expect(is_equal_approx(scene_main.dive_session.oxygen, 19.0), "scene thermal vent collision should not drain oxygen")
-	_expect(scene_main.status_label.text.contains("health damaged"), "scene thermal vent feedback should be distinct from oxygen warning copy")
+	_expect(scene_main.status_label.text.contains("-18 health"), "scene thermal vent feedback should show the health loss amount")
+	_expect(scene_main.status_label.text.contains("O2 unchanged"), "scene thermal vent feedback should be distinct from oxygen warning copy")
+	var health_bar_fill := scene_main.get_node("HUD/HealthBarFill") as ColorRect
+	_expect(is_equal_approx(health_bar_fill.color.r, MainScript.HEALTH_DAMAGED_COLOR.r) and is_equal_approx(health_bar_fill.color.g, MainScript.HEALTH_DAMAGED_COLOR.g), "recent health damage should tint the health bar separately from oxygen")
 	scene_main.queue_free()
 
 func _test_surface_oxygen_refill_isolation() -> void:

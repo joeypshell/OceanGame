@@ -116,6 +116,10 @@ export async function stageHealthDamage(page) {
     oxygen: 30,
     health_damage_events: 1,
     last_health_damage_source: "thermal vent heat",
+    last_health_damage_amount: 18,
+    health_damage_status_visible: true,
+    health_damage_prompt_visible: true,
+    health_damage_objective_visible: true,
   });
 }
 

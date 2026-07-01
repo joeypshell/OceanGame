@@ -183,6 +183,7 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 const DAYLIGHT_NORMAL_COLOR := Color(1.0, 0.78, 0.18, 0.96)
 const DAYLIGHT_DUSK_COLOR := Color(0.82, 0.42, 1.0, 0.94)
 const HEALTH_NORMAL_COLOR := Color(0.42, 1.0, 0.5, 0.94)
+const HEALTH_DAMAGED_COLOR := Color(1.0, 0.5, 0.26, 0.96)
 const HEALTH_LOW_COLOR := Color(1.0, 0.72, 0.22, 0.96)
 const HEALTH_CRITICAL_COLOR := Color(1.0, 0.18, 0.16, 0.98)
 
@@ -559,6 +560,7 @@ var run_completed_scans: Array[String] = []
 var run_predator_contacts := 0
 var run_health_damage_events := 0
 var last_health_damage_source := ""
+var last_health_damage_amount := 0.0
 var run_failure_cause := "none"
 var run_echo_lens_echo_fired := false
 var run_wreck_echo_clue_recovered := false
@@ -794,6 +796,24 @@ func _set_expedition_slate_open(is_open: bool) -> void:
 	if is_inside_tree():
 		_update_hud()
 
+func _has_recent_health_damage() -> bool:
+	return dive_session.result == DiveSessionScript.Result.DIVING and run_health_damage_events > 0 and dive_session.health < dive_session.max_health
+
+func _format_health_damage_source_short(source: String = last_health_damage_source) -> String:
+	var lowered := source.to_lower()
+	if lowered.contains("thermal vent"):
+		return "Thermal vent"
+	if source.strip_edges().is_empty():
+		return "Damage"
+
+	return source.capitalize()
+
+func _format_health_damage_status(source: String, amount: float) -> String:
+	return "%s: -%d health. O2 unchanged." % [
+		_format_health_damage_source_short(source),
+		ceili(amount),
+	]
+
 func _expedition_pressure_paused() -> bool:
 	return expedition_slate_open and dive_session.result == DiveSessionScript.Result.DIVING
 
@@ -908,6 +928,7 @@ func _apply_health_damage(amount: float, source: String) -> void:
 
 	run_health_damage_events += 1
 	last_health_damage_source = source
+	last_health_damage_amount = health_before - dive_session.health
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		run_failure_cause = "health depleted by %s" % source
 		if is_inside_tree():
@@ -915,7 +936,7 @@ func _apply_health_damage(amount: float, source: String) -> void:
 		return
 
 	if status_label != null:
-		status_label.text = "%s: health damaged; oxygen unchanged." % source.capitalize()
+		status_label.text = _format_health_damage_status(source, last_health_damage_amount)
 	if is_inside_tree():
 		_update_hud()
 
@@ -2822,17 +2843,32 @@ func _format_hud_prompt() -> String:
 			prompt = "Nightfall: return to ship"
 	elif _is_player_in_surface_oxygen_refill():
 		if dive_session.oxygen >= dive_session.max_oxygen:
-			prompt = "O2 full | Cargo %d/%d | Ship banks" % [
-				dive_session.current_cargo.size(),
-				dive_session.cargo_limit,
-			]
+			if _has_recent_health_damage():
+				prompt = "O2 only; health %d/%d; ship banks" % [
+					ceili(dive_session.health),
+					ceili(dive_session.max_health),
+				]
+			else:
+				prompt = "O2 full | Cargo %d/%d | Ship banks" % [
+					dive_session.current_cargo.size(),
+					dive_session.cargo_limit,
+				]
 		else:
-			prompt = "O2 refill | Cargo %d/%d | Ship banks" % [
-				dive_session.current_cargo.size(),
-				dive_session.cargo_limit,
-			]
+			if _has_recent_health_damage():
+				prompt = "O2 only; health %d/%d; ship banks" % [
+					ceili(dive_session.health),
+					ceili(dive_session.max_health),
+				]
+			else:
+				prompt = "O2 refill | Cargo %d/%d | Ship banks" % [
+					dive_session.current_cargo.size(),
+					dive_session.cargo_limit,
+				]
 	else:
-		prompt = "Explore | Surface for O2 | Ship banks"
+		if _has_recent_health_damage():
+			prompt = "Surface O2 only; ship banks cargo"
+		else:
+			prompt = "Explore | Surface for O2 | Ship banks"
 
 	if dive_session.result == DiveSessionScript.Result.DIVING:
 		prompt += " | %s" % _format_burst_thruster_prompt()
@@ -4701,7 +4737,8 @@ func _update_instrument_bars() -> void:
 		health_ratio = clampf(dive_session.health / dive_session.max_health, 0.0, 1.0)
 	_set_bar_fill_width(health_bar_fill, HEALTH_BAR_FILL_RECT, health_ratio)
 	if health_bar_fill != null:
-		health_bar_fill.color = _health_state_color(_health_state(dive_session.health, dive_session.max_health))
+		var health_state := _health_state(dive_session.health, dive_session.max_health)
+		health_bar_fill.color = HEALTH_DAMAGED_COLOR if health_state == "normal" and _has_recent_health_damage() else _health_state_color(health_state)
 
 	var depth_ratio := clampf(dive_session.current_depth / 200.0, 0.0, 1.0)
 	_set_bar_fill_width(depth_bar_fill, DEPTH_BAR_FILL_RECT, depth_ratio)
@@ -4872,6 +4909,7 @@ func _publish_visual_smoke_state() -> void:
 		"max_health": ceili(dive_session.max_health),
 		"health_damage_events": run_health_damage_events,
 		"last_health_damage_source": last_health_damage_source,
+		"last_health_damage_amount": ceili(last_health_damage_amount),
 		"depth_meters": roundi(dive_session.current_depth),
 		"best_depth_meters": roundi(progression_state.best_depth_reached),
 		"daylight_visible": daylight_panel.visible,
@@ -4891,6 +4929,9 @@ func _publish_visual_smoke_state() -> void:
 		"prompt_text": prompt_label.text if prompt_label != null else "",
 		"objective_text": objective_line_label.text if objective_line_label != null else "",
 		"cargo_text": cargo_label.text if cargo_label != null else "",
+		"health_damage_status_visible": status_label != null and status_label.text.contains("O2 unchanged") and status_label.text.contains("health"),
+		"health_damage_prompt_visible": prompt_label != null and prompt_label.text.to_lower().contains("o2 only"),
+		"health_damage_objective_visible": objective_line_label != null and objective_line_label.text.contains("Health hit"),
 		"night_build_choice_visible": run_summary_label != null and run_summary_label.text.contains("Build choice:"),
 		"night_tomorrow_plan_visible": run_summary_label != null and run_summary_label.text.contains("Next: press"),
 		"upgrade_feedback_next_plan_visible": upgrade_menu_feedback_label != null and upgrade_menu_feedback_label.text.contains("Next:"),
@@ -5822,6 +5863,7 @@ func _reset_run_telemetry() -> void:
 	run_predator_contacts = 0
 	run_health_damage_events = 0
 	last_health_damage_source = ""
+	last_health_damage_amount = 0.0
 	run_failure_cause = "none"
 	run_echo_lens_echo_fired = false
 	run_wreck_echo_clue_recovered = false
@@ -6500,7 +6542,12 @@ func _format_active_objective_line() -> String:
 	elif player_in_base:
 		objective = "Leave moonpool, gather supplies"
 	elif _is_player_in_surface_oxygen_refill():
-		objective = "Surface: refill O2; ship banks"
+		if _has_recent_health_damage():
+			objective = "Surface: O2 only; health stays"
+		else:
+			objective = "Surface: refill O2; ship banks"
+	elif _has_recent_health_damage():
+		objective = "Health hit: surface won't heal"
 	elif survival_state.food <= 1 or survival_state.water <= 1 or survival_state.power <= 1:
 		objective = "Prioritize food, water, power"
 	elif dive_session.current_cargo.size() > 0:
@@ -6795,6 +6842,10 @@ func _update_health_feedback() -> void:
 		health_label.modulate = health_color
 		if health_icon != null:
 			health_icon.modulate = health_color
+	elif _has_recent_health_damage():
+		health_label.modulate = HEALTH_DAMAGED_COLOR
+		if health_icon != null:
+			health_icon.modulate = HEALTH_DAMAGED_COLOR
 
 func _load_progression() -> void:
 	if not FileAccess.file_exists(PROGRESSION_SAVE_PATH):
