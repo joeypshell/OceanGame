@@ -716,19 +716,29 @@ func _test_starter_survival_resource_families() -> void:
 
 	var scene := MainScene.instantiate()
 	root.add_child(scene)
+	scene.call("_ensure_resource_role_visuals")
 	var expected_pickups := {
-		"ScrapMetal": "scrap_metal",
-		"Driftwood": "driftwood",
-		"QuartzGlass": "quartz_glass",
-		"FoodSupply": "food_supply",
-		"WaterSupply": "water_supply",
-		"PowerSupply": "power_supply",
+		"KelpFiber": {"id": "kelp_fiber", "family": "research"},
+		"ShellFragments": {"id": "shell_fragments", "family": "research"},
+		"GlowPlankton": {"id": "glow_plankton", "family": "research"},
+		"ScrapMetal": {"id": "scrap_metal", "family": "building"},
+		"Driftwood": {"id": "driftwood", "family": "building"},
+		"QuartzGlass": {"id": "quartz_glass", "family": "building"},
+		"FoodSupply": {"id": "food_supply", "family": "supply"},
+		"WaterSupply": {"id": "water_supply", "family": "supply"},
+		"PowerSupply": {"id": "power_supply", "family": "supply"},
 	}
 	for pickup_name in expected_pickups.keys():
+		var expected := expected_pickups[pickup_name] as Dictionary
 		var pickup := scene.get_node("ResourcePickups/%s" % pickup_name) as ResourcePickup
 		var candidate := scene.get_node_or_null("StarterResourceCandidates/%s/A" % pickup_name)
-		_expect(pickup.definition.id == String(expected_pickups[pickup_name]), "%s should use the expected resource definition" % pickup_name)
+		var role_read := pickup.get_node_or_null("RoleRead") as Node2D
+		_expect(pickup.definition.id == String(expected.get("id", "")), "%s should use the expected resource definition" % pickup_name)
 		_expect(candidate != null, "%s should have at least one authored spawn candidate" % pickup_name)
+		_expect(role_read != null and role_read.visible, "%s should show a pre-pickup role read marker" % pickup_name)
+		if role_read != null:
+			_expect(String(role_read.get_meta("role_family", "")) == String(expected.get("family", "")), "%s role marker should declare the expected cargo family" % pickup_name)
+			_expect(role_read.get_child_count() >= 3, "%s role marker should have enough visible shapes to read at play scale" % pickup_name)
 	var food_guidance: String = main.call("_format_first_scan_guidance", scene.get_node("ResourcePickups/FoodSupply"))
 	var power_fact: String = main.call("_scan_target_gameplay_fact", scene.get_node("ResourcePickups/PowerSupply"))
 	var scrap_guidance: String = main.call("_format_first_scan_guidance", scene.get_node("ResourcePickups/ScrapMetal"))

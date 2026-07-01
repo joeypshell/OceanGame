@@ -640,6 +640,7 @@ func _ready() -> void:
 	wreck_echo_clue_trigger.body_entered.connect(_on_wreck_echo_clue_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
 		pickup.collected.connect(_on_resource_pickup_collected)
+	_ensure_resource_role_visuals()
 	for predator in get_tree().get_nodes_in_group("predators"):
 		predator.contacted.connect(_on_predator_contacted)
 	_load_progression()
@@ -3746,6 +3747,137 @@ func _resource_pickup_feedback(resource_id: String) -> String:
 		category.to_lower(),
 	]
 
+func _ensure_resource_role_visuals() -> void:
+	var pickup_root := get_node_or_null("ResourcePickups")
+	if pickup_root == null:
+		return
+	for pickup_node in pickup_root.get_children():
+		var pickup := pickup_node as ResourcePickup
+		if pickup == null or pickup.definition == null:
+			continue
+		_ensure_resource_role_visual(pickup)
+
+func _ensure_resource_role_visual(pickup: ResourcePickup) -> void:
+	var role_family := _resource_visual_role_family(pickup.definition.id)
+	var role_read := pickup.get_node_or_null("RoleRead") as Node2D
+	if role_read == null:
+		role_read = Node2D.new()
+		role_read.name = "RoleRead"
+		pickup.add_child(role_read)
+	role_read.visible = true
+	role_read.position = Vector2(0.0, -32.0)
+	role_read.scale = Vector2(1.35, 1.35)
+	role_read.z_index = 28
+	role_read.set_meta("role_family", role_family)
+	role_read.set_meta("resource_id", pickup.definition.id)
+	if role_read.get_child_count() > 0:
+		return
+
+	_add_role_polygon(role_read, "BadgeShadow", [
+		Vector2(-16.0, -12.0),
+		Vector2(16.0, -12.0),
+		Vector2(16.0, 12.0),
+		Vector2(-16.0, 12.0),
+	], Color(0.012, 0.028, 0.036, 0.82))
+	_add_role_polygon(role_read, "BadgeRim", [
+		Vector2(-13.0, -10.0),
+		Vector2(13.0, -10.0),
+		Vector2(13.0, 10.0),
+		Vector2(-13.0, 10.0),
+	], Color(0.88, 1.0, 1.0, 0.28))
+	match role_family:
+		"supply":
+			_add_supply_role_badge(role_read, pickup.definition.id)
+		"building":
+			_add_building_role_badge(role_read, pickup.definition.id)
+		_:
+			_add_research_role_badge(role_read, pickup.definition.id)
+
+func _add_supply_role_badge(parent: Node2D, resource_id: String) -> void:
+	var accent := _resource_role_accent_color(resource_id)
+	_add_role_polygon(parent, "SupplyBadge", [
+		Vector2(-10.0, -6.0),
+		Vector2(-2.0, -10.0),
+		Vector2(9.0, -7.0),
+		Vector2(11.0, 2.0),
+		Vector2(4.0, 9.0),
+		Vector2(-8.0, 7.0),
+		Vector2(-12.0, -1.0),
+	], Color(0.98, 0.58, 0.13, 0.84))
+	_add_role_polygon(parent, "SupplyPip", [
+		Vector2(-3.0, -4.0),
+		Vector2(5.0, -4.0),
+		Vector2(6.0, 4.0),
+		Vector2(-4.0, 5.0),
+	], accent)
+
+func _add_building_role_badge(parent: Node2D, resource_id: String) -> void:
+	var accent := _resource_role_accent_color(resource_id)
+	_add_role_polygon(parent, "BuildingBlock", [
+		Vector2(-10.0, -8.0),
+		Vector2(9.0, -8.0),
+		Vector2(11.0, 7.0),
+		Vector2(-8.0, 9.0),
+	], Color(0.43, 0.50, 0.54, 0.88))
+	_add_role_polygon(parent, "BuildingSash", [
+		Vector2(-7.0, 1.0),
+		Vector2(4.0, -7.0),
+		Vector2(8.0, -3.0),
+		Vector2(-3.0, 6.0),
+	], accent)
+
+func _add_research_role_badge(parent: Node2D, resource_id: String) -> void:
+	var accent := _resource_role_accent_color(resource_id)
+	_add_role_polygon(parent, "ResearchDiamond", [
+		Vector2(0.0, -11.0),
+		Vector2(10.0, 0.0),
+		Vector2(0.0, 11.0),
+		Vector2(-10.0, 0.0),
+	], Color(0.20, 0.90, 1.0, 0.78))
+	_add_role_polygon(parent, "ResearchCore", [
+		Vector2(0.0, -5.0),
+		Vector2(5.0, 0.0),
+		Vector2(0.0, 5.0),
+		Vector2(-5.0, 0.0),
+	], accent)
+
+func _add_role_polygon(parent: Node2D, polygon_name: String, points: Array[Vector2], color: Color) -> void:
+	var polygon := Polygon2D.new()
+	polygon.name = polygon_name
+	polygon.polygon = PackedVector2Array(points)
+	polygon.color = color
+	parent.add_child(polygon)
+
+func _resource_visual_role_family(resource_id: String) -> String:
+	if survival_state.is_supply_id(resource_id):
+		return "supply"
+	if _resource_category_label(resource_id) == "Building":
+		return "building"
+	return "research"
+
+func _resource_role_accent_color(resource_id: String) -> Color:
+	match resource_id:
+		"food_supply":
+			return Color(1.0, 0.32, 0.08, 0.95)
+		"water_supply":
+			return Color(0.22, 0.90, 1.0, 0.95)
+		"power_supply":
+			return Color(1.0, 0.90, 0.16, 0.95)
+		"driftwood":
+			return Color(0.82, 0.54, 0.26, 0.95)
+		"scrap_metal":
+			return Color(0.78, 0.86, 0.90, 0.95)
+		"quartz_glass":
+			return Color(0.55, 0.92, 1.0, 0.95)
+		"kelp_fiber":
+			return Color(0.34, 1.0, 0.45, 0.95)
+		"shell_fragments":
+			return Color(1.0, 0.78, 0.58, 0.95)
+		"glow_plankton":
+			return Color(0.62, 0.50, 1.0, 0.95)
+		_:
+			return Color(0.92, 1.0, 1.0, 0.95)
+
 func _supply_banking_role(resource_id: String) -> String:
 	match resource_id:
 		"food_supply":
@@ -3893,6 +4025,7 @@ func _place_starter_resources_for_run() -> void:
 
 		pickup.global_position = candidates[rng.randi_range(0, candidates.size() - 1)]
 
+	_ensure_resource_role_visuals()
 	_place_predator_route_for_run(rng)
 	_place_lantern_ray_route_for_run(rng)
 
