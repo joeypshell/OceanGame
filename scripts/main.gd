@@ -1929,29 +1929,7 @@ func _stage_debug_health_damage_visual_review() -> void:
 	HealthDamageVisualStagingServiceScript.stage_visual_review(self)
 
 func _stage_debug_health_damage_extraction_visual_review() -> void:
-	if run_health_damage_events == 0 or dive_session.health >= dive_session.max_health:
-		_stage_debug_health_damage_visual_review()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	var staged_player := player
-	if staged_player == null:
-		staged_player = get_node_or_null("Player") as CharacterBody2D
-	var review_base := base_zone
-	if review_base == null:
-		review_base = get_node_or_null("BaseZone") as Area2D
-	if staged_player == null or review_base == null:
-		return
-
-	player = staged_player
-	player.global_position = review_base.global_position
-	player.velocity = Vector2.ZERO
-	player_in_base = true
-	player_in_surface_oxygen_refill = true
-	dive_session.has_left_base = true
-	_try_extract()
-	visual_smoke_route_stage = "health_damage_extracted"
-	_update_hud()
+	HealthDamageVisualStagingServiceScript.stage_extraction_visual_review(self)
 
 func _stage_debug_daylight_visual_review(progress_ratio: float, label: String) -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
