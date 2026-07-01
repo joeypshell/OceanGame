@@ -15,6 +15,7 @@ const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_buil
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
+const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
@@ -5339,60 +5340,30 @@ func _latest_recent_route_memory() -> String:
 	return String(latest_entry.get("route_memory", ""))
 
 func _format_resource_counts(resource_ids: Array[String]) -> String:
-	if resource_ids.is_empty():
-		return ""
-
-	var counts := {}
-	for resource_id in resource_ids:
-		counts[resource_id] = int(counts.get(resource_id, 0)) + 1
-
-	var parts: Array[String] = []
-	for resource_id in counts.keys():
-		parts.append(" %s: %s x%d" % [
-			_resource_category_label(resource_id),
-			_display_name_for_resource(resource_id),
-			int(counts[resource_id]),
-		])
-
-	return "\n" + "\n".join(parts)
+	return InventorySummaryPresenterScript.format_item_counts(
+		resource_ids,
+		_resource_category_labels_for_ids(resource_ids),
+		_resource_display_names_for_ids(resource_ids)
+	)
 
 func _format_survival_supply_counts(supply_ids: Array[String]) -> String:
-	if supply_ids.is_empty():
-		return ""
-
-	var counts := {}
-	for supply_id in supply_ids:
-		counts[supply_id] = int(counts.get(supply_id, 0)) + 1
-
-	var parts: Array[String] = []
-	for supply_id in counts.keys():
-		parts.append(" %s: %s x%d" % [
-			_resource_category_label(supply_id),
-			survival_state.display_name_for_supply(supply_id),
-			int(counts[supply_id]),
-		])
-
-	return "\n" + "\n".join(parts)
+	return InventorySummaryPresenterScript.format_item_counts(
+		supply_ids,
+		_resource_category_labels_for_ids(supply_ids),
+		_resource_display_names_for_ids(supply_ids)
+	)
 
 func _format_survival_banking_line(banked_survival_supplies: Array[String]) -> String:
-	if banked_survival_supplies.is_empty():
-		return "Survival needs banked: none."
-
-	return "Survival needs banked:%s" % _format_survival_supply_counts(banked_survival_supplies)
+	return InventorySummaryPresenterScript.format_survival_banking_line(
+		banked_survival_supplies,
+		_format_survival_supply_counts(banked_survival_supplies)
+	)
 
 func _format_cargo_counts_inline(resource_ids: Array[String]) -> String:
-	if resource_ids.is_empty():
-		return ""
-
-	var counts := {}
-	for resource_id in resource_ids:
-		counts[resource_id] = int(counts.get(resource_id, 0)) + 1
-
-	var parts: Array[String] = []
-	for resource_id in counts.keys():
-		parts.append("%s x%d" % [_short_resource_name(resource_id), int(counts[resource_id])])
-
-	return " - " + ", ".join(parts)
+	return InventorySummaryPresenterScript.format_cargo_counts_inline(
+		resource_ids,
+		_resource_short_names_for_ids(resource_ids)
+	)
 
 func _update_cargo_slots() -> void:
 	var states := CargoSlotPresenterScript.cargo_slot_states(dive_session.current_cargo, dive_session.cargo_limit, cargo_slot_nodes.size())
@@ -5445,18 +5416,32 @@ func _short_resource_name(resource_id: String) -> String:
 	)
 
 func _format_banked_resources() -> String:
-	if progression_state.banked_resources.is_empty():
-		return " none"
-
-	var parts: Array[String] = []
+	var resource_ids: Array[String] = []
 	for resource_id in progression_state.banked_resources.keys():
-		parts.append(" %s: %s x%d" % [
-			_resource_category_label(resource_id),
-			_display_name_for_resource(resource_id),
-			progression_state.resource_count(resource_id)
-		])
+		resource_ids.append(String(resource_id))
+	return InventorySummaryPresenterScript.format_banked_resources(
+		progression_state.banked_resources,
+		_resource_category_labels_for_ids(resource_ids),
+		_resource_display_names_for_ids(resource_ids)
+	)
 
-	return "\n" + "\n".join(parts)
+func _resource_category_labels_for_ids(resource_ids: Array[String]) -> Dictionary:
+	var labels := {}
+	for resource_id in resource_ids:
+		labels[resource_id] = _resource_category_label(resource_id)
+	return labels
+
+func _resource_display_names_for_ids(resource_ids: Array[String]) -> Dictionary:
+	var names := {}
+	for resource_id in resource_ids:
+		names[resource_id] = _display_name_for_resource(resource_id)
+	return names
+
+func _resource_short_names_for_ids(resource_ids: Array[String]) -> Dictionary:
+	var names := {}
+	for resource_id in resource_ids:
+		names[resource_id] = _short_resource_name(resource_id)
+	return names
 
 func _resource_category_label(resource_id: String) -> String:
 	return ResourcePresenterScript.resource_category_label(
@@ -5643,15 +5628,11 @@ func _format_scan_progress_callout(prefix: String) -> String:
 	return "%s: %s." % [prefix, ", ".join(parts)]
 
 func _format_extraction_banking_line(extracted_count: int, extracted_cargo: Array[String]) -> String:
-	if extracted_count > 0:
-		return "Upgrade/build materials banked: %d.%s" % [
-			extracted_count,
-			_format_resource_counts(extracted_cargo),
-		]
-	if not run_completed_scans.is_empty():
-		return "Banked 0 resources. Useful dive: scan data came home."
-
-	return "Banked 0 resources. No cargo or new scans came home."
+	return InventorySummaryPresenterScript.format_extraction_banking_line(
+		extracted_count,
+		_format_resource_counts(extracted_cargo),
+		not run_completed_scans.is_empty()
+	)
 
 func _sync_survival_supply_cache_state() -> void:
 	if survival_supply_cache_halo == null or survival_supply_cache_core == null:
@@ -6255,15 +6236,10 @@ func _format_recent_survival_memory(result_name: String, banked_cargo_count: int
 	return ""
 
 func _format_supply_names_inline(supply_ids: Array[String]) -> String:
-	if supply_ids.is_empty():
-		return "supply"
-
-	var names: Array[String] = []
-	for supply_id in supply_ids:
-		var name := survival_state.short_name_for_supply(supply_id)
-		if not names.has(name):
-			names.append(name)
-	return _format_need_list(names)
+	return InventorySummaryPresenterScript.format_supply_names_inline(
+		supply_ids,
+		_resource_short_names_for_ids(supply_ids)
+	)
 
 func _recent_expedition_scan_names_by_id() -> Dictionary:
 	var names_by_id := {}
