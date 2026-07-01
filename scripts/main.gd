@@ -52,6 +52,7 @@ const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
 const SiltVeinVisualStagingServiceScript := preload("res://scripts/debug/silt_vein_visual_staging_service.gd")
 const SurfaceOxygenVisualStagingServiceScript := preload("res://scripts/debug/surface_oxygen_visual_staging_service.gd")
+const SurvivalNeedsPanelServiceScript := preload("res://scripts/ui/survival_needs_panel_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
 const WreckEchoVisualStagingServiceScript := preload("res://scripts/debug/wreck_echo_visual_staging_service.gd")
@@ -3501,32 +3502,7 @@ func _update_instrument_bars() -> void:
 	_set_bar_fill_width(depth_bar_fill, DEPTH_BAR_FILL_RECT, depth_ratio)
 
 func _update_survival_needs_panel(is_visible: bool) -> void:
-	var need_labels: Array[Label] = [food_need_label, water_need_label, power_need_label]
-	var need_icons: Array[Polygon2D] = [food_need_icon, water_need_icon, power_need_icon]
-	var need_bars: Array[ColorRect] = [
-		food_need_bar_back,
-		food_need_bar_fill,
-		water_need_bar_back,
-		water_need_bar_fill,
-		power_need_bar_back,
-		power_need_bar_fill,
-	]
-	for label in need_labels:
-		label.visible = is_visible
-	for icon in need_icons:
-		icon.visible = is_visible
-	for bar in need_bars:
-		bar.visible = is_visible
-
-	if not is_visible:
-		return
-
-	food_need_label.text = "FOOD %d / %d" % [survival_state.food, int(SURVIVAL_NEED_BAR_DISPLAY_MAX)]
-	water_need_label.text = "WATER %d / %d" % [survival_state.water, int(SURVIVAL_NEED_BAR_DISPLAY_MAX)]
-	power_need_label.text = "POWER %d / %d" % [survival_state.power, int(SURVIVAL_NEED_BAR_DISPLAY_MAX)]
-	_set_bar_fill_width(food_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["food"], clampf(float(survival_state.food) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
-	_set_bar_fill_width(water_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["water"], clampf(float(survival_state.water) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
-	_set_bar_fill_width(power_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["power"], clampf(float(survival_state.power) / SURVIVAL_NEED_BAR_DISPLAY_MAX, 0.0, 1.0))
+	SurvivalNeedsPanelServiceScript.update_panel(self, is_visible)
 
 func _update_depth_rail(is_visible: bool) -> void:
 	depth_rail_line.visible = is_visible

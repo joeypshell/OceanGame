@@ -51,6 +51,7 @@ const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedi
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
+const SurvivalNeedsPanelServiceScript := preload("res://scripts/ui/survival_needs_panel_service.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
@@ -119,6 +120,7 @@ func _initialize() -> void:
 	_run("survival collapse and reset", _test_survival_collapse_and_reset)
 	_run("survival supply banking isolation", _test_survival_supply_banking_isolation)
 	_run("survival supply cache presenter", _test_survival_supply_cache_presenter)
+	_run("survival needs panel service", _test_survival_needs_panel_service)
 	_run("survival supply cache target copy", _test_survival_supply_cache_target_copy)
 	_run("starter survival resource families", _test_starter_survival_resource_families)
 	_run("resource taxonomy offload copy", _test_resource_taxonomy_offload_copy)
@@ -769,6 +771,38 @@ func _test_survival_supply_cache_presenter() -> void:
 	_expect(SurvivalSupplyCachePresenterScript.format_full_status(true, "Power") == "Cargo full: backup cache needs a slot.", "stable full-cache status should preserve backup copy")
 	_expect(SurvivalSupplyCachePresenterScript.format_full_status(false, "Power") == "Cargo full: Power cache needs a slot.", "full-cache status should name the blocked target")
 	_expect(SurvivalSupplyCachePresenterScript.format_recovered_status("Power Cell", "Power").contains("Power Cell") and SurvivalSupplyCachePresenterScript.format_recovered_status("Power Cell", "Power").contains("Ship banks"), "recovered cache status should name the supply role and ship banking")
+
+func _test_survival_needs_panel_service() -> void:
+	var main := MainScript.new()
+	main.food_need_label = Label.new()
+	main.water_need_label = Label.new()
+	main.power_need_label = Label.new()
+	main.food_need_icon = Polygon2D.new()
+	main.water_need_icon = Polygon2D.new()
+	main.power_need_icon = Polygon2D.new()
+	main.food_need_bar_back = ColorRect.new()
+	main.food_need_bar_fill = ColorRect.new()
+	main.water_need_bar_back = ColorRect.new()
+	main.water_need_bar_fill = ColorRect.new()
+	main.power_need_bar_back = ColorRect.new()
+	main.power_need_bar_fill = ColorRect.new()
+	main.survival_state.food = 5
+	main.survival_state.water = 2
+	main.survival_state.power = 4
+
+	SurvivalNeedsPanelServiceScript.update_panel(main, true)
+	_expect(main.food_need_label.visible and main.water_need_label.visible and main.power_need_label.visible, "visible survival panel should show all need labels")
+	_expect(main.food_need_icon.visible and main.water_need_icon.visible and main.power_need_icon.visible, "visible survival panel should show all need icons")
+	_expect(main.food_need_label.text == "FOOD 5 / 5", "survival panel should preserve food label copy")
+	_expect(main.water_need_label.text == "WATER 2 / 5", "survival panel should preserve water label copy")
+	_expect(main.power_need_label.text == "POWER 4 / 5", "survival panel should preserve power label copy")
+	var water_width := main.water_need_bar_fill.offset_right - main.water_need_bar_fill.offset_left
+	_expect(is_equal_approx(water_width, main.SURVIVAL_NEED_BAR_BACK_RECTS["water"].size.x * 0.4), "survival panel should scale water fill by need ratio")
+
+	SurvivalNeedsPanelServiceScript.update_panel(main, false)
+	_expect(not main.food_need_label.visible and not main.water_need_label.visible and not main.power_need_label.visible, "hidden survival panel should hide all need labels")
+	_expect(not main.food_need_bar_back.visible and not main.water_need_bar_fill.visible and not main.power_need_bar_fill.visible, "hidden survival panel should hide all need bars")
+	main.free()
 
 func _test_survival_supply_cache_target_copy() -> void:
 	var stable_status := SurvivalSupplyCachePresenterScript.format_status_text(true, "Power")
