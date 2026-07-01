@@ -1757,7 +1757,7 @@ func _test_scan_hold_timing_helper() -> void:
 	main.scan_hold_seconds = 1.0
 	main.scan_charge_elapsed = 0.35
 
-	_expect(is_equal_approx(main.call("_scan_charge_ratio"), 0.35), "scan hold ratio should report partial progress")
+	_expect(is_equal_approx(ScanFeedbackPresenterScript.scan_charge_ratio(main.scan_charge_elapsed, main.scan_hold_seconds), 0.35), "scan hold ratio should report partial progress")
 	_expect(String(main.call("_format_scan_charge_status", target)).contains("Thermal Vent: 35%"), "scan hold status should show target name and progress")
 	_expect(ScanFeedbackPresenterScript.format_scan_charge_status("Thermal Vent", 0.35) == "Scanning Thermal Vent: 35%", "scan feedback presenter should format charge status")
 	_expect(ScanFeedbackPresenterScript.format_wreck_cache_repeat_hint(true, true).contains("Echo Lens"), "scan feedback presenter should prioritize Echo Lens cache hints")
@@ -1766,9 +1766,9 @@ func _test_scan_hold_timing_helper() -> void:
 	_expect(ScanFeedbackPresenterScript.format_first_scan_guidance("pressure_wreck_signal", false, "", 0, 3, false).contains("Locked: buy Pressure Seal I"), "scan feedback presenter should preserve pressure-locked guidance")
 	_expect(ScanFeedbackPresenterScript.format_scan_target_type("lantern_ray", false) == "creature", "scan feedback presenter should classify creature scan targets")
 	main.scan_charge_elapsed = 1.5
-	_expect(is_equal_approx(main.call("_scan_charge_ratio"), 1.0), "scan hold ratio should clamp completed progress")
+	_expect(is_equal_approx(ScanFeedbackPresenterScript.scan_charge_ratio(main.scan_charge_elapsed, main.scan_hold_seconds), 1.0), "scan hold ratio should clamp completed progress")
 	main.scan_hold_seconds = 0.0
-	_expect(is_equal_approx(main.call("_scan_charge_ratio"), 1.0), "scan hold ratio should treat zero-duration scans as complete")
+	_expect(is_equal_approx(ScanFeedbackPresenterScript.scan_charge_ratio(main.scan_charge_elapsed, main.scan_hold_seconds), 1.0), "scan hold ratio should treat zero-duration scans as complete")
 
 	target.free()
 	main.free()

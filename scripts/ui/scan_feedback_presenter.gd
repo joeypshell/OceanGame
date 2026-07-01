@@ -5,6 +5,11 @@ static func format_scan_charge_status(display_name: String, charge_ratio: float)
 	var percent := int(roundf(clampf(charge_ratio, 0.0, 1.0) * 100.0))
 	return "Scanning %s: %d%%" % [display_name, percent]
 
+static func scan_charge_ratio(scan_charge_elapsed: float, scan_hold_seconds: float) -> float:
+	if scan_hold_seconds <= 0.0:
+		return 1.0
+	return clampf(scan_charge_elapsed / scan_hold_seconds, 0.0, 1.0)
+
 static func format_repeat_scan_effect_text(
 	target_id: String,
 	is_resource: bool,
