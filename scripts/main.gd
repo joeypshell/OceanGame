@@ -56,6 +56,7 @@ const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.g
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const ConditionVisualSyncServiceScript := preload("res://scripts/ui/condition_visual_sync_service.gd")
 const DiscoveryRevealSyncServiceScript := preload("res://scripts/ui/discovery_reveal_sync_service.gd")
 const RouteGateSyncServiceScript := preload("res://scripts/ui/route_gate_sync_service.gd")
 const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
@@ -2913,135 +2914,28 @@ func _spawn_routes_for_target(category: String, target_id: String, cluster_patte
 
 func _sync_condition_visuals() -> void:
 	var condition_id := _current_condition_id()
-	var is_thermal_bloom := condition_id == "thermal_bloom"
-	var is_calm_current := condition_id == "calm_current"
-	rare_signal_emphasis.visible = _rare_signal_emphasis_visible_for_condition(condition_id)
-	shelf_glimmer_opportunity.visible = _shelf_glimmer_visible_for_condition(condition_id)
-	blue_chimney_signal_opportunity.visible = _blue_chimney_signal_visible_for_condition(condition_id)
-	_sync_blackwater_signal_opportunity(condition_id)
-	_sync_dusk_trench_condition_nudge(condition_id)
-	_sync_wide_chamber_condition_nudge(condition_id)
-	_sync_mirror_kelp_condition_nudge(condition_id)
-	base_return_column.color = Color(0.38, 1.0, 0.9, 0.18) if is_calm_current else Color(0.38, 1.0, 0.9, 0.14)
-	base_return_rib_shallow.color = Color(0.62, 1.0, 0.9, 0.22) if is_calm_current else Color(0.62, 1.0, 0.9, 0.18)
-	base_return_rib_midwater.color = Color(0.62, 1.0, 0.9, 0.2) if is_calm_current else Color(0.62, 1.0, 0.9, 0.16)
-	base_return_rib_deep.color = Color(0.62, 1.0, 0.9, 0.19) if is_calm_current else Color(0.62, 1.0, 0.9, 0.15)
-	base_return_beacon.color = Color(0.74, 1.0, 0.9, 0.42) if is_calm_current else Color(0.74, 1.0, 0.9, 0.34)
-	base_return_beacon_rib.color = Color(0.62, 1.0, 0.9, 0.26) if is_calm_current else Color(0.62, 1.0, 0.9, 0.2)
-	thermal_warm_wash.color = Color(0.98, 0.52, 0.18, 0.26) if is_thermal_bloom else Color(0.92, 0.44, 0.16, 0.18)
-	thermal_heat_plume.color = Color(1.0, 0.68, 0.24, 0.38) if is_thermal_bloom else Color(1.0, 0.62, 0.2, 0.28)
-	thermal_bubble_string_a.color = Color(1.0, 1.0, 0.84, 0.46) if is_thermal_bloom else Color(0.96, 1.0, 0.82, 0.34)
-	thermal_bubble_string_b.color = Color(1.0, 1.0, 0.84, 0.4) if is_thermal_bloom else Color(0.96, 1.0, 0.82, 0.28)
-	thermal_vent_visual.color = Color(1.0, 0.5, 0.18, 1.0) if is_thermal_bloom else Color(0.96, 0.46, 0.16, 0.9)
-	thermal_vent_bubbles.color = Color(0.98, 1.0, 0.86, 0.46) if is_thermal_bloom else Color(0.9, 1.0, 0.86, 0.34)
-	_sync_route_choice_condition_nudge(condition_id)
+	ConditionVisualSyncServiceScript.sync_condition_visuals(self, condition_id, _blackwater_signal_visible_for_condition(condition_id))
 
 func _sync_route_choice_condition_nudge(condition_id: String) -> void:
-	var decision_rib := route_choice_decision_rib
-	if decision_rib == null:
-		decision_rib = get_node_or_null("RouteChoiceBand/DecisionRib") as Polygon2D
-	var safe_bank_lane := route_choice_safe_bank_lane
-	if safe_bank_lane == null:
-		safe_bank_lane = get_node_or_null("RouteChoiceBand/SafeBankLane") as Polygon2D
-	var research_lane := route_choice_research_lane
-	if research_lane == null:
-		research_lane = get_node_or_null("RouteChoiceBand/ResearchLane") as Polygon2D
-	if decision_rib == null or safe_bank_lane == null or research_lane == null:
-		return
-
-	if condition_id == "rare_signal":
-		decision_rib.color = Color(0.74, 0.92, 0.86, 0.24)
-		safe_bank_lane.color = Color(0.46, 0.92, 0.64, 0.16)
-		research_lane.color = Color(0.52, 0.96, 1.0, 0.28)
-	else:
-		decision_rib.color = Color(0.74, 0.92, 0.86, 0.18)
-		safe_bank_lane.color = Color(0.46, 0.92, 0.64, 0.18)
-		research_lane.color = Color(0.52, 0.96, 1.0, 0.2)
+	ConditionVisualSyncServiceScript.sync_route_choice_condition_nudge(self, condition_id)
 
 func _sync_dusk_trench_condition_nudge(condition_id: String) -> void:
-	var veil := dusk_low_visibility_veil
-	if veil == null:
-		veil = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/MurkVeil") as Polygon2D
-	var band := dusk_low_visibility_band
-	if band == null:
-		band = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltPulseBand") as Polygon2D
-	var rib_a := dusk_low_visibility_rib_a
-	if rib_a == null:
-		rib_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibA") as Polygon2D
-	var rib_b := dusk_low_visibility_rib_b
-	if rib_b == null:
-		rib_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/LowVisibilityCue/SiltRibB") as Polygon2D
-	if veil == null or band == null or rib_a == null or rib_b == null:
-		return
-
-	var is_low_visibility := condition_id == "low_visibility"
-	veil.color = Color(0.035, 0.055, 0.15, 0.32) if is_low_visibility else Color(0.035, 0.055, 0.15, 0.24)
-	band.color = Color(0.12, 0.16, 0.34, 0.24) if is_low_visibility else Color(0.12, 0.16, 0.34, 0.17)
-	rib_a.color = Color(0.36, 0.44, 0.78, 0.28) if is_low_visibility else Color(0.36, 0.44, 0.78, 0.2)
-	rib_b.color = Color(0.32, 0.38, 0.7, 0.24) if is_low_visibility else Color(0.32, 0.38, 0.7, 0.16)
+	ConditionVisualSyncServiceScript.sync_dusk_trench_condition_nudge(self, condition_id)
 
 func _sync_wide_chamber_condition_nudge(condition_id: String) -> void:
-	var return_main := wide_chamber_return_main
-	if return_main == null:
-		return_main = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentBackToHollow") as Polygon2D
-	var return_far := wide_chamber_return_far
-	if return_far == null:
-		return_far = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentFarRib") as Polygon2D
-	var return_mid := wide_chamber_return_mid
-	if return_mid == null:
-		return_mid = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentMidChain") as Polygon2D
-	var return_entry := wide_chamber_return_entry
-	if return_entry == null:
-		return_entry = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/ReturnCurrentEntryChain") as Polygon2D
-	if return_main == null or return_far == null or return_mid == null or return_entry == null:
-		return
-
-	var is_calm_current := condition_id == "calm_current"
-	return_main.color = Color(0.66, 1.0, 0.88, 0.17) if is_calm_current else Color(0.66, 1.0, 0.88, 0.13)
-	return_far.color = Color(0.82, 1.0, 0.92, 0.17) if is_calm_current else Color(0.82, 1.0, 0.92, 0.13)
-	return_mid.color = Color(0.58, 1.0, 0.84, 0.14) if is_calm_current else Color(0.58, 1.0, 0.84, 0.1)
-	return_entry.color = Color(0.62, 1.0, 0.86, 0.16) if is_calm_current else Color(0.62, 1.0, 0.86, 0.12)
+	ConditionVisualSyncServiceScript.sync_wide_chamber_condition_nudge(self, condition_id)
 
 func _sync_mirror_kelp_condition_nudge(condition_id: String) -> void:
-	var backwater := mirror_kelp_reflective_backwater
-	if backwater == null:
-		backwater = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/ReflectiveBackwater") as Polygon2D
-	var curtain_a := mirror_kelp_curtain_a
-	if curtain_a == null:
-		curtain_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainA") as Polygon2D
-	var curtain_b := mirror_kelp_curtain_b
-	if curtain_b == null:
-		curtain_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainB") as Polygon2D
-	var curtain_c := mirror_kelp_curtain_c
-	if curtain_c == null:
-		curtain_c = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorKelpCurtainC") as Polygon2D
-	var wash := mirror_kelp_bloom_approach_wash
-	if wash == null:
-		wash = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/KelpBloomApproachWash") as Polygon2D
-	var rib := mirror_kelp_bloom_approach_rib
-	if rib == null:
-		rib = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/KelpBloomApproachRib") as Polygon2D
-	if backwater == null or curtain_a == null or curtain_b == null or curtain_c == null or wash == null or rib == null:
-		return
-
-	var is_kelp_bloom := condition_id == "kelp_bloom"
-	wash.visible = is_kelp_bloom
-	rib.visible = is_kelp_bloom
-	backwater.color = Color(0.08, 0.36, 0.42, 0.18) if is_kelp_bloom else Color(0.08, 0.36, 0.42, 0.12)
-	curtain_a.color = Color(0.42, 0.94, 0.82, 0.24) if is_kelp_bloom else Color(0.42, 0.94, 0.82, 0.17)
-	curtain_b.color = Color(0.72, 0.96, 1.0, 0.21) if is_kelp_bloom else Color(0.72, 0.96, 1.0, 0.15)
-	curtain_c.color = Color(0.36, 0.82, 0.72, 0.19) if is_kelp_bloom else Color(0.36, 0.82, 0.72, 0.13)
-	wash.color = Color(0.4, 0.92, 0.76, 0.09)
-	rib.color = Color(0.82, 1.0, 0.9, 0.12)
+	ConditionVisualSyncServiceScript.sync_mirror_kelp_condition_nudge(self, condition_id)
 
 func _rare_signal_emphasis_visible_for_condition(condition_id: String) -> bool:
-	return condition_id == "rare_signal"
+	return ConditionVisualSyncServiceScript.rare_signal_emphasis_visible_for_condition(condition_id)
 
 func _shelf_glimmer_visible_for_condition(condition_id: String) -> bool:
-	return condition_id == "rare_signal"
+	return ConditionVisualSyncServiceScript.shelf_glimmer_visible_for_condition(condition_id)
 
 func _blue_chimney_signal_visible_for_condition(condition_id: String) -> bool:
-	return condition_id == "rare_signal"
+	return ConditionVisualSyncServiceScript.blue_chimney_signal_visible_for_condition(condition_id)
 
 func _blackwater_signal_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal" and _blackwater_crack_gate_open()
