@@ -411,6 +411,7 @@ func _test_night_phase_end_day_and_upgrade_choice() -> void:
 	_expect(night_summary.contains("Power -1"), "Night tab should name power resolution")
 	_expect(night_summary.contains("Base needs: Food"), "Night tab should show current base needs")
 	_expect(night_summary.contains("Build choice: Water Filter I ready"), "Night tab should point to a compact build choice")
+	_expect(night_summary.contains("build Water Filter I in Upgrades"), "Night tab should turn ready builds into a tomorrow plan")
 
 	main.surface_tab_index = main.SURFACE_TAB_UPGRADES
 	main.selected_upgrade_index = 0
@@ -4950,8 +4951,30 @@ func _test_next_expedition_framing() -> void:
 
 	var prompt := main._format_next_expedition_prompt()
 	_expect(prompt.contains("Expedition 4"), "result prompt should point to the next expedition number")
-	_expect(prompt.contains("ocean shifts again"), "result prompt should frame restart as a changed ocean")
+	_expect(prompt.contains("Water Filter I"), "result prompt should point to the best known upgrade/material goal")
 	_expect(not prompt.to_lower().contains("restart"), "result prompt should avoid raw restart language")
+
+	main.survival_state.food = 0
+	prompt = main._format_next_expedition_prompt()
+	_expect(prompt.contains("bank Food supply first") and prompt.contains("empty needs cut max oxygen"), "empty base needs should take priority in tomorrow planning")
+
+	main.survival_state.food = 3
+	main.progression_state.banked_resources = {
+		"driftwood": 1,
+		"quartz_glass": 1,
+	}
+	prompt = main._format_next_expedition_prompt()
+	_expect(prompt.contains("build Water Filter I in Upgrades"), "ready builds should take priority after critical base needs")
+
+	main.progression_state.banked_resources.clear()
+	main.survival_state.power = 1
+	prompt = main._format_next_expedition_prompt()
+	_expect(prompt.contains("bank Power supply soon"), "low base needs should produce a non-critical supply plan")
+
+	main.survival_state.power = 3
+	main.run_outer_shelf_survey_recovered = true
+	prompt = main._format_next_expedition_prompt()
+	_expect(prompt.contains("Glass Rim timing") and prompt.contains("Outer Shelf cargo"), "remembered place should produce a broad route plan when needs/builds are stable")
 
 	main.progression_state.current_run_number = 4
 	main.survival_state.current_day = 4

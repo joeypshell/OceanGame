@@ -5810,20 +5810,58 @@ func _format_next_expedition_prompt() -> String:
 		return "Next: press %s to restart Emergency Week." % _action_label("restart_dive")
 	if survival_state.chapter_complete:
 		return "Next: press %s for a stabilized expedition." % _action_label("restart_dive")
-	if run_rim_glass_reading_recovered:
-		return "Next: press %s for Expedition %d; use the Glass Rim reading to choose timing, cargo, or return." % [
-			_action_label("restart_dive"),
-			progression_state.current_run_number + 1,
-		]
-	if run_outer_shelf_survey_recovered:
-		return "Next: press %s for Expedition %d; try Glass Rim timing or bank the Outer Shelf cargo." % [
-			_action_label("restart_dive"),
-			progression_state.current_run_number + 1,
-		]
-	return "Next: press %s for Expedition %d; the ocean shifts again." % [
+
+	return "Next: press %s for Expedition %d; %s" % [
 		_action_label("restart_dive"),
 		progression_state.current_run_number + 1,
+		_format_tomorrow_plan(),
 	]
+
+func _format_tomorrow_plan() -> String:
+	var empty_needs := _base_need_names_at_or_below(0)
+	if not empty_needs.is_empty():
+		return "bank %s supply first; empty needs cut max oxygen." % _format_need_list(empty_needs)
+
+	var ready_upgrade := _first_ready_upgrade_definition()
+	if ready_upgrade != null:
+		return "build %s in Upgrades before diving." % ready_upgrade.display_name
+
+	var low_needs := _base_need_names_at_or_below(1)
+	if not low_needs.is_empty():
+		return "bank %s supply soon to protect tomorrow's oxygen." % _format_need_list(low_needs)
+
+	if run_rim_glass_reading_recovered:
+		return "use the Glass Rim reading to choose timing, cargo, or return."
+	if run_outer_shelf_survey_recovered:
+		return "try Glass Rim timing or bank the Outer Shelf cargo."
+
+	var broad_goal := ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory())
+	var goal_prefix := "Goal: "
+	if broad_goal.begins_with(goal_prefix):
+		broad_goal = broad_goal.substr(goal_prefix.length())
+	if broad_goal.is_empty():
+		return "the ocean shifts again."
+
+	return broad_goal
+
+func _base_need_names_at_or_below(threshold: int) -> Array[String]:
+	var needs: Array[String] = []
+	if survival_state.food <= threshold:
+		needs.append("Food")
+	if survival_state.water <= threshold:
+		needs.append("Water")
+	if survival_state.power <= threshold:
+		needs.append("Power")
+	return needs
+
+func _format_need_list(needs: Array[String]) -> String:
+	if needs.is_empty():
+		return "base"
+	if needs.size() == 1:
+		return needs[0]
+	if needs.size() == 2:
+		return "%s/%s" % [needs[0], needs[1]]
+	return "%s/%s/%s" % [needs[0], needs[1], needs[2]]
 
 func _format_expedition_ready_status() -> String:
 	if survival_state.chapter_complete:
@@ -5913,6 +5951,17 @@ func _format_daylight_closeout_line() -> String:
 	return "Daylight closeout: no ship offload before night; final return resolved base needs."
 
 func _format_night_build_choice_line() -> String:
+	var ready_upgrade := _first_ready_upgrade_definition()
+	if ready_upgrade != null:
+		return "Build choice: %s ready in Upgrades." % ready_upgrade.display_name
+
+	var progress := _format_upgrade_progress_callout()
+	var prefix := "Upgrade progress: "
+	if progress.begins_with(prefix):
+		progress = progress.substr(prefix.length())
+	return "Build choice: %s" % progress
+
+func _first_ready_upgrade_definition() -> UpgradeDefinition:
 	for upgrade in upgrade_definitions:
 		if progression_state.has_upgrade(upgrade.id):
 			continue
@@ -5921,13 +5970,8 @@ func _format_night_build_choice_line() -> String:
 		if _upgrade_missing_upgrade(upgrade) != "":
 			continue
 		if progression_state.can_afford(upgrade.resource_cost):
-			return "Build choice: %s ready in Upgrades." % upgrade.display_name
-
-	var progress := _format_upgrade_progress_callout()
-	var prefix := "Upgrade progress: "
-	if progress.begins_with(prefix):
-		progress = progress.substr(prefix.length())
-	return "Build choice: %s" % progress
+			return upgrade
+	return null
 
 func _format_condition_briefing() -> String:
 	if current_expedition_condition.is_empty():
