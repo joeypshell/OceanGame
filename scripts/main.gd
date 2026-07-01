@@ -17,6 +17,7 @@ const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
+const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -6487,113 +6488,68 @@ func _route_memory_state() -> Dictionary:
 		"run_tideglass_sample_recovered": run_tideglass_sample_recovered,
 	}
 
-func _format_gulper_research_callout() -> String:
-	if decoy_pulse_used_this_run:
-		return "\nResearch: Decoy timing bent the Gulper route briefly."
-	if run_predator_contacts > 0:
-		return "\nResearch: Gulper strike confirms the warning lane is dangerous."
-	if run_completed_scans.has("gulper_eel"):
-		return "\nResearch: Gulper route timing observed."
+func _research_result_state() -> Dictionary:
+	var state := _route_memory_state()
+	state.merge({
+		"decoy_pulse_used_this_run": decoy_pulse_used_this_run,
+		"has_echo_lens_upgrade": progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID),
+		"run_echo_lens_echo_fired": run_echo_lens_echo_fired,
+		"run_glass_kelp_reading_recovered": run_glass_kelp_reading_recovered,
+		"run_resonance_alcove_research_recovered": run_resonance_alcove_research_recovered,
+		"run_wreck_echo_clue_recovered": run_wreck_echo_clue_recovered,
+	})
+	return state
 
-	return ""
+func _format_gulper_research_callout() -> String:
+	return ResearchResultPresenterScript.format_gulper_research_callout(_research_result_state())
 
 func _format_echo_lens_research_callout() -> String:
-	if run_echo_lens_echo_fired:
-		return "\nResearch: Echo Lens caught a weak wreck echo below the shelf."
-
-	return ""
+	return ResearchResultPresenterScript.format_echo_lens_research_callout(_research_result_state())
 
 func _format_wreck_echo_research_callout() -> String:
-	if run_wreck_echo_clue_recovered:
-		return "\nResearch: Wreck Echo clue carried a deeper pressure signal below the shelf."
-
-	return ""
+	return ResearchResultPresenterScript.format_wreck_echo_research_callout(_research_result_state())
 
 func _format_east_shelf_pocket_research_callout() -> String:
-	if run_east_shelf_pocket_ping_recovered:
-		return "\nResearch: East Shelf signal core points to a sealed route below the arch."
-
-	return ""
+	return ResearchResultPresenterScript.format_east_shelf_pocket_research_callout(_research_result_state())
 
 func _format_lower_connector_echo_research_callout() -> String:
-	if run_lower_connector_echo_recovered:
-		return "\nResearch: Drop Echo confirms the Shelf Drop Connector continues below East Shelf."
-
-	return ""
+	return ResearchResultPresenterScript.format_lower_connector_echo_research_callout(_research_result_state())
 
 func _format_resonance_alcove_research_callout() -> String:
-	if run_resonance_alcove_research_recovered:
-		return "\nResearch: Resonance Alcove echo suggests the hatch opens into a small tuned pocket."
-
-	return ""
+	return ResearchResultPresenterScript.format_resonance_alcove_research_callout(_research_result_state())
 
 func _format_blue_chimney_research_callout() -> String:
-	if run_blue_chimney_draft_reading_recovered:
-		return "\nResearch: Blue Chimney survey core points toward a deeper side-route below Shelf Drop."
-
-	return ""
+	return ResearchResultPresenterScript.format_blue_chimney_research_callout(_research_result_state())
 
 func _format_lantern_silt_sample_research_callout() -> String:
-	if run_lantern_silt_sample_recovered:
-		return "\nResearch: Lantern Silt Sample confirms the left branch is the safer Silt Vein route."
-
-	return ""
+	return ResearchResultPresenterScript.format_lantern_silt_sample_research_callout(_research_result_state())
 
 func _format_blackwater_trace_research_callout() -> String:
-	if run_blackwater_trace_recovered:
-		return "\nResearch: Blackwater Trace marks the right branch's deeper route signal; return via Silt Vein, Blue Chimney, Drop Arch."
-
-	return ""
+	return ResearchResultPresenterScript.format_blackwater_trace_research_callout(_research_result_state())
 
 func _format_glass_kelp_reading_callout() -> String:
-	if run_glass_kelp_reading_recovered:
-		return "\nResearch: Glass Kelp reading confirms the Dusk Trench has a safer ledge route off the main dark water."
-
-	return ""
+	return ResearchResultPresenterScript.format_glass_kelp_reading_callout(_research_result_state())
 
 func _format_hollow_reef_reading_callout() -> String:
-	if run_hollow_reef_reading_recovered:
-		return "\nResearch: Hollow Reef cave reading marks a side-cave branch off Dusk Trench; return via Dusk and Blackwater."
-
-	return ""
+	return ResearchResultPresenterScript.format_hollow_reef_reading_callout(_research_result_state())
 
 func _format_salvage_data_cache_research_callout() -> String:
-	if run_salvage_data_cache_recovered:
-		return "\nResearch: Salvage data cache gives the lab Salvage Cutter I prep for the sealed wreck pocket."
-
-	return ""
+	return ResearchResultPresenterScript.format_salvage_data_cache_research_callout(_research_result_state())
 
 func _format_salvage_manifest_research_callout() -> String:
-	if run_salvage_manifest_recovered:
-		return "\nResearch: Salvage Manifest identifies a cut-open wreck pocket; shell cargo is optional if oxygen allows."
-
-	return ""
+	return ResearchResultPresenterScript.format_salvage_manifest_research_callout(_research_result_state())
 
 func _format_tideglass_sample_research_callout() -> String:
-	if run_tideglass_sample_recovered:
-		return "\nResearch: Tideglass Sample gives the lab a Mirror Kelp return-current reading."
-
-	return ""
+	return ResearchResultPresenterScript.format_tideglass_sample_research_callout(_research_result_state())
 
 func _format_outer_shelf_survey_research_callout() -> String:
-	if run_outer_shelf_survey_recovered:
-		return "\nResearch: Outer Shelf survey compares the Glass Rim Cut timing window against nearby Kelp Fiber cargo."
-
-	return ""
+	return ResearchResultPresenterScript.format_outer_shelf_survey_research_callout(_research_result_state())
 
 func _format_rim_glass_reading_callout() -> String:
-	if run_rim_glass_reading_recovered:
-		return "\nResearch: Glass Rim reading confirms the slackwater crossing; cargo remains optional if oxygen allows."
-
-	return ""
+	return ResearchResultPresenterScript.format_rim_glass_reading_callout(_research_result_state())
 
 func _format_sealed_shelf_hatch_readiness_callout() -> String:
-	if not progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
-		return ""
-	if not run_east_shelf_pocket_ping_recovered and not run_lower_connector_echo_recovered:
-		return ""
-
-	return "\nLab note: Echo Lens reads the Sealed Shelf Hatch; Resonance Key planning can wait."
+	return ResearchResultPresenterScript.format_sealed_shelf_hatch_readiness_callout(_research_result_state())
 
 func _format_region_memory_callout() -> String:
 	return RouteMemoryPresenterScript.format_region_memory_callout(_route_memory_state())
