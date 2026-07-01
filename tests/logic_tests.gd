@@ -8869,6 +8869,15 @@ func _test_compact_dive_hud_helpers() -> void:
 	HudVisibilityServiceScript.apply_active_hud_visibility(main_scene, true, false, false)
 	_expect(main_scene.active_stats_panel.visible, "HUD visibility service should show active stats while diving")
 	_expect(not main_scene.scan_card_panel.visible, "HUD visibility service should hide the scan card without a scan target")
+	var canvas_parent := Node2D.new()
+	var canvas_child := Node2D.new()
+	canvas_parent.z_index = 4
+	canvas_child.z_index = 3
+	canvas_parent.add_child(canvas_child)
+	_expect(HudVisibilityServiceScript.effective_canvas_z(canvas_child) == 7, "HUD visibility service should include relative parent canvas z")
+	canvas_child.z_as_relative = false
+	_expect(HudVisibilityServiceScript.effective_canvas_z(canvas_child) == 3, "HUD visibility service should stop at non-relative canvas z")
+	canvas_parent.free()
 	var active_panel: Panel = main_scene.get_node("HUD/ActiveStatsPanel")
 	var cargo_panel: Panel = main_scene.get_node("HUD/CargoPanel")
 	var cargo_title: Label = main_scene.get_node("HUD/CargoPanel/CargoTitle")
@@ -9158,14 +9167,14 @@ func _controls_overlap(first: Control, second: Control) -> bool:
 
 func _test_active_hud_final_polish_regression() -> void:
 	var main := MainScript.new()
-	_expect(not main.call("_active_hud_visible_for_result", DiveSessionScript.Result.READY), "ready state should hide active operational HUD rows")
-	_expect(main.call("_surface_hud_visible_for_result", DiveSessionScript.Result.READY), "ready state should show a surface panel")
-	_expect(main.call("_active_hud_visible_for_result", DiveSessionScript.Result.DIVING), "diving state should show active operational HUD rows")
-	_expect(not main.call("_surface_hud_visible_for_result", DiveSessionScript.Result.DIVING), "diving state should hide surface panels")
-	_expect(not main.call("_active_hud_visible_for_result", DiveSessionScript.Result.EXTRACTED), "extracted result should hide active operational HUD rows")
-	_expect(main.call("_surface_hud_visible_for_result", DiveSessionScript.Result.EXTRACTED), "extracted result should show a surface panel")
-	_expect(not main.call("_active_hud_visible_for_result", DiveSessionScript.Result.FAILED), "failure result should hide active operational HUD rows")
-	_expect(main.call("_surface_hud_visible_for_result", DiveSessionScript.Result.FAILED), "failure result should show a surface panel")
+	_expect(not HudVisibilityServiceScript.active_hud_visible_for_result(DiveSessionScript.Result.READY), "ready state should hide active operational HUD rows")
+	_expect(HudVisibilityServiceScript.surface_hud_visible_for_result(DiveSessionScript.Result.READY), "ready state should show a surface panel")
+	_expect(HudVisibilityServiceScript.active_hud_visible_for_result(DiveSessionScript.Result.DIVING), "diving state should show active operational HUD rows")
+	_expect(not HudVisibilityServiceScript.surface_hud_visible_for_result(DiveSessionScript.Result.DIVING), "diving state should hide surface panels")
+	_expect(not HudVisibilityServiceScript.active_hud_visible_for_result(DiveSessionScript.Result.EXTRACTED), "extracted result should hide active operational HUD rows")
+	_expect(HudVisibilityServiceScript.surface_hud_visible_for_result(DiveSessionScript.Result.EXTRACTED), "extracted result should show a surface panel")
+	_expect(not HudVisibilityServiceScript.active_hud_visible_for_result(DiveSessionScript.Result.FAILED), "failure result should hide active operational HUD rows")
+	_expect(HudVisibilityServiceScript.surface_hud_visible_for_result(DiveSessionScript.Result.FAILED), "failure result should show a surface panel")
 
 	main.show_debug_telemetry = false
 	var hidden_summary: String = main.call("_format_run_summary", "Compact result check.", "extracted")

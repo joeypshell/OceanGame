@@ -2916,8 +2916,8 @@ func _update_hud() -> void:
 	_update_run_panel()
 	_update_upgrade_menu()
 	_apply_active_hud_layout()
-	var is_diving := _active_hud_visible_for_result(dive_session.result)
-	var has_surface_panel := _surface_hud_visible_for_result(dive_session.result)
+	var is_diving := HudVisibilityServiceScript.active_hud_visible_for_result(dive_session.result)
+	var has_surface_panel := HudVisibilityServiceScript.surface_hud_visible_for_result(dive_session.result)
 	var has_scan_target := is_diving and current_scan_target != null
 	HudVisibilityServiceScript.apply_active_hud_visibility(self, is_diving, has_surface_panel, has_scan_target)
 	_update_daylight_timer_hud(is_diving)
@@ -3041,27 +3041,6 @@ func _set_control_rect(control: Control, rect: Rect2) -> void:
 
 func _publish_visual_smoke_state() -> void:
 	VisualSmokeBridgeScript.publish_state(self)
-
-func _effective_canvas_z(node: Node) -> int:
-	var effective_z := 0
-	var current: Node = node
-	var include_parent_z := true
-	while current != null:
-		if current is CanvasItem:
-			var canvas_item := current as CanvasItem
-			if include_parent_z:
-				effective_z += canvas_item.z_index
-				include_parent_z = canvas_item.z_as_relative
-			else:
-				break
-		current = current.get_parent()
-	return effective_z
-
-func _active_hud_visible_for_result(result: int) -> bool:
-	return result == DiveSessionScript.Result.DIVING
-
-func _surface_hud_visible_for_result(result: int) -> bool:
-	return result != DiveSessionScript.Result.DIVING
 
 func _update_run_panel() -> void:
 	RunPanelServiceScript.update_run_panel(self)
