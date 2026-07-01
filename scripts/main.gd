@@ -13,6 +13,7 @@ const ExpeditionConditionScript := preload("res://scripts/expedition_condition.g
 const Area01VisualDirectorScript := preload("res://scripts/area01_visual_director.gd")
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
+const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
@@ -1928,7 +1929,7 @@ func _cycle_debug_condition() -> void:
 	_place_starter_resources_for_run()
 	_sync_condition_visuals()
 	_update_hud()
-	status_label.text = "Debug condition: %s." % _format_condition_telemetry()
+	status_label.text = "Debug condition: %s." % ConditionPresenterScript.format_condition_telemetry(current_expedition_condition)
 
 func _cycle_debug_seed() -> void:
 	if not show_debug_telemetry:
@@ -1943,8 +1944,8 @@ func _cycle_debug_seed() -> void:
 	_update_hud()
 	status_label.text = "Debug seed: %d | %s | %s." % [
 		progression_state.current_run_seed,
-		_format_cluster_pattern(current_resource_cluster_pattern),
-		_format_condition_telemetry(),
+		ConditionPresenterScript.format_cluster_pattern(current_resource_cluster_pattern),
+		ConditionPresenterScript.format_condition_telemetry(current_expedition_condition),
 	]
 
 func _stage_debug_wreck_echo_visual_review() -> void:
@@ -5256,7 +5257,7 @@ func _format_ready_panel_summary() -> String:
 		survival_state.nightly_pressure_line(),
 		survival_state.supply_cache_hint_line(),
 		"Dive for supplies, cargo, or knowledge, then extract.",
-		_format_condition_briefing(),
+		ConditionPresenterScript.format_condition_briefing(current_expedition_condition, progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)),
 		_format_dawn_priority_line(),
 		"%s begins." % _action_label("interact"),
 	]
@@ -5681,15 +5682,6 @@ func _all_upgrades_owned() -> bool:
 func _oxygen_tank_cost() -> Dictionary:
 	return OXYGEN_TANK_UPGRADE.resource_cost
 
-func _format_cluster_pattern(pattern: String) -> String:
-	match pattern:
-		"cautious":
-			return "Cautious shallows"
-		"deep_reward":
-			return "Deep reward route"
-		_:
-			return pattern
-
 func _reset_run_telemetry() -> void:
 	run_collected_resources.clear()
 	run_collected_survival_supplies.clear()
@@ -5747,8 +5739,8 @@ func _format_run_telemetry(result_name: String) -> String:
 	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nLantern Ray route: %s\nCargo collected:%s%s\nScans: %s\nPredator contacts: %d\nHealth damage events: %d\nOxygen at result: %d / %d\nHealth at result: %d / %d\nFailure cause: %s" % [
 		result_name,
 		progression_state.current_run_seed,
-		_format_cluster_pattern(current_resource_cluster_pattern),
-		_format_condition_telemetry(),
+		ConditionPresenterScript.format_cluster_pattern(current_resource_cluster_pattern),
+		ConditionPresenterScript.format_condition_telemetry(current_expedition_condition),
 		current_predator_route_id,
 		current_lantern_ray_route_id,
 		_format_resource_counts(run_collected_resources),
@@ -5761,15 +5753,6 @@ func _format_run_telemetry(result_name: String) -> String:
 		ceili(dive_session.health),
 		ceili(dive_session.max_health),
 		run_failure_cause
-	]
-
-func _format_condition_telemetry() -> String:
-	if current_expedition_condition.is_empty():
-		return "none"
-
-	return "%s (%s)" % [
-		String(current_expedition_condition.get("display_name", "Unknown")),
-		String(current_expedition_condition.get("id", "unknown")),
 	]
 
 func _format_run_summary(player_summary: String, result_name: String) -> String:
@@ -5982,35 +5965,6 @@ func _first_ready_upgrade_definition() -> UpgradeDefinition:
 			return upgrade
 	return null
 
-func _format_condition_briefing() -> String:
-	if current_expedition_condition.is_empty():
-		return "Today: no unusual activity."
-
-	var condition_id := _current_condition_id()
-	var display_name := String(current_expedition_condition.get("display_name", "Unknown"))
-	match condition_id:
-		"calm_current":
-			return "Today: %s.\nReturn currents are clearer near base." % display_name
-		"thermal_bloom":
-			return "Today: %s.\nVent-warmed routes may point toward extra glow." % display_name
-		"kelp_bloom":
-			return "Today: %s.\nMirror Kelp approaches are denser; read the shimmer breaks." % display_name
-		"predator_migration":
-			return "Today: %s.\nExpect the Gulper route to feel active; watch warning cues." % display_name
-		"low_visibility":
-			return "Today: %s.\nLower-trench routes are murkier; bank early if unsure." % display_name
-		"rare_signal":
-			if progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID):
-				return "Today: %s.\nEast Shelf, Blue Chimney, or Blackwater pings are worth checking if oxygen allows." % display_name
-			return "Today: %s.\nEast Shelf or Blue Chimney pings are worth checking if oxygen allows." % display_name
-		"wreck_shift":
-			return "Today: %s.\nThe pressure wreck route is the notable landmark today." % display_name
-
-	return "Today: %s.\n%s" % [
-		display_name,
-		String(current_expedition_condition.get("briefing", "")),
-	]
-
 func _format_route_choice_callout() -> String:
 	return RouteMemoryPresenterScript.format_route_choice_callout(_route_memory_state())
 
@@ -6127,7 +6081,7 @@ func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> 
 		"predator_contacts": run_predator_contacts,
 		"best_depth": roundi(progression_state.best_depth_reached),
 		"seed": progression_state.current_run_seed,
-		"pattern": _format_cluster_pattern(current_resource_cluster_pattern),
+		"pattern": ConditionPresenterScript.format_cluster_pattern(current_resource_cluster_pattern),
 	})
 
 	while recent_expedition_log.size() > 3:

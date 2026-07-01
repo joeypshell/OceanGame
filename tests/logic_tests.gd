@@ -21,6 +21,7 @@ const Area01SourceTruthValidatorScript := preload("res://scripts/area01_source_t
 const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
 const Area01VisualDirectorScript := preload("res://scripts/area01_visual_director.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
+const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
@@ -186,6 +187,7 @@ func _initialize() -> void:
 	_run("surface summary tabs", _test_surface_summary_tabs)
 	_run("keyboard action prompt labels", _test_keyboard_action_prompt_labels)
 	_run("prompt formatter guard coverage", _test_prompt_formatter_guard_coverage)
+	_run("condition presenter", _test_condition_presenter)
 	_run("condition briefing copy", _test_condition_briefing_copy)
 	_run("Dusk Trench low-visibility condition nudge", _test_dusk_trench_low_visibility_condition_nudge)
 	_run("Wide Reef Chamber calm-current condition nudge", _test_wide_chamber_calm_current_condition_nudge)
@@ -7145,62 +7147,83 @@ func _test_prompt_formatter_guard_coverage() -> void:
 	_expect(main._format_hud_prompt().contains("press %s for next expedition" % restart_label), "failure HUD prompt should derive restart labels from the prompt helper")
 	main.free()
 
+func _test_condition_presenter() -> void:
+	_expect(ConditionPresenterScript.format_cluster_pattern("cautious") == "Cautious shallows", "condition presenter should name cautious resource routes")
+	_expect(ConditionPresenterScript.format_cluster_pattern("deep_reward") == "Deep reward route", "condition presenter should name deep reward resource routes")
+	_expect(ConditionPresenterScript.format_cluster_pattern("custom") == "custom", "condition presenter should preserve unknown cluster pattern ids")
+	_expect(ConditionPresenterScript.format_condition_telemetry({}) == "none", "condition telemetry should report no active condition compactly")
+	var condition := {
+		"id": "thermal_bloom",
+		"display_name": "Thermal Bloom",
+		"briefing": "Warm water stirs near the vent field.",
+	}
+	_expect(ConditionPresenterScript.format_condition_telemetry(condition) == "Thermal Bloom (thermal_bloom)", "condition telemetry should preserve display name and id")
+	_expect(ConditionPresenterScript.format_condition_briefing({}, false) == "Today: no unusual activity.", "empty condition briefing should preserve neutral copy")
+	var fallback := ConditionPresenterScript.format_condition_briefing({
+		"id": "new_current",
+		"display_name": "New Current",
+		"briefing": "A test briefing remains visible.",
+	}, false)
+	_expect(fallback.contains("Today: New Current."), "unknown condition briefing should still frame the display name")
+	_expect(fallback.contains("A test briefing remains visible."), "unknown condition briefing should preserve authored briefing copy")
+	_expect(ConditionPresenterScript.format_condition_briefing(condition, false).contains("Vent-warmed routes"), "condition presenter should own condition-specific briefing copy")
+
 func _test_condition_briefing_copy() -> void:
 	var main := MainScript.new()
-	main.current_expedition_condition = {
+	var condition := {
 		"id": "thermal_bloom",
 		"display_name": "Thermal Bloom",
 		"briefing": "Warm water stirs near the vent field.",
 		"tags": ["thermal", "scan"],
 	}
 
-	var briefing := main._format_condition_briefing()
+	var briefing := ConditionPresenterScript.format_condition_briefing(condition, false)
 	_expect(briefing.contains("Today: Thermal Bloom."), "condition briefing should frame the day condition as today's ocean change")
 	_expect(briefing.contains("Vent-warmed routes may point toward extra glow."), "thermal briefing should name the implemented vent/glow route cue")
 	_expect(not briefing.contains("thermal_bloom"), "condition briefing should not expose raw condition ids")
 	_expect(not briefing.to_lower().contains("procedural"), "condition briefing should not imply unimplemented generation systems")
 
-	main.current_expedition_condition = {
+	condition = {
 		"id": "kelp_bloom",
 		"display_name": "Kelp Bloom",
 		"briefing": "Shallow growth is unusually thick.",
 		"tags": ["resource", "shallow"],
 	}
-	briefing = main._format_condition_briefing()
+	briefing = ConditionPresenterScript.format_condition_briefing(condition, false)
 	_expect(briefing.contains("Mirror Kelp"), "kelp briefing should point at the implemented Mirror Kelp route variation")
 	_expect(briefing.contains("shimmer breaks"), "kelp briefing should tell players how to read the denser route")
 	_expect(not briefing.contains("kelp_bloom"), "kelp briefing should not expose raw condition ids")
 
-	main.current_expedition_condition = {
+	condition = {
 		"id": "predator_migration",
 		"display_name": "Predator Migration",
 		"briefing": "Deep patrols are shifting.",
 		"tags": ["predator", "route"],
 	}
-	briefing = main._format_condition_briefing()
+	briefing = ConditionPresenterScript.format_condition_briefing(condition, false)
 	_expect(briefing.contains("Gulper route"), "predator briefing should point to the existing predator route")
 	_expect(briefing.contains("warning cues"), "predator briefing should point to existing readable cues")
 
-	main.current_expedition_condition = {
+	condition = {
 		"id": "low_visibility",
 		"display_name": "Low Visibility",
 		"briefing": "Deeper water is harder to read today.",
 		"tags": ["visibility", "return"],
 	}
-	briefing = main._format_condition_briefing()
+	briefing = ConditionPresenterScript.format_condition_briefing(condition, false)
 	_expect(briefing.to_lower().contains("lower-trench"), "low-visibility briefing should nudge broad lower-trench route caution")
 	_expect(briefing.contains("bank early"), "low-visibility briefing should keep the player-visible advice compact")
 	_expect(not briefing.contains("Dusk Trench"), "low-visibility briefing should not reveal the exact trench location")
 	_expect(not briefing.contains("Blackwater"), "low-visibility briefing should not reveal the gated route chain")
 	_expect_no_echo_lens_locator_language(briefing, "low-visibility briefing")
 
-	main.current_expedition_condition = {
+	condition = {
 		"id": "rare_signal",
 		"display_name": "Rare Signal",
 		"briefing": "A weak research ping is active below.",
 		"tags": ["scan", "rare"],
 	}
-	briefing = main._format_condition_briefing()
+	briefing = ConditionPresenterScript.format_condition_briefing(condition, false)
 	_expect(briefing.contains("East Shelf"), "rare signal briefing should point at the implemented side-route opportunity")
 	_expect(briefing.contains("Blue Chimney"), "rare signal briefing should point at the lower-pocket opportunity")
 	_expect(not briefing.contains("Blackwater"), "rare signal briefing should not point at Blackwater before Resonance Key I ownership")
@@ -7215,7 +7238,7 @@ func _test_condition_briefing_copy() -> void:
 	_expect(not main.call("_blue_chimney_signal_visible_for_condition", "calm_current"), "Calm Current should not enable the Blue Chimney signal")
 	_expect(not main.call("_blackwater_signal_visible_for_condition", "rare_signal"), "Rare Signal should not enable Blackwater signal before the scoped key path is ready")
 	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
-	briefing = main._format_condition_briefing()
+	briefing = ConditionPresenterScript.format_condition_briefing(condition, main.progression_state.has_upgrade(ResonanceKeyUpgrade.id))
 	_expect(briefing.contains("Blackwater"), "rare signal briefing should nudge Blackwater once Resonance Key I is owned")
 	_expect(briefing.contains("if oxygen allows"), "Blackwater rare signal briefing should remain optional")
 	_expect_no_echo_lens_locator_language(briefing, "Blackwater rare signal briefing")
@@ -7385,8 +7408,9 @@ func _test_mirror_kelp_kelp_bloom_condition_nudge() -> void:
 	_expect(curtain_a.color.a > neutral_curtain_alpha, "Kelp Bloom should subtly strengthen Mirror Kelp curtains")
 	_expect(backwater.color.a <= 0.2 and curtain_a.color.a <= 0.25, "Kelp Bloom should stay readable without overpowering payoffs")
 	_expect(bloom_wash.color.g > bloom_wash.color.r, "Mirror Kelp bloom nudge should keep kelp/current color language")
-	_expect(scene.call("_format_condition_briefing").contains("Mirror Kelp"), "Kelp Bloom briefing should name the broad route feel")
-	_expect(scene.call("_format_condition_briefing").contains("shimmer"), "Kelp Bloom briefing should tell players how to read the variation")
+	var briefing := ConditionPresenterScript.format_condition_briefing(scene.current_expedition_condition, scene.progression_state.has_upgrade(ResonanceKeyUpgrade.id))
+	_expect(briefing.contains("Mirror Kelp"), "Kelp Bloom briefing should name the broad route feel")
+	_expect(briefing.contains("shimmer"), "Kelp Bloom briefing should tell players how to read the variation")
 	_expect(scene.call("_format_expedition_ready_status").contains("Mirror Kelp"), "ready status should acknowledge the Mirror Kelp approach variation")
 	_expect(is_equal_approx(scene.dive_session.oxygen, 22.0), "Mirror Kelp condition nudge should not drain oxygen")
 	_expect(scene.dive_session.current_cargo == ["shell_fragments"], "Mirror Kelp condition nudge should not change carried cargo")
