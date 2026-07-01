@@ -5,6 +5,12 @@ class_name HudPresenter
 const LOW_OXYGEN_RATIO := 0.25
 const CRITICAL_OXYGEN_RATIO := 0.10
 const DIVE_STATUS_MAX_CHARS := 72
+const HEALTH_LOW_RATIO := 0.35
+const HEALTH_CRITICAL_RATIO := 0.18
+const HEALTH_NORMAL_COLOR := Color(0.42, 1.0, 0.5, 0.94)
+const HEALTH_DAMAGED_COLOR := Color(1.0, 0.5, 0.26, 0.96)
+const HEALTH_LOW_COLOR := Color(1.0, 0.72, 0.22, 0.96)
+const HEALTH_CRITICAL_COLOR := Color(1.0, 0.18, 0.16, 0.98)
 
 static func oxygen_state(current_oxygen: float, maximum_oxygen: float) -> String:
 	if maximum_oxygen <= 0.0:
@@ -46,6 +52,39 @@ static func oxygen_state_color(state: String) -> Color:
 		return Color(1.0, 0.76, 0.22, 1.0)
 
 	return Color.WHITE
+
+
+static func health_state(current_health: float, maximum_health: float) -> String:
+	if maximum_health <= 0.0:
+		return "normal"
+
+	var health_ratio := current_health / maximum_health
+	if health_ratio <= HEALTH_CRITICAL_RATIO:
+		return "critical"
+	if health_ratio <= HEALTH_LOW_RATIO:
+		return "low"
+
+	return "normal"
+
+
+static func format_health_label(current_health: float, maximum_health: float) -> String:
+	var state := health_state(current_health, maximum_health)
+	var suffix := ""
+	if state == "critical":
+		suffix = "  CRITICAL"
+	elif state == "low":
+		suffix = "  LOW"
+
+	return "HEALTH: %d / %d%s" % [ceili(current_health), ceili(maximum_health), suffix]
+
+
+static func health_state_color(state: String) -> Color:
+	if state == "critical":
+		return HEALTH_CRITICAL_COLOR
+	if state == "low":
+		return HEALTH_LOW_COLOR
+
+	return HEALTH_NORMAL_COLOR
 
 
 static func compact_dive_status(text: String) -> String:
