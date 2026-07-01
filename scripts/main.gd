@@ -13,6 +13,7 @@ const ExpeditionConditionScript := preload("res://scripts/expedition_condition.g
 const Area01VisualDirectorScript := preload("res://scripts/area01_visual_director.gd")
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
+const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -35,8 +36,6 @@ const PREDATOR_WARNING_UPGRADE_ID := "predator_warning_1"
 const DECOY_PULSE_UPGRADE_ID := "decoy_pulse_1"
 const SALVAGE_CUTTER_UPGRADE_ID := "salvage_cutter_1"
 const PROGRESSION_SAVE_PATH := "user://progression_save.json"
-const LOW_OXYGEN_RATIO := 0.25
-const CRITICAL_OXYGEN_RATIO := 0.10
 const STARTER_RESOURCE_PICKUP_NAMES := [
 	"KelpFiber",
 	"ShellFragments",
@@ -167,7 +166,6 @@ const DEPTH_RAIL_LABEL_RECTS := {
 	"100": Rect2(Vector2(16.0, 558.0), Vector2(58.0, 18.0)),
 }
 const DEPTH_RAIL_MAX_DISPLAY_DEPTH := 120.0
-const DIVE_STATUS_MAX_CHARS := 72
 const ACTIVE_OBJECTIVE_MAX_CHARS := 46
 const SURVIVAL_NEED_BAR_DISPLAY_MAX := 5.0
 const TOOL_BELT_TOOL_IDS := ["scanner", "burst", "cutter", "decoy", "reserve"]
@@ -2004,7 +2002,7 @@ func _stage_debug_oxygen_visual_review(target_ratio: float, label: String) -> vo
 		return
 
 	dive_session.oxygen = maxf(1.0, dive_session.max_oxygen * target_ratio)
-	status_label.text = _oxygen_warning_text(_oxygen_state(dive_session.oxygen, dive_session.max_oxygen))
+	status_label.text = HudPresenterScript.oxygen_warning_text(HudPresenterScript.oxygen_state(dive_session.oxygen, dive_session.max_oxygen))
 	_update_hud()
 
 func _stage_debug_health_damage_visual_review() -> void:
@@ -3243,7 +3241,7 @@ func _try_scan(requested_target: Node = null) -> void:
 		if discovery_id == "wreck_signal_cache" and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
 			run_echo_lens_echo_fired = true
 			_trigger_echo_lens_pulse()
-		status_label.text = _compact_dive_status("%s known.%s" % [
+		status_label.text = HudPresenterScript.compact_dive_status("%s known.%s" % [
 			display_name,
 			_format_repeat_scan_effect_text(target) + _format_signal_lens_pulse_text(target)
 		])
@@ -3264,7 +3262,7 @@ func _try_scan(requested_target: Node = null) -> void:
 		_fail_dive()
 	else:
 		_save_progression()
-		status_label.text = _compact_dive_status("Scanned %s.%s" % [
+		status_label.text = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 			display_name,
 			_format_repeat_scan_effect_text(target) + _format_first_scan_guidance(target)
 		])
@@ -4799,7 +4797,7 @@ func _update_hud() -> void:
 	cargo_label.visible = is_diving
 	cargo_slots_root.visible = is_diving
 	_update_daylight_timer_hud(is_diving)
-	oxygen_label.text = _format_oxygen_label(dive_session.oxygen, dive_session.max_oxygen)
+	oxygen_label.text = HudPresenterScript.format_oxygen_label(dive_session.oxygen, dive_session.max_oxygen)
 	health_label.text = _format_health_label(dive_session.health, dive_session.max_health)
 	depth_label.text = "Depth: %dm | Best: %dm" % [
 		roundi(dive_session.current_depth),
@@ -4832,12 +4830,12 @@ func _update_hud() -> void:
 	scan_card_prompt_label.visible = has_scan_target
 	status_label.visible = is_diving
 	prompt_label.visible = is_diving
-	status_label.text = _compact_dive_status(status_label.text) if is_diving else status_label.text
+	status_label.text = HudPresenterScript.compact_dive_status(status_label.text) if is_diving else status_label.text
 	if is_diving:
 		objective_title_label.text = "SURVIVAL ROUTE"
 		objective_line_label.text = _format_active_objective_line()
 
-	prompt_label.text = _compact_dive_status(_format_hud_prompt()) if is_diving else _format_hud_prompt()
+	prompt_label.text = HudPresenterScript.compact_dive_status(_format_hud_prompt()) if is_diving else _format_hud_prompt()
 	_update_tool_belt(is_diving)
 	_update_expedition_slate(is_diving)
 
@@ -5235,7 +5233,7 @@ func _publish_visual_smoke_state() -> void:
 		"surface_tab": SURFACE_TAB_NAMES[surface_tab_index].to_lower(),
 		"debug_telemetry": show_debug_telemetry,
 		"area01_source_map_overlay": area01_visual_director != null and area01_visual_director.source_map_overlay_visible(),
-		"oxygen_state": _oxygen_state(dive_session.oxygen, dive_session.max_oxygen),
+		"oxygen_state": HudPresenterScript.oxygen_state(dive_session.oxygen, dive_session.max_oxygen),
 		"oxygen": ceili(dive_session.oxygen),
 		"max_oxygen": ceili(dive_session.max_oxygen),
 		"health_state": _health_state(dive_session.health, dive_session.max_health),
@@ -6952,15 +6950,6 @@ func _format_discoveries(compact: bool = false) -> String:
 
 	return text
 
-func _compact_dive_status(text: String) -> String:
-	var cleaned := text.replace("\n", " ").strip_edges()
-	while cleaned.find("  ") != -1:
-		cleaned = cleaned.replace("  ", " ")
-
-	if cleaned.length() <= DIVE_STATUS_MAX_CHARS:
-		return cleaned
-
-	return cleaned.substr(0, DIVE_STATUS_MAX_CHARS - 3).strip_edges() + "..."
 
 func _format_active_objective_line() -> String:
 	var objective := "Find supplies, scan, return"
@@ -7164,27 +7153,7 @@ func _format_base_direction() -> String:
 
 	return "Base: %s %.0fm%s" % [direction_text, delta.length() / pixels_per_meter, route_hint]
 
-func _oxygen_state(current_oxygen: float, maximum_oxygen: float) -> String:
-	if maximum_oxygen <= 0.0:
-		return "normal"
 
-	var oxygen_ratio := current_oxygen / maximum_oxygen
-	if oxygen_ratio <= CRITICAL_OXYGEN_RATIO:
-		return "critical"
-	if oxygen_ratio <= LOW_OXYGEN_RATIO:
-		return "low"
-
-	return "normal"
-
-func _format_oxygen_label(current_oxygen: float, maximum_oxygen: float) -> String:
-	var state := _oxygen_state(current_oxygen, maximum_oxygen)
-	var suffix := ""
-	if state == "critical":
-		suffix = "  CRITICAL"
-	elif state == "low":
-		suffix = "  LOW"
-
-	return "OXYGEN: %d / %d%s" % [ceili(current_oxygen), ceili(maximum_oxygen), suffix]
 
 func _health_state(current_health: float, maximum_health: float) -> String:
 	if maximum_health <= 0.0:
@@ -7216,21 +7185,7 @@ func _health_state_color(state: String) -> Color:
 
 	return HEALTH_NORMAL_COLOR
 
-func _oxygen_warning_text(state: String) -> String:
-	if state == "critical":
-		return "O2 CRITICAL\nRETURN TO BASE"
-	if state == "low":
-		return "O2 LOW\nPLAN RETURN"
 
-	return ""
-
-func _oxygen_state_color(state: String) -> Color:
-	if state == "critical":
-		return Color(1.0, 0.18, 0.12, 1.0)
-	if state == "low":
-		return Color(1.0, 0.76, 0.22, 1.0)
-
-	return Color.WHITE
 
 func _update_oxygen_feedback() -> void:
 	oxygen_warning_panel.visible = false
@@ -7242,12 +7197,12 @@ func _update_oxygen_feedback() -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING or dive_session.max_oxygen <= 0.0:
 		return
 
-	var oxygen_state := _oxygen_state(dive_session.oxygen, dive_session.max_oxygen)
-	var oxygen_color := _oxygen_state_color(oxygen_state)
+	var oxygen_state := HudPresenterScript.oxygen_state(dive_session.oxygen, dive_session.max_oxygen)
+	var oxygen_color := HudPresenterScript.oxygen_state_color(oxygen_state)
 	if oxygen_state == "critical":
 		var pulse := 1.0 + 0.08 * absf(sin(Time.get_ticks_msec() / 90.0))
 		oxygen_warning_panel.visible = true
-		oxygen_warning_label.text = _oxygen_warning_text(oxygen_state)
+		oxygen_warning_label.text = HudPresenterScript.oxygen_warning_text(oxygen_state)
 		oxygen_warning_label.modulate = oxygen_color
 		oxygen_label.modulate = oxygen_color
 		base_direction_label.modulate = Color(1.0, 0.22, 0.14, 1.0)
@@ -7255,7 +7210,7 @@ func _update_oxygen_feedback() -> void:
 		base_direction_label.scale = Vector2(pulse, pulse)
 	elif oxygen_state == "low":
 		oxygen_warning_panel.visible = true
-		oxygen_warning_label.text = _oxygen_warning_text(oxygen_state)
+		oxygen_warning_label.text = HudPresenterScript.oxygen_warning_text(oxygen_state)
 		oxygen_warning_label.modulate = oxygen_color
 		oxygen_label.modulate = oxygen_color
 		base_direction_label.modulate = Color(1.0, 0.86, 0.36, 1.0)
