@@ -98,9 +98,9 @@
         "active_stats_visible": true,
         "route_stage": "area01_deep_spine"
       },
-      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "resource_pickup", "knowledge_payoff", "timing_hazard_support_cue"],
-      "expected_route_area_label_policy": "No debug labels; deep route should read as below-surface risk and future-route promise without becoming a map overlay.",
-      "reason": "Covers the deepest current shell state and the highest risk of wall/collision confusion."
+      "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "return_current_cue"],
+      "expected_route_area_label_policy": "No debug labels; lower route should read through terrain framing and return-current support without becoming a map overlay.",
+      "reason": "Covers the lower Blue Chimney/deep-route current where source-owned cue staging previously drifted from generated geometry."
     },
     {
       "id": "area01-future-exit",
@@ -113,8 +113,8 @@
         "route_stage": "area01_future_exit"
       },
       "expected_visible_cue_families": ["solid_terrain", "terrain_rim_lip", "locked_future_route_promise"],
-      "expected_route_area_label_policy": "No debug labels; future-exit corridor should read as framed cave water, not a blank rectangular void.",
-      "reason": "Covers the right/deep corridor where sparse runtime geometry previously failed to match the uploaded source-map intent."
+      "expected_route_area_label_policy": "No debug labels; future-exit corridor should read as framed cave water with a quiet locked-route promise.",
+      "reason": "Covers the generated future-deep-exit gate so locked-promise cue expectations stay tied to source-owned hook placement."
     },
     {
       "id": "area01-source-map-overlay",

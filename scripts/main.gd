@@ -2014,10 +2014,10 @@ func _stage_debug_area01_shell_visual_review(stage: String) -> void:
 				target_position = Vector2(3000.0, 820.0)
 			status = "Debug review: Area 01 far-right chamber staged."
 		"deep_spine":
-			target_position = Vector2(1480.0, 1330.0)
+			target_position = _generated_area01_hook_visual_center("BlueChimneyReturnCurrentArea", Vector2(2208.0, 2304.0))
 			status = "Debug review: Area 01 deep spine staged."
 		"future_exit":
-			target_position = Vector2(3820.0, 1880.0)
+			target_position = _generated_area01_hook_visual_center("FutureDeepExitGateArea", Vector2(5568.0, 3040.0))
 			status = "Debug review: Area 01 future exit corridor staged."
 		"central_drop":
 			target_position = Vector2(720.0, 940.0)
@@ -2039,6 +2039,15 @@ func _stage_debug_area01_shell_visual_review(stage: String) -> void:
 	status_label.text = status
 	_update_depth()
 	_update_hud()
+
+func _generated_area01_hook_visual_center(area_name: String, fallback: Vector2) -> Vector2:
+	var area := get_node_or_null("Area01ArtSlice/RuntimeSourceHooks/%s" % area_name) as Area2D
+	if area == null:
+		return fallback
+	for child in area.get_children():
+		if child is Node2D and String(child.name).ends_with("VisualCue"):
+			return (child as Node2D).global_position
+	return fallback
 
 func _stage_debug_expanded_route_visual_review() -> void:
 	if not OS.has_feature("web"):
