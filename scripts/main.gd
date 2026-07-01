@@ -3960,15 +3960,7 @@ func _sync_east_shelf_pocket_payoff_state() -> void:
 	if halo == null or gem == null or spark == null:
 		return
 
-	if run_east_shelf_pocket_ping_recovered:
-		halo.color = Color(0.52, 1.0, 0.84, 0.08)
-		gem.color = Color(0.92, 1.0, 0.56, 0.18)
-		spark.visible = false
-	else:
-		halo.color = Color(0.52, 1.0, 0.84, 0.34)
-		gem.color = Color(0.92, 1.0, 0.56, 0.82)
-		spark.color = Color(1.0, 1.0, 0.82, 0.92)
-		spark.visible = true
+	RoutePresenterScript.sync_east_shelf_pocket_payoff(halo, gem, spark, run_east_shelf_pocket_ping_recovered)
 
 func _sync_blue_chimney_payoff_state() -> void:
 	var halo := blue_chimney_survey_halo
@@ -3983,15 +3975,7 @@ func _sync_blue_chimney_payoff_state() -> void:
 	if halo == null or gem == null or spark == null:
 		return
 
-	if run_blue_chimney_draft_reading_recovered:
-		halo.color = Color(0.46, 0.92, 1.0, 0.08)
-		gem.color = Color(0.74, 1.0, 0.96, 0.18)
-		spark.visible = false
-	else:
-		halo.color = Color(0.46, 0.92, 1.0, 0.32)
-		gem.color = Color(0.74, 1.0, 0.96, 0.78)
-		spark.color = Color(1.0, 1.0, 0.82, 0.88)
-		spark.visible = true
+	RoutePresenterScript.sync_blue_chimney_payoff(halo, gem, spark, run_blue_chimney_draft_reading_recovered)
 
 func _reveal_thermal_vent_route() -> void:
 	var route_hint := vent_route_hint

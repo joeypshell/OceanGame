@@ -54,6 +54,32 @@ static func sync_blackwater_trace_payoff(halo: Polygon2D, core: Polygon2D, spark
 		Color(1.0, 1.0, 0.82, 0.9)
 	)
 
+static func sync_east_shelf_pocket_payoff(halo: Polygon2D, core: Polygon2D, spark: Polygon2D, recovered: bool) -> void:
+	_sync_payoff_core(
+		halo,
+		core,
+		spark,
+		recovered,
+		Color(0.52, 1.0, 0.84, 0.08),
+		Color(0.92, 1.0, 0.56, 0.18),
+		Color(0.52, 1.0, 0.84, 0.34),
+		Color(0.92, 1.0, 0.56, 0.82),
+		Color(1.0, 1.0, 0.82, 0.92)
+	)
+
+static func sync_blue_chimney_payoff(halo: Polygon2D, core: Polygon2D, spark: Polygon2D, recovered: bool) -> void:
+	_sync_payoff_core(
+		halo,
+		core,
+		spark,
+		recovered,
+		Color(0.46, 0.92, 1.0, 0.08),
+		Color(0.74, 1.0, 0.96, 0.18),
+		Color(0.46, 0.92, 1.0, 0.32),
+		Color(0.74, 1.0, 0.96, 0.78),
+		Color(1.0, 1.0, 0.82, 0.88)
+	)
+
 static func sync_glass_kelp_reading_payoff(halo: Polygon2D, core: Polygon2D, spark: Polygon2D, recovered: bool) -> void:
 	_sync_payoff_core(
 		halo,
