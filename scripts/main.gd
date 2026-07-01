@@ -67,6 +67,7 @@ const DiscoveryRevealSyncServiceScript := preload("res://scripts/ui/discovery_re
 const RouteGateSyncServiceScript := preload("res://scripts/ui/route_gate_sync_service.gd")
 const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
+const RunPanelServiceScript := preload("res://scripts/ui/run_panel_service.gd")
 const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
@@ -3062,43 +3063,7 @@ func _surface_hud_visible_for_result(result: int) -> bool:
 	return result != DiveSessionScript.Result.DIVING
 
 func _update_run_panel() -> void:
-	var use_compact_panel := dive_session.result == DiveSessionScript.Result.EXTRACTED and surface_tab_index == SURFACE_TAB_UPGRADES
-	_apply_run_panel_layout(use_compact_panel)
-	surface_tabs_label.visible = _surface_tabs_enabled()
-	surface_tabs_label.text = _format_surface_tabs() if surface_tabs_label.visible else ""
-	if dive_session.result == DiveSessionScript.Result.READY:
-		run_panel.visible = true
-		run_title_label.text = _format_expedition_day_title("Ready")
-		run_summary_label.text = _format_run_summary(_format_ready_panel_summary(), "ready")
-	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
-		run_panel.visible = true
-		if surface_tab_index == SURFACE_TAB_NIGHT:
-			run_title_label.text = _format_expedition_day_title("Night")
-			run_summary_label.text = _format_run_summary(_format_night_phase_summary(), "night")
-		elif surface_tab_index == SURFACE_TAB_UPGRADES:
-			run_title_label.text = "Surface Upgrade Bay"
-			run_summary_label.text = _format_run_summary("Banked:%s\n%s choose; %s buys.\n%s" % [
-				ResourceSummaryServiceScript.format_banked_resources(progression_state.banked_resources, survival_state, RESOURCE_CATEGORY_LABELS),
-				_action_label("move_up_down"),
-				_action_label("interact"),
-				_format_next_expedition_prompt(),
-			], "extracted")
-		elif surface_tab_index == SURFACE_TAB_LOG:
-			run_title_label.text = "Recent Expeditions"
-			run_summary_label.text = _format_recent_expedition_log()
-		else:
-			run_title_label.text = _format_expedition_day_title("Result: Extraction")
-			run_summary_label.text = _format_run_summary(last_result_summary, "extracted")
-	elif dive_session.result == DiveSessionScript.Result.FAILED:
-		run_panel.visible = true
-		if surface_tab_index == SURFACE_TAB_LOG:
-			run_title_label.text = "Recent Expeditions"
-			run_summary_label.text = _format_recent_expedition_log()
-		else:
-			run_title_label.text = _format_expedition_day_title("Result: Failure")
-			run_summary_label.text = _format_run_summary(last_result_summary, "failed")
-	else:
-		run_panel.visible = false
+	RunPanelServiceScript.update_run_panel(self)
 
 func _apply_run_panel_layout(use_compact_panel: bool) -> void:
 	RunPanelLayoutServiceScript.apply_layout(self, use_compact_panel)
