@@ -16,6 +16,7 @@ const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
+const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -6461,100 +6462,30 @@ func _format_condition_briefing() -> String:
 	]
 
 func _format_route_choice_callout() -> String:
-	if run_rim_glass_reading_recovered:
-		return "Route choice: recovered Glass Rim reading beyond the timing branch."
-	if run_outer_shelf_survey_recovered:
-		return "Route choice: Outer Shelf survey marked Glass Rim Cut as a timing branch."
-	if _run_has_glass_rim_observation():
-		return "Route choice: observed Glass Ray slackwater timing near Glass Rim."
-	if run_tideglass_sample_recovered:
-		return "Route choice: Mirror Kelp Pass reading marked a deeper kelp seal."
-	if run_completed_scans.has("mirrorfin_drift"):
-		return "Route choice: observed Mirror Kelp reflection timing."
-	if run_salvage_manifest_recovered:
-		return "Route choice: opened salvage pocket manifest instead of only cargo."
-	if run_salvage_data_cache_recovered:
-		return "Route choice: wide chamber salvage cache marked a sealed pocket."
-	if run_hollow_reef_reading_recovered:
-		return "Route choice: lower-route research push reached Hollow Reef."
-	if _run_has_hollow_reef_observation():
-		return "Route choice: observed Hollow Reef upper-shelf timing."
-	if run_reached_dusk_trench:
-		return "Route choice: lower-route research push reached Dusk Trench."
-	if _run_has_glassfin_swarm_observation():
-		return "Route choice: observed Glassfin Swarm spacing without fighting."
-	if run_blackwater_trace_recovered:
-		return "Route choice: lower-route research push reached Blackwater."
-	if run_blue_chimney_draft_reading_recovered:
-		return "Route choice: lower-route research push reached Blue Chimney."
-	if run_lantern_silt_sample_recovered:
-		return "Route choice: lower-route research push reached Silt Vein."
-	if run_lower_connector_echo_recovered:
-		return "Route choice: lower-route research push reached Shelf Drop."
-	if run_east_shelf_pocket_ping_recovered:
-		return "Route choice: East Shelf research push paid off."
-	if run_predator_contacts > 0:
-		return "Route choice: predator route contested the dive."
-	if run_completed_scans.has("lantern_ray"):
-		return "Route choice: observed Lantern Ray timing without fighting."
-	if run_completed_scans.has("wreck_signal_cache"):
-		return "Route choice: pressure-wreck progress secured."
-	if run_completed_scans.has("pressure_wreck_signal"):
-		return "Route choice: pressure route marked for a future return."
-	if run_completed_scans.has("thermal_vent") and run_collected_resources.has("glow_plankton"):
-		return "Route choice: followed Thermal Vent clue toward deep glow."
-	if run_completed_scans.has("thermal_vent"):
-		return "Route choice: banked Thermal Vent clue for Pressure Seal I."
-	if run_collected_resources.has("glow_plankton") and current_resource_cluster_pattern == "deep_reward":
-		return "Route choice: pushed past the reef toward deep glow."
-	if run_completed_scans.has("shell_reef_shelf") or run_collected_resources.has("shell_fragments"):
-		return "Route choice: used Shell Reef as a midwater bank route."
-	if run_collected_resources.is_empty():
-		return ""
-
-	return "Route choice: banked a cautious resource run."
+	return RouteMemoryPresenterScript.format_route_choice_callout(_route_memory_state())
 
 func _format_recent_route_memory() -> String:
-	if run_rim_glass_reading_recovered:
-		return "Glass Rim"
-	if run_outer_shelf_survey_recovered or _run_has_glass_rim_observation():
-		return "Outer Shelf"
-	if _run_has_mirror_kelp_evidence():
-		return "Mirror Kelp Pass"
-	if run_salvage_manifest_recovered:
-		return "Salvage Pocket"
-	if run_salvage_data_cache_recovered:
-		return "Wide Reef Chamber"
-	if run_hollow_reef_reading_recovered or _run_has_hollow_reef_observation():
-		return "Hollow Reef"
-	if run_reached_dusk_trench:
-		return "Dusk Trench"
-	if _run_has_glassfin_swarm_observation():
-		return "Glassfin Swarm"
-	if run_blackwater_trace_recovered:
-		return "Blackwater"
-	if run_blue_chimney_draft_reading_recovered:
-		return "Blue Chimney"
-	if run_lantern_silt_sample_recovered:
-		return "Silt Vein"
-	if run_lower_connector_echo_recovered:
-		return "Shelf Drop"
-	if run_east_shelf_pocket_ping_recovered:
-		return "East Shelf"
-	if run_predator_contacts > 0:
-		return "Gulper Route"
-	if run_completed_scans.has("lantern_ray"):
-		return "Lantern Ray"
-	if run_completed_scans.has("wreck_signal_cache") or run_completed_scans.has("pressure_wreck_signal"):
-		return "Wreck Shelf"
-	if run_completed_scans.has("thermal_vent") or run_collected_resources.has("glow_plankton"):
-		return "Thermal Vent"
-	if run_completed_scans.has("shell_reef_shelf") or run_collected_resources.has("shell_fragments"):
-		return "Shell Reef"
-	if run_collected_resources.is_empty():
-		return "none"
+	return RouteMemoryPresenterScript.format_recent_route_memory(_route_memory_state())
 
-	return "Resource Run"
+func _route_memory_state() -> Dictionary:
+	return {
+		"current_resource_cluster_pattern": current_resource_cluster_pattern,
+		"run_blackwater_trace_recovered": run_blackwater_trace_recovered,
+		"run_blue_chimney_draft_reading_recovered": run_blue_chimney_draft_reading_recovered,
+		"run_collected_resources": run_collected_resources,
+		"run_completed_scans": run_completed_scans,
+		"run_east_shelf_pocket_ping_recovered": run_east_shelf_pocket_ping_recovered,
+		"run_hollow_reef_reading_recovered": run_hollow_reef_reading_recovered,
+		"run_lantern_silt_sample_recovered": run_lantern_silt_sample_recovered,
+		"run_lower_connector_echo_recovered": run_lower_connector_echo_recovered,
+		"run_outer_shelf_survey_recovered": run_outer_shelf_survey_recovered,
+		"run_predator_contacts": run_predator_contacts,
+		"run_reached_dusk_trench": run_reached_dusk_trench,
+		"run_rim_glass_reading_recovered": run_rim_glass_reading_recovered,
+		"run_salvage_data_cache_recovered": run_salvage_data_cache_recovered,
+		"run_salvage_manifest_recovered": run_salvage_manifest_recovered,
+		"run_tideglass_sample_recovered": run_tideglass_sample_recovered,
+	}
 
 func _format_gulper_research_callout() -> String:
 	if decoy_pulse_used_this_run:
@@ -6665,72 +6596,10 @@ func _format_sealed_shelf_hatch_readiness_callout() -> String:
 	return "\nLab note: Echo Lens reads the Sealed Shelf Hatch; Resonance Key planning can wait."
 
 func _format_region_memory_callout() -> String:
-	if run_rim_glass_reading_recovered:
-		return "Remembered place: Glass Rim - slackwater crossing beyond Outer Shelf; return through Mirror/Wide/Hollow."
-	if run_outer_shelf_survey_recovered:
-		return "Remembered place: Outer Shelf - wider water beyond Mirror Kelp; return through Mirror/Wide/Hollow."
-	if _run_has_glass_rim_observation():
-		return "Remembered place: Outer Shelf - Glass Ray timing marks the Glass Rim slackwater; return through Mirror/Wide/Hollow."
-	if _run_has_mirror_kelp_evidence():
-		return "Remembered place: Mirror Kelp Pass - reflective branch beyond Wide Reef; return through Hollow Reef."
-	if run_salvage_manifest_recovered:
-		return "Remembered place: Salvage Pocket - cut-open wreck pocket off Wide Reef; return through Hollow Reef."
-	if run_salvage_data_cache_recovered:
-		return "Remembered place: Wide Reef Chamber - salvage pocket off Hollow Reef; return through Dusk."
-	if run_hollow_reef_reading_recovered:
-		return "Remembered place: Hollow Reef - side-cave branch off Dusk; return through Blackwater."
-	if _run_has_hollow_reef_observation():
-		return "Remembered place: Hollow Reef - upper-shelf timing, return through Blackwater."
-	if run_reached_dusk_trench:
-		return "Remembered place: Dusk Trench - return up-left through Blackwater and Silt Vein to Blue Chimney."
-	if _run_has_glassfin_swarm_observation():
-		return "Remembered place: Glassfin Swarm Route - spacing window in the wide chamber; return through Hollow Reef."
-	if run_completed_scans.has("lantern_ray"):
-		return "Remembered place: Lantern Ray Route - watch the timing lane and return through Blackwater."
-	if run_predator_contacts > 0 or run_completed_scans.has("gulper_eel"):
-		return "Remembered place: Gulper Route - warning-lane timing matters."
-	if run_completed_scans.has("wreck_signal_cache") or run_completed_scans.has("pressure_wreck_signal"):
-		return "Remembered place: Wreck Shelf - pressure-route signals are worth returning to."
-	if run_completed_scans.has("thermal_vent") or run_collected_resources.has("glow_plankton"):
-		return "Remembered place: Thermal Vent Field - warm clues can lead toward deeper glow."
-	if run_completed_scans.has("shell_reef_shelf") or run_collected_resources.has("shell_fragments"):
-		return "Remembered place: Shell Reef - a safer midwater bank route."
-
-	return "Remembered place: Surface Base - safe return resolves the day."
-
-func _run_has_mirror_kelp_evidence() -> bool:
-	return run_tideglass_sample_recovered or run_completed_scans.has("mirrorfin_drift")
-
-func _run_has_glass_rim_observation() -> bool:
-	return run_completed_scans.has("glass_ray_drifter")
+	return RouteMemoryPresenterScript.format_region_memory_callout(_route_memory_state())
 
 func _format_discovery_memory_callout() -> String:
-	if run_completed_scans.has("wreck_signal_cache"):
-		return "\nDiscovery remembered: Wreck Signal Cache - deeper echoes may be readable later."
-	if run_completed_scans.has("pressure_wreck_signal"):
-		return "\nDiscovery remembered: Pressure-Locked Research Wreck - pressure access can open this route."
-	if run_completed_scans.has("gulper_eel"):
-		return "\nDiscovery remembered: Gulper Eel - warning-lane behavior can be studied."
-	if run_completed_scans.has("glassfin_swarm"):
-		return "\nDiscovery remembered: Glassfin Swarm - spacing can be read without fighting."
-	if run_completed_scans.has("mirrorfin_drift"):
-		return "\nDiscovery remembered: Mirrorfin Drift - reflection breaks can be read without fighting."
-	if run_completed_scans.has("glass_ray_drifter"):
-		return "\nDiscovery remembered: Glass Ray Drifter - Glass Rim slackwater can be read without fighting."
-	if run_completed_scans.has("lantern_ray"):
-		return "\nDiscovery remembered: Lantern Ray - lower-route movement can be observed without fighting."
-	if run_completed_scans.has("thermal_vent"):
-		return "\nDiscovery remembered: Thermal Vent - pressure-seal knowledge is banked."
-	if run_completed_scans.has("shell_reef_shelf"):
-		return "\nDiscovery remembered: Shell Reef Shelf - safer midwater banking route marked."
-
-	return ""
-
-func _run_has_hollow_reef_observation() -> bool:
-	return run_completed_scans.has("hollow_reef_skitter")
-
-func _run_has_glassfin_swarm_observation() -> bool:
-	return run_completed_scans.has("glassfin_swarm")
+	return RouteMemoryPresenterScript.format_discovery_memory_callout(_route_memory_state())
 
 func _format_scan_ids(scan_ids: Array[String]) -> String:
 	if scan_ids.is_empty():
