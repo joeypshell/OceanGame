@@ -23,6 +23,7 @@ const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd"
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
+const MirrorKelpVisualStagingServiceScript := preload("res://scripts/debug/mirror_kelp_visual_staging_service.gd")
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
@@ -2522,72 +2523,7 @@ func _stage_debug_wide_chamber_visual_review(cutter_owned := false) -> void:
 	_update_hud()
 
 func _stage_debug_mirror_kelp_visual_review(recovered := false, observed := false) -> void:
-	if not OS.has_feature("web") and not show_debug_telemetry:
-		return
-
-	var staged_player := player
-	if staged_player == null:
-		staged_player = get_node_or_null("Player") as CharacterBody2D
-	if staged_player == null:
-		return
-
-	var mirror_kelp := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass") as Node2D
-	if mirror_kelp == null:
-		return
-
-	if dive_session.result == DiveSessionScript.Result.READY:
-		dive_session.start()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	player = staged_player
-	player.global_position = mirror_kelp.global_position + Vector2(118.0, 22.0)
-	player.velocity = Vector2.ZERO
-	player_in_base = false
-	dive_session.has_left_base = true
-	dive_session.oxygen = dive_session.max_oxygen
-	player_near_blackwater_crack = false
-	player_near_glass_kelp_ledge = false
-	player_near_hollow_reef = false
-	player_near_salvage_manifest = false
-	player_near_salvage_data_cache = false
-	player_near_tideglass_sample = false
-	run_reached_dusk_trench = true
-	run_salvage_manifest_recovered = false
-	run_salvage_data_cache_recovered = false
-	run_tideglass_sample_recovered = false
-	while run_completed_scans.has("mirrorfin_drift"):
-		run_completed_scans.erase("mirrorfin_drift")
-	_sync_salvage_manifest_state()
-	_sync_salvage_data_cache_state()
-	_sync_tideglass_sample_state()
-	visual_smoke_route_stage = "mirror_kelp_pass"
-	if status_label != null:
-		status_label.text = "Debug review: Mirror Kelp Pass staged."
-
-	if recovered:
-		var sample_zone := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/InteractZone") as Area2D
-		if sample_zone != null:
-			player.global_position = sample_zone.global_position
-			player_near_tideglass_sample = true
-			run_tideglass_sample_recovered = true
-			run_reached_dusk_trench = true
-			_sync_tideglass_sample_state()
-			visual_smoke_route_stage = "mirror_kelp_tideglass"
-			if status_label != null:
-				status_label.text = "Debug review: Mirror Kelp Tideglass payoff staged."
-	elif observed:
-		var mirrorfin := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/MirrorfinDrift") as Node2D
-		if mirrorfin != null:
-			player.global_position = mirrorfin.global_position + Vector2(-42.0, 0.0)
-		run_completed_scans.append("mirrorfin_drift")
-		visual_smoke_route_stage = "mirror_kelp_mirrorfin"
-		if status_label != null:
-			status_label.text = "Debug review: Mirror Kelp Mirrorfin observation staged."
-
-	dive_session.current_depth = maxf(0.0, (player.global_position.y - surface_y) / pixels_per_meter)
-	if is_inside_tree() and active_stats_panel != null:
-		_update_hud()
+	MirrorKelpVisualStagingServiceScript.stage_visual_review(self, recovered, observed)
 
 func _stage_debug_outer_shelf_visual_review() -> void:
 	if not OS.has_feature("web") and not show_debug_telemetry:
