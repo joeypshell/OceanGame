@@ -15,7 +15,7 @@ static func stage_visual_review(host) -> void:
 	if host.dive_session.result != host.DiveSessionScript.Result.DIVING or not host.debug_wreck_echo_review_staged:
 		if host.dive_session.result != host.DiveSessionScript.Result.DIVING:
 			host.dive_session.start()
-		var trigger := host.wreck_echo_clue_trigger
+		var trigger: Area2D = host.wreck_echo_clue_trigger
 		if trigger == null:
 			trigger = host.get_node_or_null("WreckEchoDescent/ClueTrigger") as Area2D
 		if trigger == null:
@@ -39,7 +39,7 @@ static func stage_visual_review(host) -> void:
 
 	host.run_wreck_echo_clue_recovered = true
 	host._sync_wreck_echo_state()
-	var review_base := host.base_zone
+	var review_base: Area2D = host.base_zone
 	if review_base == null:
 		review_base = host.get_node_or_null("BaseZone") as Area2D
 	if host.player == null:
