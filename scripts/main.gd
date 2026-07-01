@@ -557,6 +557,7 @@ var upgrade_definitions: Array[UpgradeDefinition] = [
 ]
 var run_collected_resources: Array[String] = []
 var run_collected_survival_supplies: Array[String] = []
+var run_banked_survival_supplies: Array[String] = []
 var run_completed_scans: Array[String] = []
 var run_predator_contacts := 0
 var run_health_damage_events := 0
@@ -1007,6 +1008,7 @@ func _try_ship_offload() -> bool:
 	var offloaded_count := offloaded_cargo.size()
 	var banked_resources := _bank_extracted_cargo(offloaded_cargo)
 	var banked_survival_supplies := _bank_extracted_survival_supplies(offloaded_cargo)
+	_remember_banked_survival_supplies(banked_survival_supplies)
 	dive_session.clear_cargo()
 	dive_session.oxygen = dive_session.max_oxygen
 	daylight_ship_offload_count += 1
@@ -1035,6 +1037,7 @@ func _try_extract() -> void:
 	dive_session.extract()
 	var banked_resources := _bank_extracted_cargo(extracted_cargo)
 	var banked_survival_supplies := _bank_extracted_survival_supplies(extracted_cargo)
+	_remember_banked_survival_supplies(banked_survival_supplies)
 	_record_salvage_data_cache_discovery_if_extracted()
 	last_completed_survival_day = survival_state.current_day
 	_resolve_night_after_result()
@@ -1066,6 +1069,10 @@ func _bank_extracted_survival_supplies(extracted_cargo: Array[String]) -> Array[
 		if survival_state.bank_supply(item_id):
 			banked_supplies.append(item_id)
 	return banked_supplies
+
+func _remember_banked_survival_supplies(supply_ids: Array[String]) -> void:
+	for supply_id in supply_ids:
+		run_banked_survival_supplies.append(supply_id)
 
 func _resolve_night_after_result() -> void:
 	var night_lines := survival_state.resolve_night(_nightfall_extra_power_cost())
@@ -5046,6 +5053,7 @@ func _publish_visual_smoke_state() -> void:
 		"night_build_choice_visible": run_summary_label != null and run_summary_label.text.contains("Build choice:"),
 		"night_tomorrow_plan_visible": run_summary_label != null and run_summary_label.text.contains("Next: press"),
 		"starter_resource_target_visible": run_summary_label != null and run_summary_label.text.contains("Shell Reef pockets"),
+		"recent_survival_memory_visible": surface_tab_index == SURFACE_TAB_LOG and run_summary_label != null and run_summary_label.text.contains("survival "),
 		"upgrade_feedback_next_plan_visible": upgrade_menu_feedback_label != null and upgrade_menu_feedback_label.text.contains("Next:"),
 		"status_debug_copy": status_label != null and status_label.text.to_lower().contains("debug"),
 		"touch_controls_visible": mobile_touch_controls != null and mobile_touch_controls.visible,
@@ -5971,6 +5979,7 @@ func _format_cluster_pattern(pattern: String) -> String:
 func _reset_run_telemetry() -> void:
 	run_collected_resources.clear()
 	run_collected_survival_supplies.clear()
+	run_banked_survival_supplies.clear()
 	run_completed_scans.clear()
 	run_predator_contacts = 0
 	run_health_damage_events = 0
@@ -6577,6 +6586,7 @@ func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> 
 		"banked_cargo_count": banked_cargo_count,
 		"scans": run_completed_scans.duplicate(),
 		"route_memory": _format_recent_route_memory(),
+		"survival_memory": _format_recent_survival_memory(result_name, banked_cargo_count),
 		"predator_contacts": run_predator_contacts,
 		"best_depth": roundi(progression_state.best_depth_reached),
 		"seed": progression_state.current_run_seed,
@@ -6605,6 +6615,9 @@ func _format_recent_expedition_log() -> String:
 		var route_tease := _format_recent_route_tease(route_memory)
 		if not route_tease.is_empty():
 			line += ", next %s" % route_tease
+		var survival_memory := String(entry.get("survival_memory", ""))
+		if not survival_memory.is_empty():
+			line += ", survival %s" % survival_memory
 		if show_debug_telemetry:
 			line += " | seed %d, %s" % [
 				int(entry.get("seed", 0)),
@@ -6613,6 +6626,45 @@ func _format_recent_expedition_log() -> String:
 		lines.append(line)
 
 	return "\n".join(lines)
+
+func _format_recent_survival_memory(result_name: String, banked_cargo_count: int) -> String:
+	if run_health_damage_events > 0 and dive_session.health < dive_session.max_health:
+		return "health %d/%d; no surface heal" % [
+			ceili(dive_session.health),
+			ceili(dive_session.max_health),
+		]
+	if daylight_nightfall_away_from_ship:
+		return "late return cost Power -1"
+	if not run_banked_survival_supplies.is_empty():
+		return "banked %s supply" % _format_supply_names_inline(run_banked_survival_supplies)
+
+	var low_needs := _base_need_names_at_or_below(1)
+	if not low_needs.is_empty():
+		return "low %s" % _format_need_list(low_needs)
+
+	if result_name == "Extracted" and banked_cargo_count == 0:
+		var starter_target := _format_starter_resource_target()
+		if not starter_target.is_empty():
+			var prefix := "Shell Reef pockets: "
+			var suffix := " for Water Filter I."
+			if starter_target.begins_with(prefix):
+				starter_target = starter_target.substr(prefix.length())
+			if starter_target.ends_with(suffix):
+				starter_target = starter_target.substr(0, starter_target.length() - suffix.length())
+			return "Water Filter needs %s" % starter_target
+
+	return ""
+
+func _format_supply_names_inline(supply_ids: Array[String]) -> String:
+	if supply_ids.is_empty():
+		return "supply"
+
+	var names: Array[String] = []
+	for supply_id in supply_ids:
+		var name := survival_state.short_name_for_supply(supply_id)
+		if not names.has(name):
+			names.append(name)
+	return _format_need_list(names)
 
 func _format_recent_route_tease(route_memory: String) -> String:
 	match route_memory:

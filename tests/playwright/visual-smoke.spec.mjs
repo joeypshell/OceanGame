@@ -60,6 +60,17 @@ test.describe("OceanGame web visual smoke", () => {
       upgrade_feedback_next_plan_visible: true,
     });
 
+    await page.keyboard.press("ArrowRight");
+    await page.waitForTimeout(400);
+    await capture(page, testInfo, "recent-expedition-survival-log", {
+      result: "extracted",
+      surface_tab: "log",
+      debug_telemetry: false,
+      status_debug_copy: false,
+      run_panel_visible: true,
+      recent_survival_memory_visible: true,
+    });
+
     await page.keyboard.press("KeyR");
     await page.waitForTimeout(700);
     await page.keyboard.press("F9");

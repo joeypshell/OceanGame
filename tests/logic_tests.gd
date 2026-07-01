@@ -158,6 +158,7 @@ func _initialize() -> void:
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition log", _test_recent_expedition_log)
+	_run("recent expedition survival memory", _test_recent_expedition_survival_memory)
 	_run("thermal vent scan clue text", _test_thermal_vent_scan_clue_text)
 	_run("shell reef scan clue text", _test_shell_reef_scan_clue_text)
 	_run("wreck signal cache repeat scan hint", _test_wreck_signal_cache_repeat_scan_hint)
@@ -6603,6 +6604,75 @@ func _test_recent_expedition_log() -> void:
 	_expect(main.progression_state.to_save_data() == save_before_recent_hollow, "Hollow Reef recent route memory should remain session-only")
 	_expect(not main.progression_state.to_save_data().has("hollow_reef_route"), "recent Hollow Reef memory should not create durable route state")
 	main.free()
+
+func _test_recent_expedition_survival_memory() -> void:
+	var banked := MainScript.new()
+	banked.progression_state.current_run_number = 21
+	banked.progression_state.best_depth_reached = 72.0
+	banked.run_banked_survival_supplies = ["food_supply", "power_supply"]
+	banked._record_recent_expedition("Extracted", 2)
+	var log_text := banked._format_recent_expedition_log()
+	_expect(log_text.contains("survival banked Food/Power supply"), "recent log should remember banked survival supplies compactly")
+	_expect(not log_text.contains("seed"), "survival memory should not expose debug seed data")
+	_expect_lines_within(log_text, 120, "recent expedition survival log")
+	banked.free()
+
+	var damaged := MainScript.new()
+	damaged.progression_state.current_run_number = 22
+	damaged.run_banked_survival_supplies = ["food_supply"]
+	damaged.run_health_damage_events = 1
+	damaged.dive_session.health = 82.0
+	damaged.dive_session.max_health = 100.0
+	damaged._record_recent_expedition("Extracted", 1)
+	log_text = damaged._format_recent_expedition_log()
+	_expect(log_text.contains("survival health 82/100; no surface heal"), "health damage should be the most important survival memory")
+	_expect(not log_text.contains("survival banked Food"), "health memory should keep the line to one survival tradeoff")
+	damaged.free()
+
+	var late := MainScript.new()
+	late.progression_state.current_run_number = 23
+	late.daylight_nightfall_away_from_ship = true
+	late.run_banked_survival_supplies = ["power_supply"]
+	late._record_recent_expedition("Extracted", 1)
+	log_text = late._format_recent_expedition_log()
+	_expect(log_text.contains("survival late return cost Power -1"), "late return should be remembered as a survival tradeoff")
+	_expect(not log_text.contains("survival banked Power"), "late return should keep one compact survival memory")
+	late.free()
+
+	var low_need := MainScript.new()
+	low_need.progression_state.current_run_number = 24
+	low_need.survival_state.food = 2
+	low_need.survival_state.water = 1
+	low_need.survival_state.power = 0
+	low_need._record_recent_expedition("Extracted", 1)
+	log_text = low_need._format_recent_expedition_log()
+	_expect(log_text.contains("survival low Water/Power"), "recent log should remember low base needs when no sharper tradeoff exists")
+	low_need.free()
+
+	var target := MainScript.new()
+	target.progression_state.current_run_number = 25
+	target._record_recent_expedition("Extracted", 0)
+	log_text = target._format_recent_expedition_log()
+	_expect(log_text.contains("survival Water Filter needs Driftwood/Quartz Glass"), "no-cargo starter returns should remember the Water Filter material target")
+	target.free()
+
+	var retained := MainScript.new()
+	for run_number in range(1, 5):
+		retained.progression_state.current_run_number = run_number
+		retained.progression_state.best_depth_reached = 20.0 * run_number
+		retained.run_banked_survival_supplies.clear()
+		if run_number == 4:
+			retained.run_banked_survival_supplies = ["water_supply"]
+		retained._record_recent_expedition("Extracted", run_number)
+
+	log_text = retained._format_recent_expedition_log()
+	_expect(retained.recent_expedition_log.size() == 3, "survival-memory recent log should keep only three entries")
+	_expect(not log_text.contains("#1"), "survival-memory recent log retention should drop the oldest entry")
+	_expect(log_text.contains("#4 Extracted"), "survival-memory recent log should retain the newest entry")
+	_expect(log_text.contains("survival banked Water supply"), "retained newest entry should keep its survival memory")
+	_expect(not log_text.contains("Playtest data"), "recent log survival memory should not expose debug telemetry")
+	_expect_lines_within(log_text, 120, "recent expedition survival retention log")
+	retained.free()
 
 func _test_thermal_vent_scan_clue_text() -> void:
 	var main := MainScript.new()
