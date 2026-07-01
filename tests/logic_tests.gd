@@ -23,6 +23,7 @@ const Area01VisualDirectorScript := preload("res://scripts/area01_visual_directo
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
+const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
@@ -192,6 +193,7 @@ func _initialize() -> void:
 	_run("pressure lock guidance text", _test_pressure_lock_guidance_text)
 	_run("surface summary tabs", _test_surface_summary_tabs)
 	_run("keyboard action prompt labels", _test_keyboard_action_prompt_labels)
+	_run("HUD prompt presenter", _test_hud_prompt_presenter)
 	_run("prompt formatter guard coverage", _test_prompt_formatter_guard_coverage)
 	_run("condition presenter", _test_condition_presenter)
 	_run("condition briefing copy", _test_condition_briefing_copy)
@@ -7152,6 +7154,60 @@ func _test_keyboard_action_prompt_labels() -> void:
 	var slate_key := slate_events[0] as InputEventKey
 	_expect(slate_key != null and slate_key.keycode == KEY_TAB, "expedition slate should be bound to Tab")
 	main.free()
+
+func _test_hud_prompt_presenter() -> void:
+	var labels := {
+		"interact": "E/Enter",
+		"move_left_right": "Left/Right",
+		"move_up_down": "Up/Down",
+		"restart_dive": "R",
+	}
+	var prompt := HudPromptPresenterScript.format_prompt({
+		"action_labels": labels,
+		"result": "ready",
+	})
+	_expect(prompt == "Press E or Enter to begin the dive", "HUD prompt presenter should format ready interact copy")
+
+	prompt = HudPromptPresenterScript.format_prompt({
+		"action_labels": labels,
+		"result": "extracted",
+		"surface_tab": "upgrades",
+	})
+	_expect(prompt.contains("Upgrade bay: Up/Down select, E/Enter purchase"), "HUD prompt presenter should format upgrade tab controls")
+
+	prompt = HudPromptPresenterScript.format_prompt({
+		"action_labels": labels,
+		"burst_thruster_prompt": "Space burst",
+		"decoy_pulse_prompt": "F: decoy ready",
+		"player_near_survival_supply_cache": true,
+		"result": "diving",
+		"survival_supply_cache_prompt": "Emergency cache: E/Enter recover Power",
+	})
+	_expect(prompt.begins_with("Emergency cache: E/Enter recover Power"), "HUD prompt presenter should prefer nearby interactable prompts")
+	_expect(prompt.ends_with("Space burst | F: decoy ready"), "HUD prompt presenter should append active dive tool prompts")
+
+	prompt = HudPromptPresenterScript.format_prompt({
+		"action_labels": labels,
+		"burst_thruster_prompt": "Space burst",
+		"can_ship_offload": true,
+		"cargo_count": 2,
+		"cargo_limit": 3,
+		"has_left_base": true,
+		"player_in_base": true,
+		"result": "diving",
+	})
+	_expect(prompt.contains("At ship: E/Enter offload cargo 2/3, O2 full"), "HUD prompt presenter should format ship offload prompts")
+
+	prompt = HudPromptPresenterScript.format_prompt({
+		"action_labels": labels,
+		"burst_thruster_prompt": "Space burst",
+		"has_recent_health_damage": true,
+		"health": 82.0,
+		"max_health": 100.0,
+		"player_in_surface_oxygen_refill": true,
+		"result": "diving",
+	})
+	_expect(prompt.contains("O2 only; health 82/100; ship banks"), "HUD prompt presenter should keep surface refill copy honest after health damage")
 
 func _test_prompt_formatter_guard_coverage() -> void:
 	var main := MainScript.new()

@@ -15,6 +15,7 @@ const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_buil
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
+const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
@@ -2873,148 +2874,88 @@ func _action_label(action_id: String) -> String:
 	return String(KEYBOARD_ACTION_LABELS.get(action_id, action_id))
 
 func _format_hud_prompt() -> String:
-	var prompt := ""
-	if dive_session.result == DiveSessionScript.Result.READY:
-		prompt = "Press %s to begin the dive" % _action_label("interact").replace("/", " or ")
-	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
-		if surface_tab_index == SURFACE_TAB_NIGHT:
-			prompt = _format_night_build_prompt()
-		elif _all_upgrades_owned():
-			prompt = "Extraction complete - press %s for next expedition | %s surface view" % [
-				_action_label("restart_dive"),
-				_action_label("move_left_right"),
-			]
-		elif surface_tab_index == SURFACE_TAB_UPGRADES:
-			prompt = "Upgrade bay: %s select, %s purchase, %s next expedition | %s surface view" % [
-				_action_label("move_up_down"),
-				_action_label("interact"),
-				_action_label("restart_dive"),
-				_action_label("move_left_right"),
-			]
-		else:
-			prompt = "Extraction complete - press %s for upgrades, %s next expedition | %s surface view" % [
-				_action_label("interact"),
-				_action_label("restart_dive"),
-				_action_label("move_left_right"),
-			]
-	elif dive_session.result == DiveSessionScript.Result.FAILED:
-		prompt = "Expedition failed - press %s for next expedition" % _action_label("restart_dive")
-	elif player_near_survival_supply_cache:
-		if run_survival_supply_cache_recovered:
-			prompt = "Emergency cache recovered"
-		else:
-			prompt = SurvivalSupplyCachePresenterScript.format_prompt(
-				survival_state.needs_are_stable(),
-				survival_state.short_name_for_supply(survival_state.most_needed_supply_id()),
-				_action_label("interact")
-			)
-	elif player_near_resonance_alcove:
-		prompt = "Resonance Alcove: %s record hatch echo" % _action_label("interact")
-	elif player_near_glass_kelp_ledge:
-		if run_glass_kelp_reading_recovered:
-			prompt = "Glass Kelp read"
-		else:
-			prompt = "Glass Kelp: %s" % _action_label("interact")
-	elif player_near_hollow_reef:
-		if run_hollow_reef_reading_recovered:
-			prompt = "Hollow Reef read"
-		else:
-			prompt = "Hollow Reef: %s" % _action_label("interact")
-	elif player_near_salvage_manifest and progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID):
-		if run_salvage_manifest_recovered:
-			prompt = "Salvage manifest"
-		else:
-			prompt = "Salvage manifest: %s" % _action_label("interact")
-	elif player_near_salvage_data_cache:
-		if run_salvage_data_cache_recovered:
-			prompt = "Salvage cache"
-		else:
-			prompt = "Salvage cache: %s" % _action_label("interact")
-	elif player_near_tideglass_sample:
-		if run_tideglass_sample_recovered:
-			prompt = "Tideglass read"
-		else:
-			prompt = "Tideglass: %s" % _action_label("interact")
-	elif player_near_rim_glass_reading:
-		if run_rim_glass_reading_recovered:
-			prompt = "Glass Rim reading recovered"
-		else:
-			prompt = "Glass Rim reading: %s" % _action_label("interact")
-	elif player_near_outer_shelf_survey:
-		if run_outer_shelf_survey_recovered:
-			prompt = _outer_shelf_slackwater_decision_prompt(outer_shelf_slackwater_timer)
-		else:
-			prompt = "Outer Shelf survey: %s" % _action_label("interact")
-	elif player_near_blackwater_crack:
-		prompt = _format_blackwater_prompt()
-	elif player_near_lantern_silt_nook:
-		prompt = "Lantern Silt Nook: %s collect silt sample" % _action_label("interact")
-	elif player_near_blue_chimney:
-		prompt = "Blue Chimney: %s recover survey core" % _action_label("interact")
-	elif player_near_lower_connector_echo:
-		prompt = "Drop Echo: %s record lower-route ping" % _action_label("interact")
-	elif player_near_east_shelf_pocket:
-		prompt = "East Shelf Pocket: %s recover signal core" % _action_label("interact")
-	elif player_in_base:
-		if dive_session.has_left_base:
-			if _can_ship_offload():
-				prompt = "At ship: %s offload cargo %d/%d, O2 full" % [
-					_action_label("interact"),
-					dive_session.current_cargo.size(),
-					dive_session.cargo_limit,
-				]
-			elif daylight_nightfall_announced:
-				if daylight_nightfall_away_from_ship:
-					prompt = "At ship: %s start night; late Power -1" % _action_label("interact")
-				else:
-					prompt = "At ship: %s start night; resolve needs" % _action_label("interact")
-			else:
-				prompt = "At ship: cargo banked; O2 full; dive again"
-		else:
-			prompt = "Leave moonpool, then return to bank"
-	elif daylight_nightfall_announced:
-		if daylight_nightfall_away_from_ship:
-			prompt = "Nightfall: return to ship | cargo at risk | late Power -1"
-		else:
-			prompt = "Nightfall: return to ship"
-	elif _should_warn_late_day_cargo_banking():
-		prompt = "Bank at ship | Power risk"
-	elif _is_player_in_surface_oxygen_refill():
-		if dive_session.oxygen >= dive_session.max_oxygen:
-			if _has_recent_health_damage():
-				prompt = "O2 only; health %d/%d; ship banks" % [
-					ceili(dive_session.health),
-					ceili(dive_session.max_health),
-				]
-			else:
-				prompt = "O2 full | Cargo %d/%d | Ship banks" % [
-					dive_session.current_cargo.size(),
-					dive_session.cargo_limit,
-				]
-		else:
-			if _has_recent_health_damage():
-				prompt = "O2 only; health %d/%d; ship banks" % [
-					ceili(dive_session.health),
-					ceili(dive_session.max_health),
-				]
-			else:
-				prompt = "O2 refill | Cargo %d/%d | Ship banks" % [
-					dive_session.current_cargo.size(),
-					dive_session.cargo_limit,
-				]
-	else:
-		if _has_recent_health_damage():
-			prompt = "Surface O2 only; ship banks cargo"
-		else:
-			prompt = "Explore | Surface for O2 | Ship banks"
+	return HudPromptPresenterScript.format_prompt(_hud_prompt_state())
 
-	if dive_session.result == DiveSessionScript.Result.DIVING:
-		prompt += " | %s" % _format_burst_thruster_prompt()
-		var decoy_prompt := _format_decoy_pulse_prompt()
-		if not decoy_prompt.is_empty():
-			prompt += " | %s" % decoy_prompt
+func _hud_prompt_state() -> Dictionary:
+	return {
+		"action_labels": _prompt_action_labels(),
+		"all_upgrades_owned": _all_upgrades_owned(),
+		"blackwater_prompt": _format_blackwater_prompt(),
+		"burst_thruster_prompt": _format_burst_thruster_prompt(),
+		"can_ship_offload": _can_ship_offload(),
+		"cargo_count": dive_session.current_cargo.size(),
+		"cargo_limit": dive_session.cargo_limit,
+		"daylight_nightfall_announced": daylight_nightfall_announced,
+		"daylight_nightfall_away_from_ship": daylight_nightfall_away_from_ship,
+		"decoy_pulse_prompt": _format_decoy_pulse_prompt(),
+		"has_left_base": dive_session.has_left_base,
+		"has_recent_health_damage": _has_recent_health_damage(),
+		"has_salvage_cutter": progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID),
+		"health": dive_session.health,
+		"max_health": dive_session.max_health,
+		"max_oxygen": dive_session.max_oxygen,
+		"night_build_prompt": _format_night_build_prompt(),
+		"outer_shelf_recovered_prompt": _outer_shelf_slackwater_decision_prompt(outer_shelf_slackwater_timer),
+		"oxygen": dive_session.oxygen,
+		"player_in_base": player_in_base,
+		"player_in_surface_oxygen_refill": _is_player_in_surface_oxygen_refill(),
+		"player_near_blackwater_crack": player_near_blackwater_crack,
+		"player_near_blue_chimney": player_near_blue_chimney,
+		"player_near_east_shelf_pocket": player_near_east_shelf_pocket,
+		"player_near_glass_kelp_ledge": player_near_glass_kelp_ledge,
+		"player_near_hollow_reef": player_near_hollow_reef,
+		"player_near_lantern_silt_nook": player_near_lantern_silt_nook,
+		"player_near_lower_connector_echo": player_near_lower_connector_echo,
+		"player_near_outer_shelf_survey": player_near_outer_shelf_survey,
+		"player_near_resonance_alcove": player_near_resonance_alcove,
+		"player_near_rim_glass_reading": player_near_rim_glass_reading,
+		"player_near_salvage_data_cache": player_near_salvage_data_cache,
+		"player_near_salvage_manifest": player_near_salvage_manifest,
+		"player_near_survival_supply_cache": player_near_survival_supply_cache,
+		"player_near_tideglass_sample": player_near_tideglass_sample,
+		"result": _dive_result_prompt_state(),
+		"run_glass_kelp_reading_recovered": run_glass_kelp_reading_recovered,
+		"run_hollow_reef_reading_recovered": run_hollow_reef_reading_recovered,
+		"run_outer_shelf_survey_recovered": run_outer_shelf_survey_recovered,
+		"run_rim_glass_reading_recovered": run_rim_glass_reading_recovered,
+		"run_salvage_data_cache_recovered": run_salvage_data_cache_recovered,
+		"run_salvage_manifest_recovered": run_salvage_manifest_recovered,
+		"run_survival_supply_cache_recovered": run_survival_supply_cache_recovered,
+		"run_tideglass_sample_recovered": run_tideglass_sample_recovered,
+		"should_warn_late_day_cargo_banking": _should_warn_late_day_cargo_banking(),
+		"surface_tab": _surface_tab_prompt_state(),
+		"survival_supply_cache_prompt": SurvivalSupplyCachePresenterScript.format_prompt(
+			survival_state.needs_are_stable(),
+			survival_state.short_name_for_supply(survival_state.most_needed_supply_id()),
+			_action_label("interact")
+		),
+	}
 
-	return prompt
+func _prompt_action_labels() -> Dictionary:
+	return {
+		"interact": _action_label("interact"),
+		"move_left_right": _action_label("move_left_right"),
+		"move_up_down": _action_label("move_up_down"),
+		"restart_dive": _action_label("restart_dive"),
+	}
+
+func _dive_result_prompt_state() -> String:
+	match dive_session.result:
+		DiveSessionScript.Result.READY:
+			return "ready"
+		DiveSessionScript.Result.EXTRACTED:
+			return "extracted"
+		DiveSessionScript.Result.FAILED:
+			return "failed"
+		_:
+			return "diving"
+
+func _surface_tab_prompt_state() -> String:
+	if surface_tab_index == SURFACE_TAB_NIGHT:
+		return "night"
+	if surface_tab_index == SURFACE_TAB_UPGRADES:
+		return "upgrades"
+	return "result"
 
 func _format_night_build_prompt() -> String:
 	return NightBuildPresenterScript.format_prompt(
