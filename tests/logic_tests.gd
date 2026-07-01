@@ -49,6 +49,7 @@ const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_prese
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
+const WreckEchoVisualStagingServiceScript := preload("res://scripts/debug/wreck_echo_visual_staging_service.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -1291,7 +1292,7 @@ func _test_debug_wreck_echo_visual_staging() -> void:
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wide Reef Chamber web staging should be inaccessible outside the web debug bridge")
 	_expect(main.visual_smoke_route_stage == "", "Wide Reef Chamber web staging should not set route state outside web visual smoke")
 
-	main.call("_stage_debug_wreck_echo_visual_review")
+	WreckEchoVisualStagingServiceScript.stage_visual_review(main)
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wreck Echo visual staging should be ignored while debug telemetry is hidden")
 
 	main.show_debug_telemetry = true
