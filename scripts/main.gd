@@ -17,6 +17,7 @@ const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
+const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
@@ -6040,33 +6041,28 @@ func _format_need_list(needs: Array[String]) -> String:
 	return UpgradeCopyPresenterScript.format_need_list(needs)
 
 func _format_expedition_ready_status() -> String:
-	if survival_state.chapter_complete:
-		return "Base stabilized: continue expeditions without nightly collapse."
-	if _current_condition_id() == "low_visibility":
-		return "Day %d ready: lower-trench visibility is poor today." % survival_state.current_day
-	if _current_condition_id() == "kelp_bloom":
-		return "Day %d ready: Mirror Kelp approaches are thicker today." % survival_state.current_day
-
-	return "Day %d ready: the ocean changed overnight." % survival_state.current_day
+	return SurfaceResultPresenterScript.format_expedition_ready_status(
+		survival_state.chapter_complete,
+		_current_condition_id(),
+		survival_state.current_day
+	)
 
 func _format_expedition_day_title(suffix: String) -> String:
-	if survival_state.chapter_complete:
-		return "Base Stabilized %s" % suffix
-	var display_day := last_completed_survival_day if (suffix.begins_with("Result") or suffix == "Night") and last_completed_survival_day > 0 else survival_state.current_day
-	return "Emergency Week Day %d/%d %s" % [
-		display_day,
-		survival_state.max_days,
+	return SurfaceResultPresenterScript.format_expedition_day_title(
 		suffix,
-	]
+		survival_state.chapter_complete,
+		survival_state.current_day,
+		survival_state.max_days,
+		last_completed_survival_day
+	)
 
 func _format_completed_expedition_line(result_name: String) -> String:
-	if survival_state.chapter_complete:
-		return "Base Stabilized: %s." % result_name
-	var display_day := last_completed_survival_day if last_completed_survival_day > 0 else survival_state.current_day
-	return "Emergency Week Day %d: %s." % [
-		display_day,
+	return SurfaceResultPresenterScript.format_completed_expedition_line(
 		result_name,
-	]
+		survival_state.chapter_complete,
+		survival_state.current_day,
+		last_completed_survival_day
+	)
 
 func _format_extraction_result_summary(extracted_count: int, banked_resources: Array[String], banked_survival_supplies: Array[String] = []) -> String:
 	return "%s\n%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s%s" % [
@@ -6101,10 +6097,7 @@ func _format_extraction_result_summary(extracted_count: int, banked_resources: A
 	]
 
 func _format_night_report_block() -> String:
-	if last_night_report.is_empty():
-		return ""
-
-	return "Night Report:\n%s\n" % last_night_report
+	return SurfaceResultPresenterScript.format_night_report_block(last_night_report)
 
 func _format_night_phase_summary() -> String:
 	var lines: Array[String] = [
@@ -6121,15 +6114,10 @@ func _format_night_phase_summary() -> String:
 	return "\n".join(lines)
 
 func _format_daylight_closeout_line() -> String:
-	if daylight_nightfall_away_from_ship:
-		if daylight_ship_offload_count > 0:
-			return "Daylight closeout: nightfall caught the diver away from ship after %d ship offload(s); final return banked cargo and cost extra Power." % daylight_ship_offload_count
-		return "Daylight closeout: nightfall caught the diver away from ship; final return banked cargo and cost extra Power."
-
-	if daylight_ship_offload_count > 0:
-		return "Daylight closeout: %d ship offload(s) banked cargo before night; final return resolved base needs." % daylight_ship_offload_count
-
-	return "Daylight closeout: no ship offload before night; final return resolved base needs."
+	return SurfaceResultPresenterScript.format_daylight_closeout_line(
+		daylight_nightfall_away_from_ship,
+		daylight_ship_offload_count
+	)
 
 func _format_night_build_choice_line() -> String:
 	if night_health_recovery_used_build_time:
