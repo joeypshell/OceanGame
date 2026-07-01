@@ -31,6 +31,7 @@ const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd"
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
+const MirrorKelpVisualStagingServiceScript := preload("res://scripts/debug/mirror_kelp_visual_staging_service.gd")
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
@@ -1369,7 +1370,7 @@ func _test_debug_mirror_kelp_evidence_staging() -> void:
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 
 	main.show_debug_telemetry = false
-	main.call("_stage_debug_mirror_kelp_visual_review")
+	MirrorKelpVisualStagingServiceScript.stage_visual_review(main)
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Mirror Kelp staging should be ignored while debug telemetry is hidden outside web visual smoke")
 	_expect(main.visual_smoke_route_stage == "", "hidden Mirror Kelp staging should not set visual route state")
 	_expect(main.progression_state.to_save_data() == save_before, "hidden Mirror Kelp staging should not mutate durable progression")
