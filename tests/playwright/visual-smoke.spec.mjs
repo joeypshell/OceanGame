@@ -35,6 +35,7 @@ test.describe("OceanGame web visual smoke", () => {
       run_panel_visible: true,
       night_build_choice_visible: true,
       night_tomorrow_plan_visible: true,
+      starter_resource_target_visible: true,
     });
 
     await page.keyboard.press("Enter");

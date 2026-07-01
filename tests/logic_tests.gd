@@ -5061,7 +5061,16 @@ func _test_next_expedition_framing() -> void:
 	var prompt := main._format_next_expedition_prompt()
 	_expect(prompt.contains("Expedition 4"), "result prompt should point to the next expedition number")
 	_expect(prompt.contains("Water Filter I"), "result prompt should point to the best known upgrade/material goal")
+	_expect(prompt.contains("Shell Reef pockets"), "starter resource shortage should point back to a remembered place")
+	_expect(prompt.contains("Driftwood/Quartz Glass"), "starter resource target should name the missing materials compactly")
 	_expect(not prompt.to_lower().contains("restart"), "result prompt should avoid raw restart language")
+
+	main.progression_state.banked_resources = {
+		"driftwood": 1,
+	}
+	prompt = main._format_next_expedition_prompt()
+	_expect(prompt.contains("Shell Reef pockets"), "partial starter progress should preserve the remembered-place target")
+	_expect(prompt.contains("Quartz Glass") and not prompt.contains("Driftwood/Quartz Glass"), "partial starter progress should only name the remaining material")
 
 	main.survival_state.food = 0
 	prompt = main._format_next_expedition_prompt()

@@ -4934,6 +4934,7 @@ func _publish_visual_smoke_state() -> void:
 		"health_damage_objective_visible": objective_line_label != null and objective_line_label.text.contains("Health hit"),
 		"night_build_choice_visible": run_summary_label != null and run_summary_label.text.contains("Build choice:"),
 		"night_tomorrow_plan_visible": run_summary_label != null and run_summary_label.text.contains("Next: press"),
+		"starter_resource_target_visible": run_summary_label != null and run_summary_label.text.contains("Shell Reef pockets"),
 		"upgrade_feedback_next_plan_visible": upgrade_menu_feedback_label != null and upgrade_menu_feedback_label.text.contains("Next:"),
 		"status_debug_copy": status_label != null and status_label.text.to_lower().contains("debug"),
 		"touch_controls_visible": mobile_touch_controls != null and mobile_touch_controls.visible,
@@ -5973,6 +5974,10 @@ func _format_tomorrow_plan() -> String:
 	if run_outer_shelf_survey_recovered:
 		return "try Glass Rim timing or bank the Outer Shelf cargo."
 
+	var starter_resource_target := _format_starter_resource_target()
+	if not starter_resource_target.is_empty():
+		return starter_resource_target
+
 	var broad_goal := ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory())
 	var goal_prefix := "Goal: "
 	if broad_goal.begins_with(goal_prefix):
@@ -5981,6 +5986,30 @@ func _format_tomorrow_plan() -> String:
 		return "the ocean shifts again."
 
 	return broad_goal
+
+func _format_starter_resource_target() -> String:
+	if progression_state.has_upgrade(WATER_FILTER_UPGRADE_ID):
+		return ""
+
+	var missing_materials: Array[String] = []
+	for resource_id in WATER_FILTER_UPGRADE.resource_cost.keys():
+		var missing := int(WATER_FILTER_UPGRADE.resource_cost[resource_id]) - progression_state.resource_count(resource_id)
+		if missing > 0:
+			missing_materials.append(_display_name_for_resource(resource_id))
+
+	if missing_materials.is_empty():
+		return ""
+
+	return "Shell Reef pockets: %s for Water Filter I." % _format_material_need_list(missing_materials)
+
+func _format_material_need_list(materials: Array[String]) -> String:
+	if materials.is_empty():
+		return "materials"
+	if materials.size() == 1:
+		return materials[0]
+	if materials.size() == 2:
+		return "%s/%s" % [materials[0], materials[1]]
+	return ", ".join(materials)
 
 func _base_need_names_at_or_below(threshold: int) -> Array[String]:
 	var needs: Array[String] = []
