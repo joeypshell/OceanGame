@@ -38,6 +38,7 @@ const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_prese
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
+const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -2463,64 +2464,7 @@ func _stage_debug_hollow_reef_payoff_visual_review(recovered := false) -> void:
 	_update_hud()
 
 func _stage_debug_wide_chamber_visual_review(cutter_owned := false) -> void:
-	if not OS.has_feature("web"):
-		return
-
-	var staged_player := player
-	if staged_player == null:
-		staged_player = get_node_or_null("Player") as CharacterBody2D
-	if staged_player == null:
-		return
-
-	var chamber := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber") as Node2D
-	if chamber == null:
-		return
-
-	if dive_session.result == DiveSessionScript.Result.READY:
-		dive_session.start()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	progression_state.purchased_upgrades[ECHO_LENS_UPGRADE_ID] = true
-	progression_state.purchased_upgrades[RESONANCE_KEY_UPGRADE_ID] = true
-	if cutter_owned:
-		progression_state.purchased_upgrades[SALVAGE_CUTTER_UPGRADE_ID] = true
-	current_expedition_condition = {
-		"id": "calm_current",
-		"display_name": "Calm Current",
-		"briefing": "Safe routes are easier to read today.",
-		"tags": ["current", "return"],
-	}
-	_sync_sealed_shelf_hatch_state()
-	_sync_blackwater_crack_gate_state()
-	_sync_salvage_pocket_open_state()
-	_sync_condition_visuals()
-	_update_blackwater_pressure_cue(BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
-
-	player = staged_player
-	player.global_position = chamber.global_position + (Vector2(456.0, -88.0) if cutter_owned else Vector2(112.0, -18.0))
-	player.velocity = Vector2.ZERO
-	player_in_base = false
-	dive_session.has_left_base = true
-	dive_session.oxygen = dive_session.max_oxygen
-	player_near_blackwater_crack = false
-	player_near_glass_kelp_ledge = false
-	player_near_hollow_reef = false
-	player_near_salvage_manifest = false
-	player_near_salvage_data_cache = false
-	run_reached_dusk_trench = true
-	run_glass_kelp_reading_recovered = false
-	run_hollow_reef_reading_recovered = true
-	run_salvage_manifest_recovered = false
-	run_salvage_data_cache_recovered = false
-	_sync_glass_kelp_reading_state()
-	_sync_hollow_reef_reading_state()
-	_sync_salvage_manifest_state()
-	_sync_salvage_data_cache_state()
-	visual_smoke_route_stage = "wide_reef_salvage_open" if cutter_owned else "wide_reef_chamber"
-	status_label.text = "Debug review: Wide Reef salvage pocket opened." if cutter_owned else "Debug review: Wide Reef Chamber staged."
-	_update_depth()
-	_update_hud()
+	WideReefVisualStagingServiceScript.stage_visual_review(self, cutter_owned)
 
 func _stage_debug_mirror_kelp_visual_review(recovered := false, observed := false) -> void:
 	MirrorKelpVisualStagingServiceScript.stage_visual_review(self, recovered, observed)
