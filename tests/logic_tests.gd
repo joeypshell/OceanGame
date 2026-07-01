@@ -34,6 +34,7 @@ const HealthDamageVisualStagingServiceScript := preload("res://scripts/debug/hea
 const HollowReefVisualStagingServiceScript := preload("res://scripts/debug/hollow_reef_visual_staging_service.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPromptStateServiceScript := preload("res://scripts/ui/hud_prompt_state_service.gd")
+const HudInstrumentBarServiceScript := preload("res://scripts/ui/hud_instrument_bar_service.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd")
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
@@ -241,6 +242,7 @@ func _initialize() -> void:
 	_run("expedition slate context", _test_expedition_slate_context)
 	_run("expedition slate pressure pause", _test_expedition_slate_pressure_pause)
 	_run("HUD presenter", _test_hud_presenter)
+	_run("HUD instrument bar service", _test_hud_instrument_bar_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("visual smoke bridge", _test_visual_smoke_bridge)
@@ -8079,6 +8081,28 @@ func _test_hud_presenter() -> void:
 	_expect(HudPresenterScript.format_base_direction(Vector2.ZERO, Vector2.ZERO, 40.0) == "Base: here", "base direction presenter should show nearby base copy")
 	_expect(HudPresenterScript.format_base_direction(Vector2(400.0, 400.0), Vector2.ZERO, 40.0).begins_with("Base: up-left"), "base direction presenter should name broad return direction")
 	_expect(HudPresenterScript.format_base_direction(Vector2(4300.0, 2700.0), Vector2.ZERO, 40.0).contains("via Mirror/Wide/Hollow"), "base direction presenter should preserve far-route hint copy")
+
+func _test_hud_instrument_bar_service() -> void:
+	var main := MainScript.new()
+	main.oxygen_bar_fill = ColorRect.new()
+	main.health_bar_fill = ColorRect.new()
+	main.depth_bar_fill = ColorRect.new()
+	main.dive_session.reset(40.0, 100.0)
+	main.dive_session.start()
+	main.dive_session.oxygen = 20.0
+	main.dive_session.health = 82.0
+	main.dive_session.current_depth = 100.0
+	main.run_health_damage_events = 1
+
+	HudInstrumentBarServiceScript.update_bars(main)
+	var oxygen_width := main.oxygen_bar_fill.offset_right - main.oxygen_bar_fill.offset_left
+	var health_width := main.health_bar_fill.offset_right - main.health_bar_fill.offset_left
+	var depth_width := main.depth_bar_fill.offset_right - main.depth_bar_fill.offset_left
+	_expect(is_equal_approx(oxygen_width, main.OXYGEN_BAR_FILL_RECT.size.x * 0.5), "instrument bars should scale oxygen fill by oxygen ratio")
+	_expect(is_equal_approx(health_width, main.HEALTH_BAR_FILL_RECT.size.x * 0.82), "instrument bars should scale health fill by health ratio")
+	_expect(is_equal_approx(depth_width, main.DEPTH_BAR_FILL_RECT.size.x * 0.5), "instrument bars should scale depth fill by display depth ratio")
+	_expect(main.health_bar_fill.color == HudPresenterScript.HEALTH_DAMAGED_COLOR, "instrument bars should preserve recent-damage health color")
+	main.free()
 
 func _test_tool_belt_presenter() -> void:
 	_expect(ToolBeltPresenterScript.tool_slot_color("ready") == Color(0.018, 0.075, 0.095, 0.5), "ready tool slot color should stay exact")
