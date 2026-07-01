@@ -15,6 +15,7 @@ const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_buil
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
+const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
@@ -3702,63 +3703,36 @@ func _format_first_scan_guidance(target: Node) -> String:
 			return " Use the clue if it helps, then return to base before oxygen runs out."
 
 func _format_resource_upgrade_need(resource_id: String) -> String:
-	if survival_state.is_supply_id(resource_id):
-		return "Banks into base needs for tonight, not the upgrade-material bank."
-	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
-		return "Oxygen Tank I is installed; future upgrades may still use it."
-
 	var needed: int = maxi(0, int(_oxygen_tank_cost().get(resource_id, 0)) - progression_state.resource_count(resource_id))
-	if needed > 0:
-		return "Need %d more for Oxygen Tank I." % needed
-
-	return "Enough banked for this Oxygen Tank I material."
+	return ResourcePresenterScript.format_resource_upgrade_need(
+		survival_state.is_supply_id(resource_id),
+		progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID),
+		needed
+	)
 
 func _resource_role_summary(resource_id: String) -> String:
-	if survival_state.is_supply_id(resource_id):
-		return "%s survival supply; %s" % [
-			_resource_category_label(resource_id),
-			_supply_banking_role(resource_id),
-		]
-	var category := _resource_category_label(resource_id)
-	if category == "Building":
-		return "Building material; banks for repairs, crafting, and starter upgrades."
-	if category == "Research":
-		return "Research material; banks for oxygen, scanner, and pressure upgrades."
-	return "%s material; banks for upgrades." % category
+	return ResourcePresenterScript.resource_role_summary(
+		resource_id,
+		survival_state.is_supply_id(resource_id),
+		_resource_category_label(resource_id),
+		_supply_banking_role(resource_id)
+	)
 
 func _resource_collection_guidance(resource_id: String) -> String:
-	if survival_state.is_supply_id(resource_id):
-		return "Collect to %s." % _supply_banking_role(resource_id)
-	var category := _resource_category_label(resource_id)
-	if category == "Building":
-		return "Collect as building material for repairs/upgrades."
-	if category == "Research":
-		return "Collect as research material for oxygen/scanner upgrades."
-	return "Collect as %s material." % category.to_lower()
+	return ResourcePresenterScript.resource_collection_guidance(
+		survival_state.is_supply_id(resource_id),
+		_resource_category_label(resource_id),
+		_supply_banking_role(resource_id)
+	)
 
 func _resource_pickup_feedback(resource_id: String) -> String:
-	if survival_state.is_supply_id(resource_id):
-		return "Cargo %d/%d; ship banks %s reserve" % [
-			dive_session.current_cargo.size(),
-			dive_session.cargo_limit,
-			_resource_category_label(resource_id),
-		]
-	var category := _resource_category_label(resource_id)
-	if category == "Building":
-		return "Cargo %d/%d; ship banks building mats" % [
-			dive_session.current_cargo.size(),
-			dive_session.cargo_limit,
-		]
-	if category == "Research":
-		return "Cargo %d/%d; ship banks research mats" % [
-			dive_session.current_cargo.size(),
-			dive_session.cargo_limit,
-		]
-	return "Cargo %d/%d; ship banks %s mats" % [
+	return ResourcePresenterScript.resource_pickup_feedback(
+		resource_id,
 		dive_session.current_cargo.size(),
 		dive_session.cargo_limit,
-		category.to_lower(),
-	]
+		survival_state.is_supply_id(resource_id),
+		_resource_category_label(resource_id)
+	)
 
 func _ensure_resource_role_visuals() -> void:
 	var pickup_root := get_node_or_null("ResourcePickups")
@@ -3862,56 +3836,19 @@ func _add_role_polygon(parent: Node2D, polygon_name: String, points: Array[Vecto
 	parent.add_child(polygon)
 
 func _resource_visual_role_family(resource_id: String) -> String:
-	if survival_state.is_supply_id(resource_id):
-		return "supply"
-	if _resource_category_label(resource_id) == "Building":
-		return "building"
-	return "research"
+	return ResourcePresenterScript.resource_visual_role_family(
+		survival_state.is_supply_id(resource_id),
+		_resource_category_label(resource_id)
+	)
 
 func _resource_role_accent_color(resource_id: String) -> Color:
-	match resource_id:
-		"food_supply":
-			return Color(1.0, 0.32, 0.08, 0.95)
-		"water_supply":
-			return Color(0.22, 0.90, 1.0, 0.95)
-		"power_supply":
-			return Color(1.0, 0.90, 0.16, 0.95)
-		"driftwood":
-			return Color(0.82, 0.54, 0.26, 0.95)
-		"scrap_metal":
-			return Color(0.78, 0.86, 0.90, 0.95)
-		"quartz_glass":
-			return Color(0.55, 0.92, 1.0, 0.95)
-		"kelp_fiber":
-			return Color(0.34, 1.0, 0.45, 0.95)
-		"shell_fragments":
-			return Color(1.0, 0.78, 0.58, 0.95)
-		"glow_plankton":
-			return Color(0.62, 0.50, 1.0, 0.95)
-		_:
-			return Color(0.92, 1.0, 1.0, 0.95)
+	return ResourcePresenterScript.resource_role_accent_color(resource_id)
 
 func _supply_banking_role(resource_id: String) -> String:
-	match resource_id:
-		"food_supply":
-			return "fill tonight's Food reserve"
-		"water_supply":
-			return "fill tonight's Water reserve"
-		"power_supply":
-			return "fill tonight's Power reserve"
-		_:
-			return "fill a base need"
+	return ResourcePresenterScript.supply_banking_role(resource_id)
 
 func _format_depth_band(depth_band: String) -> String:
-	match depth_band:
-		"shallow":
-			return "Shallow"
-		"midwater":
-			return "Midwater"
-		"deep":
-			return "Deep"
-		_:
-			return depth_band
+	return ResourcePresenterScript.format_depth_band(depth_band)
 
 func _update_glow_plankton_highlight(delta: float) -> void:
 	if glow_plankton_highlight_timer <= 0.0:
@@ -5589,23 +5526,11 @@ func _tool_belt_state(tool_id: String) -> String:
 			return "disabled"
 
 func _short_resource_name(resource_id: String) -> String:
-	match resource_id:
-		"kelp_fiber":
-			return "Kelp"
-		"shell_fragments":
-			return "Shell"
-		"glow_plankton":
-			return "Glow"
-		"scrap_metal":
-			return "Scrap"
-		"driftwood":
-			return "Wood"
-		"quartz_glass":
-			return "Glass"
-		"food_supply", "water_supply", "power_supply":
-			return survival_state.short_name_for_supply(resource_id)
-		_:
-			return resource_id
+	return ResourcePresenterScript.short_resource_name(
+		resource_id,
+		survival_state.is_supply_id(resource_id),
+		survival_state.short_name_for_supply(resource_id)
+	)
 
 func _format_banked_resources() -> String:
 	if progression_state.banked_resources.is_empty():
@@ -5622,28 +5547,19 @@ func _format_banked_resources() -> String:
 	return "\n" + "\n".join(parts)
 
 func _resource_category_label(resource_id: String) -> String:
-	if survival_state.is_supply_id(resource_id):
-		return survival_state.category_name_for_supply(resource_id)
-	return String(RESOURCE_CATEGORY_LABELS.get(resource_id, "Resource"))
+	return ResourcePresenterScript.resource_category_label(
+		resource_id,
+		survival_state.is_supply_id(resource_id),
+		survival_state.category_name_for_supply(resource_id),
+		RESOURCE_CATEGORY_LABELS
+	)
 
 func _display_name_for_resource(resource_id: String) -> String:
-	match resource_id:
-		"kelp_fiber":
-			return "Kelp Fiber"
-		"shell_fragments":
-			return "Shell Fragments"
-		"glow_plankton":
-			return "Glow Plankton"
-		"scrap_metal":
-			return "Scrap Metal"
-		"driftwood":
-			return "Driftwood"
-		"quartz_glass":
-			return "Quartz Glass"
-		"food_supply", "water_supply", "power_supply":
-			return survival_state.display_name_for_supply(resource_id)
-		_:
-			return resource_id
+	return ResourcePresenterScript.display_name_for_resource(
+		resource_id,
+		survival_state.is_supply_id(resource_id),
+		survival_state.display_name_for_supply(resource_id)
+	)
 
 func _format_upgrade_status() -> String:
 	var owned_count := 0
