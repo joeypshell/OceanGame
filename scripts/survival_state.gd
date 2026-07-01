@@ -146,8 +146,15 @@ func status_line() -> String:
 func nightly_pressure_line() -> String:
 	return "Tonight: Food -1, Water -1, Power -1."
 
+func needs_are_stable() -> bool:
+	return food >= STARTING_NEED and water >= STARTING_NEED and power >= STARTING_NEED
+
 func supply_cache_hint_line() -> String:
-	return "Supply cache fills the lowest need, but uses cargo space."
+	if needs_are_stable():
+		return "Supply cache is backup while base needs are stable, but uses cargo space."
+
+	var supply_id := most_needed_supply_id()
+	return "Supply cache targets %s, the lowest need, but uses cargo space." % short_name_for_supply(supply_id)
 
 func to_save_data() -> Dictionary:
 	return {

@@ -72,6 +72,7 @@ func _initialize() -> void:
 	_run("survival night consumption", _test_survival_night_consumption)
 	_run("survival collapse and reset", _test_survival_collapse_and_reset)
 	_run("survival supply banking isolation", _test_survival_supply_banking_isolation)
+	_run("survival supply cache target copy", _test_survival_supply_cache_target_copy)
 	_run("starter survival resource families", _test_starter_survival_resource_families)
 	_run("resource taxonomy offload copy", _test_resource_taxonomy_offload_copy)
 	_run("survival oxygen penalty", _test_survival_oxygen_penalty)
@@ -524,6 +525,7 @@ func _test_debug_unlimited_oxygen() -> void:
 
 func _test_survival_night_consumption() -> void:
 	var survival := SurvivalStateScript.new()
+	var cache_copy := SurvivalStateScript.new()
 
 	var day_one_report := survival.resolve_night()
 
@@ -537,6 +539,9 @@ func _test_survival_night_consumption() -> void:
 	_expect(not survival.status_line().contains("F2 W2 P2"), "survival status should not use cryptic need abbreviations")
 	_expect(survival.nightly_pressure_line().contains("Tonight"), "ready copy helper should explain nightly pressure")
 	_expect(survival.supply_cache_hint_line().contains("cargo space"), "ready copy helper should explain the supply-cache cargo tradeoff")
+	_expect(cache_copy.supply_cache_hint_line().contains("base needs are stable"), "ready copy helper should explain when the supply cache is backup")
+	cache_copy.power = 1
+	_expect(cache_copy.supply_cache_hint_line().contains("Power") and cache_copy.supply_cache_hint_line().contains("lowest need"), "ready copy helper should name the weakest need the cache targets")
 
 	var late_return := SurvivalStateScript.new()
 	var late_report := late_return.resolve_night(1)
@@ -580,6 +585,45 @@ func _test_survival_supply_banking_isolation() -> void:
 	_expect(main.survival_state.food == 4, "food supply should increase survival food")
 	_expect(main.survival_state.power == 4, "power supply should increase survival power")
 	_expect(main.survival_state.water == 3, "unbanked water should remain unchanged")
+
+func _test_survival_supply_cache_target_copy() -> void:
+	var stable := MainScript.new()
+	var stable_status: String = stable.call("_format_survival_supply_cache_status_text")
+	var stable_prompt: String = stable.call("_format_survival_supply_cache_prompt")
+	_expect(stable_status.contains("base stable"), "stable cache status should say the cache is backup")
+	_expect(stable_prompt.contains("backup supply"), "stable cache prompt should avoid naming a false weak need")
+	stable.free()
+
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.start()
+	main.survival_state.food = 3
+	main.survival_state.water = 2
+	main.survival_state.power = 1
+	main.player_near_survival_supply_cache = true
+
+	var prompt: String = main.call("_format_hud_prompt")
+	var status: String = main.call("_format_survival_supply_cache_status_text")
+	_expect(prompt.contains("Power"), "cache prompt should name the currently weakest survival need before pickup")
+	_expect(status.contains("Power is lowest"), "cache status should name the currently weakest survival need before pickup")
+
+	main.call("_on_survival_supply_cache_body_entered", main.player)
+	_expect(main.status_label.text.contains("Power is lowest"), "cache entry status should name the weakest need")
+
+	var full_cargo: Array[String] = ["kelp_fiber", "shell_fragments", "driftwood"]
+	main.dive_session.current_cargo = full_cargo
+	var handled_full := bool(main.call("_try_survival_supply_cache_interaction"))
+	_expect(handled_full, "full cargo cache interaction should be handled with feedback")
+	_expect(main.status_label.text.contains("Cargo full") and main.status_label.text.contains("Power"), "full cargo cache status should stay short and name the blocked target")
+	_expect(not main.run_survival_supply_cache_recovered, "full cargo should not mark the cache recovered")
+
+	main.dive_session.current_cargo.clear()
+	var handled_pickup := bool(main.call("_try_survival_supply_cache_interaction"))
+	_expect(handled_pickup, "cache interaction should recover a supply when cargo has room")
+	_expect(main.dive_session.current_cargo.size() == 1 and main.dive_session.current_cargo[0] == "power_supply", "cache pickup should add the weakest survival supply")
+	_expect(main.status_label.text.contains("Power Cell") and main.status_label.text.contains("Power") and main.status_label.text.contains("Ship banks"), "recovered cache status should name the supply role and ship banking")
+	_expect(String(main.call("_format_hud_prompt")).contains("recovered"), "recovered cache prompt should stay compact")
+	main.queue_free()
 
 func _test_starter_survival_resource_families() -> void:
 	var main := MainScript.new()
@@ -6615,7 +6659,7 @@ func _test_surface_summary_tabs() -> void:
 	_expect(ready_summary.contains("E/Enter begins."), "ready panel should keep the start action visible")
 	_expect(ready_summary.contains("Base needs: Food"), "ready panel should explain survival needs with readable names")
 	_expect(ready_summary.contains("Tonight: Food -1, Water -1, Power -1."), "ready panel should explain nightly survival pressure")
-	_expect(ready_summary.contains("Supply cache fills the lowest need"), "ready panel should explain why the shallow cache matters")
+	_expect(ready_summary.contains("base needs are stable"), "ready panel should explain why the shallow cache matters")
 	_expect(ready_summary.contains("Day priority:"), "ready panel should name one main day priority")
 	_expect(ready_summary.contains("Shell Reef pockets"), "ready panel priority should point to the current starter-resource target")
 	_expect(not ready_summary.contains("Goal:"), "ready panel should not show a second generic goal line")
