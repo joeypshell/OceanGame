@@ -6,6 +6,7 @@ const SurvivalStateScript := preload("res://scripts/survival_state.gd")
 const SpawnPointScript := preload("res://scripts/spawn_point.gd")
 const UpgradeDefinitionScript := preload("res://scripts/upgrade_definition.gd")
 const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
+const DiveCapacityServiceScript := preload("res://scripts/services/dive_capacity_service.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_formatter.gd")
@@ -3464,17 +3465,10 @@ func _format_scan_target_type(target: Node) -> String:
 	return ScanTargetFeedbackServiceScript.format_scan_target_type(self, target)
 
 func _current_max_oxygen() -> float:
-	var oxygen_max := max_oxygen
-	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
-		oxygen_max = oxygen_tank_1_max_oxygen
-
-	return maxf(12.0, oxygen_max - survival_state.oxygen_penalty())
+	return DiveCapacityServiceScript.current_max_oxygen(max_oxygen, progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID), oxygen_tank_1_max_oxygen, survival_state.oxygen_penalty())
 
 func _current_cargo_limit() -> int:
-	if progression_state.has_upgrade(CARGO_RACK_UPGRADE_ID):
-		return cargo_rack_1_limit
-
-	return base_cargo_limit
+	return DiveCapacityServiceScript.current_cargo_limit(base_cargo_limit, progression_state.has_upgrade(CARGO_RACK_UPGRADE_ID), cargo_rack_1_limit)
 
 func _format_base_direction() -> String:
 	var direction_player := player
