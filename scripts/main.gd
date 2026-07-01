@@ -44,8 +44,7 @@ const NightBuildPresenterScript := preload("res://scripts/ui/night_build_present
 const OpenHatchVisualStagingServiceScript := preload("res://scripts/debug/open_hatch_visual_staging_service.gd")
 const OuterShelfVisualStagingServiceScript := preload("res://scripts/debug/outer_shelf_visual_staging_service.gd")
 const OxygenFeedbackServiceScript := preload("res://scripts/ui/oxygen_feedback_service.gd")
-const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
-const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
+const ResourcePickupPresentationServiceScript := preload("res://scripts/ui/resource_pickup_presentation_service.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
@@ -697,7 +696,7 @@ func _ready() -> void:
 	wreck_echo_clue_trigger.body_entered.connect(_on_wreck_echo_clue_body_entered)
 	for pickup in get_tree().get_nodes_in_group("resource_pickups"):
 		pickup.collected.connect(_on_resource_pickup_collected)
-	_ensure_resource_role_visuals()
+	ResourcePickupPresentationServiceScript.ensure_resource_role_visuals(self)
 	for predator in get_tree().get_nodes_in_group("predators"):
 		predator.contacted.connect(_on_predator_contacted)
 	_load_progression()
@@ -2626,53 +2625,6 @@ func _nearest_matching_visible_resource(source: ResourcePickup) -> ResourcePicku
 
 	return nearest
 
-func _resource_collection_guidance(resource_id: String) -> String:
-	return ResourcePresenterScript.resource_collection_guidance(
-		survival_state.is_supply_id(resource_id),
-		ResourceSummaryServiceScript.resource_category_label(resource_id, survival_state, RESOURCE_CATEGORY_LABELS),
-		_supply_banking_role(resource_id)
-	)
-
-func _resource_pickup_feedback(resource_id: String) -> String:
-	return ResourcePresenterScript.resource_pickup_feedback(
-		resource_id,
-		dive_session.current_cargo.size(),
-		dive_session.cargo_limit,
-		survival_state.is_supply_id(resource_id),
-		ResourceSummaryServiceScript.resource_category_label(resource_id, survival_state, RESOURCE_CATEGORY_LABELS)
-	)
-
-func _ensure_resource_role_visuals() -> void:
-	var pickup_root := get_node_or_null("ResourcePickups")
-	if pickup_root == null:
-		return
-	for pickup_node in pickup_root.get_children():
-		var pickup := pickup_node as ResourcePickup
-		if pickup == null or pickup.definition == null:
-			continue
-		_ensure_resource_role_visual(pickup)
-
-func _ensure_resource_role_visual(pickup: ResourcePickup) -> void:
-	var role_family := _resource_visual_role_family(pickup.definition.id)
-	ResourceRoleVisualPresenterScript.ensure_resource_role_visual(
-		pickup,
-		pickup.definition.id,
-		role_family,
-		_resource_role_accent_color(pickup.definition.id)
-	)
-
-func _resource_visual_role_family(resource_id: String) -> String:
-	return ResourcePresenterScript.resource_visual_role_family(
-		survival_state.is_supply_id(resource_id),
-		ResourceSummaryServiceScript.resource_category_label(resource_id, survival_state, RESOURCE_CATEGORY_LABELS)
-	)
-
-func _resource_role_accent_color(resource_id: String) -> Color:
-	return ResourcePresenterScript.resource_role_accent_color(resource_id)
-
-func _supply_banking_role(resource_id: String) -> String:
-	return ResourcePresenterScript.supply_banking_role(resource_id)
-
 func _update_glow_plankton_highlight(delta: float) -> void:
 	if glow_plankton_highlight_timer <= 0.0:
 		glow_plankton_visual.scale = Vector2.ONE
@@ -2736,7 +2688,7 @@ func _on_resource_pickup_collected(pickup: Node) -> void:
 	else:
 		status_label.text = "Collected %s. %s" % [
 			pickup.definition.display_name,
-			_resource_pickup_feedback(pickup.definition.id),
+			ResourcePickupPresentationServiceScript.resource_pickup_feedback(self, pickup.definition.id),
 		]
 		_update_hud()
 
@@ -2798,7 +2750,7 @@ func _place_starter_resources_for_run() -> void:
 
 		pickup.global_position = candidates[rng.randi_range(0, candidates.size() - 1)]
 
-	_ensure_resource_role_visuals()
+	ResourcePickupPresentationServiceScript.ensure_resource_role_visuals(self)
 	_place_predator_route_for_run(rng)
 	_place_lantern_ray_route_for_run(rng)
 

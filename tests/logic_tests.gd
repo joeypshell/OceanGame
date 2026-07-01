@@ -53,6 +53,7 @@ const OpenHatchVisualStagingServiceScript := preload("res://scripts/debug/open_h
 const OuterShelfVisualStagingServiceScript := preload("res://scripts/debug/outer_shelf_visual_staging_service.gd")
 const OxygenFeedbackServiceScript := preload("res://scripts/ui/oxygen_feedback_service.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
+const ResourcePickupPresentationServiceScript := preload("res://scripts/ui/resource_pickup_presentation_service.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
@@ -944,13 +945,14 @@ func _test_starter_survival_resource_families() -> void:
 	var direct_role_read := role_host.get_node_or_null("RoleRead") as Node2D
 	_expect(direct_role_read != null and direct_role_read.get_child_count() >= 3, "resource role visual presenter should build readable marker geometry")
 	_expect(String(direct_role_read.get_meta("role_family", "")) == "supply", "resource role visual presenter should preserve role family metadata")
+	_expect(ResourcePickupPresentationServiceScript.resource_pickup_feedback(main, "food_supply").contains("Food/Fish reserve"), "resource pickup presentation service should preserve supply pickup feedback")
 	role_host.free()
 	for definition in StarterResourceDefinitions:
 		_expect(not definition.resource_category.is_empty(), "%s should declare a resource category" % definition.id)
 
 	var scene := MainScene.instantiate()
 	root.add_child(scene)
-	scene.call("_ensure_resource_role_visuals")
+	ResourcePickupPresentationServiceScript.ensure_resource_role_visuals(scene)
 	var expected_pickups := {
 		"KelpFiber": {"id": "kelp_fiber", "family": "research"},
 		"ShellFragments": {"id": "shell_fragments", "family": "research"},
