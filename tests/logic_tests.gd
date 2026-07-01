@@ -25,6 +25,7 @@ const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
+const HollowReefVisualStagingServiceScript := preload("res://scripts/debug/hollow_reef_visual_staging_service.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPromptStateServiceScript := preload("res://scripts/ui/hud_prompt_state_service.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
@@ -1280,6 +1281,8 @@ func _test_debug_review_helpers() -> void:
 	_expect(first_condition.get("id", "") == "calm_current", "debug condition helper should fall back to the first condition")
 	_expect(main._debug_seed_for_delta(8919, 1) == 8920, "debug seed helper should increment review seed")
 	_expect(main._debug_seed_for_delta(1, -10) == 1, "debug seed helper should keep review seed positive")
+	HollowReefVisualStagingServiceScript.stage_route_visual_review(main)
+	_expect(main.visual_smoke_route_stage == "", "Hollow Reef visual staging service should stay inert outside web visual smoke")
 	main.free()
 
 func _test_debug_wreck_echo_visual_staging() -> void:
