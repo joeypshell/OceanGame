@@ -2,6 +2,7 @@ class_name RecentExpeditionLogService
 extends RefCounted
 
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
+const DiscoveryNamePresenterScript := preload("res://scripts/ui/discovery_name_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 
@@ -71,6 +72,6 @@ static func recent_expedition_scan_names_by_id(host) -> Dictionary:
 	var names_by_id := {}
 	for entry in host.recent_expedition_log:
 		for scan_id in RecentExpeditionPresenterScript.string_array_from(entry.get("scans", [])):
-			names_by_id[scan_id] = host._format_discovery_name(scan_id)
+			names_by_id[scan_id] = DiscoveryNamePresenterScript.display_name(host.progression_state, scan_id)
 
 	return names_by_id

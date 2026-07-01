@@ -28,6 +28,7 @@ const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.
 const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
 const DaylightTimerHudServiceScript := preload("res://scripts/ui/daylight_timer_hud_service.gd")
 const DepthRailServiceScript := preload("res://scripts/ui/depth_rail_service.gd")
+const DiscoveryNamePresenterScript := preload("res://scripts/ui/discovery_name_presenter.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const ExpandedRouteVisualStagingServiceScript := preload("res://scripts/debug/expanded_route_visual_staging_service.gd")
@@ -7455,7 +7456,10 @@ func _test_shell_reef_scan_clue_text() -> void:
 	target.display_name = "Shell Reef Shelf"
 	target.description = "Reef shelf."
 
-	_expect(main._format_discovery_name("shell_reef_shelf") == "Shell Reef Shelf", "shell reef discovery should have a readable name")
+	_expect(DiscoveryNamePresenterScript.display_name(main.progression_state, "shell_reef_shelf") == "Shell Reef Shelf", "shell reef discovery should have a readable name")
+	_expect(DiscoveryNamePresenterScript.display_name(main.progression_state, "") == "none", "discovery name presenter should preserve empty discovery copy")
+	main.progression_state.add_discovery("custom_signal", "Custom Signal", "Signal.", "Memory.")
+	_expect(DiscoveryNamePresenterScript.display_name(main.progression_state, "custom_signal") == "Custom Signal", "discovery name presenter should prefer durable discovery display names")
 	_expect(ScanEffectTextServiceScript.repeat_scan_effect_text(main, target).contains("Reef route clue refreshed"), "shell reef repeat scan should give compact feedback")
 	_expect(ScanEffectTextServiceScript.first_scan_guidance(main, target).contains("midwater bank route"), "shell reef first scan should explain the route decision")
 	_expect(main._format_scan_target_type(target) == "environment", "shell reef scan target should be environmental metadata")

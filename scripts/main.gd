@@ -20,6 +20,7 @@ const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.
 const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
 const DaylightTimerHudServiceScript := preload("res://scripts/ui/daylight_timer_hud_service.gd")
 const DepthRailServiceScript := preload("res://scripts/ui/depth_rail_service.gd")
+const DiscoveryNamePresenterScript := preload("res://scripts/ui/discovery_name_presenter.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const ExpandedRouteVisualStagingServiceScript := preload("res://scripts/debug/expanded_route_visual_staging_service.gd")
@@ -2119,7 +2120,7 @@ func _try_purchase_selected_upgrade() -> void:
 			_update_hud()
 			return
 		upgrade_menu_feedback = "Missing discovery: %s. %s" % [
-			_format_discovery_name(upgrade.required_discovery),
+			DiscoveryNamePresenterScript.display_name(progression_state, upgrade.required_discovery),
 			upgrade.locked_reason
 		]
 		status_label.text = "%s is locked by missing scan data." % upgrade.display_name
@@ -3307,7 +3308,7 @@ func _format_scan_progress_callout(prefix: String) -> String:
 
 	var parts: Array[String] = []
 	for discovery_id in run_completed_scans:
-		parts.append(_format_discovery_name(discovery_id))
+		parts.append(DiscoveryNamePresenterScript.display_name(progression_state, discovery_id))
 
 	return "%s: %s." % [prefix, ", ".join(parts)]
 
@@ -3345,44 +3346,6 @@ func _format_upgrade_display_name(upgrade_id: String) -> String:
 
 func _format_upgrade_prerequisite_action(discovery_id: String) -> String:
 	return UpgradeStateServiceScript.format_upgrade_prerequisite_action(discovery_id)
-
-func _format_discovery_name(discovery_id: String) -> String:
-	if discovery_id.is_empty():
-		return "none"
-
-	var discovery: Dictionary = progression_state.scan_discoveries.get(discovery_id, {})
-	if not discovery.is_empty():
-		return String(discovery.get("display_name", discovery_id))
-
-	match discovery_id:
-		"thermal_vent":
-			return "Thermal Vent"
-		"shell_reef_shelf":
-			return "Shell Reef Shelf"
-		"pressure_wreck_signal":
-			return "Pressure-Locked Research Wreck"
-		"wreck_signal_cache":
-			return "Wreck Signal Cache"
-		"east_shelf_route_research":
-			return "East Shelf or Drop Echo research"
-		"salvage_data_cache":
-			return "Salvage Data Cache"
-		"gulper_eel":
-			return "Gulper Eel"
-		"lantern_ray":
-			return "Lantern Ray"
-		"hollow_reef_skitter":
-			return "Hollow Reef Skitter"
-		"glassfin_swarm":
-			return "Glassfin Swarm"
-		"mirrorfin_drift":
-			return "Mirrorfin Drift"
-		"glass_ray_drifter":
-			return "Glass Ray Drifter"
-		"lantern_fry":
-			return "Lantern Fry"
-		_:
-			return discovery_id
 
 func _selected_upgrade_definition() -> UpgradeDefinition:
 	if upgrade_definitions.is_empty():
