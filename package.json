@@ -12,6 +12,8 @@
     "map:area01:all": "node tools/build-area01-map.mjs --validate --write --previews",
     "test:visual": "npm run web:export && playwright test --config tests/playwright/playwright.config.mjs",
     "test:visual:existing": "playwright test --config tests/playwright/playwright.config.mjs",
+    "test:survival-loop-captures": "npm run web:export && playwright test --config tests/playwright/survival-day-night-loop.config.mjs",
+    "test:survival-loop-captures:existing": "playwright test --config tests/playwright/survival-day-night-loop.config.mjs",
     "test:lower-route-smoke": "npm run web:export && playwright test --config tests/playwright/lower-route-smoke.config.mjs",
     "test:lower-route-smoke:existing": "playwright test --config tests/playwright/lower-route-smoke.config.mjs",
     "test:area01-shell-captures": "npm run web:export && playwright test --config tests/playwright/area01-shell-captures.config.mjs",

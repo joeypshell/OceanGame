@@ -150,6 +150,29 @@ Run against an already-exported build:
 npm run test:visual:existing
 ```
 
+Run the focused Survival Day/Night loop proof:
+
+```powershell
+npm run test:survival-loop-captures
+```
+
+Run it against an already-exported build:
+
+```powershell
+npm run test:survival-loop-captures:existing
+```
+
+The survival-loop proof writes local artifacts under `test-results/playwright-survival-loop/`:
+
+- `survival-loop-01-dawn-ready-plan.png`
+- `survival-loop-02-active-day-hud.png`
+- `survival-loop-03-surface-oxygen-refill.png`
+- `survival-loop-04-ship-offload-repeat-sortie.png`
+- `survival-loop-05-night-result-tomorrow-plan.png`
+- `survival-loop-06-next-dawn-ready.png`
+
+Each capture has a same-name `.json` metadata sidecar with scenario evidence, expected visual state, exported game visual state, viewport, source branch/revision, and whether the worktree was dirty. This is the preferred closeout proof for Survival Day/Night loop visual work. Passing Playwright is not enough by itself: open the generated screenshots and verify that the loop reads clearly before closing the issue.
+
 Default captures include:
 
 - `surface-ready.png`

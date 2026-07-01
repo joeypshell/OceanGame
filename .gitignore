@@ -15,6 +15,7 @@ playwright-report/
 playwright-report-mobile-like/
 playwright-report-lower-route/
 playwright-report-area01-shell/
+playwright-report-survival-loop/
 tmp/
 
 # OS/editor noise

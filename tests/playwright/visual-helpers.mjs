@@ -1,5 +1,30 @@
 import { expect } from "@playwright/test";
+import { execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
+
+let sourceMetadataCache = null;
+
+function readGitValue(args, fallback) {
+  try {
+    return execFileSync("git", args, { encoding: "utf8" }).trim();
+  } catch {
+    return fallback;
+  }
+}
+
+function sourceMetadata() {
+  if (sourceMetadataCache !== null) {
+    return sourceMetadataCache;
+  }
+
+  const dirtyStatus = readGitValue(["status", "--short"], "");
+  sourceMetadataCache = {
+    revision: process.env.OCEANGAME_SOURCE_REVISION ?? readGitValue(["rev-parse", "--short=12", "HEAD"], "unknown"),
+    branch: process.env.OCEANGAME_SOURCE_BRANCH ?? readGitValue(["branch", "--show-current"], "unknown"),
+    dirty: dirtyStatus.length > 0,
+  };
+  return sourceMetadataCache;
+}
 
 export async function bootGame(page) {
   await page.goto("/");
@@ -68,6 +93,7 @@ export async function capture(page, testInfo, name, expectedState = {}, evidence
       {
         capture: name,
         capturedAt,
+        source: sourceMetadata(),
         expectedState,
         visualState,
         viewport,
