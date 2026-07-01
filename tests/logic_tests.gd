@@ -25,6 +25,7 @@ const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
+const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -149,6 +150,7 @@ func _initialize() -> void:
 	_run("route memory presenter", _test_route_memory_presenter)
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("gulper research result callout", _test_gulper_research_result_callout)
+	_run("research result presenter", _test_research_result_presenter)
 	_run("monster research non-combat guardrails", _test_monster_research_non_combat_guardrails)
 	_run("echo lens result callout", _test_echo_lens_result_callout)
 	_run("wreck echo route first pass", _test_wreck_echo_route_first_pass)
@@ -5618,6 +5620,37 @@ func _test_gulper_research_result_callout() -> void:
 	main.decoy_pulse_used_this_run = true
 	_expect(main._format_gulper_research_callout().contains("Decoy timing"), "Decoy evidence should take priority as a stronger research result")
 	main.free()
+
+func _test_research_result_presenter() -> void:
+	var empty_state := {
+		"run_completed_scans": [],
+	}
+	_expect(ResearchResultPresenterScript.format_gulper_research_callout(empty_state) == "", "empty research state should not create Gulper copy")
+	_expect(ResearchResultPresenterScript.format_echo_lens_research_callout(empty_state) == "", "empty research state should not create Echo Lens copy")
+
+	var gulper_scan_state := {
+		"run_completed_scans": ["gulper_eel"],
+	}
+	_expect(ResearchResultPresenterScript.format_gulper_research_callout(gulper_scan_state).contains("Gulper route timing observed"), "Gulper scan should produce scan research copy")
+	var gulper_contact_state := {
+		"run_completed_scans": ["gulper_eel"],
+		"run_predator_contacts": 1,
+	}
+	_expect(ResearchResultPresenterScript.format_gulper_research_callout(gulper_contact_state).contains("warning lane"), "Gulper contact should outrank scan research copy")
+	var gulper_decoy_state := {
+		"decoy_pulse_used_this_run": true,
+		"run_completed_scans": ["gulper_eel"],
+		"run_predator_contacts": 1,
+	}
+	_expect(ResearchResultPresenterScript.format_gulper_research_callout(gulper_decoy_state).contains("Decoy timing"), "Decoy evidence should outrank contact research copy")
+
+	_expect(ResearchResultPresenterScript.format_blue_chimney_research_callout({"run_blue_chimney_draft_reading_recovered": true}).contains("Blue Chimney"), "Blue Chimney payoff should produce research copy")
+	_expect(ResearchResultPresenterScript.format_salvage_manifest_research_callout({"run_salvage_manifest_recovered": true}).contains("Salvage Manifest"), "Salvage Manifest payoff should produce research copy")
+	_expect(ResearchResultPresenterScript.format_sealed_shelf_hatch_readiness_callout({"has_echo_lens_upgrade": true}) == "", "sealed hatch lab note should stay hidden without route evidence")
+	_expect(ResearchResultPresenterScript.format_sealed_shelf_hatch_readiness_callout({
+		"has_echo_lens_upgrade": true,
+		"run_lower_connector_echo_recovered": true,
+	}).contains("Sealed Shelf Hatch"), "sealed hatch lab note should show with Echo Lens and route evidence")
 
 func _test_monster_research_non_combat_guardrails() -> void:
 	var main := MainScript.new()
