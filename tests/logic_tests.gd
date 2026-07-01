@@ -24,6 +24,7 @@ const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
+const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -145,6 +146,7 @@ func _initialize() -> void:
 	_run("next expedition framing", _test_next_expedition_framing)
 	_run("region memory result callout", _test_region_memory_result_callout)
 	_run("discovery memory result callout", _test_discovery_memory_result_callout)
+	_run("route memory presenter", _test_route_memory_presenter)
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("gulper research result callout", _test_gulper_research_result_callout)
 	_run("monster research non-combat guardrails", _test_monster_research_non_combat_guardrails)
@@ -5383,6 +5385,40 @@ func _test_discovery_memory_result_callout() -> void:
 	_expect(memory.find("Wreck Signal Cache") == memory.rfind("Wreck Signal Cache"), "discovery memory should not duplicate repeated ids")
 	_expect(not memory.contains(","), "discovery memory should stay compact and not become a checklist")
 	main.free()
+
+func _test_route_memory_presenter() -> void:
+	var empty_state := {
+		"run_completed_scans": [],
+		"run_collected_resources": [],
+	}
+	_expect(RouteMemoryPresenterScript.format_route_choice_callout(empty_state) == "", "route presenter should keep empty route choice quiet")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(empty_state) == "none", "route presenter should report no route memory for empty runs")
+	_expect(RouteMemoryPresenterScript.format_region_memory_callout(empty_state).contains("Surface Base"), "route presenter should preserve surface-base fallback")
+	_expect(RouteMemoryPresenterScript.format_discovery_memory_callout(empty_state) == "", "route presenter should keep discovery memory quiet without scans")
+
+	var shell_state := {
+		"run_completed_scans": [],
+		"run_collected_resources": ["shell_fragments"],
+	}
+	_expect(RouteMemoryPresenterScript.format_route_choice_callout(shell_state).contains("Shell Reef"), "shell cargo should still produce the Shell Reef route callout")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(shell_state) == "Shell Reef", "shell cargo should still produce Shell Reef recent memory")
+
+	var glass_rim_state := {
+		"run_completed_scans": ["glass_ray_drifter"],
+		"run_collected_resources": [],
+	}
+	_expect(RouteMemoryPresenterScript.format_route_choice_callout(glass_rim_state).contains("Glass Ray slackwater timing"), "Glass Ray observation should drive route-choice memory")
+	_expect(RouteMemoryPresenterScript.format_region_memory_callout(glass_rim_state).contains("Outer Shelf"), "Glass Ray observation should remember Outer Shelf")
+	_expect(RouteMemoryPresenterScript.format_discovery_memory_callout(glass_rim_state).contains("Glass Ray Drifter"), "Glass Ray observation should produce discovery memory")
+
+	var blackwater_state := {
+		"run_blackwater_trace_recovered": true,
+		"run_blue_chimney_draft_reading_recovered": true,
+		"run_completed_scans": ["thermal_vent"],
+		"run_collected_resources": ["shell_fragments"],
+	}
+	_expect(RouteMemoryPresenterScript.format_route_choice_callout(blackwater_state).contains("Blackwater"), "Blackwater payoff should win route-choice priority")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(blackwater_state) == "Blackwater", "Blackwater payoff should win recent route memory")
 
 func _test_route_choice_result_callout() -> void:
 	var main := MainScript.new()
