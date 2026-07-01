@@ -27,6 +27,7 @@ const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd")
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
+const HudVisibilityServiceScript := preload("res://scripts/ui/hud_visibility_service.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
 const LowerConnectorVisualStagingServiceScript := preload("res://scripts/debug/lower_connector_visual_staging_service.gd")
 const MirrorKelpVisualStagingServiceScript := preload("res://scripts/debug/mirror_kelp_visual_staging_service.gd")
@@ -3688,31 +3689,8 @@ func _update_hud() -> void:
 	_apply_active_hud_layout()
 	var is_diving := _active_hud_visible_for_result(dive_session.result)
 	var has_surface_panel := _surface_hud_visible_for_result(dive_session.result)
-	hint_label.visible = false
-	bounds_hint_label.visible = false
-	active_stats_panel.visible = is_diving
-	cargo_panel.visible = is_diving
-	daylight_panel.visible = is_diving
-	survival_needs_panel.visible = is_diving
 	var has_scan_target := is_diving and current_scan_target != null
-	scan_card_panel.visible = has_scan_target
-	tool_belt_panel.visible = is_diving
-	minimap_panel.visible = is_diving
-	oxygen_icon.visible = is_diving
-	health_icon.visible = is_diving
-	depth_icon.visible = is_diving
-	oxygen_label.visible = is_diving
-	oxygen_bar_back.visible = is_diving
-	oxygen_bar_fill.visible = is_diving
-	health_label.visible = is_diving
-	health_bar_back.visible = is_diving
-	health_bar_fill.visible = is_diving
-	depth_label.visible = is_diving
-	depth_bar_back.visible = is_diving
-	depth_bar_fill.visible = is_diving
-	base_direction_label.visible = is_diving
-	cargo_label.visible = is_diving
-	cargo_slots_root.visible = is_diving
+	HudVisibilityServiceScript.apply_active_hud_visibility(self, is_diving, has_surface_panel, has_scan_target)
 	_update_daylight_timer_hud(is_diving)
 	oxygen_label.text = HudPresenterScript.format_oxygen_label(dive_session.oxygen, dive_session.max_oxygen)
 	health_label.text = HudPresenterScript.format_health_label(dive_session.health, dive_session.max_health)
@@ -3736,17 +3714,6 @@ func _update_hud() -> void:
 	upgrade_label.text = _format_upgrade_status()
 	discoveries_label.text = _format_discoveries(true)
 	recent_expedition_log_label.text = _format_recent_expedition_log()
-	bank_label.visible = false
-	upgrade_label.visible = false
-	recent_expedition_log_label.visible = false
-	discoveries_label.visible = not has_surface_panel
-	dive_info_panel.visible = is_diving
-	scan_target_label.visible = has_scan_target
-	scan_card_title_label.visible = has_scan_target
-	scan_card_meta_label.visible = has_scan_target
-	scan_card_prompt_label.visible = has_scan_target
-	status_label.visible = is_diving
-	prompt_label.visible = is_diving
 	status_label.text = HudPresenterScript.compact_dive_status(status_label.text) if is_diving else status_label.text
 	if is_diving:
 		objective_title_label.text = "SURVIVAL ROUTE"
