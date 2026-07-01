@@ -326,7 +326,7 @@ func _test_health_damage_and_vent_failure() -> void:
 	_expect(scene_main.status_label.text.contains("-18 health"), "scene thermal vent feedback should show the health loss amount")
 	_expect(scene_main.status_label.text.contains("O2 unchanged"), "scene thermal vent feedback should be distinct from oxygen warning copy")
 	var health_bar_fill := scene_main.get_node("HUD/HealthBarFill") as ColorRect
-	_expect(is_equal_approx(health_bar_fill.color.r, MainScript.HEALTH_DAMAGED_COLOR.r) and is_equal_approx(health_bar_fill.color.g, MainScript.HEALTH_DAMAGED_COLOR.g), "recent health damage should tint the health bar separately from oxygen")
+	_expect(is_equal_approx(health_bar_fill.color.r, HudPresenterScript.HEALTH_DAMAGED_COLOR.r) and is_equal_approx(health_bar_fill.color.g, HudPresenterScript.HEALTH_DAMAGED_COLOR.g), "recent health damage should tint the health bar separately from oxygen")
 	scene_main.queue_free()
 
 func _test_health_damage_night_resolution_copy() -> void:
@@ -7372,6 +7372,17 @@ func _test_hud_presenter() -> void:
 	_expect(HudPresenterScript.oxygen_state_color("low") == Color(1.0, 0.76, 0.22, 1.0), "low oxygen color should stay exact")
 	_expect(HudPresenterScript.oxygen_state_color("critical") == Color(1.0, 0.18, 0.12, 1.0), "critical oxygen color should stay exact")
 
+	_expect(HudPresenterScript.format_health_label(100.0, 100.0) == "HEALTH: 100 / 100", "full health label should keep exact active HUD copy")
+	_expect(HudPresenterScript.format_health_label(30.0, 100.0).contains("LOW"), "health label should carry low state inline")
+	_expect(HudPresenterScript.format_health_label(12.0, 100.0).contains("CRITICAL"), "health label should carry critical state inline")
+	_expect(HudPresenterScript.health_state(100.0, 100.0) == "normal", "full health state should be normal")
+	_expect(HudPresenterScript.health_state(30.0, 100.0) == "low", "health below low threshold should be low")
+	_expect(HudPresenterScript.health_state(18.0, 100.0) == "critical", "health at critical threshold should be critical")
+	_expect(HudPresenterScript.health_state(10.0, 0.0) == "normal", "max-zero health state should stay safe")
+	_expect(HudPresenterScript.health_state_color("normal") == HudPresenterScript.HEALTH_NORMAL_COLOR, "normal health color should stay exact")
+	_expect(HudPresenterScript.health_state_color("low") == HudPresenterScript.HEALTH_LOW_COLOR, "low health color should stay exact")
+	_expect(HudPresenterScript.health_state_color("critical") == HudPresenterScript.HEALTH_CRITICAL_COLOR, "critical health color should stay exact")
+
 	var short_status := "Scanned Shell Reef."
 	_expect(HudPresenterScript.compact_dive_status("  %s  " % short_status) == short_status, "compact status should trim short copy")
 	_expect(HudPresenterScript.compact_dive_status("Line one\nLine two") == "Line one Line two", "compact status should flatten newlines")
@@ -7628,10 +7639,10 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(HudPresenterScript.format_oxygen_label(10.0, 40.0).contains("LOW"), "oxygen label should carry low state inline")
 	_expect(HudPresenterScript.format_oxygen_label(40.0, 40.0).begins_with("OXYGEN:"), "oxygen label should use instrument-style active HUD copy")
 	_expect(HudPresenterScript.oxygen_warning_text("critical").contains("RETURN TO BASE"), "critical warning should emphasize the return route")
-	_expect(main.call("_health_state", 100.0, 100.0) == "normal", "health helper should treat full health as normal")
-	_expect(main.call("_health_state", 30.0, 100.0) == "low", "health helper should mark damaged health as low")
-	_expect(main.call("_health_state", 12.0, 100.0) == "critical", "health helper should mark near-failure health as critical")
-	_expect(main.call("_format_health_label", 30.0, 100.0).contains("LOW"), "health label should carry low state inline")
+	_expect(HudPresenterScript.health_state(100.0, 100.0) == "normal", "health helper should treat full health as normal")
+	_expect(HudPresenterScript.health_state(30.0, 100.0) == "low", "health helper should mark damaged health as low")
+	_expect(HudPresenterScript.health_state(12.0, 100.0) == "critical", "health helper should mark near-failure health as critical")
+	_expect(HudPresenterScript.format_health_label(30.0, 100.0).contains("LOW"), "health label should carry low state inline")
 	main.free()
 
 func _test_mobile_touch_controls_adapter() -> void:

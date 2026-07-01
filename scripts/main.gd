@@ -187,10 +187,6 @@ const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 const DAYLIGHT_NORMAL_COLOR := Color(1.0, 0.78, 0.18, 0.96)
 const DAYLIGHT_DUSK_COLOR := Color(0.82, 0.42, 1.0, 0.94)
 const LATE_DAY_CARGO_WARNING_RATIO := 0.25
-const HEALTH_NORMAL_COLOR := Color(0.42, 1.0, 0.5, 0.94)
-const HEALTH_DAMAGED_COLOR := Color(1.0, 0.5, 0.26, 0.96)
-const HEALTH_LOW_COLOR := Color(1.0, 0.72, 0.22, 0.96)
-const HEALTH_CRITICAL_COLOR := Color(1.0, 0.18, 0.16, 0.98)
 
 @export var max_oxygen := 30.0
 @export var max_health := 100.0
@@ -4800,7 +4796,7 @@ func _update_hud() -> void:
 	cargo_slots_root.visible = is_diving
 	_update_daylight_timer_hud(is_diving)
 	oxygen_label.text = HudPresenterScript.format_oxygen_label(dive_session.oxygen, dive_session.max_oxygen)
-	health_label.text = _format_health_label(dive_session.health, dive_session.max_health)
+	health_label.text = HudPresenterScript.format_health_label(dive_session.health, dive_session.max_health)
 	depth_label.text = "Depth: %dm | Best: %dm" % [
 		roundi(dive_session.current_depth),
 		roundi(progression_state.best_depth_reached)
@@ -5054,8 +5050,8 @@ func _update_instrument_bars() -> void:
 		health_ratio = clampf(dive_session.health / dive_session.max_health, 0.0, 1.0)
 	_set_bar_fill_width(health_bar_fill, HEALTH_BAR_FILL_RECT, health_ratio)
 	if health_bar_fill != null:
-		var health_state := _health_state(dive_session.health, dive_session.max_health)
-		health_bar_fill.color = HEALTH_DAMAGED_COLOR if health_state == "normal" and _has_recent_health_damage() else _health_state_color(health_state)
+		var health_state := HudPresenterScript.health_state(dive_session.health, dive_session.max_health)
+		health_bar_fill.color = HudPresenterScript.HEALTH_DAMAGED_COLOR if health_state == "normal" and _has_recent_health_damage() else HudPresenterScript.health_state_color(health_state)
 
 	var depth_ratio := clampf(dive_session.current_depth / 200.0, 0.0, 1.0)
 	_set_bar_fill_width(depth_bar_fill, DEPTH_BAR_FILL_RECT, depth_ratio)
@@ -5238,7 +5234,7 @@ func _publish_visual_smoke_state() -> void:
 		"oxygen_state": HudPresenterScript.oxygen_state(dive_session.oxygen, dive_session.max_oxygen),
 		"oxygen": ceili(dive_session.oxygen),
 		"max_oxygen": ceili(dive_session.max_oxygen),
-		"health_state": _health_state(dive_session.health, dive_session.max_health),
+		"health_state": HudPresenterScript.health_state(dive_session.health, dive_session.max_health),
 		"health": ceili(dive_session.health),
 		"max_health": ceili(dive_session.max_health),
 		"health_damage_events": run_health_damage_events,
@@ -7052,38 +7048,6 @@ func _format_base_direction() -> String:
 
 
 
-func _health_state(current_health: float, maximum_health: float) -> String:
-	if maximum_health <= 0.0:
-		return "normal"
-
-	var health_ratio := current_health / maximum_health
-	if health_ratio <= 0.18:
-		return "critical"
-	if health_ratio <= 0.35:
-		return "low"
-
-	return "normal"
-
-func _format_health_label(current_health: float, maximum_health: float) -> String:
-	var state := _health_state(current_health, maximum_health)
-	var suffix := ""
-	if state == "critical":
-		suffix = "  CRITICAL"
-	elif state == "low":
-		suffix = "  LOW"
-
-	return "HEALTH: %d / %d%s" % [ceili(current_health), ceili(maximum_health), suffix]
-
-func _health_state_color(state: String) -> Color:
-	if state == "critical":
-		return HEALTH_CRITICAL_COLOR
-	if state == "low":
-		return HEALTH_LOW_COLOR
-
-	return HEALTH_NORMAL_COLOR
-
-
-
 func _update_oxygen_feedback() -> void:
 	oxygen_warning_panel.visible = false
 	oxygen_label.modulate = Color.WHITE
@@ -7123,8 +7087,8 @@ func _update_health_feedback() -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING or dive_session.max_health <= 0.0:
 		return
 
-	var health_state := _health_state(dive_session.health, dive_session.max_health)
-	var health_color := _health_state_color(health_state)
+	var health_state := HudPresenterScript.health_state(dive_session.health, dive_session.max_health)
+	var health_color := HudPresenterScript.health_state_color(health_state)
 	if health_state == "critical":
 		var pulse := 1.0 + 0.07 * absf(sin(Time.get_ticks_msec() / 110.0))
 		health_label.modulate = health_color
@@ -7136,9 +7100,9 @@ func _update_health_feedback() -> void:
 		if health_icon != null:
 			health_icon.modulate = health_color
 	elif _has_recent_health_damage():
-		health_label.modulate = HEALTH_DAMAGED_COLOR
+		health_label.modulate = HudPresenterScript.HEALTH_DAMAGED_COLOR
 		if health_icon != null:
-			health_icon.modulate = HEALTH_DAMAGED_COLOR
+			health_icon.modulate = HudPresenterScript.HEALTH_DAMAGED_COLOR
 
 func _load_progression() -> void:
 	if not FileAccess.file_exists(PROGRESSION_SAVE_PATH):
