@@ -4932,6 +4932,7 @@ func _publish_visual_smoke_state() -> void:
 		"health_damage_status_visible": status_label != null and status_label.text.contains("O2 unchanged") and status_label.text.contains("health"),
 		"health_damage_prompt_visible": prompt_label != null and prompt_label.text.to_lower().contains("o2 only"),
 		"health_damage_objective_visible": objective_line_label != null and objective_line_label.text.contains("Health hit"),
+		"dawn_priority_visible": run_summary_label != null and run_summary_label.text.contains("Day priority:"),
 		"night_build_choice_visible": run_summary_label != null and run_summary_label.text.contains("Build choice:"),
 		"night_tomorrow_plan_visible": run_summary_label != null and run_summary_label.text.contains("Next: press"),
 		"starter_resource_target_visible": run_summary_label != null and run_summary_label.text.contains("Shell Reef pockets"),
@@ -5152,7 +5153,7 @@ func _format_ready_panel_summary() -> String:
 		survival_state.supply_cache_hint_line(),
 		"Dive for supplies, cargo, or knowledge, then extract.",
 		_format_condition_briefing(),
-		ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory()),
+		_format_dawn_priority_line(),
 		"%s begins." % _action_label("interact"),
 	]
 	if show_debug_telemetry:
@@ -5986,6 +5987,9 @@ func _format_tomorrow_plan() -> String:
 		return "the ocean shifts again."
 
 	return broad_goal
+
+func _format_dawn_priority_line() -> String:
+	return "Day priority: %s" % _format_tomorrow_plan()
 
 func _format_starter_resource_target() -> String:
 	if progression_state.has_upgrade(WATER_FILTER_UPGRADE_ID):

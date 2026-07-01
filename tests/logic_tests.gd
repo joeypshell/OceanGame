@@ -5075,6 +5075,7 @@ func _test_next_expedition_framing() -> void:
 	main.survival_state.food = 0
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("bank Food supply first") and prompt.contains("empty needs cut max oxygen"), "empty base needs should take priority in tomorrow planning")
+	_expect(main._format_dawn_priority_line().contains("bank Food supply first"), "dawn priority should put empty base needs before upgrades")
 
 	main.survival_state.food = 3
 	main.progression_state.banked_resources = {
@@ -5083,16 +5084,19 @@ func _test_next_expedition_framing() -> void:
 	}
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("build Water Filter I in Upgrades"), "ready builds should take priority after critical base needs")
+	_expect(main._format_dawn_priority_line().contains("build Water Filter I in Upgrades"), "dawn priority should name ready builds when critical needs are stable")
 
 	main.progression_state.banked_resources.clear()
 	main.survival_state.power = 1
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("bank Power supply soon"), "low base needs should produce a non-critical supply plan")
+	_expect(main._format_dawn_priority_line().contains("bank Power supply soon"), "dawn priority should call out low base needs before route goals")
 
 	main.survival_state.power = 3
 	main.run_outer_shelf_survey_recovered = true
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("Glass Rim timing") and prompt.contains("Outer Shelf cargo"), "remembered place should produce a broad route plan when needs/builds are stable")
+	_expect(main._format_dawn_priority_line().contains("Outer Shelf cargo"), "dawn priority should preserve broad remembered-route opportunities")
 
 	main.progression_state.current_run_number = 4
 	main.survival_state.current_day = 4
@@ -6612,6 +6616,9 @@ func _test_surface_summary_tabs() -> void:
 	_expect(ready_summary.contains("Base needs: Food"), "ready panel should explain survival needs with readable names")
 	_expect(ready_summary.contains("Tonight: Food -1, Water -1, Power -1."), "ready panel should explain nightly survival pressure")
 	_expect(ready_summary.contains("Supply cache fills the lowest need"), "ready panel should explain why the shallow cache matters")
+	_expect(ready_summary.contains("Day priority:"), "ready panel should name one main day priority")
+	_expect(ready_summary.contains("Shell Reef pockets"), "ready panel priority should point to the current starter-resource target")
+	_expect(not ready_summary.contains("Goal:"), "ready panel should not show a second generic goal line")
 	_expect(not ready_summary.contains("Survival F"), "ready panel should not use cryptic survival abbreviations")
 	_expect(not ready_summary.contains("F9"), "ready panel should hide prototype reset copy when debug telemetry is off")
 	main.show_debug_telemetry = true

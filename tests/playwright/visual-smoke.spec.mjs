@@ -10,6 +10,7 @@ test.describe("OceanGame web visual smoke", () => {
       debug_telemetry: false,
       status_debug_copy: false,
       run_panel_visible: true,
+      dawn_priority_visible: true,
     });
 
     await page.keyboard.press("Enter");
