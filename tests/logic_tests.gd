@@ -27,6 +27,7 @@ const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.g
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
+const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -87,6 +88,7 @@ func _initialize() -> void:
 	_run("upgrade affordability", _test_upgrade_affordability)
 	_run("progression reset", _test_progression_reset)
 	_run("save/load behavior", _test_save_load_behavior)
+	_run("save service", _test_save_service)
 	_run("deterministic seed generation", _test_deterministic_seed_generation)
 	_run("expedition condition selection", _test_expedition_condition_selection)
 	_run("spawn-point matching", _test_spawn_point_matching)
@@ -967,6 +969,39 @@ func _test_save_load_behavior() -> void:
 	_expect(not main_saved.has("hollow_reef_reading"), "progression save should not add durable Hollow Reef reading data")
 	_expect(main_saved.get("purchased_upgrades", {}).has(ResonanceKeyUpgrade.id), "progression save should keep Resonance Key I as durable upgrade state only")
 	main.queue_free()
+
+func _test_save_service() -> void:
+	var save_path := "user://logic_test_save_service.json"
+	SaveServiceScript.delete_progression_save(save_path)
+
+	var progression := ProgressionStateScript.new()
+	progression.banked_resources = {"kelp_fiber": 3, "glow_plankton": 1}
+	progression.purchased_upgrades = {OxygenTankUpgrade.id: true}
+	progression.add_discovery("thermal_vent", "Thermal Vent", "Hot current.", "Unlocks pressure tuning.")
+	progression.record_depth(144.5)
+
+	var survival := SurvivalStateScript.new()
+	survival.current_day = 3
+	survival.food = 2
+	survival.water = 4
+	survival.power = 1
+	survival.chapter_complete = true
+
+	_expect(SaveServiceScript.save_progression(save_path, progression, survival), "save service should write progression saves")
+
+	var loaded_progression := ProgressionStateScript.new()
+	var loaded_survival := SurvivalStateScript.new()
+	_expect(SaveServiceScript.load_progression(save_path, loaded_progression, loaded_survival), "save service should load existing progression saves")
+	_expect(loaded_progression.resource_count("kelp_fiber") == 3, "save service should reload banked resources")
+	_expect(loaded_progression.has_upgrade(OxygenTankUpgrade.id), "save service should reload purchased upgrades")
+	_expect(loaded_progression.has_discovery("thermal_vent"), "save service should reload scan discoveries")
+	_expect(is_equal_approx(loaded_progression.best_depth_reached, 144.5), "save service should reload best depth")
+	_expect(loaded_survival.current_day == 3, "save service should reload nested survival day")
+	_expect(loaded_survival.food == 2 and loaded_survival.water == 4 and loaded_survival.power == 1, "save service should reload nested survival needs")
+	_expect(loaded_survival.chapter_complete, "save service should reload nested survival chapter flags")
+
+	_expect(SaveServiceScript.delete_progression_save(save_path), "save service should delete test save files")
+	_expect(not SaveServiceScript.load_progression(save_path, loaded_progression, loaded_survival), "save service should report missing saves")
 
 func _test_deterministic_seed_generation() -> void:
 	var first := ProgressionStateScript.new()
