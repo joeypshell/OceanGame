@@ -63,6 +63,7 @@ const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_syn
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
+const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
@@ -3313,103 +3314,40 @@ func _tool_belt_state(tool_id: String) -> String:
 			return "disabled"
 
 func _format_upgrade_status() -> String:
-	var owned_count := 0
-	for upgrade in upgrade_definitions:
-		if progression_state.has_upgrade(upgrade.id):
-			owned_count += 1
-
-	return "Upgrades: %d / %d installed" % [owned_count, upgrade_definitions.size()]
+	return UpgradeStateServiceScript.format_upgrade_status(self)
 
 func _format_burst_thruster_prompt() -> String:
-	if burst_thruster_cooldown_remaining > 0.0:
-		return "Burst: %ds cooldown" % ceili(burst_thruster_cooldown_remaining)
-
-	return "%s burst -%d" % [_action_label("burst_thruster"), ceili(burst_thruster_oxygen_cost)]
+	return UpgradeStateServiceScript.format_burst_thruster_prompt(self)
 
 func _format_decoy_pulse_prompt() -> String:
-	if progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
-		return "Decoy spent" if decoy_pulse_used_this_run else "%s: decoy ready" % _action_label("decoy_pulse")
-	if progression_state.has_discovery("gulper_eel"):
-		return "Decoy locked"
-
-	return ""
+	return UpgradeStateServiceScript.format_decoy_pulse_prompt(self)
 
 func _format_decoy_pulse_scan_feedback() -> String:
-	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
-		return "Predator route warning refreshed. Decoy Pulse unavailable."
-	if decoy_pulse_activated_this_scan:
-		return "Decoy Pulse spent: predator distracted for %ds." % ceili(decoy_pulse_duration_seconds)
-	if decoy_pulse_used_this_run:
-		return "Predator route warning refreshed. Decoy Pulse already spent this expedition."
-
-	return "Predator route warning refreshed. Decoy Pulse ready on re-scan."
+	return UpgradeStateServiceScript.format_decoy_pulse_scan_feedback(self)
 
 func _surface_tabs_enabled() -> bool:
 	return dive_session.result == DiveSessionScript.Result.EXTRACTED
 
 func _format_surface_tabs() -> String:
-	var parts: Array[String] = []
-	for index in range(SURFACE_TAB_NAMES.size()):
-		var tab_name: String = SURFACE_TAB_NAMES[index]
-		if index == surface_tab_index:
-			parts.append("[%s]" % tab_name)
-		else:
-			parts.append(tab_name)
-
-	return "  ".join(parts)
+	return UpgradeStateServiceScript.format_surface_tabs(self)
 
 func _format_upgrade_cost(cost: Dictionary) -> String:
-	return UpgradeCopyPresenterScript.format_upgrade_cost(cost, ResourceSummaryServiceScript.resource_names_for_cost(cost, survival_state))
+	return UpgradeStateServiceScript.format_upgrade_cost(self, cost)
 
 func _format_missing_resources(cost: Dictionary) -> String:
-	return UpgradeCopyPresenterScript.format_missing_resources(cost, _resource_counts_for_cost(cost), ResourceSummaryServiceScript.resource_names_for_cost(cost, survival_state))
+	return UpgradeStateServiceScript.format_missing_resources(self, cost)
 
 func _resource_counts_for_cost(cost: Dictionary) -> Dictionary:
-	var counts_by_id := {}
-	for resource_id in cost.keys():
-		counts_by_id[resource_id] = progression_state.resource_count(resource_id)
-	return counts_by_id
+	return UpgradeStateServiceScript.resource_counts_for_cost(self, cost)
 
 func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
-	var effect_summary := _format_upgrade_effect_summary(upgrade)
-	if upgrade.id == RESONANCE_KEY_UPGRADE_ID:
-		var resonance_missing_upgrade := _upgrade_missing_upgrade(RESONANCE_KEY_UPGRADE)
-		return UpgradeCopyPresenterScript.format_resonance_key_upgrade_state(
-			effect_summary,
-			progression_state.has_upgrade(upgrade.id),
-			_format_upgrade_display_name(resonance_missing_upgrade) if resonance_missing_upgrade != "" else "",
-			_upgrade_missing_discovery(RESONANCE_KEY_UPGRADE) != "",
-			progression_state.can_afford(RESONANCE_KEY_UPGRADE.resource_cost),
-			_action_label("interact").replace("/", " or "),
-			_format_missing_resources_inline(RESONANCE_KEY_UPGRADE.resource_cost)
-		)
-	if upgrade.id == SALVAGE_CUTTER_UPGRADE_ID:
-		return UpgradeCopyPresenterScript.format_salvage_cutter_upgrade_state(
-			effect_summary,
-			progression_state.has_upgrade(upgrade.id),
-			_upgrade_missing_discovery(SALVAGE_CUTTER_UPGRADE) != "",
-			progression_state.can_afford(SALVAGE_CUTTER_UPGRADE.resource_cost),
-			_action_label("interact").replace("/", " or "),
-			_format_missing_resources_inline(SALVAGE_CUTTER_UPGRADE.resource_cost)
-		)
-
-	var missing_discovery := _upgrade_missing_discovery(upgrade)
-	var missing_upgrade := _upgrade_missing_upgrade(upgrade)
-	return UpgradeCopyPresenterScript.format_standard_upgrade_state(
-		effect_summary,
-		progression_state.has_upgrade(upgrade.id),
-		_format_discovery_name(missing_discovery) if missing_discovery != "" else "",
-		_format_upgrade_display_name(missing_upgrade) if missing_upgrade != "" else "",
-		progression_state.can_afford(upgrade.resource_cost),
-		_action_label("interact").replace("/", " or "),
-		_format_missing_resources_inline(upgrade.resource_cost)
-	)
+	return UpgradeStateServiceScript.format_upgrade_state(self, upgrade)
 
 func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
-	return UpgradeCopyPresenterScript.format_upgrade_effect_summary(upgrade.id, upgrade.owned_text)
+	return UpgradeStateServiceScript.format_upgrade_effect_summary(upgrade)
 
 func _format_upgrade_panel_feedback(feedback: String) -> String:
-	return UpgradeCopyPresenterScript.format_upgrade_panel_feedback(feedback)
+	return UpgradeStateServiceScript.format_upgrade_panel_feedback(feedback)
 
 func _format_future_tool_upgrade_promise() -> String:
 	return ""
@@ -3418,52 +3356,13 @@ func _has_future_tool_upgrade_context() -> bool:
 	return false
 
 func _format_ready_upgrade_callout() -> String:
-	var ready: Array[String] = []
-	for upgrade in upgrade_definitions:
-		if progression_state.has_upgrade(upgrade.id):
-			continue
-		if _upgrade_missing_discovery(upgrade) != "":
-			continue
-		if _upgrade_missing_upgrade(upgrade) != "":
-			continue
-		if progression_state.can_afford(upgrade.resource_cost):
-			ready.append(upgrade.display_name)
-
-	return UpgradeCopyPresenterScript.format_ready_upgrade_callout(ready)
+	return UpgradeStateServiceScript.format_ready_upgrade_callout(self)
 
 func _format_upgrade_progress_callout() -> String:
-	for upgrade in upgrade_definitions:
-		if progression_state.has_upgrade(upgrade.id):
-			continue
-
-		var missing_discovery := _upgrade_missing_discovery(upgrade)
-		if missing_discovery != "":
-			return "Upgrade progress: %s %s to unlock %s." % [
-				_format_upgrade_prerequisite_action(missing_discovery),
-				_format_discovery_name(missing_discovery),
-				upgrade.display_name,
-			]
-
-		var missing_upgrade := _upgrade_missing_upgrade(upgrade)
-		if missing_upgrade != "":
-			return "Upgrade progress: buy %s before %s." % [
-				_format_upgrade_display_name(missing_upgrade),
-				upgrade.display_name,
-			]
-
-		var missing_resources := _format_missing_resources_inline(upgrade.resource_cost)
-		if missing_resources == "none":
-			return "Upgrade progress: %s ready to buy." % upgrade.display_name
-
-		return "Upgrade progress: %s still needs %s." % [
-			upgrade.display_name,
-			missing_resources,
-		]
-
-	return "Upgrade progress: all current upgrades installed."
+	return UpgradeStateServiceScript.format_upgrade_progress_callout(self)
 
 func _format_missing_resources_inline(cost: Dictionary) -> String:
-	return UpgradeCopyPresenterScript.format_missing_resources_inline(cost, _resource_counts_for_cost(cost), ResourceSummaryServiceScript.resource_names_for_cost(cost, survival_state))
+	return UpgradeStateServiceScript.format_missing_resources_inline(self, cost)
 
 func _format_scan_progress_callout(prefix: String) -> String:
 	if run_completed_scans.is_empty():
@@ -3505,29 +3404,10 @@ func _upgrade_missing_upgrade(upgrade: UpgradeDefinition) -> String:
 	return UpgradePurchaseScript.missing_upgrade(progression_state, upgrade)
 
 func _format_upgrade_display_name(upgrade_id: String) -> String:
-	for upgrade in upgrade_definitions:
-		if upgrade.id == upgrade_id:
-			return upgrade.display_name
-
-	match upgrade_id:
-		PREDATOR_WARNING_UPGRADE_ID:
-			return "Predator Warning I"
-		DECOY_PULSE_UPGRADE_ID:
-			return "Decoy Pulse I"
-		RESONANCE_KEY_UPGRADE_ID:
-			return "Resonance Key I"
-		WATER_FILTER_UPGRADE_ID:
-			return "Water Filter I"
-		SALVAGE_CUTTER_UPGRADE_ID:
-			return "Salvage Cutter I"
-		_:
-			return upgrade_id
+	return UpgradeStateServiceScript.format_upgrade_display_name(self, upgrade_id)
 
 func _format_upgrade_prerequisite_action(discovery_id: String) -> String:
-	if discovery_id == "salvage_data_cache":
-		return "recover"
-
-	return "scan"
+	return UpgradeStateServiceScript.format_upgrade_prerequisite_action(discovery_id)
 
 func _format_discovery_name(discovery_id: String) -> String:
 	if discovery_id.is_empty():

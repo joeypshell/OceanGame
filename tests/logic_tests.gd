@@ -73,6 +73,7 @@ const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_syn
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
+const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
@@ -265,6 +266,7 @@ func _initialize() -> void:
 	_run("scan target card service", _test_scan_target_card_service)
 	_run("run panel layout service", _test_run_panel_layout_service)
 	_run("upgrade menu service", _test_upgrade_menu_service)
+	_run("upgrade state service", _test_upgrade_state_service)
 	_run("resource summary service", _test_resource_summary_service)
 	_run("depth rail service", _test_depth_rail_service)
 	_run("minimap service", _test_minimap_service)
@@ -8308,6 +8310,30 @@ func _test_upgrade_menu_service() -> void:
 	_expect(main.upgrade_menu_title_label.text.begins_with("Upgrade Bay (1/1)"), "upgrade menu service should preserve selected title copy")
 	_expect(main.upgrade_menu_item_label.text == "Test Upgrade\nTest description", "upgrade menu service should preserve upgrade item copy")
 	_expect(main.upgrade_menu_cost_label.text == "Cost: Driftwood x1", "upgrade menu service should preserve cost copy")
+	main.free()
+
+func _test_upgrade_state_service() -> void:
+	var main := MainScript.new()
+	main.upgrade_definitions = [OxygenTankUpgrade, WaterFilterUpgrade]
+	main.surface_tab_index = MainScript.SURFACE_TAB_UPGRADES
+
+	_expect(UpgradeStateServiceScript.format_upgrade_status(main) == "Upgrades: 0 / 2 installed", "upgrade status should preserve owned/total copy")
+	_expect(UpgradeStateServiceScript.format_surface_tabs(main) == "Result  [Upgrades]  Log  Night", "surface tab copy should preserve selected tab brackets")
+	_expect(UpgradeStateServiceScript.format_burst_thruster_prompt(main).begins_with("Space burst -"), "burst prompt should preserve action-label copy")
+	_expect(UpgradeStateServiceScript.format_decoy_pulse_prompt(main) == "", "undiscovered Decoy Pulse prompt should stay hidden")
+
+	var counts := UpgradeStateServiceScript.resource_counts_for_cost(main, {"kelp_fiber": 2, "shell_fragments": 1})
+	_expect(int(counts.get("kelp_fiber", -1)) == 0, "upgrade resource count should use banked resource totals")
+	main.progression_state.banked_resources["kelp_fiber"] = 2
+	main.progression_state.banked_resources["shell_fragments"] = 1
+	main.progression_state.banked_resources["glow_plankton"] = 1
+	counts = UpgradeStateServiceScript.resource_counts_for_cost(main, {"kelp_fiber": 2, "shell_fragments": 1})
+	_expect(int(counts.get("kelp_fiber", -1)) == 2, "upgrade resource count should reflect banked resources")
+
+	var ready_callout := UpgradeStateServiceScript.format_ready_upgrade_callout(main)
+	_expect(ready_callout.contains("Oxygen Tank I"), "ready upgrade callout should include affordable upgrades")
+	_expect(UpgradeStateServiceScript.format_upgrade_prerequisite_action("salvage_data_cache") == "recover", "salvage cache prerequisite should preserve recover verb")
+	_expect(UpgradeStateServiceScript.format_upgrade_prerequisite_action("thermal_vent") == "scan", "scan prerequisites should preserve scan verb")
 	main.free()
 
 func _test_resource_summary_service() -> void:
