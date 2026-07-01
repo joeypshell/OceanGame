@@ -18,6 +18,7 @@ const BlueChimneyVisualStagingServiceScript := preload("res://scripts/debug/blue
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
+const DaylightTimerHudServiceScript := preload("res://scripts/ui/daylight_timer_hud_service.gd")
 const DepthRailServiceScript := preload("res://scripts/ui/depth_rail_service.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
@@ -3550,33 +3551,7 @@ func _visual_late_day_cargo_warning_visible() -> bool:
 	return prompt_text.contains("Power risk") or objective_text.contains("Dusk: bank cargo soon")
 
 func _update_daylight_timer_hud(is_visible: bool) -> void:
-	if daylight_panel != null:
-		daylight_panel.visible = is_visible
-	var daylight_nodes: Array[CanvasItem] = [
-		daylight_label,
-		daylight_bar_back,
-		daylight_bar_fill,
-		daylight_sun_icon,
-		daylight_moon_icon,
-	]
-	for node in daylight_nodes:
-		if node != null:
-			node.visible = is_visible
-
-	if not is_visible:
-		return
-
-	var remaining_ratio := _daylight_remaining_ratio()
-	if daylight_label != null:
-		daylight_label.text = HudPresenterScript.format_daylight_label(_daylight_remaining_seconds())
-		daylight_label.modulate = HudPresenterScript.daylight_bar_color(remaining_ratio)
-	if daylight_bar_fill != null:
-		daylight_bar_fill.color = HudPresenterScript.daylight_bar_color(remaining_ratio)
-		_set_bar_fill_width(daylight_bar_fill, DAYLIGHT_BAR_FILL_RECT, remaining_ratio)
-	if daylight_sun_icon != null:
-		daylight_sun_icon.color = Color(1.0, 0.82, 0.22, 0.32 + remaining_ratio * 0.62)
-	if daylight_moon_icon != null:
-		daylight_moon_icon.color = Color(0.72, 0.78, 1.0, 0.34 + (1.0 - remaining_ratio) * 0.58)
+	DaylightTimerHudServiceScript.update_timer(self, is_visible)
 
 func _set_bar_fill_width(fill: ColorRect, base_rect: Rect2, ratio: float) -> void:
 	_set_control_rect(fill, base_rect)
