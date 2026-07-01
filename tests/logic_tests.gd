@@ -54,6 +54,7 @@ const OxygenFeedbackServiceScript := preload("res://scripts/ui/oxygen_feedback_s
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
+const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
@@ -238,6 +239,7 @@ func _initialize() -> void:
 	_run("upgrade copy presenter", _test_upgrade_copy_presenter)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
+	_run("recent expedition log service", _test_recent_expedition_log_service)
 	_run("recent expedition presenter", _test_recent_expedition_presenter)
 	_run("recent expedition log", _test_recent_expedition_log)
 	_run("recent expedition survival memory", _test_recent_expedition_survival_memory)
@@ -7053,6 +7055,27 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 	_expect(upgrade_feedback.offset_bottom <= upgrade_panel.offset_bottom - upgrade_panel.offset_top - 14.0, "upgrade feedback label should stay inside the upgrade panel")
 	_expect(upgrade_feedback.clip_text, "upgrade feedback should clip instead of drawing outside the panel")
 	main_scene.queue_free()
+	main.free()
+
+func _test_recent_expedition_log_service() -> void:
+	var main := MainScript.new()
+	_expect(RecentExpeditionLogServiceScript.format_scan_ids([]) == "none", "empty scan-id list should format as none")
+	_expect(RecentExpeditionLogServiceScript.format_scan_ids(["thermal_vent", "shell_reef_shelf"]) == "thermal_vent, shell_reef_shelf", "scan-id list should preserve comma-separated ids")
+
+	main.progression_state.current_run_number = 5
+	main.progression_state.current_run_seed = 101
+	main.progression_state.best_depth_reached = 42.0
+	main.run_completed_scans = ["thermal_vent"]
+	main.run_banked_survival_supplies = ["food_supply"]
+	RecentExpeditionLogServiceScript.record_recent_expedition(main, "Extracted", 1)
+	_expect(main.recent_expedition_log.size() == 1, "recent expedition service should append one entry")
+	_expect(String(main.recent_expedition_log[0].get("survival_memory", "")).contains("Food"), "recent expedition service should preserve survival supply memory")
+
+	for run_number in range(6, 10):
+		main.progression_state.current_run_number = run_number
+		RecentExpeditionLogServiceScript.record_recent_expedition(main, "Extracted", 0)
+	_expect(main.recent_expedition_log.size() == 3, "recent expedition service should keep only three entries")
+	_expect(int(main.recent_expedition_log[0].get("run_number", -1)) == 7, "recent expedition service should drop oldest entries first")
 	main.free()
 
 func _test_recent_expedition_presenter() -> void:

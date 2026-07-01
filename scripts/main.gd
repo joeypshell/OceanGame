@@ -46,6 +46,7 @@ const OxygenFeedbackServiceScript := preload("res://scripts/ui/oxygen_feedback_s
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
+const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
@@ -3683,74 +3684,19 @@ func _format_discovery_memory_callout() -> String:
 	return RouteMemoryPresenterScript.format_discovery_memory_callout(_route_memory_state())
 
 func _format_scan_ids(scan_ids: Array[String]) -> String:
-	if scan_ids.is_empty():
-		return "none"
-
-	var parts: Array[String] = []
-	for scan_id in scan_ids:
-		parts.append(scan_id)
-
-	return ", ".join(parts)
+	return RecentExpeditionLogServiceScript.format_scan_ids(scan_ids)
 
 func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> void:
-	recent_expedition_log.append({
-		"run_number": progression_state.current_run_number,
-		"result": result_name,
-		"banked_cargo_count": banked_cargo_count,
-		"scans": run_completed_scans.duplicate(),
-		"route_memory": _format_recent_route_memory(),
-		"survival_memory": _format_recent_survival_memory(result_name, banked_cargo_count),
-		"predator_contacts": run_predator_contacts,
-		"best_depth": roundi(progression_state.best_depth_reached),
-		"seed": progression_state.current_run_seed,
-		"pattern": ConditionPresenterScript.format_cluster_pattern(current_resource_cluster_pattern),
-	})
-
-	while recent_expedition_log.size() > 3:
-		recent_expedition_log.pop_front()
+	RecentExpeditionLogServiceScript.record_recent_expedition(self, result_name, banked_cargo_count)
 
 func _format_recent_expedition_log() -> String:
-	return RecentExpeditionPresenterScript.format_recent_expedition_log(
-		recent_expedition_log,
-		show_debug_telemetry,
-		_recent_expedition_scan_names_by_id()
-	)
+	return RecentExpeditionLogServiceScript.format_recent_expedition_log(self)
 
 func _format_recent_survival_memory(result_name: String, banked_cargo_count: int) -> String:
-	if run_health_damage_events > 0 and dive_session.health < dive_session.max_health:
-		return "health %d/%d; med used build" % [
-			ceili(dive_session.health),
-			ceili(dive_session.max_health),
-		]
-	if daylight_nightfall_away_from_ship:
-		return "late return cost Power -1"
-	if not run_banked_survival_supplies.is_empty():
-		return "banked %s supply" % ResourceSummaryServiceScript.format_supply_names_inline(run_banked_survival_supplies, survival_state)
-
-	var low_needs := _base_need_names_at_or_below(1)
-	if not low_needs.is_empty():
-		return "low %s" % _format_need_list(low_needs)
-
-	if result_name == "Extracted" and banked_cargo_count == 0:
-		var starter_target := _format_starter_resource_target()
-		if not starter_target.is_empty():
-			var prefix := "Shell Reef pockets: "
-			var suffix := " for Water Filter I."
-			if starter_target.begins_with(prefix):
-				starter_target = starter_target.substr(prefix.length())
-			if starter_target.ends_with(suffix):
-				starter_target = starter_target.substr(0, starter_target.length() - suffix.length())
-			return "Water Filter needs %s" % starter_target
-
-	return ""
+	return RecentExpeditionLogServiceScript.format_recent_survival_memory(self, result_name, banked_cargo_count)
 
 func _recent_expedition_scan_names_by_id() -> Dictionary:
-	var names_by_id := {}
-	for entry in recent_expedition_log:
-		for scan_id in RecentExpeditionPresenterScript.string_array_from(entry.get("scans", [])):
-			names_by_id[scan_id] = _format_discovery_name(scan_id)
-
-	return names_by_id
+	return RecentExpeditionLogServiceScript.recent_expedition_scan_names_by_id(self)
 
 func _format_discoveries(compact: bool = false) -> String:
 	var discoveries := progression_state.scan_discoveries
