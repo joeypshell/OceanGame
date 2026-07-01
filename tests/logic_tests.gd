@@ -7632,17 +7632,17 @@ func _test_surface_summary_tabs() -> void:
 	_expect(main._format_ready_panel_summary().contains("F9 resets prototype save"), "ready panel may expose reset copy when debug telemetry is on")
 	main.show_debug_telemetry = false
 
-	_expect(not main._surface_tabs_enabled(), "surface tabs should be hidden before extraction")
+	_expect(not UpgradeStateServiceScript.surface_tabs_enabled(main), "surface tabs should be hidden before extraction")
 	main.dive_session.extract()
-	_expect(main._surface_tabs_enabled(), "surface tabs should be available after extraction")
-	_expect(main._format_surface_tabs() == "[Result]  Upgrades  Log  Night", "surface tabs should mark the result view by default")
+	_expect(UpgradeStateServiceScript.surface_tabs_enabled(main), "surface tabs should be available after extraction")
+	_expect(UpgradeStateServiceScript.format_surface_tabs(main) == "[Result]  Upgrades  Log  Night", "surface tabs should mark the result view by default")
 	main.surface_tab_index = main.SURFACE_TAB_UPGRADES
-	_expect(main._format_surface_tabs() == "Result  [Upgrades]  Log  Night", "surface tabs should mark the upgrade view")
+	_expect(UpgradeStateServiceScript.format_surface_tabs(main) == "Result  [Upgrades]  Log  Night", "surface tabs should mark the upgrade view")
 	_expect(main._format_upgrade_menu_title(1, 7) == "Upgrade Bay (1/7) - Up/Down select", "upgrade bay title should keep selection controls visible")
 	main.surface_tab_index = main.SURFACE_TAB_LOG
-	_expect(main._format_surface_tabs() == "Result  Upgrades  [Log]  Night", "surface tabs should mark the log view")
+	_expect(UpgradeStateServiceScript.format_surface_tabs(main) == "Result  Upgrades  [Log]  Night", "surface tabs should mark the log view")
 	main.surface_tab_index = main.SURFACE_TAB_NIGHT
-	_expect(main._format_surface_tabs() == "Result  Upgrades  Log  [Night]", "surface tabs should mark the night view")
+	_expect(UpgradeStateServiceScript.format_surface_tabs(main) == "Result  Upgrades  Log  [Night]", "surface tabs should mark the night view")
 	main.free()
 
 func _test_keyboard_action_prompt_labels() -> void:

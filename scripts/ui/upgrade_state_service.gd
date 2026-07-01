@@ -37,6 +37,9 @@ static func format_decoy_pulse_scan_feedback(host) -> String:
 
 	return "Predator route warning refreshed. Decoy Pulse ready on re-scan."
 
+static func surface_tabs_enabled(host) -> bool:
+	return host.dive_session.result == host.DiveSessionScript.Result.EXTRACTED
+
 static func format_surface_tabs(host) -> String:
 	var parts: Array[String] = []
 	for index in range(host.SURFACE_TAB_NAMES.size()):

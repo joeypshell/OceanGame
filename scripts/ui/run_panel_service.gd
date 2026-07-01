@@ -2,6 +2,7 @@ class_name RunPanelService
 extends RefCounted
 
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
+const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
 
 static func update_run_panel(host) -> void:
 	var use_compact_panel: bool = (
@@ -9,8 +10,8 @@ static func update_run_panel(host) -> void:
 		and host.surface_tab_index == host.SURFACE_TAB_UPGRADES
 	)
 	host._apply_run_panel_layout(use_compact_panel)
-	host.surface_tabs_label.visible = host._surface_tabs_enabled()
-	host.surface_tabs_label.text = host._format_surface_tabs() if host.surface_tabs_label.visible else ""
+	host.surface_tabs_label.visible = UpgradeStateServiceScript.surface_tabs_enabled(host)
+	host.surface_tabs_label.text = UpgradeStateServiceScript.format_surface_tabs(host) if host.surface_tabs_label.visible else ""
 	if host.dive_session.result == host.DiveSessionScript.Result.READY:
 		host.run_panel.visible = true
 		host.run_title_label.text = host._format_expedition_day_title("Ready")

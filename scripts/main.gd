@@ -942,9 +942,9 @@ func _unhandled_input(_event: InputEvent) -> void:
 		return
 	elif Input.is_action_just_pressed("interact"):
 		_handle_interact_action()
-	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
+	elif Input.is_action_just_pressed("move_left") and UpgradeStateServiceScript.surface_tabs_enabled(self):
 		_cycle_surface_tab(-1)
-	elif Input.is_action_just_pressed("move_right") and _surface_tabs_enabled():
+	elif Input.is_action_just_pressed("move_right") and UpgradeStateServiceScript.surface_tabs_enabled(self):
 		_cycle_surface_tab(1)
 	elif Input.is_action_just_pressed("move_up") and dive_session.result == DiveSessionScript.Result.EXTRACTED and surface_tab_index == SURFACE_TAB_UPGRADES:
 		_select_upgrade(-1)
@@ -3069,12 +3069,6 @@ func _format_decoy_pulse_prompt() -> String:
 
 func _format_decoy_pulse_scan_feedback() -> String:
 	return UpgradeStateServiceScript.format_decoy_pulse_scan_feedback(self)
-
-func _surface_tabs_enabled() -> bool:
-	return dive_session.result == DiveSessionScript.Result.EXTRACTED
-
-func _format_surface_tabs() -> String:
-	return UpgradeStateServiceScript.format_surface_tabs(self)
 
 func _format_upgrade_cost(cost: Dictionary) -> String:
 	return UpgradeStateServiceScript.format_upgrade_cost(self, cost)
