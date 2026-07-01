@@ -425,6 +425,10 @@ func _test_night_phase_end_day_and_upgrade_choice() -> void:
 	_expect(main.progression_state.resource_count("quartz_glass") == 0, "night upgrade should spend quartz glass")
 	_expect(main.survival_state.water == SurvivalStateScript.STARTING_NEED, "Water Filter I should restore one water reserve during night")
 	_expect(main.upgrade_menu_feedback.contains("Purchased Water Filter I"), "night purchase feedback should confirm the build choice")
+	_expect(main.upgrade_menu_feedback.contains("Next:"), "night purchase feedback should include a concrete next-day plan")
+	var post_purchase_prompt: String = main._format_next_expedition_prompt()
+	_expect(not post_purchase_prompt.contains("build Water Filter I"), "tomorrow plan should move past Water Filter I after it is built")
+	_expect(post_purchase_prompt.contains("Oxygen Tank I"), "tomorrow plan after Water Filter I should point back to the starter research upgrade path")
 
 	main.call("_restart_dive")
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "restart after night should prepare the next day")
@@ -6019,6 +6023,15 @@ func _test_upgrade_bay_readability_states() -> void:
 	_expect(state.begins_with("State: Missing resources"), "Water Filter I should show missing starter resources")
 	_expect(state.contains("Driftwood x1"), "Water Filter I should name missing driftwood")
 	_expect(state.contains("Quartz Glass x1"), "Water Filter I should name missing quartz glass")
+	var missing_scene := MainScene.instantiate()
+	root.add_child(missing_scene)
+	missing_scene.dive_session.extract()
+	missing_scene.surface_tab_index = missing_scene.SURFACE_TAB_UPGRADES
+	missing_scene.selected_upgrade_index = 0
+	missing_scene.call("_try_purchase_selected_upgrade")
+	_expect(missing_scene.upgrade_menu_feedback.contains("Missing Driftwood x1, Quartz Glass x1"), "missing Water Filter feedback should name starter material shortage")
+	_expect(missing_scene.upgrade_menu_feedback.contains("Next: bank it for Water Filter I."), "missing Water Filter feedback should turn shortage into a tomorrow plan")
+	missing_scene.queue_free()
 	var starter_goal := ExpeditionGoalFormatterScript.format_goal(main.progression_state, [WaterFilterUpgrade])
 	_expect(starter_goal.contains("Driftwood x1") and starter_goal.contains("Quartz Glass x1"), "ready goal should display starter resource names for Water Filter I")
 	main.progression_state.banked_resources = {

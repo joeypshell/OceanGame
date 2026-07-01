@@ -2878,13 +2878,17 @@ func _try_purchase_selected_upgrade() -> void:
 
 	if UpgradePurchaseScript.purchase(progression_state, upgrade):
 		_apply_upgrade_effect(upgrade.effect_id)
-		upgrade_menu_feedback = "Purchased %s. %s" % [upgrade.display_name, upgrade.owned_text]
+		upgrade_menu_feedback = "Purchased %s. Next: %s" % [
+			upgrade.display_name,
+			_format_tomorrow_plan(),
+		]
 		_save_progression()
 		status_label.text = "Purchased %s." % upgrade.display_name
 	else:
-		upgrade_menu_feedback = "Still missing: %s\nBanked:%s" % [
-			_format_missing_resources_inline(upgrade.resource_cost),
-			_format_banked_resources(),
+		var missing_resources := _format_missing_resources_inline(upgrade.resource_cost)
+		upgrade_menu_feedback = "Missing %s. Next: bank it for %s." % [
+			missing_resources,
+			upgrade.display_name,
 		]
 		status_label.text = "%s needs more banked resources." % upgrade.display_name
 
@@ -4887,6 +4891,9 @@ func _publish_visual_smoke_state() -> void:
 		"prompt_text": prompt_label.text if prompt_label != null else "",
 		"objective_text": objective_line_label.text if objective_line_label != null else "",
 		"cargo_text": cargo_label.text if cargo_label != null else "",
+		"night_build_choice_visible": run_summary_label != null and run_summary_label.text.contains("Build choice:"),
+		"night_tomorrow_plan_visible": run_summary_label != null and run_summary_label.text.contains("Next: press"),
+		"upgrade_feedback_next_plan_visible": upgrade_menu_feedback_label != null and upgrade_menu_feedback_label.text.contains("Next:"),
 		"status_debug_copy": status_label != null and status_label.text.to_lower().contains("debug"),
 		"touch_controls_visible": mobile_touch_controls != null and mobile_touch_controls.visible,
 		"wreck_echo_clue_recovered": run_wreck_echo_clue_recovered,

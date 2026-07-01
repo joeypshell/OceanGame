@@ -33,6 +33,8 @@ test.describe("OceanGame web visual smoke", () => {
       debug_telemetry: false,
       status_debug_copy: false,
       run_panel_visible: true,
+      night_build_choice_visible: true,
+      night_tomorrow_plan_visible: true,
     });
 
     await page.keyboard.press("Enter");
@@ -43,6 +45,17 @@ test.describe("OceanGame web visual smoke", () => {
       debug_telemetry: false,
       status_debug_copy: false,
       upgrade_panel_visible: true,
+    });
+
+    await page.keyboard.press("Enter");
+    await page.waitForTimeout(500);
+    await capture(page, testInfo, "upgrade-tab-missing-build-plan", {
+      result: "extracted",
+      surface_tab: "upgrades",
+      debug_telemetry: false,
+      status_debug_copy: false,
+      upgrade_panel_visible: true,
+      upgrade_feedback_next_plan_visible: true,
     });
 
     await page.keyboard.press("KeyR");
