@@ -6298,6 +6298,12 @@ func _test_upgrade_copy_presenter() -> void:
 	_expect(UpgradeCopyPresenterScript.format_material_need_list([]) == "materials", "empty material lists should keep fallback copy")
 	_expect(UpgradeCopyPresenterScript.format_material_need_list(["Driftwood", "Quartz Glass"]) == "Driftwood/Quartz Glass", "two material lists should use slash copy")
 	_expect(UpgradeCopyPresenterScript.format_need_list(["Food", "Water", "Power"]) == "Food/Water/Power", "three base needs should stay compact")
+	_expect(UpgradeCopyPresenterScript.format_upgrade_effect_summary(EchoLensUpgrade.id, EchoLensUpgrade.owned_text).contains("not a locator"), "upgrade effect presenter should preserve Echo Lens role copy")
+	_expect(UpgradeCopyPresenterScript.format_standard_upgrade_state("Effect: +10 max O2.", false, "", "", true, "E or Enter", "none").begins_with("State: Available now"), "standard upgrade state presenter should format available upgrades")
+	_expect(UpgradeCopyPresenterScript.format_resonance_key_upgrade_state("Effect: opens East Shelf hatch only.", false, "", true, false, "E or Enter", "Glow Plankton x1").contains("Recover: East Shelf or Drop Echo"), "resonance upgrade presenter should preserve route-research copy")
+	_expect(UpgradeCopyPresenterScript.format_salvage_cutter_upgrade_state("Effect: opens the sealed Wide Reef salvage pocket.", false, true, false, "E or Enter", "Shell Fragments x1").contains("Recover: Salvage Data Cache"), "salvage upgrade presenter should preserve cache evidence copy")
+	_expect(UpgradeCopyPresenterScript.format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.") == "Banked 3 resource(s).\nNo upgrade ready yet.", "upgrade feedback presenter should compact deposit copy")
+	_expect(UpgradeCopyPresenterScript.format_ready_upgrade_callout(["Oxygen Tank I"]) == "Ready upgrade: Oxygen Tank I.", "ready upgrade presenter should keep ready callout copy")
 
 func _test_upgrade_bay_readability_states() -> void:
 	var main := MainScript.new()
