@@ -26,6 +26,7 @@ const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
+const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
@@ -86,6 +87,7 @@ func _initialize() -> void:
 	_run("surface oxygen refill isolation", _test_surface_oxygen_refill_isolation)
 	_run("ship offload repeat daylight sortie", _test_ship_offload_repeat_daylight_sortie)
 	_run("night phase end day and upgrade choice", _test_night_phase_end_day_and_upgrade_choice)
+	_run("night build presenter", _test_night_build_presenter)
 	_run("night power patch build choice", _test_night_power_patch_build_choice)
 	_run("nightfall away from ship late return consequence", _test_nightfall_away_from_ship_late_return_consequence)
 	_run("debug unlimited oxygen", _test_debug_unlimited_oxygen)
@@ -528,6 +530,30 @@ func _test_night_phase_end_day_and_upgrade_choice() -> void:
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "restart after night should prepare the next day")
 	_expect(main.survival_state.current_day == starting_day + 1, "restart after night should keep tomorrow's day number")
 	main.queue_free()
+
+func _test_night_build_presenter() -> void:
+	var missing_choice := NightBuildPresenterScript.format_choice_line(
+		false,
+		false,
+		true,
+		false,
+		"",
+		"Upgrade progress: Oxygen Tank I needs Kelp Fiber x2",
+		"Scrap Metal x1",
+		"E/Enter",
+		1
+	)
+	_expect(missing_choice.contains("Power Patch needs Scrap Metal x1"), "night build presenter should name missing Power Patch materials")
+	_expect(missing_choice.contains("Oxygen Tank I needs Kelp Fiber x2"), "night build presenter should preserve compact upgrade progress")
+	var ready_choice := NightBuildPresenterScript.format_choice_line(false, false, true, true, "", "", "Scrap Metal x1", "E/Enter", 1)
+	_expect(ready_choice.contains("Power Patch ready"), "night build presenter should expose available Power Patch craft")
+	_expect(ready_choice.contains("E or Enter craft"), "night build presenter should use readable craft action labels")
+	_expect(NightBuildPresenterScript.format_choice_line(false, true, true, false, "", "", "Scrap Metal x1", "E/Enter", 1).contains("Power Patch installed"), "night build presenter should show installed craft state")
+	_expect(NightBuildPresenterScript.format_choice_line(true, false, true, true, "", "", "Scrap Metal x1", "E/Enter", 1).contains("Night med used build time"), "night build presenter should prioritize health recovery build lockout")
+	_expect(NightBuildPresenterScript.format_choice_line(false, false, true, false, "Water Filter I", "", "Scrap Metal x1", "E/Enter", 1).contains("Water Filter I ready"), "night build presenter should expose ready upgrades when Power Patch is not ready")
+	_expect(NightBuildPresenterScript.format_prompt(true, false, true, true, "E/Enter", "R", "Left/Right").contains("review night med"), "night build prompt should expose the health recovery review")
+	_expect(NightBuildPresenterScript.format_prompt(false, false, true, true, "E/Enter", "R", "Left/Right").contains("craft Power Patch"), "night build prompt should expose available craft action")
+	_expect(NightBuildPresenterScript.format_prompt(false, false, true, false, "E/Enter", "R", "Left/Right").contains("check Power Patch"), "night build prompt should expose missing craft review")
 
 func _test_night_power_patch_build_choice() -> void:
 	var main := MainScript.new()
