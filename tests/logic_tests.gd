@@ -521,6 +521,10 @@ func _test_starter_survival_resource_families() -> void:
 	_expect(main.call("_format_resource_counts", resources).contains("Building: Scrap Metal"), "resource result copy should name building materials")
 	_expect(main.call("_format_survival_supply_counts", supplies).contains("Food/Fish: Food/Fish Supply"), "survival result copy should name the food/fish role")
 	_expect(main.call("_format_survival_supply_counts", supplies).contains("Power: Power Cell"), "survival result copy should name the power role")
+	_expect(main.call("_resource_role_summary", "food_supply").contains("Food/Fish survival supply"), "food pickup role should read as survival supply")
+	_expect(main.call("_resource_role_summary", "power_supply").contains("Power survival supply"), "power pickup role should read as survival supply")
+	_expect(main.call("_resource_role_summary", "scrap_metal").contains("Building material"), "scrap pickup role should read as building material")
+	_expect(main.call("_resource_role_summary", "kelp_fiber").contains("Research material"), "kelp pickup role should read as research material")
 	for definition in StarterResourceDefinitions:
 		_expect(not definition.resource_category.is_empty(), "%s should declare a resource category" % definition.id)
 
@@ -539,6 +543,14 @@ func _test_starter_survival_resource_families() -> void:
 		var candidate := scene.get_node_or_null("StarterResourceCandidates/%s/A" % pickup_name)
 		_expect(pickup.definition.id == String(expected_pickups[pickup_name]), "%s should use the expected resource definition" % pickup_name)
 		_expect(candidate != null, "%s should have at least one authored spawn candidate" % pickup_name)
+	var food_guidance: String = main.call("_format_first_scan_guidance", scene.get_node("ResourcePickups/FoodSupply"))
+	var power_fact: String = main.call("_scan_target_gameplay_fact", scene.get_node("ResourcePickups/PowerSupply"))
+	var scrap_guidance: String = main.call("_format_first_scan_guidance", scene.get_node("ResourcePickups/ScrapMetal"))
+	var kelp_fact: String = main.call("_scan_target_gameplay_fact", scene.get_node("ResourcePickups/KelpFiber"))
+	_expect(food_guidance.contains("Food reserve") and food_guidance.contains("Return to ship"), "food scan guidance should explain the tonight/base decision")
+	_expect(power_fact.contains("Power survival supply") and power_fact.contains("base needs for tonight"), "power scan fact should explain the survival role")
+	_expect(scrap_guidance.contains("building material") and scrap_guidance.contains("repairs/upgrades"), "scrap scan guidance should explain the building role")
+	_expect(kelp_fact.contains("Research material") and kelp_fact.contains("Oxygen Tank I"), "kelp scan fact should explain the research/upgrade role")
 	scene.queue_free()
 
 func _test_resource_taxonomy_offload_copy() -> void:
@@ -561,7 +573,16 @@ func _test_resource_taxonomy_offload_copy() -> void:
 	_expect(main.upgrade_menu_feedback.contains("Power: Power Cell"), "offload copy should label power survival value")
 	_expect(main.upgrade_menu_feedback.contains("Building: Scrap Metal"), "offload copy should label building value")
 	_expect(main.upgrade_menu_feedback.contains("Research: Kelp Fiber"), "offload copy should label research value")
+	_expect(main.status_label.text.contains("supplies/materials banked"), "ship offload status should distinguish supplies and materials from generic cargo")
 	main.queue_free()
+
+	var pickup_scene := MainScene.instantiate()
+	root.add_child(pickup_scene)
+	pickup_scene.dive_session.start()
+	var power_pickup := pickup_scene.get_node("ResourcePickups/PowerSupply") as ResourcePickup
+	pickup_scene.call("_on_resource_pickup_collected", power_pickup)
+	_expect(pickup_scene.status_label.text.contains("Power Cell") and pickup_scene.status_label.text.contains("Power reserve"), "power pickup feedback should name its night-survival role")
+	pickup_scene.queue_free()
 
 func _test_survival_oxygen_penalty() -> void:
 	var main := MainScript.new()

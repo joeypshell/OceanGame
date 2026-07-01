@@ -987,7 +987,7 @@ func _try_ship_offload() -> bool:
 		_format_survival_supply_counts(banked_survival_supplies),
 	]
 	if status_label != null:
-		status_label.text = "Ship offload: cargo banked, oxygen full. Daylight continues."
+		status_label.text = "Ship offload: supplies/materials banked, oxygen full. Daylight continues."
 	_save_progression()
 	if is_inside_tree():
 		_update_hud()
@@ -3023,9 +3023,9 @@ func _scan_target_description(target: Node) -> String:
 
 func _scan_target_gameplay_fact(target: Node) -> String:
 	if target is ResourcePickup:
-		return "Depth: %s. Upgrade use: %s. %s" % [
+		return "Depth: %s. Role: %s. %s" % [
 			_format_depth_band(target.definition.depth_band),
-			target.definition.upgrade_use,
+			_resource_role_summary(target.definition.id),
 			_format_resource_upgrade_need(target.definition.id)
 		]
 
@@ -3400,12 +3400,13 @@ func _format_direction_to(target_position: Vector2) -> String:
 
 func _format_first_scan_guidance(target: Node) -> String:
 	if target is ResourcePickup:
+		var role_guidance := _resource_collection_guidance(target.definition.id)
 		if dive_session.current_cargo.size() >= dive_session.cargo_limit:
-			return " Cargo full: return to base to bank before collecting more."
+			return " Cargo full: return to ship to bank before collecting more."
 		elif dive_session.current_cargo.size() == dive_session.cargo_limit - 1:
-			return " Collect it if it is worth the last slot, then return to base to bank cargo."
+			return " Last slot: %s Return to ship if this is the right cargo." % role_guidance
 
-		return " Collect it, then return to base to bank cargo."
+		return " %s Return to ship to bank it." % role_guidance
 
 	match _scan_target_id(target):
 		"lantern_fry":
@@ -3437,6 +3438,8 @@ func _format_first_scan_guidance(target: Node) -> String:
 			return " Use the clue if it helps, then return to base before oxygen runs out."
 
 func _format_resource_upgrade_need(resource_id: String) -> String:
+	if survival_state.is_supply_id(resource_id):
+		return "Banks into base needs for tonight, not the upgrade-material bank."
 	if progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID):
 		return "Oxygen Tank I is installed; future upgrades may still use it."
 
@@ -3445,6 +3448,50 @@ func _format_resource_upgrade_need(resource_id: String) -> String:
 		return "Need %d more for Oxygen Tank I." % needed
 
 	return "Enough banked for this Oxygen Tank I material."
+
+func _resource_role_summary(resource_id: String) -> String:
+	if survival_state.is_supply_id(resource_id):
+		return "%s survival supply; %s" % [
+			_resource_category_label(resource_id),
+			_supply_banking_role(resource_id),
+		]
+	var category := _resource_category_label(resource_id)
+	if category == "Building":
+		return "Building material; banks for repairs, crafting, and starter upgrades."
+	if category == "Research":
+		return "Research material; banks for oxygen, scanner, and pressure upgrades."
+	return "%s material; banks for upgrades." % category
+
+func _resource_collection_guidance(resource_id: String) -> String:
+	if survival_state.is_supply_id(resource_id):
+		return "Collect to %s." % _supply_banking_role(resource_id)
+	var category := _resource_category_label(resource_id)
+	if category == "Building":
+		return "Collect as building material for repairs/upgrades."
+	if category == "Research":
+		return "Collect as research material for oxygen/scanner upgrades."
+	return "Collect as %s material." % category.to_lower()
+
+func _resource_pickup_feedback(resource_id: String) -> String:
+	if survival_state.is_supply_id(resource_id):
+		return "ship banks it to %s" % _supply_banking_role(resource_id)
+	var category := _resource_category_label(resource_id)
+	if category == "Building":
+		return "ship banks building material for repairs/upgrades"
+	if category == "Research":
+		return "ship banks research material for upgrades"
+	return "ship banks %s material" % category.to_lower()
+
+func _supply_banking_role(resource_id: String) -> String:
+	match resource_id:
+		"food_supply":
+			return "fill tonight's Food reserve"
+		"water_supply":
+			return "fill tonight's Water reserve"
+		"power_supply":
+			return "fill tonight's Power reserve"
+		_:
+			return "fill a base need"
 
 func _format_depth_band(depth_band: String) -> String:
 	match depth_band:
@@ -3518,7 +3565,10 @@ func _on_resource_pickup_collected(pickup: Node) -> void:
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		_fail_dive()
 	else:
-		status_label.text = "Collected %s." % pickup.definition.display_name
+		status_label.text = "Collected %s - %s." % [
+			pickup.definition.display_name,
+			_resource_pickup_feedback(pickup.definition.id),
+		]
 		_update_hud()
 
 func _on_predator_contacted(predator: Node) -> void:
