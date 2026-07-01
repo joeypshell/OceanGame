@@ -28,6 +28,7 @@ const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedi
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
+const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
@@ -5774,6 +5775,28 @@ func _test_wreck_echo_route_first_pass() -> void:
 	main_scene.run_wreck_echo_clue_recovered = true
 	main_scene.call("_sync_wreck_echo_state")
 	_expect(not trigger.monitoring, "Wreck Echo trigger should disable after clue recovery")
+
+	var presenter_trigger := Area2D.new()
+	var presenter_wash := Polygon2D.new()
+	var presenter_rib_a := Polygon2D.new()
+	var presenter_rib_b := Polygon2D.new()
+	var presenter_core := Polygon2D.new()
+	var presenter_marker_outer := Polygon2D.new()
+	var presenter_marker_inner := Polygon2D.new()
+	var presenter_markers: Array[Polygon2D] = [presenter_marker_outer, presenter_marker_inner]
+	RoutePresenterScript.sync_wreck_echo_state(presenter_trigger, presenter_wash, presenter_rib_a, presenter_rib_b, presenter_core, presenter_markers, true, false)
+	_expect(presenter_trigger.visible and presenter_trigger.monitoring and presenter_trigger.monitorable, "route presenter should enable Wreck Echo trigger for available unrecovered route")
+	_expect(presenter_core.visible and presenter_marker_outer.visible, "route presenter should show clue visuals for available route")
+	RoutePresenterScript.sync_wreck_echo_state(presenter_trigger, presenter_wash, presenter_rib_a, presenter_rib_b, presenter_core, presenter_markers, true, true)
+	_expect(not presenter_trigger.monitoring, "route presenter should disable recovered Wreck Echo trigger")
+	_expect(presenter_marker_outer.color.a < presenter_marker_inner.color.a, "route presenter should keep recovered marker colors quiet but layered")
+	presenter_trigger.free()
+	presenter_wash.free()
+	presenter_rib_a.free()
+	presenter_rib_b.free()
+	presenter_core.free()
+	presenter_marker_outer.free()
+	presenter_marker_inner.free()
 	main_scene.queue_free()
 
 func _test_east_shelf_pocket_result_callout() -> void:
