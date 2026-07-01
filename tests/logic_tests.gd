@@ -64,6 +64,7 @@ func _initialize() -> void:
 	_run("extraction requirements", _test_extraction_requirements)
 	_run("oxygen failure", _test_oxygen_failure)
 	_run("health damage and vent failure", _test_health_damage_and_vent_failure)
+	_run("health damage night resolution copy", _test_health_damage_night_resolution_copy)
 	_run("surface oxygen refill isolation", _test_surface_oxygen_refill_isolation)
 	_run("ship offload repeat daylight sortie", _test_ship_offload_repeat_daylight_sortie)
 	_run("night phase end day and upgrade choice", _test_night_phase_end_day_and_upgrade_choice)
@@ -319,6 +320,37 @@ func _test_health_damage_and_vent_failure() -> void:
 	var health_bar_fill := scene_main.get_node("HUD/HealthBarFill") as ColorRect
 	_expect(is_equal_approx(health_bar_fill.color.r, MainScript.HEALTH_DAMAGED_COLOR.r) and is_equal_approx(health_bar_fill.color.g, MainScript.HEALTH_DAMAGED_COLOR.g), "recent health damage should tint the health bar separately from oxygen")
 	scene_main.queue_free()
+
+func _test_health_damage_night_resolution_copy() -> void:
+	var damaged := MainScene.instantiate()
+	root.add_child(damaged)
+	damaged.dive_session.start()
+	damaged.dive_session.oxygen = damaged.dive_session.max_oxygen
+	damaged.dive_session.has_left_base = true
+	damaged.player_in_base = false
+	damaged.call("_apply_health_damage", damaged.thermal_vent_health_damage, "thermal vent heat")
+	damaged.player_in_base = true
+	damaged.call("_try_extract")
+
+	_expect(damaged.dive_session.result == DiveSessionScript.Result.EXTRACTED, "damaged return should still extract successfully")
+	_expect(damaged.last_night_report.contains("Health: 82/100 returned"), "night report should record the damaged return health value")
+	_expect(damaged.last_night_report.contains("no surface heal"), "night report should state that surfacing did not heal health")
+	_expect(damaged.last_night_report.contains("night med readies tomorrow"), "night report should explain when health is prepared for tomorrow")
+	_expect(damaged.last_result_summary.contains("no surface heal"), "result summary should carry the health resolution line through the night report")
+	_expect(damaged.run_summary_label.text.contains("no surface heal"), "default Night tab should show the health resolution line")
+	_expect(is_equal_approx(damaged.dive_session.health, 82.0), "extraction should not instantly heal health before the next expedition reset")
+	damaged.queue_free()
+
+	var clean := MainScene.instantiate()
+	root.add_child(clean)
+	clean.dive_session.start()
+	clean.dive_session.has_left_base = true
+	clean.player_in_base = true
+	clean.call("_try_extract")
+
+	_expect(not clean.last_night_report.contains("no surface heal"), "undamaged extraction should omit health resolution copy")
+	_expect(not clean.last_result_summary.contains("no surface heal"), "undamaged result summary should omit health resolution copy")
+	clean.queue_free()
 
 func _test_surface_oxygen_refill_isolation() -> void:
 	var session := DiveSessionScript.new()

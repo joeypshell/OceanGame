@@ -123,6 +123,22 @@ export async function stageHealthDamage(page) {
   });
 }
 
+export async function stageHealthDamageExtraction(page) {
+  await page.evaluate(() => {
+    window.__oceangameDebugCommand = "health_damage_extracted";
+  });
+  await assertVisualState(page, {
+    result: "extracted",
+    surface_tab: "night",
+    run_panel_visible: true,
+    route_stage: "health_damage_extracted",
+    health_damage_events: 1,
+    health: 82,
+    max_health: 100,
+    health_recovery_copy_visible: true,
+  });
+}
+
 export async function stageDaylightState(page, daylightCommand, remainingPercent) {
   await page.evaluate((nextCommand) => {
     window.__oceangameDebugCommand = nextCommand;

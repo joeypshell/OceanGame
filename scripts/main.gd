@@ -1069,6 +1069,8 @@ func _bank_extracted_survival_supplies(extracted_cargo: Array[String]) -> Array[
 
 func _resolve_night_after_result() -> void:
 	var night_lines := survival_state.resolve_night(_nightfall_extra_power_cost())
+	if _should_report_health_recovery_after_result():
+		night_lines.append(_format_health_recovery_line())
 	last_night_report = "\n".join(night_lines)
 
 func _nightfall_extra_power_cost() -> int:
@@ -1076,6 +1078,15 @@ func _nightfall_extra_power_cost() -> int:
 		return 1
 
 	return 0
+
+func _should_report_health_recovery_after_result() -> bool:
+	return dive_session.result == DiveSessionScript.Result.EXTRACTED and run_health_damage_events > 0 and dive_session.health < dive_session.max_health
+
+func _format_health_recovery_line() -> String:
+	return "Health: %d/%d returned; no surface heal; night med readies tomorrow." % [
+		ceili(dive_session.health),
+		ceili(dive_session.max_health),
+	]
 
 func _fail_dive() -> void:
 	_close_expedition_slate()
@@ -1951,6 +1962,31 @@ func _stage_debug_health_damage_visual_review() -> void:
 	_update_depth()
 	_update_hud()
 
+func _stage_debug_health_damage_extraction_visual_review() -> void:
+	if run_health_damage_events == 0 or dive_session.health >= dive_session.max_health:
+		_stage_debug_health_damage_visual_review()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	var review_base := base_zone
+	if review_base == null:
+		review_base = get_node_or_null("BaseZone") as Area2D
+	if staged_player == null or review_base == null:
+		return
+
+	player = staged_player
+	player.global_position = review_base.global_position
+	player.velocity = Vector2.ZERO
+	player_in_base = true
+	player_in_surface_oxygen_refill = true
+	dive_session.has_left_base = true
+	_try_extract()
+	visual_smoke_route_stage = "health_damage_extracted"
+	_update_hud()
+
 func _stage_debug_daylight_visual_review(progress_ratio: float, label: String) -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		dive_session.start()
@@ -2707,6 +2743,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_oxygen_visual_review(0.08, "critical")
 		"health_damage":
 			_stage_debug_health_damage_visual_review()
+		"health_damage_extracted":
+			_stage_debug_health_damage_extraction_visual_review()
 		"daylight_morning":
 			_stage_debug_daylight_visual_review(0.15, "morning")
 		"daylight_evening":
@@ -5002,6 +5040,7 @@ func _publish_visual_smoke_state() -> void:
 		"health_damage_status_visible": status_label != null and status_label.text.contains("O2 unchanged") and status_label.text.contains("health"),
 		"health_damage_prompt_visible": prompt_label != null and prompt_label.text.to_lower().contains("o2 only"),
 		"health_damage_objective_visible": objective_line_label != null and objective_line_label.text.contains("Health hit"),
+		"health_recovery_copy_visible": run_summary_label != null and run_summary_label.text.contains("no surface heal"),
 		"late_day_cargo_warning_visible": _visual_late_day_cargo_warning_visible(),
 		"dawn_priority_visible": run_summary_label != null and run_summary_label.text.contains("Day priority:"),
 		"night_build_choice_visible": run_summary_label != null and run_summary_label.text.contains("Build choice:"),
