@@ -7208,14 +7208,14 @@ func _test_daylight_timer_hud() -> void:
 	var main := MainScript.new()
 	main.daylight_duration_seconds = 420.0
 	main.daylight_elapsed_seconds = 0.0
-	_expect(main.call("_format_daylight_label") == "DAYLIGHT 07:00", "fresh daylight timer should show the full day budget")
+	_expect(HudPresenterScript.format_daylight_label(main.call("_daylight_remaining_seconds")) == "DAYLIGHT 07:00", "fresh daylight timer should show the full day budget")
 
 	main.call("_set_daylight_progress_for_debug", 0.5)
-	_expect(main.call("_format_daylight_label") == "DAYLIGHT 03:30", "daylight debug progress should deterministically set remaining time")
+	_expect(HudPresenterScript.format_daylight_label(main.call("_daylight_remaining_seconds")) == "DAYLIGHT 03:30", "daylight debug progress should deterministically set remaining time")
 	_expect(is_equal_approx(main.call("_daylight_remaining_ratio"), 0.5), "daylight remaining ratio should track the strategic day budget")
 
 	main.call("_set_daylight_progress_for_debug", 1.0)
-	_expect(main.call("_format_daylight_label") == "NIGHTFALL", "depleted daylight should show nightfall instead of oxygen-style copy")
+	_expect(HudPresenterScript.format_daylight_label(main.call("_daylight_remaining_seconds")) == "NIGHTFALL", "depleted daylight should show nightfall instead of oxygen-style copy")
 	main.free()
 
 	var scene := MainScene.instantiate()
@@ -7382,6 +7382,12 @@ func _test_hud_presenter() -> void:
 	_expect(HudPresenterScript.health_state_color("normal") == HudPresenterScript.HEALTH_NORMAL_COLOR, "normal health color should stay exact")
 	_expect(HudPresenterScript.health_state_color("low") == HudPresenterScript.HEALTH_LOW_COLOR, "low health color should stay exact")
 	_expect(HudPresenterScript.health_state_color("critical") == HudPresenterScript.HEALTH_CRITICAL_COLOR, "critical health color should stay exact")
+
+	_expect(HudPresenterScript.format_daylight_label(420.0) == "DAYLIGHT 07:00", "full daylight label should stay exact")
+	_expect(HudPresenterScript.format_daylight_label(210.0) == "DAYLIGHT 03:30", "partial daylight label should stay exact")
+	_expect(HudPresenterScript.format_daylight_label(0.0) == "NIGHTFALL", "depleted daylight label should show nightfall")
+	_expect(HudPresenterScript.daylight_bar_color(0.26) == HudPresenterScript.DAYLIGHT_NORMAL_COLOR, "daylight safe color should stay exact above dusk threshold")
+	_expect(HudPresenterScript.daylight_bar_color(0.25) == HudPresenterScript.DAYLIGHT_DUSK_COLOR, "daylight dusk color should start at threshold")
 
 	var short_status := "Scanned Shell Reef."
 	_expect(HudPresenterScript.compact_dive_status("  %s  " % short_status) == short_status, "compact status should trim short copy")

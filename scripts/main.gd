@@ -184,8 +184,6 @@ const OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD := 0.72
 const OUTER_SHELF_SLACKWATER_EASING_THRESHOLD := 0.42
 const DUSK_TRENCH_MEMORY_MIN_X := 2700.0
 const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
-const DAYLIGHT_NORMAL_COLOR := Color(1.0, 0.78, 0.18, 0.96)
-const DAYLIGHT_DUSK_COLOR := Color(0.82, 0.42, 1.0, 0.94)
 const LATE_DAY_CARGO_WARNING_RATIO := 0.25
 
 @export var max_oxygen := 30.0
@@ -883,7 +881,7 @@ func _format_expedition_slate_text() -> String:
 	if route_goal.begins_with(route_goal_prefix):
 		route_goal = route_goal.substr(route_goal_prefix.length())
 	var lines: Array[String] = [
-		"%s (%d%% daylight left)" % [_format_daylight_label(), roundi(_daylight_remaining_ratio() * 100.0)],
+		"%s (%d%% daylight left)" % [HudPresenterScript.format_daylight_label(_daylight_remaining_seconds()), roundi(_daylight_remaining_ratio() * 100.0)],
 		"Pressure: O2 %d/%d, health %d/%d, depth %dm." % [
 			ceili(dive_session.oxygen),
 			ceili(dive_session.max_oxygen),
@@ -5165,21 +5163,6 @@ func _visual_late_day_cargo_warning_visible() -> bool:
 	var objective_text := objective_line_label.text if objective_line_label != null else ""
 	return prompt_text.contains("Power risk") or objective_text.contains("Dusk: bank cargo soon")
 
-func _format_daylight_label() -> String:
-	if _daylight_remaining_seconds() <= 0.0:
-		return "NIGHTFALL"
-
-	var remaining_seconds := ceili(_daylight_remaining_seconds())
-	var minutes := int(remaining_seconds / 60)
-	var seconds := remaining_seconds % 60
-	return "DAYLIGHT %02d:%02d" % [minutes, seconds]
-
-func _daylight_bar_color(remaining_ratio: float) -> Color:
-	if remaining_ratio <= 0.25:
-		return DAYLIGHT_DUSK_COLOR
-
-	return DAYLIGHT_NORMAL_COLOR
-
 func _update_daylight_timer_hud(is_visible: bool) -> void:
 	if daylight_panel != null:
 		daylight_panel.visible = is_visible
@@ -5199,10 +5182,10 @@ func _update_daylight_timer_hud(is_visible: bool) -> void:
 
 	var remaining_ratio := _daylight_remaining_ratio()
 	if daylight_label != null:
-		daylight_label.text = _format_daylight_label()
-		daylight_label.modulate = _daylight_bar_color(remaining_ratio)
+		daylight_label.text = HudPresenterScript.format_daylight_label(_daylight_remaining_seconds())
+		daylight_label.modulate = HudPresenterScript.daylight_bar_color(remaining_ratio)
 	if daylight_bar_fill != null:
-		daylight_bar_fill.color = _daylight_bar_color(remaining_ratio)
+		daylight_bar_fill.color = HudPresenterScript.daylight_bar_color(remaining_ratio)
 		_set_bar_fill_width(daylight_bar_fill, DAYLIGHT_BAR_FILL_RECT, remaining_ratio)
 	if daylight_sun_icon != null:
 		daylight_sun_icon.color = Color(1.0, 0.82, 0.22, 0.32 + remaining_ratio * 0.62)
