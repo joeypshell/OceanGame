@@ -30,6 +30,7 @@ const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_ro
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
+const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
@@ -89,6 +90,7 @@ func _initialize() -> void:
 	_run("survival night consumption", _test_survival_night_consumption)
 	_run("survival collapse and reset", _test_survival_collapse_and_reset)
 	_run("survival supply banking isolation", _test_survival_supply_banking_isolation)
+	_run("survival supply cache presenter", _test_survival_supply_cache_presenter)
 	_run("survival supply cache target copy", _test_survival_supply_cache_target_copy)
 	_run("starter survival resource families", _test_starter_survival_resource_families)
 	_run("resource taxonomy offload copy", _test_resource_taxonomy_offload_copy)
@@ -686,13 +688,20 @@ func _test_survival_supply_banking_isolation() -> void:
 	_expect(main.survival_state.power == 4, "power supply should increase survival power")
 	_expect(main.survival_state.water == 3, "unbanked water should remain unchanged")
 
+func _test_survival_supply_cache_presenter() -> void:
+	_expect(SurvivalSupplyCachePresenterScript.format_status_text(true, "Power").contains("base stable"), "stable cache status should say the cache is backup")
+	_expect(SurvivalSupplyCachePresenterScript.format_status_text(false, "Power").contains("Power is lowest"), "cache status should name the currently weakest survival need")
+	_expect(SurvivalSupplyCachePresenterScript.format_prompt(true, "Power", "E/Enter").contains("backup supply"), "stable cache prompt should avoid naming a false weak need")
+	_expect(SurvivalSupplyCachePresenterScript.format_prompt(false, "Power", "E/Enter").contains("recover Power"), "cache prompt should name the currently weakest survival need")
+	_expect(SurvivalSupplyCachePresenterScript.format_full_status(true, "Power") == "Cargo full: backup cache needs a slot.", "stable full-cache status should preserve backup copy")
+	_expect(SurvivalSupplyCachePresenterScript.format_full_status(false, "Power") == "Cargo full: Power cache needs a slot.", "full-cache status should name the blocked target")
+	_expect(SurvivalSupplyCachePresenterScript.format_recovered_status("Power Cell", "Power").contains("Power Cell") and SurvivalSupplyCachePresenterScript.format_recovered_status("Power Cell", "Power").contains("Ship banks"), "recovered cache status should name the supply role and ship banking")
+
 func _test_survival_supply_cache_target_copy() -> void:
-	var stable := MainScript.new()
-	var stable_status: String = stable.call("_format_survival_supply_cache_status_text")
-	var stable_prompt: String = stable.call("_format_survival_supply_cache_prompt")
+	var stable_status := SurvivalSupplyCachePresenterScript.format_status_text(true, "Power")
+	var stable_prompt := SurvivalSupplyCachePresenterScript.format_prompt(true, "Power", "E/Enter")
 	_expect(stable_status.contains("base stable"), "stable cache status should say the cache is backup")
 	_expect(stable_prompt.contains("backup supply"), "stable cache prompt should avoid naming a false weak need")
-	stable.free()
 
 	var main := MainScene.instantiate()
 	root.add_child(main)
@@ -703,7 +712,7 @@ func _test_survival_supply_cache_target_copy() -> void:
 	main.player_near_survival_supply_cache = true
 
 	var prompt: String = main.call("_format_hud_prompt")
-	var status: String = main.call("_format_survival_supply_cache_status_text")
+	var status := SurvivalSupplyCachePresenterScript.format_status_text(false, main.survival_state.short_name_for_supply(main.survival_state.most_needed_supply_id()))
 	_expect(prompt.contains("Power"), "cache prompt should name the currently weakest survival need before pickup")
 	_expect(status.contains("Power is lowest"), "cache status should name the currently weakest survival need before pickup")
 

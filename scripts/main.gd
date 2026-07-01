@@ -22,6 +22,7 @@ const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_ro
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
+const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
@@ -1294,7 +1295,10 @@ func _on_survival_supply_cache_body_entered(body: Node2D) -> void:
 	if body == player:
 		player_near_survival_supply_cache = true
 		if status_label != null:
-			status_label.text = _format_survival_supply_cache_status_text()
+			status_label.text = SurvivalSupplyCachePresenterScript.format_status_text(
+				survival_state.needs_are_stable(),
+				survival_state.short_name_for_supply(survival_state.most_needed_supply_id())
+			)
 		if is_inside_tree():
 			_update_hud()
 
@@ -1524,40 +1528,22 @@ func _try_survival_supply_cache_interaction() -> bool:
 
 	var supply_id: String = survival_state.most_needed_supply_id()
 	if not dive_session.add_cargo(supply_id):
-		status_label.text = _format_survival_supply_cache_full_status()
+		status_label.text = SurvivalSupplyCachePresenterScript.format_full_status(
+			survival_state.needs_are_stable(),
+			survival_state.short_name_for_supply(survival_state.most_needed_supply_id())
+		)
 		_update_hud()
 		return true
 
 	run_survival_supply_cache_recovered = true
 	run_collected_survival_supplies.append(supply_id)
 	_sync_survival_supply_cache_state()
-	status_label.text = _format_survival_supply_cache_recovered_status(supply_id)
+	status_label.text = SurvivalSupplyCachePresenterScript.format_recovered_status(
+		survival_state.display_name_for_supply(supply_id),
+		survival_state.short_name_for_supply(supply_id)
+	)
 	_update_hud()
 	return true
-
-func _format_survival_supply_cache_status_text() -> String:
-	if survival_state.needs_are_stable():
-		return "Emergency cache: base stable backup; uses cargo."
-	return "Emergency cache: %s is lowest; uses cargo." % survival_state.short_name_for_supply(survival_state.most_needed_supply_id())
-
-func _format_survival_supply_cache_prompt() -> String:
-	if survival_state.needs_are_stable():
-		return "Emergency cache: %s backup supply" % _action_label("interact")
-	return "Emergency cache: %s recover %s" % [
-		_action_label("interact"),
-		survival_state.short_name_for_supply(survival_state.most_needed_supply_id()),
-	]
-
-func _format_survival_supply_cache_full_status() -> String:
-	if survival_state.needs_are_stable():
-		return "Cargo full: backup cache needs a slot."
-	return "Cargo full: %s cache needs a slot." % survival_state.short_name_for_supply(survival_state.most_needed_supply_id())
-
-func _format_survival_supply_cache_recovered_status(supply_id: String) -> String:
-	return "Recovered %s for %s. Ship banks it tonight." % [
-		survival_state.display_name_for_supply(supply_id),
-		survival_state.short_name_for_supply(supply_id),
-	]
 
 func _try_east_shelf_pocket_interaction() -> bool:
 	if dive_session.result != DiveSessionScript.Result.DIVING or not player_near_east_shelf_pocket:
@@ -2946,7 +2932,11 @@ func _format_hud_prompt() -> String:
 		if run_survival_supply_cache_recovered:
 			prompt = "Emergency cache recovered"
 		else:
-			prompt = _format_survival_supply_cache_prompt()
+			prompt = SurvivalSupplyCachePresenterScript.format_prompt(
+				survival_state.needs_are_stable(),
+				survival_state.short_name_for_supply(survival_state.most_needed_supply_id()),
+				_action_label("interact")
+			)
 	elif player_near_resonance_alcove:
 		prompt = "Resonance Alcove: %s record hatch echo" % _action_label("interact")
 	elif player_near_glass_kelp_ledge:
