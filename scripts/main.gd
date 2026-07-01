@@ -56,6 +56,7 @@ const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.g
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const DiscoveryRevealSyncServiceScript := preload("res://scripts/ui/discovery_reveal_sync_service.gd")
 const RouteGateSyncServiceScript := preload("res://scripts/ui/route_gate_sync_service.gd")
 const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
@@ -3046,21 +3047,7 @@ func _blackwater_signal_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal" and _blackwater_crack_gate_open()
 
 func _sync_blackwater_signal_opportunity(condition_id: String) -> void:
-	var opportunity := blackwater_signal_opportunity
-	if opportunity == null:
-		opportunity = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity") as Node2D
-	var wash := blackwater_signal_wash
-	if wash == null:
-		wash = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity/SignalWash") as Polygon2D
-	var fleck := blackwater_signal_fleck
-	if fleck == null:
-		fleck = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/BlackwaterSignalOpportunity/SignalFleck") as Polygon2D
-	if opportunity == null or wash == null or fleck == null:
-		return
-
-	opportunity.visible = _blackwater_signal_visible_for_condition(condition_id)
-	wash.color = Color(0.54, 0.72, 1.0, 0.08)
-	fleck.color = Color(0.82, 0.94, 1.0, 0.32)
+	DiscoveryRevealSyncServiceScript.sync_blackwater_signal_opportunity(self, _blackwater_signal_visible_for_condition(condition_id))
 
 func _current_condition_id() -> String:
 	return String(current_expedition_condition.get("id", ""))
@@ -3094,24 +3081,13 @@ func _sync_blue_chimney_payoff_state() -> void:
 	RoutePayoffSyncServiceScript.sync_blue_chimney_payoff(self)
 
 func _reveal_thermal_vent_route() -> void:
-	var route_hint := vent_route_hint
-	if route_hint == null:
-		route_hint = get_node_or_null("VentRouteHint")
-	if route_hint != null:
-		route_hint.visible = true
+	DiscoveryRevealSyncServiceScript.reveal_thermal_vent_route(self)
 
 func _set_hidden_glow_plankton_active(active: bool) -> void:
-	var glow_pickup := hidden_glow_plankton
-	if glow_pickup == null:
-		glow_pickup = get_node_or_null("ResourcePickups/HiddenGlowPlankton")
-	if glow_pickup == null:
-		return
-
-	glow_pickup.visible = active
-	glow_pickup.set("monitoring", active)
+	DiscoveryRevealSyncServiceScript.set_hidden_glow_plankton_active(self, active)
 
 func _reveal_pressure_wreck_signal() -> void:
-	wreck_signal_hint.visible = true
+	DiscoveryRevealSyncServiceScript.reveal_pressure_wreck_signal(self)
 
 func _sync_pressure_lock_state() -> void:
 	RouteGateSyncServiceScript.sync_pressure_lock(self)

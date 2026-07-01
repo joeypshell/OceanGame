@@ -66,6 +66,7 @@ const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const DiscoveryRevealSyncServiceScript := preload("res://scripts/ui/discovery_reveal_sync_service.gd")
 const RouteGateSyncServiceScript := preload("res://scripts/ui/route_gate_sync_service.gd")
 const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
@@ -268,6 +269,7 @@ func _initialize() -> void:
 	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
 	_run("tool belt service", _test_tool_belt_service)
+	_run("discovery reveal sync service", _test_discovery_reveal_sync_service)
 	_run("route gate sync service", _test_route_gate_sync_service)
 	_run("route payoff sync service", _test_route_payoff_sync_service)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
@@ -8391,6 +8393,46 @@ func _test_route_gate_sync_service() -> void:
 	_expect(main.salvage_opened_pocket_lane.visible, "cutter-owned salvage pocket should reveal opened lane")
 	_expect(not main.salvage_lock_bars.visible, "cutter-owned salvage pocket should hide lock bars")
 	_expect(main.salvage_promise_label.text == "OPEN", "cutter-owned salvage pocket should preserve open label")
+	main.free()
+
+func _test_discovery_reveal_sync_service() -> void:
+	var main := MainScript.new()
+	main.blackwater_signal_opportunity = Node2D.new()
+	main.blackwater_signal_wash = Polygon2D.new()
+	main.blackwater_signal_fleck = Polygon2D.new()
+	main.vent_route_hint = Node2D.new()
+	main.wreck_signal_hint = Node2D.new()
+	main.hidden_glow_plankton = Area2D.new()
+
+	DiscoveryRevealSyncServiceScript.sync_blackwater_signal_opportunity(main, true)
+	_expect(main.blackwater_signal_opportunity.visible, "visible Blackwater signal opportunity should show the node")
+	_expect(main.blackwater_signal_wash.color == Color(0.54, 0.72, 1.0, 0.08), "Blackwater signal wash color should stay exact")
+	_expect(main.blackwater_signal_fleck.color == Color(0.82, 0.94, 1.0, 0.32), "Blackwater signal fleck color should stay exact")
+
+	DiscoveryRevealSyncServiceScript.sync_blackwater_signal_opportunity(main, false)
+	_expect(not main.blackwater_signal_opportunity.visible, "hidden Blackwater signal opportunity should hide the node")
+
+	main.vent_route_hint.visible = false
+	DiscoveryRevealSyncServiceScript.reveal_thermal_vent_route(main)
+	_expect(main.vent_route_hint.visible, "thermal vent route reveal should show the route hint")
+
+	main.wreck_signal_hint.visible = false
+	DiscoveryRevealSyncServiceScript.reveal_pressure_wreck_signal(main)
+	_expect(main.wreck_signal_hint.visible, "pressure wreck reveal should show the wreck signal hint")
+
+	DiscoveryRevealSyncServiceScript.set_hidden_glow_plankton_active(main, true)
+	_expect(main.hidden_glow_plankton.visible, "active hidden Glow Plankton should be visible")
+	_expect(bool(main.hidden_glow_plankton.get("monitoring")), "active hidden Glow Plankton should enable monitoring")
+
+	DiscoveryRevealSyncServiceScript.set_hidden_glow_plankton_active(main, false)
+	_expect(not main.hidden_glow_plankton.visible, "inactive hidden Glow Plankton should be hidden")
+	_expect(not bool(main.hidden_glow_plankton.get("monitoring")), "inactive hidden Glow Plankton should disable monitoring")
+	main.blackwater_signal_opportunity.free()
+	main.blackwater_signal_wash.free()
+	main.blackwater_signal_fleck.free()
+	main.vent_route_hint.free()
+	main.wreck_signal_hint.free()
+	main.hidden_glow_plankton.free()
 	main.free()
 
 func _test_route_payoff_sync_service() -> void:
