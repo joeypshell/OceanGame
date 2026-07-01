@@ -167,6 +167,8 @@ func _initialize() -> void:
 	_run("Wide Reef Chamber calm-current condition nudge", _test_wide_chamber_calm_current_condition_nudge)
 	_run("Mirror Kelp kelp-bloom condition nudge", _test_mirror_kelp_kelp_bloom_condition_nudge)
 	_run("daylight timer HUD", _test_daylight_timer_hud)
+	_run("expedition slate context", _test_expedition_slate_context)
+	_run("expedition slate pressure pause", _test_expedition_slate_pressure_pause)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("mobile touch controls adapter", _test_mobile_touch_controls_adapter)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
@@ -6465,9 +6467,15 @@ func _test_keyboard_action_prompt_labels() -> void:
 	_expect(main._action_label("move_left_right") == "Left/Right", "tab cycling prompt label should match the current keyboard binding")
 	_expect(main._action_label("move_up_down") == "Up/Down", "selection prompt label should match the current keyboard binding")
 	_expect(main._action_label("scan") == "F", "scan prompt label should match the current keyboard binding")
+	_expect(main._action_label("expedition_slate") == "Tab", "expedition slate prompt label should match the current keyboard binding")
 	_expect(main._action_label("burst_thruster") == "Space", "burst prompt label should match the current keyboard binding")
 	_expect(main._action_label("decoy_pulse") == "F", "decoy prompt label should match the current keyboard binding")
 	_expect(main._action_label("future_action") == "future_action", "unknown prompt labels should fall back to their action id")
+	_expect(InputMap.has_action("expedition_slate"), "expedition slate should have a semantic InputMap action")
+	var slate_events := InputMap.action_get_events("expedition_slate")
+	_expect(not slate_events.is_empty(), "expedition slate InputMap action should be bound")
+	var slate_key := slate_events[0] as InputEventKey
+	_expect(slate_key != null and slate_key.keycode == KEY_TAB, "expedition slate should be bound to Tab")
 	main.free()
 
 func _test_prompt_formatter_guard_coverage() -> void:
@@ -6477,6 +6485,7 @@ func _test_prompt_formatter_guard_coverage() -> void:
 	var restart_label: String = main._action_label("restart_dive")
 	var horizontal_label: String = main._action_label("move_left_right")
 	var vertical_label: String = main._action_label("move_up_down")
+	var slate_label: String = main._action_label("expedition_slate")
 	var burst_label: String = main._action_label("burst_thruster")
 	var decoy_label: String = main._action_label("decoy_pulse")
 
@@ -6484,6 +6493,7 @@ func _test_prompt_formatter_guard_coverage() -> void:
 	_expect(main._format_upgrade_menu_title(2, 7).contains("%s select" % vertical_label), "upgrade title should derive selection labels from the prompt helper")
 	_expect(main._format_next_expedition_prompt().contains("press %s" % restart_label), "next expedition prompt should derive restart labels from the prompt helper")
 	_expect(main._format_burst_thruster_prompt().begins_with("%s burst" % burst_label), "burst prompt should derive its label from the prompt helper")
+	_expect(main._format_expedition_slate_text().contains("%s closes" % slate_label), "expedition slate should derive its close label from the prompt helper")
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks decoy.")
 	main.progression_state.purchased_upgrades[DecoyPulseUpgrade.id] = true
 	_expect(main._format_decoy_pulse_prompt() == "%s: decoy ready" % decoy_label, "decoy prompt should derive its ready label from the prompt helper")
@@ -6814,6 +6824,63 @@ func _test_daylight_timer_hud() -> void:
 	_expect(scene.daylight_nightfall_announced, "daylight expiration should announce nightfall")
 	_expect(scene.dive_session.result == DiveSessionScript.Result.DIVING, "timer expiration should keep the dive active until the player returns to ship")
 	_expect(scene.status_label.text.contains("start night"), "timer expiration should tell the player to return and start night")
+	scene.queue_free()
+
+func _test_expedition_slate_context() -> void:
+	var main := MainScript.new()
+	main.daylight_duration_seconds = 420.0
+	main.daylight_elapsed_seconds = 210.0
+	main.dive_session.reset(30.0, 100.0)
+	main.dive_session.start()
+	main.dive_session.oxygen = 12.0
+	main.dive_session.health = 64.0
+	main.dive_session.current_depth = 77.0
+	main.dive_session.cargo_limit = 3
+	main.dive_session.current_cargo = ["food_supply", "driftwood"]
+
+	var slate: String = main.call("_format_expedition_slate_text")
+	_expect(slate.contains("DAYLIGHT 03:30") and slate.contains("50% daylight left"), "slate should show remaining daylight context")
+	_expect(slate.contains("O2 12/30") and slate.contains("health 64/100"), "slate should show active pressure meters")
+	_expect(slate.contains("Cargo: 2 / 3 carried") and slate.contains("Food") and slate.contains("Wood"), "slate should show carried cargo and capacity")
+	_expect(slate.contains("Base needs: Food") and slate.contains("Tonight: Food -1, Water -1, Power -1."), "slate should show night needs before the player returns")
+	_expect(slate.contains("Known build:"), "slate should expose known build or upgrade context")
+	_expect(slate.contains("Route goal:"), "slate should preserve the current expedition goal")
+	_expect(slate.contains("surface for O2") and slate.contains("ship banks cargo"), "slate should help decide whether to keep diving or bank cargo")
+	_expect(slate.contains("Tab closes") and slate.contains("pressure is paused"), "slate should explain its active-dive pause rule")
+	main.free()
+
+func _test_expedition_slate_pressure_pause() -> void:
+	var scene := MainScene.instantiate()
+	root.add_child(scene)
+	scene.dive_session.start()
+	scene.dive_session.oxygen = 20.0
+	scene.dive_session.health = 100.0
+	scene.dive_session.current_cargo = ["shell_fragments"]
+	scene.daylight_duration_seconds = 420.0
+	scene.daylight_elapsed_seconds = 100.0
+	scene.player_in_base = false
+	scene.player_in_surface_oxygen_refill = false
+	scene.call("_update_hud")
+
+	scene.call("_toggle_expedition_slate")
+	var slate_panel: Panel = scene.get_node("HUD/ExpeditionSlatePanel")
+	var slate_body: Label = scene.get_node("HUD/ExpeditionSlatePanel/Body")
+	_expect(scene.expedition_slate_open, "Tab slate toggle should open during active diving")
+	_expect(slate_panel.visible, "open slate should show its HUD panel")
+	_expect(_control_rect(slate_panel).size == Vector2(580.0, 386.0), "slate panel should stay bounded and not become a full-screen overlay")
+	_expect(slate_body.text.contains("pressure is paused"), "slate body should state the pause rule")
+	_expect(not scene.player.is_physics_processing(), "open slate should freeze player movement along with active pressure")
+
+	var oxygen_before: float = scene.dive_session.oxygen
+	var daylight_before: float = scene.daylight_elapsed_seconds
+	scene.call("_process", 10.0)
+	_expect(is_equal_approx(scene.dive_session.oxygen, oxygen_before), "open slate should pause oxygen drain")
+	_expect(is_equal_approx(scene.daylight_elapsed_seconds, daylight_before), "open slate should pause daylight pressure")
+
+	scene.call("_toggle_expedition_slate")
+	_expect(not scene.expedition_slate_open, "second slate toggle should close it")
+	_expect(not slate_panel.visible, "closed slate should leave the active HUD sparse")
+	_expect(scene.player.is_physics_processing(), "closing slate should restore player movement processing")
 	scene.queue_free()
 
 func _test_compact_dive_hud_helpers() -> void:

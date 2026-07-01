@@ -71,6 +71,7 @@ const KEYBOARD_ACTION_LABELS := {
 	"move_left_right": "Left/Right",
 	"move_up_down": "Up/Down",
 	"scan": "F",
+	"expedition_slate": "Tab",
 	"burst_thruster": "Space",
 	"decoy_pulse": "F",
 }
@@ -95,6 +96,9 @@ const SCAN_CARD_RECT := Rect2(Vector2(972.0, 236.0), Vector2(220.0, 88.0))
 const TOOL_BELT_PANEL_RECT := Rect2(Vector2(486.0, 648.0), Vector2(308.0, 56.0))
 const MINIMAP_PANEL_RECT := Rect2(Vector2(1052.0, 548.0), Vector2(188.0, 140.0))
 const OXYGEN_WARNING_RECT := Rect2(Vector2(16.0, 594.0), Vector2(230.0, 70.0))
+const EXPEDITION_SLATE_RECT := Rect2(Vector2(350.0, 116.0), Vector2(580.0, 386.0))
+const EXPEDITION_SLATE_TITLE_RECT := Rect2(Vector2(18.0, 14.0), Vector2(544.0, 22.0))
+const EXPEDITION_SLATE_BODY_RECT := Rect2(Vector2(18.0, 48.0), Vector2(544.0, 320.0))
 const OXYGEN_ICON_POSITION := Vector2(18.0, 41.0)
 const HEALTH_ICON_POSITION := Vector2(18.0, 77.0)
 const DEPTH_ICON_POSITION := Vector2(18.0, 113.0)
@@ -517,6 +521,10 @@ var outer_shelf_slackwater_timer := 0.0
 var daylight_elapsed_seconds := 0.0
 var daylight_nightfall_announced := false
 var daylight_ship_offload_count := 0
+var expedition_slate_open := false
+var expedition_slate_panel: Panel = null
+var expedition_slate_title_label: Label = null
+var expedition_slate_body_label: Label = null
 var burst_thruster_cooldown_remaining := 0.0
 var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
@@ -682,6 +690,10 @@ func _wire_surface_oxygen_refill_zone() -> void:
 func _process(delta: float) -> void:
 	_consume_visual_smoke_command()
 	_update_depth()
+	if _expedition_pressure_paused():
+		_update_hud()
+		return
+
 	_update_glow_plankton_highlight(delta)
 	_update_resource_scan_highlight(delta)
 	_update_echo_lens_pulse(delta)
@@ -745,6 +757,131 @@ func _surface_oxygen_refill_active() -> bool:
 func _surface_oxygen_refill_floor_y() -> float:
 	return surface_y + surface_oxygen_refill_depth
 
+func _toggle_expedition_slate() -> void:
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	_set_expedition_slate_open(not expedition_slate_open)
+
+func _close_expedition_slate() -> void:
+	_set_expedition_slate_open(false)
+
+func _set_expedition_slate_open(is_open: bool) -> void:
+	if is_open and dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+	if expedition_slate_open == is_open:
+		return
+
+	expedition_slate_open = is_open
+	if player != null:
+		player.velocity = Vector2.ZERO
+		player.set_physics_process(not is_open)
+	if is_open:
+		_cancel_scan_charge("Expedition slate open: pressure paused.")
+		if status_label != null:
+			status_label.text = "Expedition slate open: pressure paused."
+	else:
+		if status_label != null and dive_session.result == DiveSessionScript.Result.DIVING:
+			status_label.text = "Expedition slate closed."
+
+	if is_inside_tree():
+		_update_hud()
+
+func _expedition_pressure_paused() -> bool:
+	return expedition_slate_open and dive_session.result == DiveSessionScript.Result.DIVING
+
+func _ensure_expedition_slate_nodes() -> void:
+	if expedition_slate_panel != null and is_instance_valid(expedition_slate_panel):
+		return
+
+	var hud := get_node_or_null("HUD")
+	if hud == null:
+		return
+
+	expedition_slate_panel = Panel.new()
+	expedition_slate_panel.name = "ExpeditionSlatePanel"
+	expedition_slate_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	expedition_slate_panel.visible = false
+	var panel_style := StyleBoxFlat.new()
+	panel_style.bg_color = Color(0.015, 0.055, 0.075, 0.9)
+	panel_style.border_color = Color(0.16, 0.78, 0.9, 0.62)
+	panel_style.border_width_left = 2
+	panel_style.border_width_top = 2
+	panel_style.border_width_right = 2
+	panel_style.border_width_bottom = 2
+	panel_style.corner_radius_top_left = 6
+	panel_style.corner_radius_top_right = 6
+	panel_style.corner_radius_bottom_left = 6
+	panel_style.corner_radius_bottom_right = 6
+	expedition_slate_panel.add_theme_stylebox_override("panel", panel_style)
+	hud.add_child(expedition_slate_panel)
+
+	expedition_slate_title_label = Label.new()
+	expedition_slate_title_label.name = "Title"
+	expedition_slate_title_label.text = "EXPEDITION SLATE"
+	expedition_slate_title_label.modulate = Color(0.58, 1.0, 0.96, 0.96)
+	expedition_slate_title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	expedition_slate_panel.add_child(expedition_slate_title_label)
+
+	expedition_slate_body_label = Label.new()
+	expedition_slate_body_label.name = "Body"
+	expedition_slate_body_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	expedition_slate_body_label.clip_text = true
+	expedition_slate_body_label.modulate = Color(0.86, 0.96, 1.0, 0.94)
+	expedition_slate_body_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	expedition_slate_panel.add_child(expedition_slate_body_label)
+
+func _update_expedition_slate(is_diving: bool) -> void:
+	_ensure_expedition_slate_nodes()
+	if expedition_slate_panel == null:
+		return
+
+	var should_show := is_diving and expedition_slate_open
+	expedition_slate_panel.visible = should_show
+	_set_control_rect(expedition_slate_panel, EXPEDITION_SLATE_RECT)
+	_set_control_rect(expedition_slate_title_label, EXPEDITION_SLATE_TITLE_RECT)
+	_set_control_rect(expedition_slate_body_label, EXPEDITION_SLATE_BODY_RECT)
+	if expedition_slate_body_label != null:
+		expedition_slate_body_label.text = _format_expedition_slate_text()
+
+func _format_expedition_slate_text() -> String:
+	var route_goal := ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory())
+	var route_goal_prefix := "Goal: "
+	if route_goal.begins_with(route_goal_prefix):
+		route_goal = route_goal.substr(route_goal_prefix.length())
+	var lines: Array[String] = [
+		"%s (%d%% daylight left)" % [_format_daylight_label(), roundi(_daylight_remaining_ratio() * 100.0)],
+		"Pressure: O2 %d/%d, health %d/%d, depth %dm." % [
+			ceili(dive_session.oxygen),
+			ceili(dive_session.max_oxygen),
+			ceili(dive_session.health),
+			ceili(dive_session.max_health),
+			roundi(dive_session.current_depth),
+		],
+		_format_current_cargo_slate_line(),
+		"Base needs: %s" % survival_state.status_line(),
+		"Tonight: Food -1, Water -1, Power -1.",
+		_format_night_build_choice_line().replace("Build choice:", "Known build:"),
+		"Route goal: %s" % route_goal,
+		"Decision: surface for O2, ship banks cargo, return before nightfall.",
+		"%s closes. Active pressure is paused while open." % _action_label("expedition_slate"),
+	]
+	return "\n".join(lines)
+
+func _format_current_cargo_slate_line() -> String:
+	var cargo_count := dive_session.current_cargo.size()
+	if cargo_count <= 0:
+		return "Cargo: empty (%d slots open)." % dive_session.cargo_limit
+
+	var parts: Array[String] = []
+	for item_id in dive_session.current_cargo:
+		parts.append(_short_resource_name(item_id))
+	return "Cargo: %d / %d carried - %s." % [
+		cargo_count,
+		dive_session.cargo_limit,
+		", ".join(parts),
+	]
+
 func _sync_surface_oxygen_refill_state_from_position() -> void:
 	if player == null:
 		return
@@ -792,6 +929,10 @@ func _unhandled_input(_event: InputEvent) -> void:
 		_reset_local_prototype_save()
 	elif _event is InputEventKey and _event.pressed and not _event.echo and _event.keycode == KEY_F10:
 		_toggle_area01_source_map_overlay()
+	elif Input.is_action_just_pressed("expedition_slate"):
+		_toggle_expedition_slate()
+	elif expedition_slate_open:
+		return
 	elif Input.is_action_just_pressed("interact"):
 		_handle_interact_action()
 	elif Input.is_action_just_pressed("move_left") and _surface_tabs_enabled():
@@ -812,6 +953,9 @@ func _unhandled_input(_event: InputEvent) -> void:
 		_cancel_scan_charge("Scan canceled.")
 
 func _handle_interact_action() -> void:
+	if expedition_slate_open:
+		return
+
 	if dive_session.result == DiveSessionScript.Result.READY:
 		_start_dive()
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
@@ -856,6 +1000,7 @@ func _try_extract() -> void:
 	if not dive_session.can_extract(player_in_base):
 		return
 
+	_close_expedition_slate()
 	var extracted_cargo := dive_session.current_cargo.duplicate()
 	var extracted_count := extracted_cargo.size()
 	dive_session.extract()
@@ -898,6 +1043,7 @@ func _resolve_night_after_result() -> void:
 	last_night_report = "\n".join(night_lines)
 
 func _fail_dive() -> void:
+	_close_expedition_slate()
 	if run_failure_cause == "none":
 		run_failure_cause = "oxygen depleted"
 	surface_tab_index = SURFACE_TAB_RESULT
@@ -933,6 +1079,7 @@ func _format_failure_cause_for_player() -> String:
 	return "oxygen depleted"
 
 func _start_dive() -> void:
+	_close_expedition_slate()
 	dive_session.start()
 	surface_tab_index = SURFACE_TAB_RESULT
 	upgrade_menu_feedback = ""
@@ -941,6 +1088,7 @@ func _start_dive() -> void:
 	_update_hud()
 
 func _restart_dive() -> void:
+	_close_expedition_slate()
 	if survival_state.chapter_failed:
 		survival_state.reset_chapter()
 	_prepare_next_run()
@@ -958,6 +1106,7 @@ func _restart_dive() -> void:
 	_update_hud()
 
 func _reset_local_prototype_save() -> void:
+	_close_expedition_slate()
 	progression_state.reset()
 	survival_state.reset_chapter()
 	_delete_progression_save()
@@ -4229,6 +4378,7 @@ func _update_hud() -> void:
 
 	prompt_label.text = _compact_dive_status(_format_hud_prompt()) if is_diving else _format_hud_prompt()
 	_update_tool_belt(is_diving)
+	_update_expedition_slate(is_diving)
 
 	_publish_visual_smoke_state()
 
