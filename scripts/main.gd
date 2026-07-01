@@ -19,6 +19,7 @@ const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.g
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
+const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -6895,38 +6896,10 @@ func _update_health_feedback() -> void:
 			health_icon.modulate = HudPresenterScript.HEALTH_DAMAGED_COLOR
 
 func _load_progression() -> void:
-	if not FileAccess.file_exists(PROGRESSION_SAVE_PATH):
-		return
-
-	var file := FileAccess.open(PROGRESSION_SAVE_PATH, FileAccess.READ)
-	if file == null:
-		push_warning("Could not open progression save.")
-		return
-
-	var parsed = JSON.parse_string(file.get_as_text())
-	if parsed is Dictionary:
-		progression_state.load_save_data(parsed)
-		survival_state.load_save_data(parsed.get("survival_state", {}))
+	SaveServiceScript.load_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 
 func _save_progression() -> void:
-	var file := FileAccess.open(PROGRESSION_SAVE_PATH, FileAccess.WRITE)
-	if file == null:
-		push_warning("Could not write progression save.")
-		return
-
-	var save_data := progression_state.to_save_data()
-	save_data["survival_state"] = survival_state.to_save_data()
-	file.store_string(JSON.stringify(save_data, "\t"))
+	SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 
 func _delete_progression_save() -> void:
-	if not FileAccess.file_exists(PROGRESSION_SAVE_PATH):
-		return
-
-	var save_dir := DirAccess.open("user://")
-	if save_dir == null:
-		push_warning("Could not open user save directory to reset progression.")
-		return
-
-	var error := save_dir.remove("progression_save.json")
-	if error != OK:
-		push_warning("Could not delete progression save; clean save will be overwritten.")
+	SaveServiceScript.delete_progression_save(PROGRESSION_SAVE_PATH)
