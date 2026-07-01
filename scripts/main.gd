@@ -14,6 +14,7 @@ const Area01VisualDirectorScript := preload("res://scripts/area01_visual_directo
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
+const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
@@ -816,21 +817,6 @@ func _set_expedition_slate_open(is_open: bool) -> void:
 func _has_recent_health_damage() -> bool:
 	return dive_session.result == DiveSessionScript.Result.DIVING and run_health_damage_events > 0 and dive_session.health < dive_session.max_health
 
-func _format_health_damage_source_short(source: String = last_health_damage_source) -> String:
-	var lowered := source.to_lower()
-	if lowered.contains("thermal vent"):
-		return "Thermal vent"
-	if source.strip_edges().is_empty():
-		return "Damage"
-
-	return source.capitalize()
-
-func _format_health_damage_status(source: String, amount: float) -> String:
-	return "%s: -%d health. O2 unchanged." % [
-		_format_health_damage_source_short(source),
-		ceili(amount),
-	]
-
 func _expedition_pressure_paused() -> bool:
 	return expedition_slate_open and dive_session.result == DiveSessionScript.Result.DIVING
 
@@ -954,7 +940,7 @@ func _apply_health_damage(amount: float, source: String) -> void:
 		return
 
 	if status_label != null:
-		status_label.text = _format_health_damage_status(source, last_health_damage_amount)
+		status_label.text = HealthFeedbackPresenterScript.format_damage_status(source, last_health_damage_amount)
 	if is_inside_tree():
 		_update_hud()
 
@@ -1097,7 +1083,7 @@ func _resolve_night_after_result() -> void:
 	var night_lines := survival_state.resolve_night(_nightfall_extra_power_cost())
 	if _should_resolve_health_recovery_after_result():
 		night_health_recovery_used_build_time = true
-		night_lines.append(_format_health_recovery_line())
+		night_lines.append(HealthFeedbackPresenterScript.format_recovery_line(dive_session.health, dive_session.max_health))
 	last_night_report = "\n".join(night_lines)
 	_refresh_carried_tomorrow_intention()
 
@@ -1155,12 +1141,6 @@ func _should_report_health_recovery_after_result() -> bool:
 func _should_resolve_health_recovery_after_result() -> bool:
 	return _should_report_health_recovery_after_result() and not survival_state.chapter_failed
 
-func _format_health_recovery_line() -> String:
-	return "Health: %d/%d returned; no surface heal; night med used build time, tomorrow health full." % [
-		ceili(dive_session.health),
-		ceili(dive_session.max_health),
-	]
-
 func _fail_dive() -> void:
 	_close_expedition_slate()
 	if run_failure_cause == "none":
@@ -1172,7 +1152,7 @@ func _fail_dive() -> void:
 	_resolve_night_after_result()
 	last_result_summary = "%s\nCause: %s.\nCargo lost. Banked resources, upgrades, scans, and best depth kept.\n%s%s\n%s%s%s\n%s\nBest depth: %dm.\n%s%s" % [
 		_format_completed_expedition_line("Failure"),
-		_format_failure_cause_for_player(),
+		HealthFeedbackPresenterScript.format_failure_cause_for_player(run_failure_cause),
 		_format_region_memory_callout(),
 		_format_discovery_memory_callout(),
 		_format_route_choice_callout(),
@@ -1184,18 +1164,8 @@ func _fail_dive() -> void:
 		_format_next_expedition_prompt(),
 	]
 	_save_progression()
-	status_label.text = "Dive failed: %s. Cargo lost." % _format_failure_cause_for_player()
+	status_label.text = "Dive failed: %s. Cargo lost." % HealthFeedbackPresenterScript.format_failure_cause_for_player(run_failure_cause)
 	_update_hud()
-
-func _format_failure_cause_for_player() -> String:
-	if run_failure_cause.contains("health depleted"):
-		return "health depleted"
-	if run_failure_cause.contains("thermal vent"):
-		return "thermal vent damage"
-	if run_failure_cause.contains("predator"):
-		return "oxygen depleted after predator contact"
-
-	return "oxygen depleted"
 
 func _start_dive() -> void:
 	_close_expedition_slate()
