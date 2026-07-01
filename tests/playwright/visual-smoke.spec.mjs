@@ -356,6 +356,9 @@ test.describe("OceanGame web visual smoke", () => {
       player_in_surface_oxygen_refill: true,
       surface_oxygen_refill_active: true,
       cargo_count: 1,
+      cargo_text: "1 / 3",
+      objective_text: "Surface: refill O2; ship banks",
+      status_text: "Surface O2 refilling; ship still banks cargo.",
     });
   });
 
@@ -373,6 +376,9 @@ test.describe("OceanGame web visual smoke", () => {
       player_in_base: true,
       cargo_count: 0,
       ship_offload_count: 1,
+      cargo_text: "0 / 3",
+      objective_text: "At ship: dive again",
+      status_text: "Ship banked cargo; O2 full. Dive again.",
     });
   });
 });

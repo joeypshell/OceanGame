@@ -737,10 +737,16 @@ func _apply_surface_oxygen_refill(delta: float) -> void:
 
 func _surface_oxygen_status_text() -> String:
 	if player_in_base:
-		return "Ship moonpool: oxygen full; offload cargo here."
+		return "Ship moonpool: O2 full; %s banks cargo." % _action_label("interact")
 	if dive_session.oxygen >= dive_session.max_oxygen:
-		return "Surface oxygen full. Cargo still carried; ship banks."
-	return "Surface oxygen refilling. Cargo still carried; ship banks."
+		return "Surface O2 full; ship still banks cargo."
+	return "Surface O2 refilling; ship still banks cargo."
+
+func _cargo_full_status_text() -> String:
+	return "Cargo full %d/%d: return to ship." % [
+		dive_session.current_cargo.size(),
+		dive_session.cargo_limit,
+	]
 
 func _is_player_in_surface_oxygen_refill() -> bool:
 	if player == null:
@@ -988,7 +994,7 @@ func _try_ship_offload() -> bool:
 		_format_survival_supply_counts(banked_survival_supplies),
 	]
 	if status_label != null:
-		status_label.text = "Ship offload: supplies/materials banked, oxygen full. Daylight continues."
+		status_label.text = "Ship banked cargo; O2 full. Dive again."
 	_save_progression()
 	if is_inside_tree():
 		_update_hud()
@@ -1401,7 +1407,7 @@ func _try_survival_supply_cache_interaction() -> bool:
 
 	var supply_id: String = survival_state.most_needed_supply_id()
 	if not dive_session.add_cargo(supply_id):
-		status_label.text = "Cargo full: choose between supplies, resources, or returning."
+		status_label.text = _cargo_full_status_text()
 		_update_hud()
 		return true
 
@@ -2795,14 +2801,18 @@ func _format_hud_prompt() -> String:
 	elif player_in_base:
 		if dive_session.has_left_base:
 			if _can_ship_offload():
-				prompt = "At ship: %s offload cargo, refill O2" % _action_label("interact")
+				prompt = "At ship: %s offload cargo %d/%d, O2 full" % [
+					_action_label("interact"),
+					dive_session.current_cargo.size(),
+					dive_session.cargo_limit,
+				]
 			elif daylight_nightfall_announced:
 				if daylight_nightfall_away_from_ship:
 					prompt = "At ship: %s start night; late Power -1" % _action_label("interact")
 				else:
 					prompt = "At ship: %s start night; resolve needs" % _action_label("interact")
 			else:
-				prompt = "At ship: cargo banked, O2 full, dive again"
+				prompt = "At ship: cargo banked; O2 full; dive again"
 		else:
 			prompt = "Leave moonpool, then return to bank"
 	elif daylight_nightfall_announced:
@@ -2812,9 +2822,15 @@ func _format_hud_prompt() -> String:
 			prompt = "Nightfall: return to ship"
 	elif _is_player_in_surface_oxygen_refill():
 		if dive_session.oxygen >= dive_session.max_oxygen:
-			prompt = "Surface O2 full | Cargo carried | Ship banks"
+			prompt = "O2 full | Cargo %d/%d | Ship banks" % [
+				dive_session.current_cargo.size(),
+				dive_session.cargo_limit,
+			]
 		else:
-			prompt = "Surface O2 refilling | Cargo carried | Ship banks"
+			prompt = "O2 refill | Cargo %d/%d | Ship banks" % [
+				dive_session.current_cargo.size(),
+				dive_session.cargo_limit,
+			]
 	else:
 		prompt = "Explore | Surface for O2 | Ship banks"
 
@@ -3498,13 +3514,27 @@ func _resource_collection_guidance(resource_id: String) -> String:
 
 func _resource_pickup_feedback(resource_id: String) -> String:
 	if survival_state.is_supply_id(resource_id):
-		return "ship banks it to %s" % _supply_banking_role(resource_id)
+		return "Cargo %d/%d; ship banks %s reserve" % [
+			dive_session.current_cargo.size(),
+			dive_session.cargo_limit,
+			_resource_category_label(resource_id),
+		]
 	var category := _resource_category_label(resource_id)
 	if category == "Building":
-		return "ship banks building material for repairs/upgrades"
+		return "Cargo %d/%d; ship banks building mats" % [
+			dive_session.current_cargo.size(),
+			dive_session.cargo_limit,
+		]
 	if category == "Research":
-		return "ship banks research material for upgrades"
-	return "ship banks %s material" % category.to_lower()
+		return "Cargo %d/%d; ship banks research mats" % [
+			dive_session.current_cargo.size(),
+			dive_session.cargo_limit,
+		]
+	return "Cargo %d/%d; ship banks %s mats" % [
+		dive_session.current_cargo.size(),
+		dive_session.cargo_limit,
+		category.to_lower(),
+	]
 
 func _supply_banking_role(resource_id: String) -> String:
 	match resource_id:
@@ -3577,7 +3607,7 @@ func _on_resource_pickup_collected(pickup: Node) -> void:
 		return
 
 	if not dive_session.add_cargo(pickup.definition.id):
-		status_label.text = "Cargo full: return to bank before risking more."
+		status_label.text = _cargo_full_status_text()
 		_update_hud()
 		return
 
@@ -3589,7 +3619,7 @@ func _on_resource_pickup_collected(pickup: Node) -> void:
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		_fail_dive()
 	else:
-		status_label.text = "Collected %s - %s." % [
+		status_label.text = "Collected %s. %s" % [
 			pickup.definition.display_name,
 			_resource_pickup_feedback(pickup.definition.id),
 		]
@@ -4853,6 +4883,10 @@ func _publish_visual_smoke_state() -> void:
 		"run_panel_visible": run_panel.visible,
 		"upgrade_panel_visible": upgrade_panel.visible,
 		"active_stats_visible": active_stats_panel.visible,
+		"status_text": status_label.text if status_label != null else "",
+		"prompt_text": prompt_label.text if prompt_label != null else "",
+		"objective_text": objective_line_label.text if objective_line_label != null else "",
+		"cargo_text": cargo_label.text if cargo_label != null else "",
 		"status_debug_copy": status_label != null and status_label.text.to_lower().contains("debug"),
 		"touch_controls_visible": mobile_touch_controls != null and mobile_touch_controls.visible,
 		"wreck_echo_clue_recovered": run_wreck_echo_clue_recovered,
@@ -6463,7 +6497,10 @@ func _format_active_objective_line() -> String:
 	elif survival_state.food <= 1 or survival_state.water <= 1 or survival_state.power <= 1:
 		objective = "Prioritize food, water, power"
 	elif dive_session.current_cargo.size() > 0:
-		objective = "Bank cargo or push deeper"
+		objective = "Cargo %d/%d: ship or push deeper" % [
+			dive_session.current_cargo.size(),
+			dive_session.cargo_limit,
+		]
 	elif current_scan_target != null:
 		objective = "Scan target or collect cargo"
 

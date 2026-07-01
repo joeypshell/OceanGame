@@ -337,11 +337,12 @@ func _test_surface_oxygen_refill_isolation() -> void:
 	_expect(main.dive_session.current_cargo == ["driftwood"], "active surface refill should not clear carried cargo")
 	_expect(main.progression_state.banked_resources.is_empty(), "active surface refill should not bank resources")
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "active surface refill should not resolve the dive")
+	_expect(main.call("_surface_oxygen_status_text") == "Surface O2 refilling; ship still banks cargo.", "surface status should distinguish oxygen refill from ship banking")
 	var surface_prompt: String = main.call("_format_hud_prompt")
-	_expect(surface_prompt.contains("Surface O2") and surface_prompt.contains("Cargo carried") and surface_prompt.contains("Ship banks"), "surface prompt should separate oxygen refill from cargo banking")
+	_expect(surface_prompt.contains("O2 refill") and surface_prompt.contains("Cargo 1/3") and surface_prompt.contains("Ship banks"), "surface prompt should separate oxygen refill from cargo banking and show carried capacity")
 	main.player_in_base = true
 	var ship_prompt: String = main.call("_format_hud_prompt")
-	_expect(ship_prompt.contains("At ship") and ship_prompt.contains("offload cargo") and ship_prompt.contains("refill O2"), "ship prompt should remain the cargo banking/offload prompt")
+	_expect(ship_prompt.contains("At ship") and ship_prompt.contains("offload cargo 1/3") and ship_prompt.contains("O2 full"), "ship prompt should remain the cargo banking/offload prompt with capacity")
 	main.free()
 
 func _test_ship_offload_repeat_daylight_sortie() -> void:
@@ -373,6 +374,7 @@ func _test_ship_offload_repeat_daylight_sortie() -> void:
 	_expect(is_equal_approx(main.daylight_elapsed_seconds, 123.0), "ship offload should preserve the current daylight timer")
 	_expect(main.daylight_ship_offload_count == 1, "ship offload should count repeated daylight sorties")
 	_expect(main.last_completed_survival_day == 0, "ship offload should not mark the day as completed")
+	_expect(main.status_label.text == "Ship banked cargo; O2 full. Dive again.", "ship offload status should be concise enough for the active HUD row")
 	var clear_prompt: String = main.call("_format_hud_prompt")
 	_expect(clear_prompt.contains("cargo banked") and clear_prompt.contains("O2 full") and clear_prompt.contains("dive again"), "ship prompt should invite another sortie after offload")
 	_expect(main.upgrade_menu_feedback.contains("Ship offload banked 2 cargo item") and main.upgrade_menu_feedback.contains("Oxygen full"), "ship offload feedback should explain cargo banking, oxygen refill, and continued daylight")
@@ -632,7 +634,7 @@ func _test_resource_taxonomy_offload_copy() -> void:
 	_expect(main.upgrade_menu_feedback.contains("Power: Power Cell"), "offload copy should label power survival value")
 	_expect(main.upgrade_menu_feedback.contains("Building: Scrap Metal"), "offload copy should label building value")
 	_expect(main.upgrade_menu_feedback.contains("Research: Kelp Fiber"), "offload copy should label research value")
-	_expect(main.status_label.text.contains("supplies/materials banked"), "ship offload status should distinguish supplies and materials from generic cargo")
+	_expect(main.status_label.text == "Ship banked cargo; O2 full. Dive again.", "active offload status should stay compact while detailed taxonomy remains in feedback")
 	main.queue_free()
 
 	var pickup_scene := MainScene.instantiate()
@@ -640,7 +642,7 @@ func _test_resource_taxonomy_offload_copy() -> void:
 	pickup_scene.dive_session.start()
 	var power_pickup := pickup_scene.get_node("ResourcePickups/PowerSupply") as ResourcePickup
 	pickup_scene.call("_on_resource_pickup_collected", power_pickup)
-	_expect(pickup_scene.status_label.text.contains("Power Cell") and pickup_scene.status_label.text.contains("Power reserve"), "power pickup feedback should name its night-survival role")
+	_expect(pickup_scene.status_label.text.contains("Power Cell") and pickup_scene.status_label.text.contains("Cargo 1/3") and pickup_scene.status_label.text.contains("Power reserve"), "power pickup feedback should name capacity and night-survival role")
 	pickup_scene.queue_free()
 
 func _test_survival_oxygen_penalty() -> void:
