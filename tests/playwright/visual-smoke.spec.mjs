@@ -39,7 +39,9 @@ test.describe("OceanGame web visual smoke", () => {
       starter_resource_target_visible: true,
     });
 
-    await page.keyboard.press("Enter");
+    await page.keyboard.press("ArrowLeft");
+    await page.waitForTimeout(300);
+    await page.keyboard.press("ArrowLeft");
     await page.waitForTimeout(500);
     await capture(page, testInfo, "upgrade-tab", {
       result: "extracted",

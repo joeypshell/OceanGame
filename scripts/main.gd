@@ -65,6 +65,10 @@ const SURFACE_TAB_UPGRADES := 1
 const SURFACE_TAB_LOG := 2
 const SURFACE_TAB_NIGHT := 3
 const SURFACE_TAB_NAMES := ["Result", "Upgrades", "Log", "Night"]
+const NIGHT_POWER_PATCH_COST := {
+	"scrap_metal": 1,
+}
+const NIGHT_POWER_PATCH_POWER_GAIN := 1
 const KEYBOARD_ACTION_LABELS := {
 	"interact": "E/Enter",
 	"restart_dive": "R",
@@ -533,6 +537,7 @@ var decoy_pulse_used_this_run := false
 var decoy_pulse_activated_this_scan := false
 var last_result_summary := ""
 var upgrade_menu_feedback := ""
+var night_build_completed_this_surface := false
 var current_resource_cluster_pattern := "cautious"
 var current_expedition_condition: Dictionary = {}
 var current_predator_route_id := "none"
@@ -989,7 +994,9 @@ func _handle_interact_action() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		_start_dive()
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
-		if surface_tab_index == SURFACE_TAB_UPGRADES:
+		if surface_tab_index == SURFACE_TAB_NIGHT:
+			_try_craft_night_power_patch()
+		elif surface_tab_index == SURFACE_TAB_UPGRADES:
 			_try_purchase_selected_upgrade()
 		else:
 			surface_tab_index = SURFACE_TAB_UPGRADES
@@ -1080,6 +1087,44 @@ func _resolve_night_after_result() -> void:
 		night_lines.append(_format_health_recovery_line())
 	last_night_report = "\n".join(night_lines)
 
+func _try_craft_night_power_patch() -> bool:
+	if dive_session.result != DiveSessionScript.Result.EXTRACTED or surface_tab_index != SURFACE_TAB_NIGHT:
+		return false
+	if survival_state.chapter_failed:
+		_set_night_build_feedback("Night build unavailable: Emergency Week collapsed.")
+		return false
+	if survival_state.chapter_complete:
+		_set_night_build_feedback("Night build unnecessary: base already stabilized.")
+		return false
+	if night_build_completed_this_surface:
+		_set_night_build_feedback("Power Patch already installed for tomorrow.")
+		return false
+	if not progression_state.spend_resources(NIGHT_POWER_PATCH_COST):
+		_set_night_build_feedback("Power Patch needs %s." % _format_missing_resources_inline(NIGHT_POWER_PATCH_COST))
+		return false
+
+	for index in range(NIGHT_POWER_PATCH_POWER_GAIN):
+		survival_state.bank_supply(SurvivalStateScript.SUPPLY_POWER)
+	night_build_completed_this_surface = true
+	var result_line := "Night build: Power Patch spent Scrap Metal x1. Power +%d for tomorrow." % NIGHT_POWER_PATCH_POWER_GAIN
+	_append_night_report_line(result_line)
+	_set_night_build_feedback(result_line)
+	_save_progression()
+	return true
+
+func _append_night_report_line(line: String) -> void:
+	if last_night_report.is_empty():
+		last_night_report = line
+	else:
+		last_night_report = "%s\n%s" % [last_night_report, line]
+
+func _set_night_build_feedback(message: String) -> void:
+	upgrade_menu_feedback = message
+	if status_label != null:
+		status_label.text = message
+	if is_inside_tree():
+		_update_hud()
+
 func _nightfall_extra_power_cost() -> int:
 	if daylight_nightfall_away_from_ship:
 		return 1
@@ -1153,6 +1198,7 @@ func _restart_dive() -> void:
 	last_night_report = ""
 	last_completed_survival_day = 0
 	upgrade_menu_feedback = ""
+	night_build_completed_this_surface = false
 	surface_tab_index = SURFACE_TAB_RESULT
 	_reset_resource_pickups()
 	status_label.text = _format_expedition_ready_status()
@@ -1172,6 +1218,7 @@ func _reset_local_prototype_save() -> void:
 	last_night_report = ""
 	last_completed_survival_day = 0
 	upgrade_menu_feedback = ""
+	night_build_completed_this_surface = false
 	surface_tab_index = SURFACE_TAB_RESULT
 	selected_upgrade_index = 0
 	_reset_resource_pickups()
@@ -1189,6 +1236,7 @@ func _prepare_next_run() -> void:
 	daylight_nightfall_announced = false
 	daylight_nightfall_away_from_ship = false
 	daylight_ship_offload_count = 0
+	night_build_completed_this_surface = false
 	player_in_surface_oxygen_refill = false
 	player_near_survival_supply_cache = false
 	player_near_east_shelf_pocket = false
@@ -2843,7 +2891,9 @@ func _format_hud_prompt() -> String:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		prompt = "Press %s to begin the dive" % _action_label("interact").replace("/", " or ")
 	elif dive_session.result == DiveSessionScript.Result.EXTRACTED:
-		if _all_upgrades_owned():
+		if surface_tab_index == SURFACE_TAB_NIGHT:
+			prompt = _format_night_build_prompt()
+		elif _all_upgrades_owned():
 			prompt = "Extraction complete - press %s for next expedition | %s surface view" % [
 				_action_label("restart_dive"),
 				_action_label("move_left_right"),
@@ -2975,6 +3025,17 @@ func _format_hud_prompt() -> String:
 			prompt += " | %s" % decoy_prompt
 
 	return prompt
+
+func _format_night_build_prompt() -> String:
+	var action := "review"
+	if not night_build_completed_this_surface and not survival_state.chapter_failed and not survival_state.chapter_complete:
+		action = "craft Power Patch" if progression_state.can_afford(NIGHT_POWER_PATCH_COST) else "check Power Patch"
+	return "Night build: %s %s, %s next expedition | %s surface view" % [
+		_action_label("interact"),
+		action,
+		_action_label("restart_dive"),
+		_action_label("move_left_right"),
+	]
 
 func _try_purchase_selected_upgrade() -> void:
 	var upgrade := _selected_upgrade_definition()
@@ -6246,6 +6307,14 @@ func _format_daylight_closeout_line() -> String:
 	return "Daylight closeout: no ship offload before night; final return resolved base needs."
 
 func _format_night_build_choice_line() -> String:
+	if night_build_completed_this_surface:
+		return "Build choice: Power Patch installed. Power +%d carries into tomorrow." % NIGHT_POWER_PATCH_POWER_GAIN
+	if not survival_state.chapter_failed and not survival_state.chapter_complete and progression_state.can_afford(NIGHT_POWER_PATCH_COST):
+		return "Build choice: Power Patch ready (%s craft; Scrap Metal x1 -> Power +%d tomorrow)." % [
+			_action_label("interact").replace("/", " or "),
+			NIGHT_POWER_PATCH_POWER_GAIN,
+		]
+
 	var ready_upgrade := _first_ready_upgrade_definition()
 	if ready_upgrade != null:
 		return "Build choice: %s ready in Upgrades." % ready_upgrade.display_name
@@ -6254,6 +6323,11 @@ func _format_night_build_choice_line() -> String:
 	var prefix := "Upgrade progress: "
 	if progress.begins_with(prefix):
 		progress = progress.substr(prefix.length())
+	if not survival_state.chapter_failed and not survival_state.chapter_complete:
+		return "Build choice: Power Patch needs %s; %s" % [
+			_format_missing_resources_inline(NIGHT_POWER_PATCH_COST),
+			progress,
+		]
 	return "Build choice: %s" % progress
 
 func _first_ready_upgrade_definition() -> UpgradeDefinition:

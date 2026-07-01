@@ -68,6 +68,7 @@ func _initialize() -> void:
 	_run("surface oxygen refill isolation", _test_surface_oxygen_refill_isolation)
 	_run("ship offload repeat daylight sortie", _test_ship_offload_repeat_daylight_sortie)
 	_run("night phase end day and upgrade choice", _test_night_phase_end_day_and_upgrade_choice)
+	_run("night power patch build choice", _test_night_power_patch_build_choice)
 	_run("nightfall away from ship late return consequence", _test_nightfall_away_from_ship_late_return_consequence)
 	_run("debug unlimited oxygen", _test_debug_unlimited_oxygen)
 	_run("survival night consumption", _test_survival_night_consumption)
@@ -482,6 +483,36 @@ func _test_night_phase_end_day_and_upgrade_choice() -> void:
 	_expect(main.survival_state.current_day == starting_day + 1, "restart after night should keep tomorrow's day number")
 	main.queue_free()
 
+func _test_night_power_patch_build_choice() -> void:
+	var main := MainScript.new()
+	main.dive_session.start()
+	main.dive_session.extract()
+	main.surface_tab_index = main.SURFACE_TAB_NIGHT
+	main.survival_state.power = 1
+
+	var missing_choice := main._format_night_build_choice_line()
+	_expect(missing_choice.contains("Power Patch needs Scrap Metal x1"), "Night tab should name the tiny craft cost when missing")
+	_expect(main._format_night_build_prompt().contains("check Power Patch"), "Night prompt should expose the build action even before materials are ready")
+
+	main.progression_state.banked_resources = {
+		"scrap_metal": 1,
+	}
+	var ready_choice := main._format_night_build_choice_line()
+	_expect(ready_choice.contains("Power Patch ready"), "Night tab should expose an available craft when scrap is banked")
+	_expect(ready_choice.contains("Power +1 tomorrow"), "Night tab should describe the next-day payoff")
+	_expect(main._format_night_build_prompt().contains("craft Power Patch"), "Night prompt should make the available craft actionable")
+
+	_expect(bool(main.call("_try_craft_night_power_patch")), "Night craft should succeed when scrap is banked")
+	_expect(main.progression_state.resource_count("scrap_metal") == 0, "Night craft should spend banked scrap")
+	_expect(main.survival_state.power == 2, "Night craft should add a visible Power reserve for tomorrow")
+	_expect(main.night_build_completed_this_surface, "Night craft should be one-per-night")
+	_expect(main.last_night_report.contains("Power Patch spent Scrap Metal x1"), "Night report should record the build result")
+	_expect(main._format_night_build_choice_line().contains("Power Patch installed"), "Night tab should show the completed build instead of another available action")
+
+	_expect(not bool(main.call("_try_craft_night_power_patch")), "Night craft should not repeat after the one-night build is complete")
+	_expect(main.survival_state.power == 2, "Rejected repeat night craft should not add more Power")
+	main.free()
+
 func _test_nightfall_away_from_ship_late_return_consequence() -> void:
 	var main := MainScene.instantiate()
 	root.add_child(main)
@@ -530,7 +561,7 @@ func _test_nightfall_away_from_ship_late_return_consequence() -> void:
 	var closeout_line: String = main.call("_format_daylight_closeout_line")
 	_expect(closeout_line.contains("nightfall caught the diver away from ship") and closeout_line.contains("cost extra Power"), "Night tab closeout should preserve the late-return context")
 	var ship_prompt: String = main.call("_format_hud_prompt")
-	_expect(ship_prompt.contains("Extraction complete"), "after late return extraction, HUD should leave active overstay prompts")
+	_expect(ship_prompt.contains("Night build") and not ship_prompt.contains("return to ship"), "after late return extraction, HUD should leave active overstay prompts")
 	main.queue_free()
 
 func _test_debug_unlimited_oxygen() -> void:

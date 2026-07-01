@@ -42,12 +42,18 @@ func can_afford(cost: Dictionary) -> bool:
 
 	return true
 
-func purchase_upgrade(upgrade_id: String, cost: Dictionary) -> bool:
-	if has_upgrade(upgrade_id) or not can_afford(cost):
+func spend_resources(cost: Dictionary) -> bool:
+	if not can_afford(cost):
 		return false
 
 	for resource_id in cost.keys():
 		banked_resources[resource_id] = resource_count(resource_id) - int(cost[resource_id])
+
+	return true
+
+func purchase_upgrade(upgrade_id: String, cost: Dictionary) -> bool:
+	if has_upgrade(upgrade_id) or not spend_resources(cost):
+		return false
 
 	purchased_upgrades[upgrade_id] = true
 	return true
