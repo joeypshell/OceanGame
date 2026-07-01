@@ -539,6 +539,7 @@ var last_result_summary := ""
 var upgrade_menu_feedback := ""
 var carried_tomorrow_intention := ""
 var night_build_completed_this_surface := false
+var night_health_recovery_used_build_time := false
 var current_resource_cluster_pattern := "cautious"
 var current_expedition_condition: Dictionary = {}
 var current_predator_route_id := "none"
@@ -1085,8 +1086,10 @@ func _remember_banked_survival_supplies(supply_ids: Array[String]) -> void:
 		run_banked_survival_supplies.append(supply_id)
 
 func _resolve_night_after_result() -> void:
+	night_health_recovery_used_build_time = false
 	var night_lines := survival_state.resolve_night(_nightfall_extra_power_cost())
-	if _should_report_health_recovery_after_result():
+	if _should_resolve_health_recovery_after_result():
+		night_health_recovery_used_build_time = true
 		night_lines.append(_format_health_recovery_line())
 	last_night_report = "\n".join(night_lines)
 	_refresh_carried_tomorrow_intention()
@@ -1099,6 +1102,9 @@ func _try_craft_night_power_patch() -> bool:
 		return false
 	if survival_state.chapter_complete:
 		_set_night_build_feedback("Night build unnecessary: base already stabilized.")
+		return false
+	if night_health_recovery_used_build_time:
+		_set_night_build_feedback("Night med already used build time; Power Patch waits until tomorrow.")
 		return false
 	if night_build_completed_this_surface:
 		_set_night_build_feedback("Power Patch already installed for tomorrow.")
@@ -1139,8 +1145,11 @@ func _nightfall_extra_power_cost() -> int:
 func _should_report_health_recovery_after_result() -> bool:
 	return dive_session.result == DiveSessionScript.Result.EXTRACTED and run_health_damage_events > 0 and dive_session.health < dive_session.max_health
 
+func _should_resolve_health_recovery_after_result() -> bool:
+	return _should_report_health_recovery_after_result() and not survival_state.chapter_failed
+
 func _format_health_recovery_line() -> String:
-	return "Health: %d/%d returned; no surface heal; night med readies tomorrow." % [
+	return "Health: %d/%d returned; no surface heal; night med used build time, tomorrow health full." % [
 		ceili(dive_session.health),
 		ceili(dive_session.max_health),
 	]
@@ -1209,6 +1218,7 @@ func _restart_dive() -> void:
 	last_completed_survival_day = 0
 	upgrade_menu_feedback = ""
 	night_build_completed_this_surface = false
+	night_health_recovery_used_build_time = false
 	surface_tab_index = SURFACE_TAB_RESULT
 	_reset_resource_pickups()
 	status_label.text = _format_expedition_ready_status()
@@ -1230,6 +1240,7 @@ func _reset_local_prototype_save() -> void:
 	upgrade_menu_feedback = ""
 	carried_tomorrow_intention = ""
 	night_build_completed_this_surface = false
+	night_health_recovery_used_build_time = false
 	surface_tab_index = SURFACE_TAB_RESULT
 	selected_upgrade_index = 0
 	_reset_resource_pickups()
@@ -1248,6 +1259,7 @@ func _prepare_next_run() -> void:
 	daylight_nightfall_away_from_ship = false
 	daylight_ship_offload_count = 0
 	night_build_completed_this_surface = false
+	night_health_recovery_used_build_time = false
 	player_in_surface_oxygen_refill = false
 	player_near_survival_supply_cache = false
 	player_near_east_shelf_pocket = false
@@ -3039,7 +3051,9 @@ func _format_hud_prompt() -> String:
 
 func _format_night_build_prompt() -> String:
 	var action := "review"
-	if not night_build_completed_this_surface and not survival_state.chapter_failed and not survival_state.chapter_complete:
+	if night_health_recovery_used_build_time:
+		action = "review night med"
+	elif not night_build_completed_this_surface and not survival_state.chapter_failed and not survival_state.chapter_complete:
 		action = "craft Power Patch" if progression_state.can_afford(NIGHT_POWER_PATCH_COST) else "check Power Patch"
 	return "Night build: %s %s, %s next expedition | %s surface view" % [
 		_action_label("interact"),
@@ -6461,6 +6475,8 @@ func _format_daylight_closeout_line() -> String:
 	return "Daylight closeout: no ship offload before night; final return resolved base needs."
 
 func _format_night_build_choice_line() -> String:
+	if night_health_recovery_used_build_time:
+		return "Build choice: Night med used build time. Tomorrow health full; Power Patch waits."
 	if night_build_completed_this_surface:
 		return "Build choice: Power Patch installed. Power +%d carries into tomorrow." % NIGHT_POWER_PATCH_POWER_GAIN
 	if not survival_state.chapter_failed and not survival_state.chapter_complete and progression_state.can_afford(NIGHT_POWER_PATCH_COST):
@@ -6857,7 +6873,7 @@ func _format_recent_expedition_log() -> String:
 
 func _format_recent_survival_memory(result_name: String, banked_cargo_count: int) -> String:
 	if run_health_damage_events > 0 and dive_session.health < dive_session.max_health:
-		return "health %d/%d; no surface heal" % [
+		return "health %d/%d; med used build" % [
 			ceili(dive_session.health),
 			ceili(dive_session.max_health),
 		]

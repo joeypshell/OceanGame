@@ -330,6 +330,9 @@ func _test_health_damage_night_resolution_copy() -> void:
 	damaged.dive_session.oxygen = damaged.dive_session.max_oxygen
 	damaged.dive_session.has_left_base = true
 	damaged.player_in_base = false
+	damaged.progression_state.banked_resources = {
+		"scrap_metal": 1,
+	}
 	damaged.call("_apply_health_damage", damaged.thermal_vent_health_damage, "thermal vent heat")
 	damaged.player_in_base = true
 	damaged.call("_try_extract")
@@ -337,10 +340,19 @@ func _test_health_damage_night_resolution_copy() -> void:
 	_expect(damaged.dive_session.result == DiveSessionScript.Result.EXTRACTED, "damaged return should still extract successfully")
 	_expect(damaged.last_night_report.contains("Health: 82/100 returned"), "night report should record the damaged return health value")
 	_expect(damaged.last_night_report.contains("no surface heal"), "night report should state that surfacing did not heal health")
-	_expect(damaged.last_night_report.contains("night med readies tomorrow"), "night report should explain when health is prepared for tomorrow")
+	_expect(damaged.last_night_report.contains("night med used build time") and damaged.last_night_report.contains("tomorrow health full"), "night report should name the health recovery cost and payoff")
 	_expect(damaged.last_result_summary.contains("no surface heal"), "result summary should carry the health resolution line through the night report")
 	_expect(damaged.run_summary_label.text.contains("no surface heal"), "default Night tab should show the health resolution line")
+	_expect(damaged.night_health_recovery_used_build_time, "damaged extraction should reserve the one-night build window for medical recovery")
+	_expect(damaged.call("_format_night_build_choice_line").contains("Night med used build time"), "Night tab should show that medical recovery consumed the build choice")
+	_expect(damaged.call("_format_night_build_prompt").contains("review night med"), "Night prompt should point at the medical recovery tradeoff")
+	_expect(not bool(damaged.call("_try_craft_night_power_patch")), "Power Patch craft should wait when night medical recovery used the build window")
+	_expect(damaged.progression_state.resource_count("scrap_metal") == 1, "blocked Power Patch should not spend banked scrap")
+	_expect(not damaged.last_night_report.contains("Power Patch spent"), "blocked Power Patch should not append a false build result")
 	_expect(is_equal_approx(damaged.dive_session.health, 82.0), "extraction should not instantly heal health before the next expedition reset")
+	damaged.call("_restart_dive")
+	_expect(is_equal_approx(damaged.dive_session.health, damaged.dive_session.max_health), "next expedition should start after the night medical recovery")
+	_expect(not damaged.night_health_recovery_used_build_time, "new expedition should clear the medical build reservation")
 	damaged.queue_free()
 
 	var clean := MainScene.instantiate()
@@ -6677,7 +6689,7 @@ func _test_recent_expedition_survival_memory() -> void:
 	damaged.dive_session.max_health = 100.0
 	damaged._record_recent_expedition("Extracted", 1)
 	log_text = damaged._format_recent_expedition_log()
-	_expect(log_text.contains("survival health 82/100; no surface heal"), "health damage should be the most important survival memory")
+	_expect(log_text.contains("survival health 82/100; med used build"), "health damage should be the most important survival memory")
 	_expect(not log_text.contains("survival banked Food"), "health memory should keep the line to one survival tradeoff")
 	damaged.free()
 
