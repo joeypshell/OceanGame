@@ -243,6 +243,44 @@ static func sync_blackwater_crack_gate_state(
 		if sill != null:
 			sill.visible = false
 
+static func sync_pressure_lock_state(
+	boundary: Area2D,
+	shimmer: CanvasItem,
+	gate_top: Polygon2D,
+	gate_bottom: Polygon2D,
+	bar_a: Polygon2D,
+	bar_b: Polygon2D,
+	bar_c: Polygon2D,
+	left_rail: Polygon2D,
+	right_rail: Polygon2D,
+	badge: Polygon2D,
+	label: Label,
+	has_pressure_seal: bool
+) -> void:
+	if boundary != null:
+		boundary.monitoring = not has_pressure_seal
+		boundary.monitorable = not has_pressure_seal
+	if shimmer != null:
+		shimmer.modulate = Color(0.62, 1.0, 0.72, 0.32) if has_pressure_seal else Color.WHITE
+	if gate_top != null:
+		gate_top.color = Color(0.62, 1.0, 0.72, 0.24) if has_pressure_seal else Color(0.74, 0.86, 1.0, 0.54)
+	if gate_bottom != null:
+		gate_bottom.color = Color(0.62, 1.0, 0.72, 0.24) if has_pressure_seal else Color(0.74, 0.86, 1.0, 0.54)
+	if bar_a != null:
+		bar_a.color = Color(0.62, 1.0, 0.72, 0.12) if has_pressure_seal else Color(0.74, 0.86, 1.0, 0.4)
+	if bar_b != null:
+		bar_b.color = Color(0.62, 1.0, 0.72, 0.12) if has_pressure_seal else Color(0.74, 0.86, 1.0, 0.4)
+	if bar_c != null:
+		bar_c.color = Color(0.62, 1.0, 0.72, 0.12) if has_pressure_seal else Color(0.74, 0.86, 1.0, 0.4)
+	if left_rail != null:
+		left_rail.color = Color(0.32, 0.86, 0.58, 0.18) if has_pressure_seal else Color(0.26, 0.48, 0.8, 0.34)
+	if right_rail != null:
+		right_rail.color = Color(0.32, 0.86, 0.58, 0.18) if has_pressure_seal else Color(0.26, 0.48, 0.8, 0.34)
+	if badge != null:
+		badge.color = Color(0.62, 1.0, 0.72, 0.72) if has_pressure_seal else Color(0.74, 0.86, 1.0, 0.72)
+	if label != null:
+		label.text = "OPEN" if has_pressure_seal else "LOCKED"
+
 static func _sync_payoff_core(
 	halo: Polygon2D,
 	core: Polygon2D,

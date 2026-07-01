@@ -4014,31 +4014,20 @@ func _reveal_pressure_wreck_signal() -> void:
 	wreck_signal_hint.visible = true
 
 func _sync_pressure_lock_state() -> void:
-	var has_pressure_seal := progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID)
-	pressure_boundary.monitoring = not has_pressure_seal
-	pressure_boundary.monitorable = not has_pressure_seal
-	if has_pressure_seal:
-		pressure_shimmer.modulate = Color(0.62, 1.0, 0.72, 0.32)
-		pressure_gate_top.color = Color(0.62, 1.0, 0.72, 0.24)
-		pressure_gate_bottom.color = Color(0.62, 1.0, 0.72, 0.24)
-		pressure_gate_bar_a.color = Color(0.62, 1.0, 0.72, 0.12)
-		pressure_gate_bar_b.color = Color(0.62, 1.0, 0.72, 0.12)
-		pressure_gate_bar_c.color = Color(0.62, 1.0, 0.72, 0.12)
-		pressure_gate_left_rail.color = Color(0.32, 0.86, 0.58, 0.18)
-		pressure_gate_right_rail.color = Color(0.32, 0.86, 0.58, 0.18)
-		pressure_lock_badge.color = Color(0.62, 1.0, 0.72, 0.72)
-		pressure_label.text = "OPEN"
-	else:
-		pressure_shimmer.modulate = Color.WHITE
-		pressure_gate_top.color = Color(0.74, 0.86, 1.0, 0.54)
-		pressure_gate_bottom.color = Color(0.74, 0.86, 1.0, 0.54)
-		pressure_gate_bar_a.color = Color(0.74, 0.86, 1.0, 0.4)
-		pressure_gate_bar_b.color = Color(0.74, 0.86, 1.0, 0.4)
-		pressure_gate_bar_c.color = Color(0.74, 0.86, 1.0, 0.4)
-		pressure_gate_left_rail.color = Color(0.26, 0.48, 0.8, 0.34)
-		pressure_gate_right_rail.color = Color(0.26, 0.48, 0.8, 0.34)
-		pressure_lock_badge.color = Color(0.74, 0.86, 1.0, 0.72)
-		pressure_label.text = "LOCKED"
+	RoutePresenterScript.sync_pressure_lock_state(
+		pressure_boundary,
+		pressure_shimmer,
+		pressure_gate_top,
+		pressure_gate_bottom,
+		pressure_gate_bar_a,
+		pressure_gate_bar_b,
+		pressure_gate_bar_c,
+		pressure_gate_left_rail,
+		pressure_gate_right_rail,
+		pressure_lock_badge,
+		pressure_label,
+		progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID)
+	)
 
 func _sync_sealed_shelf_hatch_state() -> void:
 	var echo_shimmer := sealed_shelf_hatch_echo_shimmer
