@@ -2002,28 +2002,7 @@ func _stage_debug_hollow_reef_route_visual_review() -> void:
 	HollowReefVisualStagingServiceScript.stage_route_visual_review(self)
 
 func _stage_debug_hollow_reef_payoff_visual_review(recovered := false) -> void:
-	_stage_debug_hollow_reef_route_visual_review()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	var hollow_interact := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteractZone") as Area2D
-	if hollow_interact == null:
-		return
-
-	player.global_position = hollow_interact.global_position
-	player.velocity = Vector2.ZERO
-	player_near_hollow_reef = true
-	run_reached_dusk_trench = true
-	if recovered:
-		_try_hollow_reef_interaction()
-		visual_smoke_route_stage = "hollow_reef_return"
-	else:
-		run_hollow_reef_reading_recovered = false
-		_sync_hollow_reef_reading_state()
-		visual_smoke_route_stage = "hollow_reef_payoff"
-		status_label.text = "Debug review: Hollow Reef payoff staged."
-	_update_depth()
-	_update_hud()
+	HollowReefVisualStagingServiceScript.stage_payoff_visual_review(self, recovered)
 
 func _stage_debug_wide_chamber_visual_review(cutter_owned := false) -> void:
 	WideReefVisualStagingServiceScript.stage_visual_review(self, cutter_owned)
