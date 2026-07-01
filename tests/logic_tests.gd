@@ -21,6 +21,7 @@ const Area01SourceTruthValidatorScript := preload("res://scripts/area01_source_t
 const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
 const Area01VisualDirectorScript := preload("res://scripts/area01_visual_director.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
+const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -175,6 +176,7 @@ func _initialize() -> void:
 	_run("late-day cargo banking warning", _test_late_day_cargo_banking_warning)
 	_run("expedition slate context", _test_expedition_slate_context)
 	_run("expedition slate pressure pause", _test_expedition_slate_pressure_pause)
+	_run("HUD presenter", _test_hud_presenter)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("mobile touch controls adapter", _test_mobile_touch_controls_adapter)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
@@ -1382,7 +1384,7 @@ func _test_lantern_ray_scan_behavior() -> void:
 		main.call("_scan_target_gameplay_fact", lantern_ray)
 	)
 	main.run_completed_scans.append(discovery_id)
-	var first_scan_status: String = main.call("_compact_dive_status", "Scanned %s.%s" % [
+	var first_scan_status: String = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 		display_name,
 		main.call("_format_repeat_scan_effect_text", lantern_ray) + main.call("_format_first_scan_guidance", lantern_ray)
 	])
@@ -1401,7 +1403,7 @@ func _test_lantern_ray_scan_behavior() -> void:
 	_expect(not summary.to_lower().contains("checklist"), "Lantern Ray scan result should not imply checklist UI")
 
 	var oxygen_after_first: float = main.dive_session.oxygen
-	var repeat_scan_status: String = main.call("_compact_dive_status", "%s known.%s" % [
+	var repeat_scan_status: String = HudPresenterScript.compact_dive_status("%s known.%s" % [
 		display_name,
 		main.call("_format_repeat_scan_effect_text", lantern_ray) + main.call("_format_signal_lens_pulse_text", lantern_ray)
 	])
@@ -1458,7 +1460,7 @@ func _test_hollow_reef_passive_creature_scan_behavior() -> void:
 		main.call("_scan_target_gameplay_fact", skitter)
 	)
 	main.run_completed_scans.append(discovery_id)
-	var first_scan_status: String = main.call("_compact_dive_status", "Scanned %s.%s" % [
+	var first_scan_status: String = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 		display_name,
 		main.call("_format_repeat_scan_effect_text", skitter) + main.call("_format_first_scan_guidance", skitter)
 	])
@@ -1473,7 +1475,7 @@ func _test_hollow_reef_passive_creature_scan_behavior() -> void:
 	_expect(not first_scan_status.to_lower().contains("checklist"), "Hollow Reef Skitter first scan should not imply checklist UI")
 
 	var oxygen_after_first: float = main.dive_session.oxygen
-	var repeat_scan_status: String = main.call("_compact_dive_status", "%s known.%s" % [
+	var repeat_scan_status: String = HudPresenterScript.compact_dive_status("%s known.%s" % [
 		display_name,
 		main.call("_format_repeat_scan_effect_text", skitter) + main.call("_format_signal_lens_pulse_text", skitter)
 	])
@@ -1562,7 +1564,7 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 		main.call("_scan_target_gameplay_fact", swarm)
 	)
 	main.run_completed_scans.append(discovery_id)
-	var first_scan_status: String = main.call("_compact_dive_status", "Scanned %s.%s" % [
+	var first_scan_status: String = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 		display_name,
 		main.call("_format_repeat_scan_effect_text", swarm) + main.call("_format_first_scan_guidance", swarm)
 	])
@@ -1578,7 +1580,7 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	_expect(not first_scan_status.to_lower().contains("checklist"), "Glassfin Swarm first scan should not imply checklist UI")
 
 	var oxygen_after_first: float = main.dive_session.oxygen
-	var repeat_scan_status: String = main.call("_compact_dive_status", "%s known.%s" % [
+	var repeat_scan_status: String = HudPresenterScript.compact_dive_status("%s known.%s" % [
 		display_name,
 		main.call("_format_repeat_scan_effect_text", swarm) + main.call("_format_signal_lens_pulse_text", swarm)
 	])
@@ -1659,7 +1661,7 @@ func _test_mirrorfin_route_read_behavior() -> void:
 		main.call("_scan_target_gameplay_fact", mirrorfin)
 	)
 	main.run_completed_scans.append(discovery_id)
-	var first_scan_status: String = main.call("_compact_dive_status", "Scanned %s.%s" % [
+	var first_scan_status: String = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 		display_name,
 		main.call("_format_repeat_scan_effect_text", mirrorfin) + main.call("_format_first_scan_guidance", mirrorfin)
 	])
@@ -1675,7 +1677,7 @@ func _test_mirrorfin_route_read_behavior() -> void:
 	_expect(not first_scan_status.to_lower().contains("checklist"), "Mirrorfin first scan should not imply checklist UI")
 
 	var oxygen_after_first: float = main.dive_session.oxygen
-	var repeat_scan_status: String = main.call("_compact_dive_status", "%s known.%s" % [
+	var repeat_scan_status: String = HudPresenterScript.compact_dive_status("%s known.%s" % [
 		display_name,
 		main.call("_format_repeat_scan_effect_text", mirrorfin) + main.call("_format_signal_lens_pulse_text", mirrorfin)
 	])
@@ -2180,7 +2182,7 @@ func _test_glass_ray_drifter_passive_route_read() -> void:
 		main.call("_scan_target_gameplay_fact", ray)
 	)
 	main.run_completed_scans.append(discovery_id)
-	var first_scan_status: String = main.call("_compact_dive_status", "Scanned %s.%s" % [
+	var first_scan_status: String = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 		display_name,
 		main.call("_format_repeat_scan_effect_text", ray) + main.call("_format_first_scan_guidance", ray)
 	])
@@ -7310,6 +7312,37 @@ func _test_expedition_slate_pressure_pause() -> void:
 	_expect(scene.player.is_physics_processing(), "closing slate should restore player movement processing")
 	scene.queue_free()
 
+func _test_hud_presenter() -> void:
+	_expect(HudPresenterScript.format_oxygen_label(40.0, 40.0) == "OXYGEN: 40 / 40", "full oxygen label should keep exact active HUD copy")
+	_expect(HudPresenterScript.format_oxygen_label(11.0, 40.0) == "OXYGEN: 11 / 40", "normal partial oxygen label should not add a warning suffix")
+	_expect(HudPresenterScript.format_oxygen_label(10.0, 40.0).contains("LOW"), "oxygen label should carry low state inline")
+	_expect(HudPresenterScript.format_oxygen_label(4.0, 40.0).contains("CRITICAL"), "oxygen label should carry critical state inline")
+	_expect(HudPresenterScript.format_oxygen_label(0.0, 40.0).contains("CRITICAL"), "empty oxygen should stay critical")
+	_expect(HudPresenterScript.format_oxygen_label(10.0, 0.0) == "OXYGEN: 10 / 0", "max-zero oxygen label should keep safe normal-state copy")
+
+	_expect(HudPresenterScript.oxygen_state(40.0, 40.0) == "normal", "full oxygen state should be normal")
+	_expect(HudPresenterScript.oxygen_state(11.0, 40.0) == "normal", "oxygen above low threshold should be normal")
+	_expect(HudPresenterScript.oxygen_state(10.0, 40.0) == "low", "oxygen at low threshold should be low")
+	_expect(HudPresenterScript.oxygen_state(4.0, 40.0) == "critical", "oxygen at critical threshold should be critical")
+	_expect(HudPresenterScript.oxygen_state(10.0, 0.0) == "normal", "max-zero oxygen state should stay safe")
+
+	_expect(HudPresenterScript.oxygen_warning_text("normal") == "", "normal oxygen should not show a warning")
+	_expect(HudPresenterScript.oxygen_warning_text("low") == "O2 LOW\nPLAN RETURN", "low oxygen warning copy should stay exact")
+	_expect(HudPresenterScript.oxygen_warning_text("critical") == "O2 CRITICAL\nRETURN TO BASE", "critical oxygen warning copy should stay exact")
+	_expect(HudPresenterScript.oxygen_warning_text("empty") == "", "unknown oxygen states should not show warning copy")
+
+	_expect(HudPresenterScript.oxygen_state_color("normal") == Color.WHITE, "normal oxygen color should stay white")
+	_expect(HudPresenterScript.oxygen_state_color("low") == Color(1.0, 0.76, 0.22, 1.0), "low oxygen color should stay exact")
+	_expect(HudPresenterScript.oxygen_state_color("critical") == Color(1.0, 0.18, 0.12, 1.0), "critical oxygen color should stay exact")
+
+	var short_status := "Scanned Shell Reef."
+	_expect(HudPresenterScript.compact_dive_status("  %s  " % short_status) == short_status, "compact status should trim short copy")
+	_expect(HudPresenterScript.compact_dive_status("Line one\nLine two") == "Line one Line two", "compact status should flatten newlines")
+	var long_status := "Scanned a very long target description that would otherwise overrun the active dive HUD status row and collide with nearby panels."
+	var compact_status := HudPresenterScript.compact_dive_status(long_status)
+	_expect(compact_status.length() <= 72, "compact status should keep active HUD copy within the row")
+	_expect(compact_status.ends_with("..."), "compact status should mark truncated copy")
+
 func _test_compact_dive_hud_helpers() -> void:
 	var main := MainScript.new()
 	var cargo: Array[String] = ["glow_plankton", "kelp_fiber", "glow_plankton"]
@@ -7515,7 +7548,7 @@ func _test_compact_dive_hud_helpers() -> void:
 	main_scene.queue_free()
 
 	var long_status := "Scanned Thermal Vent.\nWarm current marks optional glow; bank Pressure Seal clue. Return safely before oxygen runs out."
-	var compact_status: String = main.call("_compact_dive_status", long_status)
+	var compact_status: String = HudPresenterScript.compact_dive_status(long_status)
 	_expect(not compact_status.contains("\n"), "compact dive status should remove line breaks")
 	_expect(compact_status.length() <= 72, "compact dive status should stay within the dive HUD limit")
 
@@ -7538,12 +7571,12 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(combined_prompt.length() <= 68, "spent Decoy active prompt should stay compact")
 	_expect(combined_prompt.contains("Decoy spent"), "spent Decoy active prompt should stay compact and explicit")
 
-	_expect(main.call("_oxygen_state", 30.0, 40.0) == "normal", "oxygen helper should treat safe oxygen as normal")
-	_expect(main.call("_oxygen_state", 10.0, 40.0) == "low", "oxygen helper should mark 25 percent oxygen as low")
-	_expect(main.call("_oxygen_state", 4.0, 40.0) == "critical", "oxygen helper should mark 10 percent oxygen as critical")
-	_expect(main.call("_format_oxygen_label", 10.0, 40.0).contains("LOW"), "oxygen label should carry low state inline")
-	_expect(main.call("_format_oxygen_label", 40.0, 40.0).begins_with("OXYGEN:"), "oxygen label should use instrument-style active HUD copy")
-	_expect(main.call("_oxygen_warning_text", "critical").contains("RETURN TO BASE"), "critical warning should emphasize the return route")
+	_expect(HudPresenterScript.oxygen_state(30.0, 40.0) == "normal", "oxygen helper should treat safe oxygen as normal")
+	_expect(HudPresenterScript.oxygen_state(10.0, 40.0) == "low", "oxygen helper should mark 25 percent oxygen as low")
+	_expect(HudPresenterScript.oxygen_state(4.0, 40.0) == "critical", "oxygen helper should mark 10 percent oxygen as critical")
+	_expect(HudPresenterScript.format_oxygen_label(10.0, 40.0).contains("LOW"), "oxygen label should carry low state inline")
+	_expect(HudPresenterScript.format_oxygen_label(40.0, 40.0).begins_with("OXYGEN:"), "oxygen label should use instrument-style active HUD copy")
+	_expect(HudPresenterScript.oxygen_warning_text("critical").contains("RETURN TO BASE"), "critical warning should emphasize the return route")
 	_expect(main.call("_health_state", 100.0, 100.0) == "normal", "health helper should treat full health as normal")
 	_expect(main.call("_health_state", 30.0, 100.0) == "low", "health helper should mark damaged health as low")
 	_expect(main.call("_health_state", 12.0, 100.0) == "critical", "health helper should mark near-failure health as critical")
