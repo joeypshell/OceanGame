@@ -23,6 +23,7 @@ const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_prese
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
+const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -4671,32 +4672,23 @@ func _sync_wreck_echo_state() -> void:
 	var clue_core := wreck_echo_clue_core
 	if clue_core == null:
 		clue_core = get_node_or_null("WreckEchoDescent/ClueTrigger/ClueCore") as Polygon2D
-	if clue_core != null:
-		clue_core.visible = route_available
-		clue_core.color = Color(0.82, 0.96, 1.0, 0.06) if run_wreck_echo_clue_recovered else Color(0.82, 0.96, 1.0, 0.1)
 
-	_sync_wreck_echo_clue_marker(route_available)
-
-func _sync_wreck_echo_clue_marker(route_available: bool) -> void:
-	var marker_nodes: Array[Polygon2D] = [
-		wreck_echo_clue_marker_outer,
-		wreck_echo_clue_marker_inner,
-		wreck_echo_clue_marker_facet,
-		wreck_echo_clue_marker_arc_a,
-		wreck_echo_clue_marker_arc_b,
-	]
-	var marker_colors: Array[Color] = [
-		Color(0.62, 0.86, 1.0, 0.06) if run_wreck_echo_clue_recovered else Color(0.62, 0.86, 1.0, 0.12),
-		Color(0.82, 0.96, 1.0, 0.12) if run_wreck_echo_clue_recovered else Color(0.82, 0.96, 1.0, 0.24),
-		Color(0.94, 1.0, 1.0, 0.26) if run_wreck_echo_clue_recovered else Color(0.94, 1.0, 1.0, 0.5),
-		Color(0.7, 0.94, 1.0, 0.08) if run_wreck_echo_clue_recovered else Color(0.7, 0.94, 1.0, 0.18),
-		Color(0.7, 0.94, 1.0, 0.08) if run_wreck_echo_clue_recovered else Color(0.7, 0.94, 1.0, 0.18),
-	]
-	for index in marker_nodes.size():
-		var marker_node := marker_nodes[index]
-		if marker_node != null:
-			marker_node.visible = route_available
-			marker_node.color = marker_colors[index]
+	RoutePresenterScript.sync_wreck_echo_state(
+		trigger,
+		wash,
+		rib_a,
+		rib_b,
+		clue_core,
+		[
+			wreck_echo_clue_marker_outer,
+			wreck_echo_clue_marker_inner,
+			wreck_echo_clue_marker_facet,
+			wreck_echo_clue_marker_arc_a,
+			wreck_echo_clue_marker_arc_b,
+		],
+		route_available,
+		run_wreck_echo_clue_recovered
+	)
 
 func _sync_predator_warning_upgrade_state() -> void:
 	var multiplier := predator_warning_1_multiplier if progression_state.has_upgrade(PREDATOR_WARNING_UPGRADE_ID) else 1.45
