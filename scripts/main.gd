@@ -182,6 +182,7 @@ const DUSK_TRENCH_MEMORY_MIN_X := 2700.0
 const DUSK_TRENCH_MEMORY_MIN_Y := 2860.0
 const DAYLIGHT_NORMAL_COLOR := Color(1.0, 0.78, 0.18, 0.96)
 const DAYLIGHT_DUSK_COLOR := Color(0.82, 0.42, 1.0, 0.94)
+const LATE_DAY_CARGO_WARNING_RATIO := 0.25
 const HEALTH_NORMAL_COLOR := Color(0.42, 1.0, 0.5, 0.94)
 const HEALTH_DAMAGED_COLOR := Color(1.0, 0.5, 0.26, 0.96)
 const HEALTH_LOW_COLOR := Color(1.0, 0.72, 0.22, 0.96)
@@ -1960,6 +1961,30 @@ func _stage_debug_daylight_visual_review(progress_ratio: float, label: String) -
 	status_label.text = "Daylight %s: plan the next ship return." % label
 	_update_hud()
 
+func _stage_debug_daylight_cargo_warning_visual_review() -> void:
+	if dive_session.result == DiveSessionScript.Result.READY:
+		dive_session.start()
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return
+
+	if dive_session.current_cargo.is_empty():
+		dive_session.current_cargo.append("driftwood")
+	_set_daylight_progress_for_debug(1.0 - LATE_DAY_CARGO_WARNING_RATIO)
+	var staged_player := player
+	if staged_player == null:
+		staged_player = get_node_or_null("Player") as CharacterBody2D
+	if staged_player != null:
+		player = staged_player
+		player.global_position = start_position + Vector2(520.0, 460.0)
+		player.velocity = Vector2.ZERO
+	player_in_base = false
+	player_in_surface_oxygen_refill = false
+	dive_session.has_left_base = true
+	status_label.text = "Dusk cargo: bank before night."
+	visual_smoke_route_stage = "daylight_cargo_warning"
+	_update_depth()
+	_update_hud()
+
 func _stage_debug_surface_oxygen_refill_visual_review() -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
 		dive_session.start()
@@ -2686,6 +2711,8 @@ func _consume_visual_smoke_command() -> void:
 			_stage_debug_daylight_visual_review(0.15, "morning")
 		"daylight_evening":
 			_stage_debug_daylight_visual_review(0.75, "evening")
+		"daylight_cargo_warning":
+			_stage_debug_daylight_cargo_warning_visual_review()
 		"daylight_nightfall":
 			_stage_debug_daylight_visual_review(1.0, "nightfall")
 		"surface_oxygen_refill":
@@ -2865,6 +2892,8 @@ func _format_hud_prompt() -> String:
 			prompt = "Nightfall: return to ship | cargo at risk | late Power -1"
 		else:
 			prompt = "Nightfall: return to ship"
+	elif _should_warn_late_day_cargo_banking():
+		prompt = "Bank at ship | Power risk"
 	elif _is_player_in_surface_oxygen_refill():
 		if dive_session.oxygen >= dive_session.max_oxygen:
 			if _has_recent_health_damage():
@@ -4859,6 +4888,23 @@ func _daylight_remaining_ratio() -> float:
 
 	return clampf(_daylight_remaining_seconds() / daylight_duration_seconds, 0.0, 1.0)
 
+func _should_warn_late_day_cargo_banking() -> bool:
+	if dive_session.result != DiveSessionScript.Result.DIVING:
+		return false
+	if daylight_nightfall_announced:
+		return false
+	if player_in_base:
+		return false
+	if dive_session.current_cargo.is_empty():
+		return false
+
+	return _daylight_remaining_ratio() <= LATE_DAY_CARGO_WARNING_RATIO
+
+func _visual_late_day_cargo_warning_visible() -> bool:
+	var prompt_text := prompt_label.text if prompt_label != null else ""
+	var objective_text := objective_line_label.text if objective_line_label != null else ""
+	return prompt_text.contains("Power risk") or objective_text.contains("Dusk: bank cargo soon")
+
 func _format_daylight_label() -> String:
 	if _daylight_remaining_seconds() <= 0.0:
 		return "NIGHTFALL"
@@ -4956,6 +5002,7 @@ func _publish_visual_smoke_state() -> void:
 		"health_damage_status_visible": status_label != null and status_label.text.contains("O2 unchanged") and status_label.text.contains("health"),
 		"health_damage_prompt_visible": prompt_label != null and prompt_label.text.to_lower().contains("o2 only"),
 		"health_damage_objective_visible": objective_line_label != null and objective_line_label.text.contains("Health hit"),
+		"late_day_cargo_warning_visible": _visual_late_day_cargo_warning_visible(),
 		"dawn_priority_visible": run_summary_label != null and run_summary_label.text.contains("Day priority:"),
 		"night_build_choice_visible": run_summary_label != null and run_summary_label.text.contains("Build choice:"),
 		"night_tomorrow_plan_visible": run_summary_label != null and run_summary_label.text.contains("Next: press"),
@@ -6596,6 +6643,8 @@ func _format_active_objective_line() -> String:
 			objective = "At ship: dive again"
 	elif daylight_nightfall_announced:
 		objective = "Nightfall: return to ship"
+	elif _should_warn_late_day_cargo_banking():
+		objective = "Dusk: bank cargo soon"
 	elif player_in_base:
 		objective = "Leave moonpool, gather supplies"
 	elif _is_player_in_surface_oxygen_refill():

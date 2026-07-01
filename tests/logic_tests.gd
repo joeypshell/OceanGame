@@ -169,6 +169,7 @@ func _initialize() -> void:
 	_run("Wide Reef Chamber calm-current condition nudge", _test_wide_chamber_calm_current_condition_nudge)
 	_run("Mirror Kelp kelp-bloom condition nudge", _test_mirror_kelp_kelp_bloom_condition_nudge)
 	_run("daylight timer HUD", _test_daylight_timer_hud)
+	_run("late-day cargo banking warning", _test_late_day_cargo_banking_warning)
 	_run("expedition slate context", _test_expedition_slate_context)
 	_run("expedition slate pressure pause", _test_expedition_slate_pressure_pause)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
@@ -7048,6 +7049,37 @@ func _test_daylight_timer_hud() -> void:
 	_expect(scene.dive_session.result == DiveSessionScript.Result.DIVING, "timer expiration should keep the dive active until the player returns to ship")
 	_expect(scene.status_label.text.contains("emergency return"), "timer expiration should tell the player to return immediately")
 	scene.queue_free()
+
+func _test_late_day_cargo_banking_warning() -> void:
+	var main := MainScript.new()
+	main.daylight_duration_seconds = 100.0
+	main.daylight_elapsed_seconds = 76.0
+	main.dive_session.start()
+	main.dive_session.has_left_base = true
+	main.player_in_base = false
+	main.dive_session.current_cargo.append("driftwood")
+
+	_expect(bool(main.call("_should_warn_late_day_cargo_banking")), "low daylight with cargo away from ship should warn before nightfall")
+	var warning_prompt: String = main.call("_format_hud_prompt")
+	var warning_objective: String = main.call("_format_active_objective_line")
+	_expect(warning_prompt.contains("Bank at ship") and warning_prompt.contains("Power risk"), "late-day cargo prompt should name ship banking and Power risk")
+	_expect(warning_objective.contains("Dusk") and warning_objective.contains("bank cargo"), "late-day cargo objective should stay compact and actionable")
+
+	main.dive_session.current_cargo.clear()
+	_expect(not bool(main.call("_should_warn_late_day_cargo_banking")), "empty cargo should not show the late-day banking warning")
+	main.dive_session.current_cargo.append("driftwood")
+	main.player_in_base = true
+	_expect(not bool(main.call("_should_warn_late_day_cargo_banking")), "cargo already at ship should not show the late-day banking warning")
+	main.player_in_base = false
+	main.daylight_elapsed_seconds = 50.0
+	_expect(not bool(main.call("_should_warn_late_day_cargo_banking")), "early daylight should not show the late-day banking warning")
+	main.daylight_elapsed_seconds = 100.0
+	main.daylight_nightfall_announced = true
+	main.daylight_nightfall_away_from_ship = true
+	_expect(not bool(main.call("_should_warn_late_day_cargo_banking")), "nightfall should use the existing overstay prompt instead of the pre-night warning")
+	var nightfall_prompt: String = main.call("_format_hud_prompt")
+	_expect(nightfall_prompt.contains("cargo at risk") and nightfall_prompt.contains("late Power -1"), "nightfall away-from-ship behavior should remain unchanged")
+	main.free()
 
 func _test_expedition_slate_context() -> void:
 	var main := MainScript.new()

@@ -358,6 +358,24 @@ test.describe("OceanGame web visual smoke", () => {
       daylight_visible: true,
       daylight_remaining_percent: 25,
     });
+
+    await stageDaylightState(page, "daylight_cargo_warning", 25);
+    await capture(page, testInfo, "daylight-cargo-banking-risk", {
+      result: "diving",
+      debug_telemetry: false,
+      active_stats_visible: true,
+      touch_controls_visible: false,
+      player_rendered: true,
+      player_on_screen: true,
+      daylight_visible: true,
+      daylight_remaining_percent: 25,
+      cargo_count: 1,
+      cargo_text: "1 / 3",
+      player_in_base: false,
+      route_stage: "daylight_cargo_warning",
+      objective_text: "Dusk: bank cargo soon",
+      late_day_cargo_warning_visible: true,
+    });
   });
 
   test("captures surface oxygen refill without ship banking", async ({ page }, testInfo) => {
