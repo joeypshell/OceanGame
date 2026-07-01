@@ -5627,120 +5627,44 @@ func _resource_counts_for_cost(cost: Dictionary) -> Dictionary:
 
 func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 	var effect_summary := _format_upgrade_effect_summary(upgrade)
-	if progression_state.has_upgrade(upgrade.id):
-		return "State: Owned\n%s" % effect_summary
-
 	if upgrade.id == RESONANCE_KEY_UPGRADE_ID:
-		return _format_resonance_key_upgrade_state(effect_summary)
+		var resonance_missing_upgrade := _upgrade_missing_upgrade(RESONANCE_KEY_UPGRADE)
+		return UpgradeCopyPresenterScript.format_resonance_key_upgrade_state(
+			effect_summary,
+			progression_state.has_upgrade(upgrade.id),
+			_format_upgrade_display_name(resonance_missing_upgrade) if resonance_missing_upgrade != "" else "",
+			_upgrade_missing_discovery(RESONANCE_KEY_UPGRADE) != "",
+			progression_state.can_afford(RESONANCE_KEY_UPGRADE.resource_cost),
+			_action_label("interact").replace("/", " or "),
+			_format_missing_resources_inline(RESONANCE_KEY_UPGRADE.resource_cost)
+		)
 	if upgrade.id == SALVAGE_CUTTER_UPGRADE_ID:
-		return _format_salvage_cutter_upgrade_state(effect_summary)
+		return UpgradeCopyPresenterScript.format_salvage_cutter_upgrade_state(
+			effect_summary,
+			progression_state.has_upgrade(upgrade.id),
+			_upgrade_missing_discovery(SALVAGE_CUTTER_UPGRADE) != "",
+			progression_state.can_afford(SALVAGE_CUTTER_UPGRADE.resource_cost),
+			_action_label("interact").replace("/", " or "),
+			_format_missing_resources_inline(SALVAGE_CUTTER_UPGRADE.resource_cost)
+		)
 
 	var missing_discovery := _upgrade_missing_discovery(upgrade)
-	if missing_discovery != "":
-		return "State: Locked by scan\nScan: %s\n%s" % [
-			_format_discovery_name(missing_discovery),
-			effect_summary,
-		]
-
 	var missing_upgrade := _upgrade_missing_upgrade(upgrade)
-	if missing_upgrade != "":
-		return "State: Locked by upgrade\nInstall: %s\n%s" % [
-			_format_upgrade_display_name(missing_upgrade),
-			effect_summary,
-		]
-
-	if progression_state.can_afford(upgrade.resource_cost):
-		return "State: Available now\n%s: buy\n%s" % [
-			_action_label("interact").replace("/", " or "),
-			effect_summary,
-		]
-
-	return "State: Missing resources\nNeeds: %s\n%s" % [
-		_format_missing_resources_inline(upgrade.resource_cost),
+	return UpgradeCopyPresenterScript.format_standard_upgrade_state(
 		effect_summary,
-	]
-
-func _format_resonance_key_upgrade_state(effect_summary: String) -> String:
-	var missing_upgrade := _upgrade_missing_upgrade(RESONANCE_KEY_UPGRADE)
-	if missing_upgrade != "":
-		return "State: Locked by upgrade\nInstall: %s\n%s" % [
-			_format_upgrade_display_name(missing_upgrade),
-			effect_summary,
-		]
-
-	var missing_discovery := _upgrade_missing_discovery(RESONANCE_KEY_UPGRADE)
-	if missing_discovery != "":
-		return "State: Needs route research\nRecover: East Shelf or Drop Echo\n%s" % effect_summary
-
-	if progression_state.can_afford(RESONANCE_KEY_UPGRADE.resource_cost):
-		return "State: Available now\n%s: buy\n%s" % [
-			_action_label("interact").replace("/", " or "),
-			effect_summary,
-		]
-
-	return "State: Missing resources\nNeeds: %s\n%s" % [
-		_format_missing_resources_inline(RESONANCE_KEY_UPGRADE.resource_cost),
-		effect_summary,
-	]
-
-func _format_salvage_cutter_upgrade_state(effect_summary: String) -> String:
-	var missing_discovery := _upgrade_missing_discovery(SALVAGE_CUTTER_UPGRADE)
-	if missing_discovery != "":
-		return "State: Needs salvage data\nRecover: Salvage Data Cache\n%s" % effect_summary
-
-	if progression_state.can_afford(SALVAGE_CUTTER_UPGRADE.resource_cost):
-		return "State: Available now\n%s: buy\n%s" % [
-			_action_label("interact").replace("/", " or "),
-			effect_summary,
-		]
-
-	return "State: Missing resources\nNeeds: %s\n%s" % [
-		_format_missing_resources_inline(SALVAGE_CUTTER_UPGRADE.resource_cost),
-		effect_summary,
-	]
+		progression_state.has_upgrade(upgrade.id),
+		_format_discovery_name(missing_discovery) if missing_discovery != "" else "",
+		_format_upgrade_display_name(missing_upgrade) if missing_upgrade != "" else "",
+		progression_state.can_afford(upgrade.resource_cost),
+		_action_label("interact").replace("/", " or "),
+		_format_missing_resources_inline(upgrade.resource_cost)
+	)
 
 func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
-	match upgrade.id:
-		OXYGEN_TANK_UPGRADE_ID:
-			return "Effect: +10 max O2."
-		PRESSURE_SEAL_UPGRADE_ID:
-			return "Effect: opens first pressure route."
-		SIGNAL_LENS_UPGRADE_ID:
-			return "Effect: material scan pulse."
-		ECHO_LENS_UPGRADE_ID:
-			return "Role: broad wreck echoes, not a locator."
-		RESONANCE_KEY_UPGRADE_ID:
-			return "Effect: opens East Shelf hatch only."
-		CARGO_RACK_UPGRADE_ID:
-			return "Effect: +1 cargo slot."
-		WATER_FILTER_UPGRADE_ID:
-			return "Effect: +1 Water reserve now."
-		PREDATOR_WARNING_UPGRADE_ID:
-			return "Effect: earlier predator warning."
-		DECOY_PULSE_UPGRADE_ID:
-			return "Effect: one decoy window per expedition."
-		SALVAGE_CUTTER_UPGRADE_ID:
-			return "Effect: opens the sealed Wide Reef salvage pocket."
-
-	return "Effect: %s" % upgrade.owned_text
+	return UpgradeCopyPresenterScript.format_upgrade_effect_summary(upgrade.id, upgrade.owned_text)
 
 func _format_upgrade_panel_feedback(feedback: String) -> String:
-	if feedback.is_empty():
-		return ""
-
-	var compact := feedback
-	compact = compact.replace("Deposited", "Banked")
-	compact = compact.replace("resource(s) into the bank.", "resource(s).")
-	compact = compact.replace("No upgrade ready yet; check missing requirements below.", "No upgrade ready yet.")
-	compact = compact.replace("Ready upgrade:", "Ready:")
-	compact = compact.replace("Purchased ", "Bought ")
-	compact = compact.replace("\nBanked:", " | Banked:")
-
-	var max_chars := 112
-	if compact.length() > max_chars:
-		compact = "%s..." % compact.substr(0, max_chars - 3)
-
-	return compact
+	return UpgradeCopyPresenterScript.format_upgrade_panel_feedback(feedback)
 
 func _format_future_tool_upgrade_promise() -> String:
 	return ""
@@ -5760,10 +5684,7 @@ func _format_ready_upgrade_callout() -> String:
 		if progression_state.can_afford(upgrade.resource_cost):
 			ready.append(upgrade.display_name)
 
-	if ready.is_empty():
-		return "No upgrade ready yet; check missing requirements below."
-
-	return "Ready upgrade: %s." % ", ".join(ready)
+	return UpgradeCopyPresenterScript.format_ready_upgrade_callout(ready)
 
 func _format_upgrade_progress_callout() -> String:
 	for upgrade in upgrade_definitions:
