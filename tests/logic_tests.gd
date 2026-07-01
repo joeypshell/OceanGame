@@ -31,6 +31,7 @@ const DaylightTimerHudServiceScript := preload("res://scripts/ui/daylight_timer_
 const DepthRailServiceScript := preload("res://scripts/ui/depth_rail_service.gd")
 const DiscoveryNamePresenterScript := preload("res://scripts/ui/discovery_name_presenter.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
+const ExpeditionSlateNodeServiceScript := preload("res://scripts/ui/expedition_slate_node_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const ExpandedRouteVisualStagingServiceScript := preload("res://scripts/debug/expanded_route_visual_staging_service.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
@@ -267,6 +268,7 @@ func _initialize() -> void:
 	_run("daylight timer HUD", _test_daylight_timer_hud)
 	_run("late-day cargo banking warning", _test_late_day_cargo_banking_warning)
 	_run("expedition slate presenter", _test_expedition_slate_presenter)
+	_run("expedition slate node service", _test_expedition_slate_node_service)
 	_run("expedition slate context", _test_expedition_slate_context)
 	_run("expedition slate pressure pause", _test_expedition_slate_pressure_pause)
 	_run("HUD presenter", _test_hud_presenter)
@@ -8140,6 +8142,22 @@ func _test_expedition_slate_presenter() -> void:
 	_expect(slate.contains("Known build: Power Patch needs Scrap Metal x1."), "slate presenter should convert build choice into known build context")
 	_expect(slate.contains("Route goal: Scan target or collect cargo"), "slate presenter should remove the route goal prefix once")
 	_expect(slate.contains("Tab closes") and slate.contains("pressure is paused"), "slate presenter should preserve the pause rule")
+
+func _test_expedition_slate_node_service() -> void:
+	var main := MainScript.new()
+	var hud := CanvasLayer.new()
+	hud.name = "HUD"
+	main.add_child(hud)
+
+	ExpeditionSlateNodeServiceScript.ensure_nodes(main)
+	_expect(main.expedition_slate_panel != null and main.expedition_slate_panel.name == "ExpeditionSlatePanel", "expedition slate node service should create the slate panel")
+	_expect(main.expedition_slate_title_label != null and main.expedition_slate_title_label.text == "EXPEDITION SLATE", "expedition slate node service should preserve slate title copy")
+	_expect(main.expedition_slate_body_label != null and main.expedition_slate_body_label.clip_text, "expedition slate node service should create a clipped body label")
+	_expect(main.expedition_slate_panel.get_parent() == hud, "expedition slate node service should attach the slate panel under HUD")
+	var panel_count := hud.get_child_count()
+	ExpeditionSlateNodeServiceScript.ensure_nodes(main)
+	_expect(hud.get_child_count() == panel_count, "expedition slate node service should not duplicate nodes once created")
+	main.free()
 
 func _test_expedition_slate_context() -> void:
 	var main := MainScript.new()

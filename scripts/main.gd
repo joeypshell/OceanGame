@@ -23,6 +23,7 @@ const DaylightTimerHudServiceScript := preload("res://scripts/ui/daylight_timer_
 const DepthRailServiceScript := preload("res://scripts/ui/depth_rail_service.gd")
 const DiscoveryNamePresenterScript := preload("res://scripts/ui/discovery_name_presenter.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
+const ExpeditionSlateNodeServiceScript := preload("res://scripts/ui/expedition_slate_node_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const ExpandedRouteVisualStagingServiceScript := preload("res://scripts/debug/expanded_route_visual_staging_service.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
@@ -870,45 +871,7 @@ func _expedition_pressure_paused() -> bool:
 	return expedition_slate_open and dive_session.result == DiveSessionScript.Result.DIVING
 
 func _ensure_expedition_slate_nodes() -> void:
-	if expedition_slate_panel != null and is_instance_valid(expedition_slate_panel):
-		return
-
-	var hud := get_node_or_null("HUD")
-	if hud == null:
-		return
-
-	expedition_slate_panel = Panel.new()
-	expedition_slate_panel.name = "ExpeditionSlatePanel"
-	expedition_slate_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	expedition_slate_panel.visible = false
-	var panel_style := StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.015, 0.055, 0.075, 0.9)
-	panel_style.border_color = Color(0.16, 0.78, 0.9, 0.62)
-	panel_style.border_width_left = 2
-	panel_style.border_width_top = 2
-	panel_style.border_width_right = 2
-	panel_style.border_width_bottom = 2
-	panel_style.corner_radius_top_left = 6
-	panel_style.corner_radius_top_right = 6
-	panel_style.corner_radius_bottom_left = 6
-	panel_style.corner_radius_bottom_right = 6
-	expedition_slate_panel.add_theme_stylebox_override("panel", panel_style)
-	hud.add_child(expedition_slate_panel)
-
-	expedition_slate_title_label = Label.new()
-	expedition_slate_title_label.name = "Title"
-	expedition_slate_title_label.text = "EXPEDITION SLATE"
-	expedition_slate_title_label.modulate = Color(0.58, 1.0, 0.96, 0.96)
-	expedition_slate_title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	expedition_slate_panel.add_child(expedition_slate_title_label)
-
-	expedition_slate_body_label = Label.new()
-	expedition_slate_body_label.name = "Body"
-	expedition_slate_body_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	expedition_slate_body_label.clip_text = true
-	expedition_slate_body_label.modulate = Color(0.86, 0.96, 1.0, 0.94)
-	expedition_slate_body_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	expedition_slate_panel.add_child(expedition_slate_body_label)
+	ExpeditionSlateNodeServiceScript.ensure_nodes(self)
 
 func _update_expedition_slate(is_diving: bool) -> void:
 	_ensure_expedition_slate_nodes()
