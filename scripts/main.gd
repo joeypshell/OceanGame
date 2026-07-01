@@ -47,6 +47,7 @@ const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_prese
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
+const SurfaceOxygenVisualStagingServiceScript := preload("res://scripts/debug/surface_oxygen_visual_staging_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
 const WreckEchoVisualStagingServiceScript := preload("res://scripts/debug/wreck_echo_visual_staging_service.gd")
@@ -2015,30 +2016,7 @@ func _stage_debug_daylight_cargo_warning_visual_review() -> void:
 	_update_hud()
 
 func _stage_debug_surface_oxygen_refill_visual_review() -> void:
-	if dive_session.result == DiveSessionScript.Result.READY:
-		dive_session.start()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	var staged_player := player
-	if staged_player == null:
-		staged_player = get_node_or_null("Player") as CharacterBody2D
-	if staged_player == null:
-		return
-
-	player = staged_player
-	player.global_position = Vector2(1600.0, _surface_oxygen_refill_floor_y() - 44.0)
-	player.velocity = Vector2.ZERO
-	player_in_base = false
-	player_in_surface_oxygen_refill = true
-	dive_session.has_left_base = true
-	dive_session.oxygen = maxf(1.0, dive_session.max_oxygen * 0.18)
-	dive_session.current_cargo.clear()
-	dive_session.current_cargo.append("driftwood")
-	visual_smoke_route_stage = "surface_oxygen_refill"
-	status_label.text = _surface_oxygen_status_text()
-	_update_depth()
-	_update_hud()
+	SurfaceOxygenVisualStagingServiceScript.stage_visual_review(self)
 
 func _stage_debug_ship_offload_visual_review() -> void:
 	ShipOffloadVisualStagingServiceScript.stage_visual_review(self)
