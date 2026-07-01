@@ -14,6 +14,7 @@ const Area01VisualDirectorScript := preload("res://scripts/area01_visual_directo
 const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_builder.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
+const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
@@ -877,43 +878,28 @@ func _update_expedition_slate(is_diving: bool) -> void:
 		expedition_slate_body_label.text = _format_expedition_slate_text()
 
 func _format_expedition_slate_text() -> String:
-	var route_goal := ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory())
-	var route_goal_prefix := "Goal: "
-	if route_goal.begins_with(route_goal_prefix):
-		route_goal = route_goal.substr(route_goal_prefix.length())
-	var lines: Array[String] = [
-		"%s (%d%% daylight left)" % [HudPresenterScript.format_daylight_label(_daylight_remaining_seconds()), roundi(_daylight_remaining_ratio() * 100.0)],
-		"Pressure: O2 %d/%d, health %d/%d, depth %dm." % [
-			ceili(dive_session.oxygen),
-			ceili(dive_session.max_oxygen),
-			ceili(dive_session.health),
-			ceili(dive_session.max_health),
-			roundi(dive_session.current_depth),
-		],
-		_format_current_cargo_slate_line(),
-		"Base needs: %s" % survival_state.status_line(),
-		"Tonight: Food -1, Water -1, Power -1.",
-		_format_night_build_choice_line().replace("Build choice:", "Known build:"),
-		"Day plan: %s" % _format_current_tomorrow_intention(),
-		"Route goal: %s" % route_goal,
-		"Decision: surface for O2, ship banks cargo, return before nightfall.",
-		"%s closes. Active pressure is paused while open." % _action_label("expedition_slate"),
-	]
-	return "\n".join(lines)
+	return ExpeditionSlatePresenterScript.format_slate_text(_expedition_slate_state())
 
-func _format_current_cargo_slate_line() -> String:
-	var cargo_count := dive_session.current_cargo.size()
-	if cargo_count <= 0:
-		return "Cargo: empty (%d slots open)." % dive_session.cargo_limit
-
-	var parts: Array[String] = []
+func _expedition_slate_state() -> Dictionary:
+	var cargo_names: Array[String] = []
 	for item_id in dive_session.current_cargo:
-		parts.append(_short_resource_name(item_id))
-	return "Cargo: %d / %d carried - %s." % [
-		cargo_count,
-		dive_session.cargo_limit,
-		", ".join(parts),
-	]
+		cargo_names.append(_short_resource_name(item_id))
+	return {
+		"base_needs_line": survival_state.status_line(),
+		"cargo_limit": dive_session.cargo_limit,
+		"cargo_names": cargo_names,
+		"current_depth": roundi(dive_session.current_depth),
+		"day_plan": _format_current_tomorrow_intention(),
+		"daylight_label": HudPresenterScript.format_daylight_label(_daylight_remaining_seconds()),
+		"daylight_percent_left": roundi(_daylight_remaining_ratio() * 100.0),
+		"health": ceili(dive_session.health),
+		"known_build_line": _format_night_build_choice_line(),
+		"max_health": ceili(dive_session.max_health),
+		"max_oxygen": ceili(dive_session.max_oxygen),
+		"oxygen": ceili(dive_session.oxygen),
+		"route_goal": ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory()),
+		"slate_label": _action_label("expedition_slate"),
+	}
 
 func _sync_surface_oxygen_refill_state_from_position() -> void:
 	if player == null:

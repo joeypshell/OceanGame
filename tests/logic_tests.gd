@@ -22,6 +22,7 @@ const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_
 const Area01VisualDirectorScript := preload("res://scripts/area01_visual_director.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
+const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
@@ -202,6 +203,7 @@ func _initialize() -> void:
 	_run("Mirror Kelp kelp-bloom condition nudge", _test_mirror_kelp_kelp_bloom_condition_nudge)
 	_run("daylight timer HUD", _test_daylight_timer_hud)
 	_run("late-day cargo banking warning", _test_late_day_cargo_banking_warning)
+	_run("expedition slate presenter", _test_expedition_slate_presenter)
 	_run("expedition slate context", _test_expedition_slate_context)
 	_run("expedition slate pressure pause", _test_expedition_slate_pressure_pause)
 	_run("HUD presenter", _test_hud_presenter)
@@ -7610,6 +7612,31 @@ func _test_late_day_cargo_banking_warning() -> void:
 	var nightfall_prompt: String = main.call("_format_hud_prompt")
 	_expect(nightfall_prompt.contains("cargo at risk") and nightfall_prompt.contains("late Power -1"), "nightfall away-from-ship behavior should remain unchanged")
 	main.free()
+
+func _test_expedition_slate_presenter() -> void:
+	_expect(ExpeditionSlatePresenterScript.format_cargo_line([], 3) == "Cargo: empty (3 slots open).", "slate presenter should format empty cargo capacity")
+	_expect(ExpeditionSlatePresenterScript.format_cargo_line(["Food", "Wood"], 3) == "Cargo: 2 / 3 carried - Food, Wood.", "slate presenter should format carried cargo names in order")
+	var slate := ExpeditionSlatePresenterScript.format_slate_text({
+		"base_needs_line": "Food 4/5 | Water 3/5 | Power 2/5",
+		"cargo_limit": 3,
+		"cargo_names": ["Food", "Wood"],
+		"current_depth": 77,
+		"day_plan": "bank Power supply soon",
+		"daylight_label": "DAYLIGHT 03:30",
+		"daylight_percent_left": 50,
+		"health": 64,
+		"known_build_line": "Build choice: Power Patch needs Scrap Metal x1.",
+		"max_health": 100,
+		"max_oxygen": 30,
+		"oxygen": 12,
+		"route_goal": "Goal: Scan target or collect cargo",
+		"slate_label": "Tab",
+	})
+	_expect(slate.contains("DAYLIGHT 03:30") and slate.contains("50% daylight left"), "slate presenter should show remaining daylight context")
+	_expect(slate.contains("Pressure: O2 12/30, health 64/100, depth 77m."), "slate presenter should show active pressure meters")
+	_expect(slate.contains("Known build: Power Patch needs Scrap Metal x1."), "slate presenter should convert build choice into known build context")
+	_expect(slate.contains("Route goal: Scan target or collect cargo"), "slate presenter should remove the route goal prefix once")
+	_expect(slate.contains("Tab closes") and slate.contains("pressure is paused"), "slate presenter should preserve the pause rule")
 
 func _test_expedition_slate_context() -> void:
 	var main := MainScript.new()
