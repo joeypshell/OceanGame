@@ -60,6 +60,7 @@ const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_p
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
 const SurvivalNeedsPanelServiceScript := preload("res://scripts/ui/survival_needs_panel_service.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
+const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
@@ -260,6 +261,7 @@ func _initialize() -> void:
 	_run("depth rail service", _test_depth_rail_service)
 	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
+	_run("tool belt service", _test_tool_belt_service)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("visual smoke bridge", _test_visual_smoke_bridge)
 	_run("Area 01 visual staging service", _test_area01_visual_staging_service)
@@ -8312,6 +8314,24 @@ func _test_minimap_service() -> void:
 	MinimapServiceScript.update_minimap(main, false)
 	_expect(not main.minimap_path.visible and not main.minimap_player_marker.visible, "hidden minimap should hide path and player marker")
 	main.player.free()
+	main.free()
+
+func _test_tool_belt_service() -> void:
+	var main := MainScript.new()
+	main.tool_slot_nodes = [ColorRect.new(), ColorRect.new(), ColorRect.new(), ColorRect.new(), ColorRect.new()]
+	main.tool_icon_nodes = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+	main.tool_key_label_nodes = [Label.new(), Label.new(), Label.new(), Label.new(), Label.new()]
+	main.dive_session.reset(40.0, 100.0)
+	main.dive_session.start()
+
+	ToolBeltServiceScript.update_tool_belt(main, true)
+	_expect(main.tool_slot_nodes[0].visible and main.tool_icon_nodes[0].visible and main.tool_key_label_nodes[0].visible, "visible tool belt should show scanner slot nodes")
+	_expect(main.tool_key_label_nodes[0].text == "F" and main.tool_key_label_nodes[1].text == "Space", "tool belt service should preserve key labels")
+	_expect(main.tool_slot_nodes[0].color == ToolBeltPresenterScript.tool_slot_color("ready"), "tool belt service should preserve scanner ready slot color")
+	_expect(main.tool_icon_nodes[0].polygon.size() > 0, "tool belt service should preserve scanner icon polygon")
+
+	ToolBeltServiceScript.update_tool_belt(main, false)
+	_expect(not main.tool_slot_nodes[0].visible and not main.tool_icon_nodes[0].visible and not main.tool_key_label_nodes[0].visible, "hidden tool belt should hide scanner slot nodes")
 	main.free()
 
 func _test_tool_belt_presenter() -> void:
