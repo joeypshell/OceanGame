@@ -46,6 +46,7 @@ const ResearchResultPresenterScript := preload("res://scripts/ui/research_result
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
+const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -1310,7 +1311,7 @@ func _test_debug_wide_reef_salvage_staging_guardrails() -> void:
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 
 	main.show_debug_telemetry = false
-	main.call("_stage_debug_wide_chamber_visual_review", true)
+	WideReefVisualStagingServiceScript.stage_visual_review(main, true)
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wide Reef salvage staging should be inaccessible outside web/debug review")
 	_expect(main.visual_smoke_route_stage == "", "hidden Wide Reef salvage staging should not set visual route state")
 	_expect(main.progression_state.to_save_data() == save_before, "hidden Wide Reef salvage staging should not mutate durable progression")
