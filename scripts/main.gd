@@ -4054,26 +4054,14 @@ func _sync_sealed_shelf_hatch_state() -> void:
 	if echo_shimmer == null or lock_badge == null or lock_label == null:
 		return
 
-	var has_resonance_key := progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)
-	var has_echo_lens := progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
-	if has_resonance_key:
-		echo_shimmer.color = Color(0.95, 1.0, 0.72, 0.28)
-		lock_badge.color = Color(0.95, 1.0, 0.72, 0.78)
-		lock_label.text = "OPEN"
-		if seal_bars != null:
-			seal_bars.color = Color(0.86, 1.0, 0.72, 0.12)
-	elif has_echo_lens:
-		echo_shimmer.color = Color(0.62, 1.0, 0.78, 0.22)
-		lock_badge.color = Color(0.62, 1.0, 0.72, 0.72)
-		lock_label.text = "ECHO PING"
-		if seal_bars != null:
-			seal_bars.color = Color(0.58, 0.82, 1.0, 0.34)
-	else:
-		echo_shimmer.color = Color(0.62, 0.94, 1.0, 0.11)
-		lock_badge.color = Color(0.74, 0.86, 1.0, 0.74)
-		lock_label.text = "ECHO LOCK"
-		if seal_bars != null:
-			seal_bars.color = Color(0.58, 0.82, 1.0, 0.34)
+	RoutePresenterScript.sync_sealed_shelf_hatch_state(
+		echo_shimmer,
+		lock_badge,
+		lock_label,
+		seal_bars,
+		progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID),
+		progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
+	)
 
 func _blackwater_crack_gate_open() -> bool:
 	return progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)
@@ -4190,20 +4178,15 @@ func _sync_salvage_pocket_open_state() -> void:
 	if opened_lane == null:
 		opened_lane = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane") as Node2D
 
-	var cutter_owned := progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID)
-	if opened_lane != null:
-		opened_lane.visible = cutter_owned
-	if lock_bars != null:
-		lock_bars.visible = not cutter_owned
-	if hatch != null:
-		hatch.color = Color(0.04, 0.09, 0.095, 0.22) if cutter_owned else Color(0.12, 0.22, 0.25, 0.58)
-	if glint != null:
-		glint.color = Color(1.0, 0.78, 0.38, 0.48) if cutter_owned else Color(0.86, 0.78, 0.58, 0.28)
-	if tool_label != null:
-		tool_label.text = "CUTTER READY" if cutter_owned else "CUTTER NEEDED"
-		tool_label.visible = not cutter_owned
-	if promise_label != null:
-		promise_label.text = "OPEN" if cutter_owned else "SALVAGE"
+	RoutePresenterScript.sync_salvage_pocket_open_state(
+		hatch,
+		lock_bars,
+		glint,
+		tool_label,
+		promise_label,
+		opened_lane,
+		progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID)
+	)
 	_sync_salvage_manifest_state()
 
 func _sync_tideglass_sample_state() -> void:
@@ -4279,38 +4262,19 @@ func _sync_blackwater_crack_gate_state() -> void:
 	if mouth == null or wash == null or seal_lip == null or gate_badge == null or gate_label == null or closed_shard == null:
 		return
 
-	if _blackwater_crack_gate_open():
-		mouth.color = Color(0.006, 0.028, 0.06, 0.52)
-		wash.color = Color(0.12, 0.28, 0.42, 0.16)
-		seal_lip.color = Color(0.58, 0.9, 0.8, 0.22)
-		gate_badge.color = Color(0.62, 1.0, 0.82, 0.62)
-		gate_label.text = "KEY READY"
-		closed_shard.color = Color(0.54, 0.78, 0.92, 0.12)
-		if sill != null:
-			sill.visible = true
-		if sill_return != null:
-			sill_return.color = Color(0.62, 1.0, 0.9, 0.14)
-		_sync_blackwater_trace_payoff_state()
-	elif progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
-		mouth.color = Color(0.002, 0.01, 0.026, 0.62)
-		wash.color = Color(0.08, 0.16, 0.32, 0.2)
-		seal_lip.color = Color(0.38, 0.58, 0.74, 0.28)
-		gate_badge.color = Color(0.62, 0.86, 1.0, 0.58)
-		gate_label.text = "KEY NEEDED"
-		closed_shard.color = Color(0.54, 0.78, 0.92, 0.3)
-		if sill != null:
-			sill.visible = false
-		_sync_blackwater_trace_payoff_state()
-	else:
-		mouth.color = Color(0.002, 0.01, 0.026, 0.64)
-		wash.color = Color(0.08, 0.16, 0.32, 0.2)
-		seal_lip.color = Color(0.38, 0.58, 0.74, 0.24)
-		gate_badge.color = Color(0.38, 0.58, 0.74, 0.5)
-		gate_label.text = "RESONANCE SEAL"
-		closed_shard.color = Color(0.54, 0.78, 0.92, 0.28)
-		if sill != null:
-			sill.visible = false
-		_sync_blackwater_trace_payoff_state()
+	RoutePresenterScript.sync_blackwater_crack_gate_state(
+		mouth,
+		wash,
+		seal_lip,
+		gate_badge,
+		gate_label,
+		closed_shard,
+		sill,
+		sill_return,
+		_blackwater_crack_gate_open(),
+		progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
+	)
+	_sync_blackwater_trace_payoff_state()
 	_sync_blackwater_signal_opportunity(_current_condition_id())
 
 func _wreck_echo_route_available() -> bool:
