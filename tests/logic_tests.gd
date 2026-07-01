@@ -23,6 +23,7 @@ const Area01VisualDirectorScript := preload("res://scripts/area01_visual_directo
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
+const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
@@ -738,6 +739,18 @@ func _test_starter_survival_resource_families() -> void:
 	_expect(main.call("_format_resource_counts", resources).contains("Building: Scrap Metal"), "resource result copy should name building materials")
 	_expect(main.call("_format_survival_supply_counts", supplies).contains("Food/Fish: Food/Fish Supply"), "survival result copy should name the food/fish role")
 	_expect(main.call("_format_survival_supply_counts", supplies).contains("Power: Power Cell"), "survival result copy should name the power role")
+	var summary_names := {
+		"scrap_metal": "Scrap Metal",
+		"food_supply": "Food/Fish Supply",
+	}
+	var summary_categories := {
+		"scrap_metal": "Building",
+		"food_supply": "Food/Fish",
+	}
+	_expect(InventorySummaryPresenterScript.format_item_counts(["scrap_metal", "scrap_metal"], summary_categories, summary_names).contains("Scrap Metal x2"), "inventory summary presenter should count repeated resources")
+	_expect(InventorySummaryPresenterScript.format_cargo_counts_inline(["scrap_metal", "food_supply"], {"scrap_metal": "Scrap", "food_supply": "Food"}) == " - Scrap x1, Food x1", "inventory summary presenter should keep compact cargo copy")
+	_expect(InventorySummaryPresenterScript.format_extraction_banking_line(0, "", true).contains("scan data"), "inventory summary presenter should preserve scan-only extraction copy")
+	_expect(InventorySummaryPresenterScript.format_supply_names_inline(["food_supply", "power_supply"], {"food_supply": "Food", "power_supply": "Power"}) == "Food/Power", "inventory summary presenter should compact supply names")
 	_expect(ResourcePresenterScript.resource_role_summary("food_supply", true, "Food/Fish", "fill tonight's Food reserve").contains("Food/Fish survival supply"), "food pickup role should read as survival supply")
 	_expect(ResourcePresenterScript.resource_role_summary("power_supply", true, "Power", "fill tonight's Power reserve").contains("Power survival supply"), "power pickup role should read as survival supply")
 	_expect(ResourcePresenterScript.resource_role_summary("scrap_metal", false, "Building", "").contains("Building material"), "scrap pickup role should read as building material")
