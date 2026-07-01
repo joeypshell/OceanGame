@@ -56,6 +56,7 @@ const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_ro
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
+const ScanEffectTextServiceScript := preload("res://scripts/ui/scan_effect_text_service.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
 const ScanTargetFeedbackServiceScript := preload("res://scripts/ui/scan_target_feedback_service.gd")
@@ -265,6 +266,7 @@ func _initialize() -> void:
 	_run("HUD presenter", _test_hud_presenter)
 	_run("daylight timer HUD service", _test_daylight_timer_hud_service)
 	_run("HUD instrument bar service", _test_hud_instrument_bar_service)
+	_run("scan effect text service", _test_scan_effect_text_service)
 	_run("oxygen feedback service", _test_oxygen_feedback_service)
 	_run("health feedback service", _test_health_feedback_service)
 	_run("scan target card service", _test_scan_target_card_service)
@@ -970,10 +972,10 @@ func _test_starter_survival_resource_families() -> void:
 		if role_read != null:
 			_expect(String(role_read.get_meta("role_family", "")) == String(expected.get("family", "")), "%s role marker should declare the expected cargo family" % pickup_name)
 			_expect(role_read.get_child_count() >= 3, "%s role marker should have enough visible shapes to read at play scale" % pickup_name)
-	var food_guidance: String = main.call("_format_first_scan_guidance", scene.get_node("ResourcePickups/FoodSupply"))
-	var power_fact: String = main.call("_scan_target_gameplay_fact", scene.get_node("ResourcePickups/PowerSupply"))
-	var scrap_guidance: String = main.call("_format_first_scan_guidance", scene.get_node("ResourcePickups/ScrapMetal"))
-	var kelp_fact: String = main.call("_scan_target_gameplay_fact", scene.get_node("ResourcePickups/KelpFiber"))
+	var food_guidance: String = ScanEffectTextServiceScript.first_scan_guidance(main, scene.get_node("ResourcePickups/FoodSupply"))
+	var power_fact: String = ScanEffectTextServiceScript.scan_target_gameplay_fact(main, scene.get_node("ResourcePickups/PowerSupply"))
+	var scrap_guidance: String = ScanEffectTextServiceScript.first_scan_guidance(main, scene.get_node("ResourcePickups/ScrapMetal"))
+	var kelp_fact: String = ScanEffectTextServiceScript.scan_target_gameplay_fact(main, scene.get_node("ResourcePickups/KelpFiber"))
 	_expect(food_guidance.contains("Food reserve") and food_guidance.contains("Return to ship"), "food scan guidance should explain the tonight/base decision")
 	_expect(power_fact.contains("Power survival supply") and power_fact.contains("base needs for tonight"), "power scan fact should explain the survival role")
 	_expect(scrap_guidance.contains("building material") and scrap_guidance.contains("repairs/upgrades"), "scrap scan guidance should explain the building role")
@@ -1796,14 +1798,14 @@ func _test_lantern_ray_scan_behavior() -> void:
 		discovery_id,
 		display_name,
 		main.call("_scan_target_description", lantern_ray),
-		main.call("_scan_target_gameplay_fact", lantern_ray)
+		ScanEffectTextServiceScript.scan_target_gameplay_fact(main, lantern_ray)
 	)
 	main.run_completed_scans.append(discovery_id)
 	var first_scan_status: String = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 		display_name,
-		main.call("_format_repeat_scan_effect_text", lantern_ray) + main.call("_format_first_scan_guidance", lantern_ray)
+		ScanEffectTextServiceScript.repeat_scan_effect_text(main, lantern_ray) + ScanEffectTextServiceScript.first_scan_guidance(main, lantern_ray)
 	])
-	var first_scan_guidance: String = main.call("_format_first_scan_guidance", lantern_ray)
+	var first_scan_guidance: String = ScanEffectTextServiceScript.first_scan_guidance(main, lantern_ray)
 	_expect(main.progression_state.has_discovery("lantern_ray"), "first Lantern Ray scan should record a durable discovery")
 	_expect(main.run_completed_scans == ["lantern_ray"], "first Lantern Ray scan should count as current-run scan evidence")
 	_expect(is_equal_approx(main.dive_session.oxygen, starting_oxygen - main.scan_oxygen_cost), "first Lantern Ray scan should use the normal scan oxygen cost")
@@ -1820,7 +1822,7 @@ func _test_lantern_ray_scan_behavior() -> void:
 	var oxygen_after_first: float = main.dive_session.oxygen
 	var repeat_scan_status: String = HudPresenterScript.compact_dive_status("%s known.%s" % [
 		display_name,
-		main.call("_format_repeat_scan_effect_text", lantern_ray) + main.call("_format_signal_lens_pulse_text", lantern_ray)
+		ScanEffectTextServiceScript.repeat_scan_effect_text(main, lantern_ray) + ScanEffectTextServiceScript.signal_lens_pulse_text(main, lantern_ray)
 	])
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_after_first), "repeat Lantern Ray scan should stay free like existing known scans")
 	_expect(main.run_completed_scans == ["lantern_ray"], "repeat Lantern Ray scan should not duplicate current-run scan evidence")
@@ -1872,14 +1874,14 @@ func _test_hollow_reef_passive_creature_scan_behavior() -> void:
 		discovery_id,
 		display_name,
 		main.call("_scan_target_description", skitter),
-		main.call("_scan_target_gameplay_fact", skitter)
+		ScanEffectTextServiceScript.scan_target_gameplay_fact(main, skitter)
 	)
 	main.run_completed_scans.append(discovery_id)
 	var first_scan_status: String = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 		display_name,
-		main.call("_format_repeat_scan_effect_text", skitter) + main.call("_format_first_scan_guidance", skitter)
+		ScanEffectTextServiceScript.repeat_scan_effect_text(main, skitter) + ScanEffectTextServiceScript.first_scan_guidance(main, skitter)
 	])
-	var first_scan_guidance: String = main.call("_format_first_scan_guidance", skitter)
+	var first_scan_guidance: String = ScanEffectTextServiceScript.first_scan_guidance(main, skitter)
 	_expect(main.progression_state.has_discovery("hollow_reef_skitter"), "first Hollow Reef Skitter scan should record a normal durable discovery")
 	_expect(main.run_completed_scans == ["hollow_reef_skitter"], "first Hollow Reef Skitter scan should count as current-run scan evidence")
 	_expect(is_equal_approx(main.dive_session.oxygen, starting_oxygen - main.scan_oxygen_cost), "first Hollow Reef Skitter scan should use the normal scan oxygen cost")
@@ -1892,7 +1894,7 @@ func _test_hollow_reef_passive_creature_scan_behavior() -> void:
 	var oxygen_after_first: float = main.dive_session.oxygen
 	var repeat_scan_status: String = HudPresenterScript.compact_dive_status("%s known.%s" % [
 		display_name,
-		main.call("_format_repeat_scan_effect_text", skitter) + main.call("_format_signal_lens_pulse_text", skitter)
+		ScanEffectTextServiceScript.repeat_scan_effect_text(main, skitter) + ScanEffectTextServiceScript.signal_lens_pulse_text(main, skitter)
 	])
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_after_first), "repeat Hollow Reef Skitter scan should stay free like existing known scans")
 	_expect(main.run_completed_scans == ["hollow_reef_skitter"], "repeat Hollow Reef Skitter scan should not duplicate current-run scan evidence")
@@ -1976,14 +1978,14 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 		discovery_id,
 		display_name,
 		main.call("_scan_target_description", swarm),
-		main.call("_scan_target_gameplay_fact", swarm)
+		ScanEffectTextServiceScript.scan_target_gameplay_fact(main, swarm)
 	)
 	main.run_completed_scans.append(discovery_id)
 	var first_scan_status: String = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 		display_name,
-		main.call("_format_repeat_scan_effect_text", swarm) + main.call("_format_first_scan_guidance", swarm)
+		ScanEffectTextServiceScript.repeat_scan_effect_text(main, swarm) + ScanEffectTextServiceScript.first_scan_guidance(main, swarm)
 	])
-	var first_scan_guidance: String = main.call("_format_first_scan_guidance", swarm)
+	var first_scan_guidance: String = ScanEffectTextServiceScript.first_scan_guidance(main, swarm)
 	_expect(main.progression_state.has_discovery("glassfin_swarm"), "first Glassfin Swarm scan should record a normal durable discovery")
 	_expect(main.run_completed_scans == ["glassfin_swarm"], "first Glassfin Swarm scan should count as current-run scan evidence")
 	_expect(is_equal_approx(main.dive_session.oxygen, starting_oxygen - main.scan_oxygen_cost), "first Glassfin Swarm scan should use the normal scan oxygen cost")
@@ -1997,7 +1999,7 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	var oxygen_after_first: float = main.dive_session.oxygen
 	var repeat_scan_status: String = HudPresenterScript.compact_dive_status("%s known.%s" % [
 		display_name,
-		main.call("_format_repeat_scan_effect_text", swarm) + main.call("_format_signal_lens_pulse_text", swarm)
+		ScanEffectTextServiceScript.repeat_scan_effect_text(main, swarm) + ScanEffectTextServiceScript.signal_lens_pulse_text(main, swarm)
 	])
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_after_first), "repeat Glassfin Swarm scan should stay free like existing known scans")
 	_expect(main.run_completed_scans == ["glassfin_swarm"], "repeat Glassfin Swarm scan should not duplicate current-run scan evidence")
@@ -2073,14 +2075,14 @@ func _test_mirrorfin_route_read_behavior() -> void:
 		discovery_id,
 		display_name,
 		main.call("_scan_target_description", mirrorfin),
-		main.call("_scan_target_gameplay_fact", mirrorfin)
+		ScanEffectTextServiceScript.scan_target_gameplay_fact(main, mirrorfin)
 	)
 	main.run_completed_scans.append(discovery_id)
 	var first_scan_status: String = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 		display_name,
-		main.call("_format_repeat_scan_effect_text", mirrorfin) + main.call("_format_first_scan_guidance", mirrorfin)
+		ScanEffectTextServiceScript.repeat_scan_effect_text(main, mirrorfin) + ScanEffectTextServiceScript.first_scan_guidance(main, mirrorfin)
 	])
-	var first_scan_guidance: String = main.call("_format_first_scan_guidance", mirrorfin)
+	var first_scan_guidance: String = ScanEffectTextServiceScript.first_scan_guidance(main, mirrorfin)
 	_expect(main.progression_state.has_discovery("mirrorfin_drift"), "first Mirrorfin scan should record a normal durable discovery")
 	_expect(main.run_completed_scans == ["mirrorfin_drift"], "first Mirrorfin scan should count as current-run scan evidence")
 	_expect(is_equal_approx(main.dive_session.oxygen, starting_oxygen - main.scan_oxygen_cost), "first Mirrorfin scan should use the normal scan oxygen cost")
@@ -2094,7 +2096,7 @@ func _test_mirrorfin_route_read_behavior() -> void:
 	var oxygen_after_first: float = main.dive_session.oxygen
 	var repeat_scan_status: String = HudPresenterScript.compact_dive_status("%s known.%s" % [
 		display_name,
-		main.call("_format_repeat_scan_effect_text", mirrorfin) + main.call("_format_signal_lens_pulse_text", mirrorfin)
+		ScanEffectTextServiceScript.repeat_scan_effect_text(main, mirrorfin) + ScanEffectTextServiceScript.signal_lens_pulse_text(main, mirrorfin)
 	])
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_after_first), "repeat Mirrorfin scan should stay free like existing known scans")
 	_expect(main.run_completed_scans == ["mirrorfin_drift"], "repeat Mirrorfin scan should not duplicate current-run scan evidence")
@@ -2578,7 +2580,7 @@ func _test_glass_ray_drifter_passive_route_read() -> void:
 	scene_player.global_position = ray.global_position
 	var scan_candidates: Array[Node] = [ray]
 	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == ray, "scanner target selection should find Glass Ray reliably at close range")
-	_expect(main.call("_scan_target_gameplay_fact", ray).contains("slackwater"), "scanner read should expose the route-timing lesson")
+	_expect(ScanEffectTextServiceScript.scan_target_gameplay_fact(main, ray).contains("slackwater"), "scanner read should expose the route-timing lesson")
 	_expect(main.progression_state.to_save_data() == save_before, "unscanned Glass Ray should not mutate progression")
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "unscanned Glass Ray should not drain oxygen")
 	_expect(main.dive_session.current_cargo == cargo_before, "unscanned Glass Ray should not mutate cargo")
@@ -2594,14 +2596,14 @@ func _test_glass_ray_drifter_passive_route_read() -> void:
 		discovery_id,
 		display_name,
 		main.call("_scan_target_description", ray),
-		main.call("_scan_target_gameplay_fact", ray)
+		ScanEffectTextServiceScript.scan_target_gameplay_fact(main, ray)
 	)
 	main.run_completed_scans.append(discovery_id)
 	var first_scan_status: String = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 		display_name,
-		main.call("_format_repeat_scan_effect_text", ray) + main.call("_format_first_scan_guidance", ray)
+		ScanEffectTextServiceScript.repeat_scan_effect_text(main, ray) + ScanEffectTextServiceScript.first_scan_guidance(main, ray)
 	])
-	var first_scan_guidance: String = main.call("_format_first_scan_guidance", ray)
+	var first_scan_guidance: String = ScanEffectTextServiceScript.first_scan_guidance(main, ray)
 	_expect(main.progression_state.has_discovery("glass_ray_drifter"), "first Glass Ray scan should record a normal durable discovery")
 	_expect(main.run_completed_scans == ["glass_ray_drifter"], "first Glass Ray scan should count as current-run observation evidence")
 	_expect(is_equal_approx(main.dive_session.oxygen, starting_oxygen - main.scan_oxygen_cost), "first Glass Ray scan should use the normal scan oxygen cost")
@@ -7428,11 +7430,11 @@ func _test_thermal_vent_scan_clue_text() -> void:
 	target.display_name = "Thermal Vent"
 	target.description = "Warm current."
 
-	var first_guidance := main._format_first_scan_guidance(target)
+	var first_guidance := ScanEffectTextServiceScript.first_scan_guidance(main, target)
 	_expect(first_guidance.contains("Warm current"), "thermal vent first scan should name the warm-current clue")
 	_expect(first_guidance.contains("optional glow"), "thermal vent first scan should keep glow route optional")
 	_expect(first_guidance.contains("Pressure Seal clue"), "thermal vent first scan should explain pressure-seal knowledge")
-	_expect(main._format_repeat_scan_effect_text(target).contains("glow route optional"), "thermal vent repeat scan should stay concise and optional")
+	_expect(ScanEffectTextServiceScript.repeat_scan_effect_text(main, target).contains("glow route optional"), "thermal vent repeat scan should stay concise and optional")
 	target.free()
 	main.free()
 
@@ -7454,8 +7456,8 @@ func _test_shell_reef_scan_clue_text() -> void:
 	target.description = "Reef shelf."
 
 	_expect(main._format_discovery_name("shell_reef_shelf") == "Shell Reef Shelf", "shell reef discovery should have a readable name")
-	_expect(main._format_repeat_scan_effect_text(target).contains("Reef route clue refreshed"), "shell reef repeat scan should give compact feedback")
-	_expect(main._format_first_scan_guidance(target).contains("midwater bank route"), "shell reef first scan should explain the route decision")
+	_expect(ScanEffectTextServiceScript.repeat_scan_effect_text(main, target).contains("Reef route clue refreshed"), "shell reef repeat scan should give compact feedback")
+	_expect(ScanEffectTextServiceScript.first_scan_guidance(main, target).contains("midwater bank route"), "shell reef first scan should explain the route decision")
 	_expect(main._format_scan_target_type(target) == "environment", "shell reef scan target should be environmental metadata")
 	target.free()
 	main.free()
@@ -7467,19 +7469,19 @@ func _test_wreck_signal_cache_repeat_scan_hint() -> void:
 	target.display_name = "Wreck Signal Cache"
 	target.description = "Cache ping."
 
-	_expect(main._format_repeat_scan_effect_text(target).contains("Signal Lens I"), "cache repeat scan before Signal Lens I should refresh the current upgrade clue")
+	_expect(ScanEffectTextServiceScript.repeat_scan_effect_text(main, target).contains("Signal Lens I"), "cache repeat scan before Signal Lens I should refresh the current upgrade clue")
 	main.progression_state.purchased_upgrades[SignalLensUpgrade.id] = true
-	_expect(main._format_wreck_cache_repeat_hint().contains("Cache echo unresolved"), "cache repeat helper should name the unresolved echo")
-	var repeat_hint := main._format_repeat_scan_effect_text(target)
+	_expect(ScanEffectTextServiceScript.wreck_cache_repeat_hint(main).contains("Cache echo unresolved"), "cache repeat helper should name the unresolved echo")
+	var repeat_hint := ScanEffectTextServiceScript.repeat_scan_effect_text(main, target)
 	_expect(repeat_hint.contains("Echo Lens"), "cache repeat scan after Signal Lens I should hint at future echo-lens study")
 	_expect(repeat_hint.contains("deeper wreck signals"), "cache repeat scan should imply unresolved wreck signals without exact coordinates")
 	_expect(not repeat_hint.to_lower().contains("map"), "cache repeat scan should not introduce map UI language")
 
 	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
-	repeat_hint = main._format_repeat_scan_effect_text(target)
+	repeat_hint = ScanEffectTextServiceScript.repeat_scan_effect_text(main, target)
 	_expect(repeat_hint.contains("Echo Lens: weak wreck echo lingers below the shelf"), "Echo Lens I should turn the cache hint into a broad local wreck echo")
 	_expect_no_echo_lens_locator_language(repeat_hint, "Echo Lens I repeat scan echo")
-	_expect(main._format_signal_lens_pulse_text(target) == "", "Wreck Signal Cache repeat hint should not reuse resource pulse behavior")
+	_expect(ScanEffectTextServiceScript.signal_lens_pulse_text(main, target) == "", "Wreck Signal Cache repeat hint should not reuse resource pulse behavior")
 	target.free()
 	main.free()
 
@@ -7490,13 +7492,13 @@ func _test_pressure_lock_guidance_text() -> void:
 	target.display_name = "Pressure-Locked Research Wreck"
 	target.description = "Pressure lock."
 
-	var locked_guidance := main._format_first_scan_guidance(target)
+	var locked_guidance := ScanEffectTextServiceScript.first_scan_guidance(main, target)
 	_expect(locked_guidance.contains("Locked"), "pressure lock guidance should first say the route is blocked")
 	_expect(locked_guidance.contains("buy Pressure Seal I"), "pressure lock guidance should name the surface upgrade step")
 	_expect(locked_guidance.contains("then return"), "pressure lock guidance should explain the return loop")
 
 	main.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
-	var open_guidance := main._format_first_scan_guidance(target)
+	var open_guidance := ScanEffectTextServiceScript.first_scan_guidance(main, target)
 	_expect(open_guidance.contains("if oxygen allows"), "open pressure route guidance should invite entry only if oxygen allows")
 	_expect(open_guidance.contains("scan cache"), "open pressure route guidance should name the cache payoff")
 	target.free()
@@ -8204,6 +8206,34 @@ func _test_daylight_timer_hud_service() -> void:
 
 	DaylightTimerHudServiceScript.update_timer(main, false)
 	_expect(not main.daylight_panel.visible and not main.daylight_label.visible and not main.daylight_bar_fill.visible, "hidden daylight timer should hide the timer nodes")
+	main.free()
+
+func _test_scan_effect_text_service() -> void:
+	var main := MainScript.new()
+	var player := CharacterBody2D.new()
+	main.player = player
+	player.global_position = Vector2.ZERO
+
+	var vent := _make_scan_target("thermal_vent", "Thermal Vent", Vector2.ZERO)
+	_expect(ScanEffectTextServiceScript.first_scan_guidance(main, vent).contains("Pressure Seal clue"), "scan effect text service should preserve thermal vent first-scan guidance")
+	_expect(ScanEffectTextServiceScript.repeat_scan_effect_text(main, vent).contains("glow route optional"), "scan effect text service should preserve thermal vent repeat guidance")
+
+	var wreck_cache := _make_scan_target("wreck_signal_cache", "Wreck Signal Cache", Vector2.ZERO)
+	_expect(ScanEffectTextServiceScript.wreck_cache_repeat_hint(main).contains("Signal Lens I"), "scan effect text service should preserve pre-upgrade wreck cache hint")
+	main.progression_state.purchased_upgrades[SignalLensUpgrade.id] = true
+	_expect(ScanEffectTextServiceScript.repeat_scan_effect_text(main, wreck_cache).contains("deeper wreck signals"), "scan effect text service should preserve Signal Lens wreck-cache copy")
+	_expect(ScanEffectTextServiceScript.signal_lens_pulse_text(main, wreck_cache) == "", "scan effect text service should not show resource pulse copy for wreck cache")
+
+	var pressure_lock := _make_scan_target("pressure_wreck_signal", "Pressure-Locked Research Wreck", Vector2.ZERO)
+	_expect(ScanEffectTextServiceScript.first_scan_guidance(main, pressure_lock).contains("Locked: buy Pressure Seal I"), "scan effect text service should preserve pressure-lock upgrade guidance")
+	main.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
+	_expect(ScanEffectTextServiceScript.first_scan_guidance(main, pressure_lock).contains("scan cache"), "scan effect text service should preserve pressure-open cache guidance")
+	_expect(ScanEffectTextServiceScript.direction_to(main, Vector2(96.0, 96.0)) == "deeper-right", "scan effect text service should preserve direction copy")
+
+	vent.free()
+	wreck_cache.free()
+	pressure_lock.free()
+	player.free()
 	main.free()
 
 func _test_oxygen_feedback_service() -> void:
