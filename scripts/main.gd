@@ -15,6 +15,7 @@ const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_buil
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
+const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -5663,11 +5664,11 @@ func _update_tool_belt(is_visible: bool) -> void:
 		tool_slot_nodes[index].visible = is_visible
 		tool_icon_nodes[index].visible = is_visible
 		tool_key_label_nodes[index].visible = is_visible
-		tool_slot_nodes[index].color = _tool_slot_color(state)
-		tool_icon_nodes[index].polygon = _tool_icon_polygon(tool_id)
-		tool_icon_nodes[index].color = _tool_icon_color(tool_id, state)
+		tool_slot_nodes[index].color = ToolBeltPresenterScript.tool_slot_color(state)
+		tool_icon_nodes[index].polygon = ToolBeltPresenterScript.tool_icon_polygon(tool_id)
+		tool_icon_nodes[index].color = ToolBeltPresenterScript.tool_icon_color(tool_id, state)
 		tool_key_label_nodes[index].text = tool_keys[index]
-		tool_key_label_nodes[index].modulate = _tool_key_color(state)
+		tool_key_label_nodes[index].modulate = ToolBeltPresenterScript.tool_key_color(state)
 
 func _tool_belt_state(tool_id: String) -> String:
 	match tool_id:
@@ -5687,66 +5688,6 @@ func _tool_belt_state(tool_id: String) -> String:
 			return "locked"
 		_:
 			return "disabled"
-
-func _tool_slot_color(state: String) -> Color:
-	match state:
-		"active":
-			return Color(0.06, 0.36, 0.42, 0.68)
-		"ready":
-			return Color(0.018, 0.075, 0.095, 0.5)
-		"cooldown":
-			return Color(0.09, 0.08, 0.035, 0.54)
-		"spent":
-			return Color(0.05, 0.055, 0.065, 0.44)
-		"locked":
-			return Color(0.012, 0.02, 0.028, 0.34)
-		_:
-			return Color(0.014, 0.024, 0.032, 0.34)
-
-func _tool_key_color(state: String) -> Color:
-	match state:
-		"active":
-			return Color(0.72, 1.0, 1.0, 1.0)
-		"ready":
-			return Color(0.88, 0.96, 1.0, 0.96)
-		"cooldown":
-			return Color(1.0, 0.82, 0.38, 0.92)
-		"locked", "spent":
-			return Color(0.62, 0.7, 0.74, 0.82)
-		_:
-			return Color(0.5, 0.55, 0.6, 0.75)
-
-func _tool_icon_color(tool_id: String, state: String) -> Color:
-	if state == "locked" or state == "spent":
-		return Color(0.45, 0.56, 0.62, 0.72)
-	match tool_id:
-		"scanner":
-			return Color(0.1, 0.92, 1.0, 0.98)
-		"burst":
-			return Color(0.55, 0.92, 1.0, 0.98)
-		"cutter":
-			return Color(1.0, 0.82, 0.48, 0.98)
-		"decoy":
-			return Color(0.45, 0.88, 1.0, 0.98)
-		"reserve":
-			return Color(1.0, 0.72, 0.58, 0.98)
-		_:
-			return Color(0.8, 0.9, 1.0, 0.88)
-
-func _tool_icon_polygon(tool_id: String) -> PackedVector2Array:
-	match tool_id:
-		"scanner":
-			return PackedVector2Array([Vector2(-12, -3), Vector2(-4, -12), Vector2(10, -9), Vector2(14, 0), Vector2(8, 10), Vector2(-7, 9), Vector2(-14, 2)])
-		"burst":
-			return PackedVector2Array([Vector2(-13, 7), Vector2(-2, -12), Vector2(4, -3), Vector2(13, -6), Vector2(3, 12), Vector2(-3, 3)])
-		"cutter":
-			return PackedVector2Array([Vector2(-12, 9), Vector2(-4, -8), Vector2(3, -11), Vector2(12, -3), Vector2(4, 1), Vector2(0, 11)])
-		"decoy":
-			return PackedVector2Array([Vector2(0, -13), Vector2(10, -5), Vector2(10, 7), Vector2(0, 13), Vector2(-10, 7), Vector2(-10, -5)])
-		"reserve":
-			return PackedVector2Array([Vector2(-11, -8), Vector2(11, -8), Vector2(11, 8), Vector2(-11, 8)])
-		_:
-			return PackedVector2Array()
 
 func _short_resource_name(resource_id: String) -> String:
 	match resource_id:

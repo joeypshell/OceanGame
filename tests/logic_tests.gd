@@ -23,6 +23,7 @@ const Area01VisualDirectorScript := preload("res://scripts/area01_visual_directo
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
+const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -179,6 +180,7 @@ func _initialize() -> void:
 	_run("expedition slate context", _test_expedition_slate_context)
 	_run("expedition slate pressure pause", _test_expedition_slate_pressure_pause)
 	_run("HUD presenter", _test_hud_presenter)
+	_run("tool belt presenter", _test_tool_belt_presenter)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("mobile touch controls adapter", _test_mobile_touch_controls_adapter)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
@@ -7378,6 +7380,20 @@ func _test_hud_presenter() -> void:
 	_expect(compact_status.length() <= 72, "compact status should keep active HUD copy within the row")
 	_expect(compact_status.ends_with("..."), "compact status should mark truncated copy")
 
+func _test_tool_belt_presenter() -> void:
+	_expect(ToolBeltPresenterScript.tool_slot_color("ready") == Color(0.018, 0.075, 0.095, 0.5), "ready tool slot color should stay exact")
+	_expect(ToolBeltPresenterScript.tool_slot_color("locked").a <= 0.36, "locked tool slots should sit quieter than ready tools")
+	_expect(ToolBeltPresenterScript.tool_slot_color("active").a >= 0.65, "active tool slots should still read as selected")
+	_expect(ToolBeltPresenterScript.tool_key_color("cooldown") == Color(1.0, 0.82, 0.38, 0.92), "cooldown key color should stay exact")
+	_expect(ToolBeltPresenterScript.tool_key_color("spent") == ToolBeltPresenterScript.tool_key_color("locked"), "spent and locked key colors should stay visually quiet")
+	_expect(ToolBeltPresenterScript.tool_icon_color("scanner", "ready") == Color(0.1, 0.92, 1.0, 0.98), "scanner icon color should stay exact")
+	_expect(ToolBeltPresenterScript.tool_icon_color("decoy", "spent") == Color(0.45, 0.56, 0.62, 0.72), "spent tool icons should use disabled icon color")
+	_expect(ToolBeltPresenterScript.tool_icon_polygon("scanner").size() > 0, "scanner tool should keep an icon polygon")
+	_expect(ToolBeltPresenterScript.tool_icon_polygon("burst").size() > 0, "burst tool should keep an icon polygon")
+	_expect(ToolBeltPresenterScript.tool_icon_polygon("cutter").size() > 0, "cutter tool should keep an icon polygon")
+	_expect(ToolBeltPresenterScript.tool_icon_polygon("decoy").size() > 0, "decoy tool should keep an icon polygon")
+	_expect(ToolBeltPresenterScript.tool_icon_polygon("unknown").is_empty(), "unknown tools should not render an icon polygon")
+
 func _test_compact_dive_hud_helpers() -> void:
 	var main := MainScript.new()
 	var cargo: Array[String] = ["glow_plankton", "kelp_fiber", "glow_plankton"]
@@ -7404,9 +7420,9 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(main.call("_short_resource_name", "quartz_glass") == "Glass", "quartz glass should have a compact HUD name")
 	_expect(main.call("_cargo_slot_icon_polygon", "empty").is_empty(), "empty cargo slots should not show a resource mini-icon")
 	_expect(main.call("_cargo_slot_icon_color", "hidden").a == 0.0, "hidden cargo slot icon color should stay transparent")
-	_expect(main.call("_tool_slot_color", "ready").a <= 0.52, "ready tool slots should stay translucent like reference HUD glass")
-	_expect(main.call("_tool_slot_color", "locked").a <= 0.36, "locked tool slots should sit quieter than ready tools")
-	_expect(main.call("_tool_slot_color", "active").a >= 0.65, "active tool slots should still read as selected")
+	_expect(ToolBeltPresenterScript.tool_slot_color("ready").a <= 0.52, "ready tool slots should stay translucent like reference HUD glass")
+	_expect(ToolBeltPresenterScript.tool_slot_color("locked").a <= 0.36, "locked tool slots should sit quieter than ready tools")
+	_expect(ToolBeltPresenterScript.tool_slot_color("active").a >= 0.65, "active tool slots should still read as selected")
 
 	var compact_discoveries: String = main.call("_format_discoveries", true)
 	_expect(compact_discoveries == "Discoveries: 0", "compact discovery helper should show only the count")
