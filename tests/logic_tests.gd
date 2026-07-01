@@ -26,6 +26,7 @@ const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
+const HudPromptStateServiceScript := preload("res://scripts/ui/hud_prompt_state_service.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd")
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
@@ -7310,6 +7311,15 @@ func _test_hud_prompt_presenter() -> void:
 		"result": "diving",
 	})
 	_expect(prompt.contains("O2 only; health 82/100; ship banks"), "HUD prompt presenter should keep surface refill copy honest after health damage")
+
+	var main := MainScript.new()
+	main.dive_session.current_cargo = ["food_supply", "driftwood"]
+	main.dive_session.cargo_limit = 3
+	var state := HudPromptStateServiceScript.build_state(main)
+	_expect(state.get("cargo_count", 0) == 2, "HUD prompt state service should preserve carried cargo count")
+	_expect(state.get("cargo_limit", 0) == 3, "HUD prompt state service should preserve cargo capacity")
+	_expect(Dictionary(state.get("action_labels", {})).get("interact", "") == "E/Enter", "HUD prompt state service should include action labels")
+	main.free()
 
 func _test_prompt_formatter_guard_coverage() -> void:
 	var main := MainScript.new()

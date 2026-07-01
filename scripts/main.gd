@@ -18,6 +18,7 @@ const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
+const HudPromptStateServiceScript := preload("res://scripts/ui/hud_prompt_state_service.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd")
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
@@ -2533,59 +2534,7 @@ func _format_hud_prompt() -> String:
 	return HudPromptPresenterScript.format_prompt(_hud_prompt_state())
 
 func _hud_prompt_state() -> Dictionary:
-	return {
-		"action_labels": _prompt_action_labels(),
-		"all_upgrades_owned": _all_upgrades_owned(),
-		"blackwater_prompt": _format_blackwater_prompt(),
-		"burst_thruster_prompt": _format_burst_thruster_prompt(),
-		"can_ship_offload": _can_ship_offload(),
-		"cargo_count": dive_session.current_cargo.size(),
-		"cargo_limit": dive_session.cargo_limit,
-		"daylight_nightfall_announced": daylight_nightfall_announced,
-		"daylight_nightfall_away_from_ship": daylight_nightfall_away_from_ship,
-		"decoy_pulse_prompt": _format_decoy_pulse_prompt(),
-		"has_left_base": dive_session.has_left_base,
-		"has_recent_health_damage": _has_recent_health_damage(),
-		"has_salvage_cutter": progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID),
-		"health": dive_session.health,
-		"max_health": dive_session.max_health,
-		"max_oxygen": dive_session.max_oxygen,
-		"night_build_prompt": _format_night_build_prompt(),
-		"outer_shelf_recovered_prompt": _outer_shelf_slackwater_decision_prompt(outer_shelf_slackwater_timer),
-		"oxygen": dive_session.oxygen,
-		"player_in_base": player_in_base,
-		"player_in_surface_oxygen_refill": _is_player_in_surface_oxygen_refill(),
-		"player_near_blackwater_crack": player_near_blackwater_crack,
-		"player_near_blue_chimney": player_near_blue_chimney,
-		"player_near_east_shelf_pocket": player_near_east_shelf_pocket,
-		"player_near_glass_kelp_ledge": player_near_glass_kelp_ledge,
-		"player_near_hollow_reef": player_near_hollow_reef,
-		"player_near_lantern_silt_nook": player_near_lantern_silt_nook,
-		"player_near_lower_connector_echo": player_near_lower_connector_echo,
-		"player_near_outer_shelf_survey": player_near_outer_shelf_survey,
-		"player_near_resonance_alcove": player_near_resonance_alcove,
-		"player_near_rim_glass_reading": player_near_rim_glass_reading,
-		"player_near_salvage_data_cache": player_near_salvage_data_cache,
-		"player_near_salvage_manifest": player_near_salvage_manifest,
-		"player_near_survival_supply_cache": player_near_survival_supply_cache,
-		"player_near_tideglass_sample": player_near_tideglass_sample,
-		"result": _dive_result_prompt_state(),
-		"run_glass_kelp_reading_recovered": run_glass_kelp_reading_recovered,
-		"run_hollow_reef_reading_recovered": run_hollow_reef_reading_recovered,
-		"run_outer_shelf_survey_recovered": run_outer_shelf_survey_recovered,
-		"run_rim_glass_reading_recovered": run_rim_glass_reading_recovered,
-		"run_salvage_data_cache_recovered": run_salvage_data_cache_recovered,
-		"run_salvage_manifest_recovered": run_salvage_manifest_recovered,
-		"run_survival_supply_cache_recovered": run_survival_supply_cache_recovered,
-		"run_tideglass_sample_recovered": run_tideglass_sample_recovered,
-		"should_warn_late_day_cargo_banking": _should_warn_late_day_cargo_banking(),
-		"surface_tab": _surface_tab_prompt_state(),
-		"survival_supply_cache_prompt": SurvivalSupplyCachePresenterScript.format_prompt(
-			survival_state.needs_are_stable(),
-			survival_state.short_name_for_supply(survival_state.most_needed_supply_id()),
-			_action_label("interact")
-		),
-	}
+	return HudPromptStateServiceScript.build_state(self)
 
 func _prompt_action_labels() -> Dictionary:
 	return {
