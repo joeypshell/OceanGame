@@ -17,6 +17,7 @@ const BlackwaterVisualStagingServiceScript := preload("res://scripts/debug/black
 const BlueChimneyVisualStagingServiceScript := preload("res://scripts/debug/blue_chimney_visual_staging_service.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
+const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
@@ -1992,28 +1993,7 @@ func _stage_debug_daylight_visual_review(progress_ratio: float, label: String) -
 	_update_hud()
 
 func _stage_debug_daylight_cargo_warning_visual_review() -> void:
-	if dive_session.result == DiveSessionScript.Result.READY:
-		dive_session.start()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	if dive_session.current_cargo.is_empty():
-		dive_session.current_cargo.append("driftwood")
-	_set_daylight_progress_for_debug(1.0 - LATE_DAY_CARGO_WARNING_RATIO)
-	var staged_player := player
-	if staged_player == null:
-		staged_player = get_node_or_null("Player") as CharacterBody2D
-	if staged_player != null:
-		player = staged_player
-		player.global_position = start_position + Vector2(520.0, 460.0)
-		player.velocity = Vector2.ZERO
-	player_in_base = false
-	player_in_surface_oxygen_refill = false
-	dive_session.has_left_base = true
-	status_label.text = "Dusk cargo: bank before night."
-	visual_smoke_route_stage = "daylight_cargo_warning"
-	_update_depth()
-	_update_hud()
+	DaylightCargoVisualStagingServiceScript.stage_visual_review(self)
 
 func _stage_debug_surface_oxygen_refill_visual_review() -> void:
 	SurfaceOxygenVisualStagingServiceScript.stage_visual_review(self)
