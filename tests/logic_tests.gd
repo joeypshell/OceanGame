@@ -7269,7 +7269,7 @@ func _test_mobile_touch_controls_adapter() -> void:
 	controls.call("_build_controls")
 	if controls != null:
 		var expected_default_visibility := OS.has_feature("mobile") or bool(controls.call("_web_touch_available"))
-		_expect(bool(controls.call("should_show_touch_controls")) == expected_default_visibility, "touch controls should be visible on mobile/web and hidden on desktop")
+		_expect(bool(controls.call("should_show_touch_controls")) == expected_default_visibility, "touch controls should be visible on mobile/coarse-touch web and hidden on desktop")
 		controls.set("force_visible", true)
 		_expect(bool(controls.call("should_show_touch_controls")), "touch controls should support force-visible layout review")
 		var root_node := controls.get_node_or_null("TouchControlsRoot") as Control

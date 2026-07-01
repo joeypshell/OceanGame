@@ -8,6 +8,7 @@ test.describe("OceanGame web visual smoke", () => {
       result: "ready",
       surface_tab: "result",
       debug_telemetry: false,
+      status_debug_copy: false,
       run_panel_visible: true,
     });
 
@@ -18,14 +19,19 @@ test.describe("OceanGame web visual smoke", () => {
       result: "diving",
       oxygen_state: "normal",
       debug_telemetry: false,
+      status_debug_copy: false,
       active_stats_visible: true,
+      touch_controls_visible: false,
+      player_rendered: true,
+      player_on_screen: true,
     });
 
     await returnToBaseAndExtract(page);
     await capture(page, testInfo, "extraction-result", {
       result: "extracted",
-      surface_tab: "result",
+      surface_tab: "night",
       debug_telemetry: false,
+      status_debug_copy: false,
       run_panel_visible: true,
     });
 
@@ -35,6 +41,7 @@ test.describe("OceanGame web visual smoke", () => {
       result: "extracted",
       surface_tab: "upgrades",
       debug_telemetry: false,
+      status_debug_copy: false,
       upgrade_panel_visible: true,
     });
 
@@ -48,6 +55,7 @@ test.describe("OceanGame web visual smoke", () => {
     await capture(page, testInfo, "lower-route-pressure-gate", {
       result: "diving",
       debug_telemetry: false,
+      status_debug_copy: false,
       active_stats_visible: true,
     });
   });
@@ -93,6 +101,7 @@ test.describe("OceanGame web visual smoke", () => {
     await capture(page, testInfo, "expanded-east-shelf-route-staged", {
       result: "diving",
       debug_telemetry: false,
+      status_debug_copy: false,
       active_stats_visible: true,
       route_stage: "east_shelf_spur",
     });
@@ -104,6 +113,7 @@ test.describe("OceanGame web visual smoke", () => {
     await capture(page, testInfo, "east-shelf-pocket-ping-staged", {
       result: "diving",
       debug_telemetry: false,
+      status_debug_copy: false,
       active_stats_visible: true,
       route_stage: "east_shelf_pocket",
       east_shelf_pocket_ping_recovered: true,
@@ -116,6 +126,7 @@ test.describe("OceanGame web visual smoke", () => {
     await capture(page, testInfo, "lower-connector-staged", {
       result: "diving",
       debug_telemetry: false,
+      status_debug_copy: false,
       active_stats_visible: true,
       route_stage: "lower_connector",
     });
@@ -127,6 +138,7 @@ test.describe("OceanGame web visual smoke", () => {
     await capture(page, testInfo, "blue-chimney-pocket-staged", {
       result: "diving",
       debug_telemetry: false,
+      status_debug_copy: false,
       active_stats_visible: true,
       route_stage: "blue_chimney_pocket",
     });
@@ -290,6 +302,9 @@ test.describe("OceanGame web visual smoke", () => {
       result: "diving",
       debug_telemetry: false,
       active_stats_visible: true,
+      touch_controls_visible: false,
+      player_rendered: true,
+      player_on_screen: true,
       route_stage: "thermal_vent_health_damage",
       health: 82,
       max_health: 100,
@@ -306,6 +321,9 @@ test.describe("OceanGame web visual smoke", () => {
       result: "diving",
       debug_telemetry: false,
       active_stats_visible: true,
+      touch_controls_visible: false,
+      player_rendered: true,
+      player_on_screen: true,
       daylight_visible: true,
       daylight_remaining_percent: 85,
     });
@@ -315,6 +333,9 @@ test.describe("OceanGame web visual smoke", () => {
       result: "diving",
       debug_telemetry: false,
       active_stats_visible: true,
+      touch_controls_visible: false,
+      player_rendered: true,
+      player_on_screen: true,
       daylight_visible: true,
       daylight_remaining_percent: 25,
     });
@@ -327,6 +348,9 @@ test.describe("OceanGame web visual smoke", () => {
       result: "diving",
       debug_telemetry: false,
       active_stats_visible: true,
+      touch_controls_visible: false,
+      player_rendered: true,
+      player_on_screen: true,
       route_stage: "surface_oxygen_refill",
       player_in_base: false,
       player_in_surface_oxygen_refill: true,
@@ -342,6 +366,9 @@ test.describe("OceanGame web visual smoke", () => {
       result: "diving",
       debug_telemetry: false,
       active_stats_visible: true,
+      touch_controls_visible: false,
+      player_rendered: true,
+      player_on_screen: true,
       route_stage: "ship_offload_complete",
       player_in_base: true,
       cargo_count: 0,

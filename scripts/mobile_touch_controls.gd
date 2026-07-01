@@ -48,7 +48,14 @@ func _web_touch_available() -> bool:
 	if not OS.has_feature("web") or not Engine.has_singleton("JavaScriptBridge"):
 		return false
 	var bridge := Engine.get_singleton("JavaScriptBridge")
-	var result = bridge.eval("navigator.maxTouchPoints > 0", true)
+	var result = bridge.eval("""
+		(() => {
+			const hasTouchPoints = navigator.maxTouchPoints > 0;
+			const coarsePrimaryPointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+			const noHoverPrimaryPointer = window.matchMedia && window.matchMedia("(hover: none)").matches;
+			return hasTouchPoints && (coarsePrimaryPointer || noHoverPrimaryPointer);
+		})()
+	""", true)
 	return bool(result)
 
 func _input(event: InputEvent) -> void:

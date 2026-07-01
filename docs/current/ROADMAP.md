@@ -42,7 +42,15 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-The Survival Day/Night loop closeout batch was resolved in this order:
+The next Survival Day/Night loop batch should make the current loop cleaner, more legible, and more useful in normal play before adding route breadth:
+
+1. #747 Prove normal-play desktop loop visuals stay clean.
+2. #748 Make cargo capacity and ship offload pressure readable across two sorties.
+3. #749 Make one build or upgrade choice create a concrete tomorrow plan.
+4. #750 Make health damage feedback distinct from oxygen pressure.
+5. #751 Connect starter resources to a remembered next-day target.
+
+The previous Survival Day/Night loop closeout batch was resolved in this order:
 
 1. #741 Make a two-sortie day readable end-to-end in normal play.
 2. #742 Add a pauseable expedition slate for needs, cargo, known requirements, and remaining daylight.
@@ -142,6 +150,7 @@ git diff --check
 ```
 
 Use visual/export/Playwright captures only when a visible scene, HUD, camera, or layout change needs evidence.
+For player-visible survival-loop work, visual evidence is part of acceptance when the change affects HUD readability, camera framing, normal-play screen cleanliness, resource/cargo feedback, or night/result layout. Inspect the generated screenshots before closing the issue; passing Playwright only proves the state was reached.
 
 For the current Area 01 shell, prefer the targeted command before manual screenshot wandering:
 

@@ -1863,7 +1863,7 @@ func _stage_debug_oxygen_visual_review(target_ratio: float, label: String) -> vo
 		return
 
 	dive_session.oxygen = maxf(1.0, dive_session.max_oxygen * target_ratio)
-	status_label.text = "Debug review: %s oxygen staged." % label
+	status_label.text = _oxygen_warning_text(_oxygen_state(dive_session.oxygen, dive_session.max_oxygen))
 	_update_hud()
 
 func _stage_debug_health_damage_visual_review() -> void:
@@ -1906,7 +1906,7 @@ func _stage_debug_daylight_visual_review(progress_ratio: float, label: String) -
 		return
 
 	_set_daylight_progress_for_debug(progress_ratio)
-	status_label.text = "Debug review: daylight timer staged at %s." % label
+	status_label.text = "Daylight %s: plan the next ship return." % label
 	_update_hud()
 
 func _stage_debug_surface_oxygen_refill_visual_review() -> void:
@@ -1931,7 +1931,7 @@ func _stage_debug_surface_oxygen_refill_visual_review() -> void:
 	dive_session.current_cargo.clear()
 	dive_session.current_cargo.append("driftwood")
 	visual_smoke_route_stage = "surface_oxygen_refill"
-	status_label.text = "Debug review: surface oxygen refill staged."
+	status_label.text = _surface_oxygen_status_text()
 	_update_depth()
 	_update_hud()
 
@@ -1965,7 +1965,6 @@ func _stage_debug_ship_offload_visual_review() -> void:
 	visual_smoke_route_stage = "ship_offload_complete"
 	_try_ship_offload()
 	visual_smoke_route_stage = "ship_offload_complete"
-	status_label.text = "Debug review: ship offload complete; daylight continues."
 	_update_depth()
 	_update_hud()
 
@@ -4854,6 +4853,8 @@ func _publish_visual_smoke_state() -> void:
 		"run_panel_visible": run_panel.visible,
 		"upgrade_panel_visible": upgrade_panel.visible,
 		"active_stats_visible": active_stats_panel.visible,
+		"status_debug_copy": status_label != null and status_label.text.to_lower().contains("debug"),
+		"touch_controls_visible": mobile_touch_controls != null and mobile_touch_controls.visible,
 		"wreck_echo_clue_recovered": run_wreck_echo_clue_recovered,
 		"east_shelf_pocket_ping_recovered": run_east_shelf_pocket_ping_recovered,
 		"lower_connector_echo_recovered": run_lower_connector_echo_recovered,
@@ -4876,7 +4877,10 @@ func _publish_visual_smoke_state() -> void:
 	state["area01_cue_family_counts"] = area01_cue_report.get("families", {})
 	state["area01_cue_family_warnings"] = area01_cue_report.get("warnings", [])
 	state["area01_capture_camera"] = _area01_overlay_camera_state()
-	state["player_visual_state"] = _player_visual_smoke_state()
+	var player_smoke_state := _player_visual_smoke_state()
+	state["player_visual_state"] = player_smoke_state
+	state["player_rendered"] = _player_visual_smoke_rendered(player_smoke_state)
+	state["player_on_screen"] = _player_visual_smoke_on_screen(player_smoke_state)
 	var area01_wall := get_node_or_null("Area01ArtSlice/TerrainBackWalls/BlockoutEastReefMass") as Polygon2D
 	var area01_lip := get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutEastReefLip") as Polygon2D
 	if area01_wall != null and area01_lip != null:
@@ -4890,6 +4894,27 @@ func _publish_visual_smoke_state() -> void:
 			"lip_points": area01_lip.polygon.size(),
 		}
 	JavaScriptBridge.eval("window.__oceangameVisualState = %s;" % JSON.stringify(state), true)
+
+func _player_visual_smoke_rendered(player_state: Dictionary) -> bool:
+	return (
+		bool(player_state.get("available", false))
+		and bool(player_state.get("player_visible", false))
+		and bool(player_state.get("visual_root_visible", false))
+		and bool(player_state.get("sprite_visible", false))
+		and bool(player_state.get("sprite_has_texture", false))
+		and float(player_state.get("sprite_alpha", 0.0)) > 0.25
+	)
+
+func _player_visual_smoke_on_screen(player_state: Dictionary) -> bool:
+	if not _player_visual_smoke_rendered(player_state):
+		return false
+
+	var viewport_size := get_viewport_rect().size
+	var screen_position := Vector2(
+		float(player_state.get("screen_x", -99999.0)),
+		float(player_state.get("screen_y", -99999.0))
+	)
+	return Rect2(Vector2.ZERO, viewport_size).has_point(screen_position)
 
 func _player_visual_smoke_state() -> Dictionary:
 	if player == null:

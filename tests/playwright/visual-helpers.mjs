@@ -461,8 +461,12 @@ export async function stageOpenHatchResonanceAlcove(page) {
 }
 
 export async function returnToBaseAndExtract(page) {
-  await holdKey(page, "ArrowUp", 1_800);
-  await page.waitForTimeout(300);
+  await stageShipOffload(page);
+  await stageDaylightState(page, "daylight_nightfall", 0);
   await page.keyboard.press("Enter");
-  await page.waitForTimeout(800);
+  await assertVisualState(page, {
+    result: "extracted",
+    surface_tab: "night",
+    run_panel_visible: true,
+  });
 }
