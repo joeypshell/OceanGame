@@ -18,6 +18,7 @@ const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_sla
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
+const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
@@ -4480,110 +4481,7 @@ func _apply_active_hud_layout() -> void:
 			label.clip_text = true
 
 func _ensure_active_hud_references() -> void:
-	if active_stats_panel == null:
-		active_stats_panel = get_node_or_null("HUD/ActiveStatsPanel") as Panel
-	if cargo_panel == null:
-		cargo_panel = get_node_or_null("HUD/CargoPanel") as Panel
-	if daylight_panel == null:
-		daylight_panel = get_node_or_null("HUD/DaylightPanel") as Panel
-	if daylight_label == null:
-		daylight_label = get_node_or_null("HUD/DaylightLabel") as Label
-	if daylight_bar_back == null:
-		daylight_bar_back = get_node_or_null("HUD/DaylightBarBack") as ColorRect
-	if daylight_bar_fill == null:
-		daylight_bar_fill = get_node_or_null("HUD/DaylightBarFill") as ColorRect
-	if daylight_sun_icon == null:
-		daylight_sun_icon = get_node_or_null("HUD/DaylightSunIcon") as Polygon2D
-	if daylight_moon_icon == null:
-		daylight_moon_icon = get_node_or_null("HUD/DaylightMoonIcon") as Polygon2D
-	if survival_needs_panel == null:
-		survival_needs_panel = get_node_or_null("HUD/SurvivalNeedsPanel") as Panel
-	if dive_info_panel == null:
-		dive_info_panel = get_node_or_null("HUD/DiveInfoPanel") as Panel
-	if objective_title_label == null:
-		objective_title_label = get_node_or_null("HUD/DiveInfoPanel/ObjectiveTitle") as Label
-	if objective_line_label == null:
-		objective_line_label = get_node_or_null("HUD/DiveInfoPanel/ObjectiveLine") as Label
-	if scan_card_panel == null:
-		scan_card_panel = get_node_or_null("HUD/ScanCardPanel") as Panel
-	if tool_belt_panel == null:
-		tool_belt_panel = get_node_or_null("HUD/ToolBeltPanel") as Panel
-	if minimap_panel == null:
-		minimap_panel = get_node_or_null("HUD/MinimapPanel") as Panel
-	if oxygen_warning_panel == null:
-		oxygen_warning_panel = get_node_or_null("HUD/OxygenWarningPanel") as Panel
-	if oxygen_label == null:
-		oxygen_label = get_node_or_null("HUD/Oxygen") as Label
-	if oxygen_bar_back == null:
-		oxygen_bar_back = get_node_or_null("HUD/OxygenBarBack") as ColorRect
-	if oxygen_bar_fill == null:
-		oxygen_bar_fill = get_node_or_null("HUD/OxygenBarFill") as ColorRect
-	if health_icon == null:
-		health_icon = get_node_or_null("HUD/HealthIcon") as Polygon2D
-	if health_label == null:
-		health_label = get_node_or_null("HUD/Health") as Label
-	if health_bar_back == null:
-		health_bar_back = get_node_or_null("HUD/HealthBarBack") as ColorRect
-	if health_bar_fill == null:
-		health_bar_fill = get_node_or_null("HUD/HealthBarFill") as ColorRect
-	if depth_label == null:
-		depth_label = get_node_or_null("HUD/Depth") as Label
-	if depth_bar_back == null:
-		depth_bar_back = get_node_or_null("HUD/DepthBarBack") as ColorRect
-	if depth_bar_fill == null:
-		depth_bar_fill = get_node_or_null("HUD/DepthBarFill") as ColorRect
-	if base_direction_label == null:
-		base_direction_label = get_node_or_null("HUD/BaseDirection") as Label
-	if cargo_label == null:
-		cargo_label = get_node_or_null("HUD/Cargo") as Label
-	if discoveries_label == null:
-		discoveries_label = get_node_or_null("HUD/Discoveries") as Label
-	if scan_target_label == null:
-		scan_target_label = get_node_or_null("HUD/ScanTarget") as Label
-	if scan_card_title_label == null:
-		scan_card_title_label = get_node_or_null("HUD/ScanCardTitle") as Label
-	if scan_card_meta_label == null:
-		scan_card_meta_label = get_node_or_null("HUD/ScanCardMeta") as Label
-	if scan_card_prompt_label == null:
-		scan_card_prompt_label = get_node_or_null("HUD/ScanCardPrompt") as Label
-	if prompt_label == null:
-		prompt_label = get_node_or_null("HUD/ExtractionPrompt") as Label
-	if status_label == null:
-		status_label = get_node_or_null("HUD/Status") as Label
-	if food_need_label == null:
-		food_need_label = get_node_or_null("HUD/FoodNeed") as Label
-	if water_need_label == null:
-		water_need_label = get_node_or_null("HUD/WaterNeed") as Label
-	if power_need_label == null:
-		power_need_label = get_node_or_null("HUD/PowerNeed") as Label
-	if food_need_icon == null:
-		food_need_icon = get_node_or_null("HUD/FoodNeedIcon") as Polygon2D
-	if water_need_icon == null:
-		water_need_icon = get_node_or_null("HUD/WaterNeedIcon") as Polygon2D
-	if power_need_icon == null:
-		power_need_icon = get_node_or_null("HUD/PowerNeedIcon") as Polygon2D
-	if food_need_bar_back == null:
-		food_need_bar_back = get_node_or_null("HUD/FoodNeedBarBack") as ColorRect
-	if water_need_bar_back == null:
-		water_need_bar_back = get_node_or_null("HUD/WaterNeedBarBack") as ColorRect
-	if power_need_bar_back == null:
-		power_need_bar_back = get_node_or_null("HUD/PowerNeedBarBack") as ColorRect
-	if food_need_bar_fill == null:
-		food_need_bar_fill = get_node_or_null("HUD/FoodNeedBarFill") as ColorRect
-	if water_need_bar_fill == null:
-		water_need_bar_fill = get_node_or_null("HUD/WaterNeedBarFill") as ColorRect
-	if power_need_bar_fill == null:
-		power_need_bar_fill = get_node_or_null("HUD/PowerNeedBarFill") as ColorRect
-	if depth_rail_line == null:
-		depth_rail_line = get_node_or_null("HUD/DepthRailLine") as ColorRect
-	if depth_rail_labels.is_empty():
-		depth_rail_labels = [
-			get_node_or_null("HUD/DepthRailLabel0") as Label,
-			get_node_or_null("HUD/DepthRailLabel50") as Label,
-			get_node_or_null("HUD/DepthRailLabel100") as Label,
-		]
-	if cargo_slots_root == null:
-		cargo_slots_root = get_node_or_null("HUD/CargoSlots") as Node2D
+	HudReferenceServiceScript.ensure_active_hud_references(self)
 
 func _update_instrument_bars() -> void:
 	var oxygen_ratio := 0.0
