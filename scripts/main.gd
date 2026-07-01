@@ -53,6 +53,7 @@ const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_s
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
@@ -3633,17 +3634,7 @@ func _update_run_panel() -> void:
 		run_panel.visible = false
 
 func _apply_run_panel_layout(use_compact_panel: bool) -> void:
-	var rect := RUN_PANEL_COMPACT_RECT if use_compact_panel else RUN_PANEL_TALL_RECT
-	run_panel.offset_left = rect.position.x
-	run_panel.offset_top = rect.position.y
-	run_panel.offset_right = rect.position.x + rect.size.x
-	run_panel.offset_bottom = rect.position.y + rect.size.y
-
-	var content_right := RUN_PANEL_CONTENT_RIGHT_COMPACT if use_compact_panel else RUN_PANEL_CONTENT_RIGHT_TALL
-	surface_tabs_label.offset_right = content_right
-	run_title_label.offset_right = content_right
-	run_summary_label.offset_right = content_right
-	run_summary_label.offset_bottom = RUN_SUMMARY_COMPACT_BOTTOM if use_compact_panel else RUN_SUMMARY_TALL_BOTTOM
+	RunPanelLayoutServiceScript.apply_layout(self, use_compact_panel)
 
 func _update_upgrade_menu() -> void:
 	upgrade_panel.visible = dive_session.result == DiveSessionScript.Result.EXTRACTED and surface_tab_index == SURFACE_TAB_UPGRADES

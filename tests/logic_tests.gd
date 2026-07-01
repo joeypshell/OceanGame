@@ -63,6 +63,7 @@ const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.g
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
@@ -253,6 +254,7 @@ func _initialize() -> void:
 	_run("oxygen feedback service", _test_oxygen_feedback_service)
 	_run("health feedback service", _test_health_feedback_service)
 	_run("scan target card service", _test_scan_target_card_service)
+	_run("run panel layout service", _test_run_panel_layout_service)
 	_run("depth rail service", _test_depth_rail_service)
 	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
@@ -8219,6 +8221,24 @@ func _test_scan_target_card_service() -> void:
 	_expect(main.scan_card_meta_label.text == "NEW | ENVIRONMENT", "scan target card should preserve target metadata copy")
 	_expect(main.scan_card_prompt_label.text == "HOLD F TO SCAN", "scan target card should preserve scan prompt copy")
 	target.free()
+	main.free()
+
+func _test_run_panel_layout_service() -> void:
+	var main := MainScript.new()
+	main.run_panel = Panel.new()
+	main.surface_tabs_label = Label.new()
+	main.run_title_label = Label.new()
+	main.run_summary_label = Label.new()
+
+	RunPanelLayoutServiceScript.apply_layout(main, false)
+	_expect(_control_rect(main.run_panel) == main.RUN_PANEL_TALL_RECT, "run panel layout service should preserve tall surface panel rect")
+	_expect(main.run_summary_label.offset_bottom == main.RUN_SUMMARY_TALL_BOTTOM, "run panel layout service should preserve tall summary bottom")
+	_expect(main.run_title_label.offset_right == main.RUN_PANEL_CONTENT_RIGHT_TALL, "run panel layout service should preserve tall content right edge")
+
+	RunPanelLayoutServiceScript.apply_layout(main, true)
+	_expect(_control_rect(main.run_panel) == main.RUN_PANEL_COMPACT_RECT, "run panel layout service should preserve compact upgrade panel rect")
+	_expect(main.run_summary_label.offset_bottom == main.RUN_SUMMARY_COMPACT_BOTTOM, "run panel layout service should preserve compact summary bottom")
+	_expect(main.surface_tabs_label.offset_right == main.RUN_PANEL_CONTENT_RIGHT_COMPACT, "run panel layout service should preserve compact content right edge")
 	main.free()
 
 func _test_depth_rail_service() -> void:
