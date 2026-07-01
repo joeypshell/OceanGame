@@ -55,6 +55,7 @@ const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_prese
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
+const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
@@ -3637,28 +3638,7 @@ func _apply_run_panel_layout(use_compact_panel: bool) -> void:
 	RunPanelLayoutServiceScript.apply_layout(self, use_compact_panel)
 
 func _update_upgrade_menu() -> void:
-	upgrade_panel.visible = dive_session.result == DiveSessionScript.Result.EXTRACTED and surface_tab_index == SURFACE_TAB_UPGRADES
-	if not upgrade_panel.visible:
-		return
-
-	var upgrade := _selected_upgrade_definition()
-	if upgrade == null:
-		upgrade_menu_title_label.text = "Upgrade Bay"
-		upgrade_menu_item_label.text = "No upgrades configured"
-		upgrade_menu_cost_label.text = ""
-		upgrade_menu_state_label.text = ""
-		upgrade_menu_feedback_label.text = upgrade_menu_feedback
-		return
-
-	upgrade_menu_title_label.text = _format_upgrade_menu_title(
-		selected_upgrade_index + 1,
-		upgrade_definitions.size()
-	)
-	upgrade_menu_item_label.text = "%s\n%s" % [upgrade.display_name, upgrade.description]
-	upgrade_menu_cost_label.text = "Cost: %s" % _format_upgrade_cost(upgrade.resource_cost)
-	upgrade_menu_state_label.text = _format_upgrade_state(upgrade)
-
-	upgrade_menu_feedback_label.text = _format_upgrade_panel_feedback(upgrade_menu_feedback)
+	UpgradeMenuServiceScript.update_menu(self)
 
 func _format_upgrade_menu_title(selected_position: int, total_count: int) -> String:
 	return "Upgrade Bay (%d/%d) - %s select" % [

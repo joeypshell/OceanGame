@@ -65,6 +65,7 @@ const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
+const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
@@ -255,6 +256,7 @@ func _initialize() -> void:
 	_run("health feedback service", _test_health_feedback_service)
 	_run("scan target card service", _test_scan_target_card_service)
 	_run("run panel layout service", _test_run_panel_layout_service)
+	_run("upgrade menu service", _test_upgrade_menu_service)
 	_run("depth rail service", _test_depth_rail_service)
 	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
@@ -8239,6 +8241,41 @@ func _test_run_panel_layout_service() -> void:
 	_expect(_control_rect(main.run_panel) == main.RUN_PANEL_COMPACT_RECT, "run panel layout service should preserve compact upgrade panel rect")
 	_expect(main.run_summary_label.offset_bottom == main.RUN_SUMMARY_COMPACT_BOTTOM, "run panel layout service should preserve compact summary bottom")
 	_expect(main.surface_tabs_label.offset_right == main.RUN_PANEL_CONTENT_RIGHT_COMPACT, "run panel layout service should preserve compact content right edge")
+	main.free()
+
+func _test_upgrade_menu_service() -> void:
+	var main := MainScript.new()
+	main.upgrade_panel = Panel.new()
+	main.upgrade_menu_title_label = Label.new()
+	main.upgrade_menu_item_label = Label.new()
+	main.upgrade_menu_cost_label = Label.new()
+	main.upgrade_menu_state_label = Label.new()
+	main.upgrade_menu_feedback_label = Label.new()
+
+	UpgradeMenuServiceScript.update_menu(main)
+	_expect(not main.upgrade_panel.visible, "upgrade menu service should hide panel outside extracted upgrade tab")
+
+	main.dive_session.result = DiveSessionScript.Result.EXTRACTED
+	main.surface_tab_index = main.SURFACE_TAB_UPGRADES
+	main.upgrade_definitions = []
+	main.upgrade_menu_feedback = "No work queued"
+	UpgradeMenuServiceScript.update_menu(main)
+	_expect(main.upgrade_panel.visible, "upgrade menu service should show panel on upgrade tab")
+	_expect(main.upgrade_menu_title_label.text == "Upgrade Bay", "upgrade menu service should preserve empty title")
+	_expect(main.upgrade_menu_item_label.text == "No upgrades configured", "upgrade menu service should preserve empty item copy")
+	_expect(main.upgrade_menu_feedback_label.text == "No work queued", "upgrade menu service should preserve empty feedback copy")
+
+	var upgrade := UpgradeDefinition.new()
+	upgrade.id = "test_upgrade"
+	upgrade.display_name = "Test Upgrade"
+	upgrade.description = "Test description"
+	upgrade.resource_cost = {"driftwood": 1}
+	main.upgrade_definitions = [upgrade]
+	main.selected_upgrade_index = 0
+	UpgradeMenuServiceScript.update_menu(main)
+	_expect(main.upgrade_menu_title_label.text.begins_with("Upgrade Bay (1/1)"), "upgrade menu service should preserve selected title copy")
+	_expect(main.upgrade_menu_item_label.text == "Test Upgrade\nTest description", "upgrade menu service should preserve upgrade item copy")
+	_expect(main.upgrade_menu_cost_label.text == "Cost: Driftwood x1", "upgrade menu service should preserve cost copy")
 	main.free()
 
 func _test_depth_rail_service() -> void:
