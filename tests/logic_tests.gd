@@ -24,6 +24,7 @@ const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
+const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
@@ -745,6 +746,12 @@ func _test_starter_survival_resource_families() -> void:
 	_expect(ResourcePresenterScript.resource_pickup_feedback("food_supply", 1, 3, true, "Food/Fish").contains("Food/Fish reserve"), "supply pickup feedback should keep base-need reserve copy")
 	_expect(ResourcePresenterScript.resource_visual_role_family(false, "Building") == "building", "building resources should keep building role family")
 	_expect(ResourcePresenterScript.resource_role_accent_color("food_supply") == Color(1.0, 0.32, 0.08, 0.95), "food supply role accent should stay exact")
+	var role_host := Node2D.new()
+	ResourceRoleVisualPresenterScript.ensure_resource_role_visual(role_host, "food_supply", "supply", ResourcePresenterScript.resource_role_accent_color("food_supply"))
+	var direct_role_read := role_host.get_node_or_null("RoleRead") as Node2D
+	_expect(direct_role_read != null and direct_role_read.get_child_count() >= 3, "resource role visual presenter should build readable marker geometry")
+	_expect(String(direct_role_read.get_meta("role_family", "")) == "supply", "resource role visual presenter should preserve role family metadata")
+	role_host.free()
 	for definition in StarterResourceDefinitions:
 		_expect(not definition.resource_category.is_empty(), "%s should declare a resource category" % definition.id)
 
