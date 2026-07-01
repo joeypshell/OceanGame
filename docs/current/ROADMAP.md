@@ -42,21 +42,26 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-The next Survival Day/Night loop batch should make the current loop cleaner, more legible, and more useful in normal play before adding route breadth:
+The next Survival Day/Night loop payoff batch should make the implemented loop create better player choices before adding route breadth:
 
-1. #747 Prove normal-play desktop loop visuals stay clean.
-2. #748 Make cargo capacity and ship offload pressure readable across two sorties.
-3. #749 Make one build or upgrade choice create a concrete tomorrow plan.
-4. #750 Make health damage feedback distinct from oxygen pressure.
-5. #751 Connect starter resources to a remembered next-day target.
+1. #752 Make dawn pick one main day priority.
+2. #753 Make weak-need supply choices readable before pickup.
+3. #754 Warn about late-day banking risk before nightfall.
+4. #755 Make night health recovery rules explicit after damage.
+5. #756 Make recent expeditions remember survival tradeoffs.
 
-The previous Survival Day/Night loop closeout batch was resolved in this order:
+The previous Survival Day/Night loop closeout batches were resolved in this order:
 
 1. #741 Make a two-sortie day readable end-to-end in normal play.
 2. #742 Add a pauseable expedition slate for needs, cargo, known requirements, and remaining daylight.
 3. #743 Make starter resource roles obvious in collection, offload, and night/result copy.
 4. #744 Make the night result create a clear tomorrow plan.
 5. #745 Define nightfall away from ship as a real day-pressure consequence.
+6. #747 Prove normal-play desktop loop visuals stay clean.
+7. #748 Make cargo capacity and ship offload pressure readable across two sorties.
+8. #749 Make one build or upgrade choice create a concrete tomorrow plan.
+9. #750 Make health damage feedback distinct from oxygen pressure.
+10. #751 Connect starter resources to a remembered next-day target.
 
 After the survival-loop closeout, #734 added the first generated Area 01 wall-sprite visual pass: the generated continuous terrain domain now renders as the reef mass, playable-water regions render as source-owned water apertures, and generated cave-wall sprites decorate cave/pocket edges without owning collision.
 
