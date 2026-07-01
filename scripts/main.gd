@@ -18,6 +18,7 @@ const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_sla
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
+const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd")
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
@@ -4388,97 +4389,7 @@ func _update_hud() -> void:
 
 func _apply_active_hud_layout() -> void:
 	_ensure_active_hud_references()
-	_set_control_rect(active_stats_panel, ACTIVE_STATS_RECT)
-	_set_control_rect(cargo_panel, CARGO_PANEL_RECT)
-	_set_control_rect(daylight_panel, DAYLIGHT_PANEL_RECT)
-	_set_control_rect(survival_needs_panel, SURVIVAL_NEEDS_PANEL_RECT)
-	_set_control_rect(dive_info_panel, DIVE_INFO_RECT)
-	_set_control_rect(objective_title_label, DIVE_INFO_LABEL_RECTS["title"])
-	_set_control_rect(objective_line_label, DIVE_INFO_LABEL_RECTS["objective"])
-	_set_control_rect(scan_card_panel, SCAN_CARD_RECT)
-	_set_control_rect(tool_belt_panel, TOOL_BELT_PANEL_RECT)
-	_set_control_rect(minimap_panel, MINIMAP_PANEL_RECT)
-	_set_control_rect(oxygen_warning_panel, OXYGEN_WARNING_RECT)
-	_set_control_rect(oxygen_label, ACTIVE_HUD_LABEL_RECTS["oxygen"])
-	_set_control_rect(oxygen_bar_back, OXYGEN_BAR_BACK_RECT)
-	_set_control_rect(oxygen_bar_fill, OXYGEN_BAR_FILL_RECT)
-	_set_control_rect(health_label, ACTIVE_HUD_LABEL_RECTS["health"])
-	_set_control_rect(health_bar_back, HEALTH_BAR_BACK_RECT)
-	_set_control_rect(health_bar_fill, HEALTH_BAR_FILL_RECT)
-	_set_control_rect(depth_label, ACTIVE_HUD_LABEL_RECTS["depth"])
-	_set_control_rect(depth_bar_back, DEPTH_BAR_BACK_RECT)
-	_set_control_rect(depth_bar_fill, DEPTH_BAR_FILL_RECT)
-	_set_control_rect(base_direction_label, ACTIVE_HUD_LABEL_RECTS["base"])
-	_set_control_rect(cargo_label, ACTIVE_HUD_LABEL_RECTS["cargo"])
-	_set_control_rect(daylight_label, DAYLIGHT_LABEL_RECT)
-	_set_control_rect(daylight_bar_back, DAYLIGHT_BAR_BACK_RECT)
-	_set_control_rect(daylight_bar_fill, DAYLIGHT_BAR_FILL_RECT)
-	_set_control_rect(discoveries_label, ACTIVE_HUD_LABEL_RECTS["discoveries"])
-	_set_control_rect(scan_target_label, ACTIVE_HUD_LABEL_RECTS["scan"])
-	_set_control_rect(scan_card_title_label, SCAN_CARD_LABEL_RECTS["title"])
-	_set_control_rect(scan_card_meta_label, SCAN_CARD_LABEL_RECTS["meta"])
-	_set_control_rect(scan_card_prompt_label, SCAN_CARD_LABEL_RECTS["prompt"])
-	_set_control_rect(prompt_label, ACTIVE_HUD_LABEL_RECTS["prompt"])
-	_set_control_rect(status_label, ACTIVE_HUD_LABEL_RECTS["status"])
-	_set_control_rect(food_need_label, SURVIVAL_NEED_LABEL_RECTS["food"])
-	_set_control_rect(water_need_label, SURVIVAL_NEED_LABEL_RECTS["water"])
-	_set_control_rect(power_need_label, SURVIVAL_NEED_LABEL_RECTS["power"])
-	_set_control_rect(food_need_bar_back, SURVIVAL_NEED_BAR_BACK_RECTS["food"])
-	_set_control_rect(water_need_bar_back, SURVIVAL_NEED_BAR_BACK_RECTS["water"])
-	_set_control_rect(power_need_bar_back, SURVIVAL_NEED_BAR_BACK_RECTS["power"])
-	_set_control_rect(food_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["food"])
-	_set_control_rect(water_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["water"])
-	_set_control_rect(power_need_bar_fill, SURVIVAL_NEED_BAR_BACK_RECTS["power"])
-	if food_need_icon != null:
-		food_need_icon.position = SURVIVAL_NEED_ICON_POSITIONS["food"]
-	if water_need_icon != null:
-		water_need_icon.position = SURVIVAL_NEED_ICON_POSITIONS["water"]
-	if power_need_icon != null:
-		power_need_icon.position = SURVIVAL_NEED_ICON_POSITIONS["power"]
-	if oxygen_icon != null:
-		oxygen_icon.position = OXYGEN_ICON_POSITION
-	if health_icon != null:
-		health_icon.position = HEALTH_ICON_POSITION
-	if depth_icon != null:
-		depth_icon.position = DEPTH_ICON_POSITION
-	_set_control_rect(depth_rail_line, DEPTH_RAIL_LINE_RECT)
-	if depth_rail_labels.size() >= 3:
-		_set_control_rect(depth_rail_labels[0], DEPTH_RAIL_LABEL_RECTS["0"])
-		_set_control_rect(depth_rail_labels[1], DEPTH_RAIL_LABEL_RECTS["50"])
-		_set_control_rect(depth_rail_labels[2], DEPTH_RAIL_LABEL_RECTS["100"])
-	if cargo_slots_root != null:
-		cargo_slots_root.position = CARGO_SLOT_ACTIVE_POSITION
-	if daylight_sun_icon != null:
-		daylight_sun_icon.position = DAYLIGHT_SUN_ICON_POSITION
-	if daylight_moon_icon != null:
-		daylight_moon_icon.position = DAYLIGHT_MOON_ICON_POSITION
-
-	var bounded_labels: Array[Label] = [
-		oxygen_label,
-		health_label,
-		depth_label,
-		base_direction_label,
-		cargo_label,
-		daylight_label,
-		discoveries_label,
-		scan_target_label,
-		scan_card_title_label,
-		scan_card_meta_label,
-		scan_card_prompt_label,
-		objective_title_label,
-		objective_line_label,
-		prompt_label,
-		status_label,
-		food_need_label,
-		water_need_label,
-		power_need_label,
-	]
-	for label in depth_rail_labels:
-		bounded_labels.append(label)
-	for label in bounded_labels:
-		if label != null:
-			label.autowrap_mode = TextServer.AUTOWRAP_OFF
-			label.clip_text = true
+	HudLayoutServiceScript.apply_active_hud_layout(self)
 
 func _ensure_active_hud_references() -> void:
 	HudReferenceServiceScript.ensure_active_hud_references(self)
