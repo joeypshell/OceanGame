@@ -53,6 +53,7 @@ const OuterShelfVisualStagingServiceScript := preload("res://scripts/debug/outer
 const OxygenFeedbackServiceScript := preload("res://scripts/ui/oxygen_feedback_service.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
+const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
@@ -258,6 +259,7 @@ func _initialize() -> void:
 	_run("scan target card service", _test_scan_target_card_service)
 	_run("run panel layout service", _test_run_panel_layout_service)
 	_run("upgrade menu service", _test_upgrade_menu_service)
+	_run("resource summary service", _test_resource_summary_service)
 	_run("depth rail service", _test_depth_rail_service)
 	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
@@ -875,9 +877,9 @@ func _test_starter_survival_resource_families() -> void:
 	_expect(main.survival_state.food == 4, "food pickup should increase survival food")
 	_expect(main.survival_state.water == 4, "water pickup should increase survival water")
 	_expect(main.survival_state.power == 4, "power pickup should increase survival power")
-	_expect(main.call("_format_resource_counts", resources).contains("Building: Scrap Metal"), "resource result copy should name building materials")
-	_expect(main.call("_format_survival_supply_counts", supplies).contains("Food/Fish: Food/Fish Supply"), "survival result copy should name the food/fish role")
-	_expect(main.call("_format_survival_supply_counts", supplies).contains("Power: Power Cell"), "survival result copy should name the power role")
+	_expect(ResourceSummaryServiceScript.format_resource_counts(resources, main.survival_state, main.RESOURCE_CATEGORY_LABELS).contains("Building: Scrap Metal"), "resource result copy should name building materials")
+	_expect(ResourceSummaryServiceScript.format_survival_supply_counts(supplies, main.survival_state, main.RESOURCE_CATEGORY_LABELS).contains("Food/Fish: Food/Fish Supply"), "survival result copy should name the food/fish role")
+	_expect(ResourceSummaryServiceScript.format_survival_supply_counts(supplies, main.survival_state, main.RESOURCE_CATEGORY_LABELS).contains("Power: Power Cell"), "survival result copy should name the power role")
 	var summary_names := {
 		"scrap_metal": "Scrap Metal",
 		"food_supply": "Food/Fish Supply",
@@ -8280,6 +8282,18 @@ func _test_upgrade_menu_service() -> void:
 	_expect(main.upgrade_menu_cost_label.text == "Cost: Driftwood x1", "upgrade menu service should preserve cost copy")
 	main.free()
 
+func _test_resource_summary_service() -> void:
+	var main := MainScript.new()
+	var resources: Array[String] = ["scrap_metal", "scrap_metal", "food_supply"]
+	_expect(ResourceSummaryServiceScript.short_resource_name("kelp_fiber", main.survival_state) == "Kelp", "resource summary service should preserve compact material names")
+	_expect(ResourceSummaryServiceScript.short_resource_name("food_supply", main.survival_state) == "Food", "resource summary service should preserve compact supply names")
+	_expect(ResourceSummaryServiceScript.resource_category_label("food_supply", main.survival_state, main.RESOURCE_CATEGORY_LABELS) == "Food/Fish", "resource summary service should use survival category labels")
+	_expect(ResourceSummaryServiceScript.display_name_for_resource("scrap_metal", main.survival_state) == "Scrap Metal", "resource summary service should preserve material display names")
+	_expect(ResourceSummaryServiceScript.format_resource_counts(resources, main.survival_state, main.RESOURCE_CATEGORY_LABELS).contains("Scrap Metal x2"), "resource summary service should format counted resource summaries")
+	_expect(ResourceSummaryServiceScript.format_cargo_counts_inline(["glow_plankton", "kelp_fiber", "glow_plankton"], main.survival_state) == " - Glow x2, Kelp x1", "resource summary service should preserve inline cargo copy")
+	_expect(ResourceSummaryServiceScript.resource_names_for_cost({"driftwood": 1}, main.survival_state)["driftwood"] == "Driftwood", "resource summary service should build cost display names")
+	main.free()
+
 func _test_depth_rail_service() -> void:
 	var main := MainScript.new()
 	main.depth_rail_line = ColorRect.new()
@@ -8351,7 +8365,7 @@ func _test_tool_belt_presenter() -> void:
 func _test_compact_dive_hud_helpers() -> void:
 	var main := MainScript.new()
 	var cargo: Array[String] = ["glow_plankton", "kelp_fiber", "glow_plankton"]
-	var inline_cargo: String = main.call("_format_cargo_counts_inline", cargo)
+	var inline_cargo: String = ResourceSummaryServiceScript.format_cargo_counts_inline(cargo, main.survival_state)
 	_expect(inline_cargo == " - Glow x2, Kelp x1", "active cargo helper should keep carried resources on one line")
 
 	var slot_states: Array = CargoSlotPresenterScript.cargo_slot_states(cargo, 3, 4)
