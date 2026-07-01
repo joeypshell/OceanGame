@@ -20,6 +20,7 @@ const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_buil
 const Area01SourceTruthValidatorScript := preload("res://scripts/area01_source_truth_validator.gd")
 const Area01VisualCueContractScript := preload("res://scripts/area01_visual_cue_contract.gd")
 const Area01VisualDirectorScript := preload("res://scripts/area01_visual_director.gd")
+const Area01VisualStagingServiceScript := preload("res://scripts/debug/area01_visual_staging_service.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
@@ -213,6 +214,7 @@ func _initialize() -> void:
 	_run("tool belt presenter", _test_tool_belt_presenter)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("visual smoke bridge", _test_visual_smoke_bridge)
+	_run("Area 01 visual staging service", _test_area01_visual_staging_service)
 	_run("mobile touch controls adapter", _test_mobile_touch_controls_adapter)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
@@ -8132,6 +8134,16 @@ func _test_visual_smoke_bridge() -> void:
 	_expect(not VisualSmokeBridgeScript.player_rendered(missing_texture_state), "visual smoke bridge should not report an untextured player as rendered")
 
 	_expect(not VisualSmokeBridgeScript.player_rendered({}), "visual smoke bridge should treat an unavailable player state as not rendered")
+
+func _test_area01_visual_staging_service() -> void:
+	var main := MainScript.new()
+	var fallback := Vector2(123.0, 456.0)
+	_expect(Area01VisualStagingServiceScript.generated_hook_visual_center(main, "MissingHook", fallback) == fallback, "Area 01 visual staging should use fallback hook positions when generated hook nodes are absent")
+
+	main.visual_smoke_route_stage = ""
+	Area01VisualStagingServiceScript.stage_shell_visual_review(main, "central_drop")
+	_expect(main.visual_smoke_route_stage == "", "Area 01 visual staging should stay inert outside exported web visual-smoke runs")
+	main.free()
 
 func _test_mobile_touch_controls_adapter() -> void:
 	var main := MainScript.new()
