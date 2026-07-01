@@ -27,6 +27,7 @@ const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_sum
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
+const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
@@ -1402,6 +1403,12 @@ func _test_scan_hold_timing_helper() -> void:
 
 	_expect(is_equal_approx(main.call("_scan_charge_ratio"), 0.35), "scan hold ratio should report partial progress")
 	_expect(String(main.call("_format_scan_charge_status", target)).contains("Thermal Vent: 35%"), "scan hold status should show target name and progress")
+	_expect(ScanFeedbackPresenterScript.format_scan_charge_status("Thermal Vent", 0.35) == "Scanning Thermal Vent: 35%", "scan feedback presenter should format charge status")
+	_expect(ScanFeedbackPresenterScript.format_wreck_cache_repeat_hint(true, true).contains("Echo Lens"), "scan feedback presenter should prioritize Echo Lens cache hints")
+	_expect(ScanFeedbackPresenterScript.format_signal_lens_pulse_text(true, true, false, "", "Kelp Fiber").contains("quiet"), "scan feedback presenter should preserve quiet Signal Lens copy")
+	_expect(ScanFeedbackPresenterScript.format_direction_to(Vector2.ZERO, Vector2(96.0, 96.0)) == "deeper-right", "scan feedback presenter should format directional hints")
+	_expect(ScanFeedbackPresenterScript.format_first_scan_guidance("pressure_wreck_signal", false, "", 0, 3, false).contains("Locked: buy Pressure Seal I"), "scan feedback presenter should preserve pressure-locked guidance")
+	_expect(ScanFeedbackPresenterScript.format_scan_target_type("lantern_ray", false) == "creature", "scan feedback presenter should classify creature scan targets")
 	main.scan_charge_elapsed = 1.5
 	_expect(is_equal_approx(main.call("_scan_charge_ratio"), 1.0), "scan hold ratio should clamp completed progress")
 	main.scan_hold_seconds = 0.0

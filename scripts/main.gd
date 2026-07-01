@@ -19,6 +19,7 @@ const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_sum
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
+const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
@@ -3220,8 +3221,7 @@ func _update_scan_charge(delta: float) -> void:
 		_update_hud()
 
 func _format_scan_charge_status(target: Node) -> String:
-	var percent := int(roundf(_scan_charge_ratio() * 100.0))
-	return "Scanning %s: %d%%" % [_scan_target_display_name(target), percent]
+	return ScanFeedbackPresenterScript.format_scan_charge_status(_scan_target_display_name(target), _scan_charge_ratio())
 
 func _scan_charge_ratio() -> float:
 	if scan_hold_seconds <= 0.0:
@@ -3582,51 +3582,29 @@ func _try_trigger_decoy_pulse() -> bool:
 	return true
 
 func _format_repeat_scan_effect_text(target: Node) -> String:
-	if target is ResourcePickup:
-		return " Matching %s deposits highlighted." % target.definition.display_name
-	elif _scan_target_id(target) == "lantern_fry":
-		return " Nearby Glow Plankton pulsed again."
-	elif _scan_target_id(target) == "lantern_ray":
-		return " Lantern Ray route observation refreshed."
-	elif _scan_target_id(target) == "hollow_reef_skitter":
-		return " Hollow Reef Skitter observation refreshed."
-	elif _scan_target_id(target) == "glassfin_swarm":
-		return " Glassfin Swarm spacing observation refreshed."
-	elif _scan_target_id(target) == "mirrorfin_drift":
-		return " Mirrorfin reflection observation refreshed."
-	elif _scan_target_id(target) == "glass_ray_drifter":
-		return " Glass Ray slackwater observation refreshed."
-	elif _scan_target_id(target) == "thermal_vent":
-		return " Warm clue refreshed; glow route optional."
-	elif _scan_target_id(target) == "shell_reef_shelf":
-		return " Reef route clue refreshed."
-	elif _scan_target_id(target) == "wreck_signal_cache":
-		return _format_wreck_cache_repeat_hint()
-	elif _scan_target_id(target) == "gulper_eel":
-		return " %s" % _format_decoy_pulse_scan_feedback()
-
-	return ""
+	return ScanFeedbackPresenterScript.format_repeat_scan_effect_text(
+		_scan_target_id(target),
+		target is ResourcePickup,
+		target.definition.display_name if target is ResourcePickup else "",
+		_format_wreck_cache_repeat_hint(),
+		_format_decoy_pulse_scan_feedback()
+	)
 
 func _format_wreck_cache_repeat_hint() -> String:
-	if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
-		return " Echo Lens: weak wreck echo lingers below the shelf."
-	if progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID):
-		return " Cache echo unresolved: future Echo Lens study may read deeper wreck signals."
-
-	return " Cache clue refreshed for Signal Lens I."
+	return ScanFeedbackPresenterScript.format_wreck_cache_repeat_hint(
+		progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID),
+		progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID)
+	)
 
 func _format_signal_lens_pulse_text(target: Node) -> String:
-	if not progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID) or not target is ResourcePickup:
-		return ""
-
-	var match_target: ResourcePickup = _nearest_matching_visible_resource(target)
-	if match_target == null:
-		return " Signal Lens quiet: no matching visible deposits."
-
-	return " Signal Lens pulse leans %s toward another %s." % [
-		_format_direction_to(match_target.global_position),
-		target.definition.display_name
-	]
+	var match_target: ResourcePickup = _nearest_matching_visible_resource(target) if target is ResourcePickup else null
+	return ScanFeedbackPresenterScript.format_signal_lens_pulse_text(
+		progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID),
+		target is ResourcePickup,
+		match_target != null,
+		_format_direction_to(match_target.global_position) if match_target != null else "",
+		target.definition.display_name if target is ResourcePickup else ""
+	)
 
 func _nearest_matching_visible_resource(source: ResourcePickup) -> ResourcePickup:
 	var nearest: ResourcePickup = null
@@ -3649,62 +3627,17 @@ func _nearest_matching_visible_resource(source: ResourcePickup) -> ResourcePicku
 	return nearest
 
 func _format_direction_to(target_position: Vector2) -> String:
-	var delta := target_position - player.global_position
-	var horizontal := ""
-	if absf(delta.x) > 48.0:
-		horizontal = "right" if delta.x > 0.0 else "left"
-
-	var vertical := ""
-	if absf(delta.y) > 48.0:
-		vertical = "deeper" if delta.y > 0.0 else "up"
-
-	if not horizontal.is_empty() and not vertical.is_empty():
-		return "%s-%s" % [vertical, horizontal]
-	elif not vertical.is_empty():
-		return vertical
-	elif not horizontal.is_empty():
-		return horizontal
-
-	return "nearby"
+	return ScanFeedbackPresenterScript.format_direction_to(player.global_position, target_position)
 
 func _format_first_scan_guidance(target: Node) -> String:
-	if target is ResourcePickup:
-		var role_guidance := _resource_collection_guidance(target.definition.id)
-		if dive_session.current_cargo.size() >= dive_session.cargo_limit:
-			return " Cargo full: return to ship to bank before collecting more."
-		elif dive_session.current_cargo.size() == dive_session.cargo_limit - 1:
-			return " Last slot: %s Return to ship if this is the right cargo." % role_guidance
-
-		return " %s Return to ship to bank it." % role_guidance
-
-	match _scan_target_id(target):
-		"lantern_fry":
-			return " Follow the plankton pulse if oxygen allows, then return to base."
-		"lantern_ray":
-			return " Observe its calm pass, then return through Blackwater."
-		"hollow_reef_skitter":
-			return " Observe the upper shelf timing, then return through Hollow Reef."
-		"glassfin_swarm":
-			return " Observe the spacing lane, pass around the swarm, then return through Hollow Reef."
-		"mirrorfin_drift":
-			return " Observe the reflection break, pass after the shimmer, then return through Wide Reef."
-		"glass_ray_drifter":
-			return " Observe its turn, cross on slackwater if oxygen allows, or bank cargo."
-		"thermal_vent":
-			return " Warm current marks optional glow; bank Pressure Seal clue."
-		"shell_reef_shelf":
-			return " Reef marks a safer midwater bank route."
-		"pressure_wreck_signal":
-			if progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID):
-				return " Pressure Seal active: enter and scan cache if oxygen allows."
-
-			return " Locked: buy Pressure Seal I, then return."
-		"wreck_signal_cache":
-			return " Bank cache clue for future scanner upgrades."
-		"gulper_eel":
-			return " Time warning current, or return with cargo."
-		_:
-			return " Use the clue if it helps, then return to base before oxygen runs out."
+	return ScanFeedbackPresenterScript.format_first_scan_guidance(
+		_scan_target_id(target),
+		target is ResourcePickup,
+		_resource_collection_guidance(target.definition.id) if target is ResourcePickup else "",
+		dive_session.current_cargo.size(),
+		dive_session.cargo_limit,
+		progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID)
+	)
 
 func _format_resource_upgrade_need(resource_id: String) -> String:
 	var needed: int = maxi(0, int(_oxygen_tank_cost().get(resource_id, 0)) - progression_state.resource_count(resource_id))
@@ -6384,33 +6317,10 @@ func _scan_reticle_fallback_screen_position(world_position: Vector2, viewport_si
 	return screen_position + Vector2(world_delta.x * maxf(zoom.x, 0.001), world_delta.y * maxf(zoom.y, 0.001))
 
 func _format_scan_target_discovery_state(target: Node) -> String:
-	return "known" if progression_state.has_discovery(_scan_target_id(target)) else "new"
+	return ScanFeedbackPresenterScript.format_scan_target_discovery_state(progression_state.has_discovery(_scan_target_id(target)))
 
 func _format_scan_target_type(target: Node) -> String:
-	if target is ResourcePickup:
-		return "resource"
-
-	match _scan_target_id(target):
-		"lantern_fry":
-			return "creature"
-		"lantern_ray":
-			return "creature"
-		"hollow_reef_skitter":
-			return "creature"
-		"glassfin_swarm":
-			return "creature"
-		"mirrorfin_drift":
-			return "creature"
-		"gulper_eel":
-			return "creature"
-		"thermal_vent":
-			return "environment"
-		"shell_reef_shelf":
-			return "environment"
-		"pressure_wreck_signal", "wreck_signal_cache":
-			return "wreck signal"
-		_:
-			return "clue"
+	return ScanFeedbackPresenterScript.format_scan_target_type(_scan_target_id(target), target is ResourcePickup)
 
 func _current_max_oxygen() -> float:
 	var oxygen_max := max_oxygen
