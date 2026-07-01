@@ -26,6 +26,7 @@ const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_sla
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
+const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
@@ -7896,6 +7897,11 @@ func _test_compact_dive_hud_helpers() -> void:
 
 	var main_scene := MainScene.instantiate()
 	root.add_child(main_scene)
+	main_scene.active_stats_panel = null
+	main_scene.cargo_slots_root = null
+	HudReferenceServiceScript.ensure_active_hud_references(main_scene)
+	_expect(main_scene.active_stats_panel != null, "HUD reference service should cache the active stats panel")
+	_expect(main_scene.cargo_slots_root != null, "HUD reference service should cache the cargo slots root")
 	var active_panel: Panel = main_scene.get_node("HUD/ActiveStatsPanel")
 	var cargo_panel: Panel = main_scene.get_node("HUD/CargoPanel")
 	var cargo_title: Label = main_scene.get_node("HUD/CargoPanel/CargoTitle")
