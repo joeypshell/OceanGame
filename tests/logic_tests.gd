@@ -43,6 +43,7 @@ const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
+const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -211,6 +212,7 @@ func _initialize() -> void:
 	_run("HUD presenter", _test_hud_presenter)
 	_run("tool belt presenter", _test_tool_belt_presenter)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
+	_run("visual smoke bridge", _test_visual_smoke_bridge)
 	_run("mobile touch controls adapter", _test_mobile_touch_controls_adapter)
 	_run("active HUD final polish regression", _test_active_hud_final_polish_regression)
 	_run("expanded region world bounds", _test_expanded_region_world_bounds)
@@ -8109,6 +8111,27 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(HudPresenterScript.health_state(12.0, 100.0) == "critical", "health helper should mark near-failure health as critical")
 	_expect(HudPresenterScript.format_health_label(30.0, 100.0).contains("LOW"), "health label should carry low state inline")
 	main.free()
+
+func _test_visual_smoke_bridge() -> void:
+	var visible_state := {
+		"available": true,
+		"player_visible": true,
+		"visual_root_visible": true,
+		"sprite_visible": true,
+		"sprite_has_texture": true,
+		"sprite_alpha": 0.5,
+	}
+	_expect(VisualSmokeBridgeScript.player_rendered(visible_state), "visual smoke bridge should report a visible textured player as rendered")
+
+	var transparent_state := visible_state.duplicate()
+	transparent_state["sprite_alpha"] = 0.25
+	_expect(not VisualSmokeBridgeScript.player_rendered(transparent_state), "visual smoke bridge should require a player sprite alpha above the visibility threshold")
+
+	var missing_texture_state := visible_state.duplicate()
+	missing_texture_state["sprite_has_texture"] = false
+	_expect(not VisualSmokeBridgeScript.player_rendered(missing_texture_state), "visual smoke bridge should not report an untextured player as rendered")
+
+	_expect(not VisualSmokeBridgeScript.player_rendered({}), "visual smoke bridge should treat an unavailable player state as not rendered")
 
 func _test_mobile_touch_controls_adapter() -> void:
 	var main := MainScript.new()
