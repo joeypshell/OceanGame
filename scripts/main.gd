@@ -36,6 +36,7 @@ const HudVisibilityServiceScript := preload("res://scripts/ui/hud_visibility_ser
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
 const LowerConnectorVisualStagingServiceScript := preload("res://scripts/debug/lower_connector_visual_staging_service.gd")
 const MirrorKelpVisualStagingServiceScript := preload("res://scripts/debug/mirror_kelp_visual_staging_service.gd")
+const MinimapServiceScript := preload("res://scripts/ui/minimap_service.gd")
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
 const OpenHatchVisualStagingServiceScript := preload("res://scripts/debug/open_hatch_visual_staging_service.gd")
 const OuterShelfVisualStagingServiceScript := preload("res://scripts/debug/outer_shelf_visual_staging_service.gd")
@@ -3496,17 +3497,7 @@ func _update_depth_rail(is_visible: bool) -> void:
 	DepthRailServiceScript.update_rail(self, is_visible)
 
 func _update_minimap(is_visible: bool) -> void:
-	minimap_path.visible = is_visible
-	minimap_player_marker.visible = is_visible
-	if not is_visible:
-		return
-
-	var depth_ratio := clampf(dive_session.current_depth / DEPTH_RAIL_MAX_DISPLAY_DEPTH, 0.0, 1.0)
-	var horizontal_ratio := 0.5
-	if player != null:
-		var bounds: Rect2 = player.get("world_bounds")
-		horizontal_ratio = clampf((player.global_position.x - bounds.position.x) / bounds.size.x, 0.0, 1.0)
-	minimap_player_marker.position = Vector2(94.0 + (horizontal_ratio - 0.5) * 78.0, 34.0 + depth_ratio * 76.0)
+	MinimapServiceScript.update_minimap(self, is_visible)
 
 func _advance_daylight_timer(delta: float) -> void:
 	if daylight_duration_seconds <= 0.0 or daylight_nightfall_announced:
