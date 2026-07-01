@@ -18,6 +18,7 @@ const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
+const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
@@ -3016,17 +3017,15 @@ func _format_hud_prompt() -> String:
 	return prompt
 
 func _format_night_build_prompt() -> String:
-	var action := "review"
-	if night_health_recovery_used_build_time:
-		action = "review night med"
-	elif not night_build_completed_this_surface and not survival_state.chapter_failed and not survival_state.chapter_complete:
-		action = "craft Power Patch" if progression_state.can_afford(NIGHT_POWER_PATCH_COST) else "check Power Patch"
-	return "Night build: %s %s, %s next expedition | %s surface view" % [
+	return NightBuildPresenterScript.format_prompt(
+		night_health_recovery_used_build_time,
+		night_build_completed_this_surface,
+		not survival_state.chapter_failed and not survival_state.chapter_complete,
+		progression_state.can_afford(NIGHT_POWER_PATCH_COST),
 		_action_label("interact"),
-		action,
 		_action_label("restart_dive"),
-		_action_label("move_left_right"),
-	]
+		_action_label("move_left_right")
+	)
 
 func _try_purchase_selected_upgrade() -> void:
 	var upgrade := _selected_upgrade_definition()
@@ -5888,30 +5887,18 @@ func _format_daylight_closeout_line() -> String:
 	)
 
 func _format_night_build_choice_line() -> String:
-	if night_health_recovery_used_build_time:
-		return "Build choice: Night med used build time. Tomorrow health full; Power Patch waits."
-	if night_build_completed_this_surface:
-		return "Build choice: Power Patch installed. Power +%d carries into tomorrow." % NIGHT_POWER_PATCH_POWER_GAIN
-	if not survival_state.chapter_failed and not survival_state.chapter_complete and progression_state.can_afford(NIGHT_POWER_PATCH_COST):
-		return "Build choice: Power Patch ready (%s craft; Scrap Metal x1 -> Power +%d tomorrow)." % [
-			_action_label("interact").replace("/", " or "),
-			NIGHT_POWER_PATCH_POWER_GAIN,
-		]
-
 	var ready_upgrade := _first_ready_upgrade_definition()
-	if ready_upgrade != null:
-		return "Build choice: %s ready in Upgrades." % ready_upgrade.display_name
-
-	var progress := _format_upgrade_progress_callout()
-	var prefix := "Upgrade progress: "
-	if progress.begins_with(prefix):
-		progress = progress.substr(prefix.length())
-	if not survival_state.chapter_failed and not survival_state.chapter_complete:
-		return "Build choice: Power Patch needs %s; %s" % [
-			_format_missing_resources_inline(NIGHT_POWER_PATCH_COST),
-			progress,
-		]
-	return "Build choice: %s" % progress
+	return NightBuildPresenterScript.format_choice_line(
+		night_health_recovery_used_build_time,
+		night_build_completed_this_surface,
+		not survival_state.chapter_failed and not survival_state.chapter_complete,
+		progression_state.can_afford(NIGHT_POWER_PATCH_COST),
+		ready_upgrade.display_name if ready_upgrade != null else "",
+		_format_upgrade_progress_callout(),
+		_format_missing_resources_inline(NIGHT_POWER_PATCH_COST),
+		_action_label("interact"),
+		NIGHT_POWER_PATCH_POWER_GAIN
+	)
 
 func _first_ready_upgrade_definition() -> UpgradeDefinition:
 	for upgrade in upgrade_definitions:
