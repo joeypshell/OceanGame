@@ -67,6 +67,7 @@ const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_
 const ScanTargetFeedbackServiceScript := preload("res://scripts/ui/scan_target_feedback_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurfaceRunSummaryServiceScript := preload("res://scripts/ui/surface_run_summary_service.gd")
+const SurvivalNeedSummaryServiceScript := preload("res://scripts/ui/survival_need_summary_service.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
 const SurvivalSupplyCacheStateServiceScript := preload("res://scripts/ui/survival_supply_cache_state_service.gd")
 const SurvivalNeedsPanelServiceScript := preload("res://scripts/ui/survival_needs_panel_service.gd")
@@ -8480,6 +8481,8 @@ func _test_surface_run_summary_service() -> void:
 	main.survival_state.power = 3
 	var empty_needs := SurfaceRunSummaryServiceScript.base_need_names_at_or_below(main, 0)
 	_expect(empty_needs == ["Food"], "empty need list should include only needs at or below threshold")
+	_expect(SurvivalNeedSummaryServiceScript.base_need_names_at_or_below(main.survival_state, 1) == ["Food", "Water"], "survival need summary service should include all needs at or below threshold")
+	_expect(SurvivalNeedSummaryServiceScript.format_need_list(["Food", "Water"]) == "Food/Water", "survival need summary service should preserve compact need list copy")
 	_expect(SurfaceRunSummaryServiceScript.format_tomorrow_plan(main).contains("bank Food supply first"), "tomorrow plan should prioritize empty survival needs")
 
 	main.survival_state.food = 3
@@ -8488,6 +8491,7 @@ func _test_surface_run_summary_service() -> void:
 	main.progression_state.banked_resources["driftwood"] = 1
 	var starter_target := SurfaceRunSummaryServiceScript.format_starter_resource_target(main)
 	_expect(starter_target.contains("Quartz Glass"), "starter resource target should preserve missing Water Filter material copy")
+	_expect(SurvivalNeedSummaryServiceScript.format_starter_resource_target(main.progression_state, main.survival_state, main.WATER_FILTER_UPGRADE_ID, main.WATER_FILTER_UPGRADE.resource_cost) == starter_target, "survival need summary service should preserve starter resource target copy")
 	_expect(SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main).begins_with("Next: press R for Expedition"), "next expedition prompt should preserve restart action copy")
 	main.free()
 

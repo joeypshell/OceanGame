@@ -7,7 +7,7 @@ const NightBuildPresenterScript := preload("res://scripts/ui/night_build_present
 const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
-const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
+const SurvivalNeedSummaryServiceScript := preload("res://scripts/ui/survival_need_summary_service.gd")
 
 static func format_run_telemetry(host, result_name: String) -> String:
 	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nLantern Ray route: %s\nCargo collected:%s%s\nScans: %s\nPredator contacts: %d\nHealth damage events: %d\nOxygen at result: %d / %d\nHealth at result: %d / %d\nFailure cause: %s" % [
@@ -89,35 +89,16 @@ static func format_dawn_priority_line(host) -> String:
 	return "Day priority: %s" % format_current_tomorrow_intention(host)
 
 static func format_starter_resource_target(host) -> String:
-	if host.progression_state.has_upgrade(host.WATER_FILTER_UPGRADE_ID):
-		return ""
-
-	var missing_materials: Array[String] = []
-	for resource_id in host.WATER_FILTER_UPGRADE.resource_cost.keys():
-		var missing: int = int(host.WATER_FILTER_UPGRADE.resource_cost[resource_id]) - host.progression_state.resource_count(resource_id)
-		if missing > 0:
-			missing_materials.append(ResourceSummaryServiceScript.display_name_for_resource(resource_id, host.survival_state))
-
-	if missing_materials.is_empty():
-		return ""
-
-	return "Shell Reef pockets: %s for Water Filter I." % format_material_need_list(missing_materials)
+	return SurvivalNeedSummaryServiceScript.format_starter_resource_target(host.progression_state, host.survival_state, host.WATER_FILTER_UPGRADE_ID, host.WATER_FILTER_UPGRADE.resource_cost)
 
 static func format_material_need_list(materials: Array[String]) -> String:
-	return UpgradeCopyPresenterScript.format_material_need_list(materials)
+	return SurvivalNeedSummaryServiceScript.format_material_need_list(materials)
 
 static func base_need_names_at_or_below(host, threshold: int) -> Array[String]:
-	var needs: Array[String] = []
-	if host.survival_state.food <= threshold:
-		needs.append("Food")
-	if host.survival_state.water <= threshold:
-		needs.append("Water")
-	if host.survival_state.power <= threshold:
-		needs.append("Power")
-	return needs
+	return SurvivalNeedSummaryServiceScript.base_need_names_at_or_below(host.survival_state, threshold)
 
 static func format_need_list(needs: Array[String]) -> String:
-	return UpgradeCopyPresenterScript.format_need_list(needs)
+	return SurvivalNeedSummaryServiceScript.format_need_list(needs)
 
 static func format_expedition_ready_status(host) -> String:
 	return SurfaceResultPresenterScript.format_expedition_ready_status(
