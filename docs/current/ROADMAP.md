@@ -42,7 +42,7 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-The active GitHub batch is now Survival Day/Night loop closeout, in this order:
+The Survival Day/Night loop closeout batch was resolved in this order:
 
 1. #741 Make a two-sortie day readable end-to-end in normal play.
 2. #742 Add a pauseable expedition slate for needs, cargo, known requirements, and remaining daylight.
@@ -90,6 +90,7 @@ Area 01 source-map/runtime work should resume only where it directly supports op
 - #697 expanded Area 01 with far-west, mid-crossing, deep-spine, and far-right blockout terrain; added matching collision and lip reads; updated the source-map lanes; and added deterministic capture states for the expanded footprint.
 - A source-map-driven Area 01 wall builder now applies the same authored polygon to visible walls, collision, and rims so the first playable shell can stop drifting between art and blockers.
 - #735 through #740 were closed as already satisfied by the current implementation: daylight timer, open-surface oxygen refill, daylight ship offload, repeated sorties, health damage/failure, and food/power night resolution are present in code, current docs, and quick-tier tests.
+- #741 through #745 closed the current Survival Day/Night loop pass: two-sortie readability, the expedition slate, starter resource role copy, tomorrow-plan result copy, and a deterministic late-return consequence when nightfall catches the player away from the ship.
 
 ## Current Readability Rules
 

@@ -67,6 +67,7 @@ func _initialize() -> void:
 	_run("surface oxygen refill isolation", _test_surface_oxygen_refill_isolation)
 	_run("ship offload repeat daylight sortie", _test_ship_offload_repeat_daylight_sortie)
 	_run("night phase end day and upgrade choice", _test_night_phase_end_day_and_upgrade_choice)
+	_run("nightfall away from ship late return consequence", _test_nightfall_away_from_ship_late_return_consequence)
 	_run("debug unlimited oxygen", _test_debug_unlimited_oxygen)
 	_run("survival night consumption", _test_survival_night_consumption)
 	_run("survival collapse and reset", _test_survival_collapse_and_reset)
@@ -428,6 +429,57 @@ func _test_night_phase_end_day_and_upgrade_choice() -> void:
 	_expect(main.survival_state.current_day == starting_day + 1, "restart after night should keep tomorrow's day number")
 	main.queue_free()
 
+func _test_nightfall_away_from_ship_late_return_consequence() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.start()
+	main.player_in_base = false
+	main.dive_session.has_left_base = true
+	main.dive_session.oxygen = 12.0
+	main.dive_session.health = 72.0
+	main.daylight_elapsed_seconds = main.daylight_duration_seconds
+	main.dive_session.current_cargo.append("driftwood")
+	main.dive_session.current_cargo.append("food_supply")
+	main.dive_session.current_cargo.append("power_supply")
+
+	main.call("_advance_daylight_timer", 1.0)
+
+	_expect(main.daylight_nightfall_announced, "nightfall away from ship should announce the day ending")
+	_expect(main.daylight_nightfall_away_from_ship, "nightfall away from ship should mark the late-return consequence")
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "nightfall away from ship should keep the dive active until final ship return")
+	_expect(main.dive_session.current_cargo.size() == 3, "nightfall away from ship should keep cargo carried and at risk")
+	_expect(is_equal_approx(main.dive_session.oxygen, 12.0), "nightfall away from ship should not change oxygen directly")
+	_expect(is_equal_approx(main.dive_session.health, 72.0), "nightfall away from ship should not change health directly")
+	var overstay_prompt: String = main.call("_format_hud_prompt")
+	_expect(overstay_prompt.contains("return to ship") and overstay_prompt.contains("cargo at risk") and overstay_prompt.contains("late Power -1"), "overstay prompt should explain return, cargo risk, and power consequence")
+
+	main.player_in_base = true
+	_expect(not bool(main.call("_try_ship_offload")), "nightfall away from ship should disable daylight cargo offload")
+
+	var extracted_cargo: Array[String] = []
+	for item_id in main.dive_session.current_cargo:
+		extracted_cargo.append(item_id)
+	main.dive_session.extract()
+	main.call("_bank_extracted_cargo", extracted_cargo)
+	main.call("_bank_extracted_survival_supplies", extracted_cargo)
+	main.last_completed_survival_day = main.survival_state.current_day
+	main.call("_resolve_night_after_result")
+	main.dive_session.clear_cargo()
+	main.surface_tab_index = main.SURFACE_TAB_NIGHT
+
+	_expect(main.dive_session.result == DiveSessionScript.Result.EXTRACTED, "late return to ship should resolve the day")
+	_expect(main.dive_session.current_cargo.is_empty(), "late final return should clear carried cargo after banking")
+	_expect(main.progression_state.resource_count("driftwood") == 1, "late final return should still bank carried material cargo")
+	_expect(main.survival_state.food == SurvivalStateScript.STARTING_NEED, "late final return should bank food before paying night food")
+	_expect(main.survival_state.power == SurvivalStateScript.STARTING_NEED - 1, "late final return should bank power then pay normal night power plus late power")
+	_expect(main.survival_state.water == SurvivalStateScript.STARTING_NEED - 1, "late final return should still pay normal night water")
+	_expect(main.last_night_report.contains("Late return cost: Power -1"), "Night tab should name the late return power cost")
+	var closeout_line: String = main.call("_format_daylight_closeout_line")
+	_expect(closeout_line.contains("nightfall caught the diver away from ship") and closeout_line.contains("cost extra Power"), "Night tab closeout should preserve the late-return context")
+	var ship_prompt: String = main.call("_format_hud_prompt")
+	_expect(ship_prompt.contains("Extraction complete"), "after late return extraction, HUD should leave active overstay prompts")
+	main.queue_free()
+
 func _test_debug_unlimited_oxygen() -> void:
 	var session := DiveSessionScript.new()
 	session.reset(10.0)
@@ -467,6 +519,12 @@ func _test_survival_night_consumption() -> void:
 	_expect(not survival.status_line().contains("F2 W2 P2"), "survival status should not use cryptic need abbreviations")
 	_expect(survival.nightly_pressure_line().contains("Tonight"), "ready copy helper should explain nightly pressure")
 	_expect(survival.supply_cache_hint_line().contains("cargo space"), "ready copy helper should explain the supply-cache cargo tradeoff")
+
+	var late_return := SurvivalStateScript.new()
+	var late_report := late_return.resolve_night(1)
+	_expect(late_return.food == 2 and late_return.water == 2 and late_return.power == 1, "late return night should add one deterministic power cost without changing food or water")
+	_expect("\n".join(late_report).contains("Power -2"), "late return night report should include total power cost")
+	_expect("\n".join(late_report).contains("Late return cost"), "late return night report should explain the extra power cost")
 
 	survival.resolve_night()
 	var warning_report := survival.resolve_night()
@@ -6866,8 +6924,9 @@ func _test_daylight_timer_hud() -> void:
 
 	scene.call("_advance_daylight_timer", scene.daylight_duration_seconds)
 	_expect(scene.daylight_nightfall_announced, "daylight expiration should announce nightfall")
+	_expect(scene.daylight_nightfall_away_from_ship, "timer expiration away from ship should mark the late-return consequence")
 	_expect(scene.dive_session.result == DiveSessionScript.Result.DIVING, "timer expiration should keep the dive active until the player returns to ship")
-	_expect(scene.status_label.text.contains("start night"), "timer expiration should tell the player to return and start night")
+	_expect(scene.status_label.text.contains("emergency return"), "timer expiration should tell the player to return immediately")
 	scene.queue_free()
 
 func _test_expedition_slate_context() -> void:

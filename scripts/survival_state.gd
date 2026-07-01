@@ -90,7 +90,7 @@ func most_needed_supply_id() -> String:
 			selected_value = value
 	return selected
 
-func resolve_night() -> Array[String]:
+func resolve_night(extra_power_cost: int = 0) -> Array[String]:
 	var lines: Array[String] = []
 	if chapter_failed:
 		lines.append("Night report: chapter already collapsed. Restart Emergency Week.")
@@ -99,10 +99,13 @@ func resolve_night() -> Array[String]:
 		lines.append("Night report: base stabilized. Survival clock is paused for this prototype.")
 		return lines
 
+	var power_cost := 1 + maxi(0, extra_power_cost)
 	food -= 1
 	water -= 1
-	power -= 1
-	lines.append("Night cost paid: Food -1, Water -1, Power -1.")
+	power -= power_cost
+	lines.append("Night cost paid: Food -1, Water -1, Power -%d." % power_cost)
+	if extra_power_cost > 0:
+		lines.append("Late return cost: Power -%d for emergency lights and recovery." % extra_power_cost)
 
 	if _has_collapse():
 		chapter_failed = true

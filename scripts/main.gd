@@ -520,6 +520,7 @@ var salvage_silt_timing_timer := 0.0
 var outer_shelf_slackwater_timer := 0.0
 var daylight_elapsed_seconds := 0.0
 var daylight_nightfall_announced := false
+var daylight_nightfall_away_from_ship := false
 var daylight_ship_offload_count := 0
 var expedition_slate_open := false
 var expedition_slate_panel: Panel = null
@@ -1039,8 +1040,14 @@ func _bank_extracted_survival_supplies(extracted_cargo: Array[String]) -> Array[
 	return banked_supplies
 
 func _resolve_night_after_result() -> void:
-	var night_lines := survival_state.resolve_night()
+	var night_lines := survival_state.resolve_night(_nightfall_extra_power_cost())
 	last_night_report = "\n".join(night_lines)
+
+func _nightfall_extra_power_cost() -> int:
+	if daylight_nightfall_away_from_ship:
+		return 1
+
+	return 0
 
 func _fail_dive() -> void:
 	_close_expedition_slate()
@@ -1134,6 +1141,7 @@ func _prepare_next_run() -> void:
 	dive_session.cargo_limit = _current_cargo_limit()
 	daylight_elapsed_seconds = 0.0
 	daylight_nightfall_announced = false
+	daylight_nightfall_away_from_ship = false
 	daylight_ship_offload_count = 0
 	player_in_surface_oxygen_refill = false
 	player_near_survival_supply_cache = false
@@ -2781,11 +2789,19 @@ func _format_hud_prompt() -> String:
 			if _can_ship_offload():
 				prompt = "At ship: %s offload cargo, refill O2" % _action_label("interact")
 			elif daylight_nightfall_announced:
-				prompt = "At ship: %s start night; resolve needs" % _action_label("interact")
+				if daylight_nightfall_away_from_ship:
+					prompt = "At ship: %s start night; late Power -1" % _action_label("interact")
+				else:
+					prompt = "At ship: %s start night; resolve needs" % _action_label("interact")
 			else:
 				prompt = "At ship: cargo banked, O2 full, dive again"
 		else:
 			prompt = "Leave moonpool, then return to bank"
+	elif daylight_nightfall_announced:
+		if daylight_nightfall_away_from_ship:
+			prompt = "Nightfall: return to ship | cargo at risk | late Power -1"
+		else:
+			prompt = "Nightfall: return to ship"
 	elif _is_player_in_surface_oxygen_refill():
 		if dive_session.oxygen >= dive_session.max_oxygen:
 			prompt = "Surface O2 full | Cargo carried | Ship banks"
@@ -4718,13 +4734,18 @@ func _advance_daylight_timer(delta: float) -> void:
 func _handle_daylight_expired() -> void:
 	daylight_nightfall_announced = true
 	daylight_elapsed_seconds = maxf(daylight_elapsed_seconds, daylight_duration_seconds)
+	daylight_nightfall_away_from_ship = not player_in_base
 	if status_label != null:
-		status_label.text = "Nightfall reached: return to ship to start night."
+		if daylight_nightfall_away_from_ship:
+			status_label.text = "Nightfall: emergency return. Cargo stays at risk; ship spends extra Power."
+		else:
+			status_label.text = "Nightfall reached: start night at ship."
 
 func _set_daylight_progress_for_debug(progress_ratio: float) -> void:
 	var clamped_progress := clampf(progress_ratio, 0.0, 1.0)
 	daylight_elapsed_seconds = maxf(0.0, daylight_duration_seconds) * clamped_progress
 	daylight_nightfall_announced = clamped_progress >= 1.0
+	daylight_nightfall_away_from_ship = false
 
 func _daylight_remaining_seconds() -> float:
 	return maxf(0.0, daylight_duration_seconds - daylight_elapsed_seconds)
@@ -5945,6 +5966,11 @@ func _format_night_phase_summary() -> String:
 	return "\n".join(lines)
 
 func _format_daylight_closeout_line() -> String:
+	if daylight_nightfall_away_from_ship:
+		if daylight_ship_offload_count > 0:
+			return "Daylight closeout: nightfall caught the diver away from ship after %d ship offload(s); final return banked cargo and cost extra Power." % daylight_ship_offload_count
+		return "Daylight closeout: nightfall caught the diver away from ship; final return banked cargo and cost extra Power."
+
 	if daylight_ship_offload_count > 0:
 		return "Daylight closeout: %d ship offload(s) banked cargo before night; final return resolved base needs." % daylight_ship_offload_count
 
@@ -6388,9 +6414,14 @@ func _format_active_objective_line() -> String:
 		if _can_ship_offload():
 			objective = "At ship: offload, O2 full"
 		elif daylight_nightfall_announced:
-			objective = "At ship: start night"
+			if daylight_nightfall_away_from_ship:
+				objective = "At ship: start night, Power -1"
+			else:
+				objective = "At ship: start night"
 		else:
 			objective = "At ship: dive again"
+	elif daylight_nightfall_announced:
+		objective = "Nightfall: return to ship"
 	elif player_in_base:
 		objective = "Leave moonpool, gather supplies"
 	elif _is_player_in_surface_oxygen_refill():
