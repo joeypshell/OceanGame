@@ -26,6 +26,7 @@ const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedi
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
 const PredatorScript := preload("res://scripts/predator.gd")
 const OxygenTankUpgrade := preload("res://resources/upgrades/oxygen_tank_1.tres")
@@ -163,6 +164,7 @@ func _initialize() -> void:
 	_run("Blackwater Trace payoff", _test_blackwater_trace_payoff)
 	_run("Glass Kelp reading payoff", _test_glass_kelp_reading_payoff)
 	_run("Hollow Reef cave reading payoff", _test_hollow_reef_cave_reading_payoff)
+	_run("upgrade copy presenter", _test_upgrade_copy_presenter)
 	_run("upgrade bay readability states", _test_upgrade_bay_readability_states)
 	_run("result and upgrade copy length guards", _test_result_and_upgrade_copy_length_guards)
 	_run("recent expedition presenter", _test_recent_expedition_presenter)
@@ -6232,6 +6234,29 @@ func _test_hollow_reef_cave_reading_payoff() -> void:
 	_expect(reading_shard.color.a >= 0.7, "Hollow Reef cave reading should become visible again on expedition reset")
 	_expect(reading_spark.visible, "Hollow Reef cave reading spark should reset between expeditions")
 	main.free()
+
+func _test_upgrade_copy_presenter() -> void:
+	var cost := {
+		"driftwood": 2,
+		"quartz_glass": 1,
+	}
+	var names := {
+		"driftwood": "Driftwood",
+		"quartz_glass": "Quartz Glass",
+	}
+	var owned := {
+		"driftwood": 1,
+		"quartz_glass": 1,
+	}
+	_expect(UpgradeCopyPresenterScript.format_upgrade_cost({}, names) == "none", "empty upgrade costs should show none")
+	_expect(UpgradeCopyPresenterScript.format_upgrade_cost(cost, names).contains("Driftwood x2"), "upgrade cost copy should use display names")
+	_expect(UpgradeCopyPresenterScript.format_missing_resources(cost, owned, names).contains("Driftwood x1"), "missing resource block should include missing display names")
+	_expect(not UpgradeCopyPresenterScript.format_missing_resources(cost, owned, names).contains("Quartz Glass"), "missing resource block should omit fully owned resources")
+	_expect(UpgradeCopyPresenterScript.format_missing_resources_inline(cost, owned, names) == "Driftwood x1", "inline missing resources should stay comma-free for one item")
+	_expect(UpgradeCopyPresenterScript.format_missing_resources_inline(cost, {"driftwood": 2, "quartz_glass": 1}, names) == "none", "inline missing resources should report none when complete")
+	_expect(UpgradeCopyPresenterScript.format_material_need_list([]) == "materials", "empty material lists should keep fallback copy")
+	_expect(UpgradeCopyPresenterScript.format_material_need_list(["Driftwood", "Quartz Glass"]) == "Driftwood/Quartz Glass", "two material lists should use slash copy")
+	_expect(UpgradeCopyPresenterScript.format_need_list(["Food", "Water", "Power"]) == "Food/Water/Power", "three base needs should stay compact")
 
 func _test_upgrade_bay_readability_states() -> void:
 	var main := MainScript.new()

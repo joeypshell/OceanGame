@@ -18,6 +18,7 @@ const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedi
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -5774,23 +5775,22 @@ func _format_surface_tabs() -> String:
 	return "  ".join(parts)
 
 func _format_upgrade_cost(cost: Dictionary) -> String:
-	if cost.is_empty():
-		return "none"
-
-	var parts: Array[String] = []
-	for resource_id in cost.keys():
-		parts.append("%s x%d" % [_display_name_for_resource(resource_id), int(cost[resource_id])])
-
-	return ", ".join(parts)
+	return UpgradeCopyPresenterScript.format_upgrade_cost(cost, _resource_names_for_cost(cost))
 
 func _format_missing_resources(cost: Dictionary) -> String:
-	var parts: Array[String] = []
-	for resource_id in cost.keys():
-		var missing: int = int(cost[resource_id]) - progression_state.resource_count(resource_id)
-		if missing > 0:
-			parts.append(" %s x%d" % [_display_name_for_resource(resource_id), missing])
+	return UpgradeCopyPresenterScript.format_missing_resources(cost, _resource_counts_for_cost(cost), _resource_names_for_cost(cost))
 
-	return " none" if parts.is_empty() else "\n" + "\n".join(parts)
+func _resource_names_for_cost(cost: Dictionary) -> Dictionary:
+	var names_by_id := {}
+	for resource_id in cost.keys():
+		names_by_id[resource_id] = _display_name_for_resource(resource_id)
+	return names_by_id
+
+func _resource_counts_for_cost(cost: Dictionary) -> Dictionary:
+	var counts_by_id := {}
+	for resource_id in cost.keys():
+		counts_by_id[resource_id] = progression_state.resource_count(resource_id)
+	return counts_by_id
 
 func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 	var effect_summary := _format_upgrade_effect_summary(upgrade)
@@ -5964,13 +5964,7 @@ func _format_upgrade_progress_callout() -> String:
 	return "Upgrade progress: all current upgrades installed."
 
 func _format_missing_resources_inline(cost: Dictionary) -> String:
-	var parts: Array[String] = []
-	for resource_id in cost.keys():
-		var missing: int = int(cost[resource_id]) - progression_state.resource_count(resource_id)
-		if missing > 0:
-			parts.append("%s x%d" % [_display_name_for_resource(resource_id), missing])
-
-	return "none" if parts.is_empty() else ", ".join(parts)
+	return UpgradeCopyPresenterScript.format_missing_resources_inline(cost, _resource_counts_for_cost(cost), _resource_names_for_cost(cost))
 
 func _format_scan_progress_callout(prefix: String) -> String:
 	if run_completed_scans.is_empty():
@@ -6276,13 +6270,7 @@ func _format_starter_resource_target() -> String:
 	return "Shell Reef pockets: %s for Water Filter I." % _format_material_need_list(missing_materials)
 
 func _format_material_need_list(materials: Array[String]) -> String:
-	if materials.is_empty():
-		return "materials"
-	if materials.size() == 1:
-		return materials[0]
-	if materials.size() == 2:
-		return "%s/%s" % [materials[0], materials[1]]
-	return ", ".join(materials)
+	return UpgradeCopyPresenterScript.format_material_need_list(materials)
 
 func _base_need_names_at_or_below(threshold: int) -> Array[String]:
 	var needs: Array[String] = []
@@ -6295,13 +6283,7 @@ func _base_need_names_at_or_below(threshold: int) -> Array[String]:
 	return needs
 
 func _format_need_list(needs: Array[String]) -> String:
-	if needs.is_empty():
-		return "base"
-	if needs.size() == 1:
-		return needs[0]
-	if needs.size() == 2:
-		return "%s/%s" % [needs[0], needs[1]]
-	return "%s/%s/%s" % [needs[0], needs[1], needs[2]]
+	return UpgradeCopyPresenterScript.format_need_list(needs)
 
 func _format_expedition_ready_status() -> String:
 	if survival_state.chapter_complete:
