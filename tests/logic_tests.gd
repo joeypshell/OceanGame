@@ -55,6 +55,7 @@ const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
+const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
 const SurvivalNeedsPanelServiceScript := preload("res://scripts/ui/survival_needs_panel_service.gd")
@@ -251,6 +252,7 @@ func _initialize() -> void:
 	_run("HUD instrument bar service", _test_hud_instrument_bar_service)
 	_run("oxygen feedback service", _test_oxygen_feedback_service)
 	_run("health feedback service", _test_health_feedback_service)
+	_run("scan target card service", _test_scan_target_card_service)
 	_run("depth rail service", _test_depth_rail_service)
 	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
@@ -8196,6 +8198,27 @@ func _test_health_feedback_service() -> void:
 	HealthFeedbackServiceScript.update_feedback(main)
 	_expect(main.health_label.modulate == HudPresenterScript.HEALTH_DAMAGED_COLOR, "recent damage should tint normal health label")
 	_expect(main.health_icon.modulate == HudPresenterScript.HEALTH_DAMAGED_COLOR, "recent damage should tint normal health icon")
+	main.free()
+
+func _test_scan_target_card_service() -> void:
+	var main := MainScript.new()
+	main.scan_card_title_label = Label.new()
+	main.scan_target_label = Label.new()
+	main.scan_card_meta_label = Label.new()
+	main.scan_card_prompt_label = Label.new()
+
+	ScanTargetCardServiceScript.update_card(main, null)
+	_expect(main.scan_card_title_label.text == "SCAN TARGET", "scan target card title should stay exact")
+	_expect(main.scan_target_label.text == "none nearby", "scan target card should preserve no-target copy")
+	_expect(main.scan_card_meta_label.text == "No readable signal", "scan target card should preserve no-signal copy")
+	_expect(main.scan_card_prompt_label.text.contains("near a target"), "scan target card should preserve no-target prompt")
+
+	var target := _make_scan_target("thermal_vent", "Thermal Vent", Vector2.ZERO)
+	ScanTargetCardServiceScript.update_card(main, target)
+	_expect(main.scan_target_label.text == "Thermal Vent", "scan target card should show target display name")
+	_expect(main.scan_card_meta_label.text == "NEW | ENVIRONMENT", "scan target card should preserve target metadata copy")
+	_expect(main.scan_card_prompt_label.text == "HOLD F TO SCAN", "scan target card should preserve scan prompt copy")
+	target.free()
 	main.free()
 
 func _test_depth_rail_service() -> void:

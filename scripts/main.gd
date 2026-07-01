@@ -47,6 +47,7 @@ const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
+const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
@@ -4588,23 +4589,10 @@ func _update_scan_target_feedback() -> void:
 		if current_scan_target != null and current_scan_target.has_method("set_scan_selected"):
 			current_scan_target.set_scan_selected(true)
 
+	ScanTargetCardServiceScript.update_card(self, current_scan_target)
 	if current_scan_target == null:
-		scan_card_title_label.text = "SCAN TARGET"
-		scan_target_label.text = "none nearby"
-		scan_card_meta_label.text = "No readable signal"
-		scan_card_prompt_label.text = "Hold %s near a target" % _action_label("scan")
 		scan_reticle_root.visible = false
 	else:
-		scan_card_title_label.text = "SCAN TARGET"
-		scan_target_label.text = _scan_target_display_name(current_scan_target)
-		scan_card_meta_label.text = "%s | %s" % [
-			_format_scan_target_discovery_state(current_scan_target).to_upper(),
-			_format_scan_target_type(current_scan_target).to_upper()
-		]
-		if scan_charge_target == current_scan_target:
-			scan_card_prompt_label.text = "SCANNING %d%%" % int(roundf(_scan_charge_ratio() * 100.0))
-		else:
-			scan_card_prompt_label.text = "HOLD %s TO SCAN" % _action_label("scan")
 		_update_scan_reticle_position(current_scan_target)
 
 func _scan_target_candidate() -> Node:
