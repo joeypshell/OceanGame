@@ -49,6 +49,7 @@ const MinimapServiceScript := preload("res://scripts/ui/minimap_service.gd")
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
 const OpenHatchVisualStagingServiceScript := preload("res://scripts/debug/open_hatch_visual_staging_service.gd")
 const OuterShelfVisualStagingServiceScript := preload("res://scripts/debug/outer_shelf_visual_staging_service.gd")
+const OxygenFeedbackServiceScript := preload("res://scripts/ui/oxygen_feedback_service.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
@@ -247,6 +248,7 @@ func _initialize() -> void:
 	_run("HUD presenter", _test_hud_presenter)
 	_run("daylight timer HUD service", _test_daylight_timer_hud_service)
 	_run("HUD instrument bar service", _test_hud_instrument_bar_service)
+	_run("oxygen feedback service", _test_oxygen_feedback_service)
 	_run("depth rail service", _test_depth_rail_service)
 	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
@@ -8133,6 +8135,35 @@ func _test_daylight_timer_hud_service() -> void:
 
 	DaylightTimerHudServiceScript.update_timer(main, false)
 	_expect(not main.daylight_panel.visible and not main.daylight_label.visible and not main.daylight_bar_fill.visible, "hidden daylight timer should hide the timer nodes")
+	main.free()
+
+func _test_oxygen_feedback_service() -> void:
+	var main := MainScript.new()
+	main.oxygen_warning_panel = Panel.new()
+	main.oxygen_warning_label = Label.new()
+	main.oxygen_label = Label.new()
+	main.base_direction_label = Label.new()
+	main.dive_session.reset(40.0, 100.0)
+
+	OxygenFeedbackServiceScript.update_feedback(main)
+	_expect(not main.oxygen_warning_panel.visible, "oxygen feedback should stay hidden outside an active dive")
+	_expect(main.oxygen_label.modulate == Color.WHITE and main.base_direction_label.modulate == Color.WHITE, "oxygen feedback should reset active HUD colors")
+
+	main.dive_session.start()
+	main.dive_session.oxygen = 10.0
+	OxygenFeedbackServiceScript.update_feedback(main)
+	_expect(main.oxygen_warning_panel.visible, "low oxygen should show warning panel")
+	_expect(main.oxygen_warning_label.text == "O2 LOW\nPLAN RETURN", "low oxygen warning copy should stay exact")
+	_expect(main.oxygen_label.modulate == HudPresenterScript.oxygen_state_color("low"), "low oxygen should tint oxygen label")
+	_expect(main.base_direction_label.modulate == Color(1.0, 0.86, 0.36, 1.0), "low oxygen should tint base direction amber")
+	_expect(main.oxygen_label.scale == Vector2.ONE, "low oxygen should not pulse scale")
+
+	main.dive_session.oxygen = 4.0
+	OxygenFeedbackServiceScript.update_feedback(main)
+	_expect(main.oxygen_warning_label.text == "O2 CRITICAL\nRETURN TO BASE", "critical oxygen warning copy should stay exact")
+	_expect(main.oxygen_label.modulate == HudPresenterScript.oxygen_state_color("critical"), "critical oxygen should tint oxygen label")
+	_expect(main.base_direction_label.modulate == Color(1.0, 0.22, 0.14, 1.0), "critical oxygen should tint base direction red")
+	_expect(main.oxygen_label.scale.x >= 1.0 and main.oxygen_label.scale.x <= 1.08, "critical oxygen pulse should stay within current scale range")
 	main.free()
 
 func _test_depth_rail_service() -> void:
