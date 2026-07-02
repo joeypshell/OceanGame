@@ -3087,25 +3087,6 @@ func _update_cargo_slots() -> void:
 func _update_tool_belt(is_visible: bool) -> void:
 	ToolBeltServiceScript.update_tool_belt(self, is_visible)
 
-func _tool_belt_state(tool_id: String) -> String:
-	match tool_id:
-		"scanner":
-			return "active" if current_scan_target != null else "ready"
-		"burst":
-			if burst_thruster_cooldown_remaining > 0.0:
-				return "cooldown"
-			return "ready" if dive_session.oxygen > burst_thruster_oxygen_cost else "disabled"
-		"cutter":
-			return "ready" if progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID) else "locked"
-		"decoy":
-			if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
-				return "locked"
-			return "spent" if decoy_pulse_used_this_run else "ready"
-		"reserve":
-			return "locked"
-		_:
-			return "disabled"
-
 func _format_upgrade_status() -> String:
 	return UpgradeStateServiceScript.format_upgrade_status(self)
 

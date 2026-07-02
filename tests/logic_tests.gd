@@ -8651,6 +8651,15 @@ func _test_minimap_service() -> void:
 	main.free()
 
 func _test_tool_belt_service() -> void:
+	_expect(ToolBeltServiceScript.tool_belt_state("scanner", true, 0.0, 30.0, 6.0, false, false, false) == "active", "scanner should be active when a scan target is selected")
+	_expect(ToolBeltServiceScript.tool_belt_state("scanner", false, 0.0, 30.0, 6.0, false, false, false) == "ready", "scanner should be ready without a scan target")
+	_expect(ToolBeltServiceScript.tool_belt_state("burst", false, 1.0, 30.0, 6.0, false, false, false) == "cooldown", "burst tool should show cooldown before oxygen readiness")
+	_expect(ToolBeltServiceScript.tool_belt_state("burst", false, 0.0, 30.0, 6.0, false, false, false) == "ready", "burst tool should be ready when oxygen is above cost")
+	_expect(ToolBeltServiceScript.tool_belt_state("burst", false, 0.0, 6.0, 6.0, false, false, false) == "disabled", "burst tool should require oxygen above cost")
+	_expect(ToolBeltServiceScript.tool_belt_state("cutter", false, 0.0, 30.0, 6.0, true, false, false) == "ready", "cutter should be ready after Salvage Cutter")
+	_expect(ToolBeltServiceScript.tool_belt_state("decoy", false, 0.0, 30.0, 6.0, false, true, true) == "spent", "decoy should show spent after use")
+	_expect(ToolBeltServiceScript.tool_belt_state("reserve", false, 0.0, 30.0, 6.0, false, false, false) == "locked", "reserve tool slot should stay locked")
+
 	var main := MainScript.new()
 	main.tool_slot_nodes = [ColorRect.new(), ColorRect.new(), ColorRect.new(), ColorRect.new(), ColorRect.new()]
 	main.tool_icon_nodes = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
