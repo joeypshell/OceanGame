@@ -28,6 +28,7 @@ const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd"
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
+const LowerConnectorVisualStagingServiceScript := preload("res://scripts/debug/lower_connector_visual_staging_service.gd")
 const MirrorKelpVisualStagingServiceScript := preload("res://scripts/debug/mirror_kelp_visual_staging_service.gd")
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
 const OuterShelfVisualStagingServiceScript := preload("res://scripts/debug/outer_shelf_visual_staging_service.gd")
@@ -2114,38 +2115,7 @@ func _stage_debug_east_shelf_pocket_visual_review() -> void:
 	_update_hud()
 
 func _stage_debug_lower_connector_visual_review() -> void:
-	if not OS.has_feature("web"):
-		return
-
-	var staged_player := player
-	if staged_player == null:
-		staged_player = get_node_or_null("Player") as CharacterBody2D
-	if staged_player == null:
-		return
-
-	var turnback_hint := get_node_or_null("EastShelfSpur/ShelfDropConnector/TurnbackPocketHint") as Polygon2D
-	if turnback_hint == null:
-		return
-
-	if dive_session.result == DiveSessionScript.Result.READY:
-		dive_session.start()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	player = staged_player
-	var hint_center := Vector2.ZERO
-	for point in turnback_hint.polygon:
-		hint_center += point
-	hint_center /= max(1, turnback_hint.polygon.size())
-	player.global_position = turnback_hint.global_position + hint_center + Vector2(-120.0, -90.0)
-	player.velocity = Vector2.ZERO
-	player_in_base = false
-	dive_session.has_left_base = true
-	dive_session.oxygen = dive_session.max_oxygen
-	visual_smoke_route_stage = "lower_connector"
-	status_label.text = "Debug review: Shelf Drop Connector staged."
-	_update_depth()
-	_update_hud()
+	LowerConnectorVisualStagingServiceScript.stage_visual_review(self)
 
 func _stage_debug_blue_chimney_pocket_visual_review() -> void:
 	BlueChimneyVisualStagingServiceScript.stage_pocket_visual_review(self)
