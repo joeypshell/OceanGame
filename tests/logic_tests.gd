@@ -75,6 +75,7 @@ const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.g
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
+const RouteTimingCuePresenterScript := preload("res://scripts/ui/route_timing_cue_presenter.gd")
 const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const ConditionVisualSyncServiceScript := preload("res://scripts/ui/condition_visual_sync_service.gd")
@@ -2338,9 +2339,9 @@ func _test_outer_shelf_glass_rim_branch() -> void:
 
 func _test_outer_shelf_slackwater_timing_cue_visual_only() -> void:
 	var main := MainScript.new()
-	var low_alpha: float = main.call("_outer_shelf_slackwater_alpha", 0.0)
-	var high_alpha: float = main.call("_outer_shelf_slackwater_alpha", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
-	var repeat_alpha: float = main.call("_outer_shelf_slackwater_alpha", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.5)
+	var low_alpha: float = RouteTimingCuePresenterScript.outer_shelf_slackwater_alpha(0.0, MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
+	var high_alpha: float = RouteTimingCuePresenterScript.outer_shelf_slackwater_alpha(MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25, MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
+	var repeat_alpha: float = RouteTimingCuePresenterScript.outer_shelf_slackwater_alpha(MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.5, MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
 	var open_state: String = main.call("_outer_shelf_slackwater_decision_state", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
 	var surge_state: String = main.call("_outer_shelf_slackwater_decision_state", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.75)
 	var open_prompt: String = main.call("_outer_shelf_slackwater_decision_prompt", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
@@ -2947,9 +2948,9 @@ func _test_salvage_manifest_interaction() -> void:
 
 func _test_salvage_pocket_silt_timing_cue_visual_only() -> void:
 	var main := MainScript.new()
-	var low_alpha: float = main.call("_salvage_silt_timing_alpha", 0.0)
-	var high_alpha: float = main.call("_salvage_silt_timing_alpha", MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS * 0.25)
-	var repeat_alpha: float = main.call("_salvage_silt_timing_alpha", MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS * 0.5)
+	var low_alpha: float = RouteTimingCuePresenterScript.salvage_silt_timing_alpha(0.0, MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS)
+	var high_alpha: float = RouteTimingCuePresenterScript.salvage_silt_timing_alpha(MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS * 0.25, MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS)
+	var repeat_alpha: float = RouteTimingCuePresenterScript.salvage_silt_timing_alpha(MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS * 0.5, MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS)
 	_expect(high_alpha > low_alpha, "Salvage silt timing cue alpha should pulse upward to suggest a safe read window")
 	_expect(is_equal_approx(low_alpha, repeat_alpha), "Salvage silt timing cue pulse should repeat smoothly")
 	main.free()
@@ -3054,9 +3055,9 @@ func _test_tideglass_sample_interaction() -> void:
 
 func _test_glassfin_swarm_spacing_cue_visual_only() -> void:
 	var main := MainScript.new()
-	var low_alpha: float = main.call("_glassfin_swarm_spacing_alpha", 0.0)
-	var high_alpha: float = main.call("_glassfin_swarm_spacing_alpha", MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS * 0.25)
-	var repeat_alpha: float = main.call("_glassfin_swarm_spacing_alpha", MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS * 0.5)
+	var low_alpha: float = RouteTimingCuePresenterScript.glassfin_swarm_spacing_alpha(0.0, MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS)
+	var high_alpha: float = RouteTimingCuePresenterScript.glassfin_swarm_spacing_alpha(MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS * 0.25, MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS)
+	var repeat_alpha: float = RouteTimingCuePresenterScript.glassfin_swarm_spacing_alpha(MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS * 0.5, MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS)
 
 	_expect(high_alpha > low_alpha, "Glassfin Swarm spacing cue alpha should pulse upward to suggest a pass window")
 	_expect(is_equal_approx(low_alpha, repeat_alpha), "Glassfin Swarm spacing cue pulse should repeat smoothly")
@@ -9700,9 +9701,9 @@ func _test_east_shelf_pocket_prompt_interaction() -> void:
 
 func _test_east_shelf_current_surge_visual_timing() -> void:
 	var main := MainScript.new()
-	var low_alpha: float = main.call("_east_shelf_current_surge_alpha", 0.0)
-	var high_alpha: float = main.call("_east_shelf_current_surge_alpha", MainScript.EAST_SHELF_SURGE_PERIOD_SECONDS * 0.25)
-	var return_alpha: float = main.call("_east_shelf_current_surge_alpha", MainScript.EAST_SHELF_SURGE_PERIOD_SECONDS * 0.5)
+	var low_alpha: float = RouteTimingCuePresenterScript.east_shelf_current_surge_alpha(0.0, MainScript.EAST_SHELF_SURGE_PERIOD_SECONDS)
+	var high_alpha: float = RouteTimingCuePresenterScript.east_shelf_current_surge_alpha(MainScript.EAST_SHELF_SURGE_PERIOD_SECONDS * 0.25, MainScript.EAST_SHELF_SURGE_PERIOD_SECONDS)
+	var return_alpha: float = RouteTimingCuePresenterScript.east_shelf_current_surge_alpha(MainScript.EAST_SHELF_SURGE_PERIOD_SECONDS * 0.5, MainScript.EAST_SHELF_SURGE_PERIOD_SECONDS)
 
 	_expect(high_alpha > low_alpha, "East Shelf current-surge alpha should pulse upward to suggest timing")
 	_expect(is_equal_approx(low_alpha, return_alpha), "East Shelf current-surge pulse should repeat smoothly")
@@ -9729,9 +9730,9 @@ func _test_east_shelf_current_surge_visual_timing() -> void:
 
 func _test_blue_chimney_reverse_draft_visual_timing() -> void:
 	var main := MainScript.new()
-	var low_alpha: float = main.call("_blue_chimney_reverse_draft_alpha", 0.0)
-	var high_alpha: float = main.call("_blue_chimney_reverse_draft_alpha", MainScript.BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS * 0.25)
-	var return_alpha: float = main.call("_blue_chimney_reverse_draft_alpha", MainScript.BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS * 0.5)
+	var low_alpha: float = RouteTimingCuePresenterScript.blue_chimney_reverse_draft_alpha(0.0, MainScript.BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS)
+	var high_alpha: float = RouteTimingCuePresenterScript.blue_chimney_reverse_draft_alpha(MainScript.BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS * 0.25, MainScript.BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS)
+	var return_alpha: float = RouteTimingCuePresenterScript.blue_chimney_reverse_draft_alpha(MainScript.BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS * 0.5, MainScript.BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS)
 
 	_expect(high_alpha > low_alpha, "Blue Chimney reverse draft alpha should pulse upward to suggest timing")
 	_expect(is_equal_approx(low_alpha, return_alpha), "Blue Chimney reverse draft pulse should repeat smoothly")
@@ -9760,9 +9761,9 @@ func _test_blue_chimney_reverse_draft_visual_timing() -> void:
 
 func _test_blackwater_pressure_cue_visual_timing() -> void:
 	var main := MainScript.new()
-	var low_alpha: float = main.call("_blackwater_pressure_cue_alpha", 0.0)
-	var high_alpha: float = main.call("_blackwater_pressure_cue_alpha", MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
-	var return_alpha: float = main.call("_blackwater_pressure_cue_alpha", MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.5)
+	var low_alpha: float = RouteTimingCuePresenterScript.blackwater_pressure_cue_alpha(0.0, MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS)
+	var high_alpha: float = RouteTimingCuePresenterScript.blackwater_pressure_cue_alpha(MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25, MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS)
+	var return_alpha: float = RouteTimingCuePresenterScript.blackwater_pressure_cue_alpha(MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.5, MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS)
 
 	_expect(high_alpha > low_alpha, "Blackwater pressure cue alpha should pulse upward to suggest timing")
 	_expect(is_equal_approx(low_alpha, return_alpha), "Blackwater pressure cue pulse should repeat smoothly")
@@ -9803,9 +9804,9 @@ func _test_blackwater_pressure_cue_visual_timing() -> void:
 
 func _test_hollow_reef_timing_current_visual_only() -> void:
 	var main := MainScript.new()
-	var low_alpha: float = main.call("_hollow_reef_timing_current_alpha", 0.0)
-	var high_alpha: float = main.call("_hollow_reef_timing_current_alpha", MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS * 0.25)
-	var return_alpha: float = main.call("_hollow_reef_timing_current_alpha", MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS * 0.5)
+	var low_alpha: float = RouteTimingCuePresenterScript.hollow_reef_timing_current_alpha(0.0, MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS)
+	var high_alpha: float = RouteTimingCuePresenterScript.hollow_reef_timing_current_alpha(MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS * 0.25, MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS)
+	var return_alpha: float = RouteTimingCuePresenterScript.hollow_reef_timing_current_alpha(MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS * 0.5, MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS)
 
 	_expect(high_alpha > low_alpha, "Hollow Reef timing current alpha should pulse upward to suggest wait/pass timing")
 	_expect(is_equal_approx(low_alpha, return_alpha), "Hollow Reef timing current pulse should repeat smoothly")
