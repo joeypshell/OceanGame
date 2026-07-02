@@ -115,6 +115,17 @@ The runner prints compact step summaries and leaves detailed tool output to the 
 
 Set `OCEANGAME_TEST_VERBOSE=1` before running a tier when you need the full underlying command output on success.
 
+## File-Length Audit
+
+Use `scripts/check-file-lengths.ps1` to report handwritten source and documentation files that are getting too large for reliable agent and human review. The default mode is report-only.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\check-file-lengths.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\check-file-lengths.ps1 -FailOnRefactorThreshold $true
+```
+
+The audit scans common handwritten files (`*.gd`, `*.ps1`, `*.mjs`, `*.js`, `*.ts`, `*.md`), skips generated/vendor/cache/build output, warns above 500 lines, and marks files above 1000 lines as refactor candidates. Enforcement is intentionally opt-in until legacy large files are decomposed.
+
 ## Area 01 Source Truth Validation
 
 Area 01 has a dedicated Godot-side source-truth validator for runtime terrain/collision/rim drift. It loads `data/maps/area_01_runtime_geometry.generated.json`, builds the same runtime terrain used by `Main.tscn`, and fails if generated visible terrain, `CollisionPolygon2D` blockers, rim/lip polygons, or source-owned `Area2D` hooks no longer match the generated runtime IDs and polygons.
