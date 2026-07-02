@@ -1996,29 +1996,7 @@ func _stage_debug_dusk_trench_route_visual_review() -> void:
 	DuskTrenchVisualStagingServiceScript.stage_route_visual_review(self)
 
 func _stage_debug_dusk_trench_payoff_visual_review(recovered := false) -> void:
-	_stage_debug_dusk_trench_route_visual_review()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	var ledge_interact := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone") as Area2D
-	if ledge_interact == null:
-		return
-
-	player.global_position = ledge_interact.global_position
-	player.velocity = Vector2.ZERO
-	player_near_glass_kelp_ledge = true
-	run_reached_dusk_trench = true
-	if recovered:
-		_try_glass_kelp_ledge_interaction()
-		visual_smoke_route_stage = "dusk_trench_payoff_recovered"
-		status_label.text = "Debug review: Dusk Trench payoff recovered."
-	else:
-		run_glass_kelp_reading_recovered = false
-		_sync_glass_kelp_reading_state()
-		visual_smoke_route_stage = "dusk_trench_payoff"
-		status_label.text = "Debug review: Dusk Trench payoff staged."
-	_update_depth()
-	_update_hud()
+	DuskTrenchVisualStagingServiceScript.stage_payoff_visual_review(self, recovered)
 
 func _stage_debug_hollow_reef_route_visual_review() -> void:
 	HollowReefVisualStagingServiceScript.stage_route_visual_review(self)

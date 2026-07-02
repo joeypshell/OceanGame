@@ -146,6 +146,7 @@ func _initialize() -> void:
 	_run("debug Health Damage extraction visual staging service", _test_health_damage_extraction_visual_staging_service)
 	_run("debug Expanded Route visual staging service", _test_expanded_route_visual_staging_service)
 	_run("debug Silt Vein visual staging service", _test_silt_vein_visual_staging_service)
+	_run("debug Dusk Trench payoff visual staging service", _test_dusk_trench_payoff_visual_staging_service)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("scan hold timing helper", _test_scan_hold_timing_helper)
 	_run("compact scan marker", _test_compact_scan_marker)
@@ -1593,6 +1594,17 @@ func _test_silt_vein_visual_staging_service() -> void:
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Silt Vein staging should stay inert outside web visual smoke")
 	_expect(main.visual_smoke_route_stage == "", "Silt Vein staging should not set route state outside web visual smoke")
 	_expect(not main.dive_session.has_left_base, "Silt Vein staging should not mark route progress outside web visual smoke")
+	main.free()
+
+func _test_dusk_trench_payoff_visual_staging_service() -> void:
+	var main := MainScript.new()
+	main.dive_session.reset(30.0)
+	main.visual_smoke_route_stage = ""
+
+	DuskTrenchVisualStagingServiceScript.stage_payoff_visual_review(main)
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Dusk Trench payoff staging should stay inert outside web visual smoke")
+	_expect(main.visual_smoke_route_stage == "", "Dusk Trench payoff staging should not set route state outside web visual smoke")
+	_expect(not main.run_reached_dusk_trench, "Dusk Trench payoff staging should not set route memory outside web visual smoke")
 	main.free()
 
 func _test_scanner_target_resolver() -> void:
