@@ -5618,10 +5618,10 @@ func _test_result_progress_callouts() -> void:
 		"kelp_fiber": 2,
 		"shell_fragments": 1,
 	}
-	_expect(main._format_upgrade_progress_callout() == "Upgrade progress: Oxygen Tank I ready to buy.", "result progress should call out ready upgrades")
+	_expect(UpgradeStateServiceScript.format_upgrade_progress_callout(main) == "Upgrade progress: Oxygen Tank I ready to buy.", "result progress should call out ready upgrades")
 
 	main.progression_state.purchase_upgrade(OxygenTankUpgrade.id, OxygenTankUpgrade.resource_cost)
-	_expect(main._format_upgrade_progress_callout().contains("scan Thermal Vent"), "result progress should call out missing scan prerequisites")
+	_expect(UpgradeStateServiceScript.format_upgrade_progress_callout(main).contains("scan Thermal Vent"), "result progress should call out missing scan prerequisites")
 
 	main.run_completed_scans = ["thermal_vent", "wreck_signal_cache"]
 	_expect(SurfaceRunSummaryServiceScript.format_scan_progress_callout(main.progression_state, main.run_completed_scans, "Scans kept") == "Scans kept: Thermal Vent, Wreck Signal Cache.", "result progress should name scans kept this dive")
@@ -6968,7 +6968,7 @@ func _test_upgrade_bay_readability_states() -> void:
 	}
 	state = UpgradeStateServiceScript.format_upgrade_state(main, OxygenTankUpgrade)
 	_expect(state.begins_with("State: Available now"), "upgrade bay should label affordable upgrades")
-	_expect(main._format_ready_upgrade_callout().contains("Oxygen Tank I"), "upgrade bay should call out newly ready upgrades")
+	_expect(UpgradeStateServiceScript.format_ready_upgrade_callout(main).contains("Oxygen Tank I"), "upgrade bay should call out newly ready upgrades")
 
 	main.progression_state.purchase_upgrade(OxygenTankUpgrade.id, OxygenTankUpgrade.resource_cost)
 	state = UpgradeStateServiceScript.format_upgrade_state(main, OxygenTankUpgrade)
@@ -7157,7 +7157,7 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 		main._format_gulper_research_callout(),
 		main._format_echo_lens_research_callout(),
 		main._format_wreck_echo_research_callout(),
-		main._format_upgrade_progress_callout(),
+		UpgradeStateServiceScript.format_upgrade_progress_callout(main),
 		SurfaceRunSummaryServiceScript.format_scan_progress_callout(main.progression_state, main.run_completed_scans, "Discoveries recorded"),
 		SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main),
 	])

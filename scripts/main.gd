@@ -1018,7 +1018,7 @@ func _try_extract() -> void:
 		extracted_count,
 		ResourceSummaryServiceScript.format_resource_counts(banked_resources, survival_state, RESOURCE_CATEGORY_LABELS),
 		ResourceSummaryServiceScript.format_survival_supply_counts(banked_survival_supplies, survival_state, RESOURCE_CATEGORY_LABELS),
-		_format_ready_upgrade_callout(),
+		UpgradeStateServiceScript.format_ready_upgrade_callout(self),
 	]
 	_record_recent_expedition("Extracted", extracted_count)
 	SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
@@ -1069,7 +1069,7 @@ func _try_craft_night_power_patch() -> bool:
 		_set_night_build_feedback("Power Patch already installed for tomorrow.")
 		return false
 	if not progression_state.spend_resources(NIGHT_POWER_PATCH_COST):
-		_set_night_build_feedback("Power Patch needs %s." % _format_missing_resources_inline(NIGHT_POWER_PATCH_COST))
+		_set_night_build_feedback("Power Patch needs %s." % UpgradeStateServiceScript.format_missing_resources_inline(self, NIGHT_POWER_PATCH_COST))
 		return false
 
 	for index in range(NIGHT_POWER_PATCH_POWER_GAIN):
@@ -2068,7 +2068,7 @@ func _try_purchase_selected_upgrade() -> void:
 
 	if UpgradePurchaseScript.missing_upgrade(progression_state, upgrade) != "":
 		upgrade_menu_feedback = "Missing upgrade: %s. %s" % [
-			_format_upgrade_display_name(upgrade.required_upgrade),
+			UpgradeStateServiceScript.format_upgrade_display_name(self, upgrade.required_upgrade),
 			upgrade.locked_reason
 		]
 		status_label.text = "%s is locked by an upgrade prerequisite." % upgrade.display_name
@@ -2085,7 +2085,7 @@ func _try_purchase_selected_upgrade() -> void:
 		SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 		status_label.text = "Purchased %s." % upgrade.display_name
 	else:
-		var missing_resources := _format_missing_resources_inline(upgrade.resource_cost)
+		var missing_resources := UpgradeStateServiceScript.format_missing_resources_inline(self, upgrade.resource_cost)
 		upgrade_menu_feedback = "Missing %s. Next: bank it for %s." % [
 			missing_resources,
 			upgrade.display_name,
@@ -2743,15 +2743,6 @@ func _update_cargo_slots() -> void:
 func _format_future_tool_upgrade_promise() -> String:
 	return ""
 
-func _format_ready_upgrade_callout() -> String:
-	return UpgradeStateServiceScript.format_ready_upgrade_callout(self)
-
-func _format_upgrade_progress_callout() -> String:
-	return UpgradeStateServiceScript.format_upgrade_progress_callout(self)
-
-func _format_missing_resources_inline(cost: Dictionary) -> String:
-	return UpgradeStateServiceScript.format_missing_resources_inline(self, cost)
-
 func _sync_survival_supply_cache_state() -> void:
 	SurvivalSupplyCacheStateServiceScript.sync_state(self)
 
@@ -2767,9 +2758,6 @@ func _record_salvage_data_cache_discovery_if_extracted() -> void:
 		"Recovered Wide Reef cutter prep data.",
 		"Unlocks Salvage Cutter I for the sealed Wide Reef salvage pocket."
 	)
-
-func _format_upgrade_display_name(upgrade_id: String) -> String:
-	return UpgradeStateServiceScript.format_upgrade_display_name(self, upgrade_id)
 
 func _selected_upgrade_definition() -> UpgradeDefinition:
 	if upgrade_definitions.is_empty():
