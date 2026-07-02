@@ -1,6 +1,8 @@
 class_name MirrorKelpVisualStagingService
 extends RefCounted
 
+const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
+
 const MIRROR_KELP_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass"
 
 static func stage_visual_review(host, recovered := false, observed := false) -> void:
@@ -40,9 +42,9 @@ static func stage_visual_review(host, recovered := false, observed := false) -> 
 	host.run_tideglass_sample_recovered = false
 	while host.run_completed_scans.has("mirrorfin_drift"):
 		host.run_completed_scans.erase("mirrorfin_drift")
-	host._sync_salvage_manifest_state()
-	host._sync_salvage_data_cache_state()
-	host._sync_tideglass_sample_state()
+	RoutePayoffSyncServiceScript.sync_salvage_manifest_payoff(host)
+	RoutePayoffSyncServiceScript.sync_salvage_data_cache_payoff(host)
+	RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(host)
 	host.visual_smoke_route_stage = "mirror_kelp_pass"
 	if host.status_label != null:
 		host.status_label.text = "Debug review: Mirror Kelp Pass staged."
@@ -54,7 +56,7 @@ static func stage_visual_review(host, recovered := false, observed := false) -> 
 			host.player_near_tideglass_sample = true
 			host.run_tideglass_sample_recovered = true
 			host.run_reached_dusk_trench = true
-			host._sync_tideglass_sample_state()
+			RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(host)
 			host.visual_smoke_route_stage = "mirror_kelp_tideglass"
 			if host.status_label != null:
 				host.status_label.text = "Debug review: Mirror Kelp Tideglass payoff staged."

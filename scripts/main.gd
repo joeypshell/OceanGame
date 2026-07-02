@@ -1504,7 +1504,7 @@ func _try_east_shelf_pocket_interaction() -> bool:
 		return true
 
 	run_east_shelf_pocket_ping_recovered = true
-	_sync_east_shelf_pocket_payoff_state()
+	RoutePayoffSyncServiceScript.sync_east_shelf_pocket_payoff(self)
 	if status_label != null:
 		if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
 			status_label.text = "East Shelf signal core recovered. Echo Lens reads the seal; return to plan a key."
@@ -1572,7 +1572,7 @@ func _try_blue_chimney_interaction() -> bool:
 		return true
 
 	run_blue_chimney_draft_reading_recovered = true
-	_sync_blue_chimney_payoff_state()
+	RoutePayoffSyncServiceScript.sync_blue_chimney_payoff(self)
 	if status_label != null:
 		status_label.text = "Blue Chimney survey core recovered. Return safely to keep the lower-route reading."
 	if is_inside_tree():
@@ -1592,7 +1592,7 @@ func _try_blackwater_crack_interaction() -> bool:
 			return true
 
 		run_blackwater_trace_recovered = true
-		_sync_blackwater_trace_payoff_state()
+		RoutePayoffSyncServiceScript.sync_blackwater_trace_payoff(self)
 		if status_label != null:
 			status_label.text = "Blackwater trace recorded. Return safely via Silt Vein, Blue Chimney, and Drop Arch to keep the deep-route reading."
 		if is_inside_tree():
@@ -1618,7 +1618,7 @@ func _try_glass_kelp_ledge_interaction() -> bool:
 
 	run_glass_kelp_reading_recovered = true
 	run_reached_dusk_trench = true
-	_sync_glass_kelp_reading_state()
+	RoutePayoffSyncServiceScript.sync_glass_kelp_reading_payoff(self)
 	if status_label != null:
 		status_label.text = "Glass Kelp reading recorded. Return safely through Blackwater and Silt Vein to keep the ledge note."
 	if is_inside_tree():
@@ -1638,7 +1638,7 @@ func _try_hollow_reef_interaction() -> bool:
 
 	run_hollow_reef_reading_recovered = true
 	run_reached_dusk_trench = true
-	_sync_hollow_reef_reading_state()
+	RoutePayoffSyncServiceScript.sync_hollow_reef_reading_payoff(self)
 	if status_label != null:
 		status_label.text = "Hollow Reef cave reading recorded. Return safely through Dusk and Blackwater to keep the branch note."
 	if is_inside_tree():
@@ -1676,7 +1676,7 @@ func _try_salvage_data_cache_interaction() -> bool:
 
 	run_salvage_data_cache_recovered = true
 	run_reached_dusk_trench = true
-	_sync_salvage_data_cache_state()
+	RoutePayoffSyncServiceScript.sync_salvage_data_cache_payoff(self)
 	if status_label != null:
 		status_label.text = "Salvage data cache recovered for Salvage Cutter I prep. Return safely through Hollow Reef to keep the wreck note."
 	if is_inside_tree():
@@ -1698,7 +1698,7 @@ func _try_salvage_manifest_interaction() -> bool:
 
 	run_salvage_manifest_recovered = true
 	run_reached_dusk_trench = true
-	_sync_salvage_manifest_state()
+	RoutePayoffSyncServiceScript.sync_salvage_manifest_payoff(self)
 	if status_label != null:
 		status_label.text = "Salvage manifest recovered. Return safely or risk cargo space on nearby shell fragments."
 	if is_inside_tree():
@@ -1718,7 +1718,7 @@ func _try_outer_shelf_survey_interaction() -> bool:
 
 	run_outer_shelf_survey_recovered = true
 	run_reached_dusk_trench = true
-	_sync_outer_shelf_survey_state()
+	RoutePayoffSyncServiceScript.sync_outer_shelf_survey_payoff(self)
 	if status_label != null:
 		status_label.text = "Outer Shelf survey recorded. Choose nearby Kelp Fiber, return through Mirror/Wide/Hollow, or read the Glass Rim current: %s" % _outer_shelf_slackwater_decision_text(outer_shelf_slackwater_timer)
 	if is_inside_tree():
@@ -1738,7 +1738,7 @@ func _try_rim_glass_reading_interaction() -> bool:
 
 	run_rim_glass_reading_recovered = true
 	run_reached_dusk_trench = true
-	_sync_rim_glass_reading_state()
+	RoutePayoffSyncServiceScript.sync_rim_glass_reading_payoff(self)
 	if status_label != null:
 		status_label.text = "Glass Rim reading recovered. Bank it now, or risk nearby Kelp Fiber if oxygen allows."
 	if is_inside_tree():
@@ -1758,7 +1758,7 @@ func _try_tideglass_sample_interaction() -> bool:
 
 	run_tideglass_sample_recovered = true
 	run_reached_dusk_trench = true
-	_sync_tideglass_sample_state()
+	RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(self)
 	if status_label != null:
 		status_label.text = "Tideglass Sample recovered. Return safely through Wide Reef and Hollow Reef to keep the Mirror Kelp reading."
 	if is_inside_tree():
@@ -2575,15 +2575,9 @@ func _sync_discovery_reveals() -> void:
 	_sync_wreck_echo_state()
 	_sync_sealed_shelf_hatch_state()
 	_sync_blackwater_crack_gate_state()
-	_sync_east_shelf_pocket_payoff_state()
-	_sync_blue_chimney_payoff_state()
-	_sync_outer_shelf_survey_state()
-
-func _sync_east_shelf_pocket_payoff_state() -> void:
 	RoutePayoffSyncServiceScript.sync_east_shelf_pocket_payoff(self)
-
-func _sync_blue_chimney_payoff_state() -> void:
 	RoutePayoffSyncServiceScript.sync_blue_chimney_payoff(self)
+	RoutePayoffSyncServiceScript.sync_outer_shelf_survey_payoff(self)
 
 func _reveal_thermal_vent_route() -> void:
 	DiscoveryRevealSyncServiceScript.reveal_thermal_vent_route(self)
@@ -2620,37 +2614,13 @@ func _format_blackwater_prompt() -> String:
 
 	return "Blackwater Crack: %s read Resonance seal" % _action_label("interact")
 
-func _sync_blackwater_trace_payoff_state() -> void:
-	RoutePayoffSyncServiceScript.sync_blackwater_trace_payoff(self)
-
-func _sync_glass_kelp_reading_state() -> void:
-	RoutePayoffSyncServiceScript.sync_glass_kelp_reading_payoff(self)
-
-func _sync_hollow_reef_reading_state() -> void:
-	RoutePayoffSyncServiceScript.sync_hollow_reef_reading_payoff(self)
-
-func _sync_salvage_data_cache_state() -> void:
-	RoutePayoffSyncServiceScript.sync_salvage_data_cache_payoff(self)
-
-func _sync_salvage_manifest_state() -> void:
-	RoutePayoffSyncServiceScript.sync_salvage_manifest_payoff(self)
-
 func _sync_salvage_pocket_open_state() -> void:
 	RouteGateSyncServiceScript.sync_salvage_pocket_open(self)
-	_sync_salvage_manifest_state()
-
-func _sync_tideglass_sample_state() -> void:
-	RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(self)
-
-func _sync_outer_shelf_survey_state() -> void:
-	RoutePayoffSyncServiceScript.sync_outer_shelf_survey_payoff(self)
-
-func _sync_rim_glass_reading_state() -> void:
-	RoutePayoffSyncServiceScript.sync_rim_glass_reading_payoff(self)
+	RoutePayoffSyncServiceScript.sync_salvage_manifest_payoff(self)
 
 func _sync_blackwater_crack_gate_state() -> void:
 	RouteGateSyncServiceScript.sync_blackwater_crack_gate(self)
-	_sync_blackwater_trace_payoff_state()
+	RoutePayoffSyncServiceScript.sync_blackwater_trace_payoff(self)
 	_sync_blackwater_signal_opportunity(_current_condition_id())
 
 func _wreck_echo_route_available() -> bool:
@@ -2895,16 +2865,16 @@ func _reset_run_telemetry() -> void:
 	RunTelemetryResetServiceScript.reset_run_telemetry(self)
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
-	_sync_east_shelf_pocket_payoff_state()
-	_sync_blue_chimney_payoff_state()
-	_sync_blackwater_trace_payoff_state()
-	_sync_glass_kelp_reading_state()
-	_sync_hollow_reef_reading_state()
-	_sync_salvage_manifest_state()
-	_sync_salvage_data_cache_state()
-	_sync_outer_shelf_survey_state()
-	_sync_rim_glass_reading_state()
-	_sync_tideglass_sample_state()
+	RoutePayoffSyncServiceScript.sync_east_shelf_pocket_payoff(self)
+	RoutePayoffSyncServiceScript.sync_blue_chimney_payoff(self)
+	RoutePayoffSyncServiceScript.sync_blackwater_trace_payoff(self)
+	RoutePayoffSyncServiceScript.sync_glass_kelp_reading_payoff(self)
+	RoutePayoffSyncServiceScript.sync_hollow_reef_reading_payoff(self)
+	RoutePayoffSyncServiceScript.sync_salvage_manifest_payoff(self)
+	RoutePayoffSyncServiceScript.sync_salvage_data_cache_payoff(self)
+	RoutePayoffSyncServiceScript.sync_outer_shelf_survey_payoff(self)
+	RoutePayoffSyncServiceScript.sync_rim_glass_reading_payoff(self)
+	RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(self)
 	_sync_survival_supply_cache_state()
 
 func _format_run_telemetry(result_name: String) -> String:

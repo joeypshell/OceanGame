@@ -2,6 +2,7 @@ class_name WideReefVisualStagingService
 extends RefCounted
 
 const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
+const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 
 const WIDE_REEF_CHAMBER_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"
 
@@ -56,10 +57,10 @@ static func stage_visual_review(host, cutter_owned := false) -> void:
 	host.run_hollow_reef_reading_recovered = true
 	host.run_salvage_manifest_recovered = false
 	host.run_salvage_data_cache_recovered = false
-	host._sync_glass_kelp_reading_state()
-	host._sync_hollow_reef_reading_state()
-	host._sync_salvage_manifest_state()
-	host._sync_salvage_data_cache_state()
+	RoutePayoffSyncServiceScript.sync_glass_kelp_reading_payoff(host)
+	RoutePayoffSyncServiceScript.sync_hollow_reef_reading_payoff(host)
+	RoutePayoffSyncServiceScript.sync_salvage_manifest_payoff(host)
+	RoutePayoffSyncServiceScript.sync_salvage_data_cache_payoff(host)
 	host.visual_smoke_route_stage = "wide_reef_salvage_open" if cutter_owned else "wide_reef_chamber"
 	host.status_label.text = "Debug review: Wide Reef salvage pocket opened." if cutter_owned else "Debug review: Wide Reef Chamber staged."
 	host._update_depth()

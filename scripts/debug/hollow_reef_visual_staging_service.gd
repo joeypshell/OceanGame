@@ -2,6 +2,7 @@ class_name HollowReefVisualStagingService
 extends RefCounted
 
 const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
+const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 
 const HOLLOW_REEF_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"
 const HOLLOW_REEF_INTERACT_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteractZone"
@@ -50,8 +51,8 @@ static func stage_route_visual_review(host) -> void:
 	host.run_reached_dusk_trench = true
 	host.run_glass_kelp_reading_recovered = false
 	host.run_hollow_reef_reading_recovered = false
-	host._sync_glass_kelp_reading_state()
-	host._sync_hollow_reef_reading_state()
+	RoutePayoffSyncServiceScript.sync_glass_kelp_reading_payoff(host)
+	RoutePayoffSyncServiceScript.sync_hollow_reef_reading_payoff(host)
 	host.visual_smoke_route_stage = "hollow_reef_route"
 	host.status_label.text = "Debug review: Hollow Reef entrance staged."
 	host._update_depth()
@@ -75,7 +76,7 @@ static func stage_payoff_visual_review(host, recovered := false) -> void:
 		host.visual_smoke_route_stage = "hollow_reef_return"
 	else:
 		host.run_hollow_reef_reading_recovered = false
-		host._sync_hollow_reef_reading_state()
+		RoutePayoffSyncServiceScript.sync_hollow_reef_reading_payoff(host)
 		host.visual_smoke_route_stage = "hollow_reef_payoff"
 		host.status_label.text = "Debug review: Hollow Reef payoff staged."
 	host._update_depth()
