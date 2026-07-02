@@ -10,6 +10,7 @@ const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_exped
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurvivalNeedSummaryServiceScript := preload("res://scripts/ui/survival_need_summary_service.gd")
+const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
 
 static func format_run_telemetry(host, result_name: String) -> String:
 	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nLantern Ray route: %s\nCargo collected:%s%s\nScans: %s\nPredator contacts: %d\nHealth damage events: %d\nOxygen at result: %d / %d\nHealth at result: %d / %d\nFailure cause: %s" % [
@@ -151,7 +152,7 @@ static func format_extraction_result_summary(host, extracted_count: int, banked_
 		host._format_rim_glass_reading_callout(),
 		host._format_outer_shelf_survey_research_callout(),
 		host._format_sealed_shelf_hatch_readiness_callout(),
-		host._format_upgrade_progress_callout(),
+		UpgradeStateServiceScript.format_upgrade_progress_callout(host),
 		format_scan_progress_callout(host.progression_state, host.run_completed_scans, "Discoveries recorded"),
 		roundi(host.progression_state.best_depth_reached),
 		format_night_report_block(host),
@@ -212,8 +213,8 @@ static func format_night_build_choice_line(host) -> String:
 		not host.survival_state.chapter_failed and not host.survival_state.chapter_complete,
 		host.progression_state.can_afford(host.NIGHT_POWER_PATCH_COST),
 		ready_upgrade.display_name if ready_upgrade != null else "",
-		host._format_upgrade_progress_callout(),
-		host._format_missing_resources_inline(host.NIGHT_POWER_PATCH_COST),
+		UpgradeStateServiceScript.format_upgrade_progress_callout(host),
+		UpgradeStateServiceScript.format_missing_resources_inline(host, host.NIGHT_POWER_PATCH_COST),
 		host._action_label("interact"),
 		host.NIGHT_POWER_PATCH_POWER_GAIN
 	)
