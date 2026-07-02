@@ -7661,7 +7661,7 @@ func _test_pressure_lock_guidance_text() -> void:
 func _test_surface_summary_tabs() -> void:
 	var main := MainScript.new()
 
-	var ready_summary := main._format_ready_panel_summary()
+	var ready_summary := SurfaceRunSummaryServiceScript.format_ready_panel_summary(main)
 	_expect(ready_summary.contains("E/Enter begins."), "ready panel should keep the start action visible")
 	_expect(ready_summary.contains("Base needs: Food"), "ready panel should explain survival needs with readable names")
 	_expect(ready_summary.contains("Tonight: Food -1, Water -1, Power -1."), "ready panel should explain nightly survival pressure")
@@ -7672,11 +7672,11 @@ func _test_surface_summary_tabs() -> void:
 	_expect(not ready_summary.contains("Survival F"), "ready panel should not use cryptic survival abbreviations")
 	_expect(not ready_summary.contains("F9"), "ready panel should hide prototype reset copy when debug telemetry is off")
 	main.carried_tomorrow_intention = "bank Power supply soon to protect tomorrow's oxygen."
-	var carried_ready_summary := main._format_ready_panel_summary()
+	var carried_ready_summary := SurfaceRunSummaryServiceScript.format_ready_panel_summary(main)
 	_expect(carried_ready_summary.contains("Day priority: bank Power supply soon"), "ready panel should carry the confirmed night intention into the next day")
 	main.carried_tomorrow_intention = ""
 	main.show_debug_telemetry = true
-	_expect(main._format_ready_panel_summary().contains("F9 resets prototype save"), "ready panel may expose reset copy when debug telemetry is on")
+	_expect(SurfaceRunSummaryServiceScript.format_ready_panel_summary(main).contains("F9 resets prototype save"), "ready panel may expose reset copy when debug telemetry is on")
 	main.show_debug_telemetry = false
 
 	_expect(not UpgradeStateServiceScript.surface_tabs_enabled(main), "surface tabs should be hidden before extraction")
@@ -7784,7 +7784,7 @@ func _test_prompt_formatter_guard_coverage() -> void:
 	var burst_label: String = main._action_label("burst_thruster")
 	var decoy_label: String = main._action_label("decoy_pulse")
 
-	_expect(main._format_ready_panel_summary().contains("%s begins." % interact_label), "ready summary should derive its start label from the prompt helper")
+	_expect(SurfaceRunSummaryServiceScript.format_ready_panel_summary(main).contains("%s begins." % interact_label), "ready summary should derive its start label from the prompt helper")
 	_expect(main._format_upgrade_menu_title(2, 7).contains("%s select" % vertical_label), "upgrade title should derive selection labels from the prompt helper")
 	_expect(SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main).contains("press %s" % restart_label), "next expedition prompt should derive restart labels from the prompt helper")
 	_expect(UpgradeStateServiceScript.format_burst_thruster_prompt(main).begins_with("%s burst" % burst_label), "burst prompt should derive its label from the prompt helper")

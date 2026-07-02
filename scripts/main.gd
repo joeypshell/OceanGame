@@ -2712,22 +2712,6 @@ func _format_upgrade_menu_title(selected_position: int, total_count: int) -> Str
 		_action_label("move_up_down"),
 	]
 
-func _format_ready_panel_summary() -> String:
-	var lines: Array[String] = [
-		"Start with %d oxygen." % ceili(dive_session.max_oxygen),
-		survival_state.status_line(),
-		survival_state.nightly_pressure_line(),
-		survival_state.supply_cache_hint_line(),
-		"Dive for supplies, cargo, or knowledge, then extract.",
-		ConditionPresenterScript.format_condition_briefing(current_expedition_condition, progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)),
-		SurfaceRunSummaryServiceScript.format_dawn_priority_line(self),
-		"%s begins." % _action_label("interact"),
-	]
-	if show_debug_telemetry:
-		lines.append("Debug: F9 resets prototype save.")
-
-	return "\n".join(lines)
-
 func _update_cargo_slots() -> void:
 	var states := CargoSlotPresenterScript.cargo_slot_states(dive_session.current_cargo, dive_session.cargo_limit, cargo_slot_nodes.size())
 	for index in range(cargo_slot_nodes.size()):

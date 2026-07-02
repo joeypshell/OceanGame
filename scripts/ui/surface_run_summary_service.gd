@@ -41,6 +41,22 @@ static func format_run_summary(host, player_summary: String, result_name: String
 
 	return "%s\n%s" % [player_summary, format_run_telemetry(host, result_name)]
 
+static func format_ready_panel_summary(host) -> String:
+	var lines: Array[String] = [
+		"Start with %d oxygen." % ceili(host.dive_session.max_oxygen),
+		host.survival_state.status_line(),
+		host.survival_state.nightly_pressure_line(),
+		host.survival_state.supply_cache_hint_line(),
+		"Dive for supplies, cargo, or knowledge, then extract.",
+		ConditionPresenterScript.format_condition_briefing(host.current_expedition_condition, host.progression_state.has_upgrade(host.RESONANCE_KEY_UPGRADE_ID)),
+		format_dawn_priority_line(host),
+		"%s begins." % host._action_label("interact"),
+	]
+	if host.show_debug_telemetry:
+		lines.append("Debug: F9 resets prototype save.")
+
+	return "\n".join(lines)
+
 static func format_next_expedition_prompt(host) -> String:
 	if host.survival_state.chapter_failed:
 		return "Next: press %s to restart Emergency Week." % host._action_label("restart_dive")
