@@ -5600,26 +5600,26 @@ func _test_result_progress_callouts() -> void:
 	_expect(main._format_upgrade_progress_callout().contains("scan Thermal Vent"), "result progress should call out missing scan prerequisites")
 
 	main.run_completed_scans = ["thermal_vent", "wreck_signal_cache"]
-	_expect(main._format_scan_progress_callout("Scans kept") == "Scans kept: Thermal Vent, Wreck Signal Cache.", "result progress should name scans kept this dive")
+	_expect(SurfaceRunSummaryServiceScript.format_scan_progress_callout(main.progression_state, main.run_completed_scans, "Scans kept") == "Scans kept: Thermal Vent, Wreck Signal Cache.", "result progress should name scans kept this dive")
 
 	main.run_completed_scans.clear()
-	_expect(main._format_scan_progress_callout("Discoveries recorded") == "Discoveries recorded: none this dive.", "result progress should stay explicit when no scans were recorded")
+	_expect(SurfaceRunSummaryServiceScript.format_scan_progress_callout(main.progression_state, main.run_completed_scans, "Discoveries recorded") == "Discoveries recorded: none this dive.", "result progress should stay explicit when no scans were recorded")
 	main.free()
 
 func _test_extraction_banking_result_copy() -> void:
 	var main := MainScript.new()
 
 	var cargo: Array[String] = ["kelp_fiber"]
-	_expect(main._format_extraction_banking_line(1, cargo).contains("Upgrade/build materials banked: 1"), "cargo extraction should keep resource banking copy")
-	_expect(main._format_extraction_banking_line(1, cargo).contains("Kelp Fiber x1"), "cargo extraction should keep resource counts")
+	_expect(SurfaceRunSummaryServiceScript.format_extraction_banking_line(1, cargo, main.survival_state, main.RESOURCE_CATEGORY_LABELS, false).contains("Upgrade/build materials banked: 1"), "cargo extraction should keep resource banking copy")
+	_expect(SurfaceRunSummaryServiceScript.format_extraction_banking_line(1, cargo, main.survival_state, main.RESOURCE_CATEGORY_LABELS, false).contains("Kelp Fiber x1"), "cargo extraction should keep resource counts")
 
 	main.run_completed_scans = ["thermal_vent"]
-	var scan_only := main._format_extraction_banking_line(0, [])
+	var scan_only := SurfaceRunSummaryServiceScript.format_extraction_banking_line(0, [], main.survival_state, main.RESOURCE_CATEGORY_LABELS, not main.run_completed_scans.is_empty())
 	_expect(scan_only.contains("Banked 0 resources"), "scan-only extraction should not imply phantom cargo")
 	_expect(scan_only.contains("scan data came home"), "scan-only extraction should read as useful")
 
 	main.run_completed_scans.clear()
-	var empty_return := main._format_extraction_banking_line(0, [])
+	var empty_return := SurfaceRunSummaryServiceScript.format_extraction_banking_line(0, [], main.survival_state, main.RESOURCE_CATEGORY_LABELS, not main.run_completed_scans.is_empty())
 	_expect(empty_return.contains("No cargo or new scans"), "empty extraction should remain clearly low-value")
 	main.free()
 
@@ -7097,7 +7097,7 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 
 	var compact_result := "\n".join([
 		main._format_completed_expedition_line("Extraction"),
-		main._format_extraction_banking_line(3, main.run_collected_resources),
+		SurfaceRunSummaryServiceScript.format_extraction_banking_line(3, main.run_collected_resources, main.survival_state, main.RESOURCE_CATEGORY_LABELS, not main.run_completed_scans.is_empty()),
 		main._format_region_memory_callout(),
 		main._format_discovery_memory_callout(),
 		main._format_route_choice_callout(),
@@ -7105,7 +7105,7 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 		main._format_echo_lens_research_callout(),
 		main._format_wreck_echo_research_callout(),
 		main._format_upgrade_progress_callout(),
-		main._format_scan_progress_callout("Discoveries recorded"),
+		SurfaceRunSummaryServiceScript.format_scan_progress_callout(main.progression_state, main.run_completed_scans, "Discoveries recorded"),
 		main._format_next_expedition_prompt(),
 	])
 	_expect_lines_within(compact_result, 96, "player-facing result summary")

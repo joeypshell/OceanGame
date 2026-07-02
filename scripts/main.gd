@@ -1133,7 +1133,7 @@ func _fail_dive() -> void:
 		_format_route_choice_callout(),
 		_format_gulper_research_callout(),
 		_format_echo_lens_research_callout(),
-		_format_scan_progress_callout("Scans kept"),
+		SurfaceRunSummaryServiceScript.format_scan_progress_callout(progression_state, run_completed_scans, "Scans kept"),
 		roundi(progression_state.best_depth_reached),
 		_format_night_report_block(),
 		_format_next_expedition_prompt(),
@@ -3102,23 +3102,6 @@ func _format_upgrade_progress_callout() -> String:
 
 func _format_missing_resources_inline(cost: Dictionary) -> String:
 	return UpgradeStateServiceScript.format_missing_resources_inline(self, cost)
-
-func _format_scan_progress_callout(prefix: String) -> String:
-	if run_completed_scans.is_empty():
-		return "%s: none this dive." % prefix
-
-	var parts: Array[String] = []
-	for discovery_id in run_completed_scans:
-		parts.append(DiscoveryNamePresenterScript.display_name(progression_state, discovery_id))
-
-	return "%s: %s." % [prefix, ", ".join(parts)]
-
-func _format_extraction_banking_line(extracted_count: int, extracted_cargo: Array[String]) -> String:
-	return InventorySummaryPresenterScript.format_extraction_banking_line(
-		extracted_count,
-		ResourceSummaryServiceScript.format_resource_counts(extracted_cargo, survival_state, RESOURCE_CATEGORY_LABELS),
-		not run_completed_scans.is_empty()
-	)
 
 func _sync_survival_supply_cache_state() -> void:
 	SurvivalSupplyCacheStateServiceScript.sync_state(self)
