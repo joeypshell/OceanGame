@@ -51,6 +51,7 @@ const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
+const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
@@ -3707,18 +3708,7 @@ func _update_cargo_slots() -> void:
 		cargo_slot_icon_nodes[index].visible = slot_visible and cargo_slot_icon_nodes[index].polygon.size() > 0
 
 func _update_tool_belt(is_visible: bool) -> void:
-	var tool_keys := ["F", "Space", "2", "3", "5"]
-	for index in range(tool_slot_nodes.size()):
-		var tool_id: String = TOOL_BELT_TOOL_IDS[index]
-		var state := _tool_belt_state(tool_id)
-		tool_slot_nodes[index].visible = is_visible
-		tool_icon_nodes[index].visible = is_visible
-		tool_key_label_nodes[index].visible = is_visible
-		tool_slot_nodes[index].color = ToolBeltPresenterScript.tool_slot_color(state)
-		tool_icon_nodes[index].polygon = ToolBeltPresenterScript.tool_icon_polygon(tool_id)
-		tool_icon_nodes[index].color = ToolBeltPresenterScript.tool_icon_color(tool_id, state)
-		tool_key_label_nodes[index].text = tool_keys[index]
-		tool_key_label_nodes[index].modulate = ToolBeltPresenterScript.tool_key_color(state)
+	ToolBeltServiceScript.update_tool_belt(self, is_visible)
 
 func _tool_belt_state(tool_id: String) -> String:
 	match tool_id:
