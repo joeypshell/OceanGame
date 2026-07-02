@@ -1,18 +1,20 @@
 class_name HudPromptStateService
 extends RefCounted
 
+const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
+
 static func build_state(host) -> Dictionary:
 	return {
 		"action_labels": host._prompt_action_labels(),
 		"all_upgrades_owned": host._all_upgrades_owned(),
 		"blackwater_prompt": host._format_blackwater_prompt(),
-		"burst_thruster_prompt": host._format_burst_thruster_prompt(),
+		"burst_thruster_prompt": UpgradeStateServiceScript.format_burst_thruster_prompt(host),
 		"can_ship_offload": host._can_ship_offload(),
 		"cargo_count": host.dive_session.current_cargo.size(),
 		"cargo_limit": host.dive_session.cargo_limit,
 		"daylight_nightfall_announced": host.daylight_nightfall_announced,
 		"daylight_nightfall_away_from_ship": host.daylight_nightfall_away_from_ship,
-		"decoy_pulse_prompt": host._format_decoy_pulse_prompt(),
+		"decoy_pulse_prompt": UpgradeStateServiceScript.format_decoy_pulse_prompt(host),
 		"has_left_base": host.dive_session.has_left_base,
 		"has_recent_health_damage": host._has_recent_health_damage(),
 		"has_salvage_cutter": host.progression_state.has_upgrade(host.SALVAGE_CUTTER_UPGRADE_ID),
