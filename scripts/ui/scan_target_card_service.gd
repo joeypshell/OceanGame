@@ -15,6 +15,6 @@ static func update_card(host, target: Node) -> void:
 		host._format_scan_target_type(target).to_upper(),
 	]
 	if host.scan_charge_target == target:
-		host.scan_card_prompt_label.text = "SCANNING %d%%" % int(roundf(host._scan_charge_ratio() * 100.0))
+		host.scan_card_prompt_label.text = "SCANNING %d%%" % int(roundf(ScanFeedbackPresenterScript.scan_charge_ratio(host.scan_charge_elapsed, host.scan_hold_seconds) * 100.0))
 	else:
 		host.scan_card_prompt_label.text = "HOLD %s TO SCAN" % host._action_label("scan")

@@ -2198,12 +2198,7 @@ func _update_scan_charge(delta: float) -> void:
 		_update_hud()
 
 func _format_scan_charge_status(target: Node) -> String:
-	return ScanFeedbackPresenterScript.format_scan_charge_status(_scan_target_display_name(target), _scan_charge_ratio())
-
-func _scan_charge_ratio() -> float:
-	if scan_hold_seconds <= 0.0:
-		return 1.0
-	return clampf(scan_charge_elapsed / scan_hold_seconds, 0.0, 1.0)
+	return ScanFeedbackPresenterScript.format_scan_charge_status(_scan_target_display_name(target), ScanFeedbackPresenterScript.scan_charge_ratio(scan_charge_elapsed, scan_hold_seconds))
 
 func _try_scan(requested_target: Node = null) -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
