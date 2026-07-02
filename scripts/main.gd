@@ -75,6 +75,7 @@ const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service
 const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
+const RouteTimingCuePresenterScript := preload("res://scripts/ui/route_timing_cue_presenter.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
 const SiltVeinVisualStagingServiceScript := preload("res://scripts/debug/silt_vein_visual_staging_service.gd")
 const SurfaceOxygenVisualStagingServiceScript := preload("res://scripts/debug/surface_oxygen_visual_staging_service.gd")
@@ -2297,38 +2298,26 @@ func _update_echo_lens_pulse(delta: float) -> void:
 
 func _update_east_shelf_current_surge(delta: float) -> void:
 	east_shelf_current_surge_timer = fposmod(east_shelf_current_surge_timer + delta, EAST_SHELF_SURGE_PERIOD_SECONDS)
-	var surge_alpha := _east_shelf_current_surge_alpha(east_shelf_current_surge_timer)
+	var surge_alpha := RouteTimingCuePresenterScript.east_shelf_current_surge_alpha(east_shelf_current_surge_timer, EAST_SHELF_SURGE_PERIOD_SECONDS)
 	if east_shelf_current_surge_lane != null:
 		east_shelf_current_surge_lane.color = Color(0.66, 0.96, 1.0, surge_alpha)
 	if east_shelf_current_surge_rib != null:
 		east_shelf_current_surge_rib.color = Color(0.9, 1.0, 0.94, surge_alpha + 0.06)
 
-func _east_shelf_current_surge_alpha(timer_seconds: float) -> float:
-	var phase := sin((timer_seconds / EAST_SHELF_SURGE_PERIOD_SECONDS) * TAU)
-	return 0.08 + (phase + 1.0) * 0.045
-
 func _update_blue_chimney_reverse_draft(delta: float) -> void:
 	blue_chimney_draft_timer = fposmod(blue_chimney_draft_timer + delta, BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS)
 	if blue_chimney_reverse_draft != null:
-		blue_chimney_reverse_draft.color = Color(0.72, 1.0, 0.94, _blue_chimney_reverse_draft_alpha(blue_chimney_draft_timer))
-
-func _blue_chimney_reverse_draft_alpha(timer_seconds: float) -> float:
-	var phase := sin((timer_seconds / BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS) * TAU)
-	return 0.07 + (phase + 1.0) * 0.035
+		blue_chimney_reverse_draft.color = Color(0.72, 1.0, 0.94, RouteTimingCuePresenterScript.blue_chimney_reverse_draft_alpha(blue_chimney_draft_timer, BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS))
 
 func _update_blackwater_pressure_cue(delta: float) -> void:
 	blackwater_pressure_timer = fposmod(blackwater_pressure_timer + delta, BLACKWATER_PRESSURE_PERIOD_SECONDS)
-	var shutter_alpha := _blackwater_pressure_cue_alpha(blackwater_pressure_timer)
+	var shutter_alpha := RouteTimingCuePresenterScript.blackwater_pressure_cue_alpha(blackwater_pressure_timer, BLACKWATER_PRESSURE_PERIOD_SECONDS)
 	if blackwater_pressure_shutter != null:
 		blackwater_pressure_shutter.color = Color(0.2, 0.12, 0.42, shutter_alpha)
 	if blackwater_pressure_rib_a != null:
 		blackwater_pressure_rib_a.color = Color(0.72, 0.52, 1.0, shutter_alpha + 0.04)
 	if blackwater_pressure_rib_b != null:
 		blackwater_pressure_rib_b.color = Color(0.72, 0.52, 1.0, shutter_alpha + 0.02)
-
-func _blackwater_pressure_cue_alpha(timer_seconds: float) -> float:
-	var phase := sin((timer_seconds / BLACKWATER_PRESSURE_PERIOD_SECONDS) * TAU)
-	return 0.1 + (phase + 1.0) * 0.04
 
 func _update_lantern_ray_timing_lane(delta: float) -> void:
 	var upper := lantern_ray_timing_lane_upper
@@ -2349,7 +2338,7 @@ func _update_lantern_ray_timing_lane(delta: float) -> void:
 		lantern_ray_timing_tick_b = tick_b
 
 	lantern_ray_timing_timer = fposmod(lantern_ray_timing_timer + delta, LANTERN_RAY_TIMING_PERIOD_SECONDS)
-	var lane_alpha := _lantern_ray_timing_lane_alpha(lantern_ray_timing_timer)
+	var lane_alpha := RouteTimingCuePresenterScript.lantern_ray_timing_lane_alpha(lantern_ray_timing_timer, LANTERN_RAY_TIMING_PERIOD_SECONDS)
 	var lower_alpha := maxf(0.06, lane_alpha - 0.04)
 	var tick_alpha := lane_alpha + 0.06
 	if upper != null:
@@ -2360,10 +2349,6 @@ func _update_lantern_ray_timing_lane(delta: float) -> void:
 		tick_a.color = Color(0.98, 0.94, 1.0, tick_alpha)
 	if tick_b != null:
 		tick_b.color = Color(0.98, 0.94, 1.0, maxf(0.1, tick_alpha - 0.04))
-
-func _lantern_ray_timing_lane_alpha(timer_seconds: float) -> float:
-	var phase := sin((timer_seconds / LANTERN_RAY_TIMING_PERIOD_SECONDS) * TAU)
-	return 0.09 + (phase + 1.0) * 0.035
 
 func _update_hollow_reef_timing_current(delta: float) -> void:
 	var upper := hollow_reef_timing_ribbon_upper
@@ -2384,7 +2369,7 @@ func _update_hollow_reef_timing_current(delta: float) -> void:
 		hollow_reef_timing_tick_b = tick_b
 
 	hollow_reef_timing_timer = fposmod(hollow_reef_timing_timer + delta, HOLLOW_REEF_TIMING_PERIOD_SECONDS)
-	var cue_alpha := _hollow_reef_timing_current_alpha(hollow_reef_timing_timer)
+	var cue_alpha := RouteTimingCuePresenterScript.hollow_reef_timing_current_alpha(hollow_reef_timing_timer, HOLLOW_REEF_TIMING_PERIOD_SECONDS)
 	if upper != null:
 		upper.color = Color(0.86, 0.78, 1.0, cue_alpha)
 	if lower != null:
@@ -2393,10 +2378,6 @@ func _update_hollow_reef_timing_current(delta: float) -> void:
 		tick_a.color = Color(0.98, 0.94, 1.0, cue_alpha + 0.05)
 	if tick_b != null:
 		tick_b.color = Color(0.98, 0.94, 1.0, maxf(0.1, cue_alpha + 0.02))
-
-func _hollow_reef_timing_current_alpha(timer_seconds: float) -> float:
-	var phase := sin((timer_seconds / HOLLOW_REEF_TIMING_PERIOD_SECONDS) * TAU)
-	return 0.08 + (phase + 1.0) * 0.035
 
 func _update_glassfin_swarm_spacing_cue(delta: float) -> void:
 	var wake := glassfin_swarm_spacing_wake
@@ -2417,7 +2398,7 @@ func _update_glassfin_swarm_spacing_cue(delta: float) -> void:
 		glassfin_swarm_spacing_tick_b = tick_b
 
 	glassfin_swarm_spacing_timer = fposmod(glassfin_swarm_spacing_timer + delta, GLASSFIN_SWARM_SPACING_PERIOD_SECONDS)
-	var cue_alpha := _glassfin_swarm_spacing_alpha(glassfin_swarm_spacing_timer)
+	var cue_alpha := RouteTimingCuePresenterScript.glassfin_swarm_spacing_alpha(glassfin_swarm_spacing_timer, GLASSFIN_SWARM_SPACING_PERIOD_SECONDS)
 	if wake != null:
 		wake.color = Color(0.72, 0.86, 1.0, cue_alpha)
 	if window != null:
@@ -2426,10 +2407,6 @@ func _update_glassfin_swarm_spacing_cue(delta: float) -> void:
 		tick_a.color = Color(0.9, 0.92, 1.0, minf(0.24, cue_alpha + 0.08))
 	if tick_b != null:
 		tick_b.color = Color(0.9, 0.92, 1.0, minf(0.2, cue_alpha + 0.05))
-
-func _glassfin_swarm_spacing_alpha(timer_seconds: float) -> float:
-	var phase := sin((timer_seconds / GLASSFIN_SWARM_SPACING_PERIOD_SECONDS) * TAU)
-	return 0.08 + (phase + 1.0) * 0.04
 
 func _update_salvage_silt_timing_cue(delta: float) -> void:
 	var wake := salvage_silt_wake
@@ -2450,7 +2427,7 @@ func _update_salvage_silt_timing_cue(delta: float) -> void:
 		salvage_silt_tick_b = tick_b
 
 	salvage_silt_timing_timer = fposmod(salvage_silt_timing_timer + delta, SALVAGE_SILT_TIMING_PERIOD_SECONDS)
-	var cue_alpha := _salvage_silt_timing_alpha(salvage_silt_timing_timer)
+	var cue_alpha := RouteTimingCuePresenterScript.salvage_silt_timing_alpha(salvage_silt_timing_timer, SALVAGE_SILT_TIMING_PERIOD_SECONDS)
 	if wake != null:
 		wake.color = Color(0.74, 0.68, 1.0, cue_alpha)
 	if window != null:
@@ -2459,10 +2436,6 @@ func _update_salvage_silt_timing_cue(delta: float) -> void:
 		tick_a.color = Color(0.98, 0.9, 1.0, minf(0.22, cue_alpha + 0.075))
 	if tick_b != null:
 		tick_b.color = Color(0.98, 0.9, 1.0, minf(0.19, cue_alpha + 0.045))
-
-func _salvage_silt_timing_alpha(timer_seconds: float) -> float:
-	var phase := sin((timer_seconds / SALVAGE_SILT_TIMING_PERIOD_SECONDS) * TAU)
-	return 0.07 + (phase + 1.0) * 0.035
 
 func _update_outer_shelf_slackwater_timing_cue(delta: float) -> void:
 	var wake := outer_shelf_slackwater_wake
@@ -2483,8 +2456,8 @@ func _update_outer_shelf_slackwater_timing_cue(delta: float) -> void:
 		outer_shelf_slackwater_tick_b = tick_b
 
 	outer_shelf_slackwater_timer = fposmod(outer_shelf_slackwater_timer + delta, OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
-	var cue_alpha := _outer_shelf_slackwater_alpha(outer_shelf_slackwater_timer)
-	var window_ratio := _outer_shelf_slackwater_window_ratio(outer_shelf_slackwater_timer)
+	var cue_alpha := RouteTimingCuePresenterScript.outer_shelf_slackwater_alpha(outer_shelf_slackwater_timer, OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
+	var window_ratio := RouteTimingCuePresenterScript.outer_shelf_slackwater_window_ratio(outer_shelf_slackwater_timer, OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
 	var tick_a_alpha := 0.09 + window_ratio * 0.13
 	var tick_b_alpha := 0.22 - window_ratio * 0.08
 	if wake != null:
@@ -2496,38 +2469,19 @@ func _update_outer_shelf_slackwater_timing_cue(delta: float) -> void:
 	if tick_b != null:
 		tick_b.color = Color(0.9, 0.78, 1.0, tick_b_alpha)
 
-func _outer_shelf_slackwater_alpha(timer_seconds: float) -> float:
-	return 0.065 + _outer_shelf_slackwater_window_ratio(timer_seconds) * 0.08
-
-func _outer_shelf_slackwater_window_ratio(timer_seconds: float) -> float:
-	var phase := sin((timer_seconds / OUTER_SHELF_SLACKWATER_PERIOD_SECONDS) * TAU)
-	return (phase + 1.0) * 0.5
-
 func _outer_shelf_slackwater_decision_state(timer_seconds: float) -> String:
-	var window_ratio := _outer_shelf_slackwater_window_ratio(timer_seconds)
-	if window_ratio >= OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD:
-		return "open"
-	if window_ratio >= OUTER_SHELF_SLACKWATER_EASING_THRESHOLD:
-		return "easing"
-	return "surging"
+	return RouteTimingCuePresenterScript.outer_shelf_slackwater_decision_state(
+		timer_seconds,
+		OUTER_SHELF_SLACKWATER_PERIOD_SECONDS,
+		OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD,
+		OUTER_SHELF_SLACKWATER_EASING_THRESHOLD
+	)
 
 func _outer_shelf_slackwater_decision_prompt(timer_seconds: float) -> String:
-	match _outer_shelf_slackwater_decision_state(timer_seconds):
-		"open":
-			return "Glass Rim slackwater: cross now or bank cargo"
-		"easing":
-			return "Glass Rim current easing: wait, cross, or turn back"
-		_:
-			return "Glass Rim surge: turn back or spend oxygen waiting"
+	return RouteTimingCuePresenterScript.outer_shelf_slackwater_decision_prompt(_outer_shelf_slackwater_decision_state(timer_seconds))
 
 func _outer_shelf_slackwater_decision_text(timer_seconds: float) -> String:
-	match _outer_shelf_slackwater_decision_state(timer_seconds):
-		"open":
-			return "Glass Rim open: cross now or bank cargo."
-		"easing":
-			return "Glass Rim easing: wait, cross, or turn back."
-		_:
-			return "Glass Rim surge: turn back or wait."
+	return RouteTimingCuePresenterScript.outer_shelf_slackwater_decision_text(_outer_shelf_slackwater_decision_state(timer_seconds))
 
 func _try_trigger_decoy_pulse() -> bool:
 	if not progression_state.has_upgrade(DECOY_PULSE_UPGRADE_ID):
