@@ -43,6 +43,7 @@ const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter
 const HudPromptStateServiceScript := preload("res://scripts/ui/hud_prompt_state_service.gd")
 const HudInstrumentBarServiceScript := preload("res://scripts/ui/hud_instrument_bar_service.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
+const BlackwaterGatePresenterScript := preload("res://scripts/ui/blackwater_gate_presenter.gd")
 const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd")
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
@@ -246,6 +247,7 @@ func _initialize() -> void:
 	_run("Resonance Alcove research payoff", _test_resonance_alcove_research_payoff)
 	_run("Blue Chimney draft interaction", _test_blue_chimney_draft_interaction)
 	_run("Lantern Silt Sample interaction", _test_lantern_silt_sample_interaction)
+	_run("Blackwater gate presenter", _test_blackwater_gate_presenter)
 	_run("Blackwater Crack gate state", _test_blackwater_crack_gate_state)
 	_run("Blackwater Trace payoff", _test_blackwater_trace_payoff)
 	_run("Glass Kelp reading payoff", _test_glass_kelp_reading_payoff)
@@ -6592,6 +6594,32 @@ func _test_lantern_silt_sample_interaction() -> void:
 	_expect(not main.run_lantern_silt_sample_recovered, "Lantern Silt sample should reset between expeditions")
 	main.free()
 
+func _test_blackwater_gate_presenter() -> void:
+	_expect(
+		BlackwaterGatePresenterScript.format_gate_status(false, false).contains("Echo Lens study"),
+		"sealed Blackwater status should explain missing scanner preparation"
+	)
+	_expect(
+		BlackwaterGatePresenterScript.format_gate_status(false, true).contains("Resonance Key I preparation needed"),
+		"sealed Blackwater status should preserve key preparation copy after Echo Lens"
+	)
+	_expect(
+		BlackwaterGatePresenterScript.format_gate_status(true, true) == "Blackwater: trace sill. Return Silt/Blue/Drop.",
+		"open Blackwater status should keep compact return-route copy"
+	)
+	_expect(
+		BlackwaterGatePresenterScript.format_prompt(false, false, "E/Enter").contains("read Resonance seal"),
+		"sealed Blackwater prompt should explain the gate readback"
+	)
+	_expect(
+		BlackwaterGatePresenterScript.format_prompt(true, false, "E/Enter").contains("E/Enter record trace"),
+		"open Blackwater prompt should expose the trace interaction"
+	)
+	_expect(
+		BlackwaterGatePresenterScript.format_prompt(true, true, "E/Enter").contains("trace recorded"),
+		"recorded Blackwater prompt should preserve return guidance"
+	)
+
 func _test_blackwater_crack_gate_state() -> void:
 	var main := MainScene.instantiate()
 	main.status_label = Label.new()
@@ -6611,7 +6639,10 @@ func _test_blackwater_crack_gate_state() -> void:
 	_expect(gate_label.text == "RESONANCE SEAL", "Blackwater Crack should start as a deliberate resonance-sealed route gate")
 	_expect(not blackwater_sill.visible, "Blackwater Sill should be hidden before route preparation is ready")
 	_expect(dusk_trench.visible, "Dusk Trench should rely on Blackwater Sill parent visibility rather than a separate gate flag")
-	var sealed_status: String = main.call("_format_blackwater_gate_status")
+	var sealed_status := BlackwaterGatePresenterScript.format_gate_status(
+		main.progression_state.has_upgrade(main.RESONANCE_KEY_UPGRADE_ID),
+		main.progression_state.has_upgrade(main.ECHO_LENS_UPGRADE_ID)
+	)
 	_expect(sealed_status.contains("Echo Lens"), "Blackwater sealed status should name existing scanner preparation")
 	_expect(sealed_status.contains("Resonance Key I"), "Blackwater sealed status should name existing key preparation")
 	_expect_no_echo_lens_locator_language(sealed_status, "Blackwater sealed status")

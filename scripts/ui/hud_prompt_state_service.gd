@@ -2,12 +2,17 @@ class_name HudPromptStateService
 extends RefCounted
 
 const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
+const BlackwaterGatePresenterScript := preload("res://scripts/ui/blackwater_gate_presenter.gd")
 
 static func build_state(host) -> Dictionary:
 	return {
 		"action_labels": host._prompt_action_labels(),
 		"all_upgrades_owned": host._all_upgrades_owned(),
-		"blackwater_prompt": host._format_blackwater_prompt(),
+		"blackwater_prompt": BlackwaterGatePresenterScript.format_prompt(
+			host._blackwater_crack_gate_open(),
+			host.run_blackwater_trace_recovered,
+			host._action_label("interact")
+		),
 		"burst_thruster_prompt": UpgradeStateServiceScript.format_burst_thruster_prompt(host),
 		"can_ship_offload": host._can_ship_offload(),
 		"cargo_count": host.dive_session.current_cargo.size(),

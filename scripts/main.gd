@@ -70,6 +70,7 @@ const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_syn
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const RunPanelServiceScript := preload("res://scripts/ui/run_panel_service.gd")
 const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
+const BlackwaterGatePresenterScript := preload("res://scripts/ui/blackwater_gate_presenter.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
 const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
@@ -1354,7 +1355,10 @@ func _on_blackwater_crack_body_entered(body: Node2D) -> void:
 	if body == player:
 		player_near_blackwater_crack = true
 		if status_label != null:
-			status_label.text = _format_blackwater_gate_status()
+			status_label.text = BlackwaterGatePresenterScript.format_gate_status(
+				_blackwater_crack_gate_open(),
+				progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
+			)
 		if is_inside_tree():
 			_update_hud()
 
@@ -1600,7 +1604,10 @@ func _try_blackwater_crack_interaction() -> bool:
 		return true
 
 	if status_label != null:
-		status_label.text = _format_blackwater_gate_status()
+		status_label.text = BlackwaterGatePresenterScript.format_gate_status(
+			_blackwater_crack_gate_open(),
+			progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
+		)
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -2569,23 +2576,6 @@ func _sync_sealed_shelf_hatch_state() -> void:
 
 func _blackwater_crack_gate_open() -> bool:
 	return progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)
-
-func _format_blackwater_gate_status() -> String:
-	if _blackwater_crack_gate_open():
-		return "Blackwater: trace sill. Return Silt/Blue/Drop."
-	if progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
-		return "Blackwater Crack sealed. Resonance Key I preparation needed."
-
-	return "Blackwater Crack sealed. Echo Lens study and Resonance Key I preparation needed."
-
-func _format_blackwater_prompt() -> String:
-	if _blackwater_crack_gate_open():
-		if run_blackwater_trace_recovered:
-			return "Blackwater Sill: trace recorded - return via Silt/Blue"
-
-		return "Blackwater Sill: %s record trace" % _action_label("interact")
-
-	return "Blackwater Crack: %s read Resonance seal" % _action_label("interact")
 
 func _sync_salvage_pocket_open_state() -> void:
 	RouteGateSyncServiceScript.sync_salvage_pocket_open(self)
