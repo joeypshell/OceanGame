@@ -59,6 +59,7 @@ const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_prese
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
+const SiltVeinVisualStagingServiceScript := preload("res://scripts/debug/silt_vein_visual_staging_service.gd")
 const SurfaceOxygenVisualStagingServiceScript := preload("res://scripts/debug/surface_oxygen_visual_staging_service.gd")
 const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
 const WreckEchoVisualStagingServiceScript := preload("res://scripts/debug/wreck_echo_visual_staging_service.gd")
@@ -144,6 +145,7 @@ func _initialize() -> void:
 	_run("debug Health Damage visual staging service", _test_health_damage_visual_staging_service)
 	_run("debug Health Damage extraction visual staging service", _test_health_damage_extraction_visual_staging_service)
 	_run("debug Expanded Route visual staging service", _test_expanded_route_visual_staging_service)
+	_run("debug Silt Vein visual staging service", _test_silt_vein_visual_staging_service)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("scan hold timing helper", _test_scan_hold_timing_helper)
 	_run("compact scan marker", _test_compact_scan_marker)
@@ -1580,6 +1582,17 @@ func _test_expanded_route_visual_staging_service() -> void:
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Expanded Route staging should stay inert outside web visual smoke")
 	_expect(main.visual_smoke_route_stage == "", "Expanded Route staging should not set route state outside web visual smoke")
 	_expect(main.dive_session.current_cargo.is_empty(), "Expanded Route staging should not mutate cargo outside web visual smoke")
+	main.free()
+
+func _test_silt_vein_visual_staging_service() -> void:
+	var main := MainScript.new()
+	main.dive_session.reset(30.0)
+	main.visual_smoke_route_stage = ""
+
+	SiltVeinVisualStagingServiceScript.stage_visual_review(main)
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Silt Vein staging should stay inert outside web visual smoke")
+	_expect(main.visual_smoke_route_stage == "", "Silt Vein staging should not set route state outside web visual smoke")
+	_expect(not main.dive_session.has_left_base, "Silt Vein staging should not mark route progress outside web visual smoke")
 	main.free()
 
 func _test_scanner_target_resolver() -> void:
