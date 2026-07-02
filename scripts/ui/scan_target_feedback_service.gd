@@ -71,7 +71,12 @@ static func scan_reticle_fallback_screen_position(host, world_position: Vector2,
 	return screen_position + Vector2(world_delta.x * maxf(zoom.x, 0.001), world_delta.y * maxf(zoom.y, 0.001))
 
 static func format_scan_target_discovery_state(host, target: Node) -> String:
-	return ScanFeedbackPresenterScript.format_scan_target_discovery_state(host.progression_state.has_discovery(host._scan_target_id(target)))
+	return ScanFeedbackPresenterScript.format_scan_target_discovery_state(
+		host.progression_state.has_discovery(ScanTargetResolverScript.target_id(target))
+	)
 
 static func format_scan_target_type(host, target: Node) -> String:
-	return ScanFeedbackPresenterScript.format_scan_target_type(host._scan_target_id(target), target is ResourcePickup)
+	return ScanFeedbackPresenterScript.format_scan_target_type(
+		ScanTargetResolverScript.target_id(target),
+		target is ResourcePickup
+	)

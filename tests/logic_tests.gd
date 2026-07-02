@@ -1809,16 +1809,16 @@ func _test_lantern_ray_scan_behavior() -> void:
 	var scan_candidates: Array[Node] = [lantern_ray]
 	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == lantern_ray, "scanner target selection should find Lantern Ray reliably at close range")
 	_expect(main.call("_format_scan_target_type", lantern_ray) == "creature", "Lantern Ray scan target should read as a creature")
-	_expect(main.call("_scan_target_id", lantern_ray) == "lantern_ray", "Lantern Ray should expose a stable discovery id")
+	_expect(ScanTargetResolverScript.target_id(lantern_ray) == "lantern_ray", "Lantern Ray should expose a stable discovery id")
 
 	var starting_oxygen: float = main.dive_session.oxygen
-	var discovery_id: String = main.call("_scan_target_id", lantern_ray)
-	var display_name: String = main.call("_scan_target_display_name", lantern_ray)
+	var discovery_id: String = ScanTargetResolverScript.target_id(lantern_ray)
+	var display_name: String = ScanTargetResolverScript.display_name(lantern_ray)
 	main.dive_session.drain_oxygen(main.scan_oxygen_cost)
 	main.progression_state.add_discovery(
 		discovery_id,
 		display_name,
-		main.call("_scan_target_description", lantern_ray),
+		ScanTargetResolverScript.description(lantern_ray),
 		ScanEffectTextServiceScript.scan_target_gameplay_fact(main, lantern_ray)
 	)
 	main.run_completed_scans.append(discovery_id)
@@ -1877,7 +1877,7 @@ func _test_hollow_reef_passive_creature_scan_behavior() -> void:
 	var scan_candidates: Array[Node] = [skitter]
 	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == skitter, "scanner target selection should find Hollow Reef Skitter reliably at close range")
 	_expect(main.call("_format_scan_target_type", skitter) == "creature", "Hollow Reef Skitter scan target should read as a creature")
-	_expect(main.call("_scan_target_id", skitter) == "hollow_reef_skitter", "Hollow Reef Skitter should expose a stable discovery id")
+	_expect(ScanTargetResolverScript.target_id(skitter) == "hollow_reef_skitter", "Hollow Reef Skitter should expose a stable discovery id")
 	_expect(skitter.global_position.distance_to(hollow_reef.global_position) < 520.0, "Hollow Reef Skitter should live inside the Hollow Reef side-cave neighborhood")
 	_expect(skitter_body.color.g > skitter_body.color.r and skitter_body.color.b > skitter_body.color.r, "Hollow Reef Skitter should use cool passive reef colors instead of red warning language")
 	_expect(skitter_body.polygon[3].x < lantern_ray_body.polygon[3].x, "Hollow Reef Skitter should read smaller and distinct from the broad Lantern Ray")
@@ -1888,13 +1888,13 @@ func _test_hollow_reef_passive_creature_scan_behavior() -> void:
 
 	var save_before_scan: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	var starting_oxygen: float = main.dive_session.oxygen
-	var discovery_id: String = main.call("_scan_target_id", skitter)
-	var display_name: String = main.call("_scan_target_display_name", skitter)
+	var discovery_id: String = ScanTargetResolverScript.target_id(skitter)
+	var display_name: String = ScanTargetResolverScript.display_name(skitter)
 	main.dive_session.drain_oxygen(main.scan_oxygen_cost)
 	main.progression_state.add_discovery(
 		discovery_id,
 		display_name,
-		main.call("_scan_target_description", skitter),
+		ScanTargetResolverScript.description(skitter),
 		ScanEffectTextServiceScript.scan_target_gameplay_fact(main, skitter)
 	)
 	main.run_completed_scans.append(discovery_id)
@@ -1973,7 +1973,7 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	_expect(swarm.is_in_group("scan_targets"), "Glassfin Swarm should register as a scan target once the scene is ready")
 	_expect(scan_marker.color.a < 0.3, "Glassfin Swarm scan marker should stay subtle while idle")
 	_expect(main.call("_format_scan_target_type", swarm) == "creature", "Glassfin Swarm scan target should read as a creature")
-	_expect(main.call("_scan_target_id", swarm) == "glassfin_swarm", "Glassfin Swarm should expose a stable discovery id")
+	_expect(ScanTargetResolverScript.target_id(swarm) == "glassfin_swarm", "Glassfin Swarm should expose a stable discovery id")
 	_expect(swarm.find_child("CollisionShape2D", true, false) == null, "Glassfin Swarm should not add collision or physically block return")
 	_expect(swarm.find_child("ResourcePickup", true, false) == null, "Glassfin Swarm should not add resource pickup behavior")
 	_expect(swarm.find_child("HarvestArea", true, false) == null, "Glassfin Swarm should not add harvesting behavior")
@@ -1992,13 +1992,13 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == swarm, "scanner target selection should find Glassfin Swarm reliably at close range")
 
 	var starting_oxygen: float = main.dive_session.oxygen
-	var discovery_id: String = main.call("_scan_target_id", swarm)
-	var display_name: String = main.call("_scan_target_display_name", swarm)
+	var discovery_id: String = ScanTargetResolverScript.target_id(swarm)
+	var display_name: String = ScanTargetResolverScript.display_name(swarm)
 	main.dive_session.drain_oxygen(main.scan_oxygen_cost)
 	main.progression_state.add_discovery(
 		discovery_id,
 		display_name,
-		main.call("_scan_target_description", swarm),
+		ScanTargetResolverScript.description(swarm),
 		ScanEffectTextServiceScript.scan_target_gameplay_fact(main, swarm)
 	)
 	main.run_completed_scans.append(discovery_id)
@@ -2058,7 +2058,7 @@ func _test_mirrorfin_route_read_behavior() -> void:
 	_expect(mirrorfin.get_parent() == mirror_kelp, "Mirrorfin should be authored inside Mirror Kelp Pass")
 	_expect(mirrorfin.is_in_group("scan_targets"), "Mirrorfin should register as a scan target once the scene is ready")
 	_expect(main.call("_format_scan_target_type", mirrorfin) == "creature", "Mirrorfin scan target should read as a creature")
-	_expect(main.call("_scan_target_id", mirrorfin) == "mirrorfin_drift", "Mirrorfin should expose a stable discovery id")
+	_expect(ScanTargetResolverScript.target_id(mirrorfin) == "mirrorfin_drift", "Mirrorfin should expose a stable discovery id")
 	_expect(mirrorfin.collision_layer == 0 and mirrorfin.collision_mask == 0, "Mirrorfin should not collide, damage, or block the route")
 	_expect(reflection_lane.color.b > reflection_lane.color.r and reflection_lane.color.a <= 0.16, "Mirrorfin reflection lane should use subtle cool timing language")
 	_expect(body.color.b > body.color.r and body.color.g > body.color.r, "Mirrorfin body should avoid predator-warning red")
@@ -2089,13 +2089,13 @@ func _test_mirrorfin_route_read_behavior() -> void:
 	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == mirrorfin, "scanner target selection should find Mirrorfin reliably at close range")
 
 	var starting_oxygen: float = main.dive_session.oxygen
-	var discovery_id: String = main.call("_scan_target_id", mirrorfin)
-	var display_name: String = main.call("_scan_target_display_name", mirrorfin)
+	var discovery_id: String = ScanTargetResolverScript.target_id(mirrorfin)
+	var display_name: String = ScanTargetResolverScript.display_name(mirrorfin)
 	main.dive_session.drain_oxygen(main.scan_oxygen_cost)
 	main.progression_state.add_discovery(
 		discovery_id,
 		display_name,
-		main.call("_scan_target_description", mirrorfin),
+		ScanTargetResolverScript.description(mirrorfin),
 		ScanEffectTextServiceScript.scan_target_gameplay_fact(main, mirrorfin)
 	)
 	main.run_completed_scans.append(discovery_id)

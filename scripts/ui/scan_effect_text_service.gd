@@ -4,6 +4,7 @@ extends RefCounted
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
+const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 
 static func scan_target_gameplay_fact(host, target: Node) -> String:
 	if target is ResourcePickup:
@@ -17,7 +18,7 @@ static func scan_target_gameplay_fact(host, target: Node) -> String:
 
 static func repeat_scan_effect_text(host, target: Node) -> String:
 	return ScanFeedbackPresenterScript.format_repeat_scan_effect_text(
-		host._scan_target_id(target),
+		ScanTargetResolverScript.target_id(target),
 		target is ResourcePickup,
 		(target as ResourcePickup).definition.display_name if target is ResourcePickup else "",
 		wreck_cache_repeat_hint(host),
@@ -44,7 +45,7 @@ static func direction_to(host, target_position: Vector2) -> String:
 
 static func first_scan_guidance(host, target: Node) -> String:
 	return ScanFeedbackPresenterScript.format_first_scan_guidance(
-		host._scan_target_id(target),
+		ScanTargetResolverScript.target_id(target),
 		target is ResourcePickup,
 		resource_collection_guidance(host, (target as ResourcePickup).definition.id) if target is ResourcePickup else "",
 		host.dive_session.current_cargo.size(),
