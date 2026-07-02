@@ -76,6 +76,7 @@ const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const RouteTimingCuePresenterScript := preload("res://scripts/ui/route_timing_cue_presenter.gd")
+const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
 const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const ConditionVisualSyncServiceScript := preload("res://scripts/ui/condition_visual_sync_service.gd")
@@ -2369,7 +2370,7 @@ func _test_outer_shelf_slackwater_timing_cue_visual_only() -> void:
 	scene_main.dive_session.current_cargo.append("kelp_fiber")
 	var save_before: Dictionary = scene_main.progression_state.to_save_data().duplicate(true)
 
-	scene_main.call("_update_outer_shelf_slackwater_timing_cue", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
+	RouteTimingCueServiceScript.update_outer_shelf_slackwater_timing_cue(scene_main, MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
 	_expect(window.color.b > window.color.g and window.color.r > return_wash.color.r, "Outer Shelf slackwater timing should use pale violet timing language instead of safe-current green")
 	_expect(return_wash.color.g > window.color.g, "Glass Rim return wash should stay visually distinct from the timing window")
 	_expect(wake.color.a <= 0.15 and window.color.a <= 0.2 and tick.color.a <= 0.23, "Outer Shelf slackwater timing cue should stay subtle and non-blocking")
@@ -2970,7 +2971,7 @@ func _test_salvage_pocket_silt_timing_cue_visual_only() -> void:
 	scene_main.dive_session.current_cargo.append("shell_fragments")
 	var save_before: Dictionary = scene_main.progression_state.to_save_data().duplicate(true)
 
-	scene_main.call("_update_salvage_silt_timing_cue", MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS * 0.25)
+	RouteTimingCueServiceScript.update_salvage_silt_timing_cue(scene_main, MainScript.SALVAGE_SILT_TIMING_PERIOD_SECONDS * 0.25)
 	_expect(opened_lane.visible, "Salvage silt timing cue should live in the opened pocket lane")
 	_expect(window.color.b > window.color.g and window.color.b > window.color.r, "Salvage silt timing window should use pale silt timing color instead of safe-current green")
 	_expect(return_cue.color.g > window.color.g, "Salvage safe-return cue should stay visually distinct from the timing window")
@@ -3068,7 +3069,7 @@ func _test_glassfin_swarm_spacing_cue_visual_only() -> void:
 	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 
-	main.call("_update_glassfin_swarm_spacing_cue", 0.8)
+	RouteTimingCueServiceScript.update_glassfin_swarm_spacing_cue(main, 0.8)
 	_expect(is_equal_approx(main.dive_session.oxygen, 24.0), "Glassfin Swarm spacing cue should not drain oxygen")
 	_expect(main.dive_session.current_cargo == ["glow_plankton"], "Glassfin Swarm spacing cue should not change carried cargo")
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Glassfin Swarm spacing cue should not change dive result")
@@ -3086,7 +3087,7 @@ func _test_glassfin_swarm_spacing_cue_visual_only() -> void:
 	var resource_glimmer := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket/PocketGlimmer") as Polygon2D
 	var pressure_shutter := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureShutter") as Polygon2D
 
-	scene_main.call("_update_glassfin_swarm_spacing_cue", MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS * 0.25)
+	RouteTimingCueServiceScript.update_glassfin_swarm_spacing_cue(scene_main, MainScript.GLASSFIN_SWARM_SPACING_PERIOD_SECONDS * 0.25)
 	_expect(window.color.b > window.color.g and window.color.b > window.color.r, "Glassfin Swarm spacing window should use pale blue timing color instead of safe-current green")
 	_expect(wake.color.b > wake.color.g, "Glassfin Swarm wake should stay bluer than green return-current language")
 	_expect(tick_a.color.a <= 0.25 and window.color.a <= 0.19, "Glassfin Swarm spacing cue should stay readable without becoming a hard wall")
@@ -3139,7 +3140,7 @@ func _test_lantern_ray_timing_lane_is_visual_only() -> void:
 	var route_before: String = main.current_predator_route_id
 	var upper_alpha_before: float = timing_upper.color.a
 
-	main.call("_update_lantern_ray_timing_lane", 0.9)
+	RouteTimingCueServiceScript.update_lantern_ray_timing_lane(main, 0.9)
 	_expect(not is_equal_approx(timing_upper.color.a, upper_alpha_before), "Lantern Ray timing lane should visibly pulse as a timing cue")
 	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_before), "Lantern Ray timing lane should not secretly drain oxygen")
 	_expect(main.dive_session.current_cargo == cargo_before, "Lantern Ray timing lane should not mutate carried cargo")
@@ -9718,7 +9719,7 @@ func _test_east_shelf_current_surge_visual_timing() -> void:
 	main.run_predator_contacts = 1
 	main.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
 
-	main.call("_update_east_shelf_current_surge", 0.7)
+	RouteTimingCueServiceScript.update_east_shelf_current_surge(main, 0.7)
 	_expect(is_equal_approx(main.dive_session.oxygen, 24.0), "East Shelf current surge should not drain oxygen")
 	_expect(main.dive_session.current_cargo == ["kelp_fiber"], "East Shelf current surge should not change carried cargo")
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "East Shelf current surge should not change dive result")
@@ -9748,7 +9749,7 @@ func _test_blue_chimney_reverse_draft_visual_timing() -> void:
 	main.progression_state.banked_resources["glow_plankton"] = 2
 	main.progression_state.purchased_upgrades[PressureSealUpgrade.id] = true
 
-	main.call("_update_blue_chimney_reverse_draft", 0.7)
+	RouteTimingCueServiceScript.update_blue_chimney_reverse_draft(main, 0.7)
 	_expect(is_equal_approx(main.dive_session.oxygen, 22.0), "Blue Chimney reverse draft should not drain oxygen")
 	_expect(main.dive_session.current_cargo == ["shell_fragments"], "Blue Chimney reverse draft should not change carried cargo")
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Blue Chimney reverse draft should not change dive result")
@@ -9787,7 +9788,7 @@ func _test_blackwater_pressure_cue_visual_timing() -> void:
 	var pressure_rib_a := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/PressureRibA") as Polygon2D
 	var return_current := scene_main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue") as Polygon2D
 
-	scene_main.call("_update_blackwater_pressure_cue", MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
+	RouteTimingCueServiceScript.update_blackwater_pressure_cue(scene_main, MainScript.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
 	_expect(pressure_shutter.color.b > pressure_shutter.color.g, "Blackwater pressure cue should remain violet-blue after pulsing")
 	_expect(pressure_rib_a.color.b > pressure_rib_a.color.g, "Blackwater pressure rib should remain distinct from safe current green")
 	_expect(return_current.color.g > pressure_shutter.color.g, "Blackwater return current should stay visually distinct from pressure cue")
@@ -9822,7 +9823,7 @@ func _test_hollow_reef_timing_current_visual_only() -> void:
 	main.progression_state.banked_resources["shell_fragments"] = 2
 	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
 
-	main.call("_update_hollow_reef_timing_current", 0.7)
+	RouteTimingCueServiceScript.update_hollow_reef_timing_current(main, 0.7)
 	_expect(is_equal_approx(main.dive_session.oxygen, 20.0), "Hollow Reef timing current should not drain oxygen")
 	_expect(main.dive_session.current_cargo == ["glow_plankton"], "Hollow Reef timing current should not change carried cargo")
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Hollow Reef timing current should not change dive result")
@@ -9858,7 +9859,7 @@ func _test_hollow_reef_timing_current_visual_only() -> void:
 	_expect(timing_cue.find_child("ResourcePickup", true, false) == null, "Hollow Reef timing current should not add resource behavior")
 	_expect(timing_cue.find_child("Predator", true, false) == null, "Hollow Reef timing current should not reuse predator behavior")
 	_expect(timing_cue.find_child("PressureBoundary", true, false) == null, "Hollow Reef timing current should not add pressure behavior")
-	scene_main.call("_update_hollow_reef_timing_current", MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS * 0.25)
+	RouteTimingCueServiceScript.update_hollow_reef_timing_current(scene_main, MainScript.HOLLOW_REEF_TIMING_PERIOD_SECONDS * 0.25)
 	_expect(upper.color.b > upper.color.g and upper.color.r > upper.color.g, "Hollow Reef timing current should use pale timing color instead of safe-current green")
 	_expect(return_current.color.g > upper.color.g, "Hollow Reef safe-return current should stay greener than the timing cue")
 	_expect(upper.color.r > pressure_shutter.color.r and upper.color.g > pressure_shutter.color.g, "Hollow Reef timing current should stay brighter than pressure-lock language")
