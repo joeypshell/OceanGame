@@ -66,6 +66,7 @@ const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const RouteGateSyncServiceScript := preload("res://scripts/ui/route_gate_sync_service.gd")
 const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
@@ -267,6 +268,7 @@ func _initialize() -> void:
 	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
 	_run("tool belt service", _test_tool_belt_service)
+	_run("route gate sync service", _test_route_gate_sync_service)
 	_run("route payoff sync service", _test_route_payoff_sync_service)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("visual smoke bridge", _test_visual_smoke_bridge)
@@ -8368,6 +8370,27 @@ func _test_tool_belt_service() -> void:
 
 	ToolBeltServiceScript.update_tool_belt(main, false)
 	_expect(not main.tool_slot_nodes[0].visible and not main.tool_icon_nodes[0].visible and not main.tool_key_label_nodes[0].visible, "hidden tool belt should hide scanner slot nodes")
+	main.free()
+
+func _test_route_gate_sync_service() -> void:
+	var main := MainScript.new()
+	main.salvage_hatch_panel = Polygon2D.new()
+	main.salvage_lock_bars = Polygon2D.new()
+	main.salvage_glint = Polygon2D.new()
+	main.salvage_tool_label = Label.new()
+	main.salvage_promise_label = Label.new()
+	main.salvage_opened_pocket_lane = Node2D.new()
+
+	RouteGateSyncServiceScript.sync_salvage_pocket_open(main)
+	_expect(not main.salvage_opened_pocket_lane.visible, "locked salvage pocket should keep opened lane hidden")
+	_expect(main.salvage_lock_bars.visible, "locked salvage pocket should keep lock bars visible")
+	_expect(main.salvage_tool_label.text == "CUTTER NEEDED", "locked salvage pocket should keep cutter-needed label")
+
+	main.progression_state.add_upgrade(main.SALVAGE_CUTTER_UPGRADE_ID)
+	RouteGateSyncServiceScript.sync_salvage_pocket_open(main)
+	_expect(main.salvage_opened_pocket_lane.visible, "cutter-owned salvage pocket should reveal opened lane")
+	_expect(not main.salvage_lock_bars.visible, "cutter-owned salvage pocket should hide lock bars")
+	_expect(main.salvage_promise_label.text == "OPEN", "cutter-owned salvage pocket should preserve open label")
 	main.free()
 
 func _test_route_payoff_sync_service() -> void:

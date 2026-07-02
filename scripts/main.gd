@@ -56,6 +56,7 @@ const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.g
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const RouteGateSyncServiceScript := preload("res://scripts/ui/route_gate_sync_service.gd")
 const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
@@ -3113,43 +3114,10 @@ func _reveal_pressure_wreck_signal() -> void:
 	wreck_signal_hint.visible = true
 
 func _sync_pressure_lock_state() -> void:
-	RoutePresenterScript.sync_pressure_lock_state(
-		pressure_boundary,
-		pressure_shimmer,
-		pressure_gate_top,
-		pressure_gate_bottom,
-		pressure_gate_bar_a,
-		pressure_gate_bar_b,
-		pressure_gate_bar_c,
-		pressure_gate_left_rail,
-		pressure_gate_right_rail,
-		pressure_lock_badge,
-		pressure_label,
-		progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID)
-	)
+	RouteGateSyncServiceScript.sync_pressure_lock(self)
 
 func _sync_sealed_shelf_hatch_state() -> void:
-	var echo_shimmer := sealed_shelf_hatch_echo_shimmer
-	if echo_shimmer == null:
-		echo_shimmer = get_node_or_null("EastShelfSpur/SealedShelfHatch/EchoShimmer") as Polygon2D
-	var lock_badge := sealed_shelf_hatch_lock_badge
-	if lock_badge == null:
-		lock_badge = get_node_or_null("EastShelfSpur/SealedShelfHatch/LockBadge") as Polygon2D
-	var lock_label := sealed_shelf_hatch_lock_label
-	if lock_label == null:
-		lock_label = get_node_or_null("EastShelfSpur/SealedShelfHatch/LockLabel") as Label
-	var seal_bars := get_node_or_null("EastShelfSpur/SealedShelfHatch/SealBars") as Polygon2D
-	if echo_shimmer == null or lock_badge == null or lock_label == null:
-		return
-
-	RoutePresenterScript.sync_sealed_shelf_hatch_state(
-		echo_shimmer,
-		lock_badge,
-		lock_label,
-		seal_bars,
-		progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID),
-		progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
-	)
+	RouteGateSyncServiceScript.sync_sealed_shelf_hatch(self)
 
 func _blackwater_crack_gate_open() -> bool:
 	return progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)
@@ -3187,34 +3155,7 @@ func _sync_salvage_manifest_state() -> void:
 	RoutePayoffSyncServiceScript.sync_salvage_manifest_payoff(self)
 
 func _sync_salvage_pocket_open_state() -> void:
-	var hatch := salvage_hatch_panel
-	if hatch == null:
-		hatch = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/SealedHatchPanel") as Polygon2D
-	var lock_bars := salvage_lock_bars
-	if lock_bars == null:
-		lock_bars = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/LockBars") as Polygon2D
-	var glint := salvage_glint
-	if glint == null:
-		glint = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/SalvageGlint") as Polygon2D
-	var tool_label := salvage_tool_label
-	if tool_label == null:
-		tool_label = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/FutureCutterPort/ToolLabel") as Label
-	var promise_label := salvage_promise_label
-	if promise_label == null:
-		promise_label = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/PromiseLabel") as Label
-	var opened_lane := salvage_opened_pocket_lane
-	if opened_lane == null:
-		opened_lane = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane") as Node2D
-
-	RoutePresenterScript.sync_salvage_pocket_open_state(
-		hatch,
-		lock_bars,
-		glint,
-		tool_label,
-		promise_label,
-		opened_lane,
-		progression_state.has_upgrade(SALVAGE_CUTTER_UPGRADE_ID)
-	)
+	RouteGateSyncServiceScript.sync_salvage_pocket_open(self)
 	_sync_salvage_manifest_state()
 
 func _sync_tideglass_sample_state() -> void:
@@ -3227,45 +3168,7 @@ func _sync_rim_glass_reading_state() -> void:
 	RoutePayoffSyncServiceScript.sync_rim_glass_reading_payoff(self)
 
 func _sync_blackwater_crack_gate_state() -> void:
-	var mouth := blackwater_crack_mouth
-	if mouth == null:
-		mouth = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/CrackMouth") as Polygon2D
-	var wash := blackwater_pressure_wash
-	if wash == null:
-		wash = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/PressureDarkWash") as Polygon2D
-	var seal_lip := blackwater_seal_lip
-	if seal_lip == null:
-		seal_lip = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/SealLip") as Polygon2D
-	var gate_badge := blackwater_gate_badge
-	if gate_badge == null:
-		gate_badge = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateBadge") as Polygon2D
-	var gate_label := blackwater_gate_label
-	if gate_label == null:
-		gate_label = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/GateLabel") as Label
-	var closed_shard := blackwater_closed_shard
-	if closed_shard == null:
-		closed_shard = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/ClosedShard") as Polygon2D
-	var sill := blackwater_sill
-	if sill == null:
-		sill = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill") as Node2D
-	var sill_return := blackwater_sill_return_current
-	if sill_return == null:
-		sill_return = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/ReturnCurrentCue") as Polygon2D
-	if mouth == null or wash == null or seal_lip == null or gate_badge == null or gate_label == null or closed_shard == null:
-		return
-
-	RoutePresenterScript.sync_blackwater_crack_gate_state(
-		mouth,
-		wash,
-		seal_lip,
-		gate_badge,
-		gate_label,
-		closed_shard,
-		sill,
-		sill_return,
-		_blackwater_crack_gate_open(),
-		progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
-	)
+	RouteGateSyncServiceScript.sync_blackwater_crack_gate(self)
 	_sync_blackwater_trace_payoff_state()
 	_sync_blackwater_signal_opportunity(_current_condition_id())
 
@@ -3273,54 +3176,7 @@ func _wreck_echo_route_available() -> bool:
 	return progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID) and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID)
 
 func _sync_wreck_echo_state() -> void:
-	var route_available := _wreck_echo_route_available()
-	var trigger := wreck_echo_clue_trigger
-	if trigger == null:
-		trigger = get_node_or_null("WreckEchoDescent/ClueTrigger") as Area2D
-
-	if trigger != null:
-		trigger.visible = route_available
-		trigger.monitoring = route_available and not run_wreck_echo_clue_recovered
-		trigger.monitorable = route_available
-
-	var wash := wreck_echo_route_wash
-	if wash == null:
-		wash = get_node_or_null("WreckEchoDescent/RouteWash") as Polygon2D
-	if wash != null:
-		wash.color = Color(0.54, 0.86, 1.0, 0.07 if route_available else 0.035)
-
-	var rib_a := wreck_echo_rib_a
-	if rib_a == null:
-		rib_a = get_node_or_null("WreckEchoDescent/RibA") as Polygon2D
-	if rib_a != null:
-		rib_a.color = Color(0.78, 0.9, 1.0, 0.12 if route_available else 0.055)
-
-	var rib_b := wreck_echo_rib_b
-	if rib_b == null:
-		rib_b = get_node_or_null("WreckEchoDescent/RibB") as Polygon2D
-	if rib_b != null:
-		rib_b.color = Color(0.78, 0.9, 1.0, 0.1 if route_available else 0.05)
-
-	var clue_core := wreck_echo_clue_core
-	if clue_core == null:
-		clue_core = get_node_or_null("WreckEchoDescent/ClueTrigger/ClueCore") as Polygon2D
-
-	RoutePresenterScript.sync_wreck_echo_state(
-		trigger,
-		wash,
-		rib_a,
-		rib_b,
-		clue_core,
-		[
-			wreck_echo_clue_marker_outer,
-			wreck_echo_clue_marker_inner,
-			wreck_echo_clue_marker_facet,
-			wreck_echo_clue_marker_arc_a,
-			wreck_echo_clue_marker_arc_b,
-		],
-		route_available,
-		run_wreck_echo_clue_recovered
-	)
+	RouteGateSyncServiceScript.sync_wreck_echo(self)
 
 func _sync_predator_warning_upgrade_state() -> void:
 	var multiplier := predator_warning_1_multiplier if progression_state.has_upgrade(PREDATOR_WARNING_UPGRADE_ID) else 1.45
