@@ -56,6 +56,7 @@ const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.g
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
@@ -3086,34 +3087,10 @@ func _sync_discovery_reveals() -> void:
 	_sync_outer_shelf_survey_state()
 
 func _sync_east_shelf_pocket_payoff_state() -> void:
-	var halo := east_shelf_signal_core_halo
-	if halo == null:
-		halo = get_node_or_null("EastShelfSpur/PocketEntrance/SignalCore/CoreHalo") as Polygon2D
-	var gem := east_shelf_signal_core_gem
-	if gem == null:
-		gem = get_node_or_null("EastShelfSpur/PocketEntrance/SignalCore/CoreGem") as Polygon2D
-	var spark := east_shelf_signal_core_spark
-	if spark == null:
-		spark = get_node_or_null("EastShelfSpur/PocketEntrance/SignalCore/CoreSpark") as Polygon2D
-	if halo == null or gem == null or spark == null:
-		return
-
-	RoutePresenterScript.sync_east_shelf_pocket_payoff(halo, gem, spark, run_east_shelf_pocket_ping_recovered)
+	RoutePayoffSyncServiceScript.sync_east_shelf_pocket_payoff(self)
 
 func _sync_blue_chimney_payoff_state() -> void:
-	var halo := blue_chimney_survey_halo
-	if halo == null:
-		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyHalo") as Polygon2D
-	var gem := blue_chimney_survey_gem
-	if gem == null:
-		gem = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyGem") as Polygon2D
-	var spark := blue_chimney_survey_spark
-	if spark == null:
-		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveySpark") as Polygon2D
-	if halo == null or gem == null or spark == null:
-		return
-
-	RoutePresenterScript.sync_blue_chimney_payoff(halo, gem, spark, run_blue_chimney_draft_reading_recovered)
+	RoutePayoffSyncServiceScript.sync_blue_chimney_payoff(self)
 
 func _reveal_thermal_vent_route() -> void:
 	var route_hint := vent_route_hint
@@ -3195,79 +3172,19 @@ func _format_blackwater_prompt() -> String:
 	return "Blackwater Crack: %s read Resonance seal" % _action_label("interact")
 
 func _sync_blackwater_trace_payoff_state() -> void:
-	var halo := blackwater_trace_halo
-	if halo == null:
-		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceHalo") as Polygon2D
-	var gem := blackwater_trace_gem
-	if gem == null:
-		gem = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceGem") as Polygon2D
-	var spark := blackwater_trace_spark
-	if spark == null:
-		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/TraceCore/TraceSpark") as Polygon2D
-	if halo == null or gem == null or spark == null:
-		return
-
-	RoutePresenterScript.sync_blackwater_trace_payoff(halo, gem, spark, run_blackwater_trace_recovered)
+	RoutePayoffSyncServiceScript.sync_blackwater_trace_payoff(self)
 
 func _sync_glass_kelp_reading_state() -> void:
-	var halo := glass_kelp_reading_halo
-	if halo == null:
-		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingHalo") as Polygon2D
-	var shard := glass_kelp_reading_shard
-	if shard == null:
-		shard = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard") as Polygon2D
-	var spark := glass_kelp_reading_spark
-	if spark == null:
-		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark") as Polygon2D
-	if halo == null or shard == null or spark == null:
-		return
-
-	RoutePresenterScript.sync_glass_kelp_reading_payoff(halo, shard, spark, run_glass_kelp_reading_recovered)
+	RoutePayoffSyncServiceScript.sync_glass_kelp_reading_payoff(self)
 
 func _sync_hollow_reef_reading_state() -> void:
-	var halo := hollow_reef_reading_halo
-	if halo == null:
-		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingHalo") as Polygon2D
-	var shard := hollow_reef_reading_shard
-	if shard == null:
-		shard = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingShard") as Polygon2D
-	var spark := hollow_reef_reading_spark
-	if spark == null:
-		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingSpark") as Polygon2D
-	if halo == null or shard == null or spark == null:
-		return
-
-	RoutePresenterScript.sync_hollow_reef_reading_payoff(halo, shard, spark, run_hollow_reef_reading_recovered)
+	RoutePayoffSyncServiceScript.sync_hollow_reef_reading_payoff(self)
 
 func _sync_salvage_data_cache_state() -> void:
-	var halo := salvage_data_cache_halo
-	if halo == null:
-		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheHalo") as Polygon2D
-	var core := salvage_data_cache_core
-	if core == null:
-		core = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheCore") as Polygon2D
-	var spark := salvage_data_cache_spark
-	if spark == null:
-		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheSpark") as Polygon2D
-	if halo == null or core == null or spark == null:
-		return
-
-	RoutePresenterScript.sync_salvage_data_cache_payoff(halo, core, spark, run_salvage_data_cache_recovered)
+	RoutePayoffSyncServiceScript.sync_salvage_data_cache_payoff(self)
 
 func _sync_salvage_manifest_state() -> void:
-	var halo := salvage_manifest_halo
-	if halo == null:
-		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestHalo") as Polygon2D
-	var core := salvage_manifest_core
-	if core == null:
-		core = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestCore") as Polygon2D
-	var spark := salvage_manifest_spark
-	if spark == null:
-		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/ManifestSpark") as Polygon2D
-	if halo == null or core == null or spark == null:
-		return
-
-	RoutePresenterScript.sync_salvage_manifest_payoff(halo, core, spark, run_salvage_manifest_recovered)
+	RoutePayoffSyncServiceScript.sync_salvage_manifest_payoff(self)
 
 func _sync_salvage_pocket_open_state() -> void:
 	var hatch := salvage_hatch_panel
@@ -3301,49 +3218,13 @@ func _sync_salvage_pocket_open_state() -> void:
 	_sync_salvage_manifest_state()
 
 func _sync_tideglass_sample_state() -> void:
-	var halo := tideglass_sample_halo
-	if halo == null:
-		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleHalo") as Polygon2D
-	var core := tideglass_sample_core
-	if core == null:
-		core = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleCore") as Polygon2D
-	var spark := tideglass_sample_spark
-	if spark == null:
-		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleSpark") as Polygon2D
-	if halo == null or core == null or spark == null:
-		return
-
-	RoutePresenterScript.sync_tideglass_sample_payoff(halo, core, spark, run_tideglass_sample_recovered)
+	RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(self)
 
 func _sync_outer_shelf_survey_state() -> void:
-	var halo := outer_shelf_survey_halo
-	if halo == null:
-		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/SurveyHalo") as Polygon2D
-	var core := outer_shelf_survey_core
-	if core == null:
-		core = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/SurveyCore") as Polygon2D
-	var spark := outer_shelf_survey_spark
-	if spark == null:
-		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/SurveySpark") as Polygon2D
-	if halo == null or core == null or spark == null:
-		return
-
-	RoutePresenterScript.sync_outer_shelf_survey_payoff(halo, core, spark, run_outer_shelf_survey_recovered)
+	RoutePayoffSyncServiceScript.sync_outer_shelf_survey_payoff(self)
 
 func _sync_rim_glass_reading_state() -> void:
-	var halo := rim_glass_reading_halo
-	if halo == null:
-		halo = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/RimGlassReading/ReadingHalo") as Polygon2D
-	var core := rim_glass_reading_core
-	if core == null:
-		core = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/RimGlassReading/ReadingCore") as Polygon2D
-	var spark := rim_glass_reading_spark
-	if spark == null:
-		spark = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/RimGlassReading/ReadingSpark") as Polygon2D
-	if halo == null or core == null or spark == null:
-		return
-
-	RoutePresenterScript.sync_rim_glass_reading_payoff(halo, core, spark, run_rim_glass_reading_recovered)
+	RoutePayoffSyncServiceScript.sync_rim_glass_reading_payoff(self)
 
 func _sync_blackwater_crack_gate_state() -> void:
 	var mouth := blackwater_crack_mouth

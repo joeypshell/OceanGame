@@ -66,6 +66,7 @@ const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
@@ -266,6 +267,7 @@ func _initialize() -> void:
 	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
 	_run("tool belt service", _test_tool_belt_service)
+	_run("route payoff sync service", _test_route_payoff_sync_service)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("visual smoke bridge", _test_visual_smoke_bridge)
 	_run("Area 01 visual staging service", _test_area01_visual_staging_service)
@@ -8366,6 +8368,22 @@ func _test_tool_belt_service() -> void:
 
 	ToolBeltServiceScript.update_tool_belt(main, false)
 	_expect(not main.tool_slot_nodes[0].visible and not main.tool_icon_nodes[0].visible and not main.tool_key_label_nodes[0].visible, "hidden tool belt should hide scanner slot nodes")
+	main.free()
+
+func _test_route_payoff_sync_service() -> void:
+	var main := MainScript.new()
+	main.blue_chimney_survey_halo = Polygon2D.new()
+	main.blue_chimney_survey_gem = Polygon2D.new()
+	main.blue_chimney_survey_spark = Polygon2D.new()
+
+	RoutePayoffSyncServiceScript.sync_blue_chimney_payoff(main)
+	_expect(main.blue_chimney_survey_spark.visible, "active Blue Chimney payoff spark should remain visible")
+	_expect(main.blue_chimney_survey_gem.color.a >= 0.7, "active Blue Chimney payoff core should stay visible")
+
+	main.run_blue_chimney_draft_reading_recovered = true
+	RoutePayoffSyncServiceScript.sync_blue_chimney_payoff(main)
+	_expect(not main.blue_chimney_survey_spark.visible, "recovered Blue Chimney payoff spark should hide")
+	_expect(main.blue_chimney_survey_gem.color.a <= 0.2, "recovered Blue Chimney payoff core should dim")
 	main.free()
 
 func _test_tool_belt_presenter() -> void:
