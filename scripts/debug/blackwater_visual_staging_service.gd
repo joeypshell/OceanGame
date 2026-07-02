@@ -1,6 +1,7 @@
 class_name BlackwaterVisualStagingService
 extends RefCounted
 
+const BlackwaterGatePresenterScript := preload("res://scripts/ui/blackwater_gate_presenter.gd")
 const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
 
 const BLACKWATER_SILL_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill"
@@ -45,6 +46,9 @@ static func stage_route_visual_review(host) -> void:
 	host.dive_session.oxygen = host.dive_session.max_oxygen
 	host.player_near_blackwater_crack = true
 	host.visual_smoke_route_stage = "blackwater_route"
-	host.status_label.text = host._format_blackwater_gate_status()
+	host.status_label.text = BlackwaterGatePresenterScript.format_gate_status(
+		host._blackwater_crack_gate_open(),
+		host.progression_state.has_upgrade(host.ECHO_LENS_UPGRADE_ID)
+	)
 	host._update_depth()
 	host._update_hud()
