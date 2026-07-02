@@ -26,6 +26,7 @@ const BlueChimneyVisualStagingServiceScript := preload("res://scripts/debug/blue
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
+const DaylightTimerHudServiceScript := preload("res://scripts/ui/daylight_timer_hud_service.gd")
 const DepthRailServiceScript := preload("res://scripts/ui/depth_rail_service.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
@@ -244,6 +245,7 @@ func _initialize() -> void:
 	_run("expedition slate context", _test_expedition_slate_context)
 	_run("expedition slate pressure pause", _test_expedition_slate_pressure_pause)
 	_run("HUD presenter", _test_hud_presenter)
+	_run("daylight timer HUD service", _test_daylight_timer_hud_service)
 	_run("HUD instrument bar service", _test_hud_instrument_bar_service)
 	_run("depth rail service", _test_depth_rail_service)
 	_run("minimap service", _test_minimap_service)
@@ -8106,6 +8108,31 @@ func _test_hud_instrument_bar_service() -> void:
 	_expect(is_equal_approx(health_width, main.HEALTH_BAR_FILL_RECT.size.x * 0.82), "instrument bars should scale health fill by health ratio")
 	_expect(is_equal_approx(depth_width, main.DEPTH_BAR_FILL_RECT.size.x * 0.5), "instrument bars should scale depth fill by display depth ratio")
 	_expect(main.health_bar_fill.color == HudPresenterScript.HEALTH_DAMAGED_COLOR, "instrument bars should preserve recent-damage health color")
+	main.free()
+
+func _test_daylight_timer_hud_service() -> void:
+	var main := MainScript.new()
+	main.daylight_panel = Panel.new()
+	main.daylight_label = Label.new()
+	main.daylight_bar_back = ColorRect.new()
+	main.daylight_bar_fill = ColorRect.new()
+	main.daylight_sun_icon = Polygon2D.new()
+	main.daylight_moon_icon = Polygon2D.new()
+	main.daylight_duration_seconds = 420.0
+	main.daylight_elapsed_seconds = 210.0
+
+	DaylightTimerHudServiceScript.update_timer(main, true)
+	var fill_width := main.daylight_bar_fill.offset_right - main.daylight_bar_fill.offset_left
+	_expect(main.daylight_panel.visible and main.daylight_label.visible and main.daylight_bar_fill.visible, "visible daylight timer should show the timer nodes")
+	_expect(main.daylight_label.text == "DAYLIGHT 03:30", "daylight timer service should preserve remaining time copy")
+	_expect(main.daylight_label.modulate == HudPresenterScript.daylight_bar_color(0.5), "daylight timer service should tint label from daylight color state")
+	_expect(main.daylight_bar_fill.color == HudPresenterScript.daylight_bar_color(0.5), "daylight timer service should tint fill from daylight color state")
+	_expect(is_equal_approx(fill_width, main.DAYLIGHT_BAR_FILL_RECT.size.x * 0.5), "daylight timer service should scale fill by remaining ratio")
+	_expect(is_equal_approx(main.daylight_sun_icon.color.a, 0.32 + 0.5 * 0.62), "daylight sun icon opacity should track remaining day")
+	_expect(is_equal_approx(main.daylight_moon_icon.color.a, 0.34 + 0.5 * 0.58), "daylight moon icon opacity should track remaining night")
+
+	DaylightTimerHudServiceScript.update_timer(main, false)
+	_expect(not main.daylight_panel.visible and not main.daylight_label.visible and not main.daylight_bar_fill.visible, "hidden daylight timer should hide the timer nodes")
 	main.free()
 
 func _test_depth_rail_service() -> void:
