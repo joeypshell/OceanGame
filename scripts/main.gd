@@ -2705,8 +2705,8 @@ func _update_hud() -> void:
 		roundi(progression_state.best_depth_reached)
 	]
 	base_direction_label.text = _format_base_direction()
-	_update_oxygen_feedback()
-	_update_health_feedback()
+	OxygenFeedbackServiceScript.update_feedback(self)
+	HealthFeedbackServiceScript.update_feedback(self)
 	cargo_label.text = "%d / %d" % [
 		dive_session.current_cargo.size(),
 		dive_session.cargo_limit
@@ -3145,12 +3145,6 @@ func _format_base_direction() -> String:
 	return HudPresenterScript.format_base_direction(direction_player.global_position, start_position, pixels_per_meter)
 
 
-
-func _update_oxygen_feedback() -> void:
-	OxygenFeedbackServiceScript.update_feedback(self)
-
-func _update_health_feedback() -> void:
-	HealthFeedbackServiceScript.update_feedback(self)
 
 func _load_progression() -> void:
 	SaveServiceScript.load_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
