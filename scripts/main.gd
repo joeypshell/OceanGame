@@ -2052,7 +2052,7 @@ func _try_purchase_selected_upgrade() -> void:
 		_update_hud()
 		return
 
-	if _upgrade_missing_discovery(upgrade) != "":
+	if UpgradePurchaseScript.missing_discovery(progression_state, upgrade) != "":
 		if upgrade.id == SALVAGE_CUTTER_UPGRADE_ID:
 			upgrade_menu_feedback = "Missing evidence: Salvage Data Cache. %s" % upgrade.locked_reason
 			status_label.text = "%s needs recovered salvage data." % upgrade.display_name
@@ -2066,7 +2066,7 @@ func _try_purchase_selected_upgrade() -> void:
 		_update_hud()
 		return
 
-	if _upgrade_missing_upgrade(upgrade) != "":
+	if UpgradePurchaseScript.missing_upgrade(progression_state, upgrade) != "":
 		upgrade_menu_feedback = "Missing upgrade: %s. %s" % [
 			_format_upgrade_display_name(upgrade.required_upgrade),
 			upgrade.locked_reason
@@ -2777,12 +2777,6 @@ func _record_salvage_data_cache_discovery_if_extracted() -> void:
 		"Unlocks Salvage Cutter I for the sealed Wide Reef salvage pocket."
 	)
 
-func _upgrade_missing_discovery(upgrade: UpgradeDefinition) -> String:
-	return UpgradePurchaseScript.missing_discovery(progression_state, upgrade)
-
-func _upgrade_missing_upgrade(upgrade: UpgradeDefinition) -> String:
-	return UpgradePurchaseScript.missing_upgrade(progression_state, upgrade)
-
 func _format_upgrade_display_name(upgrade_id: String) -> String:
 	return UpgradeStateServiceScript.format_upgrade_display_name(self, upgrade_id)
 
@@ -2865,9 +2859,9 @@ func _first_ready_upgrade_definition() -> UpgradeDefinition:
 	for upgrade in upgrade_definitions:
 		if progression_state.has_upgrade(upgrade.id):
 			continue
-		if _upgrade_missing_discovery(upgrade) != "":
+		if UpgradePurchaseScript.missing_discovery(progression_state, upgrade) != "":
 			continue
-		if _upgrade_missing_upgrade(upgrade) != "":
+		if UpgradePurchaseScript.missing_upgrade(progression_state, upgrade) != "":
 			continue
 		if progression_state.can_afford(upgrade.resource_cost):
 			return upgrade
