@@ -32,6 +32,7 @@ const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const ExpandedRouteVisualStagingServiceScript := preload("res://scripts/debug/expanded_route_visual_staging_service.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
+const HealthFeedbackServiceScript := preload("res://scripts/ui/health_feedback_service.gd")
 const HealthDamageVisualStagingServiceScript := preload("res://scripts/debug/health_damage_visual_staging_service.gd")
 const HollowReefVisualStagingServiceScript := preload("res://scripts/debug/hollow_reef_visual_staging_service.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
@@ -249,6 +250,7 @@ func _initialize() -> void:
 	_run("daylight timer HUD service", _test_daylight_timer_hud_service)
 	_run("HUD instrument bar service", _test_hud_instrument_bar_service)
 	_run("oxygen feedback service", _test_oxygen_feedback_service)
+	_run("health feedback service", _test_health_feedback_service)
 	_run("depth rail service", _test_depth_rail_service)
 	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
@@ -8164,6 +8166,36 @@ func _test_oxygen_feedback_service() -> void:
 	_expect(main.oxygen_label.modulate == HudPresenterScript.oxygen_state_color("critical"), "critical oxygen should tint oxygen label")
 	_expect(main.base_direction_label.modulate == Color(1.0, 0.22, 0.14, 1.0), "critical oxygen should tint base direction red")
 	_expect(main.oxygen_label.scale.x >= 1.0 and main.oxygen_label.scale.x <= 1.08, "critical oxygen pulse should stay within current scale range")
+	main.free()
+
+func _test_health_feedback_service() -> void:
+	var main := MainScript.new()
+	main.health_label = Label.new()
+	main.health_icon = Polygon2D.new()
+	main.dive_session.reset(40.0, 100.0)
+
+	HealthFeedbackServiceScript.update_feedback(main)
+	_expect(main.health_label.modulate == Color.WHITE and main.health_icon.modulate == Color.WHITE, "health feedback should reset inactive HUD color")
+	_expect(main.health_label.scale == Vector2.ONE, "health feedback should reset inactive HUD scale")
+
+	main.dive_session.start()
+	main.dive_session.health = 30.0
+	HealthFeedbackServiceScript.update_feedback(main)
+	_expect(main.health_label.modulate == HudPresenterScript.health_state_color("low"), "low health should tint health label")
+	_expect(main.health_icon.modulate == HudPresenterScript.health_state_color("low"), "low health should tint health icon")
+	_expect(main.health_label.scale == Vector2.ONE, "low health should not pulse scale")
+
+	main.dive_session.health = 12.0
+	HealthFeedbackServiceScript.update_feedback(main)
+	_expect(main.health_label.modulate == HudPresenterScript.health_state_color("critical"), "critical health should tint health label")
+	_expect(main.health_icon.modulate == HudPresenterScript.health_state_color("critical"), "critical health should tint health icon")
+	_expect(main.health_label.scale.x >= 1.0 and main.health_label.scale.x <= 1.07, "critical health pulse should stay within current scale range")
+
+	main.dive_session.health = 82.0
+	main.run_health_damage_events = 1
+	HealthFeedbackServiceScript.update_feedback(main)
+	_expect(main.health_label.modulate == HudPresenterScript.HEALTH_DAMAGED_COLOR, "recent damage should tint normal health label")
+	_expect(main.health_icon.modulate == HudPresenterScript.HEALTH_DAMAGED_COLOR, "recent damage should tint normal health icon")
 	main.free()
 
 func _test_depth_rail_service() -> void:
