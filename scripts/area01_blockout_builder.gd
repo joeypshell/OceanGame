@@ -42,6 +42,7 @@ const GENERATED_WATER_CUTOUT_LAYER_NAME := "RuntimeSourceWaterCutouts"
 const GENERATED_WATER_EDGE_LAYER_NAME := "RuntimeSourceWaterEdges"
 const GENERATED_PLAYER_RIM_LAYER_NAME := "RuntimeSourcePlayerRims"
 const GENERATED_CAVE_WALL_ART_LAYER_NAME := "RuntimeSourceCaveWallSprites"
+const GENERATED_DOMAIN_ACCENT_LAYER_NAME := "RuntimeSourceTerrainDomainAccents"
 const AREA01_ART_SLICE_Z_INDEX := 0
 const REEF_TEXTURE_UV_SCALE := 0.84
 const FAR_BACKGROUND_AUTHORITY_ALPHA := 0.06
@@ -73,6 +74,10 @@ const GENERATED_CAVE_WALL_ART_SPACING := 190.0
 const GENERATED_CAVE_WALL_ART_ALPHA := 0.46
 const GENERATED_FUTURE_CAVE_WALL_ART_ALPHA := 0.30
 const GENERATED_CAVE_WALL_ART_MAX_REPEATS := 10
+const SOURCE_GRID_WATER_EDGE_ART_SCALE := 0.22
+const SOURCE_GRID_WATER_EDGE_ART_SPACING := 260.0
+const SOURCE_GRID_WATER_EDGE_ART_ALPHA := 0.32
+const SOURCE_GRID_WATER_EDGE_ART_MIN_LENGTH := 128.0
 const HOOK_PICKUP_COLOR := Color(0.16, 1.0, 0.82, 0.88)
 const HOOK_SCAN_COLOR := Color(0.20, 0.86, 1.0, 0.82)
 const HOOK_GATE_COLOR := Color(0.92, 0.24, 0.32, 0.62)
@@ -295,6 +300,7 @@ func _create_generated_source_visuals(terrain_layer: Node2D, rim_layer: Node2D, 
 	var terrain_domain: Variant = source_map.get("terrain_domain", {})
 	if terrain_domain is Dictionary:
 		_create_terrain_domain_visual(terrain_layer, terrain_domain as Dictionary)
+		_add_generated_domain_accents(terrain_layer, terrain_domain as Dictionary)
 
 	var water_cutout_layer := Node2D.new()
 	water_cutout_layer.name = GENERATED_WATER_CUTOUT_LAYER_NAME
@@ -318,10 +324,14 @@ func _create_generated_source_visuals(terrain_layer: Node2D, rim_layer: Node2D, 
 	Area01VisualCueContractScript.tag_node(cave_wall_art_layer, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, GENERATED_CAVE_WALL_ART_LAYER_NAME)
 	rim_layer.add_child(cave_wall_art_layer)
 
+	var exact_water_visuals_enabled := _create_source_grid_water_cutouts(water_cutout_layer, source_map)
+	if exact_water_visuals_enabled:
+		_add_source_grid_water_edge_art(cave_wall_art_layer, source_map)
+
 	for water_value in source_map.get("playable_water_regions", []):
 		if not water_value is Dictionary:
 			continue
-		_create_playable_water_visual(water_cutout_layer, water_edge_layer, player_rim_layer, cave_wall_art_layer, water_value as Dictionary)
+		_create_playable_water_visual(water_cutout_layer, water_edge_layer, player_rim_layer, cave_wall_art_layer, water_value as Dictionary, exact_water_visuals_enabled)
 
 func _create_terrain_domain_visual(terrain_layer: Node2D, terrain_domain: Dictionary) -> void:
 	var points := _points_from_json(terrain_domain.get("polygon", []))
@@ -341,7 +351,149 @@ func _create_terrain_domain_visual(terrain_layer: Node2D, terrain_domain: Dictio
 	Area01VisualCueContractScript.tag_node(visible, Area01VisualCueContractScript.FAMILY_PASSIVE_BACKGROUND, domain_id)
 	terrain_layer.add_child(visible)
 
-func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer: Node2D, player_rim_layer: Node2D, cave_wall_art_layer: Node2D, water: Dictionary) -> void:
+func _create_source_grid_water_cutouts(water_cutout_layer: Node2D, source_map: Dictionary) -> bool:
+	var cutouts: Variant = source_map.get("source_grid_water_cutouts", [])
+	if not cutouts is Array:
+		return false
+	var cutout_entries := cutouts as Array
+	if cutout_entries.is_empty():
+		return false
+
+	for cutout_value in cutout_entries:
+		if not cutout_value is Dictionary:
+			continue
+		var cutout_data := cutout_value as Dictionary
+		var points := _points_from_json(cutout_data.get("polygon", []))
+		if points.size() < 3:
+			continue
+		var runtime_generation: Variant = cutout_data.get("runtime_generation", {})
+		var runtime: Dictionary = runtime_generation as Dictionary if runtime_generation is Dictionary else {}
+		var cutout_id := String(cutout_data.get("id", "source_grid_water_cutout"))
+		var visible := Polygon2D.new()
+		visible.name = String(runtime.get("visible_polygon2d_name", "%sWaterCutout" % _pascal_case_id(cutout_id)))
+		visible.polygon = points
+		visible.visible = true
+		visible.color = WATER_CUTOUT_COLOR
+		Area01VisualCueContractScript.tag_node(visible, Area01VisualCueContractScript.FAMILY_PASSIVE_BACKGROUND, cutout_id)
+		water_cutout_layer.add_child(visible)
+
+	return true
+
+func _add_source_grid_water_edge_art(cave_wall_art_layer: Node2D, source_map: Dictionary) -> void:
+	var edges: Variant = source_map.get("source_grid_water_edges", [])
+	if not edges is Array:
+		return
+	var edge_entries := edges as Array
+	if edge_entries.is_empty():
+		return
+
+	var group := Node2D.new()
+	group.name = "SourceGridWaterBoundaryWallArt"
+	group.z_index = 1
+	Area01VisualCueContractScript.tag_node(group, Area01VisualCueContractScript.FAMILY_TERRAIN_RIM_LIP, group.name)
+	cave_wall_art_layer.add_child(group)
+
+	for edge_value in edge_entries:
+		if not edge_value is Dictionary:
+			continue
+		var edge_data := edge_value as Dictionary
+		var points := _points_from_json(edge_data.get("points", []))
+		if points.size() < 2:
+			continue
+		if points[0].distance_to(points[1]) < SOURCE_GRID_WATER_EDGE_ART_MIN_LENGTH:
+			continue
+		var edge_id := String(edge_data.get("id", "source_grid_water_edge"))
+		var trim_type := String(edge_data.get("trim_type", ""))
+		var solid_side := String(edge_data.get("solid_side", ""))
+		var offset := _source_grid_water_edge_trim_offset(solid_side)
+		_add_generated_cave_wall_edge_trim(
+			group,
+			"SourceGrid%s" % _pascal_case_id(edge_id),
+			trim_type,
+			points[0],
+			points[1],
+			offset,
+			SOURCE_GRID_WATER_EDGE_ART_SPACING,
+			SOURCE_GRID_WATER_EDGE_ART_SCALE,
+			SOURCE_GRID_WATER_EDGE_ART_ALPHA,
+			edge_id
+		)
+
+func _source_grid_water_edge_trim_offset(solid_side: String) -> Vector2:
+	match solid_side:
+		"top":
+			return Vector2(0.0, -14.0)
+		"bottom":
+			return Vector2(0.0, 14.0)
+		"left":
+			return Vector2(-14.0, 0.0)
+		"right":
+			return Vector2(14.0, 0.0)
+		_:
+			return Vector2.ZERO
+
+func _add_generated_domain_accents(terrain_layer: Node2D, terrain_domain: Dictionary) -> void:
+	var points := _points_from_json(terrain_domain.get("polygon", []))
+	if points.size() < 3:
+		return
+
+	var bounds := _polygon_bounds(points)
+	if bounds.size.x <= 0.0 or bounds.size.y <= 0.0:
+		return
+
+	var domain_id := String(terrain_domain.get("id", "terrain_domain"))
+	var layer := Node2D.new()
+	layer.name = GENERATED_DOMAIN_ACCENT_LAYER_NAME
+	layer.z_index = 2
+	Area01VisualCueContractScript.tag_node(layer, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, domain_id)
+	terrain_layer.add_child(layer)
+
+	var upper_shadow := Polygon2D.new()
+	upper_shadow.name = "ContinuousUpperReefShadow"
+	upper_shadow.color = Color(0.0, 0.03, 0.035, 0.18)
+	upper_shadow.polygon = PackedVector2Array([
+		Vector2(bounds.position.x, bounds.position.y),
+		Vector2(bounds.end.x, bounds.position.y),
+		Vector2(bounds.end.x, bounds.position.y + clampf(bounds.size.y * 0.10, 96.0, 190.0)),
+		Vector2(bounds.position.x, bounds.position.y + clampf(bounds.size.y * 0.15, 128.0, 260.0)),
+	])
+	layer.add_child(upper_shadow)
+
+	var lower_shadow := Polygon2D.new()
+	lower_shadow.name = "ContinuousLowerDepthMass"
+	lower_shadow.color = Color(0.0, 0.012, 0.018, 0.20)
+	lower_shadow.polygon = PackedVector2Array([
+		Vector2(bounds.position.x, bounds.position.y + bounds.size.y * 0.62),
+		Vector2(bounds.end.x, bounds.position.y + bounds.size.y * 0.58),
+		Vector2(bounds.end.x, bounds.end.y),
+		Vector2(bounds.position.x, bounds.end.y),
+	])
+	layer.add_child(lower_shadow)
+
+	_add_strata_band(layer, "GeneratedUpperReefStrata", bounds, 0.18, 0.08, STRATA_LIGHT_COLOR.lightened(0.12), -24.0)
+	_add_strata_band(layer, "GeneratedMidReefStrata", bounds, 0.43, 0.10, STRATA_DARK_COLOR, 18.0)
+	_add_strata_band(layer, "GeneratedLowerReefStrata", bounds, 0.73, 0.08, STRATA_LIGHT_COLOR.darkened(0.4), -14.0)
+	_add_generated_domain_decals(layer, bounds)
+
+func _add_generated_domain_decals(layer: Node2D, bounds: Rect2) -> void:
+	var decal_specs := [
+		{"name": "GeneratedDomainKelpDecal", "texture": WALL_KELP_TEXTURE, "position": bounds.position + Vector2(bounds.size.x * 0.18, bounds.size.y * 0.28), "scale": Vector2(0.30, 0.30), "alpha": 0.22},
+		{"name": "GeneratedDomainCrackDecal", "texture": WALL_CRACK_TEXTURE, "position": bounds.position + Vector2(bounds.size.x * 0.38, bounds.size.y * 0.52), "scale": Vector2(0.34, 0.34), "alpha": 0.20},
+		{"name": "GeneratedDomainCoralDecal", "texture": WALL_CORAL_TEXTURE, "position": bounds.position + Vector2(bounds.size.x * 0.68, bounds.size.y * 0.37), "scale": Vector2(0.30, 0.30), "alpha": 0.22},
+		{"name": "GeneratedDomainCornerCapDecal", "texture": WALL_CORNER_TEXTURE, "position": bounds.position + Vector2(bounds.size.x * 0.82, bounds.size.y * 0.72), "scale": Vector2(0.28, 0.28), "alpha": 0.18},
+	]
+	for spec in decal_specs:
+		var sprite := _wall_sprite(
+			String(spec["name"]),
+			spec["texture"] as Texture2D,
+			spec["position"] as Vector2,
+			spec["scale"] as Vector2,
+			float(spec["alpha"])
+		)
+		Area01VisualCueContractScript.tag_node(sprite, Area01VisualCueContractScript.FAMILY_SOLID_TERRAIN, String(spec["name"]))
+		layer.add_child(sprite)
+
+func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer: Node2D, player_rim_layer: Node2D, cave_wall_art_layer: Node2D, water: Dictionary, exact_water_visuals_enabled: bool) -> void:
 	var points := _points_from_json(water.get("polygon", []))
 	if points.size() < 3:
 		return
@@ -356,7 +508,7 @@ func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer:
 	var cutout := Polygon2D.new()
 	cutout.name = visible_name
 	cutout.polygon = points
-	cutout.visible = true
+	cutout.visible = not exact_water_visuals_enabled
 	cutout.color = OPEN_SURFACE_WATER_CUTOUT_COLOR if water_id == "open_surface_water" or water_kind == "surface" or water_kind == "open_surface" else WATER_CUTOUT_COLOR
 	Area01VisualCueContractScript.tag_node(cutout, Area01VisualCueContractScript.FAMILY_PASSIVE_BACKGROUND, water_id)
 	water_cutout_layer.add_child(cutout)
@@ -372,7 +524,7 @@ func _create_playable_water_visual(water_cutout_layer: Node2D, water_edge_layer:
 
 	if carves_collision and bool(runtime.get("player_facing_rim_markers", false)):
 		_add_playable_water_rim_markers(player_rim_layer, "%sPlayerRimSprites" % edge_name, water_id, points, String(water.get("status", "")))
-	if carves_collision:
+	if carves_collision and not exact_water_visuals_enabled:
 		_add_generated_cave_wall_art(cave_wall_art_layer, water_id, water_kind, points, String(water.get("status", "")))
 
 func _add_generated_cave_wall_art(cave_wall_art_layer: Node2D, water_id: String, water_kind: String, points: PackedVector2Array, status: String) -> void:

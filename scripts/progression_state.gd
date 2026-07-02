@@ -58,6 +58,9 @@ func purchase_upgrade(upgrade_id: String, cost: Dictionary) -> bool:
 	purchased_upgrades[upgrade_id] = true
 	return true
 
+func add_upgrade(upgrade_id: String) -> void:
+	purchased_upgrades[upgrade_id] = true
+
 func add_discovery(discovery_id: String, display_name: String, description: String, gameplay_fact: String) -> void:
 	scan_discoveries[discovery_id] = {
 		"display_name": display_name,

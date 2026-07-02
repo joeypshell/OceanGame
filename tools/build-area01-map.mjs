@@ -290,23 +290,23 @@ function connectedWaterComponents(source) {
   return components;
 }
 
-function mergeSolidCells(source) {
+function mergeGridCells(source, shouldMergeCell) {
   const visited = Array.from({ length: source.height }, () => Array(source.width).fill(false));
   const rects = [];
   for (let y = 0; y < source.height; y += 1) {
     for (let x = 0; x < source.width; x += 1) {
-      if (visited[y][x] || gridCell(source, x, y) !== SOLID) {
+      if (visited[y][x] || !shouldMergeCell(x, y)) {
         continue;
       }
       let width = 0;
-      while (x + width < source.width && !visited[y][x + width] && gridCell(source, x + width, y) === SOLID) {
+      while (x + width < source.width && !visited[y][x + width] && shouldMergeCell(x + width, y)) {
         width += 1;
       }
       let height = 1;
       let canExtend = true;
       while (y + height < source.height && canExtend) {
         for (let tx = x; tx < x + width; tx += 1) {
-          if (visited[y + height][tx] || gridCell(source, tx, y + height) !== SOLID) {
+          if (visited[y + height][tx] || !shouldMergeCell(tx, y + height)) {
             canExtend = false;
             break;
           }
@@ -324,6 +324,89 @@ function mergeSolidCells(source) {
     }
   }
   return rects;
+}
+
+function mergeSolidCells(source) {
+  return mergeGridCells(source, (x, y) => gridCell(source, x, y) === SOLID);
+}
+
+function mergePlayableWaterCutoutCells(source, firstTerrainRow) {
+  return mergeGridCells(source, (x, y) => y >= firstTerrainRow && isPlayableCell(source, x, y));
+}
+
+function sourceGridWaterBoundarySegments(source) {
+  const rangesByKey = new Map();
+  const addRange = (orientation, solidSide, line, start, end, trimType) => {
+    const key = `${orientation}:${solidSide}:${line}:${trimType}`;
+    if (!rangesByKey.has(key)) {
+      rangesByKey.set(key, { orientation, solidSide, line, trimType, ranges: [] });
+    }
+    rangesByKey.get(key).ranges.push([start, end]);
+  };
+
+  for (let y = 0; y < source.height; y += 1) {
+    for (let x = 0; x < source.width; x += 1) {
+      if (!isPlayableCell(source, x, y)) {
+        continue;
+      }
+
+      if (y > 0 && gridCell(source, x, y - 1) === SOLID) {
+        addRange("horizontal", "top", y, x, x + 1, "underside");
+      }
+      if (y + 1 < source.height && gridCell(source, x, y + 1) === SOLID) {
+        addRange("horizontal", "bottom", y + 1, x, x + 1, (y + 1) * source.cell_size >= 1400 ? "deep_floor_lip" : "top_lip");
+      }
+      if (x > 0 && gridCell(source, x - 1, y) === SOLID) {
+        addRange("vertical", "left", x, y, y + 1, "vertical_wall");
+      }
+      if (x + 1 < source.width && gridCell(source, x + 1, y) === SOLID) {
+        addRange("vertical", "right", x + 1, y, y + 1, "vertical_wall");
+      }
+    }
+  }
+
+  const segments = [];
+  for (const entry of rangesByKey.values()) {
+    const ranges = entry.ranges.sort((a, b) => a[0] - b[0]);
+    let current = null;
+    for (const range of ranges) {
+      if (current == null) {
+        current = [...range];
+        continue;
+      }
+      if (range[0] <= current[1]) {
+        current[1] = Math.max(current[1], range[1]);
+        continue;
+      }
+      segments.push({ ...entry, range: current });
+      current = [...range];
+    }
+    if (current != null) {
+      segments.push({ ...entry, range: current });
+    }
+  }
+
+  return segments.map((segment, index) => {
+    const id = `generated_grid_water_edge_${String(index + 1).padStart(3, "0")}`;
+    const line = segment.line * source.cell_size;
+    const start = segment.range[0] * source.cell_size;
+    const end = segment.range[1] * source.cell_size;
+    const points = segment.orientation === "horizontal" ? [[start, line], [end, line]] : [[line, start], [line, end]];
+    return {
+      id,
+      source_line: segment.line,
+      source_range: segment.range,
+      orientation: segment.orientation,
+      solid_side: segment.solidSide,
+      trim_type: segment.trimType,
+      points,
+      runtime_generation: {
+        visual_role: "source_grid_water_boundary_edge",
+        generated_from: "data/maps/area_01_source_grid_v1.json",
+        sprites_define_collision: false,
+      },
+    };
+  });
 }
 
 function rasterizeSolidRects(source, rects) {
@@ -375,7 +458,10 @@ function buildRuntimeGeometry(source) {
   const solidRects = mergeSolidCells(source);
   const cellSize = source.cell_size;
   const surfaceRows = source.rows.findIndex((row) => [...row].some((cell) => cell !== OPEN_SURFACE));
-  const terrainY = (surfaceRows < 0 ? source.height : surfaceRows) * cellSize;
+  const firstTerrainRow = surfaceRows < 0 ? source.height : surfaceRows;
+  const waterCutoutRects = mergePlayableWaterCutoutCells(source, firstTerrainRow);
+  const sourceGridWaterEdges = sourceGridWaterBoundarySegments(source);
+  const terrainY = firstTerrainRow * cellSize;
   const stageBounds = [0, 0, source.width * cellSize, source.height * cellSize];
   const sourceHash = crypto.createHash("sha256").update(JSON.stringify(source)).digest("hex");
 
@@ -458,6 +544,22 @@ function buildRuntimeGeometry(source) {
     world_position: cellCenter(point.cell, cellSize),
   }));
 
+  const sourceGridWaterCutouts = waterCutoutRects.map((rect, index) => {
+    const id = `generated_grid_water_cutout_${String(index + 1).padStart(3, "0")}`;
+    return {
+      id,
+      source_cells: rect,
+      polygon: polygonFromWorldRect(worldRectFromCells(rect, cellSize)),
+      runtime_generation: {
+        visual_role: "source_grid_water_cutout",
+        generated_from: "data/maps/area_01_source_grid_v1.json",
+        visible_polygon2d_name: runtimeName(id, "WaterCutout"),
+        visual_points_source: "this polygon",
+        sprites_define_collision: false,
+      },
+    };
+  });
+
   return {
     schema_version: 1,
     map_id: "area_01_runtime_geometry_generated",
@@ -497,6 +599,8 @@ function buildRuntimeGeometry(source) {
       world_bounds: worldRectFromCells(component.bounds_cells, cellSize),
       touches_surface: component.touches_surface,
     })),
+    source_grid_water_cutouts: sourceGridWaterCutouts,
+    source_grid_water_edges: sourceGridWaterEdges,
     playable_water_regions: playableWaterRegions,
     solid_terrain: solidTerrain,
     scene_hooks: sceneHooks,
@@ -577,9 +681,17 @@ function runtimePreviewSvg(source, runtime) {
     const [x, y, width, height] = terrain.source_cells;
     lines.push(`<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="#526264" opacity="0.88" stroke="#0a2027" stroke-width="0.06"/>`);
   }
+  for (const cutout of runtime.source_grid_water_cutouts ?? []) {
+    const [x, y, width, height] = cutout.source_cells;
+    lines.push(`<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="#d8f6ff" opacity="0.56" stroke="#00c9ff" stroke-width="0.035"/>`);
+  }
   for (const region of runtime.playable_water_regions) {
     const [x, y, width, height] = region.source_rect_cells;
-    lines.push(`<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="#ffffff" opacity="0.28" stroke="#00c9ff" stroke-width="0.1"/>`);
+    lines.push(`<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="none" opacity="0.4" stroke="#00c9ff" stroke-width="0.1" stroke-dasharray="0.45 0.22"/>`);
+  }
+  for (const edge of runtime.source_grid_water_edges ?? []) {
+    const [start, finish] = edge.points;
+    lines.push(`<line x1="${start[0] / source.cell_size}" y1="${start[1] / source.cell_size}" x2="${finish[0] / source.cell_size}" y2="${finish[1] / source.cell_size}" stroke="#06262d" stroke-width="0.08" opacity="0.48"/>`);
   }
   drawHooksAndReviewPoints(source, lines);
   lines.push("</svg>");

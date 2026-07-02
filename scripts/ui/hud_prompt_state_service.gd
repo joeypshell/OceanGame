@@ -3,6 +3,7 @@ extends RefCounted
 
 const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
 const BlackwaterGatePresenterScript := preload("res://scripts/ui/blackwater_gate_presenter.gd")
+const RouteTimingCuePresenterScript := preload("res://scripts/ui/route_timing_cue_presenter.gd")
 
 static func build_state(host) -> Dictionary:
 	return {
@@ -27,7 +28,12 @@ static func build_state(host) -> Dictionary:
 		"max_health": host.dive_session.max_health,
 		"max_oxygen": host.dive_session.max_oxygen,
 		"night_build_prompt": host._format_night_build_prompt(),
-		"outer_shelf_recovered_prompt": host._outer_shelf_slackwater_decision_prompt(host.outer_shelf_slackwater_timer),
+		"outer_shelf_recovered_prompt": RouteTimingCuePresenterScript.outer_shelf_slackwater_decision_prompt_for_timer(
+			host.outer_shelf_slackwater_timer,
+			host.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS,
+			host.OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD,
+			host.OUTER_SHELF_SLACKWATER_EASING_THRESHOLD
+		),
 		"oxygen": host.dive_session.oxygen,
 		"player_in_base": host.player_in_base,
 		"player_in_surface_oxygen_refill": host._is_player_in_surface_oxygen_refill(),

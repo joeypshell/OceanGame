@@ -7,11 +7,16 @@ var max_oxygen := 30.0
 var oxygen := 30.0
 var max_health := 100.0
 var health := 100.0
-var current_cargo: Array[String] = []
+var current_cargo: Array = []
+var cargo: Array:
+	get:
+		return current_cargo
+	set(value):
+		current_cargo = value
 var cargo_limit := 3
 var has_left_base := false
 var current_depth := 0.0
-var result := Result.DIVING
+var result := Result.READY
 var unlimited_oxygen := false
 
 func reset(new_max_oxygen: float, new_max_health: float = 100.0) -> void:

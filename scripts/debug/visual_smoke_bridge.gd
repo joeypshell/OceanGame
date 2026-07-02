@@ -1,7 +1,24 @@
 class_name VisualSmokeBridge
 extends RefCounted
 
+const Area01VisualStagingServiceScript := preload("res://scripts/debug/area01_visual_staging_service.gd")
+const BlackwaterVisualStagingServiceScript := preload("res://scripts/debug/blackwater_visual_staging_service.gd")
+const BlueChimneyVisualStagingServiceScript := preload("res://scripts/debug/blue_chimney_visual_staging_service.gd")
+const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
+const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
+const ExpandedRouteVisualStagingServiceScript := preload("res://scripts/debug/expanded_route_visual_staging_service.gd")
+const HealthDamageVisualStagingServiceScript := preload("res://scripts/debug/health_damage_visual_staging_service.gd")
+const HollowReefVisualStagingServiceScript := preload("res://scripts/debug/hollow_reef_visual_staging_service.gd")
+const LowerConnectorVisualStagingServiceScript := preload("res://scripts/debug/lower_connector_visual_staging_service.gd")
+const MirrorKelpVisualStagingServiceScript := preload("res://scripts/debug/mirror_kelp_visual_staging_service.gd")
+const OpenHatchVisualStagingServiceScript := preload("res://scripts/debug/open_hatch_visual_staging_service.gd")
+const OuterShelfVisualStagingServiceScript := preload("res://scripts/debug/outer_shelf_visual_staging_service.gd")
 const ScanTargetFeedbackServiceScript := preload("res://scripts/ui/scan_target_feedback_service.gd")
+const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
+const SiltVeinVisualStagingServiceScript := preload("res://scripts/debug/silt_vein_visual_staging_service.gd")
+const SurfaceOxygenVisualStagingServiceScript := preload("res://scripts/debug/surface_oxygen_visual_staging_service.gd")
+const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
+const WreckEchoVisualStagingServiceScript := preload("res://scripts/debug/wreck_echo_visual_staging_service.gd")
 
 static func consume_command(host) -> void:
 	if not OS.has_feature("web"):
@@ -18,77 +35,77 @@ static func consume_command(host) -> void:
 		"oxygen_critical":
 			host._stage_debug_oxygen_visual_review(0.08, "critical")
 		"health_damage":
-			host._stage_debug_health_damage_visual_review()
+			HealthDamageVisualStagingServiceScript.stage_visual_review(host)
 		"health_damage_extracted":
-			host._stage_debug_health_damage_extraction_visual_review()
+			HealthDamageVisualStagingServiceScript.stage_extraction_visual_review(host)
 		"daylight_morning":
 			host._stage_debug_daylight_visual_review(0.15, "morning")
 		"daylight_evening":
 			host._stage_debug_daylight_visual_review(0.75, "evening")
 		"daylight_cargo_warning":
-			host._stage_debug_daylight_cargo_warning_visual_review()
+			DaylightCargoVisualStagingServiceScript.stage_visual_review(host)
 		"daylight_nightfall":
 			host._stage_debug_daylight_visual_review(1.0, "nightfall")
 		"surface_oxygen_refill":
-			host._stage_debug_surface_oxygen_refill_visual_review()
+			SurfaceOxygenVisualStagingServiceScript.stage_visual_review(host)
 		"ship_offload":
-			host._stage_debug_ship_offload_visual_review()
+			ShipOffloadVisualStagingServiceScript.stage_visual_review(host)
 		"area01_surface_entry":
-			host._stage_debug_area01_shell_visual_review("surface_entry")
+			Area01VisualStagingServiceScript.stage_shell_visual_review(host, "surface_entry")
 		"area01_left_shelf_cave":
-			host._stage_debug_area01_shell_visual_review("left_shelf_cave")
+			Area01VisualStagingServiceScript.stage_shell_visual_review(host, "left_shelf_cave")
 		"area01_right_shelf_pocket":
-			host._stage_debug_area01_shell_visual_review("right_shelf_pocket")
+			Area01VisualStagingServiceScript.stage_shell_visual_review(host, "right_shelf_pocket")
 		"area01_west_chamber":
-			host._stage_debug_area01_shell_visual_review("west_chamber")
+			Area01VisualStagingServiceScript.stage_shell_visual_review(host, "west_chamber")
 		"area01_right_chamber":
-			host._stage_debug_area01_shell_visual_review("right_chamber")
+			Area01VisualStagingServiceScript.stage_shell_visual_review(host, "right_chamber")
 		"area01_deep_spine":
-			host._stage_debug_area01_shell_visual_review("deep_spine")
+			Area01VisualStagingServiceScript.stage_shell_visual_review(host, "deep_spine")
 		"area01_future_exit":
-			host._stage_debug_area01_shell_visual_review("future_exit")
+			Area01VisualStagingServiceScript.stage_shell_visual_review(host, "future_exit")
 		"area01_central_drop":
-			host._stage_debug_area01_shell_visual_review("central_drop")
+			Area01VisualStagingServiceScript.stage_shell_visual_review(host, "central_drop")
 		"expanded_east_shelf_route":
-			host._stage_debug_expanded_route_visual_review()
+			ExpandedRouteVisualStagingServiceScript.stage_visual_review(host)
 		"east_shelf_pocket_ping":
 			host._stage_debug_east_shelf_pocket_visual_review()
 		"lower_connector":
-			host._stage_debug_lower_connector_visual_review()
+			LowerConnectorVisualStagingServiceScript.stage_visual_review(host)
 		"blue_chimney_pocket":
-			host._stage_debug_blue_chimney_pocket_visual_review()
+			BlueChimneyVisualStagingServiceScript.stage_pocket_visual_review(host)
 		"blue_chimney_payoff":
 			host._stage_debug_blue_chimney_payoff_visual_review()
 		"silt_vein_fork":
-			host._stage_debug_silt_vein_fork_visual_review()
+			SiltVeinVisualStagingServiceScript.stage_visual_review(host)
 		"blackwater_route":
-			host._stage_debug_blackwater_route_visual_review()
+			BlackwaterVisualStagingServiceScript.stage_route_visual_review(host)
 		"dusk_trench_route":
-			host._stage_debug_dusk_trench_route_visual_review()
+			DuskTrenchVisualStagingServiceScript.stage_route_visual_review(host)
 		"dusk_trench_payoff":
-			host._stage_debug_dusk_trench_payoff_visual_review(false)
+			DuskTrenchVisualStagingServiceScript.stage_payoff_visual_review(host, false)
 		"dusk_trench_payoff_recovered":
-			host._stage_debug_dusk_trench_payoff_visual_review(true)
+			DuskTrenchVisualStagingServiceScript.stage_payoff_visual_review(host, true)
 		"hollow_reef_route":
-			host._stage_debug_hollow_reef_route_visual_review()
+			HollowReefVisualStagingServiceScript.stage_route_visual_review(host)
 		"hollow_reef_payoff":
-			host._stage_debug_hollow_reef_payoff_visual_review(false)
+			HollowReefVisualStagingServiceScript.stage_payoff_visual_review(host, false)
 		"hollow_reef_return":
-			host._stage_debug_hollow_reef_payoff_visual_review(true)
+			HollowReefVisualStagingServiceScript.stage_payoff_visual_review(host, true)
 		"wide_reef_chamber":
-			host._stage_debug_wide_chamber_visual_review()
+			WideReefVisualStagingServiceScript.stage_visual_review(host)
 		"wide_reef_salvage_open":
-			host._stage_debug_wide_chamber_visual_review(true)
+			WideReefVisualStagingServiceScript.stage_visual_review(host, true)
 		"mirror_kelp_pass":
-			host._stage_debug_mirror_kelp_visual_review()
+			MirrorKelpVisualStagingServiceScript.stage_visual_review(host)
 		"mirror_kelp_tideglass":
-			host._stage_debug_mirror_kelp_visual_review(true)
+			MirrorKelpVisualStagingServiceScript.stage_visual_review(host, true)
 		"mirror_kelp_mirrorfin":
-			host._stage_debug_mirror_kelp_visual_review(false, true)
+			MirrorKelpVisualStagingServiceScript.stage_visual_review(host, false, true)
 		"outer_shelf_survey":
-			host._stage_debug_outer_shelf_visual_review()
+			OuterShelfVisualStagingServiceScript.stage_visual_review(host)
 		"open_hatch_resonance_alcove":
-			host._stage_debug_open_hatch_alcove_visual_review()
+			OpenHatchVisualStagingServiceScript.stage_visual_review(host)
 
 static func publish_state(host) -> void:
 	if not OS.has_feature("web"):

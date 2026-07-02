@@ -2,6 +2,7 @@
 .godot/
 .import/
 *.import
+*.gd.uid
 
 # Exported builds and local release output
 /builds/

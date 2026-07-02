@@ -7,6 +7,7 @@ const COLLISION_ROOT_PATH := "Area01ArtSlice/RuntimeSourceCollision"
 const LEGACY_COLLISION_ROOT_PATH := "Area01ArtSlice/TerrainCollision"
 const RIM_LAYER_PATH := "Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims"
 const HOOK_LAYER_PATH := "Area01ArtSlice/RuntimeSourceHooks"
+const META_SOURCE_ID := &"area01_visual_cue_source_id"
 
 var errors: Array[String] = []
 var source_map: Dictionary = {}
@@ -211,6 +212,8 @@ func _validate_generated_source_visuals(scene_root: Node, map: Dictionary, expec
 	var terrain_domain := map.get("terrain_domain", {}) as Dictionary
 	var domain_runtime := terrain_domain.get("runtime_generation", {}) as Dictionary
 	var domain_name := String(domain_runtime.get("visible_polygon2d_name", ""))
+	var source_grid_cutouts := _array_value(map, "source_grid_water_cutouts")
+	var exact_source_grid_cutouts_own_water := not source_grid_cutouts.is_empty()
 	if not domain_name.is_empty():
 		var domain_visual := scene_root.get_node_or_null("%s/%s" % [TERRAIN_LAYER_PATH, domain_name]) as Polygon2D
 		expected_visible[domain_name] = String(terrain_domain.get("id", "terrain_domain"))
@@ -232,7 +235,7 @@ func _validate_generated_source_visuals(scene_root: Node, map: Dictionary, expec
 			expected_visible[cutout_name] = water_id
 			_expect(cutout != null, "playable water %s missing generated cutout Polygon2D %s" % [water_id, cutout_name])
 			if cutout != null:
-				_expect(cutout.visible, "playable water %s cutout must render the source-driven cave water aperture" % water_id)
+				_expect(cutout.visible or exact_source_grid_cutouts_own_water, "playable water %s cutout must render the source-driven cave water aperture" % water_id)
 				_expect(_same_points(cutout.polygon, _points_from_json(water.get("polygon", []))), "playable water %s cutout polygon drifted from source map" % water_id)
 		if not edge_name.is_empty():
 			var edge := scene_root.get_node_or_null("%s/RuntimeSourceWaterEdges/%s" % [RIM_LAYER_PATH, edge_name]) as Line2D
@@ -259,7 +262,7 @@ func _validate_no_unowned_visible_polygons(scene_root: Node, root_path: String, 
 	for polygon in _find_children_of_type(root, "Polygon2D"):
 		var polygon_node := polygon as Polygon2D
 		if polygon_node.visible:
-			_expect(expected_names.has(polygon_node.name), "visible Area 01 %s lacks source-map ownership: %s/%s" % [label, root_path, polygon_node.name])
+			_expect(expected_names.has(polygon_node.name) or _has_source_ownership(polygon_node), "visible Area 01 %s lacks source-map ownership: %s/%s" % [label, root_path, polygon_node.name])
 
 func _validate_runtime_hooks(scene_root: Node, scene_hooks: Array) -> void:
 	var expected_hooks := {}
@@ -292,6 +295,14 @@ func _validate_runtime_hooks(scene_root: Node, scene_hooks: Array) -> void:
 	for child in hook_root.get_children():
 		if child is Area2D:
 			_expect(expected_hooks.has(child.name), "generated Area 01 hook lacks source-map ownership: %s/%s" % [HOOK_LAYER_PATH, child.name])
+
+func _has_source_ownership(node: Node) -> bool:
+	var cursor: Node = node
+	while cursor != null:
+		if cursor.has_meta(META_SOURCE_ID) and not String(cursor.get_meta(META_SOURCE_ID)).is_empty():
+			return true
+		cursor = cursor.get_parent()
+	return false
 
 func _ids_from_entries(entries: Array, label: String) -> Dictionary:
 	var ids := {}

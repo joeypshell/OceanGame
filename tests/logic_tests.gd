@@ -6,6 +6,7 @@ const SurvivalStateScript := preload("res://scripts/survival_state.gd")
 const SpawnPointScript := preload("res://scripts/spawn_point.gd")
 const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
 const DiveCapacityServiceScript := preload("res://scripts/services/dive_capacity_service.gd")
+const DiveToolActionServiceScript := preload("res://scripts/services/dive_tool_action_service.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const PlayerScript := preload("res://scripts/player.gd")
@@ -77,6 +78,10 @@ const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.g
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
+const RouteProximityServiceScript := preload("res://scripts/services/route_proximity_service.gd")
+const RouteSetupServiceScript := preload("res://scripts/services/route_setup_service.gd")
+const SceneEventServiceScript := preload("res://scripts/services/scene_event_service.gd")
+const SurvivalControllerServiceScript := preload("res://scripts/services/survival_controller_service.gd")
 const RouteTimingCuePresenterScript := preload("res://scripts/ui/route_timing_cue_presenter.gd")
 const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
 const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
@@ -320,6 +325,7 @@ func _initialize() -> void:
 	_run("Hollow Reef timing current visual only", _test_hollow_reef_timing_current_visual_only)
 	_run("sealed shelf hatch promise state", _test_sealed_shelf_hatch_promise_state)
 	_run("burst thruster movement helper", _test_burst_thruster_movement_helper)
+	_run("burst thruster action service", _test_burst_thruster_action_service)
 	_run("player visual facing isolation", _test_player_visual_facing_isolation)
 	_run("player idle and thrust visual states", _test_player_idle_and_thrust_visual_states)
 	_run("predator decoy pulse helper", _test_predator_decoy_pulse_helper)
@@ -430,7 +436,7 @@ func _test_health_damage_and_vent_failure() -> void:
 	main.player_in_base = false
 	main.dive_session.current_cargo.append("driftwood")
 	main.thermal_vent_health_damage = 18.0
-	main.call("_apply_health_damage", main.thermal_vent_health_damage, "thermal vent heat")
+	SceneEventServiceScript.apply_health_damage(main, main.thermal_vent_health_damage, "thermal vent heat")
 	_expect(is_equal_approx(main.dive_session.health, 82.0), "thermal vent damage should reduce health by the configured amount")
 	_expect(is_equal_approx(main.dive_session.oxygen, 24.0), "thermal vent damage should leave oxygen unchanged")
 	_expect(main.run_health_damage_events == 1, "thermal vent damage should count as health damage telemetry")
@@ -441,7 +447,7 @@ func _test_health_damage_and_vent_failure() -> void:
 	main.player_in_surface_oxygen_refill = true
 	_expect(main.call("_format_active_objective_line").contains("O2 only"), "surface objective after damage should not imply healing")
 	main.dive_session.current_cargo.append("food_supply")
-	main.call("_apply_health_damage", 200.0, "thermal vent heat")
+	SceneEventServiceScript.apply_health_damage(main, 200.0, "thermal vent heat")
 	_expect(main.dive_session.result == DiveSessionScript.Result.FAILED, "fatal thermal vent damage should fail the dive")
 	_expect(main.run_failure_cause.contains("health depleted"), "fatal thermal vent damage should record health as the failure cause")
 	main.free()
@@ -451,7 +457,7 @@ func _test_health_damage_and_vent_failure() -> void:
 	scene_main.dive_session.start()
 	scene_main.dive_session.oxygen = 19.0
 	scene_main.dive_session.health = scene_main.dive_session.max_health
-	scene_main.call("_on_thermal_vent_hazard_body_entered", scene_main.player)
+	SceneEventServiceScript.on_thermal_vent_hazard_body_entered(scene_main.player, scene_main)
 	_expect(is_equal_approx(scene_main.dive_session.health, scene_main.dive_session.max_health - scene_main.thermal_vent_health_damage), "scene thermal vent collision should damage health")
 	_expect(is_equal_approx(scene_main.dive_session.oxygen, 19.0), "scene thermal vent collision should not drain oxygen")
 	_expect(scene_main.status_label.text.contains("-18 health"), "scene thermal vent feedback should show the health loss amount")
@@ -470,7 +476,7 @@ func _test_health_damage_night_resolution_copy() -> void:
 	damaged.progression_state.banked_resources = {
 		"scrap_metal": 1,
 	}
-	damaged.call("_apply_health_damage", damaged.thermal_vent_health_damage, "thermal vent heat")
+	SceneEventServiceScript.apply_health_damage(damaged, damaged.thermal_vent_health_damage, "thermal vent heat")
 	damaged.player_in_base = true
 	damaged.call("_try_extract")
 
@@ -832,7 +838,7 @@ func _test_survival_supply_banking_isolation() -> void:
 	var cargo: Array[String] = ["kelp_fiber", "food_supply", "power_supply"]
 
 	var resources: Array[String] = main.call("_bank_extracted_cargo", cargo)
-	var supplies: Array[String] = main.call("_bank_extracted_survival_supplies", cargo)
+	var supplies: Array[String] = SurvivalControllerServiceScript.bank_extracted_survival_supplies(main, cargo)
 
 	_expect(resources == ["kelp_fiber"], "survival supplies should not bank as upgrade resources")
 	_expect(supplies == ["food_supply", "power_supply"], "survival supply banking should return only supply cargo")
@@ -920,7 +926,7 @@ func _test_survival_supply_cache_target_copy() -> void:
 	_expect(prompt.contains("Power"), "cache prompt should name the currently weakest survival need before pickup")
 	_expect(status.contains("Power is lowest"), "cache status should name the currently weakest survival need before pickup")
 
-	main.call("_on_survival_supply_cache_body_entered", main.player)
+	RouteProximityServiceScript.on_survival_supply_cache_body_entered(main.player, main)
 	_expect(main.status_label.text.contains("Power is lowest"), "cache entry status should name the weakest need")
 
 	var full_cargo: Array[String] = ["kelp_fiber", "shell_fragments", "driftwood"]
@@ -942,7 +948,7 @@ func _test_starter_survival_resource_families() -> void:
 	var main := MainScript.new()
 	var cargo: Array[String] = ["scrap_metal", "driftwood", "quartz_glass", "food_supply", "water_supply", "power_supply"]
 	var resources: Array[String] = main.call("_bank_extracted_cargo", cargo)
-	var supplies: Array[String] = main.call("_bank_extracted_survival_supplies", cargo)
+	var supplies: Array[String] = SurvivalControllerServiceScript.bank_extracted_survival_supplies(main, cargo)
 
 	_expect(resources == ["scrap_metal", "driftwood", "quartz_glass"], "starter crafting materials should bank as upgrade resources")
 	_expect(supplies == ["food_supply", "water_supply", "power_supply"], "starter food, water, and power should bank as survival supplies")
@@ -1047,7 +1053,7 @@ func _test_resource_taxonomy_offload_copy() -> void:
 	root.add_child(pickup_scene)
 	pickup_scene.dive_session.start()
 	var power_pickup := pickup_scene.get_node("ResourcePickups/PowerSupply") as ResourcePickup
-	pickup_scene.call("_on_resource_pickup_collected", power_pickup)
+	SceneEventServiceScript.on_resource_pickup_collected(power_pickup, pickup_scene)
 	_expect(pickup_scene.status_label.text.contains("Power Cell") and pickup_scene.status_label.text.contains("Cargo 1/3") and pickup_scene.status_label.text.contains("Power reserve"), "power pickup feedback should name capacity and night-survival role")
 	pickup_scene.queue_free()
 
@@ -1399,12 +1405,12 @@ func _test_lantern_ray_route_variation() -> void:
 		"id": "low_visibility",
 		"display_name": "Low Visibility",
 	}
-	var low_visibility_routes: Dictionary = main._spawn_routes_for_target("creature", "lantern_ray", "cautious")
+	var low_visibility_routes: Dictionary = RouteSetupServiceScript.spawn_routes_for_target(main, "creature", "lantern_ray", "cautious")
 	_expect(low_visibility_routes.size() == 1 and low_visibility_routes.has("lantern_ray_low_visibility_glide"), "Low Visibility should prefer the authored Lantern Ray high-safe route")
 	var low_route: Dictionary = low_visibility_routes["lantern_ray_low_visibility_glide"]
 	var low_rng := RandomNumberGenerator.new()
 	low_rng.seed = 550
-	main._place_lantern_ray_route_for_run(low_rng)
+	RouteSetupServiceScript.place_lantern_ray_route_for_run(main, low_rng)
 	_expect(main.current_lantern_ray_route_id == "lantern_ray_low_visibility_glide", "Lantern Ray route placement should use the condition-preferred route")
 	_expect(lantern_ray.global_position == low_route["start"], "Lantern Ray should start at the selected authored route start")
 	_expect(lantern_ray.get("move_start") == low_route["start"], "Lantern Ray move_start should follow the selected route")
@@ -1416,12 +1422,12 @@ func _test_lantern_ray_route_variation() -> void:
 	}
 	var first_rng := RandomNumberGenerator.new()
 	first_rng.seed = 2026
-	main._place_lantern_ray_route_for_run(first_rng)
+	RouteSetupServiceScript.place_lantern_ray_route_for_run(main, first_rng)
 	var first_route_id: String = main.current_lantern_ray_route_id
 	var first_start: Vector2 = lantern_ray.global_position
 	var second_rng := RandomNumberGenerator.new()
 	second_rng.seed = 2026
-	main._place_lantern_ray_route_for_run(second_rng)
+	RouteSetupServiceScript.place_lantern_ray_route_for_run(main, second_rng)
 	_expect(main.current_lantern_ray_route_id == first_route_id, "same seed and condition should select the same Lantern Ray route")
 	_expect(lantern_ray.global_position == first_start, "same seed and condition should place the Lantern Ray at the same start")
 
@@ -1459,7 +1465,7 @@ func _test_debug_wreck_echo_visual_staging() -> void:
 	main.dive_session.reset(main.max_oxygen)
 
 	main.show_debug_telemetry = false
-	main.call("_stage_debug_wide_chamber_visual_review")
+	WideReefVisualStagingServiceScript.stage_visual_review(main)
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wide Reef Chamber web staging should be inaccessible outside the web debug bridge")
 	_expect(main.visual_smoke_route_stage == "", "Wide Reef Chamber web staging should not set route state outside web visual smoke")
 
@@ -1467,13 +1473,13 @@ func _test_debug_wreck_echo_visual_staging() -> void:
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wreck Echo visual staging should be ignored while debug telemetry is hidden")
 
 	main.show_debug_telemetry = true
-	main.call("_stage_debug_wreck_echo_visual_review")
+	WreckEchoVisualStagingServiceScript.stage_visual_review(main)
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Wreck Echo visual staging should start or keep a dive active")
 	_expect(main.debug_wreck_echo_review_staged, "Wreck Echo visual staging should remember the active route view state")
 	_expect(main._wreck_echo_route_available(), "Wreck Echo visual staging should prepare the route prerequisites")
 	_expect(not main.run_wreck_echo_clue_recovered, "first Wreck Echo visual staging press should not auto-complete the clue")
 
-	main.call("_stage_debug_wreck_echo_visual_review")
+	WreckEchoVisualStagingServiceScript.stage_visual_review(main)
 	_expect(main.dive_session.result == DiveSessionScript.Result.EXTRACTED, "second Wreck Echo visual staging press should produce the result view")
 	_expect(main.last_result_summary.contains("Wreck Echo clue carried"), "staged Wreck Echo result should include the compact clue readback")
 	main.queue_free()
@@ -1491,7 +1497,7 @@ func _test_debug_wide_reef_salvage_staging_guardrails() -> void:
 	_expect(main.progression_state.to_save_data() == save_before, "hidden Wide Reef salvage staging should not mutate durable progression")
 
 	main.show_debug_telemetry = true
-	main.call("_stage_debug_wide_chamber_visual_review", true)
+	WideReefVisualStagingServiceScript.stage_visual_review(main, true)
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Wide Reef salvage staging should remain web-only even when debug telemetry is visible headlessly")
 	_expect(main.visual_smoke_route_stage == "", "headless Wide Reef salvage staging should not set visual route state")
 	_expect(main.progression_state.to_save_data() == save_before, "headless Wide Reef salvage staging should not mutate durable progression")
@@ -1551,7 +1557,7 @@ func _test_debug_mirror_kelp_evidence_staging() -> void:
 	_expect(main.progression_state.to_save_data() == save_before, "hidden Mirror Kelp staging should not mutate durable progression")
 
 	main.show_debug_telemetry = true
-	main.call("_stage_debug_mirror_kelp_visual_review")
+	MirrorKelpVisualStagingServiceScript.stage_visual_review(main)
 	var mirror_kelp := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass") as Node2D
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Mirror Kelp staging should start or keep a dive active")
 	_expect(main.visual_smoke_route_stage == "mirror_kelp_pass", "Mirror Kelp route staging should expose a deterministic route stage")
@@ -1561,14 +1567,14 @@ func _test_debug_mirror_kelp_evidence_staging() -> void:
 	_expect(not main.run_completed_scans.has("mirrorfin_drift"), "plain Mirror Kelp staging should not auto-add Mirrorfin evidence")
 	_expect(main.progression_state.to_save_data() == save_before, "plain Mirror Kelp staging should not mutate durable progression")
 
-	main.call("_stage_debug_mirror_kelp_visual_review", true)
+	MirrorKelpVisualStagingServiceScript.stage_visual_review(main, true)
 	_expect(main.visual_smoke_route_stage == "mirror_kelp_tideglass", "Tideglass staging should expose a deterministic payoff stage")
 	_expect(main.run_tideglass_sample_recovered, "Tideglass staging should set only the run-scoped payoff evidence")
 	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Mirror Kelp Pass"), "Tideglass staging should support Mirror Kelp result memory")
 	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Mirror Kelp Pass", "Tideglass staging should support recent route memory")
 	_expect(main.progression_state.to_save_data() == save_before, "Tideglass staging should not mutate durable progression")
 
-	main.call("_stage_debug_mirror_kelp_visual_review", false, true)
+	MirrorKelpVisualStagingServiceScript.stage_visual_review(main, false, true)
 	_expect(main.visual_smoke_route_stage == "mirror_kelp_mirrorfin", "Mirrorfin staging should expose a deterministic observation stage")
 	_expect(not main.run_tideglass_sample_recovered, "Mirrorfin staging should reset Tideglass payoff state for deterministic captures")
 	_expect(main.run_completed_scans.has("mirrorfin_drift"), "Mirrorfin staging should set only current-run observation evidence")
@@ -1591,7 +1597,7 @@ func _test_debug_outer_shelf_evidence_staging() -> void:
 	_expect(main.progression_state.to_save_data() == save_before, "hidden Outer Shelf staging should not mutate durable progression")
 
 	main.show_debug_telemetry = true
-	main.call("_stage_debug_outer_shelf_visual_review")
+	OuterShelfVisualStagingServiceScript.stage_visual_review(main)
 	var blackwater_sill := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill") as Node2D
 	var survey_zone := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/InteractZone") as Area2D
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Outer Shelf staging should start or keep a dive active")
@@ -1620,7 +1626,7 @@ func _test_open_hatch_visual_staging_service() -> void:
 	_expect(main.progression_state.to_save_data() == save_before, "Open Hatch staging service should not mutate durable progression outside web visual smoke")
 
 	main.show_debug_telemetry = true
-	main.call("_stage_debug_open_hatch_alcove_visual_review")
+	OpenHatchVisualStagingServiceScript.stage_visual_review(main)
 	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Open Hatch staging wrapper should keep the non-web guard")
 	_expect(main.visual_smoke_route_stage == "", "Open Hatch staging wrapper should not set route state outside web visual smoke")
 	_expect(main.progression_state.to_save_data() == save_before, "Open Hatch staging wrapper should not mutate durable progression outside web visual smoke")
@@ -1832,7 +1838,7 @@ func _test_lantern_ray_scan_behavior() -> void:
 	_expect(lantern_ray.is_in_group("scan_targets"), "Lantern Ray should register as a scan target once the scene is ready")
 	var scan_candidates: Array[Node] = [lantern_ray]
 	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == lantern_ray, "scanner target selection should find Lantern Ray reliably at close range")
-	_expect(main.call("_format_scan_target_type", lantern_ray) == "creature", "Lantern Ray scan target should read as a creature")
+	_expect(ScanTargetFeedbackServiceScript.format_scan_target_type(main, lantern_ray) == "creature", "Lantern Ray scan target should read as a creature")
 	_expect(ScanTargetResolverScript.target_id(lantern_ray) == "lantern_ray", "Lantern Ray should expose a stable discovery id")
 
 	var starting_oxygen: float = main.dive_session.oxygen
@@ -1900,7 +1906,7 @@ func _test_hollow_reef_passive_creature_scan_behavior() -> void:
 	_expect(skitter.is_in_group("scan_targets"), "Hollow Reef Skitter should register as a scan target once the scene is ready")
 	var scan_candidates: Array[Node] = [skitter]
 	_expect(ScanTargetResolverScript.nearest(scene_player.global_position, main.scan_range, scan_candidates) == skitter, "scanner target selection should find Hollow Reef Skitter reliably at close range")
-	_expect(main.call("_format_scan_target_type", skitter) == "creature", "Hollow Reef Skitter scan target should read as a creature")
+	_expect(ScanTargetFeedbackServiceScript.format_scan_target_type(main, skitter) == "creature", "Hollow Reef Skitter scan target should read as a creature")
 	_expect(ScanTargetResolverScript.target_id(skitter) == "hollow_reef_skitter", "Hollow Reef Skitter should expose a stable discovery id")
 	_expect(skitter.global_position.distance_to(hollow_reef.global_position) < 520.0, "Hollow Reef Skitter should live inside the Hollow Reef side-cave neighborhood")
 	_expect(skitter_body.color.g > skitter_body.color.r and skitter_body.color.b > skitter_body.color.r, "Hollow Reef Skitter should use cool passive reef colors instead of red warning language")
@@ -1977,7 +1983,7 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	var scene_player := main.get_node("Player") as CharacterBody2D
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	var oxygen_before: float = main.dive_session.oxygen
-	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var cargo_before: Array = main.dive_session.current_cargo.duplicate()
 	main.player = scene_player
 	swarm.call("_ready")
 
@@ -1996,7 +2002,7 @@ func _test_glassfin_swarm_scan_behavior() -> void:
 	_expect(spacing_wake.color.a <= 0.18, "Glassfin Swarm spacing wake should be a subtle observation cue")
 	_expect(swarm.is_in_group("scan_targets"), "Glassfin Swarm should register as a scan target once the scene is ready")
 	_expect(scan_marker.color.a < 0.3, "Glassfin Swarm scan marker should stay subtle while idle")
-	_expect(main.call("_format_scan_target_type", swarm) == "creature", "Glassfin Swarm scan target should read as a creature")
+	_expect(ScanTargetFeedbackServiceScript.format_scan_target_type(main, swarm) == "creature", "Glassfin Swarm scan target should read as a creature")
 	_expect(ScanTargetResolverScript.target_id(swarm) == "glassfin_swarm", "Glassfin Swarm should expose a stable discovery id")
 	_expect(swarm.find_child("CollisionShape2D", true, false) == null, "Glassfin Swarm should not add collision or physically block return")
 	_expect(swarm.find_child("ResourcePickup", true, false) == null, "Glassfin Swarm should not add resource pickup behavior")
@@ -2075,13 +2081,13 @@ func _test_mirrorfin_route_read_behavior() -> void:
 	var scene_player := main.get_node("Player") as CharacterBody2D
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	var oxygen_before: float = main.dive_session.oxygen
-	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var cargo_before: Array = main.dive_session.current_cargo.duplicate()
 	main.player = scene_player
 	mirrorfin.call("_ready")
 
 	_expect(mirrorfin.get_parent() == mirror_kelp, "Mirrorfin should be authored inside Mirror Kelp Pass")
 	_expect(mirrorfin.is_in_group("scan_targets"), "Mirrorfin should register as a scan target once the scene is ready")
-	_expect(main.call("_format_scan_target_type", mirrorfin) == "creature", "Mirrorfin scan target should read as a creature")
+	_expect(ScanTargetFeedbackServiceScript.format_scan_target_type(main, mirrorfin) == "creature", "Mirrorfin scan target should read as a creature")
 	_expect(ScanTargetResolverScript.target_id(mirrorfin) == "mirrorfin_drift", "Mirrorfin should expose a stable discovery id")
 	_expect(mirrorfin.collision_layer == 0 and mirrorfin.collision_mask == 0, "Mirrorfin should not collide, damage, or block the route")
 	_expect(reflection_lane.color.b > reflection_lane.color.r and reflection_lane.color.a <= 0.16, "Mirrorfin reflection lane should use subtle cool timing language")
@@ -2180,7 +2186,7 @@ func _test_mirror_kelp_deep_promise() -> void:
 	var landmark := main.get_node("LandmarkMetadata/MirrorKelpPass")
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	var oxygen_before: float = main.dive_session.oxygen
-	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var cargo_before: Array = main.dive_session.current_cargo.duplicate()
 
 	_expect(promise.get_parent() == mirror_kelp, "deep kelp promise should be authored inside Mirror Kelp Pass")
 	_expect(promise.position.x > tideglass.position.x, "deep kelp promise should sit beyond the Tideglass payoff")
@@ -2239,7 +2245,7 @@ func _test_outer_shelf_route_footprint() -> void:
 	var glass_label := outer_shelf.get_node("GlassRimLabel") as Label
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	var oxygen_before: float = main.dive_session.oxygen
-	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var cargo_before: Array = main.dive_session.current_cargo.duplicate()
 
 	var min_x := INF
 	var max_x := -INF
@@ -2310,7 +2316,7 @@ func _test_outer_shelf_glass_rim_branch() -> void:
 	var branch_metadata := main.get_node("LandmarkMetadata/GlassRimCut")
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	var oxygen_before: float = main.dive_session.oxygen
-	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var cargo_before: Array = main.dive_session.current_cargo.duplicate()
 
 	_expect(branch.get_parent() == outer_shelf, "Glass Rim Cut should be authored inside the Outer Shelf footprint")
 	_expect(branch.position.x > 700.0, "Glass Rim Cut should sit deeper inside Area 02 instead of at the entrance")
@@ -2363,14 +2369,33 @@ func _test_outer_shelf_glass_rim_branch() -> void:
 	main.queue_free()
 
 func _test_outer_shelf_slackwater_timing_cue_visual_only() -> void:
-	var main := MainScript.new()
 	var low_alpha: float = RouteTimingCuePresenterScript.outer_shelf_slackwater_alpha(0.0, MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
 	var high_alpha: float = RouteTimingCuePresenterScript.outer_shelf_slackwater_alpha(MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25, MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
 	var repeat_alpha: float = RouteTimingCuePresenterScript.outer_shelf_slackwater_alpha(MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.5, MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
-	var open_state: String = main.call("_outer_shelf_slackwater_decision_state", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
-	var surge_state: String = main.call("_outer_shelf_slackwater_decision_state", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.75)
-	var open_prompt: String = main.call("_outer_shelf_slackwater_decision_prompt", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
-	var surge_prompt: String = main.call("_outer_shelf_slackwater_decision_prompt", MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.75)
+	var open_state: String = RouteTimingCuePresenterScript.outer_shelf_slackwater_decision_state(
+		MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25,
+		MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS,
+		MainScript.OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD,
+		MainScript.OUTER_SHELF_SLACKWATER_EASING_THRESHOLD
+	)
+	var surge_state: String = RouteTimingCuePresenterScript.outer_shelf_slackwater_decision_state(
+		MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.75,
+		MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS,
+		MainScript.OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD,
+		MainScript.OUTER_SHELF_SLACKWATER_EASING_THRESHOLD
+	)
+	var open_prompt: String = RouteTimingCuePresenterScript.outer_shelf_slackwater_decision_prompt_for_timer(
+		MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25,
+		MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS,
+		MainScript.OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD,
+		MainScript.OUTER_SHELF_SLACKWATER_EASING_THRESHOLD
+	)
+	var surge_prompt: String = RouteTimingCuePresenterScript.outer_shelf_slackwater_decision_prompt_for_timer(
+		MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.75,
+		MainScript.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS,
+		MainScript.OUTER_SHELF_SLACKWATER_OPEN_THRESHOLD,
+		MainScript.OUTER_SHELF_SLACKWATER_EASING_THRESHOLD
+	)
 	_expect(high_alpha > low_alpha, "Outer Shelf slackwater timing cue alpha should pulse upward to suggest a crossing window")
 	_expect(is_equal_approx(low_alpha, repeat_alpha), "Outer Shelf slackwater timing cue should repeat smoothly")
 	_expect(open_state == "open", "Outer Shelf slackwater timing should expose a readable open-crossing state")
@@ -2378,7 +2403,6 @@ func _test_outer_shelf_slackwater_timing_cue_visual_only() -> void:
 	_expect(open_prompt.contains("cross now") and open_prompt.contains("bank cargo"), "Outer Shelf open timing prompt should present a local push-or-bank decision")
 	_expect(surge_prompt.contains("turn back") and surge_prompt.contains("oxygen"), "Outer Shelf surge timing prompt should frame the cost of waiting")
 	_expect(not open_prompt.to_lower().contains("map") and not open_prompt.to_lower().contains("objective"), "Outer Shelf timing prompt should not imply map or checklist UI")
-	main.free()
 
 	var scene_main := MainScene.instantiate()
 	root.add_child(scene_main)
@@ -2590,7 +2614,7 @@ func _test_glass_ray_drifter_passive_route_read() -> void:
 	var scan_marker := ray.get_node("ScanMarker") as Polygon2D
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	var oxygen_before: float = main.dive_session.oxygen
-	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var cargo_before: Array = main.dive_session.current_cargo.duplicate()
 
 	_expect(ray.get("discovery_id") == "glass_ray_drifter", "Glass Ray should expose a stable scan id")
 	_expect(ray.get("display_name") == "Glass Ray Drifter", "Glass Ray should expose a compact display name")
@@ -2634,13 +2658,13 @@ func _test_glass_ray_drifter_passive_route_read() -> void:
 	main.dive_session.has_left_base = true
 	main.player_in_base = false
 	var starting_oxygen: float = main.dive_session.oxygen
-	var discovery_id: String = main.call("_scan_target_id", ray)
-	var display_name: String = main.call("_scan_target_display_name", ray)
+	var discovery_id: String = ScanTargetResolverScript.target_id(ray)
+	var display_name: String = ScanTargetResolverScript.display_name(ray)
 	main.dive_session.drain_oxygen(main.scan_oxygen_cost)
 	main.progression_state.add_discovery(
 		discovery_id,
 		display_name,
-		main.call("_scan_target_description", ray),
+		ScanTargetResolverScript.description(ray),
 		ScanEffectTextServiceScript.scan_target_gameplay_fact(main, ray)
 	)
 	main.run_completed_scans.append(discovery_id)
@@ -2717,7 +2741,7 @@ func _test_wide_chamber_salvage_pocket_entrance() -> void:
 	var swarm := chamber.get_node("GlassfinSwarm") as Area2D
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	var oxygen_before: float = main.dive_session.oxygen
-	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var cargo_before: Array = main.dive_session.current_cargo.duplicate()
 
 	_expect(salvage.get_parent() == chamber, "salvage pocket entrance should be authored inside the wide chamber")
 	_expect(salvage.position.x >= 520.0, "salvage pocket entrance should sit on the far side of the wide chamber")
@@ -3156,7 +3180,7 @@ func _test_lantern_ray_timing_lane_is_visual_only() -> void:
 	main.run_completed_scans.append("lantern_ray")
 	main.current_predator_route_id = "test_route"
 	var oxygen_before: float = main.dive_session.oxygen
-	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var cargo_before: Array = main.dive_session.current_cargo.duplicate()
 	var bank_before: Dictionary = main.progression_state.banked_resources.duplicate(true)
 	var upgrades_before: Dictionary = main.progression_state.purchased_upgrades.duplicate(true)
 	var discoveries_before: Dictionary = main.progression_state.scan_discoveries.duplicate(true)
@@ -4578,9 +4602,9 @@ func _test_area_01_source_map_contract() -> void:
 		_expect(water_edge is Line2D, "Area 01 playable water should build a hidden diagnostic edge Line2D: %s" % String(water_entry.get("id", "")))
 		if bool(water_entry.get("carves_collision", false)):
 			carved_water_count += 1
-			_expect(water_cutout.visible, "Area 01 carving water cutout should visibly restore source-grid playable water over the terrain domain: %s" % String(water_entry.get("id", "")))
+			_expect(not water_cutout.visible, "Area 01 carving broad water rectangle should stay hidden when source-grid cutouts own visible water: %s" % String(water_entry.get("id", "")))
 		else:
-			_expect(water_cutout.visible, "Area 01 non-carving water cutout should remain source-visible for review consistency: %s" % String(water_entry.get("id", "")))
+			_expect(not water_cutout.visible, "Area 01 non-carving broad water rectangle should stay hidden when source-grid cutouts own visible water: %s" % String(water_entry.get("id", "")))
 		if water_edge is Line2D:
 			_expect(not water_edge.visible, "Area 01 water edge Line2D should stay hidden in normal play: %s" % String(water_entry.get("id", "")))
 	_expect(carved_water_count >= 6, "Area 01 generated runtime geometry should carve cave/pocket water out of the continuous terrain domain")
@@ -4852,6 +4876,8 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	var source_map := _load_area01_source_map_for_tests()
 	var terrain_domain: Dictionary = source_map.get("terrain_domain", {})
 	var playable_water_regions: Array = source_map.get("playable_water_regions", [])
+	var source_grid_water_cutouts: Array = source_map.get("source_grid_water_cutouts", [])
+	var source_grid_water_edges: Array = source_map.get("source_grid_water_edges", [])
 	var solid_terrain: Array = source_map.get("solid_terrain", [])
 	var collisions: Array[CollisionPolygon2D] = []
 
@@ -4883,6 +4909,23 @@ func _test_area_01_authoritative_wall_builder() -> void:
 	_expect(cave_wall_art_layer != null, "Area 01 builder should create generated cave-wall sprite art from playable-water source regions")
 	if water_cutout_layer != null:
 		_expect(_effective_canvas_z(water_cutout_layer) < player_visual_z, "Area 01 playable-water cutouts should render behind the diver")
+		_expect(source_grid_water_cutouts.size() > playable_water_regions.size(), "Area 01 runtime should generate source-grid-exact water cutouts instead of only broad review rectangles")
+		for cutout_value in source_grid_water_cutouts:
+			if typeof(cutout_value) != TYPE_DICTIONARY:
+				_expect(false, "Area 01 source-grid water cutout should be a dictionary")
+				continue
+			var cutout_entry := cutout_value as Dictionary
+			var cutout_id := String(cutout_entry.get("id", "source_grid_water_cutout"))
+			var cutout_runtime_generation: Variant = cutout_entry.get("runtime_generation", {})
+			_expect(cutout_runtime_generation is Dictionary, "Area 01 source-grid water cutout should define runtime generation metadata: %s" % cutout_id)
+			if not cutout_runtime_generation is Dictionary:
+				continue
+			var cutout_runtime := cutout_runtime_generation as Dictionary
+			var generated_cutout := water_cutout_layer.get_node_or_null(String(cutout_runtime.get("visible_polygon2d_name", ""))) as Polygon2D
+			var expected_cutout_polygon := _points_from_source_map_json(cutout_entry.get("polygon", []))
+			_expect(generated_cutout != null and generated_cutout.visible, "Area 01 source-grid water cutout should render visibly: %s" % cutout_id)
+			if generated_cutout != null:
+				_expect(_packed_points_match(generated_cutout.polygon, expected_cutout_polygon), "Area 01 source-grid water cutout should exactly match generated source-grid geometry: %s" % cutout_id)
 	if water_edge_layer != null:
 		_expect(_effective_canvas_z(water_edge_layer) < player_visual_z, "Area 01 hidden water edge diagnostics should stay behind the diver")
 		_expect(water_edge_layer.find_child("*SpriteRimTrims", true, false) == null, "Area 01 should not scatter generated water-edge sprite trim chunks across cave silhouettes")
@@ -4893,6 +4936,9 @@ func _test_area_01_authoritative_wall_builder() -> void:
 		_expect(not _node_tree_contains_collision(cave_wall_art_layer), "Area 01 generated cave-wall sprites should not own collision")
 		_expect(cave_wall_art_layer.find_children("*", "Line2D", true, false).is_empty(), "Area 01 generated cave-wall sprites should not add visible or hidden Line2D outlines")
 		_expect(cave_wall_art_layer.find_children("*", "Polygon2D", true, false).is_empty(), "Area 01 generated cave-wall sprite layer should not add rectangular polygon debug boxes")
+		_expect(source_grid_water_edges.size() >= 20, "Area 01 runtime should generate source-grid water/solid boundary edges for wall art")
+		var source_grid_wall_art := cave_wall_art_layer.get_node_or_null("SourceGridWaterBoundaryWallArt") as Node2D
+		_expect(source_grid_wall_art != null, "Area 01 generated cave-wall art should follow source-grid water/solid boundaries")
 		var wall_sprites := cave_wall_art_layer.find_children("*", "Sprite2D", true, false)
 		_expect(wall_sprites.size() >= 24, "Area 01 generated cave-wall sprite layer should add enough edge art to read primary cave corridors")
 		for sprite_node in wall_sprites:
@@ -4928,15 +4974,12 @@ func _test_area_01_authoritative_wall_builder() -> void:
 			cave_wall_art_group = cave_wall_art_layer.get_node_or_null("%sWallArt" % _pascal_case_id(water_id)) as Node2D
 		if bool(water_entry.get("carves_collision", false)):
 			carved_water_count += 1
-			_expect(cutout != null and cutout.visible, "Area 01 carving playable water cutout should visibly carve the continuous terrain domain: %s" % water_id)
+			_expect(cutout != null and not cutout.visible, "Area 01 broad playable-water review rectangles should stay hidden when source-grid cutouts own visible water: %s" % water_id)
 			_expect(player_rim_line == null, "Area 01 player-facing rim/lip should not be a Line2D debug outline: %s" % water_id)
 			_expect(player_rim_group == null, "Area 01 carving playable water should not create separate stretched rim/lip sprite markers: %s" % water_id)
-			if water_id == "open_surface_water":
-				_expect(cave_wall_art_group == null, "Area 01 open surface should stay open water, not receive cave-wall sprite art")
-			else:
-				_expect(cave_wall_art_group != null, "Area 01 carving cave/pocket water should receive generated wall sprite art: %s" % water_id)
+			_expect(cave_wall_art_group == null, "Area 01 required-region review rectangles should not receive their own rectangular cave-wall sprite art: %s" % water_id)
 		else:
-			_expect(cutout != null and cutout.visible, "Area 01 non-carving playable water cutout should remain source-visible: %s" % water_id)
+			_expect(cutout != null and not cutout.visible, "Area 01 non-carving broad playable-water review rectangle should stay hidden when source-grid cutouts own visible water: %s" % water_id)
 			_expect(player_rim_group == null, "Area 01 non-carving playable water should not create a player-facing rim/lip sprite group: %s" % water_id)
 		_expect(edge != null and not edge.visible, "Area 01 playable water diagnostic edge should stay hidden: %s" % water_id)
 	_expect(carved_water_count >= 6, "Area 01 runtime map should carve traced cave/corridor water from the continuous terrain mass")
@@ -5010,6 +5053,11 @@ func _test_area_01_authoritative_wall_builder() -> void:
 		_expect(terrain_accent_layer.find_child("VerticalWallMiddleTrim*", true, false) == null, "Area 01 terrain accents should not auto-place vertical wall trims without semantic source-map segments")
 		_expect(terrain_accent_layer.find_child("DiagonalSlopeTrim*", true, false) == null, "Area 01 terrain accents should not auto-place slope trims without semantic source-map segments")
 	var generated_terrain := main.get_node("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain") as Node2D
+	var domain_accent_layer := generated_terrain.get_node_or_null("RuntimeSourceTerrainDomainAccents") as Node2D
+	_expect(domain_accent_layer != null, "Area 01 generated source-map terrain should add broad visual-only domain accents")
+	if domain_accent_layer != null:
+		_expect(not _node_tree_contains_collision(domain_accent_layer), "Area 01 generated terrain domain accents should not add collision ownership")
+		_expect(domain_accent_layer.get_child_count() >= 6, "Area 01 generated terrain domain accents should include broad strata/shadow/decal treatment")
 	var first_generated_wall: Polygon2D = null
 	for terrain in solid_terrain:
 		if typeof(terrain) != TYPE_DICTIONARY:
@@ -6464,7 +6512,7 @@ func _test_resonance_alcove_research_payoff() -> void:
 		_expect(main.status_label.text.contains("behind the sealed hatch"), "locked Resonance Alcove should explain the hatch gate")
 
 	main.progression_state.purchased_upgrades[ResonanceKeyUpgrade.id] = true
-	var cargo_before: Array[String] = main.dive_session.current_cargo.duplicate()
+	var cargo_before: Array = main.dive_session.current_cargo.duplicate()
 	var handled: bool = main.call("_try_resonance_alcove_interaction")
 	_expect(handled, "Resonance Alcove should handle interact while nearby during a dive")
 	_expect(main.run_resonance_alcove_research_recovered, "Resonance Alcove interaction should record one run-scoped research note")
@@ -8994,8 +9042,8 @@ func _test_compact_dive_hud_helpers() -> void:
 	main_scene.call("_apply_active_hud_layout")
 	main_scene.call("_update_cargo_slots")
 	var camera := main_scene.get_node("Player/Camera2D") as Camera2D
-	var zoomed_out_reticle: Vector2 = main_scene.call(
-		"_scan_reticle_fallback_screen_position",
+	var zoomed_out_reticle: Vector2 = ScanTargetFeedbackServiceScript.scan_reticle_fallback_screen_position(
+		main_scene,
 		main_scene.player.global_position + Vector2(100.0, 0.0),
 		Vector2(1280.0, 720.0)
 	)
@@ -9010,12 +9058,12 @@ func _test_compact_dive_hud_helpers() -> void:
 	root.add_child(sticky_target)
 	main.player = sticky_player
 	main.scan_range = 120.0
-	_expect(main.call("_scan_target_still_selectable", sticky_target), "scan target selection should keep the current target inside the sticky buffer")
+	_expect(ScanTargetFeedbackServiceScript.scan_target_still_selectable(main, sticky_target), "scan target selection should keep the current target inside the sticky buffer")
 	sticky_target.global_position = Vector2(154.0, 0.0)
-	_expect(not main.call("_scan_target_still_selectable", sticky_target), "scan target selection should release a target beyond the sticky buffer")
+	_expect(not ScanTargetFeedbackServiceScript.scan_target_still_selectable(main, sticky_target), "scan target selection should release a target beyond the sticky buffer")
 	sticky_target.visible = false
 	sticky_target.global_position = Vector2(80.0, 0.0)
-	_expect(not main.call("_scan_target_still_selectable", sticky_target), "hidden scan targets should not stay selected")
+	_expect(not ScanTargetFeedbackServiceScript.scan_target_still_selectable(main, sticky_target), "hidden scan targets should not stay selected")
 	sticky_target.queue_free()
 	sticky_player.queue_free()
 	var hud_style := active_panel.get_theme_stylebox("panel") as StyleBoxFlat
@@ -9287,6 +9335,25 @@ func _test_burst_thruster_movement_helper() -> void:
 	player.burst(Vector2.ZERO, 500.0)
 	_expect(player.velocity == Vector2.RIGHT * 500.0, "burst without input should use the last facing direction")
 	player.free()
+
+func _test_burst_thruster_action_service() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.start()
+	main.dive_session.oxygen = 20.0
+
+	DiveToolActionServiceScript.try_burst_thruster(main)
+
+	_expect(main.player.velocity.length() > 0.0, "burst service should push the player")
+	_expect(is_equal_approx(main.dive_session.oxygen, 20.0 - main.burst_thruster_oxygen_cost), "burst service should drain the configured oxygen cost")
+	_expect(is_equal_approx(main.burst_thruster_cooldown_remaining, main.burst_thruster_cooldown_seconds), "burst service should start the cooldown")
+	_expect(main.status_label.text.contains("Burst Thruster"), "burst service should publish concise status feedback")
+
+	var oxygen_after_burst: float = main.dive_session.oxygen
+	DiveToolActionServiceScript.try_burst_thruster(main)
+	_expect(is_equal_approx(main.dive_session.oxygen, oxygen_after_burst), "burst service should not drain oxygen while cooling down")
+	_expect(main.status_label.text.contains("cooling down"), "burst service should report cooldown lockout")
+	main.queue_free()
 
 func _test_expanded_region_world_bounds() -> void:
 	var player := PlayerScript.new()

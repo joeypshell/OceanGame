@@ -1,6 +1,8 @@
 class_name HealthDamageVisualStagingService
 extends RefCounted
 
+const SceneEventServiceScript := preload("res://scripts/services/scene_event_service.gd")
+
 const PLAYER_PATH := "Player"
 const BASE_ZONE_PATH := "BaseZone"
 const THERMAL_VENT_PATH := "Discoveries/ThermalVent"
@@ -33,7 +35,7 @@ static func stage_visual_review(host) -> void:
 	host.dive_session.oxygen = host.dive_session.max_oxygen
 	host.dive_session.health = host.dive_session.max_health
 	host.visual_smoke_route_stage = "thermal_vent_health_damage"
-	host._apply_health_damage(host.thermal_vent_health_damage, "thermal vent heat")
+	SceneEventServiceScript.apply_health_damage(host, host.thermal_vent_health_damage, "thermal vent heat")
 	host.visual_smoke_route_stage = "thermal_vent_health_damage"
 	host._update_depth()
 	host._update_hud()

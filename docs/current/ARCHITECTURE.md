@@ -19,7 +19,11 @@ Godot Main Scene
 
 Scene orchestration
   scripts/main.gd
-  Applies run setup, input, scan effects, upgrade effects, HUD updates
+  Thin Godot scene script that extends the current controller/context split
+  scripts/main_scene_controller.gd
+  Applies remaining run setup, input, scan effects, upgrade effects, survival/night coordination, HUD updates
+  scripts/main_scene_context.gd
+  Owns inherited scene node references, exported tuning, constants, and run fields
 
         |
         +--> Current-dive state
@@ -143,14 +147,20 @@ They may be Godot scenes, named node groups, reusable scripts, resources, or sim
 
 ### Scene Orchestration
 
-`scripts/main.gd` coordinates the vertical slice:
+`scripts/main.gd` is now a thin scene-script shell that extends `scripts/main_scene_controller.gd`. `scripts/main_scene_context.gd` owns the inherited scene node references, exported tuning, constants, and run fields needed by the controller and extracted services. This split keeps the Godot scene script path stable while reducing `main.gd` context load; the residual controller is now under the 500-line guardrail but remains an orchestration layer and should not become a new dumping ground.
+
+The main scene controller coordinates the vertical slice:
 
 - starts, extracts, fails, and restarts expeditions,
 - applies resource pickup, scan, predator, pressure-lock, and upgrade effects,
 - maps progression state into visible scene state,
 - updates HUD and surface panels.
 
-Keep `main.gd` as orchestration, not as the long-term owner of every domain rule. When logic becomes reusable or test-worthy, extract it into small helper scripts or resources.
+Keep `main.gd` thin and keep shrinking `main_scene_controller.gd` toward orchestration, not long-term ownership of every domain rule. When logic becomes reusable or test-worthy, extract it into small helper scripts or resources.
+
+`scripts/services/survival_controller_service.gd` owns the scene-facing survival orchestration around extraction: survival supply banking, night resolution, health-recovery night copy, and the one-night Power Patch craft. `DiveLifecycleService` sequences dive extraction/failure and delegates those survival-specific rules rather than owning them directly.
+
+`scripts/services/dive_tool_action_service.gd` owns active-dive tool actions that mutate the player and `DiveSession`, starting with Burst Thruster activation and cooldown/oxygen feedback. Input and touch adapters should call through the main scene wrapper or this service rather than reimplementing tool rules.
 
 ## Asset Pipeline Direction
 
