@@ -2155,7 +2155,7 @@ func _begin_scan_charge() -> void:
 	scan_charge_target = target
 	scan_charge_elapsed = 0.0
 	scan_hold_active = true
-	status_label.text = _format_scan_charge_status(target)
+	status_label.text = ScanFeedbackPresenterScript.format_scan_charge_target_status(target, scan_charge_elapsed, scan_hold_seconds)
 	_update_hud()
 
 func _cancel_scan_charge(message := "") -> void:
@@ -2189,14 +2189,8 @@ func _update_scan_charge(delta: float) -> void:
 		scan_hold_active = false
 		_try_scan(completed_target)
 	else:
-		status_label.text = _format_scan_charge_status(scan_charge_target)
+		status_label.text = ScanFeedbackPresenterScript.format_scan_charge_target_status(scan_charge_target, scan_charge_elapsed, scan_hold_seconds)
 		_update_hud()
-
-func _format_scan_charge_status(target: Node) -> String:
-	return ScanFeedbackPresenterScript.format_scan_charge_status(
-		ScanTargetResolverScript.display_name(target),
-		ScanFeedbackPresenterScript.scan_charge_ratio(scan_charge_elapsed, scan_hold_seconds)
-	)
 
 func _try_scan(requested_target: Node = null) -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:

@@ -1783,7 +1783,8 @@ func _test_scan_hold_timing_helper() -> void:
 	main.scan_charge_elapsed = 0.35
 
 	_expect(is_equal_approx(ScanFeedbackPresenterScript.scan_charge_ratio(main.scan_charge_elapsed, main.scan_hold_seconds), 0.35), "scan hold ratio should report partial progress")
-	_expect(String(main.call("_format_scan_charge_status", target)).contains("Thermal Vent: 35%"), "scan hold status should show target name and progress")
+	var scan_charge_status := ScanFeedbackPresenterScript.format_scan_charge_target_status(target, main.scan_charge_elapsed, main.scan_hold_seconds)
+	_expect(scan_charge_status.contains("Thermal Vent: 35%"), "scan hold status should show target name and progress")
 	_expect(ScanFeedbackPresenterScript.format_scan_charge_status("Thermal Vent", 0.35) == "Scanning Thermal Vent: 35%", "scan feedback presenter should format charge status")
 	_expect(ScanFeedbackPresenterScript.format_wreck_cache_repeat_hint(true, true).contains("Echo Lens"), "scan feedback presenter should prioritize Echo Lens cache hints")
 	_expect(ScanFeedbackPresenterScript.format_signal_lens_pulse_text(true, true, false, "", "Kelp Fiber").contains("quiet"), "scan feedback presenter should preserve quiet Signal Lens copy")

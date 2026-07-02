@@ -1,6 +1,14 @@
 class_name ScanFeedbackPresenter
 extends RefCounted
 
+const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
+
+static func format_scan_charge_target_status(target: Node, scan_charge_elapsed: float, scan_hold_seconds: float) -> String:
+	return format_scan_charge_status(
+		ScanTargetResolverScript.display_name(target),
+		scan_charge_ratio(scan_charge_elapsed, scan_hold_seconds)
+	)
+
 static func format_scan_charge_status(display_name: String, charge_ratio: float) -> String:
 	var percent := int(roundf(clampf(charge_ratio, 0.0, 1.0) * 100.0))
 	return "Scanning %s: %d%%" % [display_name, percent]
