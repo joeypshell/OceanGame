@@ -21,7 +21,7 @@ static func format_run_telemetry(host, result_name: String) -> String:
 		host.current_lantern_ray_route_id,
 		ResourceSummaryServiceScript.format_resource_counts(host.run_collected_resources, host.survival_state, host.RESOURCE_CATEGORY_LABELS),
 		ResourceSummaryServiceScript.format_survival_supply_counts(host.run_collected_survival_supplies, host.survival_state, host.RESOURCE_CATEGORY_LABELS),
-		host._format_scan_ids(host.run_completed_scans),
+		RecentExpeditionLogServiceScript.format_scan_ids(host.run_completed_scans),
 		host.run_predator_contacts,
 		host.run_health_damage_events,
 		ceili(host.dive_session.oxygen),

@@ -2979,20 +2979,14 @@ func _format_run_summary(player_summary: String, result_name: String) -> String:
 func _format_next_expedition_prompt() -> String:
 	return SurfaceRunSummaryServiceScript.format_next_expedition_prompt(self)
 
-func _format_tomorrow_plan() -> String:
-	return SurfaceRunSummaryServiceScript.format_tomorrow_plan(self)
-
 func _refresh_carried_tomorrow_intention() -> void:
-	carried_tomorrow_intention = _format_tomorrow_plan()
+	carried_tomorrow_intention = SurfaceRunSummaryServiceScript.format_tomorrow_plan(self)
 
 func _format_current_tomorrow_intention() -> String:
 	return SurfaceRunSummaryServiceScript.format_current_tomorrow_intention(self)
 
 func _format_dawn_priority_line() -> String:
 	return SurfaceRunSummaryServiceScript.format_dawn_priority_line(self)
-
-func _format_material_need_list(materials: Array[String]) -> String:
-	return SurfaceRunSummaryServiceScript.format_material_need_list(materials)
 
 func _format_expedition_ready_status() -> String:
 	return SurfaceRunSummaryServiceScript.format_expedition_ready_status(self)
@@ -3093,20 +3087,11 @@ func _format_region_memory_callout() -> String:
 func _format_discovery_memory_callout() -> String:
 	return RouteMemoryPresenterScript.format_discovery_memory_callout(RunMemoryStateServiceScript.route_memory_state(self))
 
-func _format_scan_ids(scan_ids: Array[String]) -> String:
-	return RecentExpeditionLogServiceScript.format_scan_ids(scan_ids)
-
 func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> void:
 	RecentExpeditionLogServiceScript.record_recent_expedition(self, result_name, banked_cargo_count)
 
 func _format_recent_expedition_log() -> String:
 	return RecentExpeditionLogServiceScript.format_recent_expedition_log(self)
-
-func _format_recent_survival_memory(result_name: String, banked_cargo_count: int) -> String:
-	return RecentExpeditionLogServiceScript.format_recent_survival_memory(self, result_name, banked_cargo_count)
-
-func _recent_expedition_scan_names_by_id() -> Dictionary:
-	return RecentExpeditionLogServiceScript.recent_expedition_scan_names_by_id(self)
 
 func _format_discoveries(compact: bool = false) -> String:
 	var discoveries := progression_state.scan_discoveries
