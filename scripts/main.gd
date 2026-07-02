@@ -2722,7 +2722,7 @@ func _format_ready_panel_summary() -> String:
 		survival_state.supply_cache_hint_line(),
 		"Dive for supplies, cargo, or knowledge, then extract.",
 		ConditionPresenterScript.format_condition_briefing(current_expedition_condition, progression_state.has_upgrade(RESONANCE_KEY_UPGRADE_ID)),
-		_format_dawn_priority_line(),
+		SurfaceRunSummaryServiceScript.format_dawn_priority_line(self),
 		"%s begins." % _action_label("interact"),
 	]
 	if show_debug_telemetry:
@@ -2824,9 +2824,6 @@ func _refresh_carried_tomorrow_intention() -> void:
 
 func _format_current_tomorrow_intention() -> String:
 	return SurfaceRunSummaryServiceScript.format_current_tomorrow_intention(self)
-
-func _format_dawn_priority_line() -> String:
-	return SurfaceRunSummaryServiceScript.format_dawn_priority_line(self)
 
 func _format_expedition_day_title(suffix: String) -> String:
 	return SurfaceRunSummaryServiceScript.format_expedition_day_title(self, suffix)

@@ -5668,7 +5668,7 @@ func _test_next_expedition_framing() -> void:
 	main.survival_state.food = 0
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("bank Food supply first") and prompt.contains("empty needs cut max oxygen"), "empty base needs should take priority in tomorrow planning")
-	_expect(main._format_dawn_priority_line().contains("bank Food supply first"), "dawn priority should put empty base needs before upgrades")
+	_expect(SurfaceRunSummaryServiceScript.format_dawn_priority_line(main).contains("bank Food supply first"), "dawn priority should put empty base needs before upgrades")
 
 	main.survival_state.food = 3
 	main.progression_state.banked_resources = {
@@ -5677,13 +5677,13 @@ func _test_next_expedition_framing() -> void:
 	}
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("build Water Filter I in Upgrades"), "ready builds should take priority after critical base needs")
-	_expect(main._format_dawn_priority_line().contains("build Water Filter I in Upgrades"), "dawn priority should name ready builds when critical needs are stable")
+	_expect(SurfaceRunSummaryServiceScript.format_dawn_priority_line(main).contains("build Water Filter I in Upgrades"), "dawn priority should name ready builds when critical needs are stable")
 
 	main.progression_state.banked_resources.clear()
 	main.survival_state.power = 1
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("bank Power supply soon"), "low base needs should produce a non-critical supply plan")
-	_expect(main._format_dawn_priority_line().contains("bank Power supply soon"), "dawn priority should call out low base needs before route goals")
+	_expect(SurfaceRunSummaryServiceScript.format_dawn_priority_line(main).contains("bank Power supply soon"), "dawn priority should call out low base needs before route goals")
 	main._refresh_carried_tomorrow_intention()
 	main.survival_state.power = 3
 	main.progression_state.banked_resources = {
@@ -5692,7 +5692,7 @@ func _test_next_expedition_framing() -> void:
 	}
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("bank Power supply soon"), "next expedition prompt should carry the confirmed night intention into tomorrow")
-	_expect(main._format_dawn_priority_line().contains("bank Power supply soon"), "dawn priority should keep the carried night intention instead of recomputing immediately")
+	_expect(SurfaceRunSummaryServiceScript.format_dawn_priority_line(main).contains("bank Power supply soon"), "dawn priority should keep the carried night intention instead of recomputing immediately")
 	main.carried_tomorrow_intention = ""
 
 	main.survival_state.power = 3
@@ -5700,7 +5700,7 @@ func _test_next_expedition_framing() -> void:
 	main.run_outer_shelf_survey_recovered = true
 	prompt = main._format_next_expedition_prompt()
 	_expect(prompt.contains("Glass Rim timing") and prompt.contains("Outer Shelf cargo"), "remembered place should produce a broad route plan when needs/builds are stable")
-	_expect(main._format_dawn_priority_line().contains("Outer Shelf cargo"), "dawn priority should preserve broad remembered-route opportunities")
+	_expect(SurfaceRunSummaryServiceScript.format_dawn_priority_line(main).contains("Outer Shelf cargo"), "dawn priority should preserve broad remembered-route opportunities")
 
 	main.progression_state.current_run_number = 4
 	main.survival_state.current_day = 4
