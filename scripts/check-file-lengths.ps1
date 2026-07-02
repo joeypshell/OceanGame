@@ -1,8 +1,8 @@
 param(
-	[int]$TargetMaxLines = 500,
+	[int]$TargetMaxLines = 499,
 	[int]$RefactorThresholdLines = 1000,
-	[bool]$FailOnRefactorThreshold = $false,
-	[bool]$FailOnWarning = $false
+	[switch]$FailOnRefactorThreshold,
+	[switch]$FailOnWarning
 )
 
 $ErrorActionPreference = "Stop"
@@ -22,6 +22,7 @@ $excludedDirectories = @(
 	".git",
 	".godot",
 	".import",
+	"addons",
 	"builds",
 	"exports",
 	"node_modules",
@@ -31,8 +32,19 @@ $excludedDirectories = @(
 	"playwright-report-area01-shell"
 )
 
+$excludedPathPrefixes = @(
+	"docs/archive"
+)
+
 function Test-IsExcludedPath {
 	param([string]$RelativePath)
+
+	$normalizedPath = $RelativePath -replace '\\', '/'
+	foreach ($prefix in $excludedPathPrefixes) {
+		if ($normalizedPath -eq $prefix -or $normalizedPath.StartsWith("$prefix/")) {
+			return $true
+		}
+	}
 
 	$parts = $RelativePath -split '[\\/]'
 	foreach ($part in $parts) {

@@ -121,10 +121,11 @@ Use `scripts/check-file-lengths.ps1` to report handwritten source and documentat
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\check-file-lengths.ps1
-powershell -ExecutionPolicy Bypass -File .\scripts\check-file-lengths.ps1 -FailOnRefactorThreshold $true
+powershell -ExecutionPolicy Bypass -File .\scripts\check-file-lengths.ps1 -FailOnWarning
+powershell -ExecutionPolicy Bypass -File .\scripts\check-file-lengths.ps1 -FailOnRefactorThreshold
 ```
 
-The audit scans common handwritten files (`*.gd`, `*.ps1`, `*.mjs`, `*.js`, `*.ts`, `*.md`), skips generated/vendor/cache/build output, warns above 500 lines, and marks files above 1000 lines as refactor candidates. Enforcement is intentionally opt-in until legacy large files are decomposed.
+The audit scans common handwritten files (`*.gd`, `*.ps1`, `*.mjs`, `*.js`, `*.ts`, `*.md`), skips generated/vendor/cache/build output plus archived notes, warns above 499 lines, and marks files above 1000 lines as refactor candidates. Use `-FailOnWarning` for the active under-500-line gate.
 
 ## Area 01 Source Truth Validation
 

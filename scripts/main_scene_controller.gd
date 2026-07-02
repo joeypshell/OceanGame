@@ -1,6 +1,5 @@
 class_name MainSceneController
-extends "res://scripts/main_scene_context.gd"
-
+extends MainSceneContext
 func _ready() -> void:
 	MainReadyServiceScript.ready(self)
 
