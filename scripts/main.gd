@@ -65,6 +65,7 @@ const DiscoveryRevealSyncServiceScript := preload("res://scripts/ui/discovery_re
 const RouteGateSyncServiceScript := preload("res://scripts/ui/route_gate_sync_service.gd")
 const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
+const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
 const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
@@ -3439,99 +3440,67 @@ func _first_ready_upgrade_definition() -> UpgradeDefinition:
 	return null
 
 func _format_route_choice_callout() -> String:
-	return RouteMemoryPresenterScript.format_route_choice_callout(_route_memory_state())
+	return RouteMemoryPresenterScript.format_route_choice_callout(RunMemoryStateServiceScript.route_memory_state(self))
 
 func _format_recent_route_memory() -> String:
-	return RouteMemoryPresenterScript.format_recent_route_memory(_route_memory_state())
-
-func _route_memory_state() -> Dictionary:
-	return {
-		"current_resource_cluster_pattern": current_resource_cluster_pattern,
-		"run_blackwater_trace_recovered": run_blackwater_trace_recovered,
-		"run_blue_chimney_draft_reading_recovered": run_blue_chimney_draft_reading_recovered,
-		"run_collected_resources": run_collected_resources,
-		"run_completed_scans": run_completed_scans,
-		"run_east_shelf_pocket_ping_recovered": run_east_shelf_pocket_ping_recovered,
-		"run_hollow_reef_reading_recovered": run_hollow_reef_reading_recovered,
-		"run_lantern_silt_sample_recovered": run_lantern_silt_sample_recovered,
-		"run_lower_connector_echo_recovered": run_lower_connector_echo_recovered,
-		"run_outer_shelf_survey_recovered": run_outer_shelf_survey_recovered,
-		"run_predator_contacts": run_predator_contacts,
-		"run_reached_dusk_trench": run_reached_dusk_trench,
-		"run_rim_glass_reading_recovered": run_rim_glass_reading_recovered,
-		"run_salvage_data_cache_recovered": run_salvage_data_cache_recovered,
-		"run_salvage_manifest_recovered": run_salvage_manifest_recovered,
-		"run_tideglass_sample_recovered": run_tideglass_sample_recovered,
-	}
-
-func _research_result_state() -> Dictionary:
-	var state := _route_memory_state()
-	state.merge({
-		"decoy_pulse_used_this_run": decoy_pulse_used_this_run,
-		"has_echo_lens_upgrade": progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID),
-		"run_echo_lens_echo_fired": run_echo_lens_echo_fired,
-		"run_glass_kelp_reading_recovered": run_glass_kelp_reading_recovered,
-		"run_resonance_alcove_research_recovered": run_resonance_alcove_research_recovered,
-		"run_wreck_echo_clue_recovered": run_wreck_echo_clue_recovered,
-	})
-	return state
+	return RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(self))
 
 func _format_gulper_research_callout() -> String:
-	return ResearchResultPresenterScript.format_gulper_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_gulper_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_echo_lens_research_callout() -> String:
-	return ResearchResultPresenterScript.format_echo_lens_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_echo_lens_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_wreck_echo_research_callout() -> String:
-	return ResearchResultPresenterScript.format_wreck_echo_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_wreck_echo_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_east_shelf_pocket_research_callout() -> String:
-	return ResearchResultPresenterScript.format_east_shelf_pocket_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_east_shelf_pocket_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_lower_connector_echo_research_callout() -> String:
-	return ResearchResultPresenterScript.format_lower_connector_echo_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_lower_connector_echo_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_resonance_alcove_research_callout() -> String:
-	return ResearchResultPresenterScript.format_resonance_alcove_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_resonance_alcove_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_blue_chimney_research_callout() -> String:
-	return ResearchResultPresenterScript.format_blue_chimney_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_blue_chimney_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_lantern_silt_sample_research_callout() -> String:
-	return ResearchResultPresenterScript.format_lantern_silt_sample_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_lantern_silt_sample_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_blackwater_trace_research_callout() -> String:
-	return ResearchResultPresenterScript.format_blackwater_trace_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_blackwater_trace_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_glass_kelp_reading_callout() -> String:
-	return ResearchResultPresenterScript.format_glass_kelp_reading_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_glass_kelp_reading_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_hollow_reef_reading_callout() -> String:
-	return ResearchResultPresenterScript.format_hollow_reef_reading_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_hollow_reef_reading_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_salvage_data_cache_research_callout() -> String:
-	return ResearchResultPresenterScript.format_salvage_data_cache_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_salvage_data_cache_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_salvage_manifest_research_callout() -> String:
-	return ResearchResultPresenterScript.format_salvage_manifest_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_salvage_manifest_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_tideglass_sample_research_callout() -> String:
-	return ResearchResultPresenterScript.format_tideglass_sample_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_tideglass_sample_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_outer_shelf_survey_research_callout() -> String:
-	return ResearchResultPresenterScript.format_outer_shelf_survey_research_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_outer_shelf_survey_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_rim_glass_reading_callout() -> String:
-	return ResearchResultPresenterScript.format_rim_glass_reading_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_rim_glass_reading_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_sealed_shelf_hatch_readiness_callout() -> String:
-	return ResearchResultPresenterScript.format_sealed_shelf_hatch_readiness_callout(_research_result_state())
+	return ResearchResultPresenterScript.format_sealed_shelf_hatch_readiness_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _format_region_memory_callout() -> String:
-	return RouteMemoryPresenterScript.format_region_memory_callout(_route_memory_state())
+	return RouteMemoryPresenterScript.format_region_memory_callout(RunMemoryStateServiceScript.route_memory_state(self))
 
 func _format_discovery_memory_callout() -> String:
-	return RouteMemoryPresenterScript.format_discovery_memory_callout(_route_memory_state())
+	return RouteMemoryPresenterScript.format_discovery_memory_callout(RunMemoryStateServiceScript.route_memory_state(self))
 
 func _format_scan_ids(scan_ids: Array[String]) -> String:
 	return RecentExpeditionLogServiceScript.format_scan_ids(scan_ids)

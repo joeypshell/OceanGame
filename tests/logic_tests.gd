@@ -71,6 +71,7 @@ const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.g
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
+const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const ConditionVisualSyncServiceScript := preload("res://scripts/ui/condition_visual_sync_service.gd")
 const DiscoveryRevealSyncServiceScript := preload("res://scripts/ui/discovery_reveal_sync_service.gd")
@@ -225,6 +226,7 @@ func _initialize() -> void:
 	_run("region memory result callout", _test_region_memory_result_callout)
 	_run("discovery memory result callout", _test_discovery_memory_result_callout)
 	_run("route memory presenter", _test_route_memory_presenter)
+	_run("run memory state service", _test_run_memory_state_service)
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("gulper research result callout", _test_gulper_research_result_callout)
 	_run("research result presenter", _test_research_result_presenter)
@@ -5838,6 +5840,36 @@ func _test_route_memory_presenter() -> void:
 	}
 	_expect(RouteMemoryPresenterScript.format_route_choice_callout(blackwater_state).contains("Blackwater"), "Blackwater payoff should win route-choice priority")
 	_expect(RouteMemoryPresenterScript.format_recent_route_memory(blackwater_state) == "Blackwater", "Blackwater payoff should win recent route memory")
+
+func _test_run_memory_state_service() -> void:
+	var main := MainScript.new()
+	main.current_resource_cluster_pattern = "cautious"
+	main.run_completed_scans = ["thermal_vent"]
+	main.run_collected_resources = ["shell_fragments"]
+	main.run_blackwater_trace_recovered = true
+	main.run_predator_contacts = 2
+	main.run_reached_dusk_trench = true
+
+	var route_state := RunMemoryStateServiceScript.route_memory_state(main)
+	_expect(route_state.get("current_resource_cluster_pattern") == "cautious", "run memory state service should preserve resource cluster pattern")
+	_expect(route_state.get("run_completed_scans") == ["thermal_vent"], "run memory state service should preserve scan ids")
+	_expect(route_state.get("run_collected_resources") == ["shell_fragments"], "run memory state service should preserve collected resources")
+	_expect(route_state.get("run_blackwater_trace_recovered") == true, "run memory state service should preserve route research flags")
+	_expect(route_state.get("run_predator_contacts") == 2, "run memory state service should preserve predator contact count")
+	_expect(route_state.get("run_reached_dusk_trench") == true, "run memory state service should preserve region reach flags")
+
+	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
+	main.decoy_pulse_used_this_run = true
+	main.run_echo_lens_echo_fired = true
+	main.run_wreck_echo_clue_recovered = true
+	main.run_glass_kelp_reading_recovered = true
+	var research_state := RunMemoryStateServiceScript.research_result_state(main)
+	_expect(research_state.get("has_echo_lens_upgrade") == true, "run memory state service should preserve Echo Lens ownership state")
+	_expect(research_state.get("decoy_pulse_used_this_run") == true, "run memory state service should preserve decoy pulse usage")
+	_expect(research_state.get("run_echo_lens_echo_fired") == true, "run memory state service should preserve Echo Lens echo state")
+	_expect(research_state.get("run_wreck_echo_clue_recovered") == true, "run memory state service should preserve wreck echo clue state")
+	_expect(research_state.get("run_glass_kelp_reading_recovered") == true, "run memory state service should preserve glass kelp reading state")
+	main.free()
 
 func _test_route_choice_result_callout() -> void:
 	var main := MainScript.new()
