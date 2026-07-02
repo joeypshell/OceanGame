@@ -1011,7 +1011,7 @@ func _try_extract() -> void:
 	_resolve_night_after_result()
 	dive_session.clear_cargo()
 	surface_tab_index = SURFACE_TAB_NIGHT
-	last_result_summary = _format_extraction_result_summary(extracted_count, banked_resources, banked_survival_supplies)
+	last_result_summary = SurfaceRunSummaryServiceScript.format_extraction_result_summary(self, extracted_count, banked_resources, banked_survival_supplies)
 	upgrade_menu_feedback = "Deposited %d cargo item(s).%s%s\n%s" % [
 		extracted_count,
 		ResourceSummaryServiceScript.format_resource_counts(banked_resources, survival_state, RESOURCE_CATEGORY_LABELS),
@@ -2789,9 +2789,6 @@ func _reset_run_telemetry() -> void:
 
 func _refresh_carried_tomorrow_intention() -> void:
 	carried_tomorrow_intention = SurfaceRunSummaryServiceScript.format_tomorrow_plan(self)
-
-func _format_extraction_result_summary(extracted_count: int, banked_resources: Array[String], banked_survival_supplies: Array[String] = []) -> String:
-	return SurfaceRunSummaryServiceScript.format_extraction_result_summary(self, extracted_count, banked_resources, banked_survival_supplies)
 
 func _first_ready_upgrade_definition() -> UpgradeDefinition:
 	for upgrade in upgrade_definitions:
