@@ -46,6 +46,7 @@ const ResearchResultPresenterScript := preload("res://scripts/ui/research_result
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
+const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
 const WreckEchoVisualStagingServiceScript := preload("res://scripts/debug/wreck_echo_visual_staging_service.gd")
@@ -2040,37 +2041,7 @@ func _stage_debug_surface_oxygen_refill_visual_review() -> void:
 	_update_hud()
 
 func _stage_debug_ship_offload_visual_review() -> void:
-	if dive_session.result == DiveSessionScript.Result.READY:
-		dive_session.start()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	var staged_player := player
-	if staged_player == null:
-		staged_player = get_node_or_null("Player") as CharacterBody2D
-	if staged_player == null:
-		return
-
-	player = staged_player
-	var review_base := base_zone
-	if review_base == null:
-		review_base = get_node_or_null("BaseZone") as Area2D
-	if review_base == null:
-		return
-
-	player.global_position = review_base.global_position
-	player.velocity = Vector2.ZERO
-	player_in_base = true
-	player_in_surface_oxygen_refill = true
-	dive_session.has_left_base = true
-	dive_session.oxygen = maxf(1.0, dive_session.max_oxygen * 0.22)
-	dive_session.current_cargo.clear()
-	dive_session.current_cargo.append("driftwood")
-	visual_smoke_route_stage = "ship_offload_complete"
-	_try_ship_offload()
-	visual_smoke_route_stage = "ship_offload_complete"
-	_update_depth()
-	_update_hud()
+	ShipOffloadVisualStagingServiceScript.stage_visual_review(self)
 
 func _stage_debug_area01_shell_visual_review(stage: String) -> void:
 	Area01VisualStagingServiceScript.stage_shell_visual_review(self, stage)
