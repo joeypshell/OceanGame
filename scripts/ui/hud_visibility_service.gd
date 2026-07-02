@@ -1,6 +1,29 @@
 class_name HudVisibilityService
 extends RefCounted
 
+const DiveSessionScript := preload("res://scripts/dive_session.gd")
+
+static func effective_canvas_z(node: Node) -> int:
+	var effective_z := 0
+	var current: Node = node
+	var include_parent_z := true
+	while current != null:
+		if current is CanvasItem:
+			var canvas_item := current as CanvasItem
+			if include_parent_z:
+				effective_z += canvas_item.z_index
+				include_parent_z = canvas_item.z_as_relative
+			else:
+				break
+		current = current.get_parent()
+	return effective_z
+
+static func active_hud_visible_for_result(result: int) -> bool:
+	return result == DiveSessionScript.Result.DIVING
+
+static func surface_hud_visible_for_result(result: int) -> bool:
+	return result != DiveSessionScript.Result.DIVING
+
 static func apply_active_hud_visibility(host, is_diving: bool, has_surface_panel: bool, has_scan_target: bool) -> void:
 	_set_visible(host.hint_label, false)
 	_set_visible(host.bounds_hint_label, false)
