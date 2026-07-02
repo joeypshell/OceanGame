@@ -25,6 +25,7 @@ const BlackwaterVisualStagingServiceScript := preload("res://scripts/debug/black
 const BlueChimneyVisualStagingServiceScript := preload("res://scripts/debug/blue_chimney_visual_staging_service.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
+const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
@@ -137,6 +138,7 @@ func _initialize() -> void:
 	_run("debug Open Hatch visual staging service", _test_open_hatch_visual_staging_service)
 	_run("debug Ship Offload visual staging service", _test_ship_offload_visual_staging_service)
 	_run("debug Surface Oxygen visual staging service", _test_surface_oxygen_visual_staging_service)
+	_run("debug Daylight Cargo visual staging service", _test_daylight_cargo_visual_staging_service)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("scan hold timing helper", _test_scan_hold_timing_helper)
 	_run("compact scan marker", _test_compact_scan_marker)
@@ -1506,6 +1508,25 @@ func _test_surface_oxygen_visual_staging_service() -> void:
 	_expect(main.dive_session.current_cargo == ["driftwood"], "Surface Oxygen staging should seed one carried resource for the visual review")
 	_expect(is_equal_approx(main.dive_session.oxygen, maxf(1.0, main.dive_session.max_oxygen * 0.18)), "Surface Oxygen staging should preserve the low oxygen review value")
 	_expect(main.status_label.text == "Surface O2 refilling; ship still banks cargo.", "Surface Oxygen staging should preserve the refill status copy")
+	main.queue_free()
+
+func _test_daylight_cargo_visual_staging_service() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.reset(main.max_oxygen)
+	if main.status_label == null:
+		main.status_label = Label.new()
+		main.add_child(main.status_label)
+
+	DaylightCargoVisualStagingServiceScript.stage_visual_review(main)
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Daylight Cargo staging should start or keep the daylight dive active")
+	_expect(main.visual_smoke_route_stage == "daylight_cargo_warning", "Daylight Cargo staging should expose the deterministic warning stage")
+	_expect(main.dive_session.current_cargo == ["driftwood"], "Daylight Cargo staging should seed one carried resource when cargo is empty")
+	_expect(main.dive_session.has_left_base, "Daylight Cargo staging should mark the sortie as active")
+	_expect(not main.player_in_base, "Daylight Cargo staging should keep the player away from the ship")
+	_expect(is_equal_approx(main._daylight_remaining_ratio(), main.LATE_DAY_CARGO_WARNING_RATIO), "Daylight Cargo staging should preserve the late-day warning threshold")
+	_expect(main._should_warn_late_day_cargo_banking(), "Daylight Cargo staging should trigger the existing cargo-banking warning helper")
+	_expect(main.status_label.text == "Dusk cargo: bank before night.", "Daylight Cargo staging should preserve status copy")
 	main.queue_free()
 
 func _test_scanner_target_resolver() -> void:
