@@ -784,7 +784,7 @@ func _process(delta: float) -> void:
 	_update_burst_thruster_cooldown(delta)
 	_update_scan_charge(delta)
 	if dive_session.result != DiveSessionScript.Result.DIVING:
-		_update_scan_target_feedback()
+		ScanTargetFeedbackServiceScript.update_scan_target_feedback(self)
 		return
 
 	_advance_daylight_timer(delta)
@@ -2153,7 +2153,7 @@ func _begin_scan_charge() -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
 		return
 
-	var target := _scan_target_candidate()
+	var target := ScanTargetFeedbackServiceScript.scan_target_candidate(self)
 	if target == null:
 		status_label.text = "No scan target nearby."
 		_update_hud()
@@ -2184,7 +2184,7 @@ func _update_scan_charge(delta: float) -> void:
 	if not scan_hold_active:
 		_cancel_scan_charge("Scan canceled.")
 		return
-	if not _scan_target_still_selectable(scan_charge_target):
+	if not ScanTargetFeedbackServiceScript.scan_target_still_selectable(self, scan_charge_target):
 		_cancel_scan_charge("Scan lost: target out of range.")
 		return
 
@@ -2207,7 +2207,7 @@ func _try_scan(requested_target: Node = null) -> void:
 		return
 
 	var target := requested_target if requested_target != null else _nearest_scan_target()
-	if target != null and not _scan_target_still_selectable(target):
+	if target != null and not ScanTargetFeedbackServiceScript.scan_target_still_selectable(self, target):
 		target = null
 	if target == null:
 		status_label.text = "No scan target nearby."
@@ -2665,7 +2665,7 @@ func _sync_predator_warning_upgrade_state() -> void:
 		gulper_eel.set_warning_radius_multiplier(multiplier)
 
 func _update_hud() -> void:
-	_update_scan_target_feedback()
+	ScanTargetFeedbackServiceScript.update_scan_target_feedback(self)
 	RunPanelServiceScript.update_run_panel(self)
 	UpgradeMenuServiceScript.update_menu(self)
 	_apply_active_hud_layout()
@@ -3059,24 +3059,6 @@ func _format_active_objective_line() -> String:
 		"should_warn_late_day_cargo_banking": _should_warn_late_day_cargo_banking(),
 		"survival_need_low": survival_state.food <= 1 or survival_state.water <= 1 or survival_state.power <= 1,
 	}, ACTIVE_OBJECTIVE_MAX_CHARS)
-
-func _update_scan_target_feedback() -> void:
-	ScanTargetFeedbackServiceScript.update_scan_target_feedback(self)
-
-func _scan_target_candidate() -> Node:
-	return ScanTargetFeedbackServiceScript.scan_target_candidate(self)
-
-func _scan_target_still_selectable(target: Node) -> bool:
-	return ScanTargetFeedbackServiceScript.scan_target_still_selectable(self, target)
-
-func _update_scan_reticle_position(target: Node) -> void:
-	ScanTargetFeedbackServiceScript.update_scan_reticle_position(self, target)
-
-func _scan_reticle_screen_position(world_position: Vector2) -> Vector2:
-	return ScanTargetFeedbackServiceScript.scan_reticle_screen_position(self, world_position)
-
-func _scan_reticle_fallback_screen_position(world_position: Vector2, viewport_size: Vector2) -> Vector2:
-	return ScanTargetFeedbackServiceScript.scan_reticle_fallback_screen_position(self, world_position, viewport_size)
 
 func _format_scan_target_discovery_state(target: Node) -> String:
 	return ScanTargetFeedbackServiceScript.format_scan_target_discovery_state(self, target)
