@@ -1,6 +1,8 @@
 class_name SurfaceOxygenVisualStagingService
 extends RefCounted
 
+const SurfaceStatusPresenterScript := preload("res://scripts/ui/surface_status_presenter.gd")
+
 const PLAYER_PATH := "Player"
 
 static func stage_visual_review(host) -> void:
@@ -25,6 +27,6 @@ static func stage_visual_review(host) -> void:
 	host.dive_session.current_cargo.clear()
 	host.dive_session.current_cargo.append("driftwood")
 	host.visual_smoke_route_stage = "surface_oxygen_refill"
-	host.status_label.text = host._surface_oxygen_status_text()
+	host.status_label.text = SurfaceStatusPresenterScript.surface_oxygen_status_for_host(host)
 	host._update_depth()
 	host._update_hud()
