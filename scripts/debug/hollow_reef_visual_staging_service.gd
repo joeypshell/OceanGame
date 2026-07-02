@@ -2,6 +2,7 @@ class_name HollowReefVisualStagingService
 extends RefCounted
 
 const HOLLOW_REEF_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"
+const HOLLOW_REEF_INTERACT_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteractZone"
 
 static func stage_route_visual_review(host) -> void:
 	if not OS.has_feature("web"):
@@ -51,5 +52,29 @@ static func stage_route_visual_review(host) -> void:
 	host._sync_hollow_reef_reading_state()
 	host.visual_smoke_route_stage = "hollow_reef_route"
 	host.status_label.text = "Debug review: Hollow Reef entrance staged."
+	host._update_depth()
+	host._update_hud()
+
+static func stage_payoff_visual_review(host, recovered := false) -> void:
+	stage_route_visual_review(host)
+	if host.dive_session.result != host.DiveSessionScript.Result.DIVING:
+		return
+
+	var hollow_interact := host.get_node_or_null(HOLLOW_REEF_INTERACT_PATH) as Area2D
+	if hollow_interact == null:
+		return
+
+	host.player.global_position = hollow_interact.global_position
+	host.player.velocity = Vector2.ZERO
+	host.player_near_hollow_reef = true
+	host.run_reached_dusk_trench = true
+	if recovered:
+		host._try_hollow_reef_interaction()
+		host.visual_smoke_route_stage = "hollow_reef_return"
+	else:
+		host.run_hollow_reef_reading_recovered = false
+		host._sync_hollow_reef_reading_state()
+		host.visual_smoke_route_stage = "hollow_reef_payoff"
+		host.status_label.text = "Debug review: Hollow Reef payoff staged."
 	host._update_depth()
 	host._update_hud()
