@@ -141,6 +141,7 @@ func _initialize() -> void:
 	_run("debug Surface Oxygen visual staging service", _test_surface_oxygen_visual_staging_service)
 	_run("debug Daylight Cargo visual staging service", _test_daylight_cargo_visual_staging_service)
 	_run("debug Health Damage visual staging service", _test_health_damage_visual_staging_service)
+	_run("debug Health Damage extraction visual staging service", _test_health_damage_extraction_visual_staging_service)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("scan hold timing helper", _test_scan_hold_timing_helper)
 	_run("compact scan marker", _test_compact_scan_marker)
@@ -1549,6 +1550,23 @@ func _test_health_damage_visual_staging_service() -> void:
 	_expect(main.dive_session.unlimited_oxygen, "Health Damage staging should preserve unlimited oxygen review mode")
 	_expect(not main.player_in_base, "Health Damage staging should move the player away from the ship")
 	_expect(main.dive_session.has_left_base, "Health Damage staging should mark the sortie as active")
+	main.queue_free()
+
+func _test_health_damage_extraction_visual_staging_service() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.reset(main.max_oxygen, main.max_health)
+	if main.status_label == null:
+		main.status_label = Label.new()
+		main.add_child(main.status_label)
+
+	HealthDamageVisualStagingServiceScript.stage_extraction_visual_review(main)
+	_expect(main.dive_session.result == DiveSessionScript.Result.EXTRACTED, "Health Damage extraction staging should extract through the normal result path")
+	_expect(main.visual_smoke_route_stage == "health_damage_extracted", "Health Damage extraction staging should expose the deterministic result stage")
+	_expect(main.run_health_damage_events == 1, "Health Damage extraction staging should include the staged damage event")
+	_expect(main.last_result_summary.contains("no surface heal"), "Health Damage extraction staging should preserve health recovery result copy")
+	_expect(main.last_night_report.contains("Health:"), "Health Damage extraction staging should resolve the night health report")
+	_expect(main.player_in_base, "Health Damage extraction staging should place the player at the ship before extracting")
 	main.queue_free()
 
 func _test_scanner_target_resolver() -> void:
