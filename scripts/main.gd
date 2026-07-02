@@ -2616,7 +2616,7 @@ func _update_hud() -> void:
 	bank_label.text = "Banked:%s" % ResourceSummaryServiceScript.format_banked_resources(progression_state.banked_resources, survival_state, RESOURCE_CATEGORY_LABELS)
 	upgrade_label.text = UpgradeStateServiceScript.format_upgrade_status(self)
 	discoveries_label.text = _format_discoveries(true)
-	recent_expedition_log_label.text = _format_recent_expedition_log()
+	recent_expedition_log_label.text = RecentExpeditionLogServiceScript.format_recent_expedition_log(self)
 	status_label.text = HudPresenterScript.compact_dive_status(status_label.text) if is_diving else status_label.text
 	if is_diving:
 		objective_title_label.text = "SURVIVAL ROUTE"
@@ -2813,9 +2813,6 @@ func _first_ready_upgrade_definition() -> UpgradeDefinition:
 func _format_route_choice_callout() -> String:
 	return RouteMemoryPresenterScript.format_route_choice_callout(RunMemoryStateServiceScript.route_memory_state(self))
 
-func _format_recent_route_memory() -> String:
-	return RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(self))
-
 func _format_gulper_research_callout() -> String:
 	return ResearchResultPresenterScript.format_gulper_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
@@ -2875,9 +2872,6 @@ func _format_discovery_memory_callout() -> String:
 
 func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> void:
 	RecentExpeditionLogServiceScript.record_recent_expedition(self, result_name, banked_cargo_count)
-
-func _format_recent_expedition_log() -> String:
-	return RecentExpeditionLogServiceScript.format_recent_expedition_log(self)
 
 func _format_discoveries(compact: bool = false) -> String:
 	var discoveries := progression_state.scan_discoveries

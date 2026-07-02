@@ -1505,7 +1505,7 @@ func _test_debug_wide_reef_salvage_staging_guardrails() -> void:
 	_expect(manifest_core.color.a >= 0.7, "owned Salvage Cutter I should leave the manifest visibly recoverable")
 	_expect(not main.run_salvage_manifest_recovered, "opened pocket should not auto-complete the manifest payoff")
 	_expect(not main.run_salvage_data_cache_recovered, "opened pocket should not auto-complete the earlier cache payoff")
-	_expect(main._format_recent_route_memory() != "Salvage Pocket", "opened pocket alone should not claim Salvage Pocket route memory")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) != "Salvage Pocket", "opened pocket alone should not claim Salvage Pocket route memory")
 	var staged_save: Dictionary = main.progression_state.to_save_data()
 	_expect(not staged_save.has("salvage_pocket_route"), "opened pocket should not create durable salvage route state")
 	_expect(not staged_save.has("salvage_manifest"), "opened pocket should not create durable manifest state")
@@ -1517,7 +1517,7 @@ func _test_debug_wide_reef_salvage_staging_guardrails() -> void:
 	var handled: bool = main.call("_try_salvage_manifest_interaction")
 	_expect(handled, "staged Wide Reef salvage payoff should remain interactable through the normal manifest path")
 	_expect(main.run_salvage_manifest_recovered, "staged manifest interaction should set only run-scoped payoff evidence")
-	_expect(main._format_recent_route_memory() == "Salvage Pocket", "manifest payoff should upgrade the current run memory to Salvage Pocket")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Salvage Pocket", "manifest payoff should upgrade the current run memory to Salvage Pocket")
 	var empty_cargo: Array[String] = []
 	var summary: String = main._format_extraction_result_summary(0, empty_cargo)
 	_expect(summary.contains("Salvage Manifest"), "staged manifest payoff should support extraction result memory")
@@ -1534,7 +1534,7 @@ func _test_debug_wide_reef_salvage_staging_guardrails() -> void:
 	_expect(not main.run_salvage_manifest_recovered, "Salvage Manifest payoff should reset between expeditions")
 	_expect(opened_lane.visible, "owned cutter should keep the opened lane visible after run reset")
 	_expect(manifest_core.color.a >= 0.7, "Salvage Manifest should become recoverable again after run reset")
-	_expect(main._format_recent_route_memory() != "Salvage Pocket", "run reset should clear active Salvage Pocket route memory")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) != "Salvage Pocket", "run reset should clear active Salvage Pocket route memory")
 	main.queue_free()
 
 func _test_debug_mirror_kelp_evidence_staging() -> void:
@@ -1564,7 +1564,7 @@ func _test_debug_mirror_kelp_evidence_staging() -> void:
 	_expect(main.visual_smoke_route_stage == "mirror_kelp_tideglass", "Tideglass staging should expose a deterministic payoff stage")
 	_expect(main.run_tideglass_sample_recovered, "Tideglass staging should set only the run-scoped payoff evidence")
 	_expect(main._format_route_choice_callout().contains("Mirror Kelp Pass"), "Tideglass staging should support Mirror Kelp result memory")
-	_expect(main._format_recent_route_memory() == "Mirror Kelp Pass", "Tideglass staging should support recent route memory")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Mirror Kelp Pass", "Tideglass staging should support recent route memory")
 	_expect(main.progression_state.to_save_data() == save_before, "Tideglass staging should not mutate durable progression")
 
 	main.call("_stage_debug_mirror_kelp_visual_review", false, true)
@@ -1572,7 +1572,7 @@ func _test_debug_mirror_kelp_evidence_staging() -> void:
 	_expect(not main.run_tideglass_sample_recovered, "Mirrorfin staging should reset Tideglass payoff state for deterministic captures")
 	_expect(main.run_completed_scans.has("mirrorfin_drift"), "Mirrorfin staging should set only current-run observation evidence")
 	_expect(main._format_route_choice_callout().contains("reflection timing"), "Mirrorfin staging should support observation result memory")
-	_expect(main._format_recent_route_memory() == "Mirror Kelp Pass", "Mirrorfin staging should support recent route memory")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Mirror Kelp Pass", "Mirrorfin staging should support recent route memory")
 	_expect(main.progression_state.to_save_data() == save_before, "Mirrorfin staging should not mutate durable progression")
 	_expect(not main.progression_state.to_save_data().has("mirror_kelp_pass_route"), "Mirror Kelp staging should not add durable route state")
 	main.queue_free()
@@ -2474,7 +2474,7 @@ func _test_outer_shelf_cargo_knowledge_payoff_choice() -> void:
 	_expect(extraction_summary.contains("try Glass Rim timing or bank the Outer Shelf cargo"), "Outer Shelf extraction summary should invite one next-run hypothesis")
 	_expect(not extraction_summary.to_lower().contains("checklist"), "Outer Shelf extraction summary should not imply checklist UI")
 	_expect(not extraction_summary.to_lower().contains("map"), "Outer Shelf extraction summary should not imply map UI")
-	_expect(main._format_recent_route_memory() == "Outer Shelf", "recent route helper should expose Outer Shelf after survey evidence")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Outer Shelf", "recent route helper should expose Outer Shelf after survey evidence")
 	_expect(not extraction_summary.contains("%s"), "Outer Shelf extraction summary should not leak string placeholders")
 	main.progression_state.current_run_number = 8
 	main.progression_state.current_run_seed = 1008
@@ -2565,7 +2565,7 @@ func _test_glass_rim_reading_payoff_choice() -> void:
 	_expect(extraction_summary.contains("timing, cargo, or return"), "Glass Rim extraction summary should tease the next decision loop")
 	_expect(not extraction_summary.to_lower().contains("checklist"), "Glass Rim extraction summary should not imply checklist UI")
 	_expect(not extraction_summary.to_lower().contains("map"), "Glass Rim extraction summary should not imply map UI")
-	_expect(main._format_recent_route_memory() == "Glass Rim", "recent route helper should prefer Glass Rim after the new payoff")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Glass Rim", "recent route helper should prefer Glass Rim after the new payoff")
 	main.progression_state.current_run_number = 9
 	main.progression_state.current_run_seed = 1009
 	main.call("_record_recent_expedition", "Extracted", 0)
@@ -2661,7 +2661,7 @@ func _test_glass_ray_drifter_passive_route_read() -> void:
 	_expect(main._format_discovery_memory_callout().contains("without fighting"), "Glass Ray discovery memory should frame observation as non-combat")
 	_expect(main._format_route_choice_callout().contains("Glass Ray slackwater timing"), "Glass Ray scan should produce a compact Glass Rim route-choice memory")
 	_expect(main._format_region_memory_callout().contains("Outer Shelf"), "Glass Ray scan should remember the broad Outer Shelf place")
-	_expect(main._format_recent_route_memory() == "Outer Shelf", "Glass Ray scan should support current-run Outer Shelf route memory")
+	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Outer Shelf", "Glass Ray scan should support current-run Outer Shelf route memory")
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(saved.get("scan_discoveries", {}).has("glass_ray_drifter"), "Glass Ray discovery should persist through normal scan discovery storage")
 	_expect(saved.get("banked_resources", {}) == save_before.get("banked_resources", {}), "Glass Ray scan should not mutate resources")
@@ -2950,7 +2950,7 @@ func _test_salvage_manifest_interaction() -> void:
 	main.progression_state.current_run_number = 21
 	main.progression_state.current_run_seed = 3021
 	main._record_recent_expedition("Extracted", 1)
-	var log_text: String = main._format_recent_expedition_log()
+	var log_text: String = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("#21 Extracted"), "recent expedition log should include Salvage Manifest runs")
 	_expect(log_text.contains("route Salvage Pocket"), "Salvage Manifest should produce compact salvage-pocket route memory")
 	_expect(not log_text.contains("route Wide Reef Chamber"), "Salvage Pocket memory should take priority over upstream wide chamber memory")
@@ -7288,7 +7288,7 @@ func _test_recent_expedition_log() -> void:
 		main._record_recent_expedition("Extracted", run_number)
 
 	_expect(main.recent_expedition_log.size() == 3, "recent expedition log should keep only the latest three entries")
-	var log_text := main._format_recent_expedition_log()
+	var log_text := RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(not log_text.contains("#1"), "recent expedition log should drop the oldest entry")
 	_expect(log_text.contains("#2 Extracted"), "recent expedition log should include the oldest retained entry")
 	_expect(log_text.contains("route Gulper Route"), "recent expedition log should preserve one compact route memory")
@@ -7298,7 +7298,7 @@ func _test_recent_expedition_log() -> void:
 	_expect_lines_within(log_text, 120, "recent expedition log")
 
 	main.show_debug_telemetry = true
-	log_text = main._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("seed 1004"), "recent expedition log should show seed only with debug telemetry")
 	_expect(log_text.contains("Cautious shallows"), "recent expedition log should show pattern only with debug telemetry")
 	main.show_debug_telemetry = false
@@ -7314,7 +7314,7 @@ func _test_recent_expedition_log() -> void:
 	main.run_blackwater_trace_recovered = false
 	main.run_reached_dusk_trench = false
 	main._record_recent_expedition("Extracted", 0)
-	log_text = main._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("#8 Extracted"), "recent expedition log should include Lantern Ray observation runs")
 	_expect(log_text.contains("route Lantern Ray"), "Lantern Ray observation should produce compact recent route memory")
 	_expect(log_text.contains("scans Lantern Ray"), "Lantern Ray scan should appear with readable scan names")
@@ -7336,7 +7336,7 @@ func _test_recent_expedition_log() -> void:
 	main.run_hollow_reef_reading_recovered = false
 	var save_before_recent_glassfin: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	main._record_recent_expedition("Extracted", 0)
-	log_text = main._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("#82 Extracted"), "recent expedition log should include Glassfin Swarm observation runs")
 	_expect(log_text.contains("route Glassfin Swarm"), "Glassfin Swarm observation should produce compact recent route memory")
 	_expect(log_text.contains("scans Glassfin Swarm"), "Glassfin Swarm scan should appear with readable scan name")
@@ -7359,7 +7359,7 @@ func _test_recent_expedition_log() -> void:
 	main.run_reached_dusk_trench = false
 	main.run_hollow_reef_reading_recovered = false
 	main._record_recent_expedition("Extracted", 0)
-	log_text = main._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("route Gulper Route"), "recent log should keep predator safety memory when no deeper route wins")
 	_expect(not log_text.contains("route Lantern Ray"), "predator safety memory should win over passive creature observation after contact")
 
@@ -7373,7 +7373,7 @@ func _test_recent_expedition_log() -> void:
 	main.run_blue_chimney_draft_reading_recovered = true
 	main.run_blackwater_trace_recovered = true
 	main._record_recent_expedition("Failed", 0)
-	log_text = main._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("#9 Failed"), "recent expedition log should include failed Blackwater attempts")
 	_expect(log_text.contains("route Blackwater"), "recent expedition log should prioritize the deepest reached route")
 	_expect(log_text.find("route Blackwater") == log_text.rfind("route Blackwater"), "recent expedition log should not duplicate Blackwater route memory")
@@ -7392,7 +7392,7 @@ func _test_recent_expedition_log() -> void:
 	main.run_blackwater_trace_recovered = true
 	main.run_reached_dusk_trench = true
 	main._record_recent_expedition("Extracted", 1)
-	log_text = main._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("#10 Extracted"), "recent expedition log should include Dusk route attempts")
 	_expect(log_text.contains("route Dusk Trench"), "recent expedition log should prioritize Dusk reach evidence")
 	_expect(not log_text.contains("route Blackwater"), "Dusk recent route memory should take priority over Blackwater")
@@ -7416,7 +7416,7 @@ func _test_recent_expedition_log() -> void:
 	main.run_reached_dusk_trench = true
 	main.run_hollow_reef_reading_recovered = true
 	main._record_recent_expedition("Extracted", 1)
-	log_text = main._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("#11 Extracted"), "recent expedition log should include Hollow Reef route attempts")
 	_expect(log_text.contains("route Hollow Reef"), "recent expedition log should prioritize Hollow Reef over Dusk and Blackwater")
 	_expect(not log_text.contains("route Dusk Trench"), "Hollow Reef recent route memory should take priority over Dusk")
@@ -7440,7 +7440,7 @@ func _test_recent_expedition_log() -> void:
 	main.run_salvage_data_cache_recovered = true
 	var save_before_recent_wide_chamber: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	main._record_recent_expedition("Extracted", 1)
-	log_text = main._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("#13 Extracted"), "recent expedition log should include wide chamber salvage runs")
 	_expect(log_text.contains("route Wide Reef Chamber"), "wide chamber salvage evidence should produce compact recent route memory")
 	_expect(not log_text.contains("route Hollow Reef"), "wide chamber recent route memory should take priority over Hollow Reef when salvage evidence exists")
@@ -7469,7 +7469,7 @@ func _test_recent_expedition_log() -> void:
 	main.run_tideglass_sample_recovered = true
 	var save_before_recent_mirror_kelp: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	main._record_recent_expedition("Extracted", 0)
-	log_text = main._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("#14 Extracted"), "recent expedition log should include Mirror Kelp branch runs")
 	_expect(log_text.contains("route Mirror Kelp Pass"), "Mirror Kelp evidence should produce compact recent route memory")
 	_expect(log_text.contains("scans Mirrorfin Drift"), "Mirrorfin scan should appear with readable scan name")
@@ -7498,7 +7498,7 @@ func _test_recent_expedition_log() -> void:
 	main.run_salvage_data_cache_recovered = false
 	var save_before_recent_hollow: Dictionary = main.progression_state.to_save_data().duplicate(true)
 	main._record_recent_expedition("Extracted", 0)
-	log_text = main._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(main)
 	_expect(log_text.contains("#12 Extracted"), "recent expedition log should include Hollow Reef Skitter observation runs")
 	_expect(log_text.contains("route Hollow Reef"), "Hollow Reef Skitter observation should produce compact Hollow Reef recent route memory")
 	_expect(log_text.contains("scans Hollow Reef Skitter"), "Hollow Reef Skitter scan should appear with readable scan name")
@@ -7517,7 +7517,7 @@ func _test_recent_expedition_survival_memory() -> void:
 	banked.progression_state.best_depth_reached = 72.0
 	banked.run_banked_survival_supplies = ["food_supply", "power_supply"]
 	banked._record_recent_expedition("Extracted", 2)
-	var log_text := banked._format_recent_expedition_log()
+	var log_text := RecentExpeditionLogServiceScript.format_recent_expedition_log(banked)
 	_expect(log_text.contains("survival banked Food/Power supply"), "recent log should remember banked survival supplies compactly")
 	_expect(not log_text.contains("seed"), "survival memory should not expose debug seed data")
 	_expect_lines_within(log_text, 120, "recent expedition survival log")
@@ -7530,7 +7530,7 @@ func _test_recent_expedition_survival_memory() -> void:
 	damaged.dive_session.health = 82.0
 	damaged.dive_session.max_health = 100.0
 	damaged._record_recent_expedition("Extracted", 1)
-	log_text = damaged._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(damaged)
 	_expect(log_text.contains("survival health 82/100; med used build"), "health damage should be the most important survival memory")
 	_expect(not log_text.contains("survival banked Food"), "health memory should keep the line to one survival tradeoff")
 	damaged.free()
@@ -7540,7 +7540,7 @@ func _test_recent_expedition_survival_memory() -> void:
 	late.daylight_nightfall_away_from_ship = true
 	late.run_banked_survival_supplies = ["power_supply"]
 	late._record_recent_expedition("Extracted", 1)
-	log_text = late._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(late)
 	_expect(log_text.contains("survival late return cost Power -1"), "late return should be remembered as a survival tradeoff")
 	_expect(not log_text.contains("survival banked Power"), "late return should keep one compact survival memory")
 	late.free()
@@ -7551,14 +7551,14 @@ func _test_recent_expedition_survival_memory() -> void:
 	low_need.survival_state.water = 1
 	low_need.survival_state.power = 0
 	low_need._record_recent_expedition("Extracted", 1)
-	log_text = low_need._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(low_need)
 	_expect(log_text.contains("survival low Water/Power"), "recent log should remember low base needs when no sharper tradeoff exists")
 	low_need.free()
 
 	var target := MainScript.new()
 	target.progression_state.current_run_number = 25
 	target._record_recent_expedition("Extracted", 0)
-	log_text = target._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(target)
 	_expect(log_text.contains("survival Water Filter needs Driftwood/Quartz Glass"), "no-cargo starter returns should remember the Water Filter material target")
 	target.free()
 
@@ -7571,7 +7571,7 @@ func _test_recent_expedition_survival_memory() -> void:
 			retained.run_banked_survival_supplies = ["water_supply"]
 		retained._record_recent_expedition("Extracted", run_number)
 
-	log_text = retained._format_recent_expedition_log()
+	log_text = RecentExpeditionLogServiceScript.format_recent_expedition_log(retained)
 	_expect(retained.recent_expedition_log.size() == 3, "survival-memory recent log should keep only three entries")
 	_expect(not log_text.contains("#1"), "survival-memory recent log retention should drop the oldest entry")
 	_expect(log_text.contains("#4 Extracted"), "survival-memory recent log should retain the newest entry")
