@@ -1,6 +1,7 @@
 class_name UpgradeStateService
 extends RefCounted
 
+const DiscoveryNamePresenterScript := preload("res://scripts/ui/discovery_name_presenter.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 
@@ -87,7 +88,7 @@ static func format_upgrade_state(host, upgrade) -> String:
 	return UpgradeCopyPresenterScript.format_standard_upgrade_state(
 		effect_summary,
 		host.progression_state.has_upgrade(upgrade.id),
-		host._format_discovery_name(missing_discovery) if missing_discovery != "" else "",
+		DiscoveryNamePresenterScript.display_name(host.progression_state, missing_discovery) if missing_discovery != "" else "",
 		format_upgrade_display_name(host, missing_upgrade) if missing_upgrade != "" else "",
 		host.progression_state.can_afford(upgrade.resource_cost),
 		host._action_label("interact").replace("/", " or "),
@@ -123,7 +124,7 @@ static func format_upgrade_progress_callout(host) -> String:
 		if missing_discovery != "":
 			return "Upgrade progress: %s %s to unlock %s." % [
 				format_upgrade_prerequisite_action(missing_discovery),
-				host._format_discovery_name(missing_discovery),
+				DiscoveryNamePresenterScript.display_name(host.progression_state, missing_discovery),
 				upgrade.display_name,
 			]
 
