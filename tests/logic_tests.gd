@@ -1424,7 +1424,7 @@ func _test_lantern_ray_route_variation() -> void:
 	_expect(main.current_lantern_ray_route_id == first_route_id, "same seed and condition should select the same Lantern Ray route")
 	_expect(lantern_ray.global_position == first_start, "same seed and condition should place the Lantern Ray at the same start")
 
-	var telemetry: String = main._format_run_telemetry("Extracted")
+	var telemetry: String = SurfaceRunSummaryServiceScript.format_run_telemetry(main, "Extracted")
 	_expect(telemetry.contains("Lantern Ray route:"), "debug run telemetry should expose the runtime Lantern Ray route id")
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(not saved.has("current_lantern_ray_route_id"), "Lantern Ray route variation should not save active-run route state")
@@ -5704,7 +5704,7 @@ func _test_next_expedition_framing() -> void:
 
 	main.progression_state.current_run_number = 4
 	main.survival_state.current_day = 4
-	var ready_status := main._format_expedition_ready_status()
+	var ready_status := SurfaceRunSummaryServiceScript.format_expedition_ready_status(main)
 	_expect(ready_status.contains("Day 4 ready"), "ready status should name the prepared survival day")
 	_expect(ready_status.contains("ocean changed"), "ready status should describe the changed ocean")
 	_expect(SurfaceResultPresenterScript.format_expedition_ready_status(false, "low_visibility", 4).contains("lower-trench"), "surface presenter should preserve low-visibility ready copy")
@@ -5714,7 +5714,7 @@ func _test_next_expedition_framing() -> void:
 	_expect(SurfaceResultPresenterScript.format_daylight_closeout_line(true, 2).contains("after 2 ship offload"), "surface presenter should preserve late nightfall offload copy")
 	_expect(main._format_expedition_day_title("Ready") == "Emergency Week Day 4/5 Ready", "ready title should show survival day number")
 	_expect(main._format_expedition_day_title("Result: Extraction") == "Emergency Week Day 4/5 Result: Extraction", "result title should show completed survival day number")
-	_expect(main._format_completed_expedition_line("Failure") == "Emergency Week Day 4: Failure.", "result summary should name the completed survival day")
+	_expect(SurfaceRunSummaryServiceScript.format_completed_expedition_line(main, "Failure") == "Emergency Week Day 4: Failure.", "result summary should name the completed survival day")
 	main.free()
 
 func _test_region_memory_result_callout() -> void:
@@ -7149,7 +7149,7 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 	main.decoy_pulse_used_this_run = true
 
 	var compact_result := "\n".join([
-		main._format_completed_expedition_line("Extraction"),
+		SurfaceRunSummaryServiceScript.format_completed_expedition_line(main, "Extraction"),
 		SurfaceRunSummaryServiceScript.format_extraction_banking_line(3, main.run_collected_resources, main.survival_state, main.RESOURCE_CATEGORY_LABELS, not main.run_completed_scans.is_empty()),
 		main._format_region_memory_callout(),
 		main._format_discovery_memory_callout(),

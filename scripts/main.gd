@@ -1117,7 +1117,7 @@ func _fail_dive() -> void:
 	last_completed_survival_day = survival_state.current_day
 	_resolve_night_after_result()
 	last_result_summary = "%s\nCause: %s.\nCargo lost. Banked resources, upgrades, scans, and best depth kept.\n%s%s\n%s%s%s\n%s\nBest depth: %dm.\n%s%s" % [
-		_format_completed_expedition_line("Failure"),
+		SurfaceRunSummaryServiceScript.format_completed_expedition_line(self, "Failure"),
 		HealthFeedbackPresenterScript.format_failure_cause_for_player(run_failure_cause),
 		_format_region_memory_callout(),
 		_format_discovery_memory_callout(),
@@ -1126,7 +1126,7 @@ func _fail_dive() -> void:
 		_format_echo_lens_research_callout(),
 		SurfaceRunSummaryServiceScript.format_scan_progress_callout(progression_state, run_completed_scans, "Scans kept"),
 		roundi(progression_state.best_depth_reached),
-		_format_night_report_block(),
+		SurfaceRunSummaryServiceScript.format_night_report_block(self),
 		_format_next_expedition_prompt(),
 	]
 	SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
@@ -1164,7 +1164,7 @@ func _restart_dive() -> void:
 	night_health_recovery_used_build_time = false
 	surface_tab_index = SURFACE_TAB_RESULT
 	_reset_resource_pickups()
-	status_label.text = _format_expedition_ready_status()
+	status_label.text = SurfaceRunSummaryServiceScript.format_expedition_ready_status(self)
 	_update_hud()
 
 func _reset_local_prototype_save() -> void:
@@ -2813,9 +2813,6 @@ func _reset_run_telemetry() -> void:
 	RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(self)
 	_sync_survival_supply_cache_state()
 
-func _format_run_telemetry(result_name: String) -> String:
-	return SurfaceRunSummaryServiceScript.format_run_telemetry(self, result_name)
-
 func _format_run_summary(player_summary: String, result_name: String) -> String:
 	return SurfaceRunSummaryServiceScript.format_run_summary(self, player_summary, result_name)
 
@@ -2831,20 +2828,11 @@ func _format_current_tomorrow_intention() -> String:
 func _format_dawn_priority_line() -> String:
 	return SurfaceRunSummaryServiceScript.format_dawn_priority_line(self)
 
-func _format_expedition_ready_status() -> String:
-	return SurfaceRunSummaryServiceScript.format_expedition_ready_status(self)
-
 func _format_expedition_day_title(suffix: String) -> String:
 	return SurfaceRunSummaryServiceScript.format_expedition_day_title(self, suffix)
 
-func _format_completed_expedition_line(result_name: String) -> String:
-	return SurfaceRunSummaryServiceScript.format_completed_expedition_line(self, result_name)
-
 func _format_extraction_result_summary(extracted_count: int, banked_resources: Array[String], banked_survival_supplies: Array[String] = []) -> String:
 	return SurfaceRunSummaryServiceScript.format_extraction_result_summary(self, extracted_count, banked_resources, banked_survival_supplies)
-
-func _format_night_report_block() -> String:
-	return SurfaceRunSummaryServiceScript.format_night_report_block(self)
 
 func _format_night_build_choice_line() -> String:
 	return SurfaceRunSummaryServiceScript.format_night_build_choice_line(self)
