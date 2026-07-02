@@ -76,6 +76,7 @@ const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_servi
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const RouteTimingCuePresenterScript := preload("res://scripts/ui/route_timing_cue_presenter.gd")
+const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
 const SiltVeinVisualStagingServiceScript := preload("res://scripts/debug/silt_vein_visual_staging_service.gd")
 const SurfaceOxygenVisualStagingServiceScript := preload("res://scripts/debug/surface_oxygen_visual_staging_service.gd")
@@ -2297,177 +2298,28 @@ func _update_echo_lens_pulse(delta: float) -> void:
 		echo_lens_pulse.visible = false
 
 func _update_east_shelf_current_surge(delta: float) -> void:
-	east_shelf_current_surge_timer = fposmod(east_shelf_current_surge_timer + delta, EAST_SHELF_SURGE_PERIOD_SECONDS)
-	var surge_alpha := RouteTimingCuePresenterScript.east_shelf_current_surge_alpha(east_shelf_current_surge_timer, EAST_SHELF_SURGE_PERIOD_SECONDS)
-	if east_shelf_current_surge_lane != null:
-		east_shelf_current_surge_lane.color = Color(0.66, 0.96, 1.0, surge_alpha)
-	if east_shelf_current_surge_rib != null:
-		east_shelf_current_surge_rib.color = Color(0.9, 1.0, 0.94, surge_alpha + 0.06)
+	RouteTimingCueServiceScript.update_east_shelf_current_surge(self, delta)
 
 func _update_blue_chimney_reverse_draft(delta: float) -> void:
-	blue_chimney_draft_timer = fposmod(blue_chimney_draft_timer + delta, BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS)
-	if blue_chimney_reverse_draft != null:
-		blue_chimney_reverse_draft.color = Color(0.72, 1.0, 0.94, RouteTimingCuePresenterScript.blue_chimney_reverse_draft_alpha(blue_chimney_draft_timer, BLUE_CHIMNEY_DRAFT_PERIOD_SECONDS))
+	RouteTimingCueServiceScript.update_blue_chimney_reverse_draft(self, delta)
 
 func _update_blackwater_pressure_cue(delta: float) -> void:
-	blackwater_pressure_timer = fposmod(blackwater_pressure_timer + delta, BLACKWATER_PRESSURE_PERIOD_SECONDS)
-	var shutter_alpha := RouteTimingCuePresenterScript.blackwater_pressure_cue_alpha(blackwater_pressure_timer, BLACKWATER_PRESSURE_PERIOD_SECONDS)
-	if blackwater_pressure_shutter != null:
-		blackwater_pressure_shutter.color = Color(0.2, 0.12, 0.42, shutter_alpha)
-	if blackwater_pressure_rib_a != null:
-		blackwater_pressure_rib_a.color = Color(0.72, 0.52, 1.0, shutter_alpha + 0.04)
-	if blackwater_pressure_rib_b != null:
-		blackwater_pressure_rib_b.color = Color(0.72, 0.52, 1.0, shutter_alpha + 0.02)
+	RouteTimingCueServiceScript.update_blackwater_pressure_cue(self, delta)
 
 func _update_lantern_ray_timing_lane(delta: float) -> void:
-	var upper := lantern_ray_timing_lane_upper
-	if upper == null:
-		upper = get_node_or_null("Creatures/LanternRayRoute/TimingLane/TimingLaneUpper") as Polygon2D
-		lantern_ray_timing_lane_upper = upper
-	var lower := lantern_ray_timing_lane_lower
-	if lower == null:
-		lower = get_node_or_null("Creatures/LanternRayRoute/TimingLane/TimingLaneLower") as Polygon2D
-		lantern_ray_timing_lane_lower = lower
-	var tick_a := lantern_ray_timing_tick_a
-	if tick_a == null:
-		tick_a = get_node_or_null("Creatures/LanternRayRoute/TimingLane/TimingTickA") as Polygon2D
-		lantern_ray_timing_tick_a = tick_a
-	var tick_b := lantern_ray_timing_tick_b
-	if tick_b == null:
-		tick_b = get_node_or_null("Creatures/LanternRayRoute/TimingLane/TimingTickB") as Polygon2D
-		lantern_ray_timing_tick_b = tick_b
-
-	lantern_ray_timing_timer = fposmod(lantern_ray_timing_timer + delta, LANTERN_RAY_TIMING_PERIOD_SECONDS)
-	var lane_alpha := RouteTimingCuePresenterScript.lantern_ray_timing_lane_alpha(lantern_ray_timing_timer, LANTERN_RAY_TIMING_PERIOD_SECONDS)
-	var lower_alpha := maxf(0.06, lane_alpha - 0.04)
-	var tick_alpha := lane_alpha + 0.06
-	if upper != null:
-		upper.color = Color(0.9, 0.82, 1.0, lane_alpha)
-	if lower != null:
-		lower.color = Color(0.9, 0.82, 1.0, lower_alpha)
-	if tick_a != null:
-		tick_a.color = Color(0.98, 0.94, 1.0, tick_alpha)
-	if tick_b != null:
-		tick_b.color = Color(0.98, 0.94, 1.0, maxf(0.1, tick_alpha - 0.04))
+	RouteTimingCueServiceScript.update_lantern_ray_timing_lane(self, delta)
 
 func _update_hollow_reef_timing_current(delta: float) -> void:
-	var upper := hollow_reef_timing_ribbon_upper
-	if upper == null:
-		upper = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingRibbonUpper") as Polygon2D
-		hollow_reef_timing_ribbon_upper = upper
-	var lower := hollow_reef_timing_ribbon_lower
-	if lower == null:
-		lower = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingRibbonLower") as Polygon2D
-		hollow_reef_timing_ribbon_lower = lower
-	var tick_a := hollow_reef_timing_tick_a
-	if tick_a == null:
-		tick_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingTickA") as Polygon2D
-		hollow_reef_timing_tick_a = tick_a
-	var tick_b := hollow_reef_timing_tick_b
-	if tick_b == null:
-		tick_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/TimingCurrentCue/TimingTickB") as Polygon2D
-		hollow_reef_timing_tick_b = tick_b
-
-	hollow_reef_timing_timer = fposmod(hollow_reef_timing_timer + delta, HOLLOW_REEF_TIMING_PERIOD_SECONDS)
-	var cue_alpha := RouteTimingCuePresenterScript.hollow_reef_timing_current_alpha(hollow_reef_timing_timer, HOLLOW_REEF_TIMING_PERIOD_SECONDS)
-	if upper != null:
-		upper.color = Color(0.86, 0.78, 1.0, cue_alpha)
-	if lower != null:
-		lower.color = Color(0.86, 0.78, 1.0, maxf(0.06, cue_alpha - 0.035))
-	if tick_a != null:
-		tick_a.color = Color(0.98, 0.94, 1.0, cue_alpha + 0.05)
-	if tick_b != null:
-		tick_b.color = Color(0.98, 0.94, 1.0, maxf(0.1, cue_alpha + 0.02))
+	RouteTimingCueServiceScript.update_hollow_reef_timing_current(self, delta)
 
 func _update_glassfin_swarm_spacing_cue(delta: float) -> void:
-	var wake := glassfin_swarm_spacing_wake
-	if wake == null:
-		wake = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingWake") as Polygon2D
-		glassfin_swarm_spacing_wake = wake
-	var window := glassfin_swarm_spacing_window
-	if window == null:
-		window = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingWindowPulse") as Polygon2D
-		glassfin_swarm_spacing_window = window
-	var tick_a := glassfin_swarm_spacing_tick_a
-	if tick_a == null:
-		tick_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingTickA") as Polygon2D
-		glassfin_swarm_spacing_tick_a = tick_a
-	var tick_b := glassfin_swarm_spacing_tick_b
-	if tick_b == null:
-		tick_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/GlassfinSwarm/SpacingTickB") as Polygon2D
-		glassfin_swarm_spacing_tick_b = tick_b
-
-	glassfin_swarm_spacing_timer = fposmod(glassfin_swarm_spacing_timer + delta, GLASSFIN_SWARM_SPACING_PERIOD_SECONDS)
-	var cue_alpha := RouteTimingCuePresenterScript.glassfin_swarm_spacing_alpha(glassfin_swarm_spacing_timer, GLASSFIN_SWARM_SPACING_PERIOD_SECONDS)
-	if wake != null:
-		wake.color = Color(0.72, 0.86, 1.0, cue_alpha)
-	if window != null:
-		window.color = Color(0.72, 0.74, 1.0, minf(0.18, cue_alpha + 0.025))
-	if tick_a != null:
-		tick_a.color = Color(0.9, 0.92, 1.0, minf(0.24, cue_alpha + 0.08))
-	if tick_b != null:
-		tick_b.color = Color(0.9, 0.92, 1.0, minf(0.2, cue_alpha + 0.05))
+	RouteTimingCueServiceScript.update_glassfin_swarm_spacing_cue(self, delta)
 
 func _update_salvage_silt_timing_cue(delta: float) -> void:
-	var wake := salvage_silt_wake
-	if wake == null:
-		wake = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SiltTimingWake") as Polygon2D
-		salvage_silt_wake = wake
-	var window := salvage_silt_window
-	if window == null:
-		window = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SiltTimingWindow") as Polygon2D
-		salvage_silt_window = window
-	var tick_a := salvage_silt_tick_a
-	if tick_a == null:
-		tick_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SiltTimingTickA") as Polygon2D
-		salvage_silt_tick_a = tick_a
-	var tick_b := salvage_silt_tick_b
-	if tick_b == null:
-		tick_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SiltTimingTickB") as Polygon2D
-		salvage_silt_tick_b = tick_b
-
-	salvage_silt_timing_timer = fposmod(salvage_silt_timing_timer + delta, SALVAGE_SILT_TIMING_PERIOD_SECONDS)
-	var cue_alpha := RouteTimingCuePresenterScript.salvage_silt_timing_alpha(salvage_silt_timing_timer, SALVAGE_SILT_TIMING_PERIOD_SECONDS)
-	if wake != null:
-		wake.color = Color(0.74, 0.68, 1.0, cue_alpha)
-	if window != null:
-		window.color = Color(0.92, 0.82, 1.0, minf(0.16, cue_alpha + 0.035))
-	if tick_a != null:
-		tick_a.color = Color(0.98, 0.9, 1.0, minf(0.22, cue_alpha + 0.075))
-	if tick_b != null:
-		tick_b.color = Color(0.98, 0.9, 1.0, minf(0.19, cue_alpha + 0.045))
+	RouteTimingCueServiceScript.update_salvage_silt_timing_cue(self, delta)
 
 func _update_outer_shelf_slackwater_timing_cue(delta: float) -> void:
-	var wake := outer_shelf_slackwater_wake
-	if wake == null:
-		wake = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterTimingWake") as Polygon2D
-		outer_shelf_slackwater_wake = wake
-	var window := outer_shelf_slackwater_window
-	if window == null:
-		window = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterWindow") as Polygon2D
-		outer_shelf_slackwater_window = window
-	var tick_a := outer_shelf_slackwater_tick_a
-	if tick_a == null:
-		tick_a = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterTickA") as Polygon2D
-		outer_shelf_slackwater_tick_a = tick_a
-	var tick_b := outer_shelf_slackwater_tick_b
-	if tick_b == null:
-		tick_b = get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/GlassRimCutBranch/SlackwaterTickB") as Polygon2D
-		outer_shelf_slackwater_tick_b = tick_b
-
-	outer_shelf_slackwater_timer = fposmod(outer_shelf_slackwater_timer + delta, OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
-	var cue_alpha := RouteTimingCuePresenterScript.outer_shelf_slackwater_alpha(outer_shelf_slackwater_timer, OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
-	var window_ratio := RouteTimingCuePresenterScript.outer_shelf_slackwater_window_ratio(outer_shelf_slackwater_timer, OUTER_SHELF_SLACKWATER_PERIOD_SECONDS)
-	var tick_a_alpha := 0.09 + window_ratio * 0.13
-	var tick_b_alpha := 0.22 - window_ratio * 0.08
-	if wake != null:
-		wake.color = Color(0.7, 0.67 + window_ratio * 0.08, 1.0, cue_alpha)
-	if window != null:
-		window.color = Color(0.9 + window_ratio * 0.08, 0.68 + window_ratio * 0.04, 1.0, minf(0.2, cue_alpha + 0.05))
-	if tick_a != null:
-		tick_a.color = Color(1.0, 0.84, 0.98, tick_a_alpha)
-	if tick_b != null:
-		tick_b.color = Color(0.9, 0.78, 1.0, tick_b_alpha)
+	RouteTimingCueServiceScript.update_outer_shelf_slackwater_timing_cue(self, delta)
 
 func _outer_shelf_slackwater_decision_state(timer_seconds: float) -> String:
 	return RouteTimingCuePresenterScript.outer_shelf_slackwater_decision_state(
