@@ -196,7 +196,7 @@ static func player_on_screen(host, player_state: Dictionary) -> bool:
 	if not player_rendered(player_state):
 		return false
 
-	var viewport_size := host.get_viewport_rect().size
+	var viewport_size: Vector2 = host.get_viewport_rect().size
 	var screen_position := Vector2(
 		float(player_state.get("screen_x", -99999.0)),
 		float(player_state.get("screen_y", -99999.0))
@@ -209,7 +209,7 @@ static func player_state(host) -> Dictionary:
 
 	var visual_root := host.player.get_node_or_null("VisualRoot") as CanvasItem
 	var sprite := host.player.get_node_or_null("VisualRoot/SubSpriteAnchor/SubSprite") as Sprite2D
-	var screen_position := host._scan_reticle_screen_position(host.player.global_position)
+	var screen_position: Vector2 = host._scan_reticle_screen_position(host.player.global_position)
 	var player_canvas := host.player as CanvasItem
 	var sprite_region := Rect2()
 	var sprite_alpha := 0.0
@@ -239,7 +239,7 @@ static func player_state(host) -> Dictionary:
 	}
 
 static func area01_camera_region(host) -> Rect2:
-	var visible_rect := host.get_viewport_rect()
-	var top_left = host.get_canvas_transform().affine_inverse() * visible_rect.position
-	var bottom_right = host.get_canvas_transform().affine_inverse() * visible_rect.end
+	var visible_rect: Rect2 = host.get_viewport_rect()
+	var top_left: Vector2 = host.get_canvas_transform().affine_inverse() * visible_rect.position
+	var bottom_right: Vector2 = host.get_canvas_transform().affine_inverse() * visible_rect.end
 	return Rect2(top_left, bottom_right - top_left).abs()
