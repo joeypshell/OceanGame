@@ -56,6 +56,29 @@ function rasterizeSolids(source, runtime) {
   return raster;
 }
 
+function rasterizeRects(source, entries, label) {
+  const raster = Array.from({ length: source.height }, () => Array(source.width).fill(false));
+  for (const entry of entries) {
+    const cells = entry.source_cells;
+    if (!Array.isArray(cells) || cells.length !== 4) {
+      fail(`${entry.id ?? label} must preserve source_cells [x,y,width,height]`);
+    }
+    const [x0, y0, width, height] = cells;
+    if (![x0, y0, width, height].every(Number.isInteger) || width <= 0 || height <= 0) {
+      fail(`${entry.id ?? label} source_cells must use positive integer dimensions`);
+    }
+    for (let y = y0; y < y0 + height; y += 1) {
+      for (let x = x0; x < x0 + width; x += 1) {
+        if (!raster[y] || raster[y][x] === undefined) {
+          fail(`${entry.id ?? label} source_cells extends outside the source grid`);
+        }
+        raster[y][x] = true;
+      }
+    }
+  }
+  return raster;
+}
+
 function rectCellsForHook(hook) {
   return hook.source_cells ?? null;
 }
@@ -101,6 +124,8 @@ if (runtime.validation_contract?.screenshots_are_confirmation_only !== true) {
 
 assertArray(source.rows, "source grid rows must be an array");
 assertArray(runtime.solid_terrain, "solid_terrain must be an array");
+assertArray(runtime.source_grid_water_cutouts, "source_grid_water_cutouts must be an array");
+assertArray(runtime.source_grid_water_edges, "source_grid_water_edges must be an array");
 assertArray(runtime.playable_water_regions, "playable_water_regions must be an array");
 assertArray(runtime.scene_hooks, "scene_hooks must be an array");
 assertArray(runtime.review_points, "review_points must be an array");
@@ -112,6 +137,46 @@ for (let y = 0; y < source.height; y += 1) {
     if (raster[y][x] !== expectedSolid) {
       fail(`generated solid terrain does not match source grid at ${x},${y}`);
     }
+  }
+}
+
+const firstTerrainRow = source.rows.findIndex((row) => [...row].some((cell) => cell !== "~"));
+const waterCutoutRaster = rasterizeRects(source, runtime.source_grid_water_cutouts, "source_grid_water_cutout");
+for (let y = 0; y < source.height; y += 1) {
+  for (let x = 0; x < source.width; x += 1) {
+    const expectedCutout = y >= firstTerrainRow && isPlayable(source, x, y);
+    if (waterCutoutRaster[y][x] !== expectedCutout) {
+      fail(`generated visible water cutout coverage does not match source grid at ${x},${y}`);
+    }
+  }
+}
+
+for (const cutout of runtime.source_grid_water_cutouts) {
+  assertArray(cutout.polygon, `${cutout.id} polygon must be an array`);
+  if (cutout.polygon.length < 3 || !cutout.polygon.every(isPoint)) {
+    fail(`${cutout.id} polygon must contain numeric points`);
+  }
+  if (cutout.runtime_generation?.visual_role !== "source_grid_water_cutout") {
+    fail(`${cutout.id} must be source_grid_water_cutout`);
+  }
+  if (cutout.runtime_generation?.sprites_define_collision !== false) {
+    fail(`${cutout.id} sprites must not define collision`);
+  }
+}
+
+for (const edge of runtime.source_grid_water_edges) {
+  assertArray(edge.points, `${edge.id} points must be an array`);
+  if (edge.points.length !== 2 || !edge.points.every(isPoint)) {
+    fail(`${edge.id} must contain two numeric edge points`);
+  }
+  if (!["top", "bottom", "left", "right"].includes(edge.solid_side)) {
+    fail(`${edge.id} must preserve the solid side for visual trim offset`);
+  }
+  if (edge.runtime_generation?.visual_role !== "source_grid_water_boundary_edge") {
+    fail(`${edge.id} must be source_grid_water_boundary_edge`);
+  }
+  if (edge.runtime_generation?.sprites_define_collision !== false) {
+    fail(`${edge.id} sprites must not define collision`);
   }
 }
 
@@ -209,5 +274,5 @@ for (const point of runtime.review_points) {
 }
 
 console.log(
-  `PASS Area 01 generated runtime geometry validation: ${runtime.solid_terrain.length} solid partitions, ${runtime.playable_water_regions.length} playable regions, ${runtime.scene_hooks.length} hooks, ${runtime.review_points.length} review points.`,
+  `PASS Area 01 generated runtime geometry validation: ${runtime.solid_terrain.length} solid partitions, ${runtime.source_grid_water_cutouts.length} water cutouts, ${runtime.source_grid_water_edges.length} water edges, ${runtime.playable_water_regions.length} playable regions, ${runtime.scene_hooks.length} hooks, ${runtime.review_points.length} review points.`,
 );

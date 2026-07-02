@@ -17,7 +17,9 @@ Reduce `scripts/main.gd` into smaller, well-named modules with stable responsibi
 
 ## Current Findings
 
-`scripts/main.gd` is currently about 4,804 lines. It is the vertical-slice scene script, but it has grown beyond scene composition into many mixed responsibilities:
+Checkpoint: `scripts/main.gd` has been reduced to a thin shell under the 500-line guardrail by splitting inherited scene context into `scripts/main_scene_context.gd`, residual scene orchestration into `scripts/main_scene_controller.gd`, and focused services for ready wiring, run preparation, lifecycle flow, survival/night orchestration, active-dive tool actions, route interaction/proximity, input, frame processing, scan action/runtime, scene events, surface oxygen/mobile controls, daylight, expedition slate, upgrade purchase/effects, route setup, HUD updates, and controller state helpers. `main_scene_controller.gd` is also now under 500 lines and should remain a transitional orchestration layer rather than a new dumping ground.
+
+Before this checkpoint, `scripts/main.gd` was about 4,804 lines. It was the vertical-slice scene script, but it had grown beyond scene composition into many mixed responsibilities:
 
 - Scene wiring and node references for nearly every authored route, pickup, marker, HUD panel, and debug staging node.
 - Expedition lifecycle orchestration: start, extract, fail, restart, prepare next run, resolve night, reset local save.
@@ -86,7 +88,11 @@ The target should be practical for a Godot 4.7 prototype and should evolve throu
 ```text
 scenes/Main.tscn
   scripts/main.gd
-    scene composition, signal wiring, high-level orchestration
+    thin Godot scene script shell
+  scripts/main_scene_context.gd
+    inherited scene node references, exported tuning, constants, run fields
+  scripts/main_scene_controller.gd
+    residual scene orchestration to keep shrinking into focused services
 
 scripts/state/
   existing RefCounted state may stay in scripts/ until a later broad cleanup
@@ -410,6 +416,8 @@ Follow-up notes: Keep visual helpers presentation-only.
 Summary: Move survival supply extraction routing and night report orchestration into a controller while leaving `SurvivalState` as the rules owner.
 
 Player-visible outcome: Survival supplies, night reports, oxygen penalties, collapse, and stabilization behave the same.
+
+Status: Implemented as `scripts/services/survival_controller_service.gd` for survival supply banking, night resolution, health-recovery night handling, and Power Patch night-build coordination. `DiveLifecycleService` still sequences the overall extraction/failure flow and delegates survival-specific rules.
 
 Scope: Extract `_bank_extracted_survival_supplies`, `_resolve_night_after_result`, and survival-result coordination after result formatting has moved.
 

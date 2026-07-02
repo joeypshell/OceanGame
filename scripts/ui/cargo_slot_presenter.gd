@@ -1,13 +1,13 @@
 class_name CargoSlotPresenter
 extends RefCounted
 
-static func cargo_slot_states(resource_ids: Array[String], capacity: int, visible_slots := 4) -> Array[String]:
+static func cargo_slot_states(resource_ids: Array, capacity: int, visible_slots := 4) -> Array[String]:
 	var states: Array[String] = []
 	for index in range(visible_slots):
 		if index >= capacity:
 			states.append("hidden")
 		elif index < resource_ids.size():
-			states.append(resource_ids[index])
+			states.append(String(resource_ids[index]))
 		else:
 			states.append("empty")
 

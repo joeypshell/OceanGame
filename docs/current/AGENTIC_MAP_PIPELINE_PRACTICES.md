@@ -372,9 +372,24 @@ Example shape:
 {
   "schema_version": 1,
   "generated_from": "data/maps/area_01_source_grid_v1.json",
-  "map_id": "area_01",
+  "map_id": "area_01_runtime_geometry_generated",
   "cell_size": 64,
   "stage_bounds": [0, 0, 5248, 2688],
+  "source_grid_water_cutouts": [
+    {
+      "id": "generated_grid_water_cutout_001",
+      "source_cells": [8, 5, 6, 2],
+      "polygon": [[512, 320], [896, 320], [896, 448], [512, 448]]
+    }
+  ],
+  "source_grid_water_edges": [
+    {
+      "id": "generated_grid_water_edge_001",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [[512, 320], [512, 448]]
+    }
+  ],
   "playable_water_regions": [
     {
       "id": "component_001",
@@ -425,6 +440,7 @@ The Godot builder should only:
 - create visible terrain,
 - create collision,
 - create rim/lip/edge read,
+- render source-grid water-cell apertures and water/solid boundary art from generated geometry,
 - create hook `Area2D` nodes,
 - optionally create debug overlays.
 

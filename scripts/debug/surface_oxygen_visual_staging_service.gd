@@ -6,6 +6,8 @@ const SurfaceStatusPresenterScript := preload("res://scripts/ui/surface_status_p
 const PLAYER_PATH := "Player"
 
 static func stage_visual_review(host) -> void:
+	if host.has_method("_ensure_active_hud_references"):
+		host._ensure_active_hud_references()
 	if host.dive_session.result == host.DiveSessionScript.Result.READY:
 		host.dive_session.start()
 	if host.dive_session.result != host.DiveSessionScript.Result.DIVING:

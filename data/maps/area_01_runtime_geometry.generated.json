@@ -5,7 +5,7 @@
   "source": "data/maps/area_01_source_grid_v1.json",
   "generated_from": "data/maps/area_01_source_grid_v1.json",
   "generated_by": "tools/build-area01-map.mjs",
-  "source_sha256": "88799e7b18a77cb41e04523806d06a5ee3956bfc3d996d6683141fa812b22ba9",
+  "source_sha256": "86c75c732674ff68737971827765d4c39132bd85ddba0126e318078d7831c3c1",
   "cell_size": 64,
   "stage_bounds": [
     0,
@@ -59,7 +59,7 @@
   "playable_water_components": [
     {
       "id": "water_component_001",
-      "cell_count": 1252,
+      "cell_count": 1381,
       "bounds_cells": [
         0,
         0,
@@ -73,6 +73,5200 @@
         2240
       ],
       "touches_surface": true
+    }
+  ],
+  "source_grid_water_cutouts": [
+    {
+      "id": "generated_grid_water_cutout_001",
+      "source_cells": [
+        9,
+        5,
+        6,
+        10
+      ],
+      "polygon": [
+        [
+          576,
+          320
+        ],
+        [
+          960,
+          320
+        ],
+        [
+          960,
+          960
+        ],
+        [
+          576,
+          960
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout001WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_002",
+      "source_cells": [
+        32,
+        5,
+        6,
+        3
+      ],
+      "polygon": [
+        [
+          2048,
+          320
+        ],
+        [
+          2432,
+          320
+        ],
+        [
+          2432,
+          512
+        ],
+        [
+          2048,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout002WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_003",
+      "source_cells": [
+        46,
+        5,
+        5,
+        3
+      ],
+      "polygon": [
+        [
+          2944,
+          320
+        ],
+        [
+          3264,
+          320
+        ],
+        [
+          3264,
+          512
+        ],
+        [
+          2944,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout003WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_004",
+      "source_cells": [
+        15,
+        6,
+        1,
+        11
+      ],
+      "polygon": [
+        [
+          960,
+          384
+        ],
+        [
+          1024,
+          384
+        ],
+        [
+          1024,
+          1088
+        ],
+        [
+          960,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout004WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_005",
+      "source_cells": [
+        38,
+        6,
+        1,
+        2
+      ],
+      "polygon": [
+        [
+          2432,
+          384
+        ],
+        [
+          2496,
+          384
+        ],
+        [
+          2496,
+          512
+        ],
+        [
+          2432,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout005WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_006",
+      "source_cells": [
+        51,
+        6,
+        1,
+        2
+      ],
+      "polygon": [
+        [
+          3264,
+          384
+        ],
+        [
+          3328,
+          384
+        ],
+        [
+          3328,
+          512
+        ],
+        [
+          3264,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout006WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_007",
+      "source_cells": [
+        8,
+        7,
+        1,
+        7
+      ],
+      "polygon": [
+        [
+          512,
+          448
+        ],
+        [
+          576,
+          448
+        ],
+        [
+          576,
+          896
+        ],
+        [
+          512,
+          896
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout007WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_008",
+      "source_cells": [
+        16,
+        7,
+        1,
+        10
+      ],
+      "polygon": [
+        [
+          1024,
+          448
+        ],
+        [
+          1088,
+          448
+        ],
+        [
+          1088,
+          1088
+        ],
+        [
+          1024,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout008WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_009",
+      "source_cells": [
+        31,
+        7,
+        1,
+        25
+      ],
+      "polygon": [
+        [
+          1984,
+          448
+        ],
+        [
+          2048,
+          448
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          1984,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout009WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_010",
+      "source_cells": [
+        52,
+        7,
+        1,
+        1
+      ],
+      "polygon": [
+        [
+          3328,
+          448
+        ],
+        [
+          3392,
+          448
+        ],
+        [
+          3392,
+          512
+        ],
+        [
+          3328,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout010WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_011",
+      "source_cells": [
+        7,
+        8,
+        1,
+        5
+      ],
+      "polygon": [
+        [
+          448,
+          512
+        ],
+        [
+          512,
+          512
+        ],
+        [
+          512,
+          832
+        ],
+        [
+          448,
+          832
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout011WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_012",
+      "source_cells": [
+        17,
+        8,
+        1,
+        10
+      ],
+      "polygon": [
+        [
+          1088,
+          512
+        ],
+        [
+          1152,
+          512
+        ],
+        [
+          1152,
+          1152
+        ],
+        [
+          1088,
+          1152
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout012WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_013",
+      "source_cells": [
+        23,
+        8,
+        8,
+        10
+      ],
+      "polygon": [
+        [
+          1472,
+          512
+        ],
+        [
+          1984,
+          512
+        ],
+        [
+          1984,
+          1152
+        ],
+        [
+          1472,
+          1152
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout013WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_014",
+      "source_cells": [
+        32,
+        8,
+        3,
+        24
+      ],
+      "polygon": [
+        [
+          2048,
+          512
+        ],
+        [
+          2240,
+          512
+        ],
+        [
+          2240,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout014WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_015",
+      "source_cells": [
+        40,
+        8,
+        8,
+        1
+      ],
+      "polygon": [
+        [
+          2560,
+          512
+        ],
+        [
+          3072,
+          512
+        ],
+        [
+          3072,
+          576
+        ],
+        [
+          2560,
+          576
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout015WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_016",
+      "source_cells": [
+        18,
+        9,
+        1,
+        9
+      ],
+      "polygon": [
+        [
+          1152,
+          576
+        ],
+        [
+          1216,
+          576
+        ],
+        [
+          1216,
+          1152
+        ],
+        [
+          1152,
+          1152
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout016WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_017",
+      "source_cells": [
+        35,
+        9,
+        2,
+        23
+      ],
+      "polygon": [
+        [
+          2240,
+          576
+        ],
+        [
+          2368,
+          576
+        ],
+        [
+          2368,
+          2048
+        ],
+        [
+          2240,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout017WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_018",
+      "source_cells": [
+        41,
+        9,
+        18,
+        1
+      ],
+      "polygon": [
+        [
+          2624,
+          576
+        ],
+        [
+          3776,
+          576
+        ],
+        [
+          3776,
+          640
+        ],
+        [
+          2624,
+          640
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout018WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_019",
+      "source_cells": [
+        19,
+        10,
+        4,
+        8
+      ],
+      "polygon": [
+        [
+          1216,
+          640
+        ],
+        [
+          1472,
+          640
+        ],
+        [
+          1472,
+          1152
+        ],
+        [
+          1216,
+          1152
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout019WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_020",
+      "source_cells": [
+        37,
+        10,
+        1,
+        22
+      ],
+      "polygon": [
+        [
+          2368,
+          640
+        ],
+        [
+          2432,
+          640
+        ],
+        [
+          2432,
+          2048
+        ],
+        [
+          2368,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout020WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_021",
+      "source_cells": [
+        42,
+        10,
+        18,
+        2
+      ],
+      "polygon": [
+        [
+          2688,
+          640
+        ],
+        [
+          3840,
+          640
+        ],
+        [
+          3840,
+          768
+        ],
+        [
+          2688,
+          768
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout021WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_022",
+      "source_cells": [
+        38,
+        11,
+        1,
+        21
+      ],
+      "polygon": [
+        [
+          2432,
+          704
+        ],
+        [
+          2496,
+          704
+        ],
+        [
+          2496,
+          2048
+        ],
+        [
+          2432,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout022WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_023",
+      "source_cells": [
+        60,
+        11,
+        2,
+        10
+      ],
+      "polygon": [
+        [
+          3840,
+          704
+        ],
+        [
+          3968,
+          704
+        ],
+        [
+          3968,
+          1344
+        ],
+        [
+          3840,
+          1344
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout023WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_024",
+      "source_cells": [
+        39,
+        12,
+        2,
+        1
+      ],
+      "polygon": [
+        [
+          2496,
+          768
+        ],
+        [
+          2624,
+          768
+        ],
+        [
+          2624,
+          832
+        ],
+        [
+          2496,
+          832
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout024WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_025",
+      "source_cells": [
+        43,
+        12,
+        17,
+        4
+      ],
+      "polygon": [
+        [
+          2752,
+          768
+        ],
+        [
+          3840,
+          768
+        ],
+        [
+          3840,
+          1024
+        ],
+        [
+          2752,
+          1024
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout025WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_026",
+      "source_cells": [
+        42,
+        13,
+        1,
+        20
+      ],
+      "polygon": [
+        [
+          2688,
+          832
+        ],
+        [
+          2752,
+          832
+        ],
+        [
+          2752,
+          2112
+        ],
+        [
+          2688,
+          2112
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout026WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_027",
+      "source_cells": [
+        41,
+        14,
+        1,
+        19
+      ],
+      "polygon": [
+        [
+          2624,
+          896
+        ],
+        [
+          2688,
+          896
+        ],
+        [
+          2688,
+          2112
+        ],
+        [
+          2624,
+          2112
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout027WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_028",
+      "source_cells": [
+        11,
+        15,
+        4,
+        1
+      ],
+      "polygon": [
+        [
+          704,
+          960
+        ],
+        [
+          960,
+          960
+        ],
+        [
+          960,
+          1024
+        ],
+        [
+          704,
+          1024
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout028WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_029",
+      "source_cells": [
+        14,
+        16,
+        1,
+        1
+      ],
+      "polygon": [
+        [
+          896,
+          1024
+        ],
+        [
+          960,
+          1024
+        ],
+        [
+          960,
+          1088
+        ],
+        [
+          896,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout029WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_030",
+      "source_cells": [
+        39,
+        16,
+        2,
+        17
+      ],
+      "polygon": [
+        [
+          2496,
+          1024
+        ],
+        [
+          2624,
+          1024
+        ],
+        [
+          2624,
+          2112
+        ],
+        [
+          2496,
+          2112
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout030WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_031",
+      "source_cells": [
+        43,
+        16,
+        5,
+        6
+      ],
+      "polygon": [
+        [
+          2752,
+          1024
+        ],
+        [
+          3072,
+          1024
+        ],
+        [
+          3072,
+          1408
+        ],
+        [
+          2752,
+          1408
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout031WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_032",
+      "source_cells": [
+        51,
+        16,
+        9,
+        1
+      ],
+      "polygon": [
+        [
+          3264,
+          1024
+        ],
+        [
+          3840,
+          1024
+        ],
+        [
+          3840,
+          1088
+        ],
+        [
+          3264,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout032WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_033",
+      "source_cells": [
+        48,
+        17,
+        1,
+        3
+      ],
+      "polygon": [
+        [
+          3072,
+          1088
+        ],
+        [
+          3136,
+          1088
+        ],
+        [
+          3136,
+          1280
+        ],
+        [
+          3072,
+          1280
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout033WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_034",
+      "source_cells": [
+        52,
+        17,
+        8,
+        2
+      ],
+      "polygon": [
+        [
+          3328,
+          1088
+        ],
+        [
+          3840,
+          1088
+        ],
+        [
+          3840,
+          1216
+        ],
+        [
+          3328,
+          1216
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout034WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_035",
+      "source_cells": [
+        24,
+        18,
+        7,
+        1
+      ],
+      "polygon": [
+        [
+          1536,
+          1152
+        ],
+        [
+          1984,
+          1152
+        ],
+        [
+          1984,
+          1216
+        ],
+        [
+          1536,
+          1216
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout035WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_036",
+      "source_cells": [
+        26,
+        19,
+        5,
+        13
+      ],
+      "polygon": [
+        [
+          1664,
+          1216
+        ],
+        [
+          1984,
+          1216
+        ],
+        [
+          1984,
+          2048
+        ],
+        [
+          1664,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout036WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_037",
+      "source_cells": [
+        53,
+        19,
+        7,
+        1
+      ],
+      "polygon": [
+        [
+          3392,
+          1216
+        ],
+        [
+          3840,
+          1216
+        ],
+        [
+          3840,
+          1280
+        ],
+        [
+          3392,
+          1280
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout037WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_038",
+      "source_cells": [
+        54,
+        20,
+        6,
+        1
+      ],
+      "polygon": [
+        [
+          3456,
+          1280
+        ],
+        [
+          3840,
+          1280
+        ],
+        [
+          3840,
+          1344
+        ],
+        [
+          3456,
+          1344
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout038WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_039",
+      "source_cells": [
+        24,
+        21,
+        2,
+        11
+      ],
+      "polygon": [
+        [
+          1536,
+          1344
+        ],
+        [
+          1664,
+          1344
+        ],
+        [
+          1664,
+          2048
+        ],
+        [
+          1536,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout039WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_040",
+      "source_cells": [
+        43,
+        22,
+        4,
+        2
+      ],
+      "polygon": [
+        [
+          2752,
+          1408
+        ],
+        [
+          3008,
+          1408
+        ],
+        [
+          3008,
+          1536
+        ],
+        [
+          2752,
+          1536
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout040WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_041",
+      "source_cells": [
+        23,
+        23,
+        1,
+        9
+      ],
+      "polygon": [
+        [
+          1472,
+          1472
+        ],
+        [
+          1536,
+          1472
+        ],
+        [
+          1536,
+          2048
+        ],
+        [
+          1472,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout041WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_042",
+      "source_cells": [
+        43,
+        24,
+        3,
+        9
+      ],
+      "polygon": [
+        [
+          2752,
+          1536
+        ],
+        [
+          2944,
+          1536
+        ],
+        [
+          2944,
+          2112
+        ],
+        [
+          2752,
+          2112
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout042WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_043",
+      "source_cells": [
+        52,
+        24,
+        12,
+        4
+      ],
+      "polygon": [
+        [
+          3328,
+          1536
+        ],
+        [
+          4096,
+          1536
+        ],
+        [
+          4096,
+          1792
+        ],
+        [
+          3328,
+          1792
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout043WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_044",
+      "source_cells": [
+        21,
+        25,
+        2,
+        6
+      ],
+      "polygon": [
+        [
+          1344,
+          1600
+        ],
+        [
+          1472,
+          1600
+        ],
+        [
+          1472,
+          1984
+        ],
+        [
+          1344,
+          1984
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout044WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_045",
+      "source_cells": [
+        51,
+        25,
+        1,
+        8
+      ],
+      "polygon": [
+        [
+          3264,
+          1600
+        ],
+        [
+          3328,
+          1600
+        ],
+        [
+          3328,
+          2112
+        ],
+        [
+          3264,
+          2112
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout045WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_046",
+      "source_cells": [
+        20,
+        26,
+        1,
+        4
+      ],
+      "polygon": [
+        [
+          1280,
+          1664
+        ],
+        [
+          1344,
+          1664
+        ],
+        [
+          1344,
+          1920
+        ],
+        [
+          1280,
+          1920
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout046WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_047",
+      "source_cells": [
+        46,
+        26,
+        1,
+        7
+      ],
+      "polygon": [
+        [
+          2944,
+          1664
+        ],
+        [
+          3008,
+          1664
+        ],
+        [
+          3008,
+          2112
+        ],
+        [
+          2944,
+          2112
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout047WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_048",
+      "source_cells": [
+        47,
+        27,
+        4,
+        6
+      ],
+      "polygon": [
+        [
+          3008,
+          1728
+        ],
+        [
+          3264,
+          1728
+        ],
+        [
+          3264,
+          2112
+        ],
+        [
+          3008,
+          2112
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout048WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_049",
+      "source_cells": [
+        52,
+        28,
+        10,
+        1
+      ],
+      "polygon": [
+        [
+          3328,
+          1792
+        ],
+        [
+          3968,
+          1792
+        ],
+        [
+          3968,
+          1856
+        ],
+        [
+          3328,
+          1856
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout049WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_050",
+      "source_cells": [
+        52,
+        29,
+        9,
+        4
+      ],
+      "polygon": [
+        [
+          3328,
+          1856
+        ],
+        [
+          3904,
+          1856
+        ],
+        [
+          3904,
+          2112
+        ],
+        [
+          3328,
+          2112
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout050WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_051",
+      "source_cells": [
+        22,
+        31,
+        1,
+        1
+      ],
+      "polygon": [
+        [
+          1408,
+          1984
+        ],
+        [
+          1472,
+          1984
+        ],
+        [
+          1472,
+          2048
+        ],
+        [
+          1408,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout051WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_052",
+      "source_cells": [
+        61,
+        31,
+        3,
+        4
+      ],
+      "polygon": [
+        [
+          3904,
+          1984
+        ],
+        [
+          4096,
+          1984
+        ],
+        [
+          4096,
+          2240
+        ],
+        [
+          3904,
+          2240
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout052WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_053",
+      "source_cells": [
+        54,
+        33,
+        7,
+        1
+      ],
+      "polygon": [
+        [
+          3456,
+          2112
+        ],
+        [
+          3904,
+          2112
+        ],
+        [
+          3904,
+          2176
+        ],
+        [
+          3456,
+          2176
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout053WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_cutout_054",
+      "source_cells": [
+        56,
+        34,
+        5,
+        1
+      ],
+      "polygon": [
+        [
+          3584,
+          2176
+        ],
+        [
+          3904,
+          2176
+        ],
+        [
+          3904,
+          2240
+        ],
+        [
+          3584,
+          2240
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_cutout",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "visible_polygon2d_name": "GeneratedGridWaterCutout054WaterCutout",
+        "visual_points_source": "this polygon",
+        "sprites_define_collision": false
+      }
+    }
+  ],
+  "source_grid_water_edges": [
+    {
+      "id": "generated_grid_water_edge_001",
+      "source_line": 5,
+      "source_range": [
+        0,
+        9
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          0,
+          320
+        ],
+        [
+          576,
+          320
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_002",
+      "source_line": 5,
+      "source_range": [
+        15,
+        32
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          960,
+          320
+        ],
+        [
+          2048,
+          320
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_003",
+      "source_line": 5,
+      "source_range": [
+        38,
+        46
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          2432,
+          320
+        ],
+        [
+          2944,
+          320
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_004",
+      "source_line": 5,
+      "source_range": [
+        51,
+        64
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          3264,
+          320
+        ],
+        [
+          4096,
+          320
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_005",
+      "source_line": 9,
+      "source_range": [
+        5,
+        7
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          576,
+          320
+        ],
+        [
+          576,
+          448
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_006",
+      "source_line": 9,
+      "source_range": [
+        14,
+        15
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          576,
+          896
+        ],
+        [
+          576,
+          960
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_007",
+      "source_line": 15,
+      "source_range": [
+        5,
+        6
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          960,
+          320
+        ],
+        [
+          960,
+          384
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_008",
+      "source_line": 32,
+      "source_range": [
+        5,
+        7
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2048,
+          320
+        ],
+        [
+          2048,
+          448
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_009",
+      "source_line": 38,
+      "source_range": [
+        5,
+        6
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2432,
+          320
+        ],
+        [
+          2432,
+          384
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_010",
+      "source_line": 38,
+      "source_range": [
+        10,
+        11
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2432,
+          640
+        ],
+        [
+          2432,
+          704
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_011",
+      "source_line": 46,
+      "source_range": [
+        5,
+        8
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2944,
+          320
+        ],
+        [
+          2944,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_012",
+      "source_line": 51,
+      "source_range": [
+        5,
+        6
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3264,
+          320
+        ],
+        [
+          3264,
+          384
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_013",
+      "source_line": 6,
+      "source_range": [
+        15,
+        16
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          960,
+          384
+        ],
+        [
+          1024,
+          384
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_014",
+      "source_line": 6,
+      "source_range": [
+        38,
+        39
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          2432,
+          384
+        ],
+        [
+          2496,
+          384
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_015",
+      "source_line": 6,
+      "source_range": [
+        51,
+        52
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          3264,
+          384
+        ],
+        [
+          3328,
+          384
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_016",
+      "source_line": 16,
+      "source_range": [
+        6,
+        7
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1024,
+          384
+        ],
+        [
+          1024,
+          448
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_017",
+      "source_line": 39,
+      "source_range": [
+        6,
+        8
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2496,
+          384
+        ],
+        [
+          2496,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_018",
+      "source_line": 39,
+      "source_range": [
+        11,
+        12
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2496,
+          704
+        ],
+        [
+          2496,
+          768
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_019",
+      "source_line": 39,
+      "source_range": [
+        13,
+        16
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2496,
+          832
+        ],
+        [
+          2496,
+          1024
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_020",
+      "source_line": 52,
+      "source_range": [
+        6,
+        7
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3328,
+          384
+        ],
+        [
+          3328,
+          448
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_021",
+      "source_line": 7,
+      "source_range": [
+        8,
+        9
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          512,
+          448
+        ],
+        [
+          576,
+          448
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_022",
+      "source_line": 7,
+      "source_range": [
+        16,
+        17
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          1024,
+          448
+        ],
+        [
+          1088,
+          448
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_023",
+      "source_line": 7,
+      "source_range": [
+        31,
+        32
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          1984,
+          448
+        ],
+        [
+          2048,
+          448
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_024",
+      "source_line": 7,
+      "source_range": [
+        52,
+        53
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          3328,
+          448
+        ],
+        [
+          3392,
+          448
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_025",
+      "source_line": 8,
+      "source_range": [
+        7,
+        8
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          512,
+          448
+        ],
+        [
+          512,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_026",
+      "source_line": 8,
+      "source_range": [
+        13,
+        14
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          512,
+          832
+        ],
+        [
+          512,
+          896
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_027",
+      "source_line": 17,
+      "source_range": [
+        7,
+        8
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1088,
+          448
+        ],
+        [
+          1088,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_028",
+      "source_line": 31,
+      "source_range": [
+        7,
+        8
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1984,
+          448
+        ],
+        [
+          1984,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_029",
+      "source_line": 8,
+      "source_range": [
+        35,
+        39
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          2240,
+          512
+        ],
+        [
+          2496,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_030",
+      "source_line": 8,
+      "source_range": [
+        48,
+        53
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          3072,
+          512
+        ],
+        [
+          3392,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_031",
+      "source_line": 53,
+      "source_range": [
+        7,
+        8
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3392,
+          448
+        ],
+        [
+          3392,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_032",
+      "source_line": 8,
+      "source_range": [
+        7,
+        8
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          448,
+          512
+        ],
+        [
+          512,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_033",
+      "source_line": 8,
+      "source_range": [
+        17,
+        18
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          1088,
+          512
+        ],
+        [
+          1152,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_034",
+      "source_line": 8,
+      "source_range": [
+        23,
+        31
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          1472,
+          512
+        ],
+        [
+          1984,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_035",
+      "source_line": 8,
+      "source_range": [
+        40,
+        46
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          2560,
+          512
+        ],
+        [
+          2944,
+          512
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_036",
+      "source_line": 7,
+      "source_range": [
+        8,
+        13
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          448,
+          512
+        ],
+        [
+          448,
+          832
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_037",
+      "source_line": 18,
+      "source_range": [
+        8,
+        9
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1152,
+          512
+        ],
+        [
+          1152,
+          576
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_038",
+      "source_line": 23,
+      "source_range": [
+        8,
+        10
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1472,
+          512
+        ],
+        [
+          1472,
+          640
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_039",
+      "source_line": 23,
+      "source_range": [
+        23,
+        25
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1472,
+          1472
+        ],
+        [
+          1472,
+          1600
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_040",
+      "source_line": 35,
+      "source_range": [
+        8,
+        9
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2240,
+          512
+        ],
+        [
+          2240,
+          576
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_041",
+      "source_line": 9,
+      "source_range": [
+        40,
+        41
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          2560,
+          576
+        ],
+        [
+          2624,
+          576
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_042",
+      "source_line": 40,
+      "source_range": [
+        8,
+        9
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2560,
+          512
+        ],
+        [
+          2560,
+          576
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_043",
+      "source_line": 48,
+      "source_range": [
+        8,
+        9
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3072,
+          512
+        ],
+        [
+          3072,
+          576
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_044",
+      "source_line": 48,
+      "source_range": [
+        16,
+        17
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3072,
+          1024
+        ],
+        [
+          3072,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_045",
+      "source_line": 48,
+      "source_range": [
+        20,
+        22
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3072,
+          1280
+        ],
+        [
+          3072,
+          1408
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_046",
+      "source_line": 9,
+      "source_range": [
+        18,
+        19
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          1152,
+          576
+        ],
+        [
+          1216,
+          576
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_047",
+      "source_line": 9,
+      "source_range": [
+        35,
+        37
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          2240,
+          576
+        ],
+        [
+          2368,
+          576
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_048",
+      "source_line": 9,
+      "source_range": [
+        48,
+        59
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          3072,
+          576
+        ],
+        [
+          3776,
+          576
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_049",
+      "source_line": 19,
+      "source_range": [
+        9,
+        10
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1216,
+          576
+        ],
+        [
+          1216,
+          640
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_050",
+      "source_line": 37,
+      "source_range": [
+        9,
+        10
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2368,
+          576
+        ],
+        [
+          2368,
+          640
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_051",
+      "source_line": 10,
+      "source_range": [
+        41,
+        42
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          2624,
+          640
+        ],
+        [
+          2688,
+          640
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_052",
+      "source_line": 41,
+      "source_range": [
+        9,
+        10
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2624,
+          576
+        ],
+        [
+          2624,
+          640
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_053",
+      "source_line": 41,
+      "source_range": [
+        14,
+        16
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2624,
+          896
+        ],
+        [
+          2624,
+          1024
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_054",
+      "source_line": 59,
+      "source_range": [
+        9,
+        10
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3776,
+          576
+        ],
+        [
+          3776,
+          640
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_055",
+      "source_line": 10,
+      "source_range": [
+        19,
+        23
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          1216,
+          640
+        ],
+        [
+          1472,
+          640
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_056",
+      "source_line": 10,
+      "source_range": [
+        37,
+        38
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          2368,
+          640
+        ],
+        [
+          2432,
+          640
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_057",
+      "source_line": 10,
+      "source_range": [
+        59,
+        60
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          3776,
+          640
+        ],
+        [
+          3840,
+          640
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_058",
+      "source_line": 42,
+      "source_range": [
+        10,
+        12
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2688,
+          640
+        ],
+        [
+          2688,
+          768
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_059",
+      "source_line": 42,
+      "source_range": [
+        13,
+        14
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2688,
+          832
+        ],
+        [
+          2688,
+          896
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_060",
+      "source_line": 60,
+      "source_range": [
+        10,
+        11
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3840,
+          640
+        ],
+        [
+          3840,
+          704
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_061",
+      "source_line": 11,
+      "source_range": [
+        38,
+        39
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          2432,
+          704
+        ],
+        [
+          2496,
+          704
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_062",
+      "source_line": 11,
+      "source_range": [
+        60,
+        62
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          3840,
+          704
+        ],
+        [
+          3968,
+          704
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_063",
+      "source_line": 12,
+      "source_range": [
+        42,
+        43
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          2688,
+          768
+        ],
+        [
+          2752,
+          768
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_064",
+      "source_line": 62,
+      "source_range": [
+        11,
+        21
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3968,
+          704
+        ],
+        [
+          3968,
+          1344
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_065",
+      "source_line": 62,
+      "source_range": [
+        28,
+        29
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3968,
+          1792
+        ],
+        [
+          3968,
+          1856
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_066",
+      "source_line": 13,
+      "source_range": [
+        7,
+        8
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          448,
+          832
+        ],
+        [
+          512,
+          832
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_067",
+      "source_line": 13,
+      "source_range": [
+        39,
+        41
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          2496,
+          832
+        ],
+        [
+          2624,
+          832
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_068",
+      "source_line": 12,
+      "source_range": [
+        39,
+        41
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          2496,
+          768
+        ],
+        [
+          2624,
+          768
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_069",
+      "source_line": 41,
+      "source_range": [
+        12,
+        13
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2624,
+          768
+        ],
+        [
+          2624,
+          832
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_070",
+      "source_line": 43,
+      "source_range": [
+        12,
+        13
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2752,
+          768
+        ],
+        [
+          2752,
+          832
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_071",
+      "source_line": 14,
+      "source_range": [
+        8,
+        9
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          512,
+          896
+        ],
+        [
+          576,
+          896
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_072",
+      "source_line": 13,
+      "source_range": [
+        42,
+        43
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          2688,
+          832
+        ],
+        [
+          2752,
+          832
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_073",
+      "source_line": 15,
+      "source_range": [
+        9,
+        11
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          576,
+          960
+        ],
+        [
+          704,
+          960
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_074",
+      "source_line": 14,
+      "source_range": [
+        41,
+        42
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          2624,
+          896
+        ],
+        [
+          2688,
+          896
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_075",
+      "source_line": 16,
+      "source_range": [
+        11,
+        14
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          704,
+          1024
+        ],
+        [
+          896,
+          1024
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_076",
+      "source_line": 16,
+      "source_range": [
+        48,
+        51
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          3072,
+          1024
+        ],
+        [
+          3264,
+          1024
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_077",
+      "source_line": 11,
+      "source_range": [
+        15,
+        16
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          704,
+          960
+        ],
+        [
+          704,
+          1024
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_078",
+      "source_line": 17,
+      "source_range": [
+        14,
+        17
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          896,
+          1088
+        ],
+        [
+          1088,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_079",
+      "source_line": 17,
+      "source_range": [
+        51,
+        52
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          3264,
+          1088
+        ],
+        [
+          3328,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_080",
+      "source_line": 14,
+      "source_range": [
+        16,
+        17
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          896,
+          1024
+        ],
+        [
+          896,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_081",
+      "source_line": 16,
+      "source_range": [
+        39,
+        41
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          2496,
+          1024
+        ],
+        [
+          2624,
+          1024
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_082",
+      "source_line": 51,
+      "source_range": [
+        16,
+        17
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3264,
+          1024
+        ],
+        [
+          3264,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_083",
+      "source_line": 51,
+      "source_range": [
+        25,
+        27
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3264,
+          1600
+        ],
+        [
+          3264,
+          1728
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_084",
+      "source_line": 18,
+      "source_range": [
+        17,
+        24
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          1088,
+          1152
+        ],
+        [
+          1536,
+          1152
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_085",
+      "source_line": 17,
+      "source_range": [
+        17,
+        18
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1088,
+          1088
+        ],
+        [
+          1088,
+          1152
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_086",
+      "source_line": 17,
+      "source_range": [
+        48,
+        49
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          3072,
+          1088
+        ],
+        [
+          3136,
+          1088
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_087",
+      "source_line": 49,
+      "source_range": [
+        17,
+        20
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3136,
+          1088
+        ],
+        [
+          3136,
+          1280
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_088",
+      "source_line": 52,
+      "source_range": [
+        17,
+        19
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3328,
+          1088
+        ],
+        [
+          3328,
+          1216
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_089",
+      "source_line": 52,
+      "source_range": [
+        24,
+        25
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3328,
+          1536
+        ],
+        [
+          3328,
+          1600
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_090",
+      "source_line": 19,
+      "source_range": [
+        24,
+        26
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          1536,
+          1216
+        ],
+        [
+          1664,
+          1216
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_091",
+      "source_line": 19,
+      "source_range": [
+        52,
+        53
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          3328,
+          1216
+        ],
+        [
+          3392,
+          1216
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_092",
+      "source_line": 24,
+      "source_range": [
+        18,
+        19
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1536,
+          1152
+        ],
+        [
+          1536,
+          1216
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_093",
+      "source_line": 24,
+      "source_range": [
+        21,
+        23
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1536,
+          1344
+        ],
+        [
+          1536,
+          1472
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_094",
+      "source_line": 26,
+      "source_range": [
+        19,
+        21
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1664,
+          1216
+        ],
+        [
+          1664,
+          1344
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_095",
+      "source_line": 20,
+      "source_range": [
+        48,
+        49
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          3072,
+          1280
+        ],
+        [
+          3136,
+          1280
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_096",
+      "source_line": 20,
+      "source_range": [
+        53,
+        54
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          3392,
+          1280
+        ],
+        [
+          3456,
+          1280
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_097",
+      "source_line": 53,
+      "source_range": [
+        19,
+        20
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3392,
+          1216
+        ],
+        [
+          3392,
+          1280
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_098",
+      "source_line": 21,
+      "source_range": [
+        54,
+        62
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "top_lip",
+      "points": [
+        [
+          3456,
+          1344
+        ],
+        [
+          3968,
+          1344
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_099",
+      "source_line": 54,
+      "source_range": [
+        20,
+        21
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3456,
+          1280
+        ],
+        [
+          3456,
+          1344
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_100",
+      "source_line": 54,
+      "source_range": [
+        33,
+        34
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3456,
+          2112
+        ],
+        [
+          3456,
+          2176
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_101",
+      "source_line": 21,
+      "source_range": [
+        24,
+        26
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          1536,
+          1344
+        ],
+        [
+          1664,
+          1344
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_102",
+      "source_line": 22,
+      "source_range": [
+        47,
+        48
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "deep_floor_lip",
+      "points": [
+        [
+          3008,
+          1408
+        ],
+        [
+          3072,
+          1408
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_103",
+      "source_line": 47,
+      "source_range": [
+        22,
+        24
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3008,
+          1408
+        ],
+        [
+          3008,
+          1536
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_104",
+      "source_line": 47,
+      "source_range": [
+        26,
+        27
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3008,
+          1664
+        ],
+        [
+          3008,
+          1728
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_105",
+      "source_line": 23,
+      "source_range": [
+        23,
+        24
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          1472,
+          1472
+        ],
+        [
+          1536,
+          1472
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_106",
+      "source_line": 24,
+      "source_range": [
+        46,
+        47
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "deep_floor_lip",
+      "points": [
+        [
+          2944,
+          1536
+        ],
+        [
+          3008,
+          1536
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_107",
+      "source_line": 46,
+      "source_range": [
+        24,
+        26
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2944,
+          1536
+        ],
+        [
+          2944,
+          1664
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_108",
+      "source_line": 24,
+      "source_range": [
+        52,
+        64
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          3328,
+          1536
+        ],
+        [
+          4096,
+          1536
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_109",
+      "source_line": 25,
+      "source_range": [
+        21,
+        23
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          1344,
+          1600
+        ],
+        [
+          1472,
+          1600
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_110",
+      "source_line": 25,
+      "source_range": [
+        51,
+        52
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          3264,
+          1600
+        ],
+        [
+          3328,
+          1600
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_111",
+      "source_line": 21,
+      "source_range": [
+        25,
+        26
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1344,
+          1600
+        ],
+        [
+          1344,
+          1664
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_112",
+      "source_line": 21,
+      "source_range": [
+        30,
+        31
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1344,
+          1920
+        ],
+        [
+          1344,
+          1984
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_113",
+      "source_line": 26,
+      "source_range": [
+        20,
+        21
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          1280,
+          1664
+        ],
+        [
+          1344,
+          1664
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_114",
+      "source_line": 26,
+      "source_range": [
+        46,
+        47
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          2944,
+          1664
+        ],
+        [
+          3008,
+          1664
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_115",
+      "source_line": 20,
+      "source_range": [
+        26,
+        30
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1280,
+          1664
+        ],
+        [
+          1280,
+          1920
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_116",
+      "source_line": 27,
+      "source_range": [
+        47,
+        51
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          3008,
+          1728
+        ],
+        [
+          3264,
+          1728
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_117",
+      "source_line": 28,
+      "source_range": [
+        62,
+        64
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "deep_floor_lip",
+      "points": [
+        [
+          3968,
+          1792
+        ],
+        [
+          4096,
+          1792
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_118",
+      "source_line": 29,
+      "source_range": [
+        61,
+        62
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "deep_floor_lip",
+      "points": [
+        [
+          3904,
+          1856
+        ],
+        [
+          3968,
+          1856
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_119",
+      "source_line": 30,
+      "source_range": [
+        20,
+        21
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "deep_floor_lip",
+      "points": [
+        [
+          1280,
+          1920
+        ],
+        [
+          1344,
+          1920
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_120",
+      "source_line": 61,
+      "source_range": [
+        29,
+        31
+      ],
+      "orientation": "vertical",
+      "solid_side": "right",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3904,
+          1856
+        ],
+        [
+          3904,
+          1984
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_121",
+      "source_line": 31,
+      "source_range": [
+        21,
+        22
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "deep_floor_lip",
+      "points": [
+        [
+          1344,
+          1984
+        ],
+        [
+          1408,
+          1984
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_122",
+      "source_line": 32,
+      "source_range": [
+        22,
+        39
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "deep_floor_lip",
+      "points": [
+        [
+          1408,
+          2048
+        ],
+        [
+          2496,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_123",
+      "source_line": 22,
+      "source_range": [
+        31,
+        32
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          1408,
+          1984
+        ],
+        [
+          1408,
+          2048
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_124",
+      "source_line": 31,
+      "source_range": [
+        61,
+        64
+      ],
+      "orientation": "horizontal",
+      "solid_side": "top",
+      "trim_type": "underside",
+      "points": [
+        [
+          3904,
+          1984
+        ],
+        [
+          4096,
+          1984
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_125",
+      "source_line": 33,
+      "source_range": [
+        39,
+        54
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "deep_floor_lip",
+      "points": [
+        [
+          2496,
+          2112
+        ],
+        [
+          3456,
+          2112
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_126",
+      "source_line": 39,
+      "source_range": [
+        32,
+        33
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          2496,
+          2048
+        ],
+        [
+          2496,
+          2112
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_127",
+      "source_line": 34,
+      "source_range": [
+        54,
+        56
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "deep_floor_lip",
+      "points": [
+        [
+          3456,
+          2176
+        ],
+        [
+          3584,
+          2176
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_128",
+      "source_line": 35,
+      "source_range": [
+        56,
+        64
+      ],
+      "orientation": "horizontal",
+      "solid_side": "bottom",
+      "trim_type": "deep_floor_lip",
+      "points": [
+        [
+          3584,
+          2240
+        ],
+        [
+          4096,
+          2240
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
+    },
+    {
+      "id": "generated_grid_water_edge_129",
+      "source_line": 56,
+      "source_range": [
+        34,
+        35
+      ],
+      "orientation": "vertical",
+      "solid_side": "left",
+      "trim_type": "vertical_wall",
+      "points": [
+        [
+          3584,
+          2176
+        ],
+        [
+          3584,
+          2240
+        ]
+      ],
+      "runtime_generation": {
+        "visual_role": "source_grid_water_boundary_edge",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false
+      }
     }
   ],
   "playable_water_regions": [
@@ -135,7 +5329,7 @@
         10
       ],
       "source_component_id": "water_component_001",
-      "cell_count": 87,
+      "cell_count": 96,
       "polygon": [
         [
           448,
@@ -178,7 +5372,7 @@
         12
       ],
       "source_component_id": "water_component_001",
-      "cell_count": 192,
+      "cell_count": 196,
       "polygon": [
         [
           896,
@@ -264,7 +5458,7 @@
         27
       ],
       "source_component_id": "water_component_001",
-      "cell_count": 244,
+      "cell_count": 246,
       "polygon": [
         [
           1280,
@@ -307,7 +5501,7 @@
         12
       ],
       "source_component_id": "water_component_001",
-      "cell_count": 171,
+      "cell_count": 183,
       "polygon": [
         [
           2752,
@@ -350,7 +5544,7 @@
         31
       ],
       "source_component_id": "water_component_001",
-      "cell_count": 195,
+      "cell_count": 202,
       "polygon": [
         [
           2624,
@@ -384,8 +5578,8 @@
       "source_cells": [
         0,
         5,
-        10,
-        3
+        9,
+        2
       ],
       "polygon": [
         [
@@ -393,16 +5587,16 @@
           320
         ],
         [
-          640,
+          576,
           320
         ],
         [
-          640,
-          512
+          576,
+          448
         ],
         [
           0,
-          512
+          448
         ]
       ],
       "blocks_player": true,
@@ -412,8 +5606,8 @@
         "source_cells": [
           0,
           5,
-          10,
-          3
+          9,
+          2
         ]
       },
       "runtime_generation": {
@@ -432,27 +5626,27 @@
     {
       "id": "generated_grid_solid_002",
       "source_cells": [
-        14,
+        15,
         5,
-        19,
-        3
+        17,
+        1
       ],
       "polygon": [
         [
-          896,
+          960,
           320
         ],
         [
-          2112,
+          2048,
           320
         ],
         [
-          2112,
-          512
+          2048,
+          384
         ],
         [
-          896,
-          512
+          960,
+          384
         ]
       ],
       "blocks_player": true,
@@ -460,10 +5654,10 @@
         "algorithm": "source_grid_solid_cells_greedy_rect_partition",
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
-          14,
+          15,
           5,
-          19,
-          3
+          17,
+          1
         ]
       },
       "runtime_generation": {
@@ -482,14 +5676,14 @@
     {
       "id": "generated_grid_solid_003",
       "source_cells": [
-        37,
+        38,
         5,
-        9,
-        4
+        8,
+        1
       ],
       "polygon": [
         [
-          2368,
+          2432,
           320
         ],
         [
@@ -498,11 +5692,11 @@
         ],
         [
           2944,
-          576
+          384
         ],
         [
-          2368,
-          576
+          2432,
+          384
         ]
       ],
       "blocks_player": true,
@@ -510,10 +5704,10 @@
         "algorithm": "source_grid_solid_cells_greedy_rect_partition",
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
-          37,
+          38,
           5,
-          9,
-          4
+          8,
+          1
         ]
       },
       "runtime_generation": {
@@ -532,14 +5726,14 @@
     {
       "id": "generated_grid_solid_004",
       "source_cells": [
-        50,
+        51,
         5,
-        14,
-        4
+        13,
+        1
       ],
       "polygon": [
         [
-          3200,
+          3264,
           320
         ],
         [
@@ -548,11 +5742,11 @@
         ],
         [
           4096,
-          576
+          384
         ],
         [
-          3200,
-          576
+          3264,
+          384
         ]
       ],
       "blocks_player": true,
@@ -560,10 +5754,10 @@
         "algorithm": "source_grid_solid_cells_greedy_rect_partition",
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
-          50,
+          51,
           5,
-          14,
-          4
+          13,
+          1
         ]
       },
       "runtime_generation": {
@@ -581,6 +5775,306 @@
     },
     {
       "id": "generated_grid_solid_005",
+      "source_cells": [
+        16,
+        6,
+        16,
+        1
+      ],
+      "polygon": [
+        [
+          1024,
+          384
+        ],
+        [
+          2048,
+          384
+        ],
+        [
+          2048,
+          448
+        ],
+        [
+          1024,
+          448
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          16,
+          6,
+          16,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid005Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid005Collision",
+        "rim_container_name": "GeneratedGridSolid005Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_006",
+      "source_cells": [
+        39,
+        6,
+        7,
+        2
+      ],
+      "polygon": [
+        [
+          2496,
+          384
+        ],
+        [
+          2944,
+          384
+        ],
+        [
+          2944,
+          512
+        ],
+        [
+          2496,
+          512
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          39,
+          6,
+          7,
+          2
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid006Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid006Collision",
+        "rim_container_name": "GeneratedGridSolid006Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_007",
+      "source_cells": [
+        52,
+        6,
+        12,
+        1
+      ],
+      "polygon": [
+        [
+          3328,
+          384
+        ],
+        [
+          4096,
+          384
+        ],
+        [
+          4096,
+          448
+        ],
+        [
+          3328,
+          448
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          52,
+          6,
+          12,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid007Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid007Collision",
+        "rim_container_name": "GeneratedGridSolid007Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_008",
+      "source_cells": [
+        0,
+        7,
+        8,
+        1
+      ],
+      "polygon": [
+        [
+          0,
+          448
+        ],
+        [
+          512,
+          448
+        ],
+        [
+          512,
+          512
+        ],
+        [
+          0,
+          512
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          0,
+          7,
+          8,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid008Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid008Collision",
+        "rim_container_name": "GeneratedGridSolid008Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_009",
+      "source_cells": [
+        17,
+        7,
+        14,
+        1
+      ],
+      "polygon": [
+        [
+          1088,
+          448
+        ],
+        [
+          1984,
+          448
+        ],
+        [
+          1984,
+          512
+        ],
+        [
+          1088,
+          512
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          17,
+          7,
+          14,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid009Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid009Collision",
+        "rim_container_name": "GeneratedGridSolid009Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_010",
+      "source_cells": [
+        53,
+        7,
+        11,
+        2
+      ],
+      "polygon": [
+        [
+          3392,
+          448
+        ],
+        [
+          4096,
+          448
+        ],
+        [
+          4096,
+          576
+        ],
+        [
+          3392,
+          576
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          53,
+          7,
+          11,
+          2
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid010Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid010Collision",
+        "rim_container_name": "GeneratedGridSolid010Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_011",
       "source_cells": [
         0,
         8,
@@ -620,22 +6114,22 @@
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid005Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid011Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid005Collision",
-        "rim_container_name": "GeneratedGridSolid005Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid011Collision",
+        "rim_container_name": "GeneratedGridSolid011Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_006",
+      "id": "generated_grid_solid_012",
       "source_cells": [
         18,
         8,
-        2,
-        2
+        5,
+        1
       ],
       "polygon": [
         [
@@ -643,16 +6137,16 @@
           512
         ],
         [
-          1280,
+          1472,
           512
         ],
         [
-          1280,
-          640
+          1472,
+          576
         ],
         [
           1152,
-          640
+          576
         ]
       ],
       "blocks_player": true,
@@ -662,46 +6156,146 @@
         "source_cells": [
           18,
           8,
-          2,
-          2
+          5,
+          1
         ]
       },
       "runtime_generation": {
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid006Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid012Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid006Collision",
-        "rim_container_name": "GeneratedGridSolid006Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid012Collision",
+        "rim_container_name": "GeneratedGridSolid012Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_007",
+      "id": "generated_grid_solid_013",
       "source_cells": [
-        31,
+        35,
         8,
-        2,
-        2
+        5,
+        1
       ],
       "polygon": [
         [
-          1984,
+          2240,
           512
         ],
         [
-          2112,
+          2560,
           512
         ],
         [
-          2112,
+          2560,
+          576
+        ],
+        [
+          2240,
+          576
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          35,
+          8,
+          5,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid013Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid013Collision",
+        "rim_container_name": "GeneratedGridSolid013Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_014",
+      "source_cells": [
+        48,
+        8,
+        5,
+        1
+      ],
+      "polygon": [
+        [
+          3072,
+          512
+        ],
+        [
+          3392,
+          512
+        ],
+        [
+          3392,
+          576
+        ],
+        [
+          3072,
+          576
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          48,
+          8,
+          5,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid014Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid014Collision",
+        "rim_container_name": "GeneratedGridSolid014Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_015",
+      "source_cells": [
+        19,
+        9,
+        4,
+        1
+      ],
+      "polygon": [
+        [
+          1216,
+          576
+        ],
+        [
+          1472,
+          576
+        ],
+        [
+          1472,
           640
         ],
         [
-          1984,
+          1216,
           640
         ]
       ],
@@ -710,32 +6304,32 @@
         "algorithm": "source_grid_solid_cells_greedy_rect_partition",
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
-          31,
-          8,
-          2,
-          2
+          19,
+          9,
+          4,
+          1
         ]
       },
       "runtime_generation": {
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid007Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid015Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid007Collision",
-        "rim_container_name": "GeneratedGridSolid007Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid015Collision",
+        "rim_container_name": "GeneratedGridSolid015Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_008",
+      "id": "generated_grid_solid_016",
       "source_cells": [
         37,
         9,
-        6,
-        4
+        4,
+        1
       ],
       "polygon": [
         [
@@ -743,16 +6337,16 @@
           576
         ],
         [
-          2752,
+          2624,
           576
         ],
         [
-          2752,
-          832
+          2624,
+          640
         ],
         [
           2368,
-          832
+          640
         ]
       ],
       "blocks_player": true,
@@ -762,30 +6356,30 @@
         "source_cells": [
           37,
           9,
-          6,
-          4
+          4,
+          1
         ]
       },
       "runtime_generation": {
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid008Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid016Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid008Collision",
-        "rim_container_name": "GeneratedGridSolid008Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid016Collision",
+        "rim_container_name": "GeneratedGridSolid016Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_009",
+      "id": "generated_grid_solid_017",
       "source_cells": [
         59,
         9,
         5,
-        3
+        1
       ],
       "polygon": [
         [
@@ -798,11 +6392,11 @@
         ],
         [
           4096,
-          768
+          640
         ],
         [
           3776,
-          768
+          640
         ]
       ],
       "blocks_player": true,
@@ -813,38 +6407,188 @@
           59,
           9,
           5,
-          3
+          1
         ]
       },
       "runtime_generation": {
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid009Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid017Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid009Collision",
-        "rim_container_name": "GeneratedGridSolid009Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid017Collision",
+        "rim_container_name": "GeneratedGridSolid017Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_010",
+      "id": "generated_grid_solid_018",
+      "source_cells": [
+        38,
+        10,
+        4,
+        1
+      ],
+      "polygon": [
+        [
+          2432,
+          640
+        ],
+        [
+          2688,
+          640
+        ],
+        [
+          2688,
+          704
+        ],
+        [
+          2432,
+          704
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          38,
+          10,
+          4,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid018Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid018Collision",
+        "rim_container_name": "GeneratedGridSolid018Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_019",
+      "source_cells": [
+        60,
+        10,
+        4,
+        1
+      ],
+      "polygon": [
+        [
+          3840,
+          640
+        ],
+        [
+          4096,
+          640
+        ],
+        [
+          4096,
+          704
+        ],
+        [
+          3840,
+          704
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          60,
+          10,
+          4,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid019Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid019Collision",
+        "rim_container_name": "GeneratedGridSolid019Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_020",
+      "source_cells": [
+        39,
+        11,
+        3,
+        1
+      ],
+      "polygon": [
+        [
+          2496,
+          704
+        ],
+        [
+          2688,
+          704
+        ],
+        [
+          2688,
+          768
+        ],
+        [
+          2496,
+          768
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          39,
+          11,
+          3,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid020Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid020Collision",
+        "rim_container_name": "GeneratedGridSolid020Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_021",
       "source_cells": [
         62,
-        12,
+        11,
         2,
-        12
+        13
       ],
       "polygon": [
         [
           3968,
-          768
+          704
         ],
         [
           4096,
-          768
+          704
         ],
         [
           4096,
@@ -861,26 +6605,76 @@
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
           62,
-          12,
+          11,
           2,
-          12
+          13
         ]
       },
       "runtime_generation": {
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid010Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid021Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid010Collision",
-        "rim_container_name": "GeneratedGridSolid010Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid021Collision",
+        "rim_container_name": "GeneratedGridSolid021Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_011",
+      "id": "generated_grid_solid_022",
+      "source_cells": [
+        41,
+        12,
+        2,
+        1
+      ],
+      "polygon": [
+        [
+          2624,
+          768
+        ],
+        [
+          2752,
+          768
+        ],
+        [
+          2752,
+          832
+        ],
+        [
+          2624,
+          832
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          41,
+          12,
+          2,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid022Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid022Collision",
+        "rim_container_name": "GeneratedGridSolid022Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_023",
       "source_cells": [
         7,
         13,
@@ -920,38 +6714,38 @@
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid011Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid023Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid011Collision",
-        "rim_container_name": "GeneratedGridSolid011Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid023Collision",
+        "rim_container_name": "GeneratedGridSolid023Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_012",
+      "id": "generated_grid_solid_024",
       "source_cells": [
-        37,
+        39,
         13,
-        4,
+        3,
         1
       ],
       "polygon": [
         [
-          2368,
+          2496,
           832
         ],
         [
-          2624,
+          2688,
           832
         ],
         [
-          2624,
+          2688,
           896
         ],
         [
-          2368,
+          2496,
           896
         ]
       ],
@@ -960,9 +6754,9 @@
         "algorithm": "source_grid_solid_cells_greedy_rect_partition",
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
-          37,
+          39,
           13,
-          4,
+          3,
           1
         ]
       },
@@ -970,34 +6764,34 @@
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid012Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid024Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid012Collision",
-        "rim_container_name": "GeneratedGridSolid012Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid024Collision",
+        "rim_container_name": "GeneratedGridSolid024Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_013",
+      "id": "generated_grid_solid_025",
       "source_cells": [
         8,
-        15,
-        6,
-        21
+        14,
+        1,
+        22
       ],
       "polygon": [
         [
           512,
-          960
+          896
         ],
         [
-          896,
-          960
+          576,
+          896
         ],
         [
-          896,
+          576,
           2304
         ],
         [
@@ -1011,8 +6805,108 @@
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
           8,
+          14,
+          1,
+          22
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid025Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid025Collision",
+        "rim_container_name": "GeneratedGridSolid025Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_026",
+      "source_cells": [
+        39,
+        14,
+        2,
+        2
+      ],
+      "polygon": [
+        [
+          2496,
+          896
+        ],
+        [
+          2624,
+          896
+        ],
+        [
+          2624,
+          1024
+        ],
+        [
+          2496,
+          1024
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          39,
+          14,
+          2,
+          2
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid026Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid026Collision",
+        "rim_container_name": "GeneratedGridSolid026Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_027",
+      "source_cells": [
+        9,
+        15,
+        2,
+        21
+      ],
+      "polygon": [
+        [
+          576,
+          960
+        ],
+        [
+          704,
+          960
+        ],
+        [
+          704,
+          2304
+        ],
+        [
+          576,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          9,
           15,
-          6,
+          2,
           21
         ]
       },
@@ -1020,31 +6914,381 @@
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid013Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid027Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid013Collision",
-        "rim_container_name": "GeneratedGridSolid013Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid027Collision",
+        "rim_container_name": "GeneratedGridSolid027Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_014",
+      "id": "generated_grid_solid_028",
+      "source_cells": [
+        11,
+        16,
+        3,
+        20
+      ],
+      "polygon": [
+        [
+          704,
+          1024
+        ],
+        [
+          896,
+          1024
+        ],
+        [
+          896,
+          2304
+        ],
+        [
+          704,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          11,
+          16,
+          3,
+          20
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid028Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid028Collision",
+        "rim_container_name": "GeneratedGridSolid028Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_029",
       "source_cells": [
         48,
-        15,
-        1,
-        12
+        16,
+        3,
+        1
       ],
       "polygon": [
         [
           3072,
-          960
+          1024
+        ],
+        [
+          3264,
+          1024
+        ],
+        [
+          3264,
+          1088
+        ],
+        [
+          3072,
+          1088
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          48,
+          16,
+          3,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid029Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid029Collision",
+        "rim_container_name": "GeneratedGridSolid029Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_030",
+      "source_cells": [
+        14,
+        17,
+        3,
+        19
+      ],
+      "polygon": [
+        [
+          896,
+          1088
+        ],
+        [
+          1088,
+          1088
+        ],
+        [
+          1088,
+          2304
+        ],
+        [
+          896,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          14,
+          17,
+          3,
+          19
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid030Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid030Collision",
+        "rim_container_name": "GeneratedGridSolid030Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_031",
+      "source_cells": [
+        49,
+        17,
+        3,
+        8
+      ],
+      "polygon": [
+        [
+          3136,
+          1088
+        ],
+        [
+          3328,
+          1088
+        ],
+        [
+          3328,
+          1600
         ],
         [
           3136,
-          960
+          1600
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          49,
+          17,
+          3,
+          8
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid031Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid031Collision",
+        "rim_container_name": "GeneratedGridSolid031Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_032",
+      "source_cells": [
+        17,
+        18,
+        7,
+        5
+      ],
+      "polygon": [
+        [
+          1088,
+          1152
+        ],
+        [
+          1536,
+          1152
+        ],
+        [
+          1536,
+          1472
+        ],
+        [
+          1088,
+          1472
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          17,
+          18,
+          7,
+          5
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid032Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid032Collision",
+        "rim_container_name": "GeneratedGridSolid032Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_033",
+      "source_cells": [
+        24,
+        19,
+        2,
+        2
+      ],
+      "polygon": [
+        [
+          1536,
+          1216
+        ],
+        [
+          1664,
+          1216
+        ],
+        [
+          1664,
+          1344
+        ],
+        [
+          1536,
+          1344
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          24,
+          19,
+          2,
+          2
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid033Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid033Collision",
+        "rim_container_name": "GeneratedGridSolid033Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_034",
+      "source_cells": [
+        52,
+        19,
+        1,
+        5
+      ],
+      "polygon": [
+        [
+          3328,
+          1216
+        ],
+        [
+          3392,
+          1216
+        ],
+        [
+          3392,
+          1536
+        ],
+        [
+          3328,
+          1536
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          52,
+          19,
+          1,
+          5
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid034Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid034Collision",
+        "rim_container_name": "GeneratedGridSolid034Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_035",
+      "source_cells": [
+        48,
+        20,
+        1,
+        7
+      ],
+      "polygon": [
+        [
+          3072,
+          1280
+        ],
+        [
+          3136,
+          1280
         ],
         [
           3136,
@@ -1061,48 +7305,48 @@
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
           48,
-          15,
+          20,
           1,
-          12
+          7
         ]
       },
       "runtime_generation": {
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid014Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid035Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid014Collision",
-        "rim_container_name": "GeneratedGridSolid014Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid035Collision",
+        "rim_container_name": "GeneratedGridSolid035Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_015",
+      "id": "generated_grid_solid_036",
       "source_cells": [
-        22,
-        16,
-        7,
-        5
+        53,
+        20,
+        1,
+        4
       ],
       "polygon": [
         [
-          1408,
-          1024
+          3392,
+          1280
         ],
         [
-          1856,
-          1024
+          3456,
+          1280
         ],
         [
-          1856,
-          1344
+          3456,
+          1536
         ],
         [
-          1408,
-          1344
+          3392,
+          1536
         ]
       ],
       "blocks_player": true,
@@ -1110,9 +7354,109 @@
         "algorithm": "source_grid_solid_cells_greedy_rect_partition",
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
+          53,
+          20,
+          1,
+          4
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid036Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid036Collision",
+        "rim_container_name": "GeneratedGridSolid036Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_037",
+      "source_cells": [
+        54,
+        21,
+        8,
+        3
+      ],
+      "polygon": [
+        [
+          3456,
+          1344
+        ],
+        [
+          3968,
+          1344
+        ],
+        [
+          3968,
+          1536
+        ],
+        [
+          3456,
+          1536
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          54,
+          21,
+          8,
+          3
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid037Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid037Collision",
+        "rim_container_name": "GeneratedGridSolid037Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_038",
+      "source_cells": [
+        47,
+        22,
+        1,
+        5
+      ],
+      "polygon": [
+        [
+          3008,
+          1408
+        ],
+        [
+          3072,
+          1408
+        ],
+        [
+          3072,
+          1728
+        ],
+        [
+          3008,
+          1728
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          47,
           22,
-          16,
-          7,
+          1,
           5
         ]
       },
@@ -1120,39 +7464,89 @@
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid015Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid038Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid015Collision",
-        "rim_container_name": "GeneratedGridSolid015Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid038Collision",
+        "rim_container_name": "GeneratedGridSolid038Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_016",
+      "id": "generated_grid_solid_039",
+      "source_cells": [
+        17,
+        23,
+        6,
+        2
+      ],
+      "polygon": [
+        [
+          1088,
+          1472
+        ],
+        [
+          1472,
+          1472
+        ],
+        [
+          1472,
+          1600
+        ],
+        [
+          1088,
+          1600
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          17,
+          23,
+          6,
+          2
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid039Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid039Collision",
+        "rim_container_name": "GeneratedGridSolid039Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_040",
       "source_cells": [
         46,
-        16,
-        2,
-        11
+        24,
+        1,
+        2
       ],
       "polygon": [
         [
           2944,
-          1024
+          1536
         ],
         [
-          3072,
-          1024
+          3008,
+          1536
         ],
         [
-          3072,
-          1728
+          3008,
+          1664
         ],
         [
           2944,
-          1728
+          1664
         ]
       ],
       "blocks_player": true,
@@ -1161,297 +7555,147 @@
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
           46,
-          16,
-          2,
-          11
-        ]
-      },
-      "runtime_generation": {
-        "visual_role": "generated_solid_partition",
-        "generated_from": "data/maps/area_01_source_grid_v1.json",
-        "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid016Terrain",
-        "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid016Collision",
-        "rim_container_name": "GeneratedGridSolid016Rims",
-        "visual_points_source": "this polygon",
-        "collision_points_source": "this polygon",
-        "rim_points_source": "this polygon"
-      }
-    },
-    {
-      "id": "generated_grid_solid_017",
-      "source_cells": [
-        14,
-        17,
-        8,
-        8
-      ],
-      "polygon": [
-        [
-          896,
-          1088
-        ],
-        [
-          1408,
-          1088
-        ],
-        [
-          1408,
-          1600
-        ],
-        [
-          896,
-          1600
-        ]
-      ],
-      "blocks_player": true,
-      "generation_source": {
-        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
-        "source": "data/maps/area_01_source_grid_v1.json",
-        "source_cells": [
-          14,
-          17,
-          8,
-          8
-        ]
-      },
-      "runtime_generation": {
-        "visual_role": "generated_solid_partition",
-        "generated_from": "data/maps/area_01_source_grid_v1.json",
-        "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid017Terrain",
-        "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid017Collision",
-        "rim_container_name": "GeneratedGridSolid017Rims",
-        "visual_points_source": "this polygon",
-        "collision_points_source": "this polygon",
-        "rim_points_source": "this polygon"
-      }
-    },
-    {
-      "id": "generated_grid_solid_018",
-      "source_cells": [
-        49,
-        18,
-        13,
-        6
-      ],
-      "polygon": [
-        [
-          3136,
-          1152
-        ],
-        [
-          3968,
-          1152
-        ],
-        [
-          3968,
-          1536
-        ],
-        [
-          3136,
-          1536
-        ]
-      ],
-      "blocks_player": true,
-      "generation_source": {
-        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
-        "source": "data/maps/area_01_source_grid_v1.json",
-        "source_cells": [
-          49,
-          18,
-          13,
-          6
-        ]
-      },
-      "runtime_generation": {
-        "visual_role": "generated_solid_partition",
-        "generated_from": "data/maps/area_01_source_grid_v1.json",
-        "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid018Terrain",
-        "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid018Collision",
-        "rim_container_name": "GeneratedGridSolid018Rims",
-        "visual_points_source": "this polygon",
-        "collision_points_source": "this polygon",
-        "rim_points_source": "this polygon"
-      }
-    },
-    {
-      "id": "generated_grid_solid_019",
-      "source_cells": [
-        44,
-        20,
-        2,
-        7
-      ],
-      "polygon": [
-        [
-          2816,
-          1280
-        ],
-        [
-          2944,
-          1280
-        ],
-        [
-          2944,
-          1728
-        ],
-        [
-          2816,
-          1728
-        ]
-      ],
-      "blocks_player": true,
-      "generation_source": {
-        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
-        "source": "data/maps/area_01_source_grid_v1.json",
-        "source_cells": [
-          44,
-          20,
-          2,
-          7
-        ]
-      },
-      "runtime_generation": {
-        "visual_role": "generated_solid_partition",
-        "generated_from": "data/maps/area_01_source_grid_v1.json",
-        "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid019Terrain",
-        "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid019Collision",
-        "rim_container_name": "GeneratedGridSolid019Rims",
-        "visual_points_source": "this polygon",
-        "collision_points_source": "this polygon",
-        "rim_points_source": "this polygon"
-      }
-    },
-    {
-      "id": "generated_grid_solid_020",
-      "source_cells": [
-        22,
-        21,
-        3,
-        4
-      ],
-      "polygon": [
-        [
-          1408,
-          1344
-        ],
-        [
-          1600,
-          1344
-        ],
-        [
-          1600,
-          1600
-        ],
-        [
-          1408,
-          1600
-        ]
-      ],
-      "blocks_player": true,
-      "generation_source": {
-        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
-        "source": "data/maps/area_01_source_grid_v1.json",
-        "source_cells": [
-          22,
-          21,
-          3,
-          4
-        ]
-      },
-      "runtime_generation": {
-        "visual_role": "generated_solid_partition",
-        "generated_from": "data/maps/area_01_source_grid_v1.json",
-        "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid020Terrain",
-        "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid020Collision",
-        "rim_container_name": "GeneratedGridSolid020Rims",
-        "visual_points_source": "this polygon",
-        "collision_points_source": "this polygon",
-        "rim_points_source": "this polygon"
-      }
-    },
-    {
-      "id": "generated_grid_solid_021",
-      "source_cells": [
-        49,
-        24,
-        1,
-        3
-      ],
-      "polygon": [
-        [
-          3136,
-          1536
-        ],
-        [
-          3200,
-          1536
-        ],
-        [
-          3200,
-          1728
-        ],
-        [
-          3136,
-          1728
-        ]
-      ],
-      "blocks_player": true,
-      "generation_source": {
-        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
-        "source": "data/maps/area_01_source_grid_v1.json",
-        "source_cells": [
-          49,
           24,
           1,
-          3
+          2
         ]
       },
       "runtime_generation": {
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid021Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid040Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid021Collision",
-        "rim_container_name": "GeneratedGridSolid021Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid040Collision",
+        "rim_container_name": "GeneratedGridSolid040Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_022",
+      "id": "generated_grid_solid_041",
       "source_cells": [
-        14,
+        17,
         25,
-        6,
-        11
+        4,
+        1
       ],
       "polygon": [
         [
-          896,
+          1088,
           1600
         ],
         [
-          1280,
+          1344,
           1600
+        ],
+        [
+          1344,
+          1664
+        ],
+        [
+          1088,
+          1664
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          17,
+          25,
+          4,
+          1
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid041Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid041Collision",
+        "rim_container_name": "GeneratedGridSolid041Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_042",
+      "source_cells": [
+        49,
+        25,
+        2,
+        2
+      ],
+      "polygon": [
+        [
+          3136,
+          1600
+        ],
+        [
+          3264,
+          1600
+        ],
+        [
+          3264,
+          1728
+        ],
+        [
+          3136,
+          1728
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          49,
+          25,
+          2,
+          2
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid042Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid042Collision",
+        "rim_container_name": "GeneratedGridSolid042Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_043",
+      "source_cells": [
+        17,
+        26,
+        3,
+        10
+      ],
+      "polygon": [
+        [
+          1088,
+          1664
+        ],
+        [
+          1280,
+          1664
         ],
         [
           1280,
           2304
         ],
         [
-          896,
+          1088,
           2304
         ]
       ],
@@ -1460,27 +7704,27 @@
         "algorithm": "source_grid_solid_cells_greedy_rect_partition",
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
-          14,
-          25,
-          6,
-          11
+          17,
+          26,
+          3,
+          10
         ]
       },
       "runtime_generation": {
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid022Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid043Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid022Collision",
-        "rim_container_name": "GeneratedGridSolid022Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid043Collision",
+        "rim_container_name": "GeneratedGridSolid043Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_023",
+      "id": "generated_grid_solid_044",
       "source_cells": [
         62,
         28,
@@ -1520,34 +7764,84 @@
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid023Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid044Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid023Collision",
-        "rim_container_name": "GeneratedGridSolid023Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid044Collision",
+        "rim_container_name": "GeneratedGridSolid044Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_024",
+      "id": "generated_grid_solid_045",
+      "source_cells": [
+        61,
+        29,
+        1,
+        2
+      ],
+      "polygon": [
+        [
+          3904,
+          1856
+        ],
+        [
+          3968,
+          1856
+        ],
+        [
+          3968,
+          1984
+        ],
+        [
+          3904,
+          1984
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          61,
+          29,
+          1,
+          2
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid045Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid045Collision",
+        "rim_container_name": "GeneratedGridSolid045Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_046",
       "source_cells": [
         20,
-        32,
-        21,
-        4
+        30,
+        1,
+        6
       ],
       "polygon": [
         [
           1280,
-          2048
+          1920
         ],
         [
-          2624,
-          2048
+          1344,
+          1920
         ],
         [
-          2624,
+          1344,
           2304
         ],
         [
@@ -1561,8 +7855,108 @@
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
           20,
-          32,
+          30,
+          1,
+          6
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid046Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid046Collision",
+        "rim_container_name": "GeneratedGridSolid046Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_047",
+      "source_cells": [
+        21,
+        31,
+        1,
+        5
+      ],
+      "polygon": [
+        [
+          1344,
+          1984
+        ],
+        [
+          1408,
+          1984
+        ],
+        [
+          1408,
+          2304
+        ],
+        [
+          1344,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
           21,
+          31,
+          1,
+          5
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid047Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid047Collision",
+        "rim_container_name": "GeneratedGridSolid047Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_048",
+      "source_cells": [
+        22,
+        32,
+        17,
+        4
+      ],
+      "polygon": [
+        [
+          1408,
+          2048
+        ],
+        [
+          2496,
+          2048
+        ],
+        [
+          2496,
+          2304
+        ],
+        [
+          1408,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          22,
+          32,
+          17,
           4
         ]
       },
@@ -1570,38 +7964,38 @@
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid024Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid048Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid024Collision",
-        "rim_container_name": "GeneratedGridSolid024Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid048Collision",
+        "rim_container_name": "GeneratedGridSolid048Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_025",
+      "id": "generated_grid_solid_049",
       "source_cells": [
-        41,
+        39,
         33,
-        17,
+        15,
         3
       ],
       "polygon": [
         [
-          2624,
+          2496,
           2112
         ],
         [
-          3712,
+          3456,
           2112
         ],
         [
-          3712,
+          3456,
           2304
         ],
         [
-          2624,
+          2496,
           2304
         ]
       ],
@@ -1610,9 +8004,9 @@
         "algorithm": "source_grid_solid_cells_greedy_rect_partition",
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
-          41,
+          39,
           33,
-          17,
+          15,
           3
         ]
       },
@@ -1620,38 +8014,38 @@
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid025Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid049Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid025Collision",
-        "rim_container_name": "GeneratedGridSolid025Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid049Collision",
+        "rim_container_name": "GeneratedGridSolid049Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"
       }
     },
     {
-      "id": "generated_grid_solid_026",
+      "id": "generated_grid_solid_050",
       "source_cells": [
-        58,
-        35,
-        6,
-        1
+        54,
+        34,
+        2,
+        2
       ],
       "polygon": [
         [
-          3712,
-          2240
+          3456,
+          2176
         ],
         [
-          4096,
-          2240
+          3584,
+          2176
         ],
         [
-          4096,
+          3584,
           2304
         ],
         [
-          3712,
+          3456,
           2304
         ]
       ],
@@ -1660,9 +8054,59 @@
         "algorithm": "source_grid_solid_cells_greedy_rect_partition",
         "source": "data/maps/area_01_source_grid_v1.json",
         "source_cells": [
-          58,
+          54,
+          34,
+          2,
+          2
+        ]
+      },
+      "runtime_generation": {
+        "visual_role": "generated_solid_partition",
+        "generated_from": "data/maps/area_01_source_grid_v1.json",
+        "sprites_define_collision": false,
+        "visible_polygon2d_name": "GeneratedGridSolid050Terrain",
+        "collision_static_body2d_name": "RuntimeSourceCollision",
+        "collision_polygon2d_name": "GeneratedGridSolid050Collision",
+        "rim_container_name": "GeneratedGridSolid050Rims",
+        "visual_points_source": "this polygon",
+        "collision_points_source": "this polygon",
+        "rim_points_source": "this polygon"
+      }
+    },
+    {
+      "id": "generated_grid_solid_051",
+      "source_cells": [
+        56,
+        35,
+        8,
+        1
+      ],
+      "polygon": [
+        [
+          3584,
+          2240
+        ],
+        [
+          4096,
+          2240
+        ],
+        [
+          4096,
+          2304
+        ],
+        [
+          3584,
+          2304
+        ]
+      ],
+      "blocks_player": true,
+      "generation_source": {
+        "algorithm": "source_grid_solid_cells_greedy_rect_partition",
+        "source": "data/maps/area_01_source_grid_v1.json",
+        "source_cells": [
+          56,
           35,
-          6,
+          8,
           1
         ]
       },
@@ -1670,10 +8114,10 @@
         "visual_role": "generated_solid_partition",
         "generated_from": "data/maps/area_01_source_grid_v1.json",
         "sprites_define_collision": false,
-        "visible_polygon2d_name": "GeneratedGridSolid026Terrain",
+        "visible_polygon2d_name": "GeneratedGridSolid051Terrain",
         "collision_static_body2d_name": "RuntimeSourceCollision",
-        "collision_polygon2d_name": "GeneratedGridSolid026Collision",
-        "rim_container_name": "GeneratedGridSolid026Rims",
+        "collision_polygon2d_name": "GeneratedGridSolid051Collision",
+        "rim_container_name": "GeneratedGridSolid051Rims",
         "visual_points_source": "this polygon",
         "collision_points_source": "this polygon",
         "rim_points_source": "this polygon"

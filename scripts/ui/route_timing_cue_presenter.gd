@@ -53,6 +53,17 @@ static func outer_shelf_slackwater_decision_state(
 	return "surging"
 
 
+static func outer_shelf_slackwater_decision_prompt_for_timer(
+	timer_seconds: float,
+	period_seconds: float,
+	open_threshold: float,
+	easing_threshold: float
+) -> String:
+	return outer_shelf_slackwater_decision_prompt(
+		outer_shelf_slackwater_decision_state(timer_seconds, period_seconds, open_threshold, easing_threshold)
+	)
+
+
 static func outer_shelf_slackwater_decision_prompt(state: String) -> String:
 	match state:
 		"open":
@@ -61,6 +72,17 @@ static func outer_shelf_slackwater_decision_prompt(state: String) -> String:
 			return "Glass Rim current easing: wait, cross, or turn back"
 		_:
 			return "Glass Rim surge: turn back or spend oxygen waiting"
+
+
+static func outer_shelf_slackwater_decision_text_for_timer(
+	timer_seconds: float,
+	period_seconds: float,
+	open_threshold: float,
+	easing_threshold: float
+) -> String:
+	return outer_shelf_slackwater_decision_text(
+		outer_shelf_slackwater_decision_state(timer_seconds, period_seconds, open_threshold, easing_threshold)
+	)
 
 
 static func outer_shelf_slackwater_decision_text(state: String) -> String:

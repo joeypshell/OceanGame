@@ -2,6 +2,7 @@ class_name ScanTargetFeedbackService
 extends RefCounted
 
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
+const ScanRuntimeServiceScript := preload("res://scripts/services/scan_runtime_service.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 
@@ -24,7 +25,7 @@ static func scan_target_candidate(host) -> Node:
 	if scan_target_still_selectable(host, host.current_scan_target):
 		return host.current_scan_target
 
-	return host._nearest_scan_target()
+	return ScanRuntimeServiceScript.nearest_scan_target(host)
 
 static func scan_target_still_selectable(host, target: Node) -> bool:
 	if target == null or host.player == null or not is_instance_valid(target):

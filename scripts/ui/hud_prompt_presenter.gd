@@ -40,7 +40,7 @@ static func format_prompt(state: Dictionary) -> String:
 	elif bool(state.get("player_near_resonance_alcove", false)):
 		prompt = "Resonance Alcove: %s record hatch echo" % _label(labels, "interact")
 	elif bool(state.get("player_near_glass_kelp_ledge", false)):
-		prompt = "Glass Kelp read" if bool(state.get("run_glass_kelp_reading_recovered", false)) else "Glass Kelp: %s" % _label(labels, "interact")
+		prompt = "Glass Kelp read" if bool(state.get("run_glass_kelp_reading_recovered", false)) else "Glass Kelp Ledge: %s record kelp reading" % _label(labels, "interact")
 	elif bool(state.get("player_near_hollow_reef", false)):
 		prompt = "Hollow Reef read" if bool(state.get("run_hollow_reef_reading_recovered", false)) else "Hollow Reef: %s" % _label(labels, "interact")
 	elif bool(state.get("player_near_salvage_manifest", false)) and bool(state.get("has_salvage_cutter", false)):
