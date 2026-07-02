@@ -23,5 +23,5 @@ static func update_menu(host) -> void:
 	)
 	host.upgrade_menu_item_label.text = "%s\n%s" % [upgrade.display_name, upgrade.description]
 	host.upgrade_menu_cost_label.text = "Cost: %s" % UpgradeStateServiceScript.format_upgrade_cost(host, upgrade.resource_cost)
-	host.upgrade_menu_state_label.text = host._format_upgrade_state(upgrade)
-	host.upgrade_menu_feedback_label.text = host._format_upgrade_panel_feedback(host.upgrade_menu_feedback)
+	host.upgrade_menu_state_label.text = UpgradeStateServiceScript.format_upgrade_state(host, upgrade)
+	host.upgrade_menu_feedback_label.text = UpgradeStateServiceScript.format_upgrade_panel_feedback(host.upgrade_menu_feedback)

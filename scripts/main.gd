@@ -2740,15 +2740,6 @@ func _update_cargo_slots() -> void:
 		cargo_slot_icon_nodes[index].color = CargoSlotPresenterScript.cargo_slot_icon_color(states[index])
 		cargo_slot_icon_nodes[index].visible = slot_visible and cargo_slot_icon_nodes[index].polygon.size() > 0
 
-func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
-	return UpgradeStateServiceScript.format_upgrade_state(self, upgrade)
-
-func _format_upgrade_effect_summary(upgrade: UpgradeDefinition) -> String:
-	return UpgradeStateServiceScript.format_upgrade_effect_summary(upgrade)
-
-func _format_upgrade_panel_feedback(feedback: String) -> String:
-	return UpgradeStateServiceScript.format_upgrade_panel_feedback(feedback)
-
 func _format_future_tool_upgrade_promise() -> String:
 	return ""
 

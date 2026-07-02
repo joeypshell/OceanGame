@@ -6957,7 +6957,7 @@ func _test_upgrade_bay_readability_states() -> void:
 		PredatorWarningUpgrade,
 	]
 
-	var state := main._format_upgrade_state(OxygenTankUpgrade)
+	var state := UpgradeStateServiceScript.format_upgrade_state(main, OxygenTankUpgrade)
 	_expect(state.begins_with("State: Missing resources"), "upgrade bay should label unaffordable upgrades")
 	_expect(state.contains("Needs: Glow Plankton x1"), "upgrade bay should show missing resources inline")
 
@@ -6966,15 +6966,15 @@ func _test_upgrade_bay_readability_states() -> void:
 		"kelp_fiber": 2,
 		"shell_fragments": 1,
 	}
-	state = main._format_upgrade_state(OxygenTankUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, OxygenTankUpgrade)
 	_expect(state.begins_with("State: Available now"), "upgrade bay should label affordable upgrades")
 	_expect(main._format_ready_upgrade_callout().contains("Oxygen Tank I"), "upgrade bay should call out newly ready upgrades")
 
 	main.progression_state.purchase_upgrade(OxygenTankUpgrade.id, OxygenTankUpgrade.resource_cost)
-	state = main._format_upgrade_state(OxygenTankUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, OxygenTankUpgrade)
 	_expect(state.begins_with("State: Owned"), "upgrade bay should label owned upgrades")
 
-	state = main._format_upgrade_state(WaterFilterUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, WaterFilterUpgrade)
 	_expect(state.begins_with("State: Missing resources"), "Water Filter I should show missing starter resources")
 	_expect(state.contains("Driftwood x1"), "Water Filter I should name missing driftwood")
 	_expect(state.contains("Quartz Glass x1"), "Water Filter I should name missing quartz glass")
@@ -6993,25 +6993,25 @@ func _test_upgrade_bay_readability_states() -> void:
 		"driftwood": 1,
 		"quartz_glass": 1,
 	}
-	state = main._format_upgrade_state(WaterFilterUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, WaterFilterUpgrade)
 	_expect(state.begins_with("State: Available now"), "Water Filter I should become available after starter resources are banked")
 	var water_before := main.survival_state.water
 	_expect(UpgradePurchaseScript.purchase(main.progression_state, WaterFilterUpgrade), "Water Filter I should purchase through the normal upgrade pipeline")
 	main.call("_apply_upgrade_effect", WaterFilterUpgrade.effect_id)
 	_expect(main.survival_state.water == water_before + 1, "Water Filter I effect should add one water reserve")
-	state = main._format_upgrade_state(WaterFilterUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, WaterFilterUpgrade)
 	_expect(state.begins_with("State: Owned"), "Water Filter I should show owned after purchase")
 
-	state = main._format_upgrade_state(PressureSealUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, PressureSealUpgrade)
 	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label scan-locked upgrades")
 	_expect(state.contains("Scan: Thermal Vent"), "upgrade bay should name missing discoveries")
 
-	state = main._format_upgrade_state(EchoLensUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, EchoLensUpgrade)
 	_expect(state.begins_with("State: Locked by scan"), "upgrade bay should label Echo Lens I scan-locked before Wreck Signal Cache")
 	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I state should distinguish it from Signal Lens I without locator language")
 
 	main.progression_state.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal map.", "Unlocks scanner tuning.")
-	state = main._format_upgrade_state(EchoLensUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, EchoLensUpgrade)
 	_expect(state.begins_with("State: Locked by upgrade"), "upgrade bay should label Echo Lens I as upgrade-locked before Signal Lens I")
 	_expect(state.contains("Install: Signal Lens I"), "upgrade bay should name Signal Lens I as the Echo Lens prerequisite")
 	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I locked-upgrade state should keep its compact role hint")
@@ -7022,7 +7022,7 @@ func _test_upgrade_bay_readability_states() -> void:
 		"kelp_fiber": 1,
 		"shell_fragments": 2,
 	}
-	state = main._format_upgrade_state(EchoLensUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, EchoLensUpgrade)
 	_expect(state.begins_with("State: Missing resources"), "upgrade bay should label Echo Lens I missing resources after prerequisites are met")
 	_expect(state.contains("Needs: Glow Plankton x1"), "Echo Lens I missing-resource state should show only remaining cost")
 	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I missing-resource state should keep its compact role hint")
@@ -7032,16 +7032,16 @@ func _test_upgrade_bay_readability_states() -> void:
 		"kelp_fiber": 1,
 		"shell_fragments": 2,
 	}
-	state = main._format_upgrade_state(EchoLensUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, EchoLensUpgrade)
 	_expect(state.begins_with("State: Available now"), "upgrade bay should label Echo Lens I available after prerequisites and resources are ready")
 	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I available state should keep its compact role hint")
 
 	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
-	state = main._format_upgrade_state(EchoLensUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, EchoLensUpgrade)
 	_expect(state.begins_with("State: Owned"), "upgrade bay should label Echo Lens I owned after purchase")
 	_expect(state.contains("Role: broad wreck echoes, not a locator."), "Echo Lens I owned state should keep its compact role hint")
 
-	state = main._format_upgrade_state(ResonanceKeyUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, ResonanceKeyUpgrade)
 	_expect(state.begins_with("State: Needs route research"), "Resonance Key I should ask for route research after Echo Lens I is owned")
 	_expect(state.contains("Recover: East Shelf or Drop Echo"), "Resonance Key I should name the broad route-research requirement")
 	_expect(state.contains("Effect: opens East Shelf hatch only."), "Resonance Key I should keep hatch-specific effect copy")
@@ -7052,7 +7052,7 @@ func _test_upgrade_bay_readability_states() -> void:
 		"glow_plankton": 1,
 		"shell_fragments": 1,
 	}
-	state = main._format_upgrade_state(ResonanceKeyUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, ResonanceKeyUpgrade)
 	_expect(state.begins_with("State: Missing resources"), "Resonance Key I should show missing resources after prerequisites are met")
 	_expect(state.contains("Needs: Glow Plankton x1"), "Resonance Key I should show only missing glow plankton")
 	_expect_no_echo_lens_locator_language(state, "Resonance Key I missing-resource state")
@@ -7061,18 +7061,18 @@ func _test_upgrade_bay_readability_states() -> void:
 		"glow_plankton": 2,
 		"shell_fragments": 1,
 	}
-	state = main._format_upgrade_state(ResonanceKeyUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, ResonanceKeyUpgrade)
 	_expect(state.begins_with("State: Available now"), "Resonance Key I should become available after route context and resources")
 	_expect_no_echo_lens_locator_language(state, "Resonance Key I available state")
 
 	main.progression_state.purchase_upgrade(ResonanceKeyUpgrade.id, ResonanceKeyUpgrade.resource_cost)
-	state = main._format_upgrade_state(ResonanceKeyUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, ResonanceKeyUpgrade)
 	_expect(state.begins_with("State: Owned"), "Resonance Key I should show owned state after purchase")
 	_expect(state.contains("Effect: opens East Shelf hatch only."), "Resonance Key I owned state should stay hatch-specific")
 	_expect_no_echo_lens_locator_language(state, "Resonance Key I owned state")
 
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
-	state = main._format_upgrade_state(DecoyPulseUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, DecoyPulseUpgrade)
 	_expect(state.begins_with("State: Locked by upgrade"), "upgrade bay should label upgrade-locked upgrades")
 	_expect(state.contains("Install: Predator Warning I"), "upgrade bay should name missing upgrade prerequisites")
 
@@ -7082,15 +7082,15 @@ func _test_upgrade_bay_readability_states() -> void:
 		"kelp_fiber": 1,
 		"shell_fragments": 1,
 	}
-	state = main._format_upgrade_state(DecoyPulseUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, DecoyPulseUpgrade)
 	_expect(state.begins_with("State: Available now"), "Decoy Pulse I should become available after discovery, prerequisite upgrade, and resources")
 
 	main.progression_state.purchase_upgrade(DecoyPulseUpgrade.id, DecoyPulseUpgrade.resource_cost)
-	state = main._format_upgrade_state(DecoyPulseUpgrade)
+	state = UpgradeStateServiceScript.format_upgrade_state(main, DecoyPulseUpgrade)
 	_expect(state.begins_with("State: Owned"), "upgrade bay should label Decoy Pulse I owned after purchase")
-	_expect(main._format_upgrade_effect_summary(EchoLensUpgrade).contains("not a locator"), "Echo Lens I compact effect summary should preserve no-locator wording")
+	_expect(UpgradeStateServiceScript.format_upgrade_effect_summary(EchoLensUpgrade).contains("not a locator"), "Echo Lens I compact effect summary should preserve no-locator wording")
 	_expect(main._format_future_tool_upgrade_promise() == "", "future cutter promise should stay hidden before lower-route evidence")
-	var feedback := main._format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.")
+	var feedback := UpgradeStateServiceScript.format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.")
 	_expect(feedback == "Banked 3 resource(s).\nNo upgrade ready yet.", "upgrade panel feedback should compact deposit copy")
 	_expect_lines_within(feedback, 72, "compacted upgrade feedback")
 
@@ -7100,11 +7100,11 @@ func _test_upgrade_bay_readability_states() -> void:
 	_expect_lines_within(cutter_promise, 72, "future cutter promise")
 	_expect_no_echo_lens_locator_language(cutter_promise, "future cutter promise")
 
-	var promised_feedback := main._format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.")
+	var promised_feedback := UpgradeStateServiceScript.format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.")
 	_expect(promised_feedback.contains("Banked 3 resource(s)."), "future cutter promise should not replace normal upgrade feedback")
 	_expect(not promised_feedback.contains("Planned: Salvage Cutter"), "upgrade feedback should not append obsolete planned cutter copy")
 	_expect_lines_within(promised_feedback, 72, "future cutter promised feedback")
-	var cutter_state := main._format_upgrade_state(SalvageCutterUpgrade)
+	var cutter_state := UpgradeStateServiceScript.format_upgrade_state(main, SalvageCutterUpgrade)
 	_expect(cutter_state.begins_with("State: Needs salvage data"), "Salvage Cutter I should be locked by recovered cache evidence before extraction")
 	_expect(cutter_state.contains("Recover: Salvage Data Cache"), "Salvage Cutter I should name the broad evidence prerequisite")
 	_expect(cutter_state.contains("Wide Reef salvage pocket"), "Salvage Cutter I should stay scoped to the sealed Wide Reef pocket")
@@ -7113,17 +7113,17 @@ func _test_upgrade_bay_readability_states() -> void:
 		"kelp_fiber": 1,
 		"shell_fragments": 1,
 	}
-	cutter_state = main._format_upgrade_state(SalvageCutterUpgrade)
+	cutter_state = UpgradeStateServiceScript.format_upgrade_state(main, SalvageCutterUpgrade)
 	_expect(cutter_state.begins_with("State: Missing resources"), "Salvage Cutter I should show missing resources after evidence is recovered")
 	_expect(cutter_state.contains("Shell Fragments x1"), "Salvage Cutter I should show only the remaining existing-resource cost")
 	main.progression_state.banked_resources = {
 		"kelp_fiber": 1,
 		"shell_fragments": 2,
 	}
-	cutter_state = main._format_upgrade_state(SalvageCutterUpgrade)
+	cutter_state = UpgradeStateServiceScript.format_upgrade_state(main, SalvageCutterUpgrade)
 	_expect(cutter_state.begins_with("State: Available now"), "Salvage Cutter I should become available after evidence and existing resources")
 	main.progression_state.purchase_upgrade(SalvageCutterUpgrade.id, SalvageCutterUpgrade.resource_cost)
-	cutter_state = main._format_upgrade_state(SalvageCutterUpgrade)
+	cutter_state = UpgradeStateServiceScript.format_upgrade_state(main, SalvageCutterUpgrade)
 	_expect(cutter_state.begins_with("State: Owned"), "Salvage Cutter I should show owned after normal upgrade purchase")
 	main.run_salvage_data_cache_recovered = false
 	main.recent_expedition_log = [{"route_memory": "Wide Reef Chamber"}]
@@ -7175,14 +7175,14 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 	}
 	main.progression_state.add_discovery("wreck_signal_cache", "Wreck Signal Cache", "Signal cache.", "Scanner curiosity.")
 	var upgrade_states := [
-		main._format_upgrade_state(OxygenTankUpgrade),
-		main._format_upgrade_state(PressureSealUpgrade),
-		main._format_upgrade_state(EchoLensUpgrade),
+		UpgradeStateServiceScript.format_upgrade_state(main, OxygenTankUpgrade),
+		UpgradeStateServiceScript.format_upgrade_state(main, PressureSealUpgrade),
+		UpgradeStateServiceScript.format_upgrade_state(main, EchoLensUpgrade),
 	]
 	main.progression_state.purchased_upgrades[SignalLensUpgrade.id] = true
-	upgrade_states.append(main._format_upgrade_state(EchoLensUpgrade))
+	upgrade_states.append(UpgradeStateServiceScript.format_upgrade_state(main, EchoLensUpgrade))
 	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
-	upgrade_states.append(main._format_upgrade_state(EchoLensUpgrade))
+	upgrade_states.append(UpgradeStateServiceScript.format_upgrade_state(main, EchoLensUpgrade))
 	for index in range(upgrade_states.size()):
 		_expect_lines_within(String(upgrade_states[index]), 88, "upgrade state %d" % index)
 
