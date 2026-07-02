@@ -48,6 +48,7 @@ const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_ro
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
+const ScanEffectTextServiceScript := preload("res://scripts/ui/scan_effect_text_service.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
 const ScanTargetFeedbackServiceScript := preload("res://scripts/ui/scan_target_feedback_service.gd")
@@ -2282,7 +2283,7 @@ func _try_scan(requested_target: Node = null) -> void:
 			_trigger_echo_lens_pulse()
 		status_label.text = HudPresenterScript.compact_dive_status("%s known.%s" % [
 			display_name,
-			_format_repeat_scan_effect_text(target) + _format_signal_lens_pulse_text(target)
+			ScanEffectTextServiceScript.repeat_scan_effect_text(self, target) + ScanEffectTextServiceScript.signal_lens_pulse_text(self, target, _nearest_matching_visible_resource(target) if target is ResourcePickup else null)
 		])
 		_update_hud()
 		return
@@ -2292,7 +2293,7 @@ func _try_scan(requested_target: Node = null) -> void:
 		discovery_id,
 		display_name,
 		_scan_target_description(target),
-		_scan_target_gameplay_fact(target)
+		ScanEffectTextServiceScript.scan_target_gameplay_fact(self, target)
 	)
 	run_completed_scans.append(discovery_id)
 	_activate_scan_effect(target)
@@ -2303,7 +2304,7 @@ func _try_scan(requested_target: Node = null) -> void:
 		_save_progression()
 		status_label.text = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 			display_name,
-			_format_repeat_scan_effect_text(target) + _format_first_scan_guidance(target)
+			ScanEffectTextServiceScript.repeat_scan_effect_text(self, target) + ScanEffectTextServiceScript.first_scan_guidance(self, target)
 		])
 		_update_hud()
 
@@ -2322,16 +2323,6 @@ func _scan_target_display_name(target: Node) -> String:
 
 func _scan_target_description(target: Node) -> String:
 	return ScanTargetResolverScript.description(target)
-
-func _scan_target_gameplay_fact(target: Node) -> String:
-	if target is ResourcePickup:
-		return "Depth: %s. Role: %s. %s" % [
-			_format_depth_band(target.definition.depth_band),
-			_resource_role_summary(target.definition.id),
-			_format_resource_upgrade_need(target.definition.id)
-		]
-
-	return String(target.get("gameplay_fact"))
 
 func _activate_scan_effect(target: Node) -> void:
 	decoy_pulse_activated_this_scan = false
@@ -2614,31 +2605,6 @@ func _try_trigger_decoy_pulse() -> bool:
 	status_label.text = "Decoy Pulse: Gulper Eel distracted briefly."
 	return true
 
-func _format_repeat_scan_effect_text(target: Node) -> String:
-	return ScanFeedbackPresenterScript.format_repeat_scan_effect_text(
-		_scan_target_id(target),
-		target is ResourcePickup,
-		target.definition.display_name if target is ResourcePickup else "",
-		_format_wreck_cache_repeat_hint(),
-		_format_decoy_pulse_scan_feedback()
-	)
-
-func _format_wreck_cache_repeat_hint() -> String:
-	return ScanFeedbackPresenterScript.format_wreck_cache_repeat_hint(
-		progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID),
-		progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID)
-	)
-
-func _format_signal_lens_pulse_text(target: Node) -> String:
-	var match_target: ResourcePickup = _nearest_matching_visible_resource(target) if target is ResourcePickup else null
-	return ScanFeedbackPresenterScript.format_signal_lens_pulse_text(
-		progression_state.has_upgrade(SIGNAL_LENS_UPGRADE_ID),
-		target is ResourcePickup,
-		match_target != null,
-		_format_direction_to(match_target.global_position) if match_target != null else "",
-		target.definition.display_name if target is ResourcePickup else ""
-	)
-
 func _nearest_matching_visible_resource(source: ResourcePickup) -> ResourcePickup:
 	var nearest: ResourcePickup = null
 	var nearest_distance := INF
@@ -2658,35 +2624,6 @@ func _nearest_matching_visible_resource(source: ResourcePickup) -> ResourcePicku
 			nearest_distance = distance
 
 	return nearest
-
-func _format_direction_to(target_position: Vector2) -> String:
-	return ScanFeedbackPresenterScript.format_direction_to(player.global_position, target_position)
-
-func _format_first_scan_guidance(target: Node) -> String:
-	return ScanFeedbackPresenterScript.format_first_scan_guidance(
-		_scan_target_id(target),
-		target is ResourcePickup,
-		_resource_collection_guidance(target.definition.id) if target is ResourcePickup else "",
-		dive_session.current_cargo.size(),
-		dive_session.cargo_limit,
-		progression_state.has_upgrade(PRESSURE_SEAL_UPGRADE_ID)
-	)
-
-func _format_resource_upgrade_need(resource_id: String) -> String:
-	var needed: int = maxi(0, int(_oxygen_tank_cost().get(resource_id, 0)) - progression_state.resource_count(resource_id))
-	return ResourcePresenterScript.format_resource_upgrade_need(
-		survival_state.is_supply_id(resource_id),
-		progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID),
-		needed
-	)
-
-func _resource_role_summary(resource_id: String) -> String:
-	return ResourcePresenterScript.resource_role_summary(
-		resource_id,
-		survival_state.is_supply_id(resource_id),
-		ResourceSummaryServiceScript.resource_category_label(resource_id, survival_state, RESOURCE_CATEGORY_LABELS),
-		_supply_banking_role(resource_id)
-	)
 
 func _resource_collection_guidance(resource_id: String) -> String:
 	return ResourcePresenterScript.resource_collection_guidance(
@@ -2734,9 +2671,6 @@ func _resource_role_accent_color(resource_id: String) -> Color:
 
 func _supply_banking_role(resource_id: String) -> String:
 	return ResourcePresenterScript.supply_banking_role(resource_id)
-
-func _format_depth_band(depth_band: String) -> String:
-	return ResourcePresenterScript.format_depth_band(depth_band)
 
 func _update_glow_plankton_highlight(delta: float) -> void:
 	if glow_plankton_highlight_timer <= 0.0:
