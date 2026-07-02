@@ -1520,7 +1520,7 @@ func _test_debug_wide_reef_salvage_staging_guardrails() -> void:
 	_expect(main.run_salvage_manifest_recovered, "staged manifest interaction should set only run-scoped payoff evidence")
 	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Salvage Pocket", "manifest payoff should upgrade the current run memory to Salvage Pocket")
 	var empty_cargo: Array[String] = []
-	var summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(summary.contains("Salvage Manifest"), "staged manifest payoff should support extraction result memory")
 	main.progression_state.current_run_number = 42
 	main.progression_state.current_run_seed = 9042
@@ -1857,7 +1857,7 @@ func _test_lantern_ray_scan_behavior() -> void:
 	_expect(first_scan_guidance.contains("Observe its calm pass"), "first Lantern Ray scan guidance should stay route-observation focused")
 
 	var no_cargo: Array[String] = []
-	var summary: String = main.call("_format_extraction_result_summary", 0, no_cargo)
+	var summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, no_cargo)
 	_expect(summary.contains("Lantern Ray"), "Lantern Ray scan should appear in scan/discovery result copy")
 	_expect_no_monster_combat_language(summary, "Lantern Ray scan result copy")
 	_expect(not summary.to_lower().contains("field guide"), "Lantern Ray scan result should not imply field-guide UI")
@@ -2469,7 +2469,7 @@ func _test_outer_shelf_cargo_knowledge_payoff_choice() -> void:
 	_expect(callout.contains("Kelp Fiber cargo"), "Outer Shelf result memory should preserve the cargo-vs-knowledge choice")
 	_expect_no_echo_lens_locator_language(callout, "Outer Shelf result line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Remembered place: Outer Shelf"), "Outer Shelf extraction summary should remember the newest area")
 	_expect(extraction_summary.contains("Outer Shelf survey"), "Outer Shelf extraction summary should include recovered survey memory")
 	_expect(extraction_summary.contains("try Glass Rim timing or bank the Outer Shelf cargo"), "Outer Shelf extraction summary should invite one next-run hypothesis")
@@ -2488,7 +2488,7 @@ func _test_outer_shelf_cargo_knowledge_payoff_choice() -> void:
 
 	var fresh_main := MainScript.new()
 	_expect(ResearchResultCalloutServiceScript.format_outer_shelf_survey_research_callout(fresh_main) == "", "Outer Shelf result line should stay hidden before survey recovery")
-	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	var fresh_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(fresh_main, 0, empty_cargo)
 	_expect(not fresh_summary.contains("Outer Shelf survey"), "Outer Shelf extraction summary should stay hidden before survey recovery")
 	fresh_main.free()
 
@@ -2559,7 +2559,7 @@ func _test_glass_rim_reading_payoff_choice() -> void:
 	_expect(callout.contains("cargo remains optional"), "Glass Rim research line should preserve the cargo-vs-knowledge decision")
 	_expect_no_echo_lens_locator_language(callout, "Glass Rim research line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Remembered place: Glass Rim"), "Glass Rim extraction summary should remember the specific payoff place")
 	_expect(extraction_summary.contains("Route choice: recovered Glass Rim reading"), "Glass Rim extraction summary should distinguish this payoff from the survey")
 	_expect(extraction_summary.contains("Research: Glass Rim reading"), "Glass Rim extraction summary should include the new research payoff")
@@ -2863,7 +2863,7 @@ func _test_salvage_data_cache_interaction() -> void:
 	_expect(not callout.to_lower().contains("craft"), "salvage result memory should not introduce crafting")
 	_expect_no_echo_lens_locator_language(callout, "salvage data cache result line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Salvage data cache"), "salvage extraction summary should include recovered cache memory")
 	_expect(extraction_summary.contains("Salvage Cutter I prep"), "salvage extraction summary should make the cache useful for tool planning")
 	_expect(not extraction_summary.to_lower().contains("buy cutter"), "salvage extraction summary should not make the future cutter purchasable")
@@ -2881,7 +2881,7 @@ func _test_salvage_data_cache_interaction() -> void:
 
 	var fresh_main := MainScript.new()
 	_expect(ResearchResultCalloutServiceScript.format_salvage_data_cache_research_callout(fresh_main) == "", "salvage result line should stay hidden before payoff recovery")
-	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	var fresh_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(fresh_main, 0, empty_cargo)
 	_expect(not fresh_summary.contains("Salvage data cache"), "salvage extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
 	main.free()
@@ -2943,7 +2943,7 @@ func _test_salvage_manifest_interaction() -> void:
 	_expect(not callout.to_lower().contains("loot table"), "Salvage Manifest result memory should avoid loot-system language")
 	_expect_no_echo_lens_locator_language(callout, "Salvage Manifest result line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Salvage Manifest"), "Salvage Manifest extraction summary should include recovered manifest memory")
 	_expect(extraction_summary.contains("Salvage Pocket"), "Salvage Manifest extraction summary should remember the opened pocket place")
 	_expect(not extraction_summary.to_lower().contains("inventory"), "Salvage Manifest extraction summary should avoid inventory language")
@@ -2965,7 +2965,7 @@ func _test_salvage_manifest_interaction() -> void:
 
 	var fresh_main := MainScript.new()
 	_expect(ResearchResultCalloutServiceScript.format_salvage_manifest_research_callout(fresh_main) == "", "Salvage Manifest result line should stay hidden before payoff recovery")
-	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	var fresh_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(fresh_main, 0, empty_cargo)
 	_expect(not fresh_summary.contains("Salvage Manifest"), "Salvage Manifest extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
 	main.free()
@@ -3061,7 +3061,7 @@ func _test_tideglass_sample_interaction() -> void:
 	_expect(callout.contains("return-current"), "Tideglass result memory should explain why the sample mattered")
 	_expect_no_echo_lens_locator_language(callout, "Tideglass result line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Tideglass Sample"), "Tideglass extraction summary should include recovered sample memory")
 	_expect(extraction_summary.contains("Mirror Kelp"), "Tideglass extraction summary should keep the branch payoff readable")
 	_expect(not extraction_summary.to_lower().contains("inventory"), "Tideglass extraction summary should avoid inventory language")
@@ -3072,7 +3072,7 @@ func _test_tideglass_sample_interaction() -> void:
 
 	var fresh_main := MainScript.new()
 	_expect(ResearchResultCalloutServiceScript.format_tideglass_sample_research_callout(fresh_main) == "", "Tideglass result line should stay hidden before payoff recovery")
-	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	var fresh_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(fresh_main, 0, empty_cargo)
 	_expect(not fresh_summary.contains("Tideglass Sample"), "Tideglass extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
 	main.free()
@@ -5998,7 +5998,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(blackwater_callout.find("Route choice:") == blackwater_callout.rfind("Route choice:"), "Blackwater route memory should stay one compact route-choice line")
 	_expect_no_echo_lens_locator_language(blackwater_callout, "Blackwater route choice")
 	var empty_cargo: Array[String] = []
-	var blackwater_summary := main._format_extraction_result_summary(0, empty_cargo)
+	var blackwater_summary := SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(not blackwater_summary.contains("Dusk Trench"), "Dusk result memory should stay hidden before reach evidence")
 
 	main.run_reached_dusk_trench = true
@@ -6007,7 +6007,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not dusk_callout.contains("Blackwater"), "Dusk route choice should take priority over Blackwater route evidence")
 	_expect(dusk_callout.find("Route choice:") == dusk_callout.rfind("Route choice:"), "Dusk route memory should stay one compact route-choice line")
 	_expect_no_echo_lens_locator_language(dusk_callout, "Dusk route choice")
-	var dusk_summary := main._format_extraction_result_summary(0, empty_cargo)
+	var dusk_summary := SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(dusk_summary.contains("Remembered place: Dusk Trench"), "Dusk extraction summary should include supported remembered-place evidence")
 	_expect(dusk_summary.contains("Route choice: lower-route research push reached Dusk Trench."), "Dusk extraction summary should include supported route-choice evidence")
 	_expect(not dusk_summary.contains("map"), "Dusk extraction summary should avoid map language")
@@ -6018,7 +6018,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not hollow_callout.contains("Dusk Trench"), "Hollow Reef route choice should take priority over Dusk reach evidence")
 	_expect(not hollow_callout.contains("Blackwater"), "Hollow Reef route choice should take priority over Blackwater trace evidence")
 	_expect_no_echo_lens_locator_language(hollow_callout, "Hollow Reef route choice")
-	var hollow_summary := main._format_extraction_result_summary(0, empty_cargo)
+	var hollow_summary := SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(hollow_summary.contains("Remembered place: Hollow Reef"), "Hollow Reef extraction summary should include the branch as remembered place")
 	_expect(hollow_summary.contains("Route choice: lower-route research push reached Hollow Reef."), "Hollow Reef extraction summary should include the highest route-choice evidence")
 
@@ -6030,7 +6030,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not wide_chamber_callout.contains("Hollow Reef"), "wide chamber route choice should take priority over Hollow Reef reading evidence")
 	_expect(not wide_chamber_callout.contains("Dusk Trench"), "wide chamber route choice should take priority over Dusk reach evidence")
 	_expect_no_echo_lens_locator_language(wide_chamber_callout, "Wide Reef Chamber route choice")
-	var wide_chamber_summary := main._format_extraction_result_summary(0, empty_cargo)
+	var wide_chamber_summary := SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(wide_chamber_summary.contains("Remembered place: Wide Reef Chamber"), "wide chamber extraction summary should remember the larger chamber when salvage evidence exists")
 	_expect(wide_chamber_summary.contains("Route choice: wide chamber salvage cache marked a sealed pocket."), "wide chamber extraction summary should include one compact route-choice line")
 	_expect(wide_chamber_summary.find("Route choice:") == wide_chamber_summary.rfind("Route choice:"), "wide chamber extraction summary should not duplicate route-choice lines")
@@ -6064,7 +6064,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not hollow_observation_route_choice.contains("Dusk Trench"), "Hollow Reef Skitter route choice should be more specific than generic Dusk reach")
 	_expect(not hollow_observation_route_choice.to_lower().contains("checklist"), "Hollow Reef Skitter route choice should not imply checklist UI")
 	_expect_no_echo_lens_locator_language(hollow_observation_route_choice, "Hollow Reef Skitter route choice")
-	var hollow_observation_summary := main._format_extraction_result_summary(0, empty_cargo)
+	var hollow_observation_summary := SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(hollow_observation_summary.contains("Remembered place: Hollow Reef"), "Hollow Reef Skitter extraction summary should remember the side-cave place")
 	_expect(hollow_observation_summary.contains("Route choice: observed Hollow Reef upper-shelf timing."), "Hollow Reef Skitter extraction summary should include one compact route-choice line")
 	_expect(hollow_observation_summary.find("Route choice:") == hollow_observation_summary.rfind("Route choice:"), "Hollow Reef Skitter extraction summary should not duplicate route-choice lines")
@@ -6081,7 +6081,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(glassfin_route_choice.contains("without fighting"), "Glassfin Swarm route-choice memory should reinforce observation-first creature direction")
 	_expect(not glassfin_route_choice.to_lower().contains("checklist"), "Glassfin Swarm route choice should not imply checklist UI")
 	_expect_no_monster_combat_language(glassfin_route_choice, "Glassfin Swarm route choice")
-	var glassfin_summary := main._format_extraction_result_summary(0, empty_cargo)
+	var glassfin_summary := SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(glassfin_summary.contains("Remembered place: Glassfin Swarm Route"), "Glassfin Swarm extraction summary should remember the creature-route place")
 	_expect(glassfin_summary.contains("Route choice: observed Glassfin Swarm spacing without fighting."), "Glassfin Swarm extraction summary should include one compact route-choice line")
 	_expect(glassfin_summary.contains("Discovery remembered: Glassfin Swarm"), "Glassfin Swarm extraction summary should include compact discovery memory")
@@ -6248,7 +6248,7 @@ func _test_wreck_echo_route_first_pass() -> void:
 	_expect(callout.contains("Wreck Echo clue"), "Wreck Echo clue should produce compact research callout")
 	_expect(callout.contains("deeper pressure signal below the shelf"), "Wreck Echo clue should stay broad/local")
 	_expect_no_echo_lens_locator_language(callout, "Wreck Echo result line")
-	var extraction_summary := main._format_extraction_result_summary(0, [])
+	var extraction_summary := SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, [])
 	_expect(extraction_summary.contains("Wreck Echo clue carried"), "Wreck Echo extraction summary should include the clue readback")
 	_expect(not extraction_summary.contains("%s"), "Wreck Echo extraction summary should not leak string placeholders")
 	_expect(not extraction_summary.contains("%dm"), "Wreck Echo extraction summary should not leak depth placeholders")
@@ -6395,7 +6395,7 @@ func _test_east_shelf_pocket_result_callout() -> void:
 	_expect(not callout.to_lower().contains("quest"), "East Shelf pocket result line should not imply quest UI")
 	_expect(not callout.to_lower().contains("checklist"), "East Shelf pocket result line should not imply checklist UI")
 
-	var extraction_summary := main._format_extraction_result_summary(0, [])
+	var extraction_summary := SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, [])
 	_expect(extraction_summary.contains("East Shelf signal core"), "East Shelf pocket extraction summary should include recovered signal-core memory")
 	_expect(not extraction_summary.contains("%s"), "East Shelf pocket extraction summary should not leak string placeholders")
 	var saved: Dictionary = main.progression_state.to_save_data()
@@ -6436,7 +6436,7 @@ func _test_lower_connector_echo_opportunity() -> void:
 	_expect(not callout.to_lower().contains("checklist"), "Drop Echo result line should not imply checklist UI")
 
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Drop Echo"), "Drop Echo extraction summary should include recovered lower-route memory")
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(not saved.has("drop_echo"), "Drop Echo should not become durable save data")
@@ -6489,12 +6489,12 @@ func _test_resonance_alcove_research_payoff() -> void:
 	_expect(callout.contains("small tuned pocket"), "Resonance Alcove result memory should stay broad and local")
 	_expect_no_echo_lens_locator_language(callout, "Resonance Alcove result line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Resonance Alcove"), "Resonance Alcove extraction summary should include recovered research memory")
 
 	var fresh_main := MainScript.new()
 	_expect(ResearchResultCalloutServiceScript.format_resonance_alcove_research_callout(fresh_main) == "", "Resonance Alcove result line should stay hidden before payoff recovery")
-	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	var fresh_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(fresh_main, 0, empty_cargo)
 	_expect(not fresh_summary.contains("Resonance Alcove"), "Resonance Alcove extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
 	main.free()
@@ -6543,13 +6543,13 @@ func _test_blue_chimney_draft_interaction() -> void:
 	_expect(callout.contains("deeper side-route"), "Blue Chimney result memory should hint at future route growth")
 	_expect_no_echo_lens_locator_language(callout, "Blue Chimney result line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Blue Chimney survey core"), "Blue Chimney extraction summary should include recovered survey core memory")
 	_expect(not extraction_summary.contains("%s"), "Blue Chimney extraction summary should not leak string placeholders")
 
 	var fresh_main := MainScript.new()
 	_expect(ResearchResultCalloutServiceScript.format_blue_chimney_research_callout(fresh_main) == "", "Blue Chimney result line should stay hidden before draft recovery")
-	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	var fresh_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(fresh_main, 0, empty_cargo)
 	_expect(not fresh_summary.contains("Blue Chimney survey core"), "Blue Chimney extraction summary should stay hidden before survey core recovery")
 	fresh_main.free()
 
@@ -6601,13 +6601,13 @@ func _test_lantern_silt_sample_interaction() -> void:
 	_expect(callout.contains("Silt Vein"), "Lantern Silt result memory should keep broad fork context")
 	_expect_no_echo_lens_locator_language(callout, "Lantern Silt result line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Lantern Silt Sample"), "Lantern Silt extraction summary should include recovered sample memory")
 	_expect(not extraction_summary.contains("%s"), "Lantern Silt extraction summary should not leak string placeholders")
 
 	var fresh_main := MainScript.new()
 	_expect(ResearchResultCalloutServiceScript.format_lantern_silt_sample_research_callout(fresh_main) == "", "Lantern Silt result line should stay hidden before sample recovery")
-	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	var fresh_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(fresh_main, 0, empty_cargo)
 	_expect(not fresh_summary.contains("Lantern Silt Sample"), "Lantern Silt extraction summary should stay hidden before sample recovery")
 	fresh_main.free()
 
@@ -6759,7 +6759,7 @@ func _test_blackwater_trace_payoff() -> void:
 	_expect(callout.contains("Drop Arch"), "Blackwater Trace result memory should name the upper lower-route landmark")
 	_expect_no_echo_lens_locator_language(callout, "Blackwater Trace result line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Blackwater Trace"), "Blackwater extraction summary should include recovered trace memory")
 	_expect(not extraction_summary.contains("%s"), "Blackwater extraction summary should not leak string placeholders")
 
@@ -6769,7 +6769,7 @@ func _test_blackwater_trace_payoff() -> void:
 
 	var fresh_main := MainScript.new()
 	_expect(ResearchResultCalloutServiceScript.format_blackwater_trace_research_callout(fresh_main) == "", "Blackwater Trace result line should stay hidden before recovery")
-	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	var fresh_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(fresh_main, 0, empty_cargo)
 	_expect(not fresh_summary.contains("Blackwater Trace"), "Blackwater extraction summary should stay hidden before trace recovery")
 	fresh_main.free()
 
@@ -6831,13 +6831,13 @@ func _test_glass_kelp_reading_payoff() -> void:
 	_expect(callout.contains("safer ledge"), "Glass Kelp result memory should explain why the pocket mattered")
 	_expect_no_echo_lens_locator_language(callout, "Glass Kelp result line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Glass Kelp reading"), "Glass Kelp extraction summary should include recovered reading memory")
 	_expect(not extraction_summary.contains("%s"), "Glass Kelp extraction summary should not leak string placeholders")
 
 	var fresh_main := MainScript.new()
 	_expect(ResearchResultCalloutServiceScript.format_glass_kelp_reading_callout(fresh_main) == "", "Glass Kelp result line should stay hidden before reading recovery")
-	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	var fresh_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(fresh_main, 0, empty_cargo)
 	_expect(not fresh_summary.contains("Glass Kelp reading"), "Glass Kelp extraction summary should stay hidden before reading recovery")
 	fresh_main.free()
 
@@ -6902,13 +6902,13 @@ func _test_hollow_reef_cave_reading_payoff() -> void:
 	_expect(callout.contains("Dusk Trench"), "Hollow Reef result memory should name the broad route context")
 	_expect_no_echo_lens_locator_language(callout, "Hollow Reef result line")
 	var empty_cargo: Array[String] = []
-	var extraction_summary: String = main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Hollow Reef cave reading"), "Hollow Reef extraction summary should include recovered reading memory")
 	_expect(not extraction_summary.contains("%s"), "Hollow Reef extraction summary should not leak string placeholders")
 
 	var fresh_main := MainScript.new()
 	_expect(ResearchResultCalloutServiceScript.format_hollow_reef_reading_callout(fresh_main) == "", "Hollow Reef result line should stay hidden before reading recovery")
-	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
+	var fresh_summary: String = SurfaceRunSummaryServiceScript.format_extraction_result_summary(fresh_main, 0, empty_cargo)
 	_expect(not fresh_summary.contains("Hollow Reef cave reading"), "Hollow Reef extraction summary should stay hidden before reading recovery")
 	fresh_main.free()
 
@@ -9970,7 +9970,7 @@ func _test_sealed_shelf_hatch_promise_state() -> void:
 	_expect_no_echo_lens_locator_language(readiness_copy, "sealed hatch readiness copy")
 
 	var empty_cargo: Array[String] = []
-	var extraction_summary := copy_main._format_extraction_result_summary(0, empty_cargo)
+	var extraction_summary := SurfaceRunSummaryServiceScript.format_extraction_result_summary(copy_main, 0, empty_cargo)
 	_expect(extraction_summary.contains("Resonance Key"), "sealed hatch readiness copy should appear in extraction result after relevant research")
 	copy_main.free()
 
