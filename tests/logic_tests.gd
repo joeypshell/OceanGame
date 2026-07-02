@@ -44,6 +44,7 @@ const HudVisibilityServiceScript := preload("res://scripts/ui/hud_visibility_ser
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
 const LowerConnectorVisualStagingServiceScript := preload("res://scripts/debug/lower_connector_visual_staging_service.gd")
 const MirrorKelpVisualStagingServiceScript := preload("res://scripts/debug/mirror_kelp_visual_staging_service.gd")
+const MinimapServiceScript := preload("res://scripts/ui/minimap_service.gd")
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
 const OpenHatchVisualStagingServiceScript := preload("res://scripts/debug/open_hatch_visual_staging_service.gd")
 const OuterShelfVisualStagingServiceScript := preload("res://scripts/debug/outer_shelf_visual_staging_service.gd")
@@ -245,6 +246,7 @@ func _initialize() -> void:
 	_run("HUD presenter", _test_hud_presenter)
 	_run("HUD instrument bar service", _test_hud_instrument_bar_service)
 	_run("depth rail service", _test_depth_rail_service)
+	_run("minimap service", _test_minimap_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("visual smoke bridge", _test_visual_smoke_bridge)
@@ -8121,6 +8123,25 @@ func _test_depth_rail_service() -> void:
 	DepthRailServiceScript.update_rail(main, false)
 	_expect(not main.depth_rail_line.visible and not main.depth_rail_marker.visible, "hidden depth rail should hide line and marker")
 	_expect(not main.depth_rail_labels[0].visible and not main.depth_rail_labels[1].visible and not main.depth_rail_labels[2].visible, "hidden depth rail should hide labels")
+	main.free()
+
+func _test_minimap_service() -> void:
+	var main := MainScript.new()
+	main.minimap_path = Line2D.new()
+	main.minimap_player_marker = Polygon2D.new()
+	main.player = PlayerScene.instantiate()
+	main.player.set("world_bounds", Rect2(Vector2.ZERO, Vector2(200.0, 200.0)))
+	main.player.global_position = Vector2(200.0, 0.0)
+	main.dive_session.current_depth = main.DEPTH_RAIL_MAX_DISPLAY_DEPTH * 0.5
+
+	MinimapServiceScript.update_minimap(main, true)
+	_expect(main.minimap_path.visible and main.minimap_player_marker.visible, "visible minimap should show path and player marker")
+	_expect(is_equal_approx(main.minimap_player_marker.position.x, 94.0 + 39.0), "minimap marker should track player horizontal world ratio")
+	_expect(is_equal_approx(main.minimap_player_marker.position.y, 34.0 + 38.0), "minimap marker should track current depth ratio")
+
+	MinimapServiceScript.update_minimap(main, false)
+	_expect(not main.minimap_path.visible and not main.minimap_player_marker.visible, "hidden minimap should hide path and player marker")
+	main.player.free()
 	main.free()
 
 func _test_tool_belt_presenter() -> void:
