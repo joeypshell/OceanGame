@@ -5,6 +5,7 @@ const ProgressionStateScript := preload("res://scripts/progression_state.gd")
 const SurvivalStateScript := preload("res://scripts/survival_state.gd")
 const SpawnPointScript := preload("res://scripts/spawn_point.gd")
 const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
+const DiveCapacityServiceScript := preload("res://scripts/services/dive_capacity_service.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 const SpawnSelectionScript := preload("res://scripts/spawn_selection.gd")
 const PlayerScript := preload("res://scripts/player.gd")
@@ -1025,6 +1026,12 @@ func _test_resource_taxonomy_offload_copy() -> void:
 	pickup_scene.queue_free()
 
 func _test_survival_oxygen_penalty() -> void:
+	_expect(DiveCapacityServiceScript.current_max_oxygen(30.0, false, 40.0, 4.0) == 26.0, "dive capacity service should apply survival oxygen penalty to base oxygen")
+	_expect(DiveCapacityServiceScript.current_max_oxygen(30.0, true, 40.0, 4.0) == 36.0, "dive capacity service should apply survival oxygen penalty after Oxygen Tank")
+	_expect(DiveCapacityServiceScript.current_max_oxygen(14.0, false, 40.0, 8.0) == 12.0, "dive capacity service should preserve the oxygen floor")
+	_expect(DiveCapacityServiceScript.current_cargo_limit(3, false, 4) == 3, "dive capacity service should preserve base cargo capacity")
+	_expect(DiveCapacityServiceScript.current_cargo_limit(3, true, 4) == 4, "dive capacity service should apply Cargo Rack capacity")
+
 	var main := MainScript.new()
 	main.survival_state.food = 0
 
