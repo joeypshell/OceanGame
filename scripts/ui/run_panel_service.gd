@@ -28,7 +28,7 @@ static func update_run_panel(host) -> void:
 				ResourceSummaryServiceScript.format_banked_resources(host.progression_state.banked_resources, host.survival_state, host.RESOURCE_CATEGORY_LABELS),
 				host._action_label("move_up_down"),
 				host._action_label("interact"),
-				host._format_next_expedition_prompt(),
+				SurfaceRunSummaryServiceScript.format_next_expedition_prompt(host),
 			], "extracted")
 		elif host.surface_tab_index == host.SURFACE_TAB_LOG:
 			host.run_title_label.text = "Recent Expeditions"

@@ -640,7 +640,7 @@ func _test_night_phase_end_day_and_upgrade_choice() -> void:
 	_expect(main.survival_state.water == SurvivalStateScript.STARTING_NEED, "Water Filter I should restore one water reserve during night")
 	_expect(main.upgrade_menu_feedback.contains("Purchased Water Filter I"), "night purchase feedback should confirm the build choice")
 	_expect(main.upgrade_menu_feedback.contains("Next:"), "night purchase feedback should include a concrete next-day plan")
-	var post_purchase_prompt: String = main._format_next_expedition_prompt()
+	var post_purchase_prompt: String = SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main)
 	_expect(not post_purchase_prompt.contains("build Water Filter I"), "tomorrow plan should move past Water Filter I after it is built")
 	_expect(post_purchase_prompt.contains("Oxygen Tank I"), "tomorrow plan after Water Filter I should point back to the starter research upgrade path")
 
@@ -680,14 +680,14 @@ func _test_night_power_patch_build_choice() -> void:
 	main.surface_tab_index = main.SURFACE_TAB_NIGHT
 	main.survival_state.power = 1
 
-	var missing_choice := main._format_night_build_choice_line()
+	var missing_choice := SurfaceRunSummaryServiceScript.format_night_build_choice_line(main)
 	_expect(missing_choice.contains("Power Patch needs Scrap Metal x1"), "Night tab should name the tiny craft cost when missing")
 	_expect(main._format_night_build_prompt().contains("check Power Patch"), "Night prompt should expose the build action even before materials are ready")
 
 	main.progression_state.banked_resources = {
 		"scrap_metal": 1,
 	}
-	var ready_choice := main._format_night_build_choice_line()
+	var ready_choice := SurfaceRunSummaryServiceScript.format_night_build_choice_line(main)
 	_expect(ready_choice.contains("Power Patch ready"), "Night tab should expose an available craft when scrap is banked")
 	_expect(ready_choice.contains("Power +1 tomorrow"), "Night tab should describe the next-day payoff")
 	_expect(main._format_night_build_prompt().contains("craft Power Patch"), "Night prompt should make the available craft actionable")
@@ -697,7 +697,7 @@ func _test_night_power_patch_build_choice() -> void:
 	_expect(main.survival_state.power == 2, "Night craft should add a visible Power reserve for tomorrow")
 	_expect(main.night_build_completed_this_surface, "Night craft should be one-per-night")
 	_expect(main.last_night_report.contains("Power Patch spent Scrap Metal x1"), "Night report should record the build result")
-	_expect(main._format_night_build_choice_line().contains("Power Patch installed"), "Night tab should show the completed build instead of another available action")
+	_expect(SurfaceRunSummaryServiceScript.format_night_build_choice_line(main).contains("Power Patch installed"), "Night tab should show the completed build instead of another available action")
 
 	_expect(not bool(main.call("_try_craft_night_power_patch")), "Night craft should not repeat after the one-night build is complete")
 	_expect(main.survival_state.power == 2, "Rejected repeat night craft should not add more Power")
@@ -5651,7 +5651,7 @@ func _test_next_expedition_framing() -> void:
 	var main := MainScript.new()
 	main.progression_state.current_run_number = 3
 
-	var prompt := main._format_next_expedition_prompt()
+	var prompt := SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main)
 	_expect(prompt.contains("Expedition 4"), "result prompt should point to the next expedition number")
 	_expect(prompt.contains("Water Filter I"), "result prompt should point to the best known upgrade/material goal")
 	_expect(prompt.contains("Shell Reef pockets"), "starter resource shortage should point back to a remembered place")
@@ -5661,12 +5661,12 @@ func _test_next_expedition_framing() -> void:
 	main.progression_state.banked_resources = {
 		"driftwood": 1,
 	}
-	prompt = main._format_next_expedition_prompt()
+	prompt = SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main)
 	_expect(prompt.contains("Shell Reef pockets"), "partial starter progress should preserve the remembered-place target")
 	_expect(prompt.contains("Quartz Glass") and not prompt.contains("Driftwood/Quartz Glass"), "partial starter progress should only name the remaining material")
 
 	main.survival_state.food = 0
-	prompt = main._format_next_expedition_prompt()
+	prompt = SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main)
 	_expect(prompt.contains("bank Food supply first") and prompt.contains("empty needs cut max oxygen"), "empty base needs should take priority in tomorrow planning")
 	_expect(SurfaceRunSummaryServiceScript.format_dawn_priority_line(main).contains("bank Food supply first"), "dawn priority should put empty base needs before upgrades")
 
@@ -5675,13 +5675,13 @@ func _test_next_expedition_framing() -> void:
 		"driftwood": 1,
 		"quartz_glass": 1,
 	}
-	prompt = main._format_next_expedition_prompt()
+	prompt = SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main)
 	_expect(prompt.contains("build Water Filter I in Upgrades"), "ready builds should take priority after critical base needs")
 	_expect(SurfaceRunSummaryServiceScript.format_dawn_priority_line(main).contains("build Water Filter I in Upgrades"), "dawn priority should name ready builds when critical needs are stable")
 
 	main.progression_state.banked_resources.clear()
 	main.survival_state.power = 1
-	prompt = main._format_next_expedition_prompt()
+	prompt = SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main)
 	_expect(prompt.contains("bank Power supply soon"), "low base needs should produce a non-critical supply plan")
 	_expect(SurfaceRunSummaryServiceScript.format_dawn_priority_line(main).contains("bank Power supply soon"), "dawn priority should call out low base needs before route goals")
 	main._refresh_carried_tomorrow_intention()
@@ -5690,7 +5690,7 @@ func _test_next_expedition_framing() -> void:
 		"driftwood": 1,
 		"quartz_glass": 1,
 	}
-	prompt = main._format_next_expedition_prompt()
+	prompt = SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main)
 	_expect(prompt.contains("bank Power supply soon"), "next expedition prompt should carry the confirmed night intention into tomorrow")
 	_expect(SurfaceRunSummaryServiceScript.format_dawn_priority_line(main).contains("bank Power supply soon"), "dawn priority should keep the carried night intention instead of recomputing immediately")
 	main.carried_tomorrow_intention = ""
@@ -5698,7 +5698,7 @@ func _test_next_expedition_framing() -> void:
 	main.survival_state.power = 3
 	main.progression_state.banked_resources.clear()
 	main.run_outer_shelf_survey_recovered = true
-	prompt = main._format_next_expedition_prompt()
+	prompt = SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main)
 	_expect(prompt.contains("Glass Rim timing") and prompt.contains("Outer Shelf cargo"), "remembered place should produce a broad route plan when needs/builds are stable")
 	_expect(SurfaceRunSummaryServiceScript.format_dawn_priority_line(main).contains("Outer Shelf cargo"), "dawn priority should preserve broad remembered-route opportunities")
 
@@ -7159,7 +7159,7 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 		main._format_wreck_echo_research_callout(),
 		main._format_upgrade_progress_callout(),
 		SurfaceRunSummaryServiceScript.format_scan_progress_callout(main.progression_state, main.run_completed_scans, "Discoveries recorded"),
-		main._format_next_expedition_prompt(),
+		SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main),
 	])
 	_expect_lines_within(compact_result, 96, "player-facing result summary")
 	_expect(not SurfaceRunSummaryServiceScript.format_run_summary(main, compact_result, "Extraction").contains("Playtest data:"), "result copy length guard should keep debug telemetry gated")
@@ -7792,7 +7792,7 @@ func _test_prompt_formatter_guard_coverage() -> void:
 
 	_expect(main._format_ready_panel_summary().contains("%s begins." % interact_label), "ready summary should derive its start label from the prompt helper")
 	_expect(main._format_upgrade_menu_title(2, 7).contains("%s select" % vertical_label), "upgrade title should derive selection labels from the prompt helper")
-	_expect(main._format_next_expedition_prompt().contains("press %s" % restart_label), "next expedition prompt should derive restart labels from the prompt helper")
+	_expect(SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main).contains("press %s" % restart_label), "next expedition prompt should derive restart labels from the prompt helper")
 	_expect(UpgradeStateServiceScript.format_burst_thruster_prompt(main).begins_with("%s burst" % burst_label), "burst prompt should derive its label from the prompt helper")
 	_expect(ExpeditionSlatePresenterScript.format_slate_text_for_host(main).contains("%s closes" % slate_label), "expedition slate should derive its close label from the prompt helper")
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks decoy.")

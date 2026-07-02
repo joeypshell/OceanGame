@@ -1127,7 +1127,7 @@ func _fail_dive() -> void:
 		SurfaceRunSummaryServiceScript.format_scan_progress_callout(progression_state, run_completed_scans, "Scans kept"),
 		roundi(progression_state.best_depth_reached),
 		SurfaceRunSummaryServiceScript.format_night_report_block(self),
-		_format_next_expedition_prompt(),
+		SurfaceRunSummaryServiceScript.format_next_expedition_prompt(self),
 	]
 	SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 	status_label.text = "Dive failed: %s. Cargo lost." % HealthFeedbackPresenterScript.format_failure_cause_for_player(run_failure_cause)
@@ -2080,7 +2080,7 @@ func _try_purchase_selected_upgrade() -> void:
 		_refresh_carried_tomorrow_intention()
 		upgrade_menu_feedback = "Purchased %s. Next: %s" % [
 			upgrade.display_name,
-			_format_current_tomorrow_intention(),
+			SurfaceRunSummaryServiceScript.format_current_tomorrow_intention(self),
 		]
 		SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 		status_label.text = "Purchased %s." % upgrade.display_name
@@ -2813,20 +2813,11 @@ func _reset_run_telemetry() -> void:
 	RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(self)
 	_sync_survival_supply_cache_state()
 
-func _format_next_expedition_prompt() -> String:
-	return SurfaceRunSummaryServiceScript.format_next_expedition_prompt(self)
-
 func _refresh_carried_tomorrow_intention() -> void:
 	carried_tomorrow_intention = SurfaceRunSummaryServiceScript.format_tomorrow_plan(self)
 
-func _format_current_tomorrow_intention() -> String:
-	return SurfaceRunSummaryServiceScript.format_current_tomorrow_intention(self)
-
 func _format_extraction_result_summary(extracted_count: int, banked_resources: Array[String], banked_survival_supplies: Array[String] = []) -> String:
 	return SurfaceRunSummaryServiceScript.format_extraction_result_summary(self, extracted_count, banked_resources, banked_survival_supplies)
-
-func _format_night_build_choice_line() -> String:
-	return SurfaceRunSummaryServiceScript.format_night_build_choice_line(self)
 
 func _first_ready_upgrade_definition() -> UpgradeDefinition:
 	for upgrade in upgrade_definitions:

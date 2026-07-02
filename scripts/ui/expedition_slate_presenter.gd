@@ -5,6 +5,7 @@ const ExpeditionGoalFormatterScript := preload("res://scripts/expedition_goal_fo
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
+const SurfaceRunSummaryServiceScript := preload("res://scripts/ui/surface_run_summary_service.gd")
 
 static func format_slate_text_for_host(host) -> String:
 	return format_slate_text(slate_state(host))
@@ -18,11 +19,11 @@ static func slate_state(host) -> Dictionary:
 		"cargo_limit": host.dive_session.cargo_limit,
 		"cargo_names": cargo_names,
 		"current_depth": roundi(host.dive_session.current_depth),
-		"day_plan": host._format_current_tomorrow_intention(),
+		"day_plan": SurfaceRunSummaryServiceScript.format_current_tomorrow_intention(host),
 		"daylight_label": HudPresenterScript.format_daylight_label(host._daylight_remaining_seconds()),
 		"daylight_percent_left": roundi(host._daylight_remaining_ratio() * 100.0),
 		"health": ceili(host.dive_session.health),
-		"known_build_line": host._format_night_build_choice_line(),
+		"known_build_line": SurfaceRunSummaryServiceScript.format_night_build_choice_line(host),
 		"max_health": ceili(host.dive_session.max_health),
 		"max_oxygen": ceili(host.dive_session.max_oxygen),
 		"oxygen": ceili(host.dive_session.oxygen),
