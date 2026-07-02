@@ -51,6 +51,7 @@ const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_pre
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
+const SurvivalSupplyCacheStateServiceScript := preload("res://scripts/ui/survival_supply_cache_state_service.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
@@ -3875,19 +3876,7 @@ func _format_extraction_banking_line(extracted_count: int, extracted_cargo: Arra
 	)
 
 func _sync_survival_supply_cache_state() -> void:
-	if survival_supply_cache_halo == null or survival_supply_cache_core == null:
-		return
-
-	if run_survival_supply_cache_recovered:
-		survival_supply_cache_halo.color = Color(0.72, 0.95, 1.0, 0.08)
-		survival_supply_cache_core.color = Color(0.96, 0.78, 0.38, 0.18)
-		if survival_supply_cache_label != null:
-			survival_supply_cache_label.text = "SUPPLY TAKEN"
-	else:
-		survival_supply_cache_halo.color = Color(0.72, 0.95, 1.0, 0.22)
-		survival_supply_cache_core.color = Color(0.96, 0.78, 0.38, 0.72)
-		if survival_supply_cache_label != null:
-			survival_supply_cache_label.text = "SUPPLY CACHE"
+	SurvivalSupplyCacheStateServiceScript.sync_state(self)
 
 func _record_salvage_data_cache_discovery_if_extracted() -> void:
 	if not run_salvage_data_cache_recovered:

@@ -59,6 +59,7 @@ const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_pre
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
+const SurvivalSupplyCacheStateServiceScript := preload("res://scripts/ui/survival_supply_cache_state_service.gd")
 const SurvivalNeedsPanelServiceScript := preload("res://scripts/ui/survival_needs_panel_service.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
@@ -131,6 +132,7 @@ func _initialize() -> void:
 	_run("survival collapse and reset", _test_survival_collapse_and_reset)
 	_run("survival supply banking isolation", _test_survival_supply_banking_isolation)
 	_run("survival supply cache presenter", _test_survival_supply_cache_presenter)
+	_run("survival supply cache state service", _test_survival_supply_cache_state_service)
 	_run("survival needs panel service", _test_survival_needs_panel_service)
 	_run("survival supply cache target copy", _test_survival_supply_cache_target_copy)
 	_run("starter survival resource families", _test_starter_survival_resource_families)
@@ -793,6 +795,24 @@ func _test_survival_supply_cache_presenter() -> void:
 	_expect(SurvivalSupplyCachePresenterScript.format_full_status(true, "Power") == "Cargo full: backup cache needs a slot.", "stable full-cache status should preserve backup copy")
 	_expect(SurvivalSupplyCachePresenterScript.format_full_status(false, "Power") == "Cargo full: Power cache needs a slot.", "full-cache status should name the blocked target")
 	_expect(SurvivalSupplyCachePresenterScript.format_recovered_status("Power Cell", "Power").contains("Power Cell") and SurvivalSupplyCachePresenterScript.format_recovered_status("Power Cell", "Power").contains("Ship banks"), "recovered cache status should name the supply role and ship banking")
+
+func _test_survival_supply_cache_state_service() -> void:
+	var main := MainScript.new()
+	main.survival_supply_cache_halo = Polygon2D.new()
+	main.survival_supply_cache_core = Polygon2D.new()
+	main.survival_supply_cache_label = Label.new()
+
+	SurvivalSupplyCacheStateServiceScript.sync_state(main)
+	_expect(main.survival_supply_cache_halo.color == Color(0.72, 0.95, 1.0, 0.22), "available supply cache halo should keep readable color")
+	_expect(main.survival_supply_cache_core.color == Color(0.96, 0.78, 0.38, 0.72), "available supply cache core should keep readable color")
+	_expect(main.survival_supply_cache_label.text == "SUPPLY CACHE", "available supply cache label should stay exact")
+
+	main.run_survival_supply_cache_recovered = true
+	SurvivalSupplyCacheStateServiceScript.sync_state(main)
+	_expect(main.survival_supply_cache_halo.color == Color(0.72, 0.95, 1.0, 0.08), "recovered supply cache halo should dim")
+	_expect(main.survival_supply_cache_core.color == Color(0.96, 0.78, 0.38, 0.18), "recovered supply cache core should dim")
+	_expect(main.survival_supply_cache_label.text == "SUPPLY TAKEN", "recovered supply cache label should stay exact")
+	main.free()
 
 func _test_survival_needs_panel_service() -> void:
 	var main := MainScript.new()
