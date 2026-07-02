@@ -24,6 +24,7 @@ const Area01VisualStagingServiceScript := preload("res://scripts/debug/area01_vi
 const BlackwaterVisualStagingServiceScript := preload("res://scripts/debug/blackwater_visual_staging_service.gd")
 const BlueChimneyVisualStagingServiceScript := preload("res://scripts/debug/blue_chimney_visual_staging_service.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
+const RunTelemetryResetServiceScript := preload("res://scripts/services/run_telemetry_reset_service.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
 const DaylightTimerHudServiceScript := preload("res://scripts/ui/daylight_timer_hud_service.gd")
@@ -227,6 +228,7 @@ func _initialize() -> void:
 	_run("discovery memory result callout", _test_discovery_memory_result_callout)
 	_run("route memory presenter", _test_route_memory_presenter)
 	_run("run memory state service", _test_run_memory_state_service)
+	_run("run telemetry reset service", _test_run_telemetry_reset_service)
 	_run("route choice result callout", _test_route_choice_result_callout)
 	_run("gulper research result callout", _test_gulper_research_result_callout)
 	_run("research result presenter", _test_research_result_presenter)
@@ -5869,6 +5871,61 @@ func _test_run_memory_state_service() -> void:
 	_expect(research_state.get("run_echo_lens_echo_fired") == true, "run memory state service should preserve Echo Lens echo state")
 	_expect(research_state.get("run_wreck_echo_clue_recovered") == true, "run memory state service should preserve wreck echo clue state")
 	_expect(research_state.get("run_glass_kelp_reading_recovered") == true, "run memory state service should preserve glass kelp reading state")
+	main.free()
+
+func _test_run_telemetry_reset_service() -> void:
+	var main := MainScript.new()
+	main.run_collected_resources = ["shell_fragments"]
+	main.run_collected_survival_supplies = ["food_supply"]
+	main.run_banked_survival_supplies = ["power_supply"]
+	main.run_completed_scans = ["thermal_vent"]
+	main.run_predator_contacts = 2
+	main.run_health_damage_events = 1
+	main.last_health_damage_source = "thermal vent heat"
+	main.last_health_damage_amount = 12.0
+	main.run_failure_cause = "oxygen"
+	main.run_echo_lens_echo_fired = true
+	main.run_wreck_echo_clue_recovered = true
+	main.run_east_shelf_pocket_ping_recovered = true
+	main.run_lower_connector_echo_recovered = true
+	main.run_resonance_alcove_research_recovered = true
+	main.run_blue_chimney_draft_reading_recovered = true
+	main.run_lantern_silt_sample_recovered = true
+	main.run_blackwater_trace_recovered = true
+	main.run_reached_dusk_trench = true
+	main.run_glass_kelp_reading_recovered = true
+	main.run_hollow_reef_reading_recovered = true
+	main.run_salvage_manifest_recovered = true
+	main.run_salvage_data_cache_recovered = true
+	main.run_outer_shelf_survey_recovered = true
+	main.run_rim_glass_reading_recovered = true
+	main.run_tideglass_sample_recovered = true
+	main.run_survival_supply_cache_recovered = true
+	main.last_completed_survival_day = 4
+	main.debug_wreck_echo_review_staged = true
+	main.visual_smoke_route_stage = "wreck"
+	main.current_lantern_ray_route_id = "high"
+	main.echo_lens_pulse_timer = 3.0
+	main.blue_chimney_draft_timer = 3.0
+	main.blackwater_pressure_timer = 3.0
+	main.lantern_ray_timing_timer = 3.0
+	main.hollow_reef_timing_timer = 3.0
+	main.glassfin_swarm_spacing_timer = 3.0
+	main.salvage_silt_timing_timer = 3.0
+	main.outer_shelf_slackwater_timer = 3.0
+
+	RunTelemetryResetServiceScript.reset_run_telemetry(main)
+	_expect(main.run_collected_resources.is_empty() and main.run_collected_survival_supplies.is_empty(), "run telemetry reset service should clear collected resource telemetry")
+	_expect(main.run_banked_survival_supplies.is_empty() and main.run_completed_scans.is_empty(), "run telemetry reset service should clear banked supply and scan telemetry")
+	_expect(main.run_predator_contacts == 0 and main.run_health_damage_events == 0, "run telemetry reset service should clear encounter counters")
+	_expect(main.last_health_damage_source == "" and is_equal_approx(main.last_health_damage_amount, 0.0), "run telemetry reset service should clear last damage details")
+	_expect(main.run_failure_cause == "none", "run telemetry reset service should restore default failure cause")
+	_expect(not main.run_echo_lens_echo_fired and not main.run_wreck_echo_clue_recovered, "run telemetry reset service should clear Echo Lens and wreck clue flags")
+	_expect(not main.run_blackwater_trace_recovered and not main.run_reached_dusk_trench, "run telemetry reset service should clear route memory flags")
+	_expect(not main.run_salvage_data_cache_recovered and not main.run_tideglass_sample_recovered, "run telemetry reset service should clear late-region research flags")
+	_expect(main.last_completed_survival_day == 0 and not main.debug_wreck_echo_review_staged, "run telemetry reset service should clear day/debug reset fields")
+	_expect(main.visual_smoke_route_stage == "" and main.current_lantern_ray_route_id == "none", "run telemetry reset service should restore visual stage and Lantern Ray route defaults")
+	_expect(is_equal_approx(main.echo_lens_pulse_timer, 0.0) and is_equal_approx(main.outer_shelf_slackwater_timer, 0.0), "run telemetry reset service should clear route timing timers")
 	main.free()
 
 func _test_route_choice_result_callout() -> void:

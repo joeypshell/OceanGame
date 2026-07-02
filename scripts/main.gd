@@ -16,6 +16,7 @@ const Area01VisualStagingServiceScript := preload("res://scripts/debug/area01_vi
 const BlackwaterVisualStagingServiceScript := preload("res://scripts/debug/blackwater_visual_staging_service.gd")
 const BlueChimneyVisualStagingServiceScript := preload("res://scripts/debug/blue_chimney_visual_staging_service.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
+const RunTelemetryResetServiceScript := preload("res://scripts/services/run_telemetry_reset_service.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
 const DaylightTimerHudServiceScript := preload("res://scripts/ui/daylight_timer_hud_service.gd")
@@ -3318,44 +3319,7 @@ func _oxygen_tank_cost() -> Dictionary:
 	return OXYGEN_TANK_UPGRADE.resource_cost
 
 func _reset_run_telemetry() -> void:
-	run_collected_resources.clear()
-	run_collected_survival_supplies.clear()
-	run_banked_survival_supplies.clear()
-	run_completed_scans.clear()
-	run_predator_contacts = 0
-	run_health_damage_events = 0
-	last_health_damage_source = ""
-	last_health_damage_amount = 0.0
-	run_failure_cause = "none"
-	run_echo_lens_echo_fired = false
-	run_wreck_echo_clue_recovered = false
-	run_east_shelf_pocket_ping_recovered = false
-	run_lower_connector_echo_recovered = false
-	run_resonance_alcove_research_recovered = false
-	run_blue_chimney_draft_reading_recovered = false
-	run_lantern_silt_sample_recovered = false
-	run_blackwater_trace_recovered = false
-	run_reached_dusk_trench = false
-	run_glass_kelp_reading_recovered = false
-	run_hollow_reef_reading_recovered = false
-	run_salvage_manifest_recovered = false
-	run_salvage_data_cache_recovered = false
-	run_outer_shelf_survey_recovered = false
-	run_rim_glass_reading_recovered = false
-	run_tideglass_sample_recovered = false
-	run_survival_supply_cache_recovered = false
-	last_completed_survival_day = 0
-	debug_wreck_echo_review_staged = false
-	visual_smoke_route_stage = ""
-	current_lantern_ray_route_id = "none"
-	echo_lens_pulse_timer = 0.0
-	blue_chimney_draft_timer = 0.0
-	blackwater_pressure_timer = 0.0
-	lantern_ray_timing_timer = 0.0
-	hollow_reef_timing_timer = 0.0
-	glassfin_swarm_spacing_timer = 0.0
-	salvage_silt_timing_timer = 0.0
-	outer_shelf_slackwater_timer = 0.0
+	RunTelemetryResetServiceScript.reset_run_telemetry(self)
 	if echo_lens_pulse != null:
 		echo_lens_pulse.visible = false
 	_sync_east_shelf_pocket_payoff_state()
