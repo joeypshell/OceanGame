@@ -2,6 +2,7 @@ class_name OuterShelfVisualStagingService
 extends RefCounted
 
 const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
+const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 
 const BLACKWATER_SILL_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill"
 const OUTER_SHELF_SURVEY_ZONE_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/InteractZone"
@@ -50,10 +51,10 @@ static func stage_visual_review(host) -> void:
 	host.run_outer_shelf_survey_recovered = false
 	while host.run_completed_scans.has("mirrorfin_drift"):
 		host.run_completed_scans.erase("mirrorfin_drift")
-	host._sync_salvage_manifest_state()
-	host._sync_salvage_data_cache_state()
-	host._sync_tideglass_sample_state()
-	host._sync_outer_shelf_survey_state()
+	RoutePayoffSyncServiceScript.sync_salvage_manifest_payoff(host)
+	RoutePayoffSyncServiceScript.sync_salvage_data_cache_payoff(host)
+	RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(host)
+	RoutePayoffSyncServiceScript.sync_outer_shelf_survey_payoff(host)
 	RouteTimingCueServiceScript.update_outer_shelf_slackwater_timing_cue(host, host.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
 	host.visual_smoke_route_stage = "outer_shelf_survey"
 	if host.status_label != null:

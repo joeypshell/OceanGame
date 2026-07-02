@@ -2399,7 +2399,7 @@ func _test_outer_shelf_cargo_knowledge_payoff_choice() -> void:
 	var survey_core := survey.get_node("SurveyCore") as Polygon2D
 	var survey_spark := survey.get_node("SurveySpark") as Polygon2D
 	var kelp_candidate := main.get_node("StarterResourceCandidates/KelpFiber/OuterShelfA") as SpawnPoint
-	main.call("_sync_outer_shelf_survey_state")
+	RoutePayoffSyncServiceScript.sync_outer_shelf_survey_payoff(main)
 	_expect(survey_core.color.a >= 0.8, "Outer Shelf survey core should start visibly recoverable")
 	_expect(survey_spark.visible, "Outer Shelf survey spark should start visible before recovery")
 	_expect(kelp_candidate.target_id == "kelp_fiber", "Outer Shelf cargo choice should use existing Kelp Fiber")
@@ -2493,7 +2493,7 @@ func _test_glass_rim_reading_payoff_choice() -> void:
 	var spark := reading.get_node("ReadingSpark") as Polygon2D
 	var interact_zone := reading.get_node("InteractZone") as Area2D
 	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
-	main.call("_sync_rim_glass_reading_state")
+	RoutePayoffSyncServiceScript.sync_rim_glass_reading_payoff(main)
 	_expect(reading.position.x > branch.position.x, "Glass Rim reading should sit beyond the timing branch")
 	_expect(reading.position.x < promise.position.x, "Glass Rim reading should sit before the sealed future promise")
 	_expect(interact_zone.collision_layer == 0, "Glass Rim reading interaction should not become route collision")
@@ -2796,7 +2796,7 @@ func _test_salvage_data_cache_interaction() -> void:
 	var cache_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheHalo") as Polygon2D
 	var cache_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheCore") as Polygon2D
 	var cache_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/DataCache/CacheSpark") as Polygon2D
-	main.call("_sync_salvage_data_cache_state")
+	RoutePayoffSyncServiceScript.sync_salvage_data_cache_payoff(main)
 	_expect(cache_core.color.a >= 0.7, "salvage data cache should start visibly recoverable")
 	_expect(cache_spark.visible, "salvage data cache spark should start visible before recovery")
 	var prompt: String = main.call("_format_hud_prompt")
@@ -2996,7 +2996,7 @@ func _test_tideglass_sample_interaction() -> void:
 	var sample_halo := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleHalo") as Polygon2D
 	var sample_core := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleCore") as Polygon2D
 	var sample_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/TideglassSample/SampleSpark") as Polygon2D
-	main.call("_sync_tideglass_sample_state")
+	RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(main)
 	_expect(sample_core.color.a >= 0.7, "Tideglass Sample should start visibly recoverable")
 	_expect(sample_spark.visible, "Tideglass Sample spark should start visible before recovery")
 	var prompt: String = main.call("_format_hud_prompt")
@@ -6486,7 +6486,7 @@ func _test_blue_chimney_draft_interaction() -> void:
 	main.dive_session.current_cargo = ["shell_fragments"]
 	var survey_gem := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveyGem") as Polygon2D
 	var survey_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SurveyCore/SurveySpark") as Polygon2D
-	main.call("_sync_blue_chimney_payoff_state")
+	RoutePayoffSyncServiceScript.sync_blue_chimney_payoff(main)
 	_expect(survey_gem.color.a >= 0.7, "Blue Chimney survey core should start visibly recoverable")
 	_expect(survey_spark.visible, "Blue Chimney survey spark should start visible before recovery")
 	var prompt: String = main.call("_format_hud_prompt")
@@ -6738,7 +6738,7 @@ func _test_glass_kelp_reading_payoff() -> void:
 	main.progression_state.banked_resources = {"glow_plankton": 2}
 	var reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingShard") as Polygon2D
 	var reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/ReadingCore/ReadingSpark") as Polygon2D
-	main.call("_sync_glass_kelp_reading_state")
+	RoutePayoffSyncServiceScript.sync_glass_kelp_reading_payoff(main)
 	_expect(reading_shard.color.a >= 0.7, "Glass Kelp reading should start visibly recoverable")
 	_expect(reading_spark.visible, "Glass Kelp reading spark should start visible before recovery")
 	var prompt: String = main.call("_format_hud_prompt")
@@ -6806,7 +6806,7 @@ func _test_hollow_reef_cave_reading_payoff() -> void:
 	main.progression_state.banked_resources = {"kelp_fiber": 2}
 	var reading_shard := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingShard") as Polygon2D
 	var reading_spark := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/CaveReadingCore/ReadingSpark") as Polygon2D
-	main.call("_sync_hollow_reef_reading_state")
+	RoutePayoffSyncServiceScript.sync_hollow_reef_reading_payoff(main)
 	_expect(reading_shard.color.a >= 0.7, "Hollow Reef cave reading should start visibly recoverable")
 	_expect(reading_spark.visible, "Hollow Reef cave reading spark should start visible before recovery")
 	var prompt: String = main.call("_format_hud_prompt")
@@ -9673,7 +9673,7 @@ func _test_east_shelf_pocket_prompt_interaction() -> void:
 	main.player_near_east_shelf_pocket = true
 	var signal_core_gem := main.get_node("EastShelfSpur/PocketEntrance/SignalCore/CoreGem") as Polygon2D
 	var signal_core_spark := main.get_node("EastShelfSpur/PocketEntrance/SignalCore/CoreSpark") as Polygon2D
-	main.call("_sync_east_shelf_pocket_payoff_state")
+	RoutePayoffSyncServiceScript.sync_east_shelf_pocket_payoff(main)
 	_expect(signal_core_gem.color.a >= 0.8 and signal_core_spark.visible, "East Shelf signal core should start as an obvious visible payoff")
 	var prompt: String = main.call("_format_hud_prompt")
 	_expect(prompt.contains("East Shelf Pocket"), "East Shelf pocket proximity should own the active dive prompt")
