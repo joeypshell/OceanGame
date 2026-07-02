@@ -2690,8 +2690,8 @@ func _sync_predator_warning_upgrade_state() -> void:
 
 func _update_hud() -> void:
 	_update_scan_target_feedback()
-	_update_run_panel()
-	_update_upgrade_menu()
+	RunPanelServiceScript.update_run_panel(self)
+	UpgradeMenuServiceScript.update_menu(self)
 	_apply_active_hud_layout()
 	var is_diving := HudVisibilityServiceScript.active_hud_visible_for_result(dive_session.result)
 	var has_surface_panel := HudVisibilityServiceScript.surface_hud_visible_for_result(dive_session.result)
@@ -2712,10 +2712,10 @@ func _update_hud() -> void:
 		dive_session.cargo_limit
 	]
 	_update_cargo_slots()
-	_update_instrument_bars()
-	_update_survival_needs_panel(is_diving)
-	_update_depth_rail(is_diving)
-	_update_minimap(is_diving)
+	HudInstrumentBarServiceScript.update_bars(self)
+	SurvivalNeedsPanelServiceScript.update_panel(self, is_diving)
+	DepthRailServiceScript.update_rail(self, is_diving)
+	MinimapServiceScript.update_minimap(self, is_diving)
 	bank_label.text = "Banked:%s" % ResourceSummaryServiceScript.format_banked_resources(progression_state.banked_resources, survival_state, RESOURCE_CATEGORY_LABELS)
 	upgrade_label.text = UpgradeStateServiceScript.format_upgrade_status(self)
 	discoveries_label.text = _format_discoveries(true)
@@ -2726,7 +2726,7 @@ func _update_hud() -> void:
 		objective_line_label.text = _format_active_objective_line()
 
 	prompt_label.text = HudPresenterScript.compact_dive_status(_format_hud_prompt()) if is_diving else _format_hud_prompt()
-	_update_tool_belt(is_diving)
+	ToolBeltServiceScript.update_tool_belt(self, is_diving)
 	_update_expedition_slate(is_diving)
 
 	_publish_visual_smoke_state()
@@ -2737,18 +2737,6 @@ func _apply_active_hud_layout() -> void:
 
 func _ensure_active_hud_references() -> void:
 	HudReferenceServiceScript.ensure_active_hud_references(self)
-
-func _update_instrument_bars() -> void:
-	HudInstrumentBarServiceScript.update_bars(self)
-
-func _update_survival_needs_panel(is_visible: bool) -> void:
-	SurvivalNeedsPanelServiceScript.update_panel(self, is_visible)
-
-func _update_depth_rail(is_visible: bool) -> void:
-	DepthRailServiceScript.update_rail(self, is_visible)
-
-func _update_minimap(is_visible: bool) -> void:
-	MinimapServiceScript.update_minimap(self, is_visible)
 
 func _advance_daylight_timer(delta: float) -> void:
 	if daylight_duration_seconds <= 0.0 or daylight_nightfall_announced:
@@ -2819,14 +2807,8 @@ func _set_control_rect(control: Control, rect: Rect2) -> void:
 func _publish_visual_smoke_state() -> void:
 	VisualSmokeBridgeScript.publish_state(self)
 
-func _update_run_panel() -> void:
-	RunPanelServiceScript.update_run_panel(self)
-
 func _apply_run_panel_layout(use_compact_panel: bool) -> void:
 	RunPanelLayoutServiceScript.apply_layout(self, use_compact_panel)
-
-func _update_upgrade_menu() -> void:
-	UpgradeMenuServiceScript.update_menu(self)
 
 func _format_upgrade_menu_title(selected_position: int, total_count: int) -> String:
 	return "Upgrade Bay (%d/%d) - %s select" % [
@@ -2860,9 +2842,6 @@ func _update_cargo_slots() -> void:
 		cargo_slot_icon_nodes[index].polygon = CargoSlotPresenterScript.cargo_slot_icon_polygon(states[index])
 		cargo_slot_icon_nodes[index].color = CargoSlotPresenterScript.cargo_slot_icon_color(states[index])
 		cargo_slot_icon_nodes[index].visible = slot_visible and cargo_slot_icon_nodes[index].polygon.size() > 0
-
-func _update_tool_belt(is_visible: bool) -> void:
-	ToolBeltServiceScript.update_tool_belt(self, is_visible)
 
 func _format_burst_thruster_prompt() -> String:
 	return UpgradeStateServiceScript.format_burst_thruster_prompt(self)
