@@ -1,6 +1,8 @@
 class_name WreckEchoVisualStagingService
 extends RefCounted
 
+const ResearchResultCalloutServiceScript := preload("res://scripts/ui/research_result_callout_service.gd")
+
 static func stage_visual_review(host) -> void:
 	if not host.show_debug_telemetry:
 		return
@@ -52,6 +54,6 @@ static func stage_visual_review(host) -> void:
 	host.player_in_base = true
 	if not host.is_inside_tree():
 		host.dive_session.extract()
-		host.last_result_summary = host._format_wreck_echo_research_callout()
+		host.last_result_summary = ResearchResultCalloutServiceScript.format_wreck_echo_research_callout(host)
 		return
 	host._try_extract()

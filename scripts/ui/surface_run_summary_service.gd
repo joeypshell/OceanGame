@@ -8,6 +8,7 @@ const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_sum
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
 const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
+const ResearchResultCalloutServiceScript := preload("res://scripts/ui/research_result_callout_service.gd")
 const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
@@ -137,23 +138,23 @@ static func format_extraction_result_summary(host, extracted_count: int, banked_
 		format_region_memory_callout(host),
 		format_discovery_memory_callout(host),
 		format_route_choice_callout(host),
-		host._format_gulper_research_callout(),
-		host._format_echo_lens_research_callout(),
-		host._format_wreck_echo_research_callout(),
-		host._format_east_shelf_pocket_research_callout(),
-		host._format_lower_connector_echo_research_callout(),
-		host._format_resonance_alcove_research_callout(),
-		host._format_blue_chimney_research_callout(),
-		host._format_lantern_silt_sample_research_callout(),
-		host._format_blackwater_trace_research_callout(),
-		host._format_glass_kelp_reading_callout(),
-		host._format_hollow_reef_reading_callout(),
-		host._format_salvage_data_cache_research_callout(),
-		host._format_salvage_manifest_research_callout(),
-		host._format_tideglass_sample_research_callout(),
-		host._format_rim_glass_reading_callout(),
-		host._format_outer_shelf_survey_research_callout(),
-		host._format_sealed_shelf_hatch_readiness_callout(),
+		ResearchResultCalloutServiceScript.format_gulper_research_callout(host),
+		ResearchResultCalloutServiceScript.format_echo_lens_research_callout(host),
+		ResearchResultCalloutServiceScript.format_wreck_echo_research_callout(host),
+		ResearchResultCalloutServiceScript.format_east_shelf_pocket_research_callout(host),
+		ResearchResultCalloutServiceScript.format_lower_connector_echo_research_callout(host),
+		ResearchResultCalloutServiceScript.format_resonance_alcove_research_callout(host),
+		ResearchResultCalloutServiceScript.format_blue_chimney_research_callout(host),
+		ResearchResultCalloutServiceScript.format_lantern_silt_sample_research_callout(host),
+		ResearchResultCalloutServiceScript.format_blackwater_trace_research_callout(host),
+		ResearchResultCalloutServiceScript.format_glass_kelp_reading_callout(host),
+		ResearchResultCalloutServiceScript.format_hollow_reef_reading_callout(host),
+		ResearchResultCalloutServiceScript.format_salvage_data_cache_research_callout(host),
+		ResearchResultCalloutServiceScript.format_salvage_manifest_research_callout(host),
+		ResearchResultCalloutServiceScript.format_tideglass_sample_research_callout(host),
+		ResearchResultCalloutServiceScript.format_rim_glass_reading_callout(host),
+		ResearchResultCalloutServiceScript.format_outer_shelf_survey_research_callout(host),
+		ResearchResultCalloutServiceScript.format_sealed_shelf_hatch_readiness_callout(host),
 		UpgradeStateServiceScript.format_upgrade_progress_callout(host),
 		format_scan_progress_callout(host.progression_state, host.run_completed_scans, "Discoveries recorded"),
 		roundi(host.progression_state.best_depth_reached),

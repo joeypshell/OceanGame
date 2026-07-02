@@ -81,6 +81,7 @@ const RouteTimingCuePresenterScript := preload("res://scripts/ui/route_timing_cu
 const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
 const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
+const ResearchResultCalloutServiceScript := preload("res://scripts/ui/research_result_callout_service.gd")
 const ConditionVisualSyncServiceScript := preload("res://scripts/ui/condition_visual_sync_service.gd")
 const DiscoveryRevealSyncServiceScript := preload("res://scripts/ui/discovery_reveal_sync_service.gd")
 const RouteGateSyncServiceScript := preload("res://scripts/ui/route_gate_sync_service.gd")
@@ -2462,7 +2463,7 @@ func _test_outer_shelf_cargo_knowledge_payoff_choice() -> void:
 	_expect(not saved.has("outer_shelf_route"), "Outer Shelf should not create durable route state")
 	_expect(not saved.has("glass_rim_cut"), "Glass Rim Cut should not create durable route state")
 
-	var callout: String = main.call("_format_outer_shelf_survey_research_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_outer_shelf_survey_research_callout(main)
 	_expect(callout.contains("Outer Shelf"), "Outer Shelf result memory should name the area")
 	_expect(callout.contains("Glass Rim Cut"), "Outer Shelf result memory should explain why the survey mattered")
 	_expect(callout.contains("Kelp Fiber cargo"), "Outer Shelf result memory should preserve the cargo-vs-knowledge choice")
@@ -2486,7 +2487,7 @@ func _test_outer_shelf_cargo_knowledge_payoff_choice() -> void:
 	_expect(not recent_log.to_lower().contains("map"), "Outer Shelf recent log should not imply map UI")
 
 	var fresh_main := MainScript.new()
-	_expect(fresh_main._format_outer_shelf_survey_research_callout() == "", "Outer Shelf result line should stay hidden before survey recovery")
+	_expect(ResearchResultCalloutServiceScript.format_outer_shelf_survey_research_callout(fresh_main) == "", "Outer Shelf result line should stay hidden before survey recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Outer Shelf survey"), "Outer Shelf extraction summary should stay hidden before survey recovery")
 	fresh_main.free()
@@ -2553,7 +2554,7 @@ func _test_glass_rim_reading_payoff_choice() -> void:
 	_expect(not saved.has("rim_glass_reading"), "Glass Rim reading should not create durable reading state")
 	_expect(not saved.has("glass_rim_route"), "Glass Rim reading should not create durable route state")
 	_expect(not saved.has("route_graph"), "Glass Rim reading should not create route graph state")
-	var callout: String = main.call("_format_rim_glass_reading_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_rim_glass_reading_callout(main)
 	_expect(callout.contains("Glass Rim reading"), "Glass Rim research line should name the new payoff")
 	_expect(callout.contains("cargo remains optional"), "Glass Rim research line should preserve the cargo-vs-knowledge decision")
 	_expect_no_echo_lens_locator_language(callout, "Glass Rim research line")
@@ -2854,7 +2855,7 @@ func _test_salvage_data_cache_interaction() -> void:
 	var not_handled: bool = main.call("_try_salvage_data_cache_interaction")
 	_expect(not not_handled, "salvage data cache should not consume interact outside its proximity zone")
 
-	var callout: String = main.call("_format_salvage_data_cache_research_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_salvage_data_cache_research_callout(main)
 	_expect(callout.contains("Salvage data cache"), "salvage result memory should name the recovered cache")
 	_expect(callout.contains("sealed wreck pocket"), "salvage result memory should keep the future destination broad")
 	_expect(callout.contains("Salvage Cutter I prep"), "salvage result memory should connect the cache to the narrow tool prerequisite")
@@ -2879,7 +2880,7 @@ func _test_salvage_data_cache_interaction() -> void:
 	_expect(cache_spark.visible, "salvage data cache spark should reset after expedition reset")
 
 	var fresh_main := MainScript.new()
-	_expect(fresh_main._format_salvage_data_cache_research_callout() == "", "salvage result line should stay hidden before payoff recovery")
+	_expect(ResearchResultCalloutServiceScript.format_salvage_data_cache_research_callout(fresh_main) == "", "salvage result line should stay hidden before payoff recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Salvage data cache"), "salvage extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
@@ -2934,7 +2935,7 @@ func _test_salvage_manifest_interaction() -> void:
 	var not_handled: bool = main.call("_try_salvage_manifest_interaction")
 	_expect(not not_handled, "Salvage Manifest should not consume interact outside its proximity zone")
 
-	var callout: String = main.call("_format_salvage_manifest_research_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_salvage_manifest_research_callout(main)
 	_expect(callout.contains("Salvage Manifest"), "Salvage Manifest result memory should name the recovered payoff")
 	_expect(callout.contains("cut-open wreck pocket"), "Salvage Manifest result memory should name the opened-pocket context")
 	_expect(callout.contains("shell cargo is optional"), "Salvage Manifest result memory should preserve the cargo-vs-knowledge decision")
@@ -2963,7 +2964,7 @@ func _test_salvage_manifest_interaction() -> void:
 	_expect(manifest_spark.visible, "Salvage Manifest spark should reset after expedition reset")
 
 	var fresh_main := MainScript.new()
-	_expect(fresh_main._format_salvage_manifest_research_callout() == "", "Salvage Manifest result line should stay hidden before payoff recovery")
+	_expect(ResearchResultCalloutServiceScript.format_salvage_manifest_research_callout(fresh_main) == "", "Salvage Manifest result line should stay hidden before payoff recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Salvage Manifest"), "Salvage Manifest extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
@@ -3054,7 +3055,7 @@ func _test_tideglass_sample_interaction() -> void:
 	var not_handled: bool = main.call("_try_tideglass_sample_interaction")
 	_expect(not not_handled, "Tideglass Sample should not consume interact outside its proximity zone")
 
-	var callout: String = main.call("_format_tideglass_sample_research_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_tideglass_sample_research_callout(main)
 	_expect(callout.contains("Tideglass Sample"), "Tideglass result memory should name the recovered sample")
 	_expect(callout.contains("Mirror Kelp"), "Tideglass result memory should name the branch context")
 	_expect(callout.contains("return-current"), "Tideglass result memory should explain why the sample mattered")
@@ -3070,7 +3071,7 @@ func _test_tideglass_sample_interaction() -> void:
 	_expect(sample_spark.visible, "Tideglass Sample spark should reset after expedition reset")
 
 	var fresh_main := MainScript.new()
-	_expect(fresh_main._format_tideglass_sample_research_callout() == "", "Tideglass result line should stay hidden before payoff recovery")
+	_expect(ResearchResultCalloutServiceScript.format_tideglass_sample_research_callout(fresh_main) == "", "Tideglass result line should stay hidden before payoff recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Tideglass Sample"), "Tideglass extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
@@ -6148,19 +6149,19 @@ func _test_route_choice_result_callout() -> void:
 func _test_gulper_research_result_callout() -> void:
 	var main := MainScript.new()
 
-	_expect(main._format_gulper_research_callout() == "", "Gulper research should stay hidden without evidence")
+	_expect(ResearchResultCalloutServiceScript.format_gulper_research_callout(main) == "", "Gulper research should stay hidden without evidence")
 
 	main.run_completed_scans = ["gulper_eel"]
-	_expect(main._format_gulper_research_callout().contains("Gulper route timing observed"), "Gulper scan should produce a research callout")
-	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s%s" % [SurfaceRunSummaryServiceScript.format_route_choice_callout(main), main._format_gulper_research_callout()], "extracted")
+	_expect(ResearchResultCalloutServiceScript.format_gulper_research_callout(main).contains("Gulper route timing observed"), "Gulper scan should produce a research callout")
+	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s%s" % [SurfaceRunSummaryServiceScript.format_route_choice_callout(main), ResearchResultCalloutServiceScript.format_gulper_research_callout(main)], "extracted")
 	_expect(summary.contains("Research:"), "player-facing summary should include compact creature research when relevant")
 	_expect(not summary.contains("Playtest data:"), "creature research should not expose debug telemetry")
 
 	main.run_predator_contacts = 1
-	_expect(main._format_gulper_research_callout().contains("warning lane"), "Gulper contact should take priority over scan research")
+	_expect(ResearchResultCalloutServiceScript.format_gulper_research_callout(main).contains("warning lane"), "Gulper contact should take priority over scan research")
 
 	main.decoy_pulse_used_this_run = true
-	_expect(main._format_gulper_research_callout().contains("Decoy timing"), "Decoy evidence should take priority as a stronger research result")
+	_expect(ResearchResultCalloutServiceScript.format_gulper_research_callout(main).contains("Decoy timing"), "Decoy evidence should take priority as a stronger research result")
 	main.free()
 
 func _test_research_result_presenter() -> void:
@@ -6197,16 +6198,16 @@ func _test_research_result_presenter() -> void:
 func _test_monster_research_non_combat_guardrails() -> void:
 	var main := MainScript.new()
 	main.run_completed_scans = ["gulper_eel"]
-	var scan_callout := main._format_gulper_research_callout()
+	var scan_callout := ResearchResultCalloutServiceScript.format_gulper_research_callout(main)
 	_expect_no_monster_combat_language(scan_callout, "Gulper scan research")
 
 	main.run_predator_contacts = 1
-	var contact_callout := main._format_gulper_research_callout()
+	var contact_callout := ResearchResultCalloutServiceScript.format_gulper_research_callout(main)
 	_expect(contact_callout.contains("warning lane"), "contact research should stay framed as route danger")
 	_expect_no_monster_combat_language(contact_callout, "Gulper contact research")
 
 	main.decoy_pulse_used_this_run = true
-	var decoy_callout := main._format_gulper_research_callout()
+	var decoy_callout := ResearchResultCalloutServiceScript.format_gulper_research_callout(main)
 	_expect(decoy_callout.contains("Decoy timing"), "Monster Research II candidate should stay framed as decoy timing")
 	_expect_no_monster_combat_language(decoy_callout, "Decoy response research")
 
@@ -6223,9 +6224,9 @@ func _test_monster_research_non_combat_guardrails() -> void:
 func _test_echo_lens_result_callout() -> void:
 	var main := MainScript.new()
 
-	_expect(main._format_echo_lens_research_callout() == "", "Echo Lens result line should stay hidden until an echo fires")
+	_expect(ResearchResultCalloutServiceScript.format_echo_lens_research_callout(main) == "", "Echo Lens result line should stay hidden until an echo fires")
 	main.run_echo_lens_echo_fired = true
-	var callout := main._format_echo_lens_research_callout()
+	var callout := ResearchResultCalloutServiceScript.format_echo_lens_research_callout(main)
 	_expect(callout.contains("Echo Lens"), "Echo Lens result line should name the scanner upgrade")
 	_expect(callout.contains("weak wreck echo below the shelf"), "Echo Lens result line should preserve the broad local echo memory")
 	_expect_no_echo_lens_locator_language(callout, "Echo Lens result line")
@@ -6241,9 +6242,9 @@ func _test_wreck_echo_route_first_pass() -> void:
 	_expect(not main._wreck_echo_route_available(), "Wreck Echo route should still need Echo Lens I")
 	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
 	_expect(main._wreck_echo_route_available(), "Wreck Echo route should require pressure and Echo Lens context")
-	_expect(main._format_wreck_echo_research_callout() == "", "Wreck Echo result line should stay hidden before clue recovery")
+	_expect(ResearchResultCalloutServiceScript.format_wreck_echo_research_callout(main) == "", "Wreck Echo result line should stay hidden before clue recovery")
 	main.run_wreck_echo_clue_recovered = true
-	var callout := main._format_wreck_echo_research_callout()
+	var callout := ResearchResultCalloutServiceScript.format_wreck_echo_research_callout(main)
 	_expect(callout.contains("Wreck Echo clue"), "Wreck Echo clue should produce compact research callout")
 	_expect(callout.contains("deeper pressure signal below the shelf"), "Wreck Echo clue should stay broad/local")
 	_expect_no_echo_lens_locator_language(callout, "Wreck Echo result line")
@@ -6384,10 +6385,10 @@ func _test_wreck_echo_route_first_pass() -> void:
 
 func _test_east_shelf_pocket_result_callout() -> void:
 	var main := MainScript.new()
-	_expect(main._format_east_shelf_pocket_research_callout() == "", "East Shelf pocket result line should stay hidden before signal-core recovery")
+	_expect(ResearchResultCalloutServiceScript.format_east_shelf_pocket_research_callout(main) == "", "East Shelf pocket result line should stay hidden before signal-core recovery")
 
 	main.run_east_shelf_pocket_ping_recovered = true
-	var callout := main._format_east_shelf_pocket_research_callout()
+	var callout := ResearchResultCalloutServiceScript.format_east_shelf_pocket_research_callout(main)
 	_expect(callout.contains("East Shelf signal core"), "East Shelf signal core should produce compact research memory")
 	_expect(callout.contains("sealed route below the arch"), "East Shelf pocket result line should stay broad and local")
 	_expect(not callout.to_lower().contains("map"), "East Shelf pocket result line should not imply a map marker")
@@ -6427,7 +6428,7 @@ func _test_lower_connector_echo_opportunity() -> void:
 	var not_handled: bool = main.call("_try_lower_connector_echo_interaction")
 	_expect(not not_handled, "Drop Echo should not consume interact outside its proximity zone")
 
-	var callout: String = main.call("_format_lower_connector_echo_research_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_lower_connector_echo_research_callout(main)
 	_expect(callout.contains("Drop Echo"), "Drop Echo should produce compact extraction research memory")
 	_expect(callout.contains("Shelf Drop Connector"), "Drop Echo result memory should name the lower connector")
 	_expect(not callout.to_lower().contains("map"), "Drop Echo result line should not imply map UI")
@@ -6483,7 +6484,7 @@ func _test_resonance_alcove_research_payoff() -> void:
 	_expect(not saved.has("resonance_alcove"), "Resonance Alcove note should not become durable save data")
 	_expect(not saved.has("resonance_alcove_research"), "Resonance Alcove research should not create durable route state")
 
-	var callout: String = main.call("_format_resonance_alcove_research_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_resonance_alcove_research_callout(main)
 	_expect(callout.contains("Resonance Alcove"), "Resonance Alcove result memory should name the small pocket")
 	_expect(callout.contains("small tuned pocket"), "Resonance Alcove result memory should stay broad and local")
 	_expect_no_echo_lens_locator_language(callout, "Resonance Alcove result line")
@@ -6492,7 +6493,7 @@ func _test_resonance_alcove_research_payoff() -> void:
 	_expect(extraction_summary.contains("Resonance Alcove"), "Resonance Alcove extraction summary should include recovered research memory")
 
 	var fresh_main := MainScript.new()
-	_expect(fresh_main._format_resonance_alcove_research_callout() == "", "Resonance Alcove result line should stay hidden before payoff recovery")
+	_expect(ResearchResultCalloutServiceScript.format_resonance_alcove_research_callout(fresh_main) == "", "Resonance Alcove result line should stay hidden before payoff recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Resonance Alcove"), "Resonance Alcove extraction summary should stay hidden before payoff recovery")
 	fresh_main.free()
@@ -6535,7 +6536,7 @@ func _test_blue_chimney_draft_interaction() -> void:
 	var not_handled: bool = main.call("_try_blue_chimney_interaction")
 	_expect(not not_handled, "Blue Chimney should not consume interact outside its proximity zone")
 
-	var callout: String = main.call("_format_blue_chimney_research_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_blue_chimney_research_callout(main)
 	_expect(callout.contains("Blue Chimney"), "Blue Chimney result memory should name the lower pocket")
 	_expect(callout.contains("survey core"), "Blue Chimney result memory should name the concrete payoff")
 	_expect(callout.contains("Shelf Drop"), "Blue Chimney result memory should keep broad route context")
@@ -6547,7 +6548,7 @@ func _test_blue_chimney_draft_interaction() -> void:
 	_expect(not extraction_summary.contains("%s"), "Blue Chimney extraction summary should not leak string placeholders")
 
 	var fresh_main := MainScript.new()
-	_expect(fresh_main._format_blue_chimney_research_callout() == "", "Blue Chimney result line should stay hidden before draft recovery")
+	_expect(ResearchResultCalloutServiceScript.format_blue_chimney_research_callout(fresh_main) == "", "Blue Chimney result line should stay hidden before draft recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Blue Chimney survey core"), "Blue Chimney extraction summary should stay hidden before survey core recovery")
 	fresh_main.free()
@@ -6594,7 +6595,7 @@ func _test_lantern_silt_sample_interaction() -> void:
 	_expect(not saved.has("lantern_silt"), "Lantern Silt sample should not create durable route state")
 	_expect(not saved.has("silt_vein_fork"), "Silt Vein Fork should not create durable route state")
 
-	var callout: String = main.call("_format_lantern_silt_sample_research_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_lantern_silt_sample_research_callout(main)
 	_expect(callout.contains("Lantern Silt Sample"), "Lantern Silt result memory should name the sample")
 	_expect(callout.contains("left branch"), "Lantern Silt result memory should explain the broad route choice")
 	_expect(callout.contains("Silt Vein"), "Lantern Silt result memory should keep broad fork context")
@@ -6605,7 +6606,7 @@ func _test_lantern_silt_sample_interaction() -> void:
 	_expect(not extraction_summary.contains("%s"), "Lantern Silt extraction summary should not leak string placeholders")
 
 	var fresh_main := MainScript.new()
-	_expect(fresh_main._format_lantern_silt_sample_research_callout() == "", "Lantern Silt result line should stay hidden before sample recovery")
+	_expect(ResearchResultCalloutServiceScript.format_lantern_silt_sample_research_callout(fresh_main) == "", "Lantern Silt result line should stay hidden before sample recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Lantern Silt Sample"), "Lantern Silt extraction summary should stay hidden before sample recovery")
 	fresh_main.free()
@@ -6749,7 +6750,7 @@ func _test_blackwater_trace_payoff() -> void:
 	var not_handled: bool = main.call("_try_blackwater_crack_interaction")
 	_expect(not not_handled, "Blackwater Trace should not consume interact outside its proximity zone")
 
-	var callout: String = main.call("_format_blackwater_trace_research_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_blackwater_trace_research_callout(main)
 	_expect(callout.contains("Blackwater Trace"), "Blackwater Trace result memory should name the payoff")
 	_expect(callout.contains("right branch"), "Blackwater Trace result memory should explain the route choice")
 	_expect(callout.contains("deeper route"), "Blackwater Trace result memory should hint at future route growth")
@@ -6767,7 +6768,7 @@ func _test_blackwater_trace_payoff() -> void:
 	_expect(not saved.has("blackwater_route"), "Blackwater Trace should not create durable route state")
 
 	var fresh_main := MainScript.new()
-	_expect(fresh_main._format_blackwater_trace_research_callout() == "", "Blackwater Trace result line should stay hidden before recovery")
+	_expect(ResearchResultCalloutServiceScript.format_blackwater_trace_research_callout(fresh_main) == "", "Blackwater Trace result line should stay hidden before recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Blackwater Trace"), "Blackwater extraction summary should stay hidden before trace recovery")
 	fresh_main.free()
@@ -6824,7 +6825,7 @@ func _test_glass_kelp_reading_payoff() -> void:
 	_expect(not saved.has("glass_kelp"), "Glass Kelp should not create durable route state")
 	_expect(not saved.has("dusk_trench"), "Glass Kelp should not create durable Dusk Trench state")
 
-	var callout: String = main.call("_format_glass_kelp_reading_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_glass_kelp_reading_callout(main)
 	_expect(callout.contains("Glass Kelp"), "Glass Kelp result memory should name the payoff")
 	_expect(callout.contains("Dusk Trench"), "Glass Kelp result memory should name the broad route context")
 	_expect(callout.contains("safer ledge"), "Glass Kelp result memory should explain why the pocket mattered")
@@ -6835,7 +6836,7 @@ func _test_glass_kelp_reading_payoff() -> void:
 	_expect(not extraction_summary.contains("%s"), "Glass Kelp extraction summary should not leak string placeholders")
 
 	var fresh_main := MainScript.new()
-	_expect(fresh_main._format_glass_kelp_reading_callout() == "", "Glass Kelp result line should stay hidden before reading recovery")
+	_expect(ResearchResultCalloutServiceScript.format_glass_kelp_reading_callout(fresh_main) == "", "Glass Kelp result line should stay hidden before reading recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Glass Kelp reading"), "Glass Kelp extraction summary should stay hidden before reading recovery")
 	fresh_main.free()
@@ -6895,7 +6896,7 @@ func _test_hollow_reef_cave_reading_payoff() -> void:
 	_expect(not saved.has("deep_reef_closed"), "Hollow Reef closed promise should not create durable gate state yet")
 	_expect(not saved.has("dusk_trench"), "Hollow Reef should not create durable Dusk Trench state")
 
-	var callout: String = main.call("_format_hollow_reef_reading_callout")
+	var callout: String = ResearchResultCalloutServiceScript.format_hollow_reef_reading_callout(main)
 	_expect(callout.contains("Hollow Reef"), "Hollow Reef result memory should name the branch")
 	_expect(callout.contains("side-cave branch"), "Hollow Reef result memory should explain why the branch mattered")
 	_expect(callout.contains("Dusk Trench"), "Hollow Reef result memory should name the broad route context")
@@ -6906,7 +6907,7 @@ func _test_hollow_reef_cave_reading_payoff() -> void:
 	_expect(not extraction_summary.contains("%s"), "Hollow Reef extraction summary should not leak string placeholders")
 
 	var fresh_main := MainScript.new()
-	_expect(fresh_main._format_hollow_reef_reading_callout() == "", "Hollow Reef result line should stay hidden before reading recovery")
+	_expect(ResearchResultCalloutServiceScript.format_hollow_reef_reading_callout(fresh_main) == "", "Hollow Reef result line should stay hidden before reading recovery")
 	var fresh_summary: String = fresh_main._format_extraction_result_summary(0, empty_cargo)
 	_expect(not fresh_summary.contains("Hollow Reef cave reading"), "Hollow Reef extraction summary should stay hidden before reading recovery")
 	fresh_main.free()
@@ -7147,9 +7148,9 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 		SurfaceRunSummaryServiceScript.format_region_memory_callout(main),
 		SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main),
 		SurfaceRunSummaryServiceScript.format_route_choice_callout(main),
-		main._format_gulper_research_callout(),
-		main._format_echo_lens_research_callout(),
-		main._format_wreck_echo_research_callout(),
+		ResearchResultCalloutServiceScript.format_gulper_research_callout(main),
+		ResearchResultCalloutServiceScript.format_echo_lens_research_callout(main),
+		ResearchResultCalloutServiceScript.format_wreck_echo_research_callout(main),
 		UpgradeStateServiceScript.format_upgrade_progress_callout(main),
 		SurfaceRunSummaryServiceScript.format_scan_progress_callout(main.progression_state, main.run_completed_scans, "Discoveries recorded"),
 		SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main),
@@ -9461,9 +9462,9 @@ func _test_no_minimap_orientation_guardrails() -> void:
 	main.run_lower_connector_echo_recovered = true
 	main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
 	var orientation_memory := "%s%s%s" % [
-		main.call("_format_east_shelf_pocket_research_callout"),
-		main.call("_format_lower_connector_echo_research_callout"),
-		main.call("_format_sealed_shelf_hatch_readiness_callout"),
+		ResearchResultCalloutServiceScript.format_east_shelf_pocket_research_callout(main),
+		ResearchResultCalloutServiceScript.format_lower_connector_echo_research_callout(main),
+		ResearchResultCalloutServiceScript.format_sealed_shelf_hatch_readiness_callout(main),
 	]
 	_expect(orientation_memory.contains("East Shelf"), "orientation memory should name the learned side route")
 	_expect(orientation_memory.contains("Shelf Drop Connector"), "orientation memory should name the lower connector")
@@ -9959,11 +9960,11 @@ func _test_sealed_shelf_hatch_promise_state() -> void:
 	main.queue_free()
 
 	var copy_main := MainScript.new()
-	_expect(copy_main._format_sealed_shelf_hatch_readiness_callout() == "", "sealed hatch readiness copy should stay hidden before Echo Lens I")
+	_expect(ResearchResultCalloutServiceScript.format_sealed_shelf_hatch_readiness_callout(copy_main) == "", "sealed hatch readiness copy should stay hidden before Echo Lens I")
 	copy_main.progression_state.purchased_upgrades[EchoLensUpgrade.id] = true
-	_expect(copy_main._format_sealed_shelf_hatch_readiness_callout() == "", "sealed hatch readiness copy should need recovered route research")
+	_expect(ResearchResultCalloutServiceScript.format_sealed_shelf_hatch_readiness_callout(copy_main) == "", "sealed hatch readiness copy should need recovered route research")
 	copy_main.run_east_shelf_pocket_ping_recovered = true
-	var readiness_copy := copy_main._format_sealed_shelf_hatch_readiness_callout()
+	var readiness_copy := ResearchResultCalloutServiceScript.format_sealed_shelf_hatch_readiness_callout(copy_main)
 	_expect(readiness_copy.contains("Sealed Shelf Hatch"), "sealed hatch readiness copy should name the hatch promise")
 	_expect(readiness_copy.contains("Resonance Key"), "sealed hatch readiness copy should point to the future key promise")
 	_expect_no_echo_lens_locator_language(readiness_copy, "sealed hatch readiness copy")
