@@ -2717,7 +2717,7 @@ func _update_hud() -> void:
 	_update_depth_rail(is_diving)
 	_update_minimap(is_diving)
 	bank_label.text = "Banked:%s" % ResourceSummaryServiceScript.format_banked_resources(progression_state.banked_resources, survival_state, RESOURCE_CATEGORY_LABELS)
-	upgrade_label.text = _format_upgrade_status()
+	upgrade_label.text = UpgradeStateServiceScript.format_upgrade_status(self)
 	discoveries_label.text = _format_discoveries(true)
 	recent_expedition_log_label.text = _format_recent_expedition_log()
 	status_label.text = HudPresenterScript.compact_dive_status(status_label.text) if is_diving else status_label.text
@@ -2864,9 +2864,6 @@ func _update_cargo_slots() -> void:
 func _update_tool_belt(is_visible: bool) -> void:
 	ToolBeltServiceScript.update_tool_belt(self, is_visible)
 
-func _format_upgrade_status() -> String:
-	return UpgradeStateServiceScript.format_upgrade_status(self)
-
 func _format_burst_thruster_prompt() -> String:
 	return UpgradeStateServiceScript.format_burst_thruster_prompt(self)
 
@@ -2875,15 +2872,6 @@ func _format_decoy_pulse_prompt() -> String:
 
 func _format_decoy_pulse_scan_feedback() -> String:
 	return UpgradeStateServiceScript.format_decoy_pulse_scan_feedback(self)
-
-func _format_upgrade_cost(cost: Dictionary) -> String:
-	return UpgradeStateServiceScript.format_upgrade_cost(self, cost)
-
-func _format_missing_resources(cost: Dictionary) -> String:
-	return UpgradeStateServiceScript.format_missing_resources(self, cost)
-
-func _resource_counts_for_cost(cost: Dictionary) -> Dictionary:
-	return UpgradeStateServiceScript.resource_counts_for_cost(self, cost)
 
 func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 	return UpgradeStateServiceScript.format_upgrade_state(self, upgrade)
@@ -2896,9 +2884,6 @@ func _format_upgrade_panel_feedback(feedback: String) -> String:
 
 func _format_future_tool_upgrade_promise() -> String:
 	return ""
-
-func _has_future_tool_upgrade_context() -> bool:
-	return false
 
 func _format_ready_upgrade_callout() -> String:
 	return UpgradeStateServiceScript.format_ready_upgrade_callout(self)
@@ -2933,9 +2918,6 @@ func _upgrade_missing_upgrade(upgrade: UpgradeDefinition) -> String:
 
 func _format_upgrade_display_name(upgrade_id: String) -> String:
 	return UpgradeStateServiceScript.format_upgrade_display_name(self, upgrade_id)
-
-func _format_upgrade_prerequisite_action(discovery_id: String) -> String:
-	return UpgradeStateServiceScript.format_upgrade_prerequisite_action(discovery_id)
 
 func _selected_upgrade_definition() -> UpgradeDefinition:
 	if upgrade_definitions.is_empty():
