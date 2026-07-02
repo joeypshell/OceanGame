@@ -26,6 +26,7 @@ const HealthDamageVisualStagingServiceScript := preload("res://scripts/debug/hea
 const HollowReefVisualStagingServiceScript := preload("res://scripts/debug/hollow_reef_visual_staging_service.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPromptStateServiceScript := preload("res://scripts/ui/hud_prompt_state_service.gd")
+const HudInstrumentBarServiceScript := preload("res://scripts/ui/hud_instrument_bar_service.gd")
 const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd")
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
@@ -3485,21 +3486,7 @@ func _ensure_active_hud_references() -> void:
 	HudReferenceServiceScript.ensure_active_hud_references(self)
 
 func _update_instrument_bars() -> void:
-	var oxygen_ratio := 0.0
-	if dive_session.max_oxygen > 0.0:
-		oxygen_ratio = clampf(dive_session.oxygen / dive_session.max_oxygen, 0.0, 1.0)
-	_set_bar_fill_width(oxygen_bar_fill, OXYGEN_BAR_FILL_RECT, oxygen_ratio)
-
-	var health_ratio := 0.0
-	if dive_session.max_health > 0.0:
-		health_ratio = clampf(dive_session.health / dive_session.max_health, 0.0, 1.0)
-	_set_bar_fill_width(health_bar_fill, HEALTH_BAR_FILL_RECT, health_ratio)
-	if health_bar_fill != null:
-		var health_state := HudPresenterScript.health_state(dive_session.health, dive_session.max_health)
-		health_bar_fill.color = HudPresenterScript.HEALTH_DAMAGED_COLOR if health_state == "normal" and _has_recent_health_damage() else HudPresenterScript.health_state_color(health_state)
-
-	var depth_ratio := clampf(dive_session.current_depth / 200.0, 0.0, 1.0)
-	_set_bar_fill_width(depth_bar_fill, DEPTH_BAR_FILL_RECT, depth_ratio)
+	HudInstrumentBarServiceScript.update_bars(self)
 
 func _update_survival_needs_panel(is_visible: bool) -> void:
 	SurvivalNeedsPanelServiceScript.update_panel(self, is_visible)
