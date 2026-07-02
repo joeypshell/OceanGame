@@ -45,6 +45,7 @@ const OuterShelfVisualStagingServiceScript := preload("res://scripts/debug/outer
 const OxygenFeedbackServiceScript := preload("res://scripts/ui/oxygen_feedback_service.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
+const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
@@ -916,7 +917,7 @@ func _format_expedition_slate_text() -> String:
 func _expedition_slate_state() -> Dictionary:
 	var cargo_names: Array[String] = []
 	for item_id in dive_session.current_cargo:
-		cargo_names.append(_short_resource_name(item_id))
+		cargo_names.append(ResourceSummaryServiceScript.short_resource_name(item_id, survival_state))
 	return {
 		"base_needs_line": survival_state.status_line(),
 		"cargo_limit": dive_session.cargo_limit,
@@ -1039,8 +1040,8 @@ func _try_ship_offload() -> bool:
 	daylight_ship_offload_count += 1
 	upgrade_menu_feedback = "Ship offload banked %d cargo item(s).%s%s\nOxygen full. Daylight continues; dive again when ready." % [
 		offloaded_count,
-		_format_resource_counts(banked_resources),
-		_format_survival_supply_counts(banked_survival_supplies),
+		ResourceSummaryServiceScript.format_resource_counts(banked_resources, survival_state, RESOURCE_CATEGORY_LABELS),
+		ResourceSummaryServiceScript.format_survival_supply_counts(banked_survival_supplies, survival_state, RESOURCE_CATEGORY_LABELS),
 	]
 	if status_label != null:
 		status_label.text = "Ship banked cargo; O2 full. Dive again."
@@ -1071,8 +1072,8 @@ func _try_extract() -> void:
 	last_result_summary = _format_extraction_result_summary(extracted_count, banked_resources, banked_survival_supplies)
 	upgrade_menu_feedback = "Deposited %d cargo item(s).%s%s\n%s" % [
 		extracted_count,
-		_format_resource_counts(banked_resources),
-		_format_survival_supply_counts(banked_survival_supplies),
+		ResourceSummaryServiceScript.format_resource_counts(banked_resources, survival_state, RESOURCE_CATEGORY_LABELS),
+		ResourceSummaryServiceScript.format_survival_supply_counts(banked_survival_supplies, survival_state, RESOURCE_CATEGORY_LABELS),
 		_format_ready_upgrade_callout(),
 	]
 	_record_recent_expedition("Extracted", extracted_count)
@@ -2674,14 +2675,14 @@ func _resource_role_summary(resource_id: String) -> String:
 	return ResourcePresenterScript.resource_role_summary(
 		resource_id,
 		survival_state.is_supply_id(resource_id),
-		_resource_category_label(resource_id),
+		ResourceSummaryServiceScript.resource_category_label(resource_id, survival_state, RESOURCE_CATEGORY_LABELS),
 		_supply_banking_role(resource_id)
 	)
 
 func _resource_collection_guidance(resource_id: String) -> String:
 	return ResourcePresenterScript.resource_collection_guidance(
 		survival_state.is_supply_id(resource_id),
-		_resource_category_label(resource_id),
+		ResourceSummaryServiceScript.resource_category_label(resource_id, survival_state, RESOURCE_CATEGORY_LABELS),
 		_supply_banking_role(resource_id)
 	)
 
@@ -2691,7 +2692,7 @@ func _resource_pickup_feedback(resource_id: String) -> String:
 		dive_session.current_cargo.size(),
 		dive_session.cargo_limit,
 		survival_state.is_supply_id(resource_id),
-		_resource_category_label(resource_id)
+		ResourceSummaryServiceScript.resource_category_label(resource_id, survival_state, RESOURCE_CATEGORY_LABELS)
 	)
 
 func _ensure_resource_role_visuals() -> void:
@@ -2716,7 +2717,7 @@ func _ensure_resource_role_visual(pickup: ResourcePickup) -> void:
 func _resource_visual_role_family(resource_id: String) -> String:
 	return ResourcePresenterScript.resource_visual_role_family(
 		survival_state.is_supply_id(resource_id),
-		_resource_category_label(resource_id)
+		ResourceSummaryServiceScript.resource_category_label(resource_id, survival_state, RESOURCE_CATEGORY_LABELS)
 	)
 
 func _resource_role_accent_color(resource_id: String) -> Color:
@@ -3472,7 +3473,7 @@ func _update_hud() -> void:
 	_update_survival_needs_panel(is_diving)
 	_update_depth_rail(is_diving)
 	_update_minimap(is_diving)
-	bank_label.text = "Banked:%s" % _format_banked_resources()
+	bank_label.text = "Banked:%s" % ResourceSummaryServiceScript.format_banked_resources(progression_state.banked_resources, survival_state, RESOURCE_CATEGORY_LABELS)
 	upgrade_label.text = _format_upgrade_status()
 	discoveries_label.text = _format_discoveries(true)
 	recent_expedition_log_label.text = _format_recent_expedition_log()
@@ -3613,7 +3614,7 @@ func _update_run_panel() -> void:
 		elif surface_tab_index == SURFACE_TAB_UPGRADES:
 			run_title_label.text = "Surface Upgrade Bay"
 			run_summary_label.text = _format_run_summary("Banked:%s\n%s choose; %s buys.\n%s" % [
-				_format_banked_resources(),
+				ResourceSummaryServiceScript.format_banked_resources(progression_state.banked_resources, survival_state, RESOURCE_CATEGORY_LABELS),
 				_action_label("move_up_down"),
 				_action_label("interact"),
 				_format_next_expedition_prompt(),
@@ -3671,32 +3672,6 @@ func _latest_recent_route_memory() -> String:
 	var latest_entry := recent_expedition_log[recent_expedition_log.size() - 1]
 	return String(latest_entry.get("route_memory", ""))
 
-func _format_resource_counts(resource_ids: Array[String]) -> String:
-	return InventorySummaryPresenterScript.format_item_counts(
-		resource_ids,
-		_resource_category_labels_for_ids(resource_ids),
-		_resource_display_names_for_ids(resource_ids)
-	)
-
-func _format_survival_supply_counts(supply_ids: Array[String]) -> String:
-	return InventorySummaryPresenterScript.format_item_counts(
-		supply_ids,
-		_resource_category_labels_for_ids(supply_ids),
-		_resource_display_names_for_ids(supply_ids)
-	)
-
-func _format_survival_banking_line(banked_survival_supplies: Array[String]) -> String:
-	return InventorySummaryPresenterScript.format_survival_banking_line(
-		banked_survival_supplies,
-		_format_survival_supply_counts(banked_survival_supplies)
-	)
-
-func _format_cargo_counts_inline(resource_ids: Array[String]) -> String:
-	return InventorySummaryPresenterScript.format_cargo_counts_inline(
-		resource_ids,
-		_resource_short_names_for_ids(resource_ids)
-	)
-
 func _update_cargo_slots() -> void:
 	var states := CargoSlotPresenterScript.cargo_slot_states(dive_session.current_cargo, dive_session.cargo_limit, cargo_slot_nodes.size())
 	for index in range(cargo_slot_nodes.size()):
@@ -3728,56 +3703,6 @@ func _tool_belt_state(tool_id: String) -> String:
 			return "locked"
 		_:
 			return "disabled"
-
-func _short_resource_name(resource_id: String) -> String:
-	return ResourcePresenterScript.short_resource_name(
-		resource_id,
-		survival_state.is_supply_id(resource_id),
-		survival_state.short_name_for_supply(resource_id)
-	)
-
-func _format_banked_resources() -> String:
-	var resource_ids: Array[String] = []
-	for resource_id in progression_state.banked_resources.keys():
-		resource_ids.append(String(resource_id))
-	return InventorySummaryPresenterScript.format_banked_resources(
-		progression_state.banked_resources,
-		_resource_category_labels_for_ids(resource_ids),
-		_resource_display_names_for_ids(resource_ids)
-	)
-
-func _resource_category_labels_for_ids(resource_ids: Array[String]) -> Dictionary:
-	var labels := {}
-	for resource_id in resource_ids:
-		labels[resource_id] = _resource_category_label(resource_id)
-	return labels
-
-func _resource_display_names_for_ids(resource_ids: Array[String]) -> Dictionary:
-	var names := {}
-	for resource_id in resource_ids:
-		names[resource_id] = _display_name_for_resource(resource_id)
-	return names
-
-func _resource_short_names_for_ids(resource_ids: Array[String]) -> Dictionary:
-	var names := {}
-	for resource_id in resource_ids:
-		names[resource_id] = _short_resource_name(resource_id)
-	return names
-
-func _resource_category_label(resource_id: String) -> String:
-	return ResourcePresenterScript.resource_category_label(
-		resource_id,
-		survival_state.is_supply_id(resource_id),
-		survival_state.category_name_for_supply(resource_id),
-		RESOURCE_CATEGORY_LABELS
-	)
-
-func _display_name_for_resource(resource_id: String) -> String:
-	return ResourcePresenterScript.display_name_for_resource(
-		resource_id,
-		survival_state.is_supply_id(resource_id),
-		survival_state.display_name_for_supply(resource_id)
-	)
 
 func _format_upgrade_status() -> String:
 	var owned_count := 0
@@ -3826,16 +3751,10 @@ func _format_surface_tabs() -> String:
 	return "  ".join(parts)
 
 func _format_upgrade_cost(cost: Dictionary) -> String:
-	return UpgradeCopyPresenterScript.format_upgrade_cost(cost, _resource_names_for_cost(cost))
+	return UpgradeCopyPresenterScript.format_upgrade_cost(cost, ResourceSummaryServiceScript.resource_names_for_cost(cost, survival_state))
 
 func _format_missing_resources(cost: Dictionary) -> String:
-	return UpgradeCopyPresenterScript.format_missing_resources(cost, _resource_counts_for_cost(cost), _resource_names_for_cost(cost))
-
-func _resource_names_for_cost(cost: Dictionary) -> Dictionary:
-	var names_by_id := {}
-	for resource_id in cost.keys():
-		names_by_id[resource_id] = _display_name_for_resource(resource_id)
-	return names_by_id
+	return UpgradeCopyPresenterScript.format_missing_resources(cost, _resource_counts_for_cost(cost), ResourceSummaryServiceScript.resource_names_for_cost(cost, survival_state))
 
 func _resource_counts_for_cost(cost: Dictionary) -> Dictionary:
 	var counts_by_id := {}
@@ -3936,7 +3855,7 @@ func _format_upgrade_progress_callout() -> String:
 	return "Upgrade progress: all current upgrades installed."
 
 func _format_missing_resources_inline(cost: Dictionary) -> String:
-	return UpgradeCopyPresenterScript.format_missing_resources_inline(cost, _resource_counts_for_cost(cost), _resource_names_for_cost(cost))
+	return UpgradeCopyPresenterScript.format_missing_resources_inline(cost, _resource_counts_for_cost(cost), ResourceSummaryServiceScript.resource_names_for_cost(cost, survival_state))
 
 func _format_scan_progress_callout(prefix: String) -> String:
 	if run_completed_scans.is_empty():
@@ -3951,7 +3870,7 @@ func _format_scan_progress_callout(prefix: String) -> String:
 func _format_extraction_banking_line(extracted_count: int, extracted_cargo: Array[String]) -> String:
 	return InventorySummaryPresenterScript.format_extraction_banking_line(
 		extracted_count,
-		_format_resource_counts(extracted_cargo),
+		ResourceSummaryServiceScript.format_resource_counts(extracted_cargo, survival_state, RESOURCE_CATEGORY_LABELS),
 		not run_completed_scans.is_empty()
 	)
 
@@ -4130,8 +4049,8 @@ func _format_run_telemetry(result_name: String) -> String:
 		ConditionPresenterScript.format_condition_telemetry(current_expedition_condition),
 		current_predator_route_id,
 		current_lantern_ray_route_id,
-		_format_resource_counts(run_collected_resources),
-		_format_survival_supply_counts(run_collected_survival_supplies),
+		ResourceSummaryServiceScript.format_resource_counts(run_collected_resources, survival_state, RESOURCE_CATEGORY_LABELS),
+		ResourceSummaryServiceScript.format_survival_supply_counts(run_collected_survival_supplies, survival_state, RESOURCE_CATEGORY_LABELS),
 		_format_scan_ids(run_completed_scans),
 		run_predator_contacts,
 		run_health_damage_events,
@@ -4212,7 +4131,7 @@ func _format_starter_resource_target() -> String:
 	for resource_id in WATER_FILTER_UPGRADE.resource_cost.keys():
 		var missing := int(WATER_FILTER_UPGRADE.resource_cost[resource_id]) - progression_state.resource_count(resource_id)
 		if missing > 0:
-			missing_materials.append(_display_name_for_resource(resource_id))
+			missing_materials.append(ResourceSummaryServiceScript.display_name_for_resource(resource_id, survival_state))
 
 	if missing_materials.is_empty():
 		return ""
@@ -4263,7 +4182,7 @@ func _format_extraction_result_summary(extracted_count: int, banked_resources: A
 	return "%s\n%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s%s" % [
 		_format_completed_expedition_line("Extraction"),
 		_format_extraction_banking_line(banked_resources.size(), banked_resources),
-		_format_survival_banking_line(banked_survival_supplies),
+		ResourceSummaryServiceScript.format_survival_banking_line(banked_survival_supplies, survival_state, RESOURCE_CATEGORY_LABELS),
 		_format_region_memory_callout(),
 		_format_discovery_memory_callout(),
 		_format_route_choice_callout(),
@@ -4303,7 +4222,7 @@ func _format_night_phase_summary() -> String:
 		lines.append(report)
 	lines.append(_format_daylight_closeout_line())
 	lines.append(survival_state.status_line())
-	lines.append("Banked materials:%s" % _format_banked_resources())
+	lines.append("Banked materials:%s" % ResourceSummaryServiceScript.format_banked_resources(progression_state.banked_resources, survival_state, RESOURCE_CATEGORY_LABELS))
 	lines.append(_format_night_build_choice_line())
 	lines.append(_format_next_expedition_prompt())
 	return "\n".join(lines)
@@ -4478,7 +4397,7 @@ func _format_recent_survival_memory(result_name: String, banked_cargo_count: int
 	if daylight_nightfall_away_from_ship:
 		return "late return cost Power -1"
 	if not run_banked_survival_supplies.is_empty():
-		return "banked %s supply" % _format_supply_names_inline(run_banked_survival_supplies)
+		return "banked %s supply" % ResourceSummaryServiceScript.format_supply_names_inline(run_banked_survival_supplies, survival_state)
 
 	var low_needs := _base_need_names_at_or_below(1)
 	if not low_needs.is_empty():
@@ -4496,12 +4415,6 @@ func _format_recent_survival_memory(result_name: String, banked_cargo_count: int
 			return "Water Filter needs %s" % starter_target
 
 	return ""
-
-func _format_supply_names_inline(supply_ids: Array[String]) -> String:
-	return InventorySummaryPresenterScript.format_supply_names_inline(
-		supply_ids,
-		_resource_short_names_for_ids(supply_ids)
-	)
 
 func _recent_expedition_scan_names_by_id() -> Dictionary:
 	var names_by_id := {}
