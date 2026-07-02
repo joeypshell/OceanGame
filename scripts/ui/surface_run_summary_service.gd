@@ -8,6 +8,8 @@ const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_sum
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
 const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
+const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
+const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurvivalNeedSummaryServiceScript := preload("res://scripts/ui/survival_need_summary_service.gd")
 const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
@@ -132,9 +134,9 @@ static func format_extraction_result_summary(host, extracted_count: int, banked_
 		format_completed_expedition_line(host, "Extraction"),
 		format_extraction_banking_line(banked_resources.size(), banked_resources, host.survival_state, host.RESOURCE_CATEGORY_LABELS, not host.run_completed_scans.is_empty()),
 		ResourceSummaryServiceScript.format_survival_banking_line(banked_survival_supplies, host.survival_state, host.RESOURCE_CATEGORY_LABELS),
-		host._format_region_memory_callout(),
-		host._format_discovery_memory_callout(),
-		host._format_route_choice_callout(),
+		format_region_memory_callout(host),
+		format_discovery_memory_callout(host),
+		format_route_choice_callout(host),
 		host._format_gulper_research_callout(),
 		host._format_echo_lens_research_callout(),
 		host._format_wreck_echo_research_callout(),
@@ -158,6 +160,15 @@ static func format_extraction_result_summary(host, extracted_count: int, banked_
 		format_night_report_block(host),
 		format_next_expedition_prompt(host)
 	]
+
+static func format_region_memory_callout(host) -> String:
+	return RouteMemoryPresenterScript.format_region_memory_callout(RunMemoryStateServiceScript.route_memory_state(host))
+
+static func format_discovery_memory_callout(host) -> String:
+	return RouteMemoryPresenterScript.format_discovery_memory_callout(RunMemoryStateServiceScript.route_memory_state(host))
+
+static func format_route_choice_callout(host) -> String:
+	return RouteMemoryPresenterScript.format_route_choice_callout(RunMemoryStateServiceScript.route_memory_state(host))
 
 static func format_scan_progress_callout(progression_state, run_completed_scans: Array[String], prefix: String) -> String:
 	if run_completed_scans.is_empty():

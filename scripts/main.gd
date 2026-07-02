@@ -61,7 +61,6 @@ const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_s
 const SurvivalSupplyCacheStateServiceScript := preload("res://scripts/ui/survival_supply_cache_state_service.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
-const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
 const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const ConditionVisualSyncServiceScript := preload("res://scripts/ui/condition_visual_sync_service.gd")
 const DiscoveryRevealSyncServiceScript := preload("res://scripts/ui/discovery_reveal_sync_service.gd")
@@ -1119,9 +1118,9 @@ func _fail_dive() -> void:
 	last_result_summary = "%s\nCause: %s.\nCargo lost. Banked resources, upgrades, scans, and best depth kept.\n%s%s\n%s%s%s\n%s\nBest depth: %dm.\n%s%s" % [
 		SurfaceRunSummaryServiceScript.format_completed_expedition_line(self, "Failure"),
 		HealthFeedbackPresenterScript.format_failure_cause_for_player(run_failure_cause),
-		_format_region_memory_callout(),
-		_format_discovery_memory_callout(),
-		_format_route_choice_callout(),
+		SurfaceRunSummaryServiceScript.format_region_memory_callout(self),
+		SurfaceRunSummaryServiceScript.format_discovery_memory_callout(self),
+		SurfaceRunSummaryServiceScript.format_route_choice_callout(self),
 		_format_gulper_research_callout(),
 		_format_echo_lens_research_callout(),
 		SurfaceRunSummaryServiceScript.format_scan_progress_callout(progression_state, run_completed_scans, "Scans kept"),
@@ -2807,9 +2806,6 @@ func _first_ready_upgrade_definition() -> UpgradeDefinition:
 			return upgrade
 	return null
 
-func _format_route_choice_callout() -> String:
-	return RouteMemoryPresenterScript.format_route_choice_callout(RunMemoryStateServiceScript.route_memory_state(self))
-
 func _format_gulper_research_callout() -> String:
 	return ResearchResultPresenterScript.format_gulper_research_callout(RunMemoryStateServiceScript.research_result_state(self))
 
@@ -2860,12 +2856,6 @@ func _format_rim_glass_reading_callout() -> String:
 
 func _format_sealed_shelf_hatch_readiness_callout() -> String:
 	return ResearchResultPresenterScript.format_sealed_shelf_hatch_readiness_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_region_memory_callout() -> String:
-	return RouteMemoryPresenterScript.format_region_memory_callout(RunMemoryStateServiceScript.route_memory_state(self))
-
-func _format_discovery_memory_callout() -> String:
-	return RouteMemoryPresenterScript.format_discovery_memory_callout(RunMemoryStateServiceScript.route_memory_state(self))
 
 func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> void:
 	RecentExpeditionLogServiceScript.record_recent_expedition(self, result_name, banked_cargo_count)
