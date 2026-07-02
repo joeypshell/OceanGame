@@ -2,6 +2,7 @@ class_name ScanTargetCardService
 extends RefCounted
 
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
+const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
 
 static func update_card(host, target: Node) -> void:
 	host.scan_card_title_label.text = "SCAN TARGET"
@@ -11,7 +12,7 @@ static func update_card(host, target: Node) -> void:
 		host.scan_card_prompt_label.text = "Hold %s near a target" % host._action_label("scan")
 		return
 
-	host.scan_target_label.text = host._scan_target_display_name(target)
+	host.scan_target_label.text = ScanTargetResolverScript.display_name(target)
 	host.scan_card_meta_label.text = "%s | %s" % [
 		host._format_scan_target_discovery_state(target).to_upper(),
 		host._format_scan_target_type(target).to_upper(),

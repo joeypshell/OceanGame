@@ -2200,7 +2200,10 @@ func _update_scan_charge(delta: float) -> void:
 		_update_hud()
 
 func _format_scan_charge_status(target: Node) -> String:
-	return ScanFeedbackPresenterScript.format_scan_charge_status(_scan_target_display_name(target), ScanFeedbackPresenterScript.scan_charge_ratio(scan_charge_elapsed, scan_hold_seconds))
+	return ScanFeedbackPresenterScript.format_scan_charge_status(
+		ScanTargetResolverScript.display_name(target),
+		ScanFeedbackPresenterScript.scan_charge_ratio(scan_charge_elapsed, scan_hold_seconds)
+	)
 
 func _try_scan(requested_target: Node = null) -> void:
 	if dive_session.result != DiveSessionScript.Result.DIVING:
@@ -2214,8 +2217,8 @@ func _try_scan(requested_target: Node = null) -> void:
 		_update_hud()
 		return
 
-	var discovery_id := _scan_target_id(target)
-	var display_name := _scan_target_display_name(target)
+	var discovery_id := ScanTargetResolverScript.target_id(target)
+	var display_name := ScanTargetResolverScript.display_name(target)
 	if progression_state.has_discovery(discovery_id):
 		_activate_scan_effect(target)
 		if discovery_id == "wreck_signal_cache" and progression_state.has_upgrade(ECHO_LENS_UPGRADE_ID):
@@ -2232,7 +2235,7 @@ func _try_scan(requested_target: Node = null) -> void:
 	progression_state.add_discovery(
 		discovery_id,
 		display_name,
-		_scan_target_description(target),
+		ScanTargetResolverScript.description(target),
 		ScanEffectTextServiceScript.scan_target_gameplay_fact(self, target)
 	)
 	run_completed_scans.append(discovery_id)
@@ -2255,27 +2258,18 @@ func _nearest_scan_target() -> Node:
 
 	return ScanTargetResolverScript.nearest(player.global_position, scan_range, candidates)
 
-func _scan_target_id(target: Node) -> String:
-	return ScanTargetResolverScript.target_id(target)
-
-func _scan_target_display_name(target: Node) -> String:
-	return ScanTargetResolverScript.display_name(target)
-
-func _scan_target_description(target: Node) -> String:
-	return ScanTargetResolverScript.description(target)
-
 func _activate_scan_effect(target: Node) -> void:
 	decoy_pulse_activated_this_scan = false
 	if target is ResourcePickup:
 		resource_scan_highlight_id = target.definition.id
 		resource_scan_highlight_timer = 8.0
-	elif _scan_target_id(target) == "lantern_fry":
+	elif ScanTargetResolverScript.target_id(target) == "lantern_fry":
 		glow_plankton_highlight_timer = 8.0
-	elif _scan_target_id(target) == "thermal_vent":
+	elif ScanTargetResolverScript.target_id(target) == "thermal_vent":
 		_reveal_thermal_vent_route()
-	elif _scan_target_id(target) == "pressure_wreck_signal":
+	elif ScanTargetResolverScript.target_id(target) == "pressure_wreck_signal":
 		_reveal_pressure_wreck_signal()
-	elif _scan_target_id(target) == "gulper_eel":
+	elif ScanTargetResolverScript.target_id(target) == "gulper_eel":
 		_try_trigger_decoy_pulse()
 
 func _trigger_echo_lens_pulse() -> void:
