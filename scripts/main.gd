@@ -2846,12 +2846,6 @@ func _format_extraction_result_summary(extracted_count: int, banked_resources: A
 func _format_night_report_block() -> String:
 	return SurfaceRunSummaryServiceScript.format_night_report_block(self)
 
-func _format_night_phase_summary() -> String:
-	return SurfaceRunSummaryServiceScript.format_night_phase_summary(self)
-
-func _format_daylight_closeout_line() -> String:
-	return SurfaceRunSummaryServiceScript.format_daylight_closeout_line(self)
-
 func _format_night_build_choice_line() -> String:
 	return SurfaceRunSummaryServiceScript.format_night_build_choice_line(self)
 
