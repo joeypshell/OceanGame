@@ -7089,17 +7089,11 @@ func _test_upgrade_bay_readability_states() -> void:
 	state = UpgradeStateServiceScript.format_upgrade_state(main, DecoyPulseUpgrade)
 	_expect(state.begins_with("State: Owned"), "upgrade bay should label Decoy Pulse I owned after purchase")
 	_expect(UpgradeStateServiceScript.format_upgrade_effect_summary(EchoLensUpgrade).contains("not a locator"), "Echo Lens I compact effect summary should preserve no-locator wording")
-	_expect(main._format_future_tool_upgrade_promise() == "", "future cutter promise should stay hidden before lower-route evidence")
 	var feedback := UpgradeStateServiceScript.format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.")
 	_expect(feedback == "Banked 3 resource(s).\nNo upgrade ready yet.", "upgrade panel feedback should compact deposit copy")
 	_expect_lines_within(feedback, 72, "compacted upgrade feedback")
 
 	main.run_salvage_data_cache_recovered = true
-	var cutter_promise := main._format_future_tool_upgrade_promise()
-	_expect(cutter_promise == "", "future cutter promise should be removed now that Salvage Cutter I is a real upgrade entry")
-	_expect_lines_within(cutter_promise, 72, "future cutter promise")
-	_expect_no_echo_lens_locator_language(cutter_promise, "future cutter promise")
-
 	var promised_feedback := UpgradeStateServiceScript.format_upgrade_panel_feedback("Deposited 3 resource(s) into the bank.\nNo upgrade ready yet; check missing requirements below.")
 	_expect(promised_feedback.contains("Banked 3 resource(s)."), "future cutter promise should not replace normal upgrade feedback")
 	_expect(not promised_feedback.contains("Planned: Salvage Cutter"), "upgrade feedback should not append obsolete planned cutter copy")
@@ -7127,7 +7121,6 @@ func _test_upgrade_bay_readability_states() -> void:
 	_expect(cutter_state.begins_with("State: Owned"), "Salvage Cutter I should show owned after normal upgrade purchase")
 	main.run_salvage_data_cache_recovered = false
 	main.recent_expedition_log = [{"route_memory": "Wide Reef Chamber"}]
-	_expect(main._format_future_tool_upgrade_promise() == "", "recent Wide Reef Chamber memory should not revive obsolete future cutter promise copy")
 	main.free()
 
 func _test_result_and_upgrade_copy_length_guards() -> void:
