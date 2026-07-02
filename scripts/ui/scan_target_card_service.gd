@@ -1,6 +1,8 @@
 class_name ScanTargetCardService
 extends RefCounted
 
+const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
+
 static func update_card(host, target: Node) -> void:
 	host.scan_card_title_label.text = "SCAN TARGET"
 	if target == null:
