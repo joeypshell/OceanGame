@@ -71,6 +71,7 @@ const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_
 const RunPanelServiceScript := preload("res://scripts/ui/run_panel_service.gd")
 const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
 const BlackwaterGatePresenterScript := preload("res://scripts/ui/blackwater_gate_presenter.gd")
+const SurfaceStatusPresenterScript := preload("res://scripts/ui/surface_status_presenter.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
 const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
@@ -808,20 +809,7 @@ func _apply_surface_oxygen_refill(delta: float) -> void:
 	if daylight_nightfall_announced or status_label == null:
 		return
 	if dive_session.oxygen > oxygen_before + 0.01:
-		status_label.text = _surface_oxygen_status_text()
-
-func _surface_oxygen_status_text() -> String:
-	if player_in_base:
-		return "Ship moonpool: O2 full; %s banks cargo." % _action_label("interact")
-	if dive_session.oxygen >= dive_session.max_oxygen:
-		return "Surface O2 full; ship still banks cargo."
-	return "Surface O2 refilling; ship still banks cargo."
-
-func _cargo_full_status_text() -> String:
-	return "Cargo full %d/%d: return to ship." % [
-		dive_session.current_cargo.size(),
-		dive_session.cargo_limit,
-	]
+		status_label.text = SurfaceStatusPresenterScript.surface_oxygen_status_for_host(self)
 
 func _is_player_in_surface_oxygen_refill() -> bool:
 	if player == null:
@@ -1271,7 +1259,7 @@ func _on_surface_oxygen_refill_zone_body_entered(body: Node2D) -> void:
 	if body == player:
 		player_in_surface_oxygen_refill = true
 		if dive_session.result == DiveSessionScript.Result.DIVING and status_label != null:
-			status_label.text = _surface_oxygen_status_text()
+			status_label.text = SurfaceStatusPresenterScript.surface_oxygen_status_for_host(self)
 		if is_inside_tree():
 			_update_hud()
 
@@ -2395,7 +2383,7 @@ func _on_resource_pickup_collected(pickup: Node) -> void:
 		return
 
 	if not dive_session.add_cargo(pickup.definition.id):
-		status_label.text = _cargo_full_status_text()
+		status_label.text = SurfaceStatusPresenterScript.cargo_full_status_for_host(self)
 		_update_hud()
 		return
 

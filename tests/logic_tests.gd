@@ -46,6 +46,7 @@ const HudPresenterScript := preload("res://scripts/ui/hud_presenter.gd")
 const BlackwaterGatePresenterScript := preload("res://scripts/ui/blackwater_gate_presenter.gd")
 const HudLayoutServiceScript := preload("res://scripts/ui/hud_layout_service.gd")
 const HudReferenceServiceScript := preload("res://scripts/ui/hud_reference_service.gd")
+const SurfaceStatusPresenterScript := preload("res://scripts/ui/surface_status_presenter.gd")
 const CargoSlotPresenterScript := preload("res://scripts/ui/cargo_slot_presenter.gd")
 const HudVisibilityServiceScript := preload("res://scripts/ui/hud_visibility_service.gd")
 const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_summary_presenter.gd")
@@ -142,6 +143,7 @@ func _initialize() -> void:
 	_run("health damage and vent failure", _test_health_damage_and_vent_failure)
 	_run("health damage night resolution copy", _test_health_damage_night_resolution_copy)
 	_run("surface oxygen refill isolation", _test_surface_oxygen_refill_isolation)
+	_run("surface status presenter", _test_surface_status_presenter)
 	_run("ship offload repeat daylight sortie", _test_ship_offload_repeat_daylight_sortie)
 	_run("night phase end day and upgrade choice", _test_night_phase_end_day_and_upgrade_choice)
 	_run("night build presenter", _test_night_build_presenter)
@@ -531,13 +533,31 @@ func _test_surface_oxygen_refill_isolation() -> void:
 	_expect(main.dive_session.current_cargo == ["driftwood"], "active surface refill should not clear carried cargo")
 	_expect(main.progression_state.banked_resources.is_empty(), "active surface refill should not bank resources")
 	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "active surface refill should not resolve the dive")
-	_expect(main.call("_surface_oxygen_status_text") == "Surface O2 refilling; ship still banks cargo.", "surface status should distinguish oxygen refill from ship banking")
+	_expect(SurfaceStatusPresenterScript.surface_oxygen_status_text(false, main.dive_session.oxygen, main.dive_session.max_oxygen, "E/Enter") == "Surface O2 refilling; ship still banks cargo.", "surface status should distinguish oxygen refill from ship banking")
 	var surface_prompt: String = main.call("_format_hud_prompt")
 	_expect(surface_prompt.contains("O2 refill") and surface_prompt.contains("Cargo 1/3") and surface_prompt.contains("Ship banks"), "surface prompt should separate oxygen refill from cargo banking and show carried capacity")
 	main.player_in_base = true
 	var ship_prompt: String = main.call("_format_hud_prompt")
 	_expect(ship_prompt.contains("At ship") and ship_prompt.contains("offload cargo 1/3") and ship_prompt.contains("O2 full"), "ship prompt should remain the cargo banking/offload prompt with capacity")
 	main.free()
+
+func _test_surface_status_presenter() -> void:
+	_expect(
+		SurfaceStatusPresenterScript.surface_oxygen_status_text(true, 12.0, 30.0, "E/Enter") == "Ship moonpool: O2 full; E/Enter banks cargo.",
+		"ship moonpool surface status should preserve offload action copy"
+	)
+	_expect(
+		SurfaceStatusPresenterScript.surface_oxygen_status_text(false, 30.0, 30.0, "E/Enter") == "Surface O2 full; ship still banks cargo.",
+		"full surface oxygen status should separate oxygen from ship banking"
+	)
+	_expect(
+		SurfaceStatusPresenterScript.surface_oxygen_status_text(false, 12.0, 30.0, "E/Enter") == "Surface O2 refilling; ship still banks cargo.",
+		"refilling surface oxygen status should preserve ship banking reminder"
+	)
+	_expect(
+		SurfaceStatusPresenterScript.cargo_full_status_text(3, 3) == "Cargo full 3/3: return to ship.",
+		"cargo full status should preserve capacity copy"
+	)
 
 func _test_ship_offload_repeat_daylight_sortie() -> void:
 	var main := MainScript.new()
