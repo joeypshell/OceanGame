@@ -56,6 +56,7 @@ const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_prese
 const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const ShipOffloadVisualStagingServiceScript := preload("res://scripts/debug/ship_offload_visual_staging_service.gd")
+const SurfaceOxygenVisualStagingServiceScript := preload("res://scripts/debug/surface_oxygen_visual_staging_service.gd")
 const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
 const WreckEchoVisualStagingServiceScript := preload("res://scripts/debug/wreck_echo_visual_staging_service.gd")
 const ScannableScript := preload("res://scripts/scannable.gd")
@@ -135,6 +136,7 @@ func _initialize() -> void:
 	_run("debug Outer Shelf evidence staging", _test_debug_outer_shelf_evidence_staging)
 	_run("debug Open Hatch visual staging service", _test_open_hatch_visual_staging_service)
 	_run("debug Ship Offload visual staging service", _test_ship_offload_visual_staging_service)
+	_run("debug Surface Oxygen visual staging service", _test_surface_oxygen_visual_staging_service)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("scan hold timing helper", _test_scan_hold_timing_helper)
 	_run("compact scan marker", _test_compact_scan_marker)
@@ -1489,6 +1491,21 @@ func _test_ship_offload_visual_staging_service() -> void:
 	_expect(is_equal_approx(main.dive_session.oxygen, main.dive_session.max_oxygen), "Ship Offload staging should refill oxygen through the ship offload path")
 	_expect(main.player_in_base, "Ship Offload staging should leave the player at the ship")
 	_expect(main.dive_session.has_left_base, "Ship Offload staging should preserve repeat-sortie eligibility")
+	main.queue_free()
+
+func _test_surface_oxygen_visual_staging_service() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.reset(main.max_oxygen)
+
+	SurfaceOxygenVisualStagingServiceScript.stage_visual_review(main)
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Surface Oxygen staging should start or keep the daylight dive active")
+	_expect(main.visual_smoke_route_stage == "surface_oxygen_refill", "Surface Oxygen staging should expose the deterministic review stage")
+	_expect(main.player_in_surface_oxygen_refill, "Surface Oxygen staging should place the player in the refill area")
+	_expect(not main.player_in_base, "Surface Oxygen staging should stay distinct from ship offload staging")
+	_expect(main.dive_session.current_cargo == ["driftwood"], "Surface Oxygen staging should seed one carried resource for the visual review")
+	_expect(is_equal_approx(main.dive_session.oxygen, maxf(1.0, main.dive_session.max_oxygen * 0.18)), "Surface Oxygen staging should preserve the low oxygen review value")
+	_expect(main.status_label.text == "Surface O2 refilling; ship still banks cargo.", "Surface Oxygen staging should preserve the refill status copy")
 	main.queue_free()
 
 func _test_scanner_target_resolver() -> void:
