@@ -2705,13 +2705,6 @@ func _publish_visual_smoke_state() -> void:
 func _apply_run_panel_layout(use_compact_panel: bool) -> void:
 	RunPanelLayoutServiceScript.apply_layout(self, use_compact_panel)
 
-func _format_upgrade_menu_title(selected_position: int, total_count: int) -> String:
-	return "Upgrade Bay (%d/%d) - %s select" % [
-		selected_position,
-		total_count,
-		_action_label("move_up_down"),
-	]
-
 func _update_cargo_slots() -> void:
 	var states := CargoSlotPresenterScript.cargo_slot_states(dive_session.current_cargo, dive_session.cargo_limit, cargo_slot_nodes.size())
 	for index in range(cargo_slot_nodes.size()):

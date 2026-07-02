@@ -52,6 +52,13 @@ static func format_surface_tabs(host) -> String:
 
 	return "  ".join(parts)
 
+static func format_upgrade_menu_title(selected_position: int, total_count: int, move_label: String) -> String:
+	return "Upgrade Bay (%d/%d) - %s select" % [
+		selected_position,
+		total_count,
+		move_label,
+	]
+
 static func format_upgrade_cost(host, cost: Dictionary) -> String:
 	return UpgradeCopyPresenterScript.format_upgrade_cost(cost, ResourceSummaryServiceScript.resource_names_for_cost(cost, host.survival_state))
 

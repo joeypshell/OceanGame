@@ -7685,7 +7685,7 @@ func _test_surface_summary_tabs() -> void:
 	_expect(UpgradeStateServiceScript.format_surface_tabs(main) == "[Result]  Upgrades  Log  Night", "surface tabs should mark the result view by default")
 	main.surface_tab_index = main.SURFACE_TAB_UPGRADES
 	_expect(UpgradeStateServiceScript.format_surface_tabs(main) == "Result  [Upgrades]  Log  Night", "surface tabs should mark the upgrade view")
-	_expect(main._format_upgrade_menu_title(1, 7) == "Upgrade Bay (1/7) - Up/Down select", "upgrade bay title should keep selection controls visible")
+	_expect(UpgradeStateServiceScript.format_upgrade_menu_title(1, 7, main._action_label("move_up_down")) == "Upgrade Bay (1/7) - Up/Down select", "upgrade bay title should keep selection controls visible")
 	main.surface_tab_index = main.SURFACE_TAB_LOG
 	_expect(UpgradeStateServiceScript.format_surface_tabs(main) == "Result  Upgrades  [Log]  Night", "surface tabs should mark the log view")
 	main.surface_tab_index = main.SURFACE_TAB_NIGHT
@@ -7785,7 +7785,7 @@ func _test_prompt_formatter_guard_coverage() -> void:
 	var decoy_label: String = main._action_label("decoy_pulse")
 
 	_expect(SurfaceRunSummaryServiceScript.format_ready_panel_summary(main).contains("%s begins." % interact_label), "ready summary should derive its start label from the prompt helper")
-	_expect(main._format_upgrade_menu_title(2, 7).contains("%s select" % vertical_label), "upgrade title should derive selection labels from the prompt helper")
+	_expect(UpgradeStateServiceScript.format_upgrade_menu_title(2, 7, main._action_label("move_up_down")).contains("%s select" % vertical_label), "upgrade title should derive selection labels from the prompt helper")
 	_expect(SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main).contains("press %s" % restart_label), "next expedition prompt should derive restart labels from the prompt helper")
 	_expect(UpgradeStateServiceScript.format_burst_thruster_prompt(main).begins_with("%s burst" % burst_label), "burst prompt should derive its label from the prompt helper")
 	_expect(ExpeditionSlatePresenterScript.format_slate_text_for_host(main).contains("%s closes" % slate_label), "expedition slate should derive its close label from the prompt helper")
