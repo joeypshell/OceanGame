@@ -61,14 +61,13 @@ const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_s
 const SurvivalSupplyCacheStateServiceScript := preload("res://scripts/ui/survival_supply_cache_state_service.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
 const ToolBeltServiceScript := preload("res://scripts/ui/tool_belt_service.gd")
-const ResearchResultPresenterScript := preload("res://scripts/ui/research_result_presenter.gd")
 const ConditionVisualSyncServiceScript := preload("res://scripts/ui/condition_visual_sync_service.gd")
 const DiscoveryRevealSyncServiceScript := preload("res://scripts/ui/discovery_reveal_sync_service.gd")
 const RouteGateSyncServiceScript := preload("res://scripts/ui/route_gate_sync_service.gd")
 const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
 const RunPanelServiceScript := preload("res://scripts/ui/run_panel_service.gd")
-const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
+const ResearchResultCalloutServiceScript := preload("res://scripts/ui/research_result_callout_service.gd")
 const BlackwaterGatePresenterScript := preload("res://scripts/ui/blackwater_gate_presenter.gd")
 const SurfaceStatusPresenterScript := preload("res://scripts/ui/surface_status_presenter.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
@@ -1121,8 +1120,8 @@ func _fail_dive() -> void:
 		SurfaceRunSummaryServiceScript.format_region_memory_callout(self),
 		SurfaceRunSummaryServiceScript.format_discovery_memory_callout(self),
 		SurfaceRunSummaryServiceScript.format_route_choice_callout(self),
-		_format_gulper_research_callout(),
-		_format_echo_lens_research_callout(),
+		ResearchResultCalloutServiceScript.format_gulper_research_callout(self),
+		ResearchResultCalloutServiceScript.format_echo_lens_research_callout(self),
 		SurfaceRunSummaryServiceScript.format_scan_progress_callout(progression_state, run_completed_scans, "Scans kept"),
 		roundi(progression_state.best_depth_reached),
 		SurfaceRunSummaryServiceScript.format_night_report_block(self),
@@ -2805,57 +2804,6 @@ func _first_ready_upgrade_definition() -> UpgradeDefinition:
 		if progression_state.can_afford(upgrade.resource_cost):
 			return upgrade
 	return null
-
-func _format_gulper_research_callout() -> String:
-	return ResearchResultPresenterScript.format_gulper_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_echo_lens_research_callout() -> String:
-	return ResearchResultPresenterScript.format_echo_lens_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_wreck_echo_research_callout() -> String:
-	return ResearchResultPresenterScript.format_wreck_echo_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_east_shelf_pocket_research_callout() -> String:
-	return ResearchResultPresenterScript.format_east_shelf_pocket_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_lower_connector_echo_research_callout() -> String:
-	return ResearchResultPresenterScript.format_lower_connector_echo_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_resonance_alcove_research_callout() -> String:
-	return ResearchResultPresenterScript.format_resonance_alcove_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_blue_chimney_research_callout() -> String:
-	return ResearchResultPresenterScript.format_blue_chimney_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_lantern_silt_sample_research_callout() -> String:
-	return ResearchResultPresenterScript.format_lantern_silt_sample_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_blackwater_trace_research_callout() -> String:
-	return ResearchResultPresenterScript.format_blackwater_trace_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_glass_kelp_reading_callout() -> String:
-	return ResearchResultPresenterScript.format_glass_kelp_reading_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_hollow_reef_reading_callout() -> String:
-	return ResearchResultPresenterScript.format_hollow_reef_reading_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_salvage_data_cache_research_callout() -> String:
-	return ResearchResultPresenterScript.format_salvage_data_cache_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_salvage_manifest_research_callout() -> String:
-	return ResearchResultPresenterScript.format_salvage_manifest_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_tideglass_sample_research_callout() -> String:
-	return ResearchResultPresenterScript.format_tideglass_sample_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_outer_shelf_survey_research_callout() -> String:
-	return ResearchResultPresenterScript.format_outer_shelf_survey_research_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_rim_glass_reading_callout() -> String:
-	return ResearchResultPresenterScript.format_rim_glass_reading_callout(RunMemoryStateServiceScript.research_result_state(self))
-
-func _format_sealed_shelf_hatch_readiness_callout() -> String:
-	return ResearchResultPresenterScript.format_sealed_shelf_hatch_readiness_callout(RunMemoryStateServiceScript.research_result_state(self))
 
 func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> void:
 	RecentExpeditionLogServiceScript.record_recent_expedition(self, result_name, banked_cargo_count)
