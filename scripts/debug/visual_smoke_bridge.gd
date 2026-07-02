@@ -1,6 +1,8 @@
 class_name VisualSmokeBridge
 extends RefCounted
 
+const ScanTargetFeedbackServiceScript := preload("res://scripts/ui/scan_target_feedback_service.gd")
+
 static func consume_command(host) -> void:
 	if not OS.has_feature("web"):
 		return
@@ -209,7 +211,7 @@ static func player_state(host) -> Dictionary:
 
 	var visual_root := host.player.get_node_or_null("VisualRoot") as CanvasItem
 	var sprite := host.player.get_node_or_null("VisualRoot/SubSpriteAnchor/SubSprite") as Sprite2D
-	var screen_position: Vector2 = host._scan_reticle_screen_position(host.player.global_position)
+	var screen_position: Vector2 = ScanTargetFeedbackServiceScript.scan_reticle_screen_position(host, host.player.global_position)
 	var player_canvas := host.player as CanvasItem
 	var sprite_region := Rect2()
 	var sprite_alpha := 0.0
