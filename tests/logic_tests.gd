@@ -28,6 +28,7 @@ const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.
 const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
+const ExpandedRouteVisualStagingServiceScript := preload("res://scripts/debug/expanded_route_visual_staging_service.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HealthDamageVisualStagingServiceScript := preload("res://scripts/debug/health_damage_visual_staging_service.gd")
 const HollowReefVisualStagingServiceScript := preload("res://scripts/debug/hollow_reef_visual_staging_service.gd")
@@ -142,6 +143,7 @@ func _initialize() -> void:
 	_run("debug Daylight Cargo visual staging service", _test_daylight_cargo_visual_staging_service)
 	_run("debug Health Damage visual staging service", _test_health_damage_visual_staging_service)
 	_run("debug Health Damage extraction visual staging service", _test_health_damage_extraction_visual_staging_service)
+	_run("debug Expanded Route visual staging service", _test_expanded_route_visual_staging_service)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("scan hold timing helper", _test_scan_hold_timing_helper)
 	_run("compact scan marker", _test_compact_scan_marker)
@@ -1568,6 +1570,17 @@ func _test_health_damage_extraction_visual_staging_service() -> void:
 	_expect(main.last_night_report.contains("Health:"), "Health Damage extraction staging should resolve the night health report")
 	_expect(main.player_in_base, "Health Damage extraction staging should place the player at the ship before extracting")
 	main.queue_free()
+
+func _test_expanded_route_visual_staging_service() -> void:
+	var main := MainScript.new()
+	main.dive_session.reset(30.0)
+	main.visual_smoke_route_stage = ""
+
+	ExpandedRouteVisualStagingServiceScript.stage_visual_review(main)
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Expanded Route staging should stay inert outside web visual smoke")
+	_expect(main.visual_smoke_route_stage == "", "Expanded Route staging should not set route state outside web visual smoke")
+	_expect(main.dive_session.current_cargo.is_empty(), "Expanded Route staging should not mutate cargo outside web visual smoke")
+	main.free()
 
 func _test_scanner_target_resolver() -> void:
 	var farther_a := _make_scan_target("alpha", "Alpha", Vector2(10.0, 0.0))
