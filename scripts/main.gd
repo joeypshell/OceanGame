@@ -2521,18 +2521,6 @@ func _sync_condition_visuals() -> void:
 	var condition_id := _current_condition_id()
 	ConditionVisualSyncServiceScript.sync_condition_visuals(self, condition_id, _blackwater_signal_visible_for_condition(condition_id))
 
-func _sync_route_choice_condition_nudge(condition_id: String) -> void:
-	ConditionVisualSyncServiceScript.sync_route_choice_condition_nudge(self, condition_id)
-
-func _sync_dusk_trench_condition_nudge(condition_id: String) -> void:
-	ConditionVisualSyncServiceScript.sync_dusk_trench_condition_nudge(self, condition_id)
-
-func _sync_wide_chamber_condition_nudge(condition_id: String) -> void:
-	ConditionVisualSyncServiceScript.sync_wide_chamber_condition_nudge(self, condition_id)
-
-func _sync_mirror_kelp_condition_nudge(condition_id: String) -> void:
-	ConditionVisualSyncServiceScript.sync_mirror_kelp_condition_nudge(self, condition_id)
-
 func _blackwater_signal_visible_for_condition(condition_id: String) -> bool:
 	return condition_id == "rare_signal" and _blackwater_crack_gate_open()
 
