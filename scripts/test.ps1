@@ -52,6 +52,9 @@ $godotCommand = Resolve-GodotCommand
 
 switch ($Tier) {
 	"quick" {
+		Invoke-Step "Godot asset import" {
+			& $godotCommand --headless --path . --import
+		}
 		Invoke-Step "Godot headless launch" {
 			& $godotCommand --headless --path . --quit-after 1
 		}
@@ -109,6 +112,9 @@ switch ($Tier) {
 		Write-Host "PASS mobile-like tier"
 	}
 	"full" {
+		Invoke-Step "Godot asset import" {
+			& $godotCommand --headless --path . --import
+		}
 		Invoke-Step "Godot headless launch" {
 			& $godotCommand --headless --path . --quit-after 1
 		}
