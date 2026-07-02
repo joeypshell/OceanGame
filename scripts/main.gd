@@ -15,6 +15,7 @@ const Area01BlockoutBuilderScript := preload("res://scripts/area01_blockout_buil
 const Area01VisualStagingServiceScript := preload("res://scripts/debug/area01_visual_staging_service.gd")
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
+const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
 const HollowReefVisualStagingServiceScript := preload("res://scripts/debug/hollow_reef_visual_staging_service.gd")
@@ -2268,52 +2269,7 @@ func _stage_debug_blackwater_route_visual_review() -> void:
 	_update_hud()
 
 func _stage_debug_dusk_trench_route_visual_review() -> void:
-	if not OS.has_feature("web"):
-		return
-
-	var staged_player := player
-	if staged_player == null:
-		staged_player = get_node_or_null("Player") as CharacterBody2D
-	if staged_player == null:
-		return
-
-	var dusk_trench := get_node_or_null("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench") as Node2D
-	if dusk_trench == null:
-		return
-
-	if dive_session.result == DiveSessionScript.Result.READY:
-		dive_session.start()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	progression_state.purchased_upgrades[ECHO_LENS_UPGRADE_ID] = true
-	progression_state.purchased_upgrades[RESONANCE_KEY_UPGRADE_ID] = true
-	current_expedition_condition = {
-		"id": "low_visibility",
-		"display_name": "Low Visibility",
-		"briefing": "Deeper water is harder to read today.",
-		"tags": ["visibility", "return"],
-	}
-	_sync_sealed_shelf_hatch_state()
-	_sync_blackwater_crack_gate_state()
-	_sync_condition_visuals()
-	_update_blackwater_pressure_cue(BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
-
-	player = staged_player
-	player.global_position = dusk_trench.global_position + Vector2(92.0, 32.0)
-	player.velocity = Vector2.ZERO
-	player_in_base = false
-	dive_session.has_left_base = true
-	dive_session.oxygen = dive_session.max_oxygen
-	player_near_blackwater_crack = false
-	player_near_glass_kelp_ledge = false
-	run_reached_dusk_trench = true
-	run_glass_kelp_reading_recovered = false
-	_sync_glass_kelp_reading_state()
-	visual_smoke_route_stage = "dusk_trench_route"
-	status_label.text = "Debug review: Dusk Trench route staged."
-	_update_depth()
-	_update_hud()
+	DuskTrenchVisualStagingServiceScript.stage_route_visual_review(self)
 
 func _stage_debug_dusk_trench_payoff_visual_review(recovered := false) -> void:
 	_stage_debug_dusk_trench_route_visual_review()
