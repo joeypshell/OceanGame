@@ -40,6 +40,7 @@ const InventorySummaryPresenterScript := preload("res://scripts/ui/inventory_sum
 const LowerConnectorVisualStagingServiceScript := preload("res://scripts/debug/lower_connector_visual_staging_service.gd")
 const MirrorKelpVisualStagingServiceScript := preload("res://scripts/debug/mirror_kelp_visual_staging_service.gd")
 const NightBuildPresenterScript := preload("res://scripts/ui/night_build_presenter.gd")
+const OpenHatchVisualStagingServiceScript := preload("res://scripts/debug/open_hatch_visual_staging_service.gd")
 const OuterShelfVisualStagingServiceScript := preload("res://scripts/debug/outer_shelf_visual_staging_service.gd")
 const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd")
 const ResourceRoleVisualPresenterScript := preload("res://scripts/ui/resource_role_visual_presenter.gd")
@@ -131,6 +132,7 @@ func _initialize() -> void:
 	_run("debug Wide Reef salvage staging guardrails", _test_debug_wide_reef_salvage_staging_guardrails)
 	_run("debug Mirror Kelp evidence staging", _test_debug_mirror_kelp_evidence_staging)
 	_run("debug Outer Shelf evidence staging", _test_debug_outer_shelf_evidence_staging)
+	_run("debug Open Hatch visual staging service", _test_open_hatch_visual_staging_service)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("scan hold timing helper", _test_scan_hold_timing_helper)
 	_run("compact scan marker", _test_compact_scan_marker)
@@ -1452,6 +1454,24 @@ func _test_debug_outer_shelf_evidence_staging() -> void:
 	_expect(main.progression_state.to_save_data() == save_before, "Outer Shelf staging should not mutate durable progression")
 	_expect(not main.progression_state.to_save_data().has("outer_shelf_survey"), "Outer Shelf staging should not add durable survey state")
 	main.queue_free()
+
+func _test_open_hatch_visual_staging_service() -> void:
+	var main := MainScript.new()
+	main.dive_session.reset(30.0)
+	main.visual_smoke_route_stage = ""
+	var save_before: Dictionary = main.progression_state.to_save_data().duplicate(true)
+
+	OpenHatchVisualStagingServiceScript.stage_visual_review(main)
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Open Hatch staging service should stay inert outside web visual smoke")
+	_expect(main.visual_smoke_route_stage == "", "Open Hatch staging service should not set route state outside web visual smoke")
+	_expect(main.progression_state.to_save_data() == save_before, "Open Hatch staging service should not mutate durable progression outside web visual smoke")
+
+	main.show_debug_telemetry = true
+	main.call("_stage_debug_open_hatch_alcove_visual_review")
+	_expect(main.dive_session.result == DiveSessionScript.Result.READY, "Open Hatch staging wrapper should keep the non-web guard")
+	_expect(main.visual_smoke_route_stage == "", "Open Hatch staging wrapper should not set route state outside web visual smoke")
+	_expect(main.progression_state.to_save_data() == save_before, "Open Hatch staging wrapper should not mutate durable progression outside web visual smoke")
+	main.free()
 
 func _test_scanner_target_resolver() -> void:
 	var farther_a := _make_scan_target("alpha", "Alpha", Vector2(10.0, 0.0))
