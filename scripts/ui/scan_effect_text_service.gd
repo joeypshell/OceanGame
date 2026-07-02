@@ -5,6 +5,7 @@ const ResourcePresenterScript := preload("res://scripts/ui/resource_presenter.gd
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetResolverScript := preload("res://scripts/scan_target_resolver.gd")
+const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
 
 static func scan_target_gameplay_fact(host, target: Node) -> String:
 	if target is ResourcePickup:
@@ -22,7 +23,7 @@ static func repeat_scan_effect_text(host, target: Node) -> String:
 		target is ResourcePickup,
 		(target as ResourcePickup).definition.display_name if target is ResourcePickup else "",
 		wreck_cache_repeat_hint(host),
-		host._format_decoy_pulse_scan_feedback()
+		UpgradeStateServiceScript.format_decoy_pulse_scan_feedback(host)
 	)
 
 static func wreck_cache_repeat_hint(host) -> String:

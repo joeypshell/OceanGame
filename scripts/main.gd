@@ -2762,15 +2762,6 @@ func _update_cargo_slots() -> void:
 		cargo_slot_icon_nodes[index].color = CargoSlotPresenterScript.cargo_slot_icon_color(states[index])
 		cargo_slot_icon_nodes[index].visible = slot_visible and cargo_slot_icon_nodes[index].polygon.size() > 0
 
-func _format_burst_thruster_prompt() -> String:
-	return UpgradeStateServiceScript.format_burst_thruster_prompt(self)
-
-func _format_decoy_pulse_prompt() -> String:
-	return UpgradeStateServiceScript.format_decoy_pulse_prompt(self)
-
-func _format_decoy_pulse_scan_feedback() -> String:
-	return UpgradeStateServiceScript.format_decoy_pulse_scan_feedback(self)
-
 func _format_upgrade_state(upgrade: UpgradeDefinition) -> String:
 	return UpgradeStateServiceScript.format_upgrade_state(self, upgrade)
 

@@ -7742,11 +7742,11 @@ func _test_prompt_formatter_guard_coverage() -> void:
 	_expect(main._format_ready_panel_summary().contains("%s begins." % interact_label), "ready summary should derive its start label from the prompt helper")
 	_expect(main._format_upgrade_menu_title(2, 7).contains("%s select" % vertical_label), "upgrade title should derive selection labels from the prompt helper")
 	_expect(main._format_next_expedition_prompt().contains("press %s" % restart_label), "next expedition prompt should derive restart labels from the prompt helper")
-	_expect(main._format_burst_thruster_prompt().begins_with("%s burst" % burst_label), "burst prompt should derive its label from the prompt helper")
+	_expect(UpgradeStateServiceScript.format_burst_thruster_prompt(main).begins_with("%s burst" % burst_label), "burst prompt should derive its label from the prompt helper")
 	_expect(ExpeditionSlatePresenterScript.format_slate_text_for_host(main).contains("%s closes" % slate_label), "expedition slate should derive its close label from the prompt helper")
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks decoy.")
 	main.progression_state.purchased_upgrades[DecoyPulseUpgrade.id] = true
-	_expect(main._format_decoy_pulse_prompt() == "%s: decoy ready" % decoy_label, "decoy prompt should derive its ready label from the prompt helper")
+	_expect(UpgradeStateServiceScript.format_decoy_pulse_prompt(main) == "%s: decoy ready" % decoy_label, "decoy prompt should derive its ready label from the prompt helper")
 	main.dive_session.reset(main.max_oxygen)
 	_expect(main._format_hud_prompt() == "Press %s to begin the dive" % interact_words, "ready HUD prompt should derive interact wording from the prompt helper")
 
@@ -9070,8 +9070,8 @@ func _test_compact_dive_hud_helpers() -> void:
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks decoy.")
 	main.progression_state.purchased_upgrades[DecoyPulseUpgrade.id] = true
 	var combined_prompt := "Explore, then return to base | %s | %s" % [
-		main._format_burst_thruster_prompt(),
-		main._format_decoy_pulse_prompt(),
+		UpgradeStateServiceScript.format_burst_thruster_prompt(main),
+		UpgradeStateServiceScript.format_decoy_pulse_prompt(main),
 	]
 	_expect(combined_prompt.length() <= 72, "combined Burst and Decoy active prompt should stay compact")
 	_expect(combined_prompt.contains("Space burst"), "combined active prompt should keep the Space command visible")
@@ -9080,8 +9080,8 @@ func _test_compact_dive_hud_helpers() -> void:
 
 	main.decoy_pulse_used_this_run = true
 	combined_prompt = "Explore, then return to base | %s | %s" % [
-		main._format_burst_thruster_prompt(),
-		main._format_decoy_pulse_prompt(),
+		UpgradeStateServiceScript.format_burst_thruster_prompt(main),
+		UpgradeStateServiceScript.format_decoy_pulse_prompt(main),
 	]
 	_expect(combined_prompt.length() <= 68, "spent Decoy active prompt should stay compact")
 	_expect(combined_prompt.contains("Decoy spent"), "spent Decoy active prompt should stay compact and explicit")
@@ -10006,22 +10006,22 @@ func _test_predator_decoy_pulse_helper() -> void:
 
 func _test_decoy_pulse_feedback_text() -> void:
 	var main := MainScript.new()
-	_expect(main._format_decoy_pulse_prompt() == "", "decoy prompt should stay hidden before Gulper Eel discovery")
-	_expect(main._format_decoy_pulse_scan_feedback().contains("unavailable"), "decoy scan feedback should explain unavailable state")
+	_expect(UpgradeStateServiceScript.format_decoy_pulse_prompt(main) == "", "decoy prompt should stay hidden before Gulper Eel discovery")
+	_expect(UpgradeStateServiceScript.format_decoy_pulse_scan_feedback(main).contains("unavailable"), "decoy scan feedback should explain unavailable state")
 
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks warning tuning.")
-	_expect(main._format_decoy_pulse_prompt().contains("locked"), "decoy prompt should show upgrade-locked state after discovery")
+	_expect(UpgradeStateServiceScript.format_decoy_pulse_prompt(main).contains("locked"), "decoy prompt should show upgrade-locked state after discovery")
 
 	main.progression_state.purchased_upgrades[DecoyPulseUpgrade.id] = true
-	_expect(main._format_decoy_pulse_prompt().contains("ready"), "decoy prompt should show ready state when owned and unused")
+	_expect(UpgradeStateServiceScript.format_decoy_pulse_prompt(main).contains("ready"), "decoy prompt should show ready state when owned and unused")
 	main.decoy_pulse_activated_this_scan = true
-	_expect(main._format_decoy_pulse_scan_feedback().contains("spent"), "decoy scan feedback should report use")
-	_expect(main._format_decoy_pulse_scan_feedback().contains("3s"), "decoy scan feedback should report duration")
+	_expect(UpgradeStateServiceScript.format_decoy_pulse_scan_feedback(main).contains("spent"), "decoy scan feedback should report use")
+	_expect(UpgradeStateServiceScript.format_decoy_pulse_scan_feedback(main).contains("3s"), "decoy scan feedback should report duration")
 
 	main.decoy_pulse_activated_this_scan = false
 	main.decoy_pulse_used_this_run = true
-	_expect(main._format_decoy_pulse_prompt().contains("spent"), "decoy prompt should show spent state")
-	_expect(main._format_decoy_pulse_scan_feedback().contains("already spent"), "decoy scan feedback should explain repeat denial")
+	_expect(UpgradeStateServiceScript.format_decoy_pulse_prompt(main).contains("spent"), "decoy prompt should show spent state")
+	_expect(UpgradeStateServiceScript.format_decoy_pulse_scan_feedback(main).contains("already spent"), "decoy scan feedback should explain repeat denial")
 	main.free()
 
 func _make_spawn_point(spawn_id: String, category: String, target_id: String, depth_band: String, cluster_pattern: String, position: Vector2, preferred_condition_id := "") -> SpawnPoint:
