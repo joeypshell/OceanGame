@@ -7741,7 +7741,7 @@ func _test_prompt_formatter_guard_coverage() -> void:
 	_expect(main._format_upgrade_menu_title(2, 7).contains("%s select" % vertical_label), "upgrade title should derive selection labels from the prompt helper")
 	_expect(main._format_next_expedition_prompt().contains("press %s" % restart_label), "next expedition prompt should derive restart labels from the prompt helper")
 	_expect(main._format_burst_thruster_prompt().begins_with("%s burst" % burst_label), "burst prompt should derive its label from the prompt helper")
-	_expect(main._format_expedition_slate_text().contains("%s closes" % slate_label), "expedition slate should derive its close label from the prompt helper")
+	_expect(ExpeditionSlatePresenterScript.format_slate_text_for_host(main).contains("%s closes" % slate_label), "expedition slate should derive its close label from the prompt helper")
 	main.progression_state.add_discovery("gulper_eel", "Gulper Eel", "Predator.", "Unlocks decoy.")
 	main.progression_state.purchased_upgrades[DecoyPulseUpgrade.id] = true
 	_expect(main._format_decoy_pulse_prompt() == "%s: decoy ready" % decoy_label, "decoy prompt should derive its ready label from the prompt helper")
@@ -8182,7 +8182,7 @@ func _test_expedition_slate_context() -> void:
 	main.dive_session.current_cargo = ["food_supply", "driftwood"]
 	main.carried_tomorrow_intention = "bank Power supply soon to protect tomorrow's oxygen."
 
-	var slate: String = main.call("_format_expedition_slate_text")
+	var slate: String = ExpeditionSlatePresenterScript.format_slate_text_for_host(main)
 	_expect(slate.contains("DAYLIGHT 03:30") and slate.contains("50% daylight left"), "slate should show remaining daylight context")
 	_expect(slate.contains("O2 12/30") and slate.contains("health 64/100"), "slate should show active pressure meters")
 	_expect(slate.contains("Cargo: 2 / 3 carried") and slate.contains("Food") and slate.contains("Wood"), "slate should show carried cargo and capacity")

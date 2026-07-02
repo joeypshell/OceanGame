@@ -886,31 +886,7 @@ func _update_expedition_slate(is_diving: bool) -> void:
 	_set_control_rect(expedition_slate_title_label, EXPEDITION_SLATE_TITLE_RECT)
 	_set_control_rect(expedition_slate_body_label, EXPEDITION_SLATE_BODY_RECT)
 	if expedition_slate_body_label != null:
-		expedition_slate_body_label.text = _format_expedition_slate_text()
-
-func _format_expedition_slate_text() -> String:
-	return ExpeditionSlatePresenterScript.format_slate_text(_expedition_slate_state())
-
-func _expedition_slate_state() -> Dictionary:
-	var cargo_names: Array[String] = []
-	for item_id in dive_session.current_cargo:
-		cargo_names.append(ResourceSummaryServiceScript.short_resource_name(item_id, survival_state))
-	return {
-		"base_needs_line": survival_state.status_line(),
-		"cargo_limit": dive_session.cargo_limit,
-		"cargo_names": cargo_names,
-		"current_depth": roundi(dive_session.current_depth),
-		"day_plan": _format_current_tomorrow_intention(),
-		"daylight_label": HudPresenterScript.format_daylight_label(_daylight_remaining_seconds()),
-		"daylight_percent_left": roundi(_daylight_remaining_ratio() * 100.0),
-		"health": ceili(dive_session.health),
-		"known_build_line": _format_night_build_choice_line(),
-		"max_health": ceili(dive_session.max_health),
-		"max_oxygen": ceili(dive_session.max_oxygen),
-		"oxygen": ceili(dive_session.oxygen),
-		"route_goal": ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), RecentExpeditionLogServiceScript.latest_recent_route_memory(recent_expedition_log)),
-		"slate_label": _action_label("expedition_slate"),
-	}
+		expedition_slate_body_label.text = ExpeditionSlatePresenterScript.format_slate_text_for_host(self)
 
 func _sync_surface_oxygen_refill_state_from_position() -> void:
 	if player == null:
