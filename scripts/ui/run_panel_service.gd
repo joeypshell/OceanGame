@@ -2,6 +2,7 @@ class_name RunPanelService
 extends RefCounted
 
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
+const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_expedition_log_service.gd")
 const SurfaceRunSummaryServiceScript := preload("res://scripts/ui/surface_run_summary_service.gd")
 const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
 
@@ -32,7 +33,7 @@ static func update_run_panel(host) -> void:
 			], "extracted")
 		elif host.surface_tab_index == host.SURFACE_TAB_LOG:
 			host.run_title_label.text = "Recent Expeditions"
-			host.run_summary_label.text = host._format_recent_expedition_log()
+			host.run_summary_label.text = RecentExpeditionLogServiceScript.format_recent_expedition_log(host)
 		else:
 			host.run_title_label.text = SurfaceRunSummaryServiceScript.format_expedition_day_title(host, "Result: Extraction")
 			host.run_summary_label.text = SurfaceRunSummaryServiceScript.format_run_summary(host, host.last_result_summary, "extracted")
@@ -40,7 +41,7 @@ static func update_run_panel(host) -> void:
 		host.run_panel.visible = true
 		if host.surface_tab_index == host.SURFACE_TAB_LOG:
 			host.run_title_label.text = "Recent Expeditions"
-			host.run_summary_label.text = host._format_recent_expedition_log()
+			host.run_summary_label.text = RecentExpeditionLogServiceScript.format_recent_expedition_log(host)
 		else:
 			host.run_title_label.text = SurfaceRunSummaryServiceScript.format_expedition_day_title(host, "Result: Failure")
 			host.run_summary_label.text = SurfaceRunSummaryServiceScript.format_run_summary(host, host.last_result_summary, "failed")

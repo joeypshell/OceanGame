@@ -5,6 +5,8 @@ const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.
 const DiscoveryNamePresenterScript := preload("res://scripts/ui/discovery_name_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
+const RouteMemoryPresenterScript := preload("res://scripts/ui/route_memory_presenter.gd")
+const RunMemoryStateServiceScript := preload("res://scripts/ui/run_memory_state_service.gd")
 const SurvivalNeedSummaryServiceScript := preload("res://scripts/ui/survival_need_summary_service.gd")
 
 static func format_scan_ids(scan_ids: Array[String]) -> String:
@@ -30,7 +32,7 @@ static func record_recent_expedition(host, result_name: String, banked_cargo_cou
 		"result": result_name,
 		"banked_cargo_count": banked_cargo_count,
 		"scans": host.run_completed_scans.duplicate(),
-		"route_memory": host._format_recent_route_memory(),
+		"route_memory": RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(host)),
 		"survival_memory": format_recent_survival_memory(host, result_name, banked_cargo_count),
 		"predator_contacts": host.run_predator_contacts,
 		"best_depth": roundi(host.progression_state.best_depth_reached),
