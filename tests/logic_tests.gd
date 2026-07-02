@@ -26,6 +26,7 @@ const BlueChimneyVisualStagingServiceScript := preload("res://scripts/debug/blue
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
+const DepthRailServiceScript := preload("res://scripts/ui/depth_rail_service.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const ExpandedRouteVisualStagingServiceScript := preload("res://scripts/debug/expanded_route_visual_staging_service.gd")
@@ -243,6 +244,7 @@ func _initialize() -> void:
 	_run("expedition slate pressure pause", _test_expedition_slate_pressure_pause)
 	_run("HUD presenter", _test_hud_presenter)
 	_run("HUD instrument bar service", _test_hud_instrument_bar_service)
+	_run("depth rail service", _test_depth_rail_service)
 	_run("tool belt presenter", _test_tool_belt_presenter)
 	_run("compact dive hud helpers", _test_compact_dive_hud_helpers)
 	_run("visual smoke bridge", _test_visual_smoke_bridge)
@@ -8102,6 +8104,23 @@ func _test_hud_instrument_bar_service() -> void:
 	_expect(is_equal_approx(health_width, main.HEALTH_BAR_FILL_RECT.size.x * 0.82), "instrument bars should scale health fill by health ratio")
 	_expect(is_equal_approx(depth_width, main.DEPTH_BAR_FILL_RECT.size.x * 0.5), "instrument bars should scale depth fill by display depth ratio")
 	_expect(main.health_bar_fill.color == HudPresenterScript.HEALTH_DAMAGED_COLOR, "instrument bars should preserve recent-damage health color")
+	main.free()
+
+func _test_depth_rail_service() -> void:
+	var main := MainScript.new()
+	main.depth_rail_line = ColorRect.new()
+	main.depth_rail_marker = Polygon2D.new()
+	main.depth_rail_labels = [Label.new(), Label.new(), Label.new()]
+	main.dive_session.current_depth = main.DEPTH_RAIL_MAX_DISPLAY_DEPTH * 0.5
+
+	DepthRailServiceScript.update_rail(main, true)
+	_expect(main.depth_rail_line.visible and main.depth_rail_marker.visible, "visible depth rail should show line and marker")
+	_expect(main.depth_rail_labels[0].text == "0m" and main.depth_rail_labels[1].text == "50m" and main.depth_rail_labels[2].text == "100m", "depth rail labels should preserve compact copy")
+	_expect(is_equal_approx(main.depth_rail_marker.position.y, main.DEPTH_RAIL_LINE_RECT.position.y + main.DEPTH_RAIL_LINE_RECT.size.y * 0.5), "depth rail marker should track current depth ratio")
+
+	DepthRailServiceScript.update_rail(main, false)
+	_expect(not main.depth_rail_line.visible and not main.depth_rail_marker.visible, "hidden depth rail should hide line and marker")
+	_expect(not main.depth_rail_labels[0].visible and not main.depth_rail_labels[1].visible and not main.depth_rail_labels[2].visible, "hidden depth rail should hide labels")
 	main.free()
 
 func _test_tool_belt_presenter() -> void:

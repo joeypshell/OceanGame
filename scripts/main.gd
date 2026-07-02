@@ -18,6 +18,7 @@ const BlueChimneyVisualStagingServiceScript := preload("res://scripts/debug/blue
 const MobileTouchControlsScript := preload("res://scripts/mobile_touch_controls.gd")
 const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.gd")
 const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/daylight_cargo_visual_staging_service.gd")
+const DepthRailServiceScript := preload("res://scripts/ui/depth_rail_service.gd")
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const ExpandedRouteVisualStagingServiceScript := preload("res://scripts/debug/expanded_route_visual_staging_service.gd")
@@ -3492,22 +3493,7 @@ func _update_survival_needs_panel(is_visible: bool) -> void:
 	SurvivalNeedsPanelServiceScript.update_panel(self, is_visible)
 
 func _update_depth_rail(is_visible: bool) -> void:
-	depth_rail_line.visible = is_visible
-	depth_rail_marker.visible = is_visible
-	for label in depth_rail_labels:
-		label.visible = is_visible
-
-	if not is_visible:
-		return
-
-	depth_rail_labels[0].text = "0m"
-	depth_rail_labels[1].text = "50m"
-	depth_rail_labels[2].text = "100m"
-	var ratio := clampf(dive_session.current_depth / DEPTH_RAIL_MAX_DISPLAY_DEPTH, 0.0, 1.0)
-	depth_rail_marker.position = Vector2(
-		DEPTH_RAIL_LINE_RECT.position.x + 1.0,
-		DEPTH_RAIL_LINE_RECT.position.y + DEPTH_RAIL_LINE_RECT.size.y * ratio
-	)
+	DepthRailServiceScript.update_rail(self, is_visible)
 
 func _update_minimap(is_visible: bool) -> void:
 	minimap_path.visible = is_visible
