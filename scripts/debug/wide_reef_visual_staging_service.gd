@@ -1,6 +1,8 @@
 class_name WideReefVisualStagingService
 extends RefCounted
 
+const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
+
 const WIDE_REEF_CHAMBER_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber"
 
 static func stage_visual_review(host, cutter_owned := false) -> void:
@@ -36,7 +38,7 @@ static func stage_visual_review(host, cutter_owned := false) -> void:
 	host._sync_blackwater_crack_gate_state()
 	host._sync_salvage_pocket_open_state()
 	host._sync_condition_visuals()
-	host._update_blackwater_pressure_cue(host.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
+	RouteTimingCueServiceScript.update_blackwater_pressure_cue(host, host.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
 
 	host.player = staged_player
 	host.player.global_position = chamber.global_position + (Vector2(456.0, -88.0) if cutter_owned else Vector2(112.0, -18.0))

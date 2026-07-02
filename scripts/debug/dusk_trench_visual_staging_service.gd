@@ -1,6 +1,8 @@
 class_name DuskTrenchVisualStagingService
 extends RefCounted
 
+const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
+
 const DUSK_TRENCH_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench"
 const GLASS_KELP_INTERACT_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone"
 
@@ -34,7 +36,7 @@ static func stage_route_visual_review(host) -> void:
 	host._sync_sealed_shelf_hatch_state()
 	host._sync_blackwater_crack_gate_state()
 	host._sync_condition_visuals()
-	host._update_blackwater_pressure_cue(host.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
+	RouteTimingCueServiceScript.update_blackwater_pressure_cue(host, host.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
 
 	host.player = staged_player
 	host.player.global_position = dusk_trench.global_position + Vector2(92.0, 32.0)

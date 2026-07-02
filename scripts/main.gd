@@ -772,14 +772,14 @@ func _process(delta: float) -> void:
 	_update_glow_plankton_highlight(delta)
 	_update_resource_scan_highlight(delta)
 	_update_echo_lens_pulse(delta)
-	_update_east_shelf_current_surge(delta)
-	_update_blue_chimney_reverse_draft(delta)
-	_update_blackwater_pressure_cue(delta)
-	_update_lantern_ray_timing_lane(delta)
-	_update_hollow_reef_timing_current(delta)
-	_update_glassfin_swarm_spacing_cue(delta)
-	_update_salvage_silt_timing_cue(delta)
-	_update_outer_shelf_slackwater_timing_cue(delta)
+	RouteTimingCueServiceScript.update_east_shelf_current_surge(self, delta)
+	RouteTimingCueServiceScript.update_blue_chimney_reverse_draft(self, delta)
+	RouteTimingCueServiceScript.update_blackwater_pressure_cue(self, delta)
+	RouteTimingCueServiceScript.update_lantern_ray_timing_lane(self, delta)
+	RouteTimingCueServiceScript.update_hollow_reef_timing_current(self, delta)
+	RouteTimingCueServiceScript.update_glassfin_swarm_spacing_cue(self, delta)
+	RouteTimingCueServiceScript.update_salvage_silt_timing_cue(self, delta)
+	RouteTimingCueServiceScript.update_outer_shelf_slackwater_timing_cue(self, delta)
 	_update_lantern_fry_idle()
 	_update_burst_thruster_cooldown(delta)
 	_update_scan_charge(delta)
@@ -2296,30 +2296,6 @@ func _update_echo_lens_pulse(delta: float) -> void:
 	echo_lens_pulse.modulate = Color(1.0, 1.0, 1.0, lerpf(0.9, 0.0, age_ratio))
 	if echo_lens_pulse_timer <= 0.0:
 		echo_lens_pulse.visible = false
-
-func _update_east_shelf_current_surge(delta: float) -> void:
-	RouteTimingCueServiceScript.update_east_shelf_current_surge(self, delta)
-
-func _update_blue_chimney_reverse_draft(delta: float) -> void:
-	RouteTimingCueServiceScript.update_blue_chimney_reverse_draft(self, delta)
-
-func _update_blackwater_pressure_cue(delta: float) -> void:
-	RouteTimingCueServiceScript.update_blackwater_pressure_cue(self, delta)
-
-func _update_lantern_ray_timing_lane(delta: float) -> void:
-	RouteTimingCueServiceScript.update_lantern_ray_timing_lane(self, delta)
-
-func _update_hollow_reef_timing_current(delta: float) -> void:
-	RouteTimingCueServiceScript.update_hollow_reef_timing_current(self, delta)
-
-func _update_glassfin_swarm_spacing_cue(delta: float) -> void:
-	RouteTimingCueServiceScript.update_glassfin_swarm_spacing_cue(self, delta)
-
-func _update_salvage_silt_timing_cue(delta: float) -> void:
-	RouteTimingCueServiceScript.update_salvage_silt_timing_cue(self, delta)
-
-func _update_outer_shelf_slackwater_timing_cue(delta: float) -> void:
-	RouteTimingCueServiceScript.update_outer_shelf_slackwater_timing_cue(self, delta)
 
 func _outer_shelf_slackwater_decision_state(timer_seconds: float) -> String:
 	return RouteTimingCuePresenterScript.outer_shelf_slackwater_decision_state(
