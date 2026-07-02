@@ -38,3 +38,16 @@ static func display_name(progression_state, discovery_id: String) -> String:
 			return "Lantern Fry"
 		_:
 			return discovery_id
+
+static func format_discoveries(progression_state, compact: bool = false) -> String:
+	var discoveries: Dictionary = progression_state.scan_discoveries
+	var text := "Discoveries: %d" % discoveries.size()
+	if compact:
+		return text
+	if discoveries.is_empty():
+		return text + "\n???"
+
+	for discovery in discoveries.values():
+		text += "\n%s - %s" % [discovery["display_name"], discovery["gameplay_fact"]]
+
+	return text

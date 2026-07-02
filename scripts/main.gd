@@ -2613,7 +2613,7 @@ func _update_hud() -> void:
 	MinimapServiceScript.update_minimap(self, is_diving)
 	bank_label.text = "Banked:%s" % ResourceSummaryServiceScript.format_banked_resources(progression_state.banked_resources, survival_state, RESOURCE_CATEGORY_LABELS)
 	upgrade_label.text = UpgradeStateServiceScript.format_upgrade_status(self)
-	discoveries_label.text = _format_discoveries(true)
+	discoveries_label.text = DiscoveryNamePresenterScript.format_discoveries(progression_state, true)
 	recent_expedition_log_label.text = RecentExpeditionLogServiceScript.format_recent_expedition_log(self)
 	status_label.text = HudPresenterScript.compact_dive_status(status_label.text) if is_diving else status_label.text
 	if is_diving:
@@ -2781,20 +2781,6 @@ func _first_ready_upgrade_definition() -> UpgradeDefinition:
 
 func _record_recent_expedition(result_name: String, banked_cargo_count: int) -> void:
 	RecentExpeditionLogServiceScript.record_recent_expedition(self, result_name, banked_cargo_count)
-
-func _format_discoveries(compact: bool = false) -> String:
-	var discoveries := progression_state.scan_discoveries
-	var text := "Discoveries: %d" % discoveries.size()
-	if compact:
-		return text
-	if discoveries.is_empty():
-		return text + "\n???"
-
-	for discovery in discoveries.values():
-		text += "\n%s - %s" % [discovery["display_name"], discovery["gameplay_fact"]]
-
-	return text
-
 
 func _format_active_objective_line() -> String:
 	return HudPresenterScript.format_active_objective_line({
