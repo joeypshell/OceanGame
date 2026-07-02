@@ -3256,17 +3256,8 @@ func _format_current_tomorrow_intention() -> String:
 func _format_dawn_priority_line() -> String:
 	return SurfaceRunSummaryServiceScript.format_dawn_priority_line(self)
 
-func _format_starter_resource_target() -> String:
-	return SurfaceRunSummaryServiceScript.format_starter_resource_target(self)
-
 func _format_material_need_list(materials: Array[String]) -> String:
 	return SurfaceRunSummaryServiceScript.format_material_need_list(materials)
-
-func _base_need_names_at_or_below(threshold: int) -> Array[String]:
-	return SurfaceRunSummaryServiceScript.base_need_names_at_or_below(self, threshold)
-
-func _format_need_list(needs: Array[String]) -> String:
-	return SurfaceRunSummaryServiceScript.format_need_list(needs)
 
 func _format_expedition_ready_status() -> String:
 	return SurfaceRunSummaryServiceScript.format_expedition_ready_status(self)

@@ -5,6 +5,7 @@ const ConditionPresenterScript := preload("res://scripts/ui/condition_presenter.
 const DiscoveryNamePresenterScript := preload("res://scripts/ui/discovery_name_presenter.gd")
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
+const SurvivalNeedSummaryServiceScript := preload("res://scripts/ui/survival_need_summary_service.gd")
 
 static func format_scan_ids(scan_ids: Array[String]) -> String:
 	if scan_ids.is_empty():
@@ -58,12 +59,12 @@ static func format_recent_survival_memory(host, result_name: String, banked_carg
 	if not host.run_banked_survival_supplies.is_empty():
 		return "banked %s supply" % ResourceSummaryServiceScript.format_supply_names_inline(host.run_banked_survival_supplies, host.survival_state)
 
-	var low_needs: Array[String] = host._base_need_names_at_or_below(1)
+	var low_needs: Array[String] = SurvivalNeedSummaryServiceScript.base_need_names_at_or_below(host.survival_state, 1)
 	if not low_needs.is_empty():
-		return "low %s" % host._format_need_list(low_needs)
+		return "low %s" % SurvivalNeedSummaryServiceScript.format_need_list(low_needs)
 
 	if result_name == "Extracted" and banked_cargo_count == 0:
-		var starter_target: String = host._format_starter_resource_target()
+		var starter_target: String = SurvivalNeedSummaryServiceScript.format_starter_resource_target(host.progression_state, host.survival_state, host.WATER_FILTER_UPGRADE_ID, host.WATER_FILTER_UPGRADE.resource_cost)
 		if not starter_target.is_empty():
 			var prefix := "Shell Reef pockets: "
 			var suffix := " for Water Filter I."
