@@ -7608,8 +7608,10 @@ func _test_shell_reef_scan_clue_text() -> void:
 
 	_expect(DiscoveryNamePresenterScript.display_name(main.progression_state, "shell_reef_shelf") == "Shell Reef Shelf", "shell reef discovery should have a readable name")
 	_expect(DiscoveryNamePresenterScript.display_name(main.progression_state, "") == "none", "discovery name presenter should preserve empty discovery copy")
+	_expect(DiscoveryNamePresenterScript.format_discoveries(main.progression_state) == "Discoveries: 0\n???", "empty discovery summary should keep the unknown placeholder")
 	main.progression_state.add_discovery("custom_signal", "Custom Signal", "Signal.", "Memory.")
 	_expect(DiscoveryNamePresenterScript.display_name(main.progression_state, "custom_signal") == "Custom Signal", "discovery name presenter should prefer durable discovery display names")
+	_expect(DiscoveryNamePresenterScript.format_discoveries(main.progression_state).contains("Custom Signal - Memory."), "discovery summary should list discovered gameplay facts")
 	_expect(ScanEffectTextServiceScript.repeat_scan_effect_text(main, target).contains("Reef route clue refreshed"), "shell reef repeat scan should give compact feedback")
 	_expect(ScanEffectTextServiceScript.first_scan_guidance(main, target).contains("midwater bank route"), "shell reef first scan should explain the route decision")
 	_expect(ScanTargetFeedbackServiceScript.format_scan_target_type(main, target) == "environment", "shell reef scan target should be environmental metadata")
@@ -8914,7 +8916,7 @@ func _test_compact_dive_hud_helpers() -> void:
 	_expect(ToolBeltPresenterScript.tool_slot_color("locked").a <= 0.36, "locked tool slots should sit quieter than ready tools")
 	_expect(ToolBeltPresenterScript.tool_slot_color("active").a >= 0.65, "active tool slots should still read as selected")
 
-	var compact_discoveries: String = main.call("_format_discoveries", true)
+	var compact_discoveries: String = DiscoveryNamePresenterScript.format_discoveries(main.progression_state, true)
 	_expect(compact_discoveries == "Discoveries: 0", "compact discovery helper should show only the count")
 
 	var main_scene := MainScene.instantiate()
