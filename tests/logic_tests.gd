@@ -1563,7 +1563,7 @@ func _test_debug_mirror_kelp_evidence_staging() -> void:
 	main.call("_stage_debug_mirror_kelp_visual_review", true)
 	_expect(main.visual_smoke_route_stage == "mirror_kelp_tideglass", "Tideglass staging should expose a deterministic payoff stage")
 	_expect(main.run_tideglass_sample_recovered, "Tideglass staging should set only the run-scoped payoff evidence")
-	_expect(main._format_route_choice_callout().contains("Mirror Kelp Pass"), "Tideglass staging should support Mirror Kelp result memory")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Mirror Kelp Pass"), "Tideglass staging should support Mirror Kelp result memory")
 	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Mirror Kelp Pass", "Tideglass staging should support recent route memory")
 	_expect(main.progression_state.to_save_data() == save_before, "Tideglass staging should not mutate durable progression")
 
@@ -1571,7 +1571,7 @@ func _test_debug_mirror_kelp_evidence_staging() -> void:
 	_expect(main.visual_smoke_route_stage == "mirror_kelp_mirrorfin", "Mirrorfin staging should expose a deterministic observation stage")
 	_expect(not main.run_tideglass_sample_recovered, "Mirrorfin staging should reset Tideglass payoff state for deterministic captures")
 	_expect(main.run_completed_scans.has("mirrorfin_drift"), "Mirrorfin staging should set only current-run observation evidence")
-	_expect(main._format_route_choice_callout().contains("reflection timing"), "Mirrorfin staging should support observation result memory")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("reflection timing"), "Mirrorfin staging should support observation result memory")
 	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Mirror Kelp Pass", "Mirrorfin staging should support recent route memory")
 	_expect(main.progression_state.to_save_data() == save_before, "Mirrorfin staging should not mutate durable progression")
 	_expect(not main.progression_state.to_save_data().has("mirror_kelp_pass_route"), "Mirror Kelp staging should not add durable route state")
@@ -2145,12 +2145,12 @@ func _test_mirrorfin_route_read_behavior() -> void:
 	_expect(main.run_completed_scans == ["mirrorfin_drift"], "repeat Mirrorfin scan should not duplicate current-run scan evidence")
 	_expect(repeat_scan_status.contains("Mirrorfin Drift known"), "repeat Mirrorfin scan should use compact known-target copy")
 	_expect(repeat_scan_status.contains("observation refreshed"), "repeat Mirrorfin scan should refresh behavior text compactly")
-	_expect(main._format_discovery_memory_callout().contains("Mirrorfin Drift"), "Mirrorfin first scan should produce compact discovery memory")
-	_expect(main._format_discovery_memory_callout().contains("without fighting"), "Mirrorfin discovery memory should frame observation as non-combat")
-	_expect(main._format_route_choice_callout().contains("Mirror Kelp"), "Mirrorfin scan should now support compact Mirror Kelp route memory")
-	_expect(main._format_route_choice_callout().contains("reflection timing"), "Mirrorfin route memory should explain what the observation taught")
+	_expect(SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main).contains("Mirrorfin Drift"), "Mirrorfin first scan should produce compact discovery memory")
+	_expect(SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main).contains("without fighting"), "Mirrorfin discovery memory should frame observation as non-combat")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Mirror Kelp"), "Mirrorfin scan should now support compact Mirror Kelp route memory")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("reflection timing"), "Mirrorfin route memory should explain what the observation taught")
 	main.run_reached_dusk_trench = true
-	_expect(main._format_route_choice_callout().contains("Mirror Kelp"), "Mirrorfin branch evidence should stay more specific than upstream route reach memory")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Mirror Kelp"), "Mirrorfin branch evidence should stay more specific than upstream route reach memory")
 
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(saved.get("scan_discoveries", {}).has("mirrorfin_drift"), "Mirrorfin discovery should persist through normal scan discovery storage")
@@ -2657,10 +2657,10 @@ func _test_glass_ray_drifter_passive_route_read() -> void:
 	_expect_no_monster_combat_language(first_scan_status, "Glass Ray first scan status")
 	_expect(not first_scan_status.to_lower().contains("field guide"), "Glass Ray scan should not imply field-guide UI")
 	_expect(not first_scan_status.to_lower().contains("checklist"), "Glass Ray scan should not imply checklist UI")
-	_expect(main._format_discovery_memory_callout().contains("Glass Ray Drifter"), "Glass Ray scan should produce compact discovery memory")
-	_expect(main._format_discovery_memory_callout().contains("without fighting"), "Glass Ray discovery memory should frame observation as non-combat")
-	_expect(main._format_route_choice_callout().contains("Glass Ray slackwater timing"), "Glass Ray scan should produce a compact Glass Rim route-choice memory")
-	_expect(main._format_region_memory_callout().contains("Outer Shelf"), "Glass Ray scan should remember the broad Outer Shelf place")
+	_expect(SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main).contains("Glass Ray Drifter"), "Glass Ray scan should produce compact discovery memory")
+	_expect(SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main).contains("without fighting"), "Glass Ray discovery memory should frame observation as non-combat")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Glass Ray slackwater timing"), "Glass Ray scan should produce a compact Glass Rim route-choice memory")
+	_expect(SurfaceRunSummaryServiceScript.format_region_memory_callout(main).contains("Outer Shelf"), "Glass Ray scan should remember the broad Outer Shelf place")
 	_expect(RouteMemoryPresenterScript.format_recent_route_memory(RunMemoryStateServiceScript.route_memory_state(main)) == "Outer Shelf", "Glass Ray scan should support current-run Outer Shelf route memory")
 	var saved: Dictionary = main.progression_state.to_save_data()
 	_expect(saved.get("scan_discoveries", {}).has("glass_ray_drifter"), "Glass Ray discovery should persist through normal scan discovery storage")
@@ -5720,19 +5720,19 @@ func _test_next_expedition_framing() -> void:
 func _test_region_memory_result_callout() -> void:
 	var main := MainScript.new()
 
-	_expect(main._format_region_memory_callout().contains("Surface Base"), "region memory fallback should preserve safe return framing")
+	_expect(SurfaceRunSummaryServiceScript.format_region_memory_callout(main).contains("Surface Base"), "region memory fallback should preserve safe return framing")
 
 	main.run_collected_resources = ["shell_fragments"]
-	_expect(main._format_region_memory_callout().contains("Shell Reef"), "shell cargo should remember Shell Reef")
+	_expect(SurfaceRunSummaryServiceScript.format_region_memory_callout(main).contains("Shell Reef"), "shell cargo should remember Shell Reef")
 
 	main.run_completed_scans = ["thermal_vent"]
-	_expect(main._format_region_memory_callout().contains("Thermal Vent Field"), "thermal scan should remember Thermal Vent Field over shell cargo")
+	_expect(SurfaceRunSummaryServiceScript.format_region_memory_callout(main).contains("Thermal Vent Field"), "thermal scan should remember Thermal Vent Field over shell cargo")
 
 	main.run_completed_scans = ["pressure_wreck_signal"]
-	_expect(main._format_region_memory_callout().contains("Wreck Shelf"), "pressure wreck scan should remember Wreck Shelf")
+	_expect(SurfaceRunSummaryServiceScript.format_region_memory_callout(main).contains("Wreck Shelf"), "pressure wreck scan should remember Wreck Shelf")
 
 	main.run_completed_scans = ["lantern_ray"]
-	var lantern_ray_memory := main._format_region_memory_callout()
+	var lantern_ray_memory := SurfaceRunSummaryServiceScript.format_region_memory_callout(main)
 	_expect(lantern_ray_memory.contains("Lantern Ray Route"), "Lantern Ray scan should remember the lower-route creature place")
 	_expect(lantern_ray_memory.contains("timing lane"), "Lantern Ray memory should point to observation timing rather than combat")
 	_expect(lantern_ray_memory.contains("Blackwater"), "Lantern Ray memory should preserve broad return-route language")
@@ -5742,12 +5742,12 @@ func _test_region_memory_result_callout() -> void:
 
 	main.run_completed_scans.clear()
 	main.run_predator_contacts = 1
-	_expect(main._format_region_memory_callout().contains("Gulper Route"), "predator evidence should remember Gulper Route as the deepest contested place")
-	_expect(not main._format_region_memory_callout().contains(","), "region memory callout should stay compact and not become a checklist")
+	_expect(SurfaceRunSummaryServiceScript.format_region_memory_callout(main).contains("Gulper Route"), "predator evidence should remember Gulper Route as the deepest contested place")
+	_expect(not SurfaceRunSummaryServiceScript.format_region_memory_callout(main).contains(","), "region memory callout should stay compact and not become a checklist")
 
 	main.run_completed_scans = ["lantern_ray"]
 	main.run_reached_dusk_trench = true
-	var dusk_memory := main._format_region_memory_callout()
+	var dusk_memory := SurfaceRunSummaryServiceScript.format_region_memory_callout(main)
 	_expect(dusk_memory.contains("Dusk Trench"), "Dusk reach evidence should remember the lower-trench place")
 	_expect(not dusk_memory.contains("Lantern Ray Route"), "Dusk reach evidence should not be crowded out by Lantern Ray observation")
 	_expect(dusk_memory.contains("up-left"), "Dusk reach memory should keep broad return language")
@@ -5757,7 +5757,7 @@ func _test_region_memory_result_callout() -> void:
 	_expect_no_echo_lens_locator_language(dusk_memory, "Dusk Trench remembered place")
 
 	main.run_hollow_reef_reading_recovered = true
-	var hollow_memory := main._format_region_memory_callout()
+	var hollow_memory := SurfaceRunSummaryServiceScript.format_region_memory_callout(main)
 	_expect(hollow_memory.contains("Hollow Reef"), "Hollow Reef reading should own the remembered place over Dusk")
 	_expect(not hollow_memory.contains("Lantern Ray Route"), "Hollow Reef memory should not be crowded out by creature observation")
 	_expect(hollow_memory.contains("Blackwater"), "Hollow Reef memory should preserve broad return-chain language")
@@ -5766,7 +5766,7 @@ func _test_region_memory_result_callout() -> void:
 	main.run_hollow_reef_reading_recovered = false
 	main.run_reached_dusk_trench = false
 	main.run_completed_scans = ["hollow_reef_skitter"]
-	var hollow_observation_memory := main._format_region_memory_callout()
+	var hollow_observation_memory := SurfaceRunSummaryServiceScript.format_region_memory_callout(main)
 	_expect(hollow_observation_memory.contains("Hollow Reef"), "Hollow Reef Skitter scan should remember the side-cave place")
 	_expect(hollow_observation_memory.contains("upper-shelf timing"), "Hollow Reef Skitter memory should say what was learned compactly")
 	_expect(hollow_observation_memory.contains("Blackwater"), "Hollow Reef Skitter memory should preserve broad return-route language")
@@ -5776,12 +5776,12 @@ func _test_region_memory_result_callout() -> void:
 	_expect_no_echo_lens_locator_language(hollow_observation_memory, "Hollow Reef Skitter remembered place")
 
 	main.run_reached_dusk_trench = true
-	var hollow_observation_over_dusk := main._format_region_memory_callout()
+	var hollow_observation_over_dusk := SurfaceRunSummaryServiceScript.format_region_memory_callout(main)
 	_expect(hollow_observation_over_dusk.contains("Hollow Reef"), "Hollow Reef observation should take priority over generic Dusk reach memory")
 	_expect(not hollow_observation_over_dusk.contains("Dusk Trench -"), "Hollow Reef observation should not collapse back to generic Dusk memory")
 	main.run_reached_dusk_trench = false
 	main.run_completed_scans = ["glassfin_swarm"]
-	var glassfin_memory := main._format_region_memory_callout()
+	var glassfin_memory := SurfaceRunSummaryServiceScript.format_region_memory_callout(main)
 	_expect(glassfin_memory.contains("Glassfin Swarm"), "Glassfin Swarm scan should remember the creature-route place")
 	_expect(glassfin_memory.contains("spacing window"), "Glassfin Swarm memory should say what was learned compactly")
 	_expect(glassfin_memory.contains("Hollow Reef"), "Glassfin Swarm memory should preserve broad return-route language")
@@ -5789,16 +5789,16 @@ func _test_region_memory_result_callout() -> void:
 	_expect(not glassfin_memory.to_lower().contains("field guide"), "Glassfin Swarm memory should not imply field-guide UI")
 	_expect(not glassfin_memory.to_lower().contains("checklist"), "Glassfin Swarm memory should not imply checklist UI")
 	main.run_reached_dusk_trench = true
-	var dusk_over_glassfin := main._format_region_memory_callout()
+	var dusk_over_glassfin := SurfaceRunSummaryServiceScript.format_region_memory_callout(main)
 	_expect(dusk_over_glassfin.contains("Dusk Trench"), "Dusk reach evidence should take priority over Glassfin observation")
 	_expect(not dusk_over_glassfin.contains("Glassfin Swarm"), "Glassfin observation should not crowd out Dusk route evidence")
 	main.run_reached_dusk_trench = false
 	main.run_hollow_reef_reading_recovered = true
-	var hollow_over_glassfin := main._format_region_memory_callout()
+	var hollow_over_glassfin := SurfaceRunSummaryServiceScript.format_region_memory_callout(main)
 	_expect(hollow_over_glassfin.contains("Hollow Reef"), "Hollow Reef route evidence should take priority over Glassfin observation")
 	_expect(not hollow_over_glassfin.contains("Glassfin Swarm"), "Glassfin observation should not crowd out Hollow Reef route evidence")
 	main.run_tideglass_sample_recovered = true
-	var mirror_kelp_memory := main._format_region_memory_callout()
+	var mirror_kelp_memory := SurfaceRunSummaryServiceScript.format_region_memory_callout(main)
 	_expect(mirror_kelp_memory.contains("Mirror Kelp Pass"), "Mirror Kelp payoff should remember the branch place")
 	_expect(mirror_kelp_memory.contains("Wide Reef"), "Mirror Kelp memory should preserve broad return-route language")
 	_expect(mirror_kelp_memory.contains("Hollow Reef"), "Mirror Kelp memory should preserve the lower-route return chain")
@@ -5810,19 +5810,19 @@ func _test_region_memory_result_callout() -> void:
 func _test_discovery_memory_result_callout() -> void:
 	var main := MainScript.new()
 
-	_expect(main._format_discovery_memory_callout() == "", "discovery memory should stay hidden when no first-time major discovery happened")
+	_expect(SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main) == "", "discovery memory should stay hidden when no first-time major discovery happened")
 
 	main.run_completed_scans = ["shell_reef_shelf"]
-	_expect(main._format_discovery_memory_callout().contains("Shell Reef Shelf"), "shell reef first scan should produce discovery memory")
+	_expect(SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main).contains("Shell Reef Shelf"), "shell reef first scan should produce discovery memory")
 
 	main.run_completed_scans = ["shell_reef_shelf", "thermal_vent"]
-	_expect(main._format_discovery_memory_callout().contains("Thermal Vent"), "thermal first scan should take priority over shell reef")
+	_expect(SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main).contains("Thermal Vent"), "thermal first scan should take priority over shell reef")
 
 	main.run_completed_scans = ["thermal_vent", "gulper_eel"]
-	_expect(main._format_discovery_memory_callout().contains("Gulper Eel"), "gulper first scan should produce creature research memory")
+	_expect(SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main).contains("Gulper Eel"), "gulper first scan should produce creature research memory")
 
 	main.run_completed_scans = ["lantern_ray"]
-	var lantern_ray_discovery_memory := main._format_discovery_memory_callout()
+	var lantern_ray_discovery_memory := SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main)
 	_expect(lantern_ray_discovery_memory.contains("Lantern Ray"), "Lantern Ray first scan should produce creature observation memory")
 	_expect(lantern_ray_discovery_memory.contains("without fighting"), "Lantern Ray discovery memory should frame observation as non-combat")
 	_expect_no_monster_combat_language(lantern_ray_discovery_memory, "Lantern Ray discovery memory")
@@ -5830,7 +5830,7 @@ func _test_discovery_memory_result_callout() -> void:
 	_expect(not lantern_ray_discovery_memory.to_lower().contains("checklist"), "Lantern Ray discovery memory should not imply checklist UI")
 
 	main.run_completed_scans = ["glassfin_swarm"]
-	var glassfin_discovery_memory := main._format_discovery_memory_callout()
+	var glassfin_discovery_memory := SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main)
 	_expect(glassfin_discovery_memory.contains("Glassfin Swarm"), "Glassfin Swarm first scan should produce creature observation memory")
 	_expect(glassfin_discovery_memory.contains("spacing"), "Glassfin Swarm discovery memory should name the spacing lesson")
 	_expect(glassfin_discovery_memory.contains("without fighting"), "Glassfin Swarm discovery memory should frame observation as non-combat")
@@ -5839,7 +5839,7 @@ func _test_discovery_memory_result_callout() -> void:
 	_expect(not glassfin_discovery_memory.to_lower().contains("checklist"), "Glassfin Swarm discovery memory should not imply checklist UI")
 
 	main.run_completed_scans = ["pressure_wreck_signal", "wreck_signal_cache", "wreck_signal_cache"]
-	var memory := main._format_discovery_memory_callout()
+	var memory := SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main)
 	_expect(memory.contains("Wreck Signal Cache"), "cache first scan should take priority over outside wreck signal")
 	_expect(memory.find("Wreck Signal Cache") == memory.rfind("Wreck Signal Cache"), "discovery memory should not duplicate repeated ids")
 	_expect(not memory.contains(","), "discovery memory should stay compact and not become a checklist")
@@ -5967,31 +5967,31 @@ func _test_run_telemetry_reset_service() -> void:
 func _test_route_choice_result_callout() -> void:
 	var main := MainScript.new()
 
-	_expect(main._format_route_choice_callout() == "", "route choice callout should stay hidden without run evidence")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main) == "", "route choice callout should stay hidden without run evidence")
 
 	main.run_collected_resources = ["shell_fragments"]
-	_expect(main._format_route_choice_callout().contains("Shell Reef"), "shell cargo should produce a reef banking callout")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Shell Reef"), "shell cargo should produce a reef banking callout")
 
 	main.run_collected_resources = []
 	main.run_east_shelf_pocket_ping_recovered = true
-	_expect(main._format_route_choice_callout().contains("East Shelf research push"), "East Shelf payoff should produce a research-push route callout")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("East Shelf research push"), "East Shelf payoff should produce a research-push route callout")
 
 	main.run_lower_connector_echo_recovered = true
-	_expect(main._format_route_choice_callout().contains("Shelf Drop"), "Drop Echo payoff should produce a lower-route route callout")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Shelf Drop"), "Drop Echo payoff should produce a lower-route route callout")
 
 	main.run_blue_chimney_draft_reading_recovered = true
-	_expect(main._format_route_choice_callout().contains("Blue Chimney"), "Blue Chimney survey core should produce a lower-route route callout")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Blue Chimney"), "Blue Chimney survey core should produce a lower-route route callout")
 
 	main.run_east_shelf_pocket_ping_recovered = false
 	main.run_lower_connector_echo_recovered = false
 	main.run_blue_chimney_draft_reading_recovered = false
 	main.run_lantern_silt_sample_recovered = true
-	_expect(main._format_route_choice_callout().contains("Silt Vein"), "Lantern Silt payoff should produce a lower-route route callout")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Silt Vein"), "Lantern Silt payoff should produce a lower-route route callout")
 
 	main.run_lantern_silt_sample_recovered = false
 	main.run_blackwater_trace_recovered = true
 	main.run_predator_contacts = 1
-	var blackwater_callout := main._format_route_choice_callout()
+	var blackwater_callout := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(blackwater_callout.contains("Blackwater"), "Blackwater Trace should produce the deepest-route route callout")
 	_expect(not blackwater_callout.contains("predator route"), "Blackwater route evidence should not be crowded out by predator pressure")
 	_expect(blackwater_callout.find("Route choice:") == blackwater_callout.rfind("Route choice:"), "Blackwater route memory should stay one compact route-choice line")
@@ -6001,7 +6001,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not blackwater_summary.contains("Dusk Trench"), "Dusk result memory should stay hidden before reach evidence")
 
 	main.run_reached_dusk_trench = true
-	var dusk_callout := main._format_route_choice_callout()
+	var dusk_callout := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(dusk_callout.contains("Dusk Trench"), "Dusk reach evidence should produce the deepest route-choice callout")
 	_expect(not dusk_callout.contains("Blackwater"), "Dusk route choice should take priority over Blackwater route evidence")
 	_expect(dusk_callout.find("Route choice:") == dusk_callout.rfind("Route choice:"), "Dusk route memory should stay one compact route-choice line")
@@ -6012,7 +6012,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not dusk_summary.contains("map"), "Dusk extraction summary should avoid map language")
 
 	main.run_hollow_reef_reading_recovered = true
-	var hollow_callout := main._format_route_choice_callout()
+	var hollow_callout := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(hollow_callout.contains("Hollow Reef"), "Hollow Reef reading should produce the deepest route-choice callout")
 	_expect(not hollow_callout.contains("Dusk Trench"), "Hollow Reef route choice should take priority over Dusk reach evidence")
 	_expect(not hollow_callout.contains("Blackwater"), "Hollow Reef route choice should take priority over Blackwater trace evidence")
@@ -6023,7 +6023,7 @@ func _test_route_choice_result_callout() -> void:
 
 	main.run_salvage_data_cache_recovered = true
 	var save_before_wide_chamber_memory: Dictionary = main.progression_state.to_save_data().duplicate(true)
-	var wide_chamber_callout := main._format_route_choice_callout()
+	var wide_chamber_callout := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(wide_chamber_callout.contains("wide chamber"), "wide chamber salvage evidence should produce the most specific route-choice callout")
 	_expect(wide_chamber_callout.contains("sealed pocket"), "wide chamber route choice should name the compact salvage lesson")
 	_expect(not wide_chamber_callout.contains("Hollow Reef"), "wide chamber route choice should take priority over Hollow Reef reading evidence")
@@ -6037,14 +6037,14 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not main.progression_state.to_save_data().has("wide_reef_chamber_route"), "wide chamber route memory should not create durable route state")
 	_expect(not main.progression_state.to_save_data().has("recent_route_memory"), "wide chamber route memory should not create durable recent-route state")
 	main.run_tideglass_sample_recovered = true
-	var tideglass_route_callout := main._format_route_choice_callout()
+	var tideglass_route_callout := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(tideglass_route_callout.contains("Mirror Kelp Pass"), "Tideglass payoff should produce Mirror Kelp route-choice memory")
 	_expect(tideglass_route_callout.contains("deeper kelp seal"), "Tideglass route memory should name the compact branch promise")
 	_expect(not tideglass_route_callout.contains("wide chamber"), "Mirror Kelp payoff should take priority over the upstream wide chamber route")
 	_expect_no_echo_lens_locator_language(tideglass_route_callout, "Tideglass route choice")
 	main.run_tideglass_sample_recovered = false
 	main.run_completed_scans = ["mirrorfin_drift"]
-	var mirrorfin_route_callout := main._format_route_choice_callout()
+	var mirrorfin_route_callout := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(mirrorfin_route_callout.contains("Mirror Kelp"), "Mirrorfin observation should produce Mirror Kelp route-choice memory")
 	_expect(mirrorfin_route_callout.contains("reflection timing"), "Mirrorfin route memory should name the observation lesson")
 	_expect(not mirrorfin_route_callout.contains("wide chamber"), "Mirrorfin route memory should take priority over the upstream wide chamber route")
@@ -6057,7 +6057,7 @@ func _test_route_choice_result_callout() -> void:
 
 	main.run_completed_scans = ["hollow_reef_skitter"]
 	var save_before_hollow_observation: Dictionary = main.progression_state.to_save_data().duplicate(true)
-	var hollow_observation_route_choice := main._format_route_choice_callout()
+	var hollow_observation_route_choice := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(hollow_observation_route_choice.contains("Hollow Reef"), "Hollow Reef Skitter scan should produce route-choice memory")
 	_expect(hollow_observation_route_choice.contains("upper-shelf timing"), "Hollow Reef Skitter route-choice memory should name the compact lesson")
 	_expect(not hollow_observation_route_choice.contains("Dusk Trench"), "Hollow Reef Skitter route choice should be more specific than generic Dusk reach")
@@ -6074,7 +6074,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not save_after_hollow_observation.has("route_graph"), "Hollow Reef route memory should not create route graph state")
 	main.run_completed_scans = ["glassfin_swarm"]
 	var save_before_glassfin_observation: Dictionary = main.progression_state.to_save_data().duplicate(true)
-	var glassfin_route_choice := main._format_route_choice_callout()
+	var glassfin_route_choice := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(glassfin_route_choice.contains("Glassfin Swarm"), "Glassfin Swarm scan should produce route-choice memory")
 	_expect(glassfin_route_choice.contains("spacing"), "Glassfin Swarm route-choice memory should name the compact lesson")
 	_expect(glassfin_route_choice.contains("without fighting"), "Glassfin Swarm route-choice memory should reinforce observation-first creature direction")
@@ -6091,12 +6091,12 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not save_after_glassfin_observation.has("monster_journal"), "Glassfin Swarm route memory should not create monster journal state")
 	_expect(not save_after_glassfin_observation.has("creature_inventory"), "Glassfin Swarm route memory should not create creature inventory state")
 	main.run_reached_dusk_trench = true
-	var dusk_over_glassfin_route_choice := main._format_route_choice_callout()
+	var dusk_over_glassfin_route_choice := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(dusk_over_glassfin_route_choice.contains("Dusk Trench"), "Dusk reach evidence should win over Glassfin route-choice memory")
 	_expect(not dusk_over_glassfin_route_choice.contains("Glassfin Swarm"), "Glassfin route-choice memory should not crowd out Dusk route evidence")
 	main.run_reached_dusk_trench = false
 	main.run_hollow_reef_reading_recovered = true
-	var hollow_over_glassfin_route_choice := main._format_route_choice_callout()
+	var hollow_over_glassfin_route_choice := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(hollow_over_glassfin_route_choice.contains("Hollow Reef"), "Hollow Reef route evidence should win over Glassfin route-choice memory")
 	_expect(not hollow_over_glassfin_route_choice.contains("Glassfin Swarm"), "Glassfin route-choice memory should not crowd out Hollow Reef route evidence")
 	main.run_hollow_reef_reading_recovered = false
@@ -6106,17 +6106,17 @@ func _test_route_choice_result_callout() -> void:
 	main.run_predator_contacts = 0
 	main.current_resource_cluster_pattern = "deep_reward"
 	main.run_collected_resources = ["glow_plankton"]
-	_expect(main._format_route_choice_callout().contains("deep glow"), "deep reward glow cargo should produce a deep push callout")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("deep glow"), "deep reward glow cargo should produce a deep push callout")
 
 	main.run_completed_scans = ["wreck_signal_cache"]
-	_expect(main._format_route_choice_callout().contains("pressure-wreck progress"), "wreck cache scan should produce a pressure progress callout")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("pressure-wreck progress"), "wreck cache scan should produce a pressure progress callout")
 
 	main.run_predator_contacts = 1
-	_expect(main._format_route_choice_callout().contains("predator route"), "predator contact should take priority in the route callout")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("predator route"), "predator contact should take priority in the route callout")
 
 	main.run_predator_contacts = 0
 	main.run_completed_scans = ["lantern_ray"]
-	var lantern_route_choice := main._format_route_choice_callout()
+	var lantern_route_choice := SurfaceRunSummaryServiceScript.format_route_choice_callout(main)
 	_expect(lantern_route_choice.contains("Lantern Ray"), "Lantern Ray scan should produce a route observation callout when no deeper route wins")
 	_expect_no_monster_combat_language(lantern_route_choice, "Lantern Ray route choice")
 
@@ -6127,12 +6127,12 @@ func _test_route_choice_result_callout() -> void:
 		"display_name": "Thermal Bloom",
 		"briefing": "Warm water stirs.",
 	}
-	_expect(main._format_route_choice_callout().contains("Pressure Seal I"), "thermal vent scan should produce a pressure seal route callout")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Pressure Seal I"), "thermal vent scan should produce a pressure seal route callout")
 
 	main.run_collected_resources = ["glow_plankton"]
-	_expect(main._format_route_choice_callout().contains("Thermal Vent clue"), "vent scan plus glow cargo should produce a vent route callout")
+	_expect(SurfaceRunSummaryServiceScript.format_route_choice_callout(main).contains("Thermal Vent clue"), "vent scan plus glow cargo should produce a vent route callout")
 
-	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s\nCompact result line." % main._format_route_choice_callout(), "extracted")
+	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s\nCompact result line." % SurfaceRunSummaryServiceScript.format_route_choice_callout(main), "extracted")
 	_expect(summary.contains("Route choice:"), "player-facing result summary should include the route callout")
 	_expect(summary.find("Route choice:") == summary.rfind("Route choice:"), "player-facing result summary should not duplicate route-choice lines")
 	_expect(not summary.contains("Playtest data:"), "result summary should not include debug telemetry unless F3 is enabled")
@@ -6140,7 +6140,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not summary.contains("thermal_bloom"), "condition id should stay hidden unless debug telemetry is enabled")
 
 	main.show_debug_telemetry = true
-	summary = SurfaceRunSummaryServiceScript.format_run_summary(main, main._format_route_choice_callout(), "extracted")
+	summary = SurfaceRunSummaryServiceScript.format_run_summary(main, SurfaceRunSummaryServiceScript.format_route_choice_callout(main), "extracted")
 	_expect(summary.contains("Playtest data:"), "debug telemetry should appear only when enabled")
 	_expect(summary.contains("Condition: Thermal Bloom (thermal_bloom)"), "debug telemetry should include condition display and id")
 	main.free()
@@ -6152,7 +6152,7 @@ func _test_gulper_research_result_callout() -> void:
 
 	main.run_completed_scans = ["gulper_eel"]
 	_expect(main._format_gulper_research_callout().contains("Gulper route timing observed"), "Gulper scan should produce a research callout")
-	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s%s" % [main._format_route_choice_callout(), main._format_gulper_research_callout()], "extracted")
+	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s%s" % [SurfaceRunSummaryServiceScript.format_route_choice_callout(main), main._format_gulper_research_callout()], "extracted")
 	_expect(summary.contains("Research:"), "player-facing summary should include compact creature research when relevant")
 	_expect(not summary.contains("Playtest data:"), "creature research should not expose debug telemetry")
 
@@ -6229,7 +6229,7 @@ func _test_echo_lens_result_callout() -> void:
 	_expect(callout.contains("Echo Lens"), "Echo Lens result line should name the scanner upgrade")
 	_expect(callout.contains("weak wreck echo below the shelf"), "Echo Lens result line should preserve the broad local echo memory")
 	_expect_no_echo_lens_locator_language(callout, "Echo Lens result line")
-	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s%s" % [main._format_route_choice_callout(), callout], "extracted")
+	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s%s" % [SurfaceRunSummaryServiceScript.format_route_choice_callout(main), callout], "extracted")
 	_expect(summary.contains("Research:"), "Echo Lens result line should appear as compact research memory")
 	_expect(not summary.contains("Playtest data:"), "Echo Lens result line should not expose debug telemetry")
 	main.free()
@@ -7144,9 +7144,9 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 	var compact_result := "\n".join([
 		SurfaceRunSummaryServiceScript.format_completed_expedition_line(main, "Extraction"),
 		SurfaceRunSummaryServiceScript.format_extraction_banking_line(3, main.run_collected_resources, main.survival_state, main.RESOURCE_CATEGORY_LABELS, not main.run_completed_scans.is_empty()),
-		main._format_region_memory_callout(),
-		main._format_discovery_memory_callout(),
-		main._format_route_choice_callout(),
+		SurfaceRunSummaryServiceScript.format_region_memory_callout(main),
+		SurfaceRunSummaryServiceScript.format_discovery_memory_callout(main),
+		SurfaceRunSummaryServiceScript.format_route_choice_callout(main),
 		main._format_gulper_research_callout(),
 		main._format_echo_lens_research_callout(),
 		main._format_wreck_echo_research_callout(),
