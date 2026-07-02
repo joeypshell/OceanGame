@@ -41,6 +41,7 @@ const SaveServiceScript := preload("res://scripts/services/save_service.gd")
 const RoutePresenterScript := preload("res://scripts/ui/route_presenter.gd")
 const VisualSmokeBridgeScript := preload("res://scripts/debug/visual_smoke_bridge.gd")
 const WideReefVisualStagingServiceScript := preload("res://scripts/debug/wide_reef_visual_staging_service.gd")
+const WreckEchoVisualStagingServiceScript := preload("res://scripts/debug/wreck_echo_visual_staging_service.gd")
 const OXYGEN_TANK_UPGRADE := preload("res://resources/upgrades/oxygen_tank_1.tres")
 const PRESSURE_SEAL_UPGRADE := preload("res://resources/upgrades/pressure_seal_1.tres")
 const SIGNAL_LENS_UPGRADE := preload("res://resources/upgrades/signal_lens_1.tres")
@@ -1901,59 +1902,7 @@ func _cycle_debug_seed() -> void:
 	]
 
 func _stage_debug_wreck_echo_visual_review() -> void:
-	if not show_debug_telemetry:
-		return
-
-	progression_state.purchased_upgrades[SIGNAL_LENS_UPGRADE_ID] = true
-	progression_state.purchased_upgrades[PRESSURE_SEAL_UPGRADE_ID] = true
-	progression_state.purchased_upgrades[ECHO_LENS_UPGRADE_ID] = true
-	if pressure_boundary != null:
-		_sync_pressure_lock_state()
-	_sync_wreck_echo_state()
-
-	if dive_session.result != DiveSessionScript.Result.DIVING or not debug_wreck_echo_review_staged:
-		if dive_session.result != DiveSessionScript.Result.DIVING:
-			dive_session.start()
-		var trigger := wreck_echo_clue_trigger
-		if trigger == null:
-			trigger = get_node_or_null("WreckEchoDescent/ClueTrigger") as Area2D
-		if trigger == null:
-			return
-		var staged_player := player
-		if staged_player == null:
-			staged_player = get_node_or_null("Player") as CharacterBody2D
-		if staged_player == null:
-			return
-		player = staged_player
-		player.global_position = trigger.global_position + Vector2(-95.0, -34.0)
-		player.velocity = Vector2.ZERO
-		dive_session.has_left_base = true
-		debug_wreck_echo_review_staged = true
-		if status_label != null:
-			status_label.text = "Debug review: Wreck Echo route staged."
-		_update_depth()
-		if is_inside_tree():
-			_update_hud()
-		return
-
-	run_wreck_echo_clue_recovered = true
-	_sync_wreck_echo_state()
-	var review_base := base_zone
-	if review_base == null:
-		review_base = get_node_or_null("BaseZone") as Area2D
-	if player == null:
-		player = get_node_or_null("Player") as CharacterBody2D
-	if review_base == null or player == null:
-		return
-	base_zone = review_base
-	player.global_position = base_zone.global_position
-	player.velocity = Vector2.ZERO
-	player_in_base = true
-	if not is_inside_tree():
-		dive_session.extract()
-		last_result_summary = _format_wreck_echo_research_callout()
-		return
-	_try_extract()
+	WreckEchoVisualStagingServiceScript.stage_visual_review(self)
 
 func _stage_debug_oxygen_visual_review(target_ratio: float, label: String) -> void:
 	if dive_session.result == DiveSessionScript.Result.READY:
