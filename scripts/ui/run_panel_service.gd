@@ -17,7 +17,7 @@ static func update_run_panel(host) -> void:
 	if host.dive_session.result == host.DiveSessionScript.Result.READY:
 		host.run_panel.visible = true
 		host.run_title_label.text = SurfaceRunSummaryServiceScript.format_expedition_day_title(host, "Ready")
-		host.run_summary_label.text = SurfaceRunSummaryServiceScript.format_run_summary(host, host._format_ready_panel_summary(), "ready")
+		host.run_summary_label.text = SurfaceRunSummaryServiceScript.format_run_summary(host, SurfaceRunSummaryServiceScript.format_ready_panel_summary(host), "ready")
 	elif host.dive_session.result == host.DiveSessionScript.Result.EXTRACTED:
 		host.run_panel.visible = true
 		if host.surface_tab_index == host.SURFACE_TAB_NIGHT:
