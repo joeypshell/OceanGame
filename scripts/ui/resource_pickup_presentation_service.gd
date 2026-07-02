@@ -15,7 +15,7 @@ static func resource_pickup_feedback(host, resource_id: String) -> String:
 	)
 
 static func ensure_resource_role_visuals(host) -> void:
-	var pickup_root := host.get_node_or_null("ResourcePickups")
+	var pickup_root: Node = host.get_node_or_null("ResourcePickups")
 	if pickup_root == null:
 		return
 	for pickup_node in pickup_root.get_children():

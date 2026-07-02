@@ -5,7 +5,7 @@ static func ensure_nodes(host) -> void:
 	if host.expedition_slate_panel != null and is_instance_valid(host.expedition_slate_panel):
 		return
 
-	var hud := host.get_node_or_null("HUD")
+	var hud: Node = host.get_node_or_null("HUD")
 	if hud == null:
 		return
 

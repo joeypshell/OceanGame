@@ -80,6 +80,7 @@ const DiscoveryRevealSyncServiceScript := preload("res://scripts/ui/discovery_re
 const RouteGateSyncServiceScript := preload("res://scripts/ui/route_gate_sync_service.gd")
 const RoutePayoffSyncServiceScript := preload("res://scripts/ui/route_payoff_sync_service.gd")
 const RunPanelLayoutServiceScript := preload("res://scripts/ui/run_panel_layout_service.gd")
+const RunPanelServiceScript := preload("res://scripts/ui/run_panel_service.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 const UpgradeMenuServiceScript := preload("res://scripts/ui/upgrade_menu_service.gd")
 const UpgradeStateServiceScript := preload("res://scripts/ui/upgrade_state_service.gd")
@@ -281,6 +282,7 @@ func _initialize() -> void:
 	_run("scan target feedback service", _test_scan_target_feedback_service)
 	_run("surface run summary service", _test_surface_run_summary_service)
 	_run("run panel layout service", _test_run_panel_layout_service)
+	_run("run panel service", _test_run_panel_service)
 	_run("upgrade menu service", _test_upgrade_menu_service)
 	_run("upgrade state service", _test_upgrade_state_service)
 	_run("resource summary service", _test_resource_summary_service)
@@ -8498,6 +8500,36 @@ func _test_run_panel_layout_service() -> void:
 	_expect(_control_rect(main.run_panel) == main.RUN_PANEL_COMPACT_RECT, "run panel layout service should preserve compact upgrade panel rect")
 	_expect(main.run_summary_label.offset_bottom == main.RUN_SUMMARY_COMPACT_BOTTOM, "run panel layout service should preserve compact summary bottom")
 	_expect(main.surface_tabs_label.offset_right == main.RUN_PANEL_CONTENT_RIGHT_COMPACT, "run panel layout service should preserve compact content right edge")
+	main.free()
+
+func _test_run_panel_service() -> void:
+	var main := MainScript.new()
+	main.run_panel = Panel.new()
+	main.surface_tabs_label = Label.new()
+	main.run_title_label = Label.new()
+	main.run_summary_label = Label.new()
+	main.dive_session.result = DiveSessionScript.Result.READY
+
+	RunPanelServiceScript.update_run_panel(main)
+	_expect(main.run_panel.visible, "run panel service should show the panel in ready state")
+	_expect(main.run_title_label.text.contains("Ready"), "run panel service should preserve ready title copy")
+	_expect(main.run_summary_label.text.contains("Start with"), "run panel service should preserve ready summary copy")
+
+	main.dive_session.result = DiveSessionScript.Result.EXTRACTED
+	main.surface_tab_index = main.SURFACE_TAB_UPGRADES
+	RunPanelServiceScript.update_run_panel(main)
+	_expect(main.run_title_label.text == "Surface Upgrade Bay", "run panel service should preserve upgrade tab title")
+	_expect(main.run_summary_label.text.contains("Banked:"), "run panel service should preserve upgrade tab banked summary")
+	_expect(_control_rect(main.run_panel) == main.RUN_PANEL_COMPACT_RECT, "run panel service should request compact layout for upgrade tab")
+
+	main.surface_tab_index = main.SURFACE_TAB_LOG
+	RunPanelServiceScript.update_run_panel(main)
+	_expect(main.run_title_label.text == "Recent Expeditions", "run panel service should preserve recent log title")
+	_expect(main.run_summary_label.text.contains("Recent Expeditions"), "run panel service should show recent expedition log copy")
+
+	main.dive_session.result = DiveSessionScript.Result.DIVING
+	RunPanelServiceScript.update_run_panel(main)
+	_expect(not main.run_panel.visible, "run panel service should hide the surface panel while diving")
 	main.free()
 
 func _test_upgrade_menu_service() -> void:
