@@ -2929,7 +2929,7 @@ func _test_salvage_manifest_interaction() -> void:
 	_expect(log_text.contains("#21 Extracted"), "recent expedition log should include Salvage Manifest runs")
 	_expect(log_text.contains("route Salvage Pocket"), "Salvage Manifest should produce compact salvage-pocket route memory")
 	_expect(not log_text.contains("route Wide Reef Chamber"), "Salvage Pocket memory should take priority over upstream wide chamber memory")
-	_expect(main._latest_recent_route_memory() == "Salvage Pocket", "latest route helper should expose Salvage Pocket after manifest evidence")
+	_expect(RecentExpeditionLogServiceScript.latest_recent_route_memory(main.recent_expedition_log) == "Salvage Pocket", "latest route helper should expose Salvage Pocket after manifest evidence")
 	_expect(main.progression_state.to_save_data() == save_before_recent, "Salvage Pocket recent route memory should remain session-only")
 	_expect(not main.progression_state.to_save_data().has("salvage_pocket_route"), "recent Salvage Pocket memory should not create durable route state")
 	main.call("_reset_run_telemetry")
@@ -7221,7 +7221,7 @@ func _test_recent_expedition_presenter() -> void:
 func _test_recent_expedition_log() -> void:
 	var main := MainScript.new()
 	main.current_resource_cluster_pattern = "cautious"
-	_expect(main._latest_recent_route_memory() == "", "empty recent expedition log should not provide ready-route memory")
+	_expect(RecentExpeditionLogServiceScript.latest_recent_route_memory(main.recent_expedition_log) == "", "empty recent expedition log should not provide ready-route memory")
 
 	for run_number in range(1, 5):
 		main.progression_state.current_run_number = run_number
@@ -7290,7 +7290,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(not log_text.to_lower().contains("field guide"), "Glassfin Swarm recent log should not imply field-guide UI")
 	_expect(not log_text.to_lower().contains("checklist"), "Glassfin Swarm recent log should not imply checklist UI")
 	_expect_no_monster_combat_language(log_text, "Glassfin Swarm recent expedition log")
-	_expect(main._latest_recent_route_memory() == "Glassfin Swarm", "latest route helper should expose Glassfin Swarm after a swarm observation")
+	_expect(RecentExpeditionLogServiceScript.latest_recent_route_memory(main.recent_expedition_log) == "Glassfin Swarm", "latest route helper should expose Glassfin Swarm after a swarm observation")
 	_expect(main.progression_state.to_save_data() == save_before_recent_glassfin, "Glassfin Swarm recent route memory should remain session-only")
 	_expect(not main.progression_state.to_save_data().has("glassfin_swarm_route"), "recent Glassfin Swarm memory should not create durable route state")
 
@@ -7325,7 +7325,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(log_text.find("route Blackwater") == log_text.rfind("route Blackwater"), "recent expedition log should not duplicate Blackwater route memory")
 	_expect(not log_text.contains("seed"), "Blackwater recent log should hide raw seed without debug telemetry")
 	_expect_no_echo_lens_locator_language(log_text, "Blackwater recent expedition log")
-	_expect(main._latest_recent_route_memory() == "Blackwater", "latest route helper should expose Blackwater for the next ready panel")
+	_expect(RecentExpeditionLogServiceScript.latest_recent_route_memory(main.recent_expedition_log) == "Blackwater", "latest route helper should expose Blackwater for the next ready panel")
 
 	main.recent_expedition_log.clear()
 	main.progression_state.current_run_number = 10
@@ -7348,7 +7348,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(log_text.find("route Dusk Trench") == log_text.rfind("route Dusk Trench"), "recent expedition log should not duplicate Dusk route memory")
 	_expect(not log_text.contains("seed"), "Dusk recent log should hide raw seed without debug telemetry")
 	_expect_no_echo_lens_locator_language(log_text, "Dusk recent expedition log")
-	_expect(main._latest_recent_route_memory() == "Dusk Trench", "latest route helper should expose Dusk for the next ready panel")
+	_expect(RecentExpeditionLogServiceScript.latest_recent_route_memory(main.recent_expedition_log) == "Dusk Trench", "latest route helper should expose Dusk for the next ready panel")
 
 	main.recent_expedition_log.clear()
 	main.progression_state.current_run_number = 11
@@ -7370,7 +7370,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(not log_text.contains("route Glassfin Swarm"), "Hollow Reef recent route memory should take priority over Glassfin observation")
 	_expect(not log_text.contains("route Lantern Ray"), "Hollow Reef recent route memory should take priority over creature observation")
 	_expect_no_echo_lens_locator_language(log_text, "Hollow Reef recent expedition log")
-	_expect(main._latest_recent_route_memory() == "Hollow Reef", "latest route helper should expose Hollow Reef for the next ready panel")
+	_expect(RecentExpeditionLogServiceScript.latest_recent_route_memory(main.recent_expedition_log) == "Hollow Reef", "latest route helper should expose Hollow Reef for the next ready panel")
 
 	main.recent_expedition_log.clear()
 	main.progression_state.current_run_number = 13
@@ -7396,7 +7396,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(not log_text.to_lower().contains("checklist"), "wide chamber recent log should not imply checklist UI")
 	_expect(not log_text.to_lower().contains("field guide"), "wide chamber recent log should not imply field-guide UI")
 	_expect_no_echo_lens_locator_language(log_text, "Wide Reef Chamber recent expedition log")
-	_expect(main._latest_recent_route_memory() == "Wide Reef Chamber", "latest route helper should expose Wide Reef Chamber after salvage cache evidence")
+	_expect(RecentExpeditionLogServiceScript.latest_recent_route_memory(main.recent_expedition_log) == "Wide Reef Chamber", "latest route helper should expose Wide Reef Chamber after salvage cache evidence")
 	_expect(main.progression_state.to_save_data() == save_before_recent_wide_chamber, "wide chamber recent route memory should remain session-only")
 	_expect(not main.progression_state.to_save_data().has("wide_reef_chamber_route"), "recent wide chamber memory should not create durable route state")
 
@@ -7425,7 +7425,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(not log_text.to_lower().contains("checklist"), "Mirror Kelp recent log should not imply checklist UI")
 	_expect(not log_text.to_lower().contains("field guide"), "Mirror Kelp recent log should not imply field-guide UI")
 	_expect_no_echo_lens_locator_language(log_text, "Mirror Kelp recent expedition log")
-	_expect(main._latest_recent_route_memory() == "Mirror Kelp Pass", "latest route helper should expose Mirror Kelp Pass after branch evidence")
+	_expect(RecentExpeditionLogServiceScript.latest_recent_route_memory(main.recent_expedition_log) == "Mirror Kelp Pass", "latest route helper should expose Mirror Kelp Pass after branch evidence")
 	_expect(main.progression_state.to_save_data() == save_before_recent_mirror_kelp, "Mirror Kelp recent route memory should remain session-only")
 	_expect(not main.progression_state.to_save_data().has("mirror_kelp_pass_route"), "recent Mirror Kelp memory should not create durable route state")
 
@@ -7452,7 +7452,7 @@ func _test_recent_expedition_log() -> void:
 	_expect(not log_text.to_lower().contains("checklist"), "Hollow Reef recent log should not imply checklist UI")
 	_expect(not log_text.to_lower().contains("field guide"), "Hollow Reef recent log should not imply field-guide UI")
 	_expect_no_echo_lens_locator_language(log_text, "Hollow Reef Skitter recent expedition log")
-	_expect(main._latest_recent_route_memory() == "Hollow Reef", "latest route helper should expose Hollow Reef after a Skitter observation")
+	_expect(RecentExpeditionLogServiceScript.latest_recent_route_memory(main.recent_expedition_log) == "Hollow Reef", "latest route helper should expose Hollow Reef after a Skitter observation")
 	_expect(main.progression_state.to_save_data() == save_before_recent_hollow, "Hollow Reef recent route memory should remain session-only")
 	_expect(not main.progression_state.to_save_data().has("hollow_reef_route"), "recent Hollow Reef memory should not create durable route state")
 	main.free()
