@@ -29,6 +29,7 @@ const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/da
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
+const HealthDamageVisualStagingServiceScript := preload("res://scripts/debug/health_damage_visual_staging_service.gd")
 const HollowReefVisualStagingServiceScript := preload("res://scripts/debug/hollow_reef_visual_staging_service.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPromptStateServiceScript := preload("res://scripts/ui/hud_prompt_state_service.gd")
@@ -139,6 +140,7 @@ func _initialize() -> void:
 	_run("debug Ship Offload visual staging service", _test_ship_offload_visual_staging_service)
 	_run("debug Surface Oxygen visual staging service", _test_surface_oxygen_visual_staging_service)
 	_run("debug Daylight Cargo visual staging service", _test_daylight_cargo_visual_staging_service)
+	_run("debug Health Damage visual staging service", _test_health_damage_visual_staging_service)
 	_run("scanner target resolver", _test_scanner_target_resolver)
 	_run("scan hold timing helper", _test_scan_hold_timing_helper)
 	_run("compact scan marker", _test_compact_scan_marker)
@@ -1527,6 +1529,26 @@ func _test_daylight_cargo_visual_staging_service() -> void:
 	_expect(is_equal_approx(main._daylight_remaining_ratio(), main.LATE_DAY_CARGO_WARNING_RATIO), "Daylight Cargo staging should preserve the late-day warning threshold")
 	_expect(main._should_warn_late_day_cargo_banking(), "Daylight Cargo staging should trigger the existing cargo-banking warning helper")
 	_expect(main.status_label.text == "Dusk cargo: bank before night.", "Daylight Cargo staging should preserve status copy")
+	main.queue_free()
+
+func _test_health_damage_visual_staging_service() -> void:
+	var main := MainScene.instantiate()
+	root.add_child(main)
+	main.dive_session.reset(main.max_oxygen, main.max_health)
+	if main.status_label == null:
+		main.status_label = Label.new()
+		main.add_child(main.status_label)
+
+	HealthDamageVisualStagingServiceScript.stage_visual_review(main)
+	_expect(main.dive_session.result == DiveSessionScript.Result.DIVING, "Health Damage staging should start or keep the daylight dive active")
+	_expect(main.visual_smoke_route_stage == "thermal_vent_health_damage", "Health Damage staging should expose the deterministic review stage")
+	_expect(main.run_health_damage_events == 1, "Health Damage staging should route through the normal damage telemetry")
+	_expect(main.last_health_damage_source == "thermal vent heat", "Health Damage staging should preserve the thermal vent source")
+	_expect(is_equal_approx(main.dive_session.health, main.dive_session.max_health - main.thermal_vent_health_damage), "Health Damage staging should apply configured thermal vent health loss")
+	_expect(is_equal_approx(main.dive_session.oxygen, main.dive_session.max_oxygen), "Health Damage staging should keep oxygen full for the review capture")
+	_expect(main.dive_session.unlimited_oxygen, "Health Damage staging should preserve unlimited oxygen review mode")
+	_expect(not main.player_in_base, "Health Damage staging should move the player away from the ship")
+	_expect(main.dive_session.has_left_base, "Health Damage staging should mark the sortie as active")
 	main.queue_free()
 
 func _test_scanner_target_resolver() -> void:

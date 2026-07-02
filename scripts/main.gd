@@ -21,6 +21,7 @@ const DaylightCargoVisualStagingServiceScript := preload("res://scripts/debug/da
 const DuskTrenchVisualStagingServiceScript := preload("res://scripts/debug/dusk_trench_visual_staging_service.gd")
 const ExpeditionSlatePresenterScript := preload("res://scripts/ui/expedition_slate_presenter.gd")
 const HealthFeedbackPresenterScript := preload("res://scripts/ui/health_feedback_presenter.gd")
+const HealthDamageVisualStagingServiceScript := preload("res://scripts/debug/health_damage_visual_staging_service.gd")
 const HollowReefVisualStagingServiceScript := preload("res://scripts/debug/hollow_reef_visual_staging_service.gd")
 const HudPromptPresenterScript := preload("res://scripts/ui/hud_prompt_presenter.gd")
 const HudPromptStateServiceScript := preload("res://scripts/ui/hud_prompt_state_service.gd")
@@ -1925,37 +1926,7 @@ func _stage_debug_oxygen_visual_review(target_ratio: float, label: String) -> vo
 	_update_hud()
 
 func _stage_debug_health_damage_visual_review() -> void:
-	if dive_session.result == DiveSessionScript.Result.READY:
-		dive_session.start()
-	if dive_session.result != DiveSessionScript.Result.DIVING:
-		return
-
-	var staged_player := player
-	if staged_player == null:
-		staged_player = get_node_or_null("Player") as CharacterBody2D
-	if staged_player == null:
-		return
-
-	var vent := thermal_vent_hazard
-	if vent == null:
-		vent = get_node_or_null("Discoveries/ThermalVent") as Area2D
-	if vent == null:
-		return
-
-	player = staged_player
-	player.global_position = vent.global_position + Vector2(96.0, -48.0)
-	player.velocity = Vector2.ZERO
-	player_in_base = false
-	player_in_surface_oxygen_refill = false
-	dive_session.has_left_base = true
-	dive_session.unlimited_oxygen = true
-	dive_session.oxygen = dive_session.max_oxygen
-	dive_session.health = dive_session.max_health
-	visual_smoke_route_stage = "thermal_vent_health_damage"
-	_apply_health_damage(thermal_vent_health_damage, "thermal vent heat")
-	visual_smoke_route_stage = "thermal_vent_health_damage"
-	_update_depth()
-	_update_hud()
+	HealthDamageVisualStagingServiceScript.stage_visual_review(self)
 
 func _stage_debug_health_damage_extraction_visual_review() -> void:
 	if run_health_damage_events == 0 or dive_session.health >= dive_session.max_health:
