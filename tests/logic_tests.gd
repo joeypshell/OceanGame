@@ -58,6 +58,7 @@ const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedi
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
+const SurfaceRunSummaryServiceScript := preload("res://scripts/ui/surface_run_summary_service.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
 const SurvivalSupplyCacheStateServiceScript := preload("res://scripts/ui/survival_supply_cache_state_service.gd")
 const SurvivalNeedsPanelServiceScript := preload("res://scripts/ui/survival_needs_panel_service.gd")
@@ -264,6 +265,7 @@ func _initialize() -> void:
 	_run("oxygen feedback service", _test_oxygen_feedback_service)
 	_run("health feedback service", _test_health_feedback_service)
 	_run("scan target card service", _test_scan_target_card_service)
+	_run("surface run summary service", _test_surface_run_summary_service)
 	_run("run panel layout service", _test_run_panel_layout_service)
 	_run("upgrade menu service", _test_upgrade_menu_service)
 	_run("upgrade state service", _test_upgrade_state_service)
@@ -8257,6 +8259,29 @@ func _test_scan_target_card_service() -> void:
 	_expect(main.scan_card_meta_label.text == "NEW | ENVIRONMENT", "scan target card should preserve target metadata copy")
 	_expect(main.scan_card_prompt_label.text == "HOLD F TO SCAN", "scan target card should preserve scan prompt copy")
 	target.free()
+	main.free()
+
+func _test_surface_run_summary_service() -> void:
+	var main := MainScript.new()
+	main.show_debug_telemetry = false
+	_expect(SurfaceRunSummaryServiceScript.format_run_summary(main, "Short summary", "Extracted") == "Short summary", "non-debug run summary should preserve player summary only")
+	main.show_debug_telemetry = true
+	_expect(SurfaceRunSummaryServiceScript.format_run_summary(main, "Short summary", "Extracted").contains("Playtest data:"), "debug run summary should append telemetry")
+
+	main.survival_state.food = 0
+	main.survival_state.water = 1
+	main.survival_state.power = 3
+	var empty_needs := SurfaceRunSummaryServiceScript.base_need_names_at_or_below(main, 0)
+	_expect(empty_needs == ["Food"], "empty need list should include only needs at or below threshold")
+	_expect(SurfaceRunSummaryServiceScript.format_tomorrow_plan(main).contains("bank Food supply first"), "tomorrow plan should prioritize empty survival needs")
+
+	main.survival_state.food = 3
+	main.survival_state.water = 3
+	main.survival_state.power = 3
+	main.progression_state.banked_resources["driftwood"] = 1
+	var starter_target := SurfaceRunSummaryServiceScript.format_starter_resource_target(main)
+	_expect(starter_target.contains("Quartz Glass"), "starter resource target should preserve missing Water Filter material copy")
+	_expect(SurfaceRunSummaryServiceScript.format_next_expedition_prompt(main).begins_with("Next: press R for Expedition"), "next expedition prompt should preserve restart action copy")
 	main.free()
 
 func _test_run_panel_layout_service() -> void:

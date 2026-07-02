@@ -50,6 +50,7 @@ const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedi
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
+const SurfaceRunSummaryServiceScript := preload("res://scripts/ui/surface_run_summary_service.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
 const SurvivalSupplyCacheStateServiceScript := preload("res://scripts/ui/survival_supply_cache_state_service.gd")
 const ToolBeltPresenterScript := preload("res://scripts/ui/tool_belt_presenter.gd")
@@ -3518,210 +3519,61 @@ func _reset_run_telemetry() -> void:
 	_sync_survival_supply_cache_state()
 
 func _format_run_telemetry(result_name: String) -> String:
-	return "\n\nPlaytest data:\nResult: %s\nSeed: %d\nPattern: %s\nCondition: %s\nPredator route: %s\nLantern Ray route: %s\nCargo collected:%s%s\nScans: %s\nPredator contacts: %d\nHealth damage events: %d\nOxygen at result: %d / %d\nHealth at result: %d / %d\nFailure cause: %s" % [
-		result_name,
-		progression_state.current_run_seed,
-		ConditionPresenterScript.format_cluster_pattern(current_resource_cluster_pattern),
-		ConditionPresenterScript.format_condition_telemetry(current_expedition_condition),
-		current_predator_route_id,
-		current_lantern_ray_route_id,
-		ResourceSummaryServiceScript.format_resource_counts(run_collected_resources, survival_state, RESOURCE_CATEGORY_LABELS),
-		ResourceSummaryServiceScript.format_survival_supply_counts(run_collected_survival_supplies, survival_state, RESOURCE_CATEGORY_LABELS),
-		_format_scan_ids(run_completed_scans),
-		run_predator_contacts,
-		run_health_damage_events,
-		ceili(dive_session.oxygen),
-		ceili(dive_session.max_oxygen),
-		ceili(dive_session.health),
-		ceili(dive_session.max_health),
-		run_failure_cause
-	]
+	return SurfaceRunSummaryServiceScript.format_run_telemetry(self, result_name)
 
 func _format_run_summary(player_summary: String, result_name: String) -> String:
-	if not show_debug_telemetry:
-		return player_summary
-
-	return "%s\n%s" % [player_summary, _format_run_telemetry(result_name)]
+	return SurfaceRunSummaryServiceScript.format_run_summary(self, player_summary, result_name)
 
 func _format_next_expedition_prompt() -> String:
-	if survival_state.chapter_failed:
-		return "Next: press %s to restart Emergency Week." % _action_label("restart_dive")
-	if survival_state.chapter_complete:
-		return "Next: press %s for a stabilized expedition." % _action_label("restart_dive")
-
-	return "Next: press %s for Expedition %d; %s" % [
-		_action_label("restart_dive"),
-		progression_state.current_run_number + 1,
-		_format_current_tomorrow_intention(),
-	]
+	return SurfaceRunSummaryServiceScript.format_next_expedition_prompt(self)
 
 func _format_tomorrow_plan() -> String:
-	var empty_needs := _base_need_names_at_or_below(0)
-	if not empty_needs.is_empty():
-		return "bank %s supply first; empty needs cut max oxygen." % _format_need_list(empty_needs)
-
-	var ready_upgrade := _first_ready_upgrade_definition()
-	if ready_upgrade != null:
-		return "build %s in Upgrades before diving." % ready_upgrade.display_name
-
-	var low_needs := _base_need_names_at_or_below(1)
-	if not low_needs.is_empty():
-		return "bank %s supply soon to protect tomorrow's oxygen." % _format_need_list(low_needs)
-
-	if run_rim_glass_reading_recovered:
-		return "use the Glass Rim reading to choose timing, cargo, or return."
-	if run_outer_shelf_survey_recovered:
-		return "try Glass Rim timing or bank the Outer Shelf cargo."
-
-	var starter_resource_target := _format_starter_resource_target()
-	if not starter_resource_target.is_empty():
-		return starter_resource_target
-
-	var broad_goal := ExpeditionGoalFormatterScript.format_goal(progression_state, upgrade_definitions, _current_condition_id(), _latest_recent_route_memory())
-	var goal_prefix := "Goal: "
-	if broad_goal.begins_with(goal_prefix):
-		broad_goal = broad_goal.substr(goal_prefix.length())
-	if broad_goal.is_empty():
-		return "the ocean shifts again."
-
-	return broad_goal
+	return SurfaceRunSummaryServiceScript.format_tomorrow_plan(self)
 
 func _refresh_carried_tomorrow_intention() -> void:
 	carried_tomorrow_intention = _format_tomorrow_plan()
 
 func _format_current_tomorrow_intention() -> String:
-	var carried := carried_tomorrow_intention.strip_edges()
-	if not carried.is_empty():
-		return carried
-
-	return _format_tomorrow_plan()
+	return SurfaceRunSummaryServiceScript.format_current_tomorrow_intention(self)
 
 func _format_dawn_priority_line() -> String:
-	return "Day priority: %s" % _format_current_tomorrow_intention()
+	return SurfaceRunSummaryServiceScript.format_dawn_priority_line(self)
 
 func _format_starter_resource_target() -> String:
-	if progression_state.has_upgrade(WATER_FILTER_UPGRADE_ID):
-		return ""
-
-	var missing_materials: Array[String] = []
-	for resource_id in WATER_FILTER_UPGRADE.resource_cost.keys():
-		var missing := int(WATER_FILTER_UPGRADE.resource_cost[resource_id]) - progression_state.resource_count(resource_id)
-		if missing > 0:
-			missing_materials.append(ResourceSummaryServiceScript.display_name_for_resource(resource_id, survival_state))
-
-	if missing_materials.is_empty():
-		return ""
-
-	return "Shell Reef pockets: %s for Water Filter I." % _format_material_need_list(missing_materials)
+	return SurfaceRunSummaryServiceScript.format_starter_resource_target(self)
 
 func _format_material_need_list(materials: Array[String]) -> String:
-	return UpgradeCopyPresenterScript.format_material_need_list(materials)
+	return SurfaceRunSummaryServiceScript.format_material_need_list(materials)
 
 func _base_need_names_at_or_below(threshold: int) -> Array[String]:
-	var needs: Array[String] = []
-	if survival_state.food <= threshold:
-		needs.append("Food")
-	if survival_state.water <= threshold:
-		needs.append("Water")
-	if survival_state.power <= threshold:
-		needs.append("Power")
-	return needs
+	return SurfaceRunSummaryServiceScript.base_need_names_at_or_below(self, threshold)
 
 func _format_need_list(needs: Array[String]) -> String:
-	return UpgradeCopyPresenterScript.format_need_list(needs)
+	return SurfaceRunSummaryServiceScript.format_need_list(needs)
 
 func _format_expedition_ready_status() -> String:
-	return SurfaceResultPresenterScript.format_expedition_ready_status(
-		survival_state.chapter_complete,
-		_current_condition_id(),
-		survival_state.current_day
-	)
+	return SurfaceRunSummaryServiceScript.format_expedition_ready_status(self)
 
 func _format_expedition_day_title(suffix: String) -> String:
-	return SurfaceResultPresenterScript.format_expedition_day_title(
-		suffix,
-		survival_state.chapter_complete,
-		survival_state.current_day,
-		survival_state.max_days,
-		last_completed_survival_day
-	)
+	return SurfaceRunSummaryServiceScript.format_expedition_day_title(self, suffix)
 
 func _format_completed_expedition_line(result_name: String) -> String:
-	return SurfaceResultPresenterScript.format_completed_expedition_line(
-		result_name,
-		survival_state.chapter_complete,
-		survival_state.current_day,
-		last_completed_survival_day
-	)
+	return SurfaceRunSummaryServiceScript.format_completed_expedition_line(self, result_name)
 
 func _format_extraction_result_summary(extracted_count: int, banked_resources: Array[String], banked_survival_supplies: Array[String] = []) -> String:
-	return "%s\n%s\n%s\n%s%s\n%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n%s\n%s\nBest depth: %dm.\n%s%s" % [
-		_format_completed_expedition_line("Extraction"),
-		_format_extraction_banking_line(banked_resources.size(), banked_resources),
-		ResourceSummaryServiceScript.format_survival_banking_line(banked_survival_supplies, survival_state, RESOURCE_CATEGORY_LABELS),
-		_format_region_memory_callout(),
-		_format_discovery_memory_callout(),
-		_format_route_choice_callout(),
-		_format_gulper_research_callout(),
-		_format_echo_lens_research_callout(),
-		_format_wreck_echo_research_callout(),
-		_format_east_shelf_pocket_research_callout(),
-		_format_lower_connector_echo_research_callout(),
-		_format_resonance_alcove_research_callout(),
-		_format_blue_chimney_research_callout(),
-		_format_lantern_silt_sample_research_callout(),
-		_format_blackwater_trace_research_callout(),
-		_format_glass_kelp_reading_callout(),
-		_format_hollow_reef_reading_callout(),
-		_format_salvage_data_cache_research_callout(),
-		_format_salvage_manifest_research_callout(),
-		_format_tideglass_sample_research_callout(),
-		_format_rim_glass_reading_callout(),
-		_format_outer_shelf_survey_research_callout(),
-		_format_sealed_shelf_hatch_readiness_callout(),
-		_format_upgrade_progress_callout(),
-		_format_scan_progress_callout("Discoveries recorded"),
-		roundi(progression_state.best_depth_reached),
-		_format_night_report_block(),
-		_format_next_expedition_prompt()
-	]
+	return SurfaceRunSummaryServiceScript.format_extraction_result_summary(self, extracted_count, banked_resources, banked_survival_supplies)
 
 func _format_night_report_block() -> String:
-	return SurfaceResultPresenterScript.format_night_report_block(last_night_report)
+	return SurfaceRunSummaryServiceScript.format_night_report_block(self)
 
 func _format_night_phase_summary() -> String:
-	var lines: Array[String] = [
-		_format_completed_expedition_line("Night"),
-	]
-	var report := _format_night_report_block().strip_edges()
-	if not report.is_empty():
-		lines.append(report)
-	lines.append(_format_daylight_closeout_line())
-	lines.append(survival_state.status_line())
-	lines.append("Banked materials:%s" % ResourceSummaryServiceScript.format_banked_resources(progression_state.banked_resources, survival_state, RESOURCE_CATEGORY_LABELS))
-	lines.append(_format_night_build_choice_line())
-	lines.append(_format_next_expedition_prompt())
-	return "\n".join(lines)
+	return SurfaceRunSummaryServiceScript.format_night_phase_summary(self)
 
 func _format_daylight_closeout_line() -> String:
-	return SurfaceResultPresenterScript.format_daylight_closeout_line(
-		daylight_nightfall_away_from_ship,
-		daylight_ship_offload_count
-	)
+	return SurfaceRunSummaryServiceScript.format_daylight_closeout_line(self)
 
 func _format_night_build_choice_line() -> String:
-	var ready_upgrade := _first_ready_upgrade_definition()
-	return NightBuildPresenterScript.format_choice_line(
-		night_health_recovery_used_build_time,
-		night_build_completed_this_surface,
-		not survival_state.chapter_failed and not survival_state.chapter_complete,
-		progression_state.can_afford(NIGHT_POWER_PATCH_COST),
-		ready_upgrade.display_name if ready_upgrade != null else "",
-		_format_upgrade_progress_callout(),
-		_format_missing_resources_inline(NIGHT_POWER_PATCH_COST),
-		_action_label("interact"),
-		NIGHT_POWER_PATCH_POWER_GAIN
-	)
+	return SurfaceRunSummaryServiceScript.format_night_build_choice_line(self)
 
 func _first_ready_upgrade_definition() -> UpgradeDefinition:
 	for upgrade in upgrade_definitions:
