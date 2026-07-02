@@ -1,6 +1,8 @@
 class_name OuterShelfVisualStagingService
 extends RefCounted
 
+const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
+
 const BLACKWATER_SILL_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill"
 const OUTER_SHELF_SURVEY_ZONE_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/MirrorKelpPass/OuterShelfReach/OuterShelfSurveyCore/InteractZone"
 
@@ -52,7 +54,7 @@ static func stage_visual_review(host) -> void:
 	host._sync_salvage_data_cache_state()
 	host._sync_tideglass_sample_state()
 	host._sync_outer_shelf_survey_state()
-	host._update_outer_shelf_slackwater_timing_cue(host.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
+	RouteTimingCueServiceScript.update_outer_shelf_slackwater_timing_cue(host, host.OUTER_SHELF_SLACKWATER_PERIOD_SECONDS * 0.25)
 	host.visual_smoke_route_stage = "outer_shelf_survey"
 	if host.status_label != null:
 		host.status_label.text = "Debug review: Outer Shelf survey and Glass Rim route staged."

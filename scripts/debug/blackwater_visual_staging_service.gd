@@ -1,6 +1,8 @@
 class_name BlackwaterVisualStagingService
 extends RefCounted
 
+const RouteTimingCueServiceScript := preload("res://scripts/ui/route_timing_cue_service.gd")
+
 const BLACKWATER_SILL_PATH := "EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill"
 
 static func stage_route_visual_review(host) -> void:
@@ -33,7 +35,7 @@ static func stage_route_visual_review(host) -> void:
 	host._sync_sealed_shelf_hatch_state()
 	host._sync_blackwater_crack_gate_state()
 	host._sync_condition_visuals()
-	host._update_blackwater_pressure_cue(host.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
+	RouteTimingCueServiceScript.update_blackwater_pressure_cue(host, host.BLACKWATER_PRESSURE_PERIOD_SECONDS * 0.25)
 
 	host.player = staged_player
 	host.player.global_position = sill.global_position + Vector2(-20.0, -20.0)
