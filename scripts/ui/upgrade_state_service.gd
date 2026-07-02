@@ -3,6 +3,7 @@ extends RefCounted
 
 const DiscoveryNamePresenterScript := preload("res://scripts/ui/discovery_name_presenter.gd")
 const ResourceSummaryServiceScript := preload("res://scripts/ui/resource_summary_service.gd")
+const UpgradePurchaseScript := preload("res://scripts/upgrade_purchase.gd")
 const UpgradeCopyPresenterScript := preload("res://scripts/ui/upgrade_copy_presenter.gd")
 
 static func format_upgrade_status(host) -> String:
@@ -66,12 +67,12 @@ static func resource_counts_for_cost(host, cost: Dictionary) -> Dictionary:
 static func format_upgrade_state(host, upgrade) -> String:
 	var effect_summary := format_upgrade_effect_summary(upgrade)
 	if upgrade.id == host.RESONANCE_KEY_UPGRADE_ID:
-		var resonance_missing_upgrade: String = host._upgrade_missing_upgrade(host.RESONANCE_KEY_UPGRADE)
+		var resonance_missing_upgrade: String = UpgradePurchaseScript.missing_upgrade(host.progression_state, host.RESONANCE_KEY_UPGRADE)
 		return UpgradeCopyPresenterScript.format_resonance_key_upgrade_state(
 			effect_summary,
 			host.progression_state.has_upgrade(upgrade.id),
 			format_upgrade_display_name(host, resonance_missing_upgrade) if resonance_missing_upgrade != "" else "",
-			host._upgrade_missing_discovery(host.RESONANCE_KEY_UPGRADE) != "",
+			UpgradePurchaseScript.missing_discovery(host.progression_state, host.RESONANCE_KEY_UPGRADE) != "",
 			host.progression_state.can_afford(host.RESONANCE_KEY_UPGRADE.resource_cost),
 			host._action_label("interact").replace("/", " or "),
 			format_missing_resources_inline(host, host.RESONANCE_KEY_UPGRADE.resource_cost)
@@ -80,14 +81,14 @@ static func format_upgrade_state(host, upgrade) -> String:
 		return UpgradeCopyPresenterScript.format_salvage_cutter_upgrade_state(
 			effect_summary,
 			host.progression_state.has_upgrade(upgrade.id),
-			host._upgrade_missing_discovery(host.SALVAGE_CUTTER_UPGRADE) != "",
+			UpgradePurchaseScript.missing_discovery(host.progression_state, host.SALVAGE_CUTTER_UPGRADE) != "",
 			host.progression_state.can_afford(host.SALVAGE_CUTTER_UPGRADE.resource_cost),
 			host._action_label("interact").replace("/", " or "),
 			format_missing_resources_inline(host, host.SALVAGE_CUTTER_UPGRADE.resource_cost)
 		)
 
-	var missing_discovery: String = host._upgrade_missing_discovery(upgrade)
-	var missing_upgrade: String = host._upgrade_missing_upgrade(upgrade)
+	var missing_discovery: String = UpgradePurchaseScript.missing_discovery(host.progression_state, upgrade)
+	var missing_upgrade: String = UpgradePurchaseScript.missing_upgrade(host.progression_state, upgrade)
 	return UpgradeCopyPresenterScript.format_standard_upgrade_state(
 		effect_summary,
 		host.progression_state.has_upgrade(upgrade.id),
@@ -109,9 +110,9 @@ static func format_ready_upgrade_callout(host) -> String:
 	for upgrade in host.upgrade_definitions:
 		if host.progression_state.has_upgrade(upgrade.id):
 			continue
-		if host._upgrade_missing_discovery(upgrade) != "":
+		if UpgradePurchaseScript.missing_discovery(host.progression_state, upgrade) != "":
 			continue
-		if host._upgrade_missing_upgrade(upgrade) != "":
+		if UpgradePurchaseScript.missing_upgrade(host.progression_state, upgrade) != "":
 			continue
 		if host.progression_state.can_afford(upgrade.resource_cost):
 			ready.append(upgrade.display_name)
@@ -123,7 +124,7 @@ static func format_upgrade_progress_callout(host) -> String:
 		if host.progression_state.has_upgrade(upgrade.id):
 			continue
 
-		var missing_discovery: String = host._upgrade_missing_discovery(upgrade)
+		var missing_discovery: String = UpgradePurchaseScript.missing_discovery(host.progression_state, upgrade)
 		if missing_discovery != "":
 			return "Upgrade progress: %s %s to unlock %s." % [
 				format_upgrade_prerequisite_action(missing_discovery),
@@ -131,7 +132,7 @@ static func format_upgrade_progress_callout(host) -> String:
 				upgrade.display_name,
 			]
 
-		var missing_upgrade: String = host._upgrade_missing_upgrade(upgrade)
+		var missing_upgrade: String = UpgradePurchaseScript.missing_upgrade(host.progression_state, upgrade)
 		if missing_upgrade != "":
 			return "Upgrade progress: buy %s before %s." % [
 				format_upgrade_display_name(host, missing_upgrade),
