@@ -50,6 +50,7 @@ const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_exped
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
+const ScanTargetFeedbackServiceScript := preload("res://scripts/ui/scan_target_feedback_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurfaceRunSummaryServiceScript := preload("res://scripts/ui/surface_run_summary_service.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
@@ -3729,75 +3730,28 @@ func _format_active_objective_line() -> String:
 	}, ACTIVE_OBJECTIVE_MAX_CHARS)
 
 func _update_scan_target_feedback() -> void:
-	var next_target := _scan_target_candidate() if dive_session.result == DiveSessionScript.Result.DIVING else null
-	if current_scan_target != next_target:
-		if current_scan_target != null and current_scan_target.has_method("set_scan_selected"):
-			current_scan_target.set_scan_selected(false)
-		current_scan_target = next_target
-		if current_scan_target != null and current_scan_target.has_method("set_scan_selected"):
-			current_scan_target.set_scan_selected(true)
-
-	ScanTargetCardServiceScript.update_card(self, current_scan_target)
-	if current_scan_target == null:
-		scan_reticle_root.visible = false
-	else:
-		_update_scan_reticle_position(current_scan_target)
+	ScanTargetFeedbackServiceScript.update_scan_target_feedback(self)
 
 func _scan_target_candidate() -> Node:
-	if _scan_target_still_selectable(current_scan_target):
-		return current_scan_target
-
-	return _nearest_scan_target()
+	return ScanTargetFeedbackServiceScript.scan_target_candidate(self)
 
 func _scan_target_still_selectable(target: Node) -> bool:
-	if target == null or player == null or not is_instance_valid(target):
-		return false
-	if not (target is Node2D):
-		return false
-	if not ScanTargetResolverScript.is_valid_target(target):
-		return false
-
-	return player.global_position.distance_to((target as Node2D).global_position) <= scan_range + SCAN_TARGET_STICKY_RANGE_BUFFER
+	return ScanTargetFeedbackServiceScript.scan_target_still_selectable(self, target)
 
 func _update_scan_reticle_position(target: Node) -> void:
-	if target == null or not (target is Node2D):
-		scan_reticle_root.visible = false
-		return
-
-	var viewport_size := get_viewport_rect().size
-	var screen_position := _scan_reticle_screen_position((target as Node2D).global_position)
-
-	scan_reticle_root.visible = true
-	scan_reticle_root.position = Vector2(
-		clampf(screen_position.x, SCAN_RETICLE_SCREEN_MARGIN, viewport_size.x - SCAN_RETICLE_SCREEN_MARGIN),
-		clampf(screen_position.y, SCAN_RETICLE_SCREEN_MARGIN, viewport_size.y - SCAN_RETICLE_SCREEN_MARGIN)
-	)
+	ScanTargetFeedbackServiceScript.update_scan_reticle_position(self, target)
 
 func _scan_reticle_screen_position(world_position: Vector2) -> Vector2:
-	var viewport_size := get_viewport_rect().size
-	var canvas_transform := get_viewport().get_canvas_transform()
-	if not canvas_transform.is_equal_approx(Transform2D.IDENTITY):
-		return canvas_transform * world_position
-
-	return _scan_reticle_fallback_screen_position(world_position, viewport_size)
+	return ScanTargetFeedbackServiceScript.scan_reticle_screen_position(self, world_position)
 
 func _scan_reticle_fallback_screen_position(world_position: Vector2, viewport_size: Vector2) -> Vector2:
-	var screen_position := viewport_size * 0.5
-	if player == null:
-		return screen_position
-
-	var zoom := Vector2.ONE
-	var camera := player.get_node_or_null("Camera2D") as Camera2D
-	if camera != null:
-		zoom = camera.zoom
-	var world_delta := world_position - player.global_position
-	return screen_position + Vector2(world_delta.x * maxf(zoom.x, 0.001), world_delta.y * maxf(zoom.y, 0.001))
+	return ScanTargetFeedbackServiceScript.scan_reticle_fallback_screen_position(self, world_position, viewport_size)
 
 func _format_scan_target_discovery_state(target: Node) -> String:
-	return ScanFeedbackPresenterScript.format_scan_target_discovery_state(progression_state.has_discovery(_scan_target_id(target)))
+	return ScanTargetFeedbackServiceScript.format_scan_target_discovery_state(self, target)
 
 func _format_scan_target_type(target: Node) -> String:
-	return ScanFeedbackPresenterScript.format_scan_target_type(_scan_target_id(target), target is ResourcePickup)
+	return ScanTargetFeedbackServiceScript.format_scan_target_type(self, target)
 
 func _current_max_oxygen() -> float:
 	var oxygen_max := max_oxygen

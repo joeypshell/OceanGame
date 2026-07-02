@@ -58,6 +58,7 @@ const RecentExpeditionLogServiceScript := preload("res://scripts/ui/recent_exped
 const RecentExpeditionPresenterScript := preload("res://scripts/ui/recent_expedition_presenter.gd")
 const ScanFeedbackPresenterScript := preload("res://scripts/ui/scan_feedback_presenter.gd")
 const ScanTargetCardServiceScript := preload("res://scripts/ui/scan_target_card_service.gd")
+const ScanTargetFeedbackServiceScript := preload("res://scripts/ui/scan_target_feedback_service.gd")
 const SurfaceResultPresenterScript := preload("res://scripts/ui/surface_result_presenter.gd")
 const SurfaceRunSummaryServiceScript := preload("res://scripts/ui/surface_run_summary_service.gd")
 const SurvivalSupplyCachePresenterScript := preload("res://scripts/ui/survival_supply_cache_presenter.gd")
@@ -267,6 +268,7 @@ func _initialize() -> void:
 	_run("oxygen feedback service", _test_oxygen_feedback_service)
 	_run("health feedback service", _test_health_feedback_service)
 	_run("scan target card service", _test_scan_target_card_service)
+	_run("scan target feedback service", _test_scan_target_feedback_service)
 	_run("surface run summary service", _test_surface_run_summary_service)
 	_run("run panel layout service", _test_run_panel_layout_service)
 	_run("upgrade menu service", _test_upgrade_menu_service)
@@ -8282,6 +8284,36 @@ func _test_scan_target_card_service() -> void:
 	_expect(main.scan_card_meta_label.text == "NEW | ENVIRONMENT", "scan target card should preserve target metadata copy")
 	_expect(main.scan_card_prompt_label.text == "HOLD F TO SCAN", "scan target card should preserve scan prompt copy")
 	target.free()
+	main.free()
+
+func _test_scan_target_feedback_service() -> void:
+	var main := MainScript.new()
+	var player := CharacterBody2D.new()
+	main.player = player
+	player.global_position = Vector2(100.0, 100.0)
+	main.scan_range = 120.0
+
+	var target := _make_scan_target("thermal_vent", "Thermal Vent", Vector2(150.0, 100.0))
+	main.current_scan_target = target
+	_expect(ScanTargetFeedbackServiceScript.scan_target_still_selectable(main, target), "scan target feedback service should keep the current target inside the sticky buffer")
+	_expect(ScanTargetFeedbackServiceScript.scan_target_candidate(main) == target, "scan target feedback service should preserve the current sticky target")
+	_expect(ScanTargetFeedbackServiceScript.format_scan_target_type(main, target) == "environment", "scan target feedback service should preserve target type copy")
+	_expect(ScanTargetFeedbackServiceScript.format_scan_target_discovery_state(main, target) == "new", "scan target feedback service should preserve undiscovered state copy")
+
+	main.progression_state.add_discovery("thermal_vent", "Thermal Vent", "Vent.", "Route clue.")
+	_expect(ScanTargetFeedbackServiceScript.format_scan_target_discovery_state(main, target) == "known", "scan target feedback service should preserve discovered state copy")
+
+	target.global_position = Vector2(249.0, 100.0)
+	_expect(not ScanTargetFeedbackServiceScript.scan_target_still_selectable(main, target), "scan target feedback service should release a target beyond the sticky buffer")
+	target.visible = false
+	target.global_position = Vector2(120.0, 100.0)
+	_expect(not ScanTargetFeedbackServiceScript.scan_target_still_selectable(main, target), "scan target feedback service should reject hidden scan targets")
+
+	var fallback := ScanTargetFeedbackServiceScript.scan_reticle_fallback_screen_position(main, Vector2(112.0, 84.0), Vector2(1280.0, 720.0))
+	_expect(fallback == Vector2(652.0, 344.0), "scan reticle fallback should preserve camera-relative positioning without camera zoom")
+
+	target.free()
+	player.free()
 	main.free()
 
 func _test_surface_run_summary_service() -> void:
