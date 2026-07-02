@@ -3024,12 +3024,6 @@ func _format_active_objective_line() -> String:
 		"survival_need_low": survival_state.food <= 1 or survival_state.water <= 1 or survival_state.power <= 1,
 	}, ACTIVE_OBJECTIVE_MAX_CHARS)
 
-func _format_scan_target_discovery_state(target: Node) -> String:
-	return ScanTargetFeedbackServiceScript.format_scan_target_discovery_state(self, target)
-
-func _format_scan_target_type(target: Node) -> String:
-	return ScanTargetFeedbackServiceScript.format_scan_target_type(self, target)
-
 func _current_max_oxygen() -> float:
 	return DiveCapacityServiceScript.current_max_oxygen(max_oxygen, progression_state.has_upgrade(OXYGEN_TANK_UPGRADE_ID), oxygen_tank_1_max_oxygen, survival_state.oxygen_penalty())
 

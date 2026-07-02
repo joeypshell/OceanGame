@@ -7567,7 +7567,7 @@ func _test_shell_reef_scan_clue_text() -> void:
 	_expect(DiscoveryNamePresenterScript.display_name(main.progression_state, "custom_signal") == "Custom Signal", "discovery name presenter should prefer durable discovery display names")
 	_expect(ScanEffectTextServiceScript.repeat_scan_effect_text(main, target).contains("Reef route clue refreshed"), "shell reef repeat scan should give compact feedback")
 	_expect(ScanEffectTextServiceScript.first_scan_guidance(main, target).contains("midwater bank route"), "shell reef first scan should explain the route decision")
-	_expect(main._format_scan_target_type(target) == "environment", "shell reef scan target should be environmental metadata")
+	_expect(ScanTargetFeedbackServiceScript.format_scan_target_type(main, target) == "environment", "shell reef scan target should be environmental metadata")
 	target.free()
 	main.free()
 
