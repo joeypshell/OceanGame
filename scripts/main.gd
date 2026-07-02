@@ -706,7 +706,7 @@ func _ready() -> void:
 	ResourcePickupPresentationServiceScript.ensure_resource_role_visuals(self)
 	for predator in get_tree().get_nodes_in_group("predators"):
 		predator.contacted.connect(_on_predator_contacted)
-	_load_progression()
+	SaveServiceScript.load_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 	_prepare_next_run()
 	_sync_debug_oxygen_mode()
 	_sync_discovery_reveals()
@@ -1000,7 +1000,7 @@ func _try_ship_offload() -> bool:
 	]
 	if status_label != null:
 		status_label.text = "Ship banked cargo; O2 full. Dive again."
-	_save_progression()
+	SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 	if is_inside_tree():
 		_update_hud()
 	return true
@@ -1032,7 +1032,7 @@ func _try_extract() -> void:
 		_format_ready_upgrade_callout(),
 	]
 	_record_recent_expedition("Extracted", extracted_count)
-	_save_progression()
+	SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 	status_label.text = "Night phase: food, water, and power resolved."
 	_update_hud()
 
@@ -1090,7 +1090,7 @@ func _try_craft_night_power_patch() -> bool:
 	_append_night_report_line(result_line)
 	_refresh_carried_tomorrow_intention()
 	_set_night_build_feedback(result_line)
-	_save_progression()
+	SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 	return true
 
 func _append_night_report_line(line: String) -> void:
@@ -1140,7 +1140,7 @@ func _fail_dive() -> void:
 		_format_night_report_block(),
 		_format_next_expedition_prompt(),
 	]
-	_save_progression()
+	SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 	status_label.text = "Dive failed: %s. Cargo lost." % HealthFeedbackPresenterScript.format_failure_cause_for_player(run_failure_cause)
 	_update_hud()
 
@@ -1182,7 +1182,7 @@ func _reset_local_prototype_save() -> void:
 	_close_expedition_slate()
 	progression_state.reset()
 	survival_state.reset_chapter()
-	_delete_progression_save()
+	SaveServiceScript.delete_progression_save(PROGRESSION_SAVE_PATH)
 	_prepare_next_run()
 	player.global_position = start_position
 	player.velocity = Vector2.ZERO
@@ -1199,7 +1199,7 @@ func _reset_local_prototype_save() -> void:
 	selected_upgrade_index = 0
 	_reset_resource_pickups()
 	_sync_discovery_reveals()
-	_save_progression()
+	SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 	status_label.text = "Prototype save reset. Expedition 1 ready."
 	_update_hud()
 
@@ -2087,7 +2087,7 @@ func _try_purchase_selected_upgrade() -> void:
 			upgrade.display_name,
 			_format_current_tomorrow_intention(),
 		]
-		_save_progression()
+		SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 		status_label.text = "Purchased %s." % upgrade.display_name
 	else:
 		var missing_resources := _format_missing_resources_inline(upgrade.resource_cost)
@@ -2241,7 +2241,7 @@ func _try_scan(requested_target: Node = null) -> void:
 	if dive_session.result == DiveSessionScript.Result.FAILED:
 		_fail_dive()
 	else:
-		_save_progression()
+		SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
 		status_label.text = HudPresenterScript.compact_dive_status("Scanned %s.%s" % [
 			display_name,
 			ScanEffectTextServiceScript.repeat_scan_effect_text(self, target) + ScanEffectTextServiceScript.first_scan_guidance(self, target)
@@ -3143,14 +3143,3 @@ func _format_base_direction() -> String:
 		return "Base: here"
 
 	return HudPresenterScript.format_base_direction(direction_player.global_position, start_position, pixels_per_meter)
-
-
-
-func _load_progression() -> void:
-	SaveServiceScript.load_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
-
-func _save_progression() -> void:
-	SaveServiceScript.save_progression(PROGRESSION_SAVE_PATH, progression_state, survival_state)
-
-func _delete_progression_save() -> void:
-	SaveServiceScript.delete_progression_save(PROGRESSION_SAVE_PATH)
