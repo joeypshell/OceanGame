@@ -5712,8 +5712,8 @@ func _test_next_expedition_framing() -> void:
 	_expect(SurfaceResultPresenterScript.format_completed_expedition_line("Failure", false, 5, 4) == "Emergency Week Day 4: Failure.", "surface presenter should preserve completed expedition result copy")
 	_expect(SurfaceResultPresenterScript.format_night_report_block("Night cost paid.").begins_with("Night Report:"), "surface presenter should wrap night reports")
 	_expect(SurfaceResultPresenterScript.format_daylight_closeout_line(true, 2).contains("after 2 ship offload"), "surface presenter should preserve late nightfall offload copy")
-	_expect(main._format_expedition_day_title("Ready") == "Emergency Week Day 4/5 Ready", "ready title should show survival day number")
-	_expect(main._format_expedition_day_title("Result: Extraction") == "Emergency Week Day 4/5 Result: Extraction", "result title should show completed survival day number")
+	_expect(SurfaceRunSummaryServiceScript.format_expedition_day_title(main, "Ready") == "Emergency Week Day 4/5 Ready", "ready title should show survival day number")
+	_expect(SurfaceRunSummaryServiceScript.format_expedition_day_title(main, "Result: Extraction") == "Emergency Week Day 4/5 Result: Extraction", "result title should show completed survival day number")
 	_expect(SurfaceRunSummaryServiceScript.format_completed_expedition_line(main, "Failure") == "Emergency Week Day 4: Failure.", "result summary should name the completed survival day")
 	main.free()
 
@@ -6132,7 +6132,7 @@ func _test_route_choice_result_callout() -> void:
 	main.run_collected_resources = ["glow_plankton"]
 	_expect(main._format_route_choice_callout().contains("Thermal Vent clue"), "vent scan plus glow cargo should produce a vent route callout")
 
-	var summary := main._format_run_summary("%s\nCompact result line." % main._format_route_choice_callout(), "extracted")
+	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s\nCompact result line." % main._format_route_choice_callout(), "extracted")
 	_expect(summary.contains("Route choice:"), "player-facing result summary should include the route callout")
 	_expect(summary.find("Route choice:") == summary.rfind("Route choice:"), "player-facing result summary should not duplicate route-choice lines")
 	_expect(not summary.contains("Playtest data:"), "result summary should not include debug telemetry unless F3 is enabled")
@@ -6140,7 +6140,7 @@ func _test_route_choice_result_callout() -> void:
 	_expect(not summary.contains("thermal_bloom"), "condition id should stay hidden unless debug telemetry is enabled")
 
 	main.show_debug_telemetry = true
-	summary = main._format_run_summary(main._format_route_choice_callout(), "extracted")
+	summary = SurfaceRunSummaryServiceScript.format_run_summary(main, main._format_route_choice_callout(), "extracted")
 	_expect(summary.contains("Playtest data:"), "debug telemetry should appear only when enabled")
 	_expect(summary.contains("Condition: Thermal Bloom (thermal_bloom)"), "debug telemetry should include condition display and id")
 	main.free()
@@ -6152,7 +6152,7 @@ func _test_gulper_research_result_callout() -> void:
 
 	main.run_completed_scans = ["gulper_eel"]
 	_expect(main._format_gulper_research_callout().contains("Gulper route timing observed"), "Gulper scan should produce a research callout")
-	var summary := main._format_run_summary("%s%s" % [main._format_route_choice_callout(), main._format_gulper_research_callout()], "extracted")
+	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s%s" % [main._format_route_choice_callout(), main._format_gulper_research_callout()], "extracted")
 	_expect(summary.contains("Research:"), "player-facing summary should include compact creature research when relevant")
 	_expect(not summary.contains("Playtest data:"), "creature research should not expose debug telemetry")
 
@@ -6210,7 +6210,7 @@ func _test_monster_research_non_combat_guardrails() -> void:
 	_expect(decoy_callout.contains("Decoy timing"), "Monster Research II candidate should stay framed as decoy timing")
 	_expect_no_monster_combat_language(decoy_callout, "Decoy response research")
 
-	var summary := main._format_run_summary(decoy_callout, "extracted")
+	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, decoy_callout, "extracted")
 	_expect_no_monster_combat_language(summary, "Monster research result summary")
 	_expect(not summary.contains("field guide"), "Monster research result should not add field-guide UI language")
 	_expect(not summary.contains("checklist"), "Monster research result should not add checklist UI language")
@@ -6229,7 +6229,7 @@ func _test_echo_lens_result_callout() -> void:
 	_expect(callout.contains("Echo Lens"), "Echo Lens result line should name the scanner upgrade")
 	_expect(callout.contains("weak wreck echo below the shelf"), "Echo Lens result line should preserve the broad local echo memory")
 	_expect_no_echo_lens_locator_language(callout, "Echo Lens result line")
-	var summary := main._format_run_summary("%s%s" % [main._format_route_choice_callout(), callout], "extracted")
+	var summary := SurfaceRunSummaryServiceScript.format_run_summary(main, "%s%s" % [main._format_route_choice_callout(), callout], "extracted")
 	_expect(summary.contains("Research:"), "Echo Lens result line should appear as compact research memory")
 	_expect(not summary.contains("Playtest data:"), "Echo Lens result line should not expose debug telemetry")
 	main.free()
@@ -7162,10 +7162,10 @@ func _test_result_and_upgrade_copy_length_guards() -> void:
 		main._format_next_expedition_prompt(),
 	])
 	_expect_lines_within(compact_result, 96, "player-facing result summary")
-	_expect(not main._format_run_summary(compact_result, "Extraction").contains("Playtest data:"), "result copy length guard should keep debug telemetry gated")
+	_expect(not SurfaceRunSummaryServiceScript.format_run_summary(main, compact_result, "Extraction").contains("Playtest data:"), "result copy length guard should keep debug telemetry gated")
 
 	main.show_debug_telemetry = true
-	_expect(main._format_run_summary(compact_result, "Extraction").contains("Playtest data:"), "debug telemetry should remain opt-in for long result checks")
+	_expect(SurfaceRunSummaryServiceScript.format_run_summary(main, compact_result, "Extraction").contains("Playtest data:"), "debug telemetry should remain opt-in for long result checks")
 	main.show_debug_telemetry = false
 
 	main.progression_state.banked_resources = {

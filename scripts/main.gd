@@ -2813,9 +2813,6 @@ func _reset_run_telemetry() -> void:
 	RoutePayoffSyncServiceScript.sync_tideglass_sample_payoff(self)
 	_sync_survival_supply_cache_state()
 
-func _format_run_summary(player_summary: String, result_name: String) -> String:
-	return SurfaceRunSummaryServiceScript.format_run_summary(self, player_summary, result_name)
-
 func _format_next_expedition_prompt() -> String:
 	return SurfaceRunSummaryServiceScript.format_next_expedition_prompt(self)
 
@@ -2824,9 +2821,6 @@ func _refresh_carried_tomorrow_intention() -> void:
 
 func _format_current_tomorrow_intention() -> String:
 	return SurfaceRunSummaryServiceScript.format_current_tomorrow_intention(self)
-
-func _format_expedition_day_title(suffix: String) -> String:
-	return SurfaceRunSummaryServiceScript.format_expedition_day_title(self, suffix)
 
 func _format_extraction_result_summary(extracted_count: int, banked_resources: Array[String], banked_survival_supplies: Array[String] = []) -> String:
 	return SurfaceRunSummaryServiceScript.format_extraction_result_summary(self, extracted_count, banked_resources, banked_survival_supplies)
