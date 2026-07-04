@@ -1,4 +1,4 @@
-# Current Roadmap
+﻿# Current Roadmap
 
 This is the compact active roadmap for issue-driven work. Historical issue batches and completed milestone detail live in `docs/current/PROJECT_INDEX.md` and `docs/archive/ROADMAP_HISTORY_2026_06_27.md`.
 
@@ -42,15 +42,20 @@ Primary planning docs:
 
 ## Immediate Issue Order
 
-The next Survival Day/Night loop payoff batch should make the implemented loop create better player choices before adding route breadth:
+The next GDQuest-informed support batch should convert useful Godot practice into scoped OceanGame work that supports the Survival Day/Night closeout and Area 01 visual-readability priorities:
 
-1. #752 Make dawn pick one main day priority.
-2. #753 Make weak-need supply choices readable before pickup.
-3. #754 Warn about late-day banking risk before nightfall.
-4. #755 Make night health recovery rules explicit after damage.
-5. #756 Make recent expeditions remember survival tradeoffs.
+1. #891 Formalize OceanGame collision and sensor layers.
+2. #892 Add route-aware camera anchors for Area 01 readability.
+3. #893 Define pixel-art import and sprite scale rules.
+4. #894 Prototype underwater shader and lighting readability.
+5. #895 Add an audio-state plan and first feedback slice.
+6. #896 Tighten scene communication around survival-loop events.
 
-The previous Survival Day/Night loop closeout batches were resolved in this order:
+Planning source: `docs/planning/GDQUEST_GODOT_TUTORIAL_IMPORT_2026_07_04.md`.
+
+The most recent Survival Day/Night payoff/QA batch closed #752 through #761 after making dawn priority, supply-role readability, late-day banking risk, health recovery, recent expedition memory, build/craft payoff, tomorrow intention, resource roles, health-vs-oxygen feedback, and deterministic visual proof more readable.
+
+The earlier Survival Day/Night loop closeout batches were resolved in this order:
 
 1. #741 Make a two-sortie day readable end-to-end in normal play.
 2. #742 Add a pauseable expedition slate for needs, cargo, known requirements, and remaining daylight.
