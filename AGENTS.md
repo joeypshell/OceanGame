@@ -33,6 +33,8 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 
 ## Development Workflow
 
+- Treat protected `main` as the only integration baseline. Never work directly on it; fetch `origin`, create a dedicated `codex/<issue-number>-short-name` branch and worktree from `origin/main`, and return changes through a pull request targeting `main`.
+- Before claiming an issue, check its comments and current pull requests for another agent's claim. Claim one issue at a time with the agent name, branch, worktree path, and expected files, and avoid files already owned by active parallel work.
 - Read the issue, linked docs, and nearby code before editing.
 - Prefer existing project patterns over new abstractions.
 - Keep changes scoped to the issue.

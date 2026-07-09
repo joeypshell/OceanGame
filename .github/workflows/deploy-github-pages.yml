@@ -3,7 +3,7 @@ name: Deploy Godot Web to GitHub Pages
 on:
   push:
     branches:
-      - codex/setup-agentic-workflow
+      - main
   workflow_dispatch:
 
 permissions:

@@ -64,7 +64,17 @@ The Area 01 visual truth gate is intentionally stricter than state assertions. A
 
 ## GitHub Pages Web Demo
 
-The project has a GitHub Actions deployment workflow at `.github/workflows/deploy-github-pages.yml`. It runs on pushes to the current default project branch, `codex/setup-agentic-workflow`, and can also be started manually from the Actions tab.
+The project has a GitHub Actions deployment workflow at `.github/workflows/deploy-github-pages.yml`. It runs on accepted pushes to the protected default branch, `main`, and can also be started manually from the Actions tab.
+
+Feature work starts from `origin/main` in a dedicated branch/worktree and returns through a pull request targeting `main`. Branch protection requires fresh `godot-smoke` and `CodeQL` checks plus resolved review conversations, but does not require a second reviewer in this single-maintainer repository. The former `codex/setup-agentic-workflow` branch is a legacy compatibility branch, not an integration target; do not delete it while another checkout or agent still depends on it.
+
+Repository baseline readback:
+
+```powershell
+gh repo view joeypshell/OceanGame --json defaultBranchRef
+gh api repos/joeypshell/OceanGame/branches/main/protection
+git remote set-head origin --auto
+```
 
 Deployment flow:
 
