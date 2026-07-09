@@ -43,6 +43,9 @@ Do not require an issue for:
 ## Agent Rules
 
 - Treat the issue as the active task contract.
+- Check issue comments and open pull requests before claiming work. Claim one issue at a time and record the agent name, `codex/<issue-number>-short-name` branch, dedicated worktree path, and expected files before editing.
+- Start each issue branch from the latest `origin/main`, keep parallel agents in separate worktrees, and avoid files named by another active claim.
+- Never push directly to protected `main`. Push the feature branch and open a pull request targeting `main`; after merge, close the issue, remove the merged feature branch/worktree, and refresh the unclaimed queue.
 - Read `AGENTS.md`, linked docs, and nearby code before editing.
 - Keep scope tight. If new work appears, create or request a linked follow-up issue.
 - Record durable decisions, blockers, commit hashes, and verification results in issue comments.
