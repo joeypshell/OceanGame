@@ -24,7 +24,8 @@ function Resolve-GodotCommand {
 function Invoke-Step {
 	param(
 		[string]$Name,
-		[scriptblock]$Command
+		[scriptblock]$Command,
+		[string[]]$RejectOutputPatterns = @()
 	)
 
 	Write-Host "==> $Name"
@@ -42,6 +43,13 @@ function Invoke-Step {
 		$output | ForEach-Object { Write-Host $_ }
 		throw "$Name failed with exit code $exitCode"
 	}
+	$outputText = $output | Out-String
+	foreach ($pattern in $RejectOutputPatterns) {
+		if ($outputText -match $pattern) {
+			$output | ForEach-Object { Write-Host $_ }
+			throw "$Name emitted a forbidden diagnostic matching: $pattern"
+		}
+	}
 	if ($env:OCEANGAME_TEST_VERBOSE -eq "1") {
 		$output | ForEach-Object { Write-Host $_ }
 	}
@@ -49,20 +57,27 @@ function Invoke-Step {
 }
 
 $godotCommand = Resolve-GodotCommand
+$godotLeakPatterns = @(
+	'RIDs? of type .* were leaked\.',
+	'ObjectDB instances? were leaked at exit',
+	'RID allocations? of type .* were leaked at exit',
+	'Leaked instance:',
+	'Resources still in use at exit'
+)
 
 switch ($Tier) {
 	"quick" {
 		Invoke-Step "Godot asset import" {
 			& $godotCommand --headless --path . --import
 		}
-		Invoke-Step "Godot headless launch" {
-			& $godotCommand --headless --path . --quit-after 1
+		Invoke-Step -Name "Godot headless launch" -RejectOutputPatterns $godotLeakPatterns -Command {
+			& $godotCommand --verbose --headless --path . --quit-after 1
 		}
-		Invoke-Step "Godot logic tests" {
-			& $godotCommand --headless --path . --script res://tests/logic_tests.gd
+		Invoke-Step -Name "Godot logic tests" -RejectOutputPatterns $godotLeakPatterns -Command {
+			& $godotCommand --verbose --headless --path . --script res://tests/logic_tests.gd
 		}
-		Invoke-Step "Area 01 source truth validation" {
-			& $godotCommand --headless --path . --script res://tests/area01_source_truth_validation.gd
+		Invoke-Step -Name "Area 01 source truth validation" -RejectOutputPatterns $godotLeakPatterns -Command {
+			& $godotCommand --verbose --headless --path . --script res://tests/area01_source_truth_validation.gd
 		}
 		Invoke-Step "Area 01 runtime placement validation" {
 			node tools/validate-area01-runtime-placements.mjs
@@ -115,14 +130,14 @@ switch ($Tier) {
 		Invoke-Step "Godot asset import" {
 			& $godotCommand --headless --path . --import
 		}
-		Invoke-Step "Godot headless launch" {
-			& $godotCommand --headless --path . --quit-after 1
+		Invoke-Step -Name "Godot headless launch" -RejectOutputPatterns $godotLeakPatterns -Command {
+			& $godotCommand --verbose --headless --path . --quit-after 1
 		}
-		Invoke-Step "Godot logic tests" {
-			& $godotCommand --headless --path . --script res://tests/logic_tests.gd
+		Invoke-Step -Name "Godot logic tests" -RejectOutputPatterns $godotLeakPatterns -Command {
+			& $godotCommand --verbose --headless --path . --script res://tests/logic_tests.gd
 		}
-		Invoke-Step "Area 01 source truth validation" {
-			& $godotCommand --headless --path . --script res://tests/area01_source_truth_validation.gd
+		Invoke-Step -Name "Area 01 source truth validation" -RejectOutputPatterns $godotLeakPatterns -Command {
+			& $godotCommand --verbose --headless --path . --script res://tests/area01_source_truth_validation.gd
 		}
 		Invoke-Step "MCP context self-test" {
 			node .mcp/oceangame-context-server.mjs --self-test
