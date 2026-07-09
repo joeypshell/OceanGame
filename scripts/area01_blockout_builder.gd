@@ -399,6 +399,9 @@ func _cue_family_for_hook_type(hook_type: String) -> String:
 			return Area01VisualCueContractScript.FAMILY_DEBUG_SOURCE_MAP_OVERLAY
 
 func _hook_visual_for_type(hook_type: String, center: Vector2) -> Polygon2D:
+	if hook_type not in ["pickup", "scan", "gate", "return_current", "hazard"]:
+		return null
+
 	var visual := Polygon2D.new()
 	visual.name = "%sVisualCue" % _pascal_case_id(hook_type)
 	visual.position = center
@@ -446,8 +449,5 @@ func _hook_visual_for_type(hook_type: String, center: Vector2) -> Polygon2D:
 				Vector2(-16.0, 0.0),
 				Vector2(-5.0, -5.0),
 			])
-		_:
-			return null
-
 	visual.visible = true
 	return visual

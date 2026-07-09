@@ -15,8 +15,12 @@ class DummyScanTarget:
 
 var _failures: Array[String] = []
 var _passes := 0
+var _initial_orphan_node_ids: Dictionary = {}
 
 func _initialize() -> void:
+	for instance_id in Node.get_orphan_node_ids():
+		_initial_orphan_node_ids[instance_id] = true
+
 	var suites := []
 	for suite_index in range(1, SUITE_COUNT + 1):
 		suites.append(load("res://tests/logic_test_suite_%02d.gd" % suite_index).new())
@@ -221,13 +225,29 @@ func _initialize() -> void:
 
 	if _failures.is_empty():
 		print("Logic tests passed: %d checks." % _passes)
-		quit(0)
+		call_deferred("_finish", 0)
 		return
 
 	for failure in _failures:
 		push_error(failure)
 	print("Logic tests failed: %d failure(s), %d passed checks." % [_failures.size(), _passes])
-	quit(1)
+	call_deferred("_finish", 1)
+
+
+func _finish(exit_code: int) -> void:
+	await process_frame
+	_free_test_orphans()
+	await process_frame
+	quit(exit_code)
+
+
+func _free_test_orphans() -> void:
+	for instance_id in Node.get_orphan_node_ids():
+		if _initial_orphan_node_ids.has(instance_id):
+			continue
+		var node := instance_from_id(instance_id) as Node
+		if node != null:
+			node.free()
 
 
 
