@@ -4,7 +4,7 @@ This file describes implemented repository tooling and agent workflow support.
 
 ## Godot AI MCP
 
-OceanGame adopts `hi-godot/godot-ai` as optional local Godot editor MCP tooling for scene-aware development. It is not vendored into this repository and is separate from the repo-local read-only OceanGame context MCP server.
+OceanGame tracks the evaluated `hi-godot/godot-ai` 2.7.6 snapshot as optional Godot editor MCP tooling for scene-aware development. It remains separate from the repo-local read-only OceanGame context MCP server and is excluded from release exports.
 
 Policy and setup notes live in:
 
@@ -41,6 +41,8 @@ Useful split commands:
 
 ```powershell
 npm run web:export
+npm run test:web-release-smoke
+npm run test:web-release-smoke:existing
 npm run test:visual:existing
 npm run test:survival-loop-captures
 npm run test:survival-loop-captures:existing
@@ -50,7 +52,7 @@ npm run test:visual:mobile-like
 npm run test:visual:mobile-like:existing
 ```
 
-The Web export preset writes to `exports/web/index.html`. The Playwright server serves that folder with the cross-origin isolation headers Godot Web builds need. Screenshots, traces, and reports are local artifacts under `test-results/` and `playwright-report/`; do not commit them unless a future issue explicitly asks for reference images.
+The Web export preset writes to `exports/web/index.html`. The Playwright server serves that folder with the cross-origin isolation headers Godot Web builds need. `test:web-release-smoke` is a no-screenshot release gate: it boots the exported game and fails on browser console errors, uncaught page errors, failed requests, or HTTP error responses. Screenshots, traces, and reports are local artifacts under `test-results/` and `playwright-report/`; do not commit them unless a future issue explicitly asks for reference images.
 
 The focused Survival Day/Night loop capture command is `npm run test:survival-loop-captures`, or `npm run test:survival-loop-captures:existing` after a Web export already exists. It writes local artifacts under `test-results/playwright-survival-loop/` for dawn/ready planning, active daylight HUD, surface oxygen refill, ship offload, night result/tomorrow planning, and next-dawn setup. Each screenshot has a JSON sidecar with the scenario, expected visual state, exported game visual state, viewport, source branch/revision, and dirty-worktree flag. A passing run only proves deterministic states were reached and artifacts were written; the screenshots must still be opened and inspected for readability before closing survival-loop visual work.
 
@@ -79,11 +81,12 @@ git remote set-head origin --auto
 Deployment flow:
 
 1. Set up Godot 4.7.
-2. Launch the project headlessly.
-3. Run deterministic logic tests.
-4. Export the `Web` preset to `exports/web/index.html`.
-5. Upload `exports/web/` as a GitHub Pages artifact.
-6. Deploy to GitHub Pages.
+2. Import and launch the project headlessly, then run deterministic logic tests.
+3. Validate Area 01 runtime source truth, generated source-map parity, hook placement, and playable-water framing.
+4. Enforce the active handwritten-file length guard.
+5. Export the `Web` preset to `exports/web/index.html` and pass the no-screenshot browser-console smoke.
+6. Upload `exports/web/` as a GitHub Pages artifact.
+7. Deploy to GitHub Pages.
 
 Expected tester URL after Pages is enabled and the first workflow succeeds:
 
@@ -95,7 +98,9 @@ Local preflight:
 
 ```powershell
 npm run web:export
+npm run test:web-release-smoke:existing
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Tier quick
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-file-lengths.ps1 -FailOnWarning
 git diff --check
 ```
 
@@ -119,9 +124,11 @@ Tier guidance:
 - `docs`: MCP context self-test, Area 01 runtime source-map validation, Area 01 placement validation, Area 01 playable-water framing validation, and `git diff --check`. Use for docs, planning, and MCP resource changes.
 - `visual`: desktop Playwright visual smoke against the existing export. Use after HUD, UI, camera, route, or art changes when the Web export already exists.
 - `mobile-like`: mobile-like Playwright smoke against the existing export. Use only for mobile-like safe-area, HUD, panel, or route-layout questions.
-- `full`: Godot checks, MCP self-test, Web export, desktop visual smoke, mobile-like visual smoke, and `git diff --check`. Reserve for milestone closeout, export/tooling changes, or major visual/camera route changes.
+- `full`: Godot checks, MCP self-test, Area 01 validators, file-length enforcement, Web export, desktop visual smoke, no-screenshot browser-console smoke, mobile-like visual smoke, and `git diff --check`. Reserve for milestone closeout, export/tooling changes, or major visual/camera route changes.
 
 The runner prints compact step summaries and leaves detailed tool output to the underlying command only when needed. Prefer `quick` or `docs` unless the issue actually changes visual layout or export tooling.
+
+Protected PR CI and Pages run the same release-critical headless, Area 01, file-length, Web export, and browser-console checks. The required PR job keeps its cheap checks for every change but skips Chromium installation/export for diffs containing only `docs/**` and Markdown; Pages likewise skips docs-only pushes. Neither workflow runs screenshot suites, which stay targeted to visual/layout issues.
 
 Set `OCEANGAME_TEST_VERBOSE=1` before running a tier when you need the full underlying command output on success.
 

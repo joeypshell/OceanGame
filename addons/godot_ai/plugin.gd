@@ -2,7 +2,7 @@
 extends EditorPlugin
 
 const GAME_HELPER_AUTOLOAD_NAME := "_mcp_game_helper"
-const GAME_HELPER_AUTOLOAD_PATH := "res://addons/godot_ai/runtime/game_helper.gd"
+const GAME_HELPER_AUTOLOAD_PATH := "res://scripts/debug/godot_ai_game_helper_loader.gd"
 
 ## Editor-process Logger subclass — captures parse errors, @tool runtime
 ## errors, and push_error/push_warning so the LLM can read them via

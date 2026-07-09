@@ -253,7 +253,7 @@ Use this workflow to inspect whether the active HUD, warning panel, surface pane
 
 ## Optional Godot AI MCP Capture
 
-If the local `hi-godot/godot-ai` plugin is installed, enabled in Godot, and its MCP server is running, it may be used for live editor screenshots and scene inspection. This repository does not vendor that plugin and does not require it for normal verification.
+If the tracked `hi-godot/godot-ai` plugin is enabled in Godot and its MCP server is running, it may be used for live editor screenshots and scene inspection. The plugin remains optional for normal verification and is excluded from release exports.
 
 When using Godot AI MCP, record:
 
