@@ -136,8 +136,14 @@ switch ($Tier) {
 		Invoke-Step "Area 01 playable-water framing validation" {
 			node tools/validate-area01-playable-water-framing.mjs
 		}
+		Invoke-Step "File length guard" {
+			& (Join-Path $repoRoot "scripts/check-file-lengths.ps1") -FailOnWarning
+		}
 		Invoke-Step "Desktop Playwright export and visual smoke" {
 			npm.cmd run test:visual
+		}
+		Invoke-Step "Exported Web console smoke against existing export" {
+			npm.cmd run test:web-release-smoke:existing
 		}
 		Invoke-Step "Mobile-like Playwright export and visual smoke" {
 			npm.cmd run test:visual:mobile-like

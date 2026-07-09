@@ -13,13 +13,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup Godot
         uses: chickensoft-games/setup-godot@v2
         with:
           version: 4.7.0
           use-dotnet: false
+          include-templates: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Detect release-impacting changes
+        id: release_changes
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          release_required=false
+          if [[ -z "$BASE_SHA" || "$BASE_SHA" =~ ^0+$ ]]; then
+            release_required=true
+          else
+            while IFS= read -r path; do
+              case "$path" in
+                docs/*|*.md) ;;
+                *) release_required=true; break ;;
+              esac
+            done < <(git diff --name-only "$BASE_SHA" "$GITHUB_SHA" --)
+          fi
+          echo "required=$release_required" >> "$GITHUB_OUTPUT"
 
       - name: Import Godot assets
         run: godot --headless --path . --import
@@ -29,6 +60,34 @@ jobs:
 
       - name: Run deterministic logic tests
         run: godot --headless --path . --script res://tests/logic_tests.gd
+
+      - name: Validate Area 01 runtime source truth
+        run: godot --headless --path . --script res://tests/area01_source_truth_validation.gd
+
+      - name: Validate Area 01 generated source map
+        run: node tools/validate-area01-runtime-source-map.mjs
+
+      - name: Validate Area 01 generated placements
+        run: node tools/validate-area01-runtime-placements.mjs
+
+      - name: Validate Area 01 playable-water framing
+        run: node tools/validate-area01-playable-water-framing.mjs
+
+      - name: Enforce file length guard
+        shell: pwsh
+        run: ./scripts/check-file-lengths.ps1 -FailOnWarning
+
+      - name: Install Chromium
+        if: steps.release_changes.outputs.required == 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Export Web build
+        if: steps.release_changes.outputs.required == 'true'
+        run: npm run web:export
+
+      - name: Smoke exported Web startup
+        if: steps.release_changes.outputs.required == 'true'
+        run: npm run test:web-release-smoke:existing
 
       - name: Check whitespace
         run: git diff --check

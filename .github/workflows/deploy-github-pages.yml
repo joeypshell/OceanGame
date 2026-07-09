@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
   workflow_dispatch:
 
 permissions:
@@ -21,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Godot
         uses: chickensoft-games/setup-godot@v2
@@ -31,9 +34,13 @@ jobs:
           include-templates: true
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
+          cache: npm
+
+      - name: Install Node dependencies
+        run: npm ci
 
       - name: Import Godot project
         run: godot --headless --path . --editor --quit
@@ -41,8 +48,30 @@ jobs:
       - name: Run logic tests
         run: godot --headless --path . --script res://tests/logic_tests.gd
 
+      - name: Validate Area 01 runtime source truth
+        run: godot --headless --path . --script res://tests/area01_source_truth_validation.gd
+
+      - name: Validate Area 01 generated source map
+        run: node tools/validate-area01-runtime-source-map.mjs
+
+      - name: Validate Area 01 generated placements
+        run: node tools/validate-area01-runtime-placements.mjs
+
+      - name: Validate Area 01 playable-water framing
+        run: node tools/validate-area01-playable-water-framing.mjs
+
+      - name: Enforce file length guard
+        shell: pwsh
+        run: ./scripts/check-file-lengths.ps1 -FailOnWarning
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
       - name: Export Web build
         run: npm run web:export
+
+      - name: Smoke exported Web startup
+        run: npm run test:web-release-smoke:existing
 
       - name: Prepare Pages artifact
         run: |
@@ -50,10 +79,10 @@ jobs:
           touch exports/web/.nojekyll
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: exports/web
 
@@ -67,4 +96,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
