@@ -332,6 +332,7 @@ func _test_area_01_first_art_slice_scene_contract(runner) -> void:
 	runner._expect(dressing_crystal.color.a < cargo_slot.color.a, "decorative crystals should stay quieter than cargo-object glows")
 	runner._expect(dressing_coral.color.a < left_platform_mass.color.a, "decorative coral should enrich shelves without competing with terrain masses")
 	runner._expect(cargo_slot.color.a < left_wall.color.a, "gameplay object slots should not look like solid terrain")
-	runner._expect(background_study.modulate.a <= 0.24, "old broad background study should sit behind the first real art slice")
+	runner._expect(not background_study.visible, "old broad background study should not paint rocky texture across normal-play water")
+	runner._expect(background_study.modulate.a <= 0.06, "old broad background study should stay very faint if temporarily enabled for review")
 	runner._expect(not route_choice_band.visible, "route-choice review band should stay hidden by default so the first art slice reads as a place, not a diagram")
 	main.free()

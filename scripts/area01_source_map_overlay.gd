@@ -89,8 +89,16 @@ func source_map_summary() -> Dictionary:
 		"hooks": (source_map.get("scene_hooks", []) as Array).size(),
 		"rules": (source_map.get("validation_rules", []) as Array).size(),
 		"map_id": String(source_map.get("map_id", "legacy_blockout_source_map")),
-		"status": String(source_map.get("status", "legacy_fallback")),
+		"status": _source_map_status(),
 	}
+
+func _source_map_status() -> String:
+	var status := String(source_map.get("status", ""))
+	if not status.is_empty():
+		return status
+	if bool(source_map.get("generated", false)) or loaded_source_map_path == RUNTIME_SOURCE_MAP_PATH:
+		return "generated_current"
+	return "legacy_fallback"
 
 func _draw() -> void:
 	if source_map.is_empty():

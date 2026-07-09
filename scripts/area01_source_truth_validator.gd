@@ -219,7 +219,7 @@ func _validate_generated_source_visuals(scene_root: Node, map: Dictionary, expec
 		expected_visible[domain_name] = String(terrain_domain.get("id", "terrain_domain"))
 		_expect(domain_visual != null, "terrain_domain missing generated continuous terrain Polygon2D %s" % domain_name)
 		if domain_visual != null:
-			_expect(domain_visual.visible, "terrain_domain must render the continuous player-facing terrain mass")
+			_expect(not domain_visual.visible, "terrain_domain must stay a hidden reference guide so uncut texture cannot fill playable water")
 			_expect(_same_points(domain_visual.polygon, _points_from_json(terrain_domain.get("polygon", []))), "terrain_domain polygon drifted from source map")
 
 	for water_value in _array_value(map, "playable_water_regions"):

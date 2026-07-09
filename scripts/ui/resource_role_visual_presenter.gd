@@ -10,7 +10,7 @@ static func ensure_resource_role_visual(pickup: Node2D, resource_id: String, rol
 	role_read.visible = true
 	role_read.position = Vector2(0.0, -32.0)
 	role_read.scale = Vector2(1.35, 1.35)
-	role_read.z_index = 28
+	role_read.z_index = 2
 	role_read.set_meta("role_family", role_family)
 	role_read.set_meta("resource_id", resource_id)
 	if role_read.get_child_count() > 0:

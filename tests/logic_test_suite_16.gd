@@ -286,7 +286,6 @@ func _test_east_shelf_spur_branch_scene_contract_part_8(runner) -> void:
 
 func _test_east_shelf_spur_branch_scene_contract_part_9(runner) -> void:
 	var main := MainScene.instantiate()
-	var blue_chimney_pocket := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket") as Node2D
 	var blackwater_crack := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack") as Node2D
 	var blackwater_sill := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill") as Node2D
 	var hollow_resource_pocket := main.get_node("EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteriorLane/UpperShelfChoice/ShelteredResourcePocket") as Node2D
@@ -299,6 +298,7 @@ func _test_east_shelf_spur_branch_scene_contract_part_9(runner) -> void:
 	var lantern_ray_scan_marker := main.get_node("Creatures/LanternRayRoute/ScanMarker") as Polygon2D
 	var lantern_ray_collision := main.get_node("Creatures/LanternRayRoute/CollisionShape2D") as CollisionShape2D
 	var blue_chimney_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/BlueChimneyA") as SpawnPoint
+	var blue_chimney_return_current_position := _source_hook_world_position(runner._load_area01_source_map_for_tests(), "blue_chimney_return_current")
 	var hollow_reef_glow_candidate := main.get_node("StarterResourceCandidates/GlowPlankton/HollowReefA") as SpawnPoint
 	var mirror_kelp_cargo_candidate := main.get_node("StarterResourceCandidates/KelpFiber/MirrorKelpA") as SpawnPoint
 
@@ -318,7 +318,9 @@ func _test_east_shelf_spur_branch_scene_contract_part_9(runner) -> void:
 	runner._expect(blue_chimney_glow_candidate.target_id == "glow_plankton", "Blue Chimney optional material should use existing Glow Plankton")
 	runner._expect(blue_chimney_glow_candidate.depth_band == "deep", "Blue Chimney material candidate should preserve deep resource identity")
 	runner._expect(blue_chimney_glow_candidate.cluster_pattern == "deep_reward", "Blue Chimney material candidate should remain optional deep-reward route pressure")
-	runner._expect(blue_chimney_glow_candidate.position.distance_to(blue_chimney_pocket.position) <= 96.0, "Blue Chimney material candidate should sit near the lower pocket after runtime v3 playable-water re-anchor")
+	runner._expect(blue_chimney_return_current_position != Vector2.INF, "Blue Chimney material candidate should have a generated source-grid return-current anchor")
+	if blue_chimney_return_current_position != Vector2.INF:
+		runner._expect(blue_chimney_glow_candidate.position.distance_to(blue_chimney_return_current_position) <= 48.0, "Blue Chimney material candidate should sit near the generated lower-pocket return current after source-grid re-anchor")
 	runner._expect(hollow_reef_glow_candidate.target_id == "glow_plankton", "Hollow Reef sheltered pocket should use existing Glow Plankton")
 	runner._expect(hollow_reef_glow_candidate.depth_band == "deep", "Hollow Reef material candidate should preserve deep resource identity")
 	runner._expect(hollow_reef_glow_candidate.cluster_pattern == "deep_reward", "Hollow Reef material candidate should stay optional in the deep-reward resource pool")
@@ -333,3 +335,15 @@ func _test_east_shelf_spur_branch_scene_contract_part_9(runner) -> void:
 	runner._expect(main.get_node_or_null("ResourcePickups/MirrorKelpFiber") == null, "Mirror Kelp cargo split should not add an extra active resource pickup")
 
 	main.free()
+
+func _source_hook_world_position(source_map: Dictionary, hook_id: String) -> Vector2:
+	for hook_value in source_map.get("scene_hooks", []):
+		if typeof(hook_value) != TYPE_DICTIONARY:
+			continue
+		var hook := hook_value as Dictionary
+		if String(hook.get("id", "")) != hook_id:
+			continue
+		var value: Variant = hook.get("world_position", [])
+		if value is Array and value.size() >= 2:
+			return Vector2(float(value[0]), float(value[1]))
+	return Vector2.INF

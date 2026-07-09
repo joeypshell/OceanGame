@@ -157,24 +157,34 @@ func _test_area_01_authoritative_wall_builder(runner) -> void:
 	var expected_domain_polygon: PackedVector2Array = runner._points_from_source_map_json(terrain_domain.get("polygon", []))
 	var terrain_domain_node := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/%s" % String(terrain_domain_runtime.get("visible_polygon2d_name", ""))) as Polygon2D
 	runner._expect(expected_domain_polygon.size() >= 3, "Area 01 terrain domain should define one continuous source-map polygon")
-	runner._expect(terrain_domain_node != null and terrain_domain_node.visible, "Area 01 builder should render the continuous terrain-domain mass")
+	runner._expect(terrain_domain_node != null and not terrain_domain_node.visible, "Area 01 builder should keep the continuous terrain-domain guide hidden from normal play")
 	if terrain_domain_node != null:
 		runner._expect(runner._packed_points_match(terrain_domain_node.polygon, expected_domain_polygon), "Area 01 terrain-domain visual should exactly match the source-map terrain domain")
-		runner._expect(terrain_domain_node.texture != null, "Area 01 terrain-domain visual should use the generated reef fill texture")
+		runner._expect(terrain_domain_node.texture == null, "Area 01 terrain-domain guide should not paint reef texture across playable water")
 
 	var water_cutout_layer := main.get_node_or_null("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain/RuntimeSourceWaterCutouts") as Node2D
 	var water_edge_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourceWaterEdges") as Node2D
 	var player_rim_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourcePlayerRims") as Node2D
 	var cave_wall_art_layer := main.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/RuntimeSourceRims/RuntimeSourceCaveWallSprites") as Node2D
+	var merged_water_skin_layer: Node2D = null
+	if water_cutout_layer != null:
+		merged_water_skin_layer = water_cutout_layer.get_node_or_null("RuntimeSourceMergedWaterSkins") as Node2D
 	var carved_water_count := 0
 	var art_slice := main.get_node("Area01ArtSlice") as CanvasItem
 	var player_visual_root := main.get_node("Player/VisualRoot") as CanvasItem
+	var resource_pickups_root := main.get_node("ResourcePickups") as CanvasItem
+	var creatures_root := main.get_node("Creatures") as CanvasItem
+	var predators_root := main.get_node("Predators") as CanvasItem
+	var discoveries_root := main.get_node("Discoveries") as CanvasItem
 	var player_visual_z: int = runner._effective_canvas_z(player_visual_root)
 	runner._expect(player_visual_z >= 20, "player visual should render in an actor band above world art")
 	runner._expect(art_slice.z_index >= 0, "Area 01 art slice should stay above opaque ocean backgrounds so cave walls remain visible")
 	runner._expect(runner._effective_canvas_z(art_slice) < player_visual_z, "Area 01 art slice should stay below actors so generated terrain cannot cover the diver")
+	for actor_root in [resource_pickups_root, creatures_root, predators_root, discoveries_root]:
+		runner._expect(runner._effective_canvas_z(actor_root) >= 16, "gameplay object roots should render above generated Area 01 terrain/rim decoration: %s" % actor_root.name)
+		runner._expect(runner._effective_canvas_z(actor_root) < player_visual_z, "gameplay object roots should stay below the player actor band: %s" % actor_root.name)
 	if terrain_domain_node != null:
-		runner._expect(runner._effective_canvas_z(terrain_domain_node) < player_visual_z, "Area 01 terrain domain should render behind the diver")
+		runner._expect(runner._effective_canvas_z(terrain_domain_node) < player_visual_z, "Area 01 terrain domain guide should stay behind the diver if enabled for review")
 	runner._expect(water_cutout_layer != null, "Area 01 builder should create source-owned playable-water cutouts")
 	runner._expect(water_edge_layer != null, "Area 01 builder should retain hidden playable-water diagnostic edge nodes")
 	runner._expect(player_rim_layer != null, "Area 01 builder should retain the generated rim container for solid terrain")
@@ -195,9 +205,40 @@ func _test_area_01_authoritative_wall_builder(runner) -> void:
 			var cutout_runtime := cutout_runtime_generation as Dictionary
 			var generated_cutout := water_cutout_layer.get_node_or_null(String(cutout_runtime.get("visible_polygon2d_name", ""))) as Polygon2D
 			var expected_cutout_polygon: PackedVector2Array = runner._points_from_source_map_json(cutout_entry.get("polygon", []))
-			runner._expect(generated_cutout != null and generated_cutout.visible, "Area 01 source-grid water cutout should render visibly: %s" % cutout_id)
+			runner._expect(generated_cutout != null and not generated_cutout.visible, "Area 01 exact source-grid water cutout should stay diagnostic-only: %s" % cutout_id)
 			if generated_cutout != null:
 				runner._expect(runner._packed_points_match(generated_cutout.polygon, expected_cutout_polygon), "Area 01 source-grid water cutout should exactly match generated source-grid geometry: %s" % cutout_id)
+		runner._expect(merged_water_skin_layer != null, "Area 01 exact source-grid water should render through a merged player-facing water-skin layer")
+		if merged_water_skin_layer != null:
+			runner._expect(merged_water_skin_layer.get_child_count() > 0, "Area 01 merged water-skin layer should contain visible water polygons")
+			runner._expect(merged_water_skin_layer.get_child_count() < source_grid_water_cutouts.size(), "Area 01 merged water-skin layer should reduce visible source-grid rectangle count")
+			runner._expect(not runner._node_tree_contains_collision(merged_water_skin_layer), "Area 01 merged water-skin layer should stay visual-only")
+			for child in merged_water_skin_layer.get_children():
+				if child is Polygon2D:
+					runner._expect((child as Polygon2D).visible, "Area 01 merged water-skin polygons should be player-facing")
+					runner._expect((child as Polygon2D).polygon.size() >= 10, "Area 01 merged water-skin polygons should use organic multi-point silhouettes: %s" % child.name)
+					runner._expect(_long_axis_aligned_edge_count((child as Polygon2D).polygon, 320.0) <= 1, "Area 01 merged water-skin polygons should avoid long rectangular placeholder edges: %s" % child.name)
+					runner._expect((child as Polygon2D).color.a <= 0.105, "Area 01 merged water-skin polygons should stay low-opacity: %s" % child.name)
+		var water_ambience_groups := water_cutout_layer.find_children("*WaterAmbience", "Node2D", true, false)
+		runner._expect(water_ambience_groups.size() >= 12, "Area 01 large source-grid water cutouts should receive passive interior ambience")
+		for ambience_group in water_ambience_groups:
+			runner._expect(not runner._node_tree_contains_collision(ambience_group as Node), "Area 01 water ambience should stay visual-only")
+			runner._expect((ambience_group as Node).find_children("DistantReefSilhouette", "Polygon2D", true, false).is_empty(), "Area 01 playable water ambience should not add rocky reef silhouettes inside water: %s" % ambience_group.name)
+			for ambience_child in (ambience_group as Node).get_children():
+				if ambience_child is Polygon2D:
+					runner._expect(not String(ambience_child.name).contains("SoftCurrentRibbon"), "Area 01 water ambience should avoid long continuous current ribbons: %s" % ambience_child.name)
+					if String(ambience_child.name).contains("SoftCurrentEddy"):
+						runner._expect((ambience_child as Polygon2D).color.a <= 0.020, "Area 01 current eddies should stay subtle: %s" % ambience_child.name)
+						runner._expect(_long_axis_aligned_edge_count((ambience_child as Polygon2D).polygon, 220.0) == 0, "Area 01 current eddies should not regress into long axis-aligned bands: %s" % ambience_child.name)
+		var corridor_breakup_groups := water_cutout_layer.find_children("CorridorBreakup", "Node2D", true, false)
+		runner._expect(corridor_breakup_groups.size() >= 4 and corridor_breakup_groups.size() <= 8, "Area 01 wider source-grid corridors should receive passive visual breakup without decorating every one-cell grid seam")
+		for corridor_group in corridor_breakup_groups:
+			runner._expect(not runner._node_tree_contains_collision(corridor_group as Node), "Area 01 corridor visual breakup should stay visual-only")
+			for corridor_child in (corridor_group as Node).get_children():
+				if corridor_child is Polygon2D:
+					runner._expect(not String(corridor_child.name).contains("DepthSeam"), "Area 01 corridor ambience should avoid continuous seam bands: %s" % corridor_child.name)
+					runner._expect((corridor_child as Polygon2D).color.a <= 0.040, "Area 01 corridor ambience should stay lower priority than pickups and terrain rims: %s" % corridor_child.name)
+					runner._expect(_long_axis_aligned_edge_count((corridor_child as Polygon2D).polygon, 220.0) == 0, "Area 01 corridor ambience should use broken local eddies, not long axis-aligned bands: %s" % corridor_child.name)
 	if water_edge_layer != null:
 		runner._expect(runner._effective_canvas_z(water_edge_layer) < player_visual_z, "Area 01 hidden water edge diagnostics should stay behind the diver")
 		runner._expect(water_edge_layer.find_child("*SpriteRimTrims", true, false) == null, "Area 01 should not scatter generated water-edge sprite trim chunks across cave silhouettes")
@@ -207,16 +248,40 @@ func _test_area_01_authoritative_wall_builder(runner) -> void:
 		runner._expect(runner._effective_canvas_z(cave_wall_art_layer) < player_visual_z, "Area 01 generated cave-wall sprites should render behind the diver")
 		runner._expect(not runner._node_tree_contains_collision(cave_wall_art_layer), "Area 01 generated cave-wall sprites should not own collision")
 		runner._expect(cave_wall_art_layer.find_children("*", "Line2D", true, false).is_empty(), "Area 01 generated cave-wall sprites should not add visible or hidden Line2D outlines")
-		runner._expect(cave_wall_art_layer.find_children("*", "Polygon2D", true, false).is_empty(), "Area 01 generated cave-wall sprite layer should not add rectangular polygon debug boxes")
 		runner._expect(source_grid_water_edges.size() >= 20, "Area 01 runtime should generate source-grid water/solid boundary edges for wall art")
+		var source_grid_edge_bands := cave_wall_art_layer.get_node_or_null("SourceGridWaterBoundarySoftBands") as Node2D
+		runner._expect(source_grid_edge_bands != null, "Area 01 generated cave-wall art should add source-grid soft edge bands")
+		if source_grid_edge_bands != null:
+			runner._expect(source_grid_edge_bands.get_child_count() >= 24 and source_grid_edge_bands.get_child_count() <= 60, "Area 01 generated soft edge bands should cover primary cave apertures without noisy one-cell seams")
+			runner._expect(not runner._node_tree_contains_collision(source_grid_edge_bands), "Area 01 source-grid soft edge bands should stay visual-only")
+			for band_node in source_grid_edge_bands.get_children():
+				if band_node is Polygon2D:
+					runner._expect((band_node as Polygon2D).color.a <= 0.035, "Area 01 source-grid soft edge bands should stay low-opacity: %s" % band_node.name)
+		var source_grid_corner_caps := cave_wall_art_layer.get_node_or_null("SourceGridWaterBoundaryCornerCaps") as Node2D
+		runner._expect(source_grid_corner_caps != null, "Area 01 generated cave-wall art should add source-grid corner caps")
+		if source_grid_corner_caps != null:
+			runner._expect(source_grid_corner_caps.get_child_count() >= 24 and source_grid_corner_caps.get_child_count() <= 48, "Area 01 generated source-grid corner caps should mark major cave turns without speckling every grid corner")
+			runner._expect(not runner._node_tree_contains_collision(source_grid_corner_caps), "Area 01 source-grid corner caps should stay visual-only")
+		var source_grid_breakup_sprites := cave_wall_art_layer.get_node_or_null("SourceGridWaterBoundaryBreakupSprites") as Node2D
+		runner._expect(source_grid_breakup_sprites != null, "Area 01 generated cave-wall art should add source-grid breakup sprites")
+		if source_grid_breakup_sprites != null:
+			runner._expect(source_grid_breakup_sprites.get_child_count() >= 8 and source_grid_breakup_sprites.get_child_count() <= 16, "Area 01 generated breakup sprites should interrupt repeated bands without becoming visual noise")
+			runner._expect(not runner._node_tree_contains_collision(source_grid_breakup_sprites), "Area 01 source-grid breakup sprites should stay visual-only")
+		var cave_wall_polygons := cave_wall_art_layer.find_children("*", "Polygon2D", true, false)
+		for polygon_node in cave_wall_polygons:
+			var polygon_parent := (polygon_node as Node).get_parent()
+			runner._expect(source_grid_edge_bands != null and polygon_parent == source_grid_edge_bands, "Area 01 generated cave-wall polygon visuals should only be source-grid soft edge bands: %s" % polygon_node.name)
 		var source_grid_wall_art := cave_wall_art_layer.get_node_or_null("SourceGridWaterBoundaryWallArt") as Node2D
 		runner._expect(source_grid_wall_art != null, "Area 01 generated cave-wall art should follow source-grid water/solid boundaries")
+		if source_grid_wall_art != null:
+			runner._expect(source_grid_wall_art.get_child_count() >= 24 and source_grid_wall_art.get_child_count() <= 60, "Area 01 generated source-grid wall art should be budgeted enough to read cave silhouettes without clutter")
 		var wall_sprites := cave_wall_art_layer.find_children("*", "Sprite2D", true, false)
-		runner._expect(wall_sprites.size() >= 24, "Area 01 generated cave-wall sprite layer should add enough edge art to read primary cave corridors")
+		runner._expect(wall_sprites.size() >= 56 and wall_sprites.size() <= 124, "Area 01 generated cave-wall sprite layer should add enough edge art to read corridors while avoiding seam noise")
 		for sprite_node in wall_sprites:
 			var sprite := sprite_node as Sprite2D
 			runner._expect(sprite != null and sprite.visible and sprite.texture != null, "Area 01 generated cave-wall art should use visible texture sprites")
 			if sprite != null:
+				runner._expect(sprite.modulate.a <= 0.46, "Area 01 generated cave-wall sprites should stay within the visual alpha budget: %s" % sprite.name)
 				runner._expect(absf(absf(sprite.scale.x) - absf(sprite.scale.y)) <= 0.001, "Area 01 generated cave-wall sprites should use uniform scale instead of stretched sprite fragments: %s" % sprite.name)
 				runner._expect(absf(sprite.scale.x) <= 0.32 and absf(sprite.scale.y) <= 0.32, "Area 01 generated cave-wall sprites should stay trim-sized rather than becoming stretched wall strips: %s" % sprite.name)
 	for water_value in playable_water_regions:
@@ -314,10 +379,10 @@ func _test_area_01_authoritative_wall_builder(runner) -> void:
 	runner._expect(not background_mid.visible, "Area 01 builder should hide old mid-background wall-like shapes during wall-map rescue")
 	runner._expect(not foreground_decor.visible, "Area 01 builder should hide foreground dressing during wall-map rescue")
 	runner._expect(not platform_kit.visible, "Area 01 builder should hide old decorative platform overlays during wall-map rescue")
-	runner._expect(background_far.modulate.a <= 0.13, "Area 01 far background should be demoted below source-map terrain")
-	runner._expect(parallax_background.modulate.a <= 0.17, "Area 01 parallax background should not compete with source-map terrain")
-	runner._expect(lighting_stack.modulate.a <= 0.29, "Area 01 broad lighting stack should not read as blocking terrain")
-	runner._expect(water_light_shafts.modulate.a <= 0.25, "Area 01 light shafts should stay secondary to collision-source terrain")
+	runner._expect(background_far.modulate.a <= 0.08, "Area 01 far background should be demoted below source-map terrain")
+	runner._expect(parallax_background.modulate.a <= 0.09, "Area 01 parallax background should not compete with source-map terrain")
+	runner._expect(lighting_stack.modulate.a <= 0.10, "Area 01 broad lighting stack should not read as blocking terrain")
+	runner._expect(water_light_shafts.modulate.a <= 0.10, "Area 01 light shafts should stay secondary to collision-source terrain")
 	runner._expect(wall_dressing_layer == null, "Area 01 builder should not keep the old shape-dressing layer")
 	runner._expect(tile_terrain_layer == null, "Area 01 builder should not render rectangular atlas tiles over arbitrary wall polygons")
 	if terrain_accent_layer != null:
@@ -326,10 +391,7 @@ func _test_area_01_authoritative_wall_builder(runner) -> void:
 		runner._expect(terrain_accent_layer.find_child("DiagonalSlopeTrim*", true, false) == null, "Area 01 terrain accents should not auto-place slope trims without semantic source-map segments")
 	var generated_terrain := main.get_node("Area01ArtSlice/TerrainBackWalls/RuntimeSourceTerrain") as Node2D
 	var domain_accent_layer := generated_terrain.get_node_or_null("RuntimeSourceTerrainDomainAccents") as Node2D
-	runner._expect(domain_accent_layer != null, "Area 01 generated source-map terrain should add broad visual-only domain accents")
-	if domain_accent_layer != null:
-		runner._expect(not runner._node_tree_contains_collision(domain_accent_layer), "Area 01 generated terrain domain accents should not add collision ownership")
-		runner._expect(domain_accent_layer.get_child_count() >= 6, "Area 01 generated terrain domain accents should include broad strata/shadow/decal treatment")
+	runner._expect(domain_accent_layer == null, "Area 01 should not render broad uncut terrain-domain accents across playable water")
 	var first_generated_wall: Polygon2D = null
 	for terrain in solid_terrain:
 		if typeof(terrain) != TYPE_DICTIONARY:
@@ -349,63 +411,15 @@ func _test_area_01_authoritative_wall_builder(runner) -> void:
 		runner._expect(first_generated_wall.visible, "Area 01 generated solid partition should be player-facing terrain")
 	main.free()
 
-func _test_area_01_starter_resource_pocket_placement(runner) -> void:
-	var main := MainScene.instantiate()
-	var builder := Area01BlockoutBuilderScript.new()
-	runner._expect(builder.build(main), "Area 01 starter resource placement test should use runtime source-map collision: %s" % builder.last_error)
-	var source_map: Dictionary = runner._load_area01_source_map_for_tests()
-	var hooks_by_id := {}
-	for hook_value in source_map.get("scene_hooks", []):
-		if typeof(hook_value) == TYPE_DICTIONARY:
-			hooks_by_id[String((hook_value as Dictionary).get("id", ""))] = hook_value
-
-	var collisions: Array[CollisionPolygon2D] = runner._area01_enabled_collision_polygons(main)
-	for hook_id in ["starter_kelp_fiber", "starter_shell_fragments", "starter_food_supply"]:
-		runner._expect(hooks_by_id.has(hook_id), "Area 01 generated source map should include starter resource hook: %s" % hook_id)
-		if not hooks_by_id.has(hook_id):
+func _long_axis_aligned_edge_count(points: PackedVector2Array, min_length: float) -> int:
+	var count := 0
+	if points.size() < 2:
+		return count
+	for index in range(points.size()):
+		var edge := points[(index + 1) % points.size()] - points[index]
+		var length := edge.length()
+		if length < min_length:
 			continue
-		var hook := hooks_by_id[hook_id] as Dictionary
-		runner._expect(String(hook.get("type", "")) == "pickup", "starter resource hook should be typed as pickup: %s" % hook_id)
-		runner._expect(not String(hook.get("resource", "")).is_empty(), "starter resource hook should name its resource family: %s" % hook_id)
-		var runtime := hook.get("runtime_generation", {}) as Dictionary
-		var area := main.get_node_or_null("Area01ArtSlice/RuntimeSourceHooks/%s" % String(runtime.get("area2d_name", ""))) as Area2D
-		runner._expect(area != null, "starter resource hook should build a generated Area2D: %s" % hook_id)
-		if area == null:
-			continue
-		var collision := area.get_node_or_null(String(runtime.get("collision_polygon2d_name", ""))) as CollisionPolygon2D
-		runner._expect(collision != null and collision.disabled, "starter resource hook should stay inert/nonblocking until gameplay promotes it: %s" % hook_id)
-		var points: PackedVector2Array = runner._points_from_source_map_json(hook.get("points", []))
-		runner._expect(points.size() >= 3, "starter resource hook should have generated polygon points: %s" % hook_id)
-		if points.size() >= 3:
-			var center := Vector2.ZERO
-			for point in points:
-				center += point
-			center /= float(points.size())
-			runner._expect(not runner._point_inside_any_collision(center, collisions), "starter resource hook should not sit inside generated Area 01 terrain collision: %s" % hook_id)
-	main.free()
-
-func _test_area_01_cave_mouth_affordances(runner) -> void:
-	var main := MainScene.instantiate()
-	var root := main.get_node("Area01ArtSlice/GameplayObjects/CaveMouthAffordances") as Node2D
-	var left_mouth := root.get_node("LeftCaveMouth") as Node2D
-	var right_mouth := root.get_node("RightChamberMouth") as Node2D
-	var future_seal := root.get_node("LowerBasinFutureSeal") as Node2D
-	var left_shadow := left_mouth.get_node("MouthShadow") as Polygon2D
-	var left_wash := left_mouth.get_node("EntryWaterWash") as Polygon2D
-	var left_rim := left_mouth.get_node("UpperRim") as Polygon2D
-	var right_shadow := right_mouth.get_node("MouthShadow") as Polygon2D
-	var right_wash := right_mouth.get_node("EntryWaterWash") as Polygon2D
-	var future_mouth := future_seal.get_node("SealMouth") as Polygon2D
-	var future_veil := future_seal.get_node("PressureVeil") as Polygon2D
-	var future_bars := future_seal.get_node("SealBars") as Polygon2D
-	var future_glint := future_seal.get_node("FutureGlint") as Polygon2D
-	runner._expect(root.find_child("CollisionShape2D", true, false) == null, "Area 01 cave-mouth affordances should not add hidden collision")
-	runner._expect(root.find_child("CollisionPolygon2D", true, false) == null, "Area 01 cave-mouth affordances should not add player blockers")
-	runner._expect(root.find_child("Label", true, false) == null, "Area 01 cave-mouth affordances should not rely on labels for comprehension")
-	runner._expect(left_shadow.color.a >= 0.6 and right_shadow.color.a >= 0.55, "reachable cave mouths should use dark negative space so openings read apart from solid reef")
-	runner._expect(left_wash.color.a <= 0.16 and right_wash.color.a <= 0.14, "reachable cave-mouth water washes should stay subtle instead of becoming route arrows")
-	runner._expect(left_rim.color.a > left_wash.color.a, "reachable cave-mouth rims should frame the opening more clearly than the water wash")
-	runner._expect(future_mouth.color.a < left_shadow.color.a, "future sealed mouth should be quieter than current reachable cave openings")
-	runner._expect(future_veil.color.a < left_wash.color.a and future_bars.color.a < left_rim.color.a, "future route promise should stay lower priority than current cave affordances")
-	runner._expect(future_glint.color.a < left_rim.color.a, "future glint should invite curiosity without reading as a collectible")
-	main.free()
+		if absf(edge.x) / length >= 0.99 or absf(edge.y) / length >= 0.99:
+			count += 1
+	return count

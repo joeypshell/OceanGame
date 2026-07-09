@@ -258,7 +258,8 @@ func _test_sprite_ready_scene_asset_slots(runner) -> void:
 
 	var shallow_midwater_background := main.get_node("ShallowMidwaterBackgroundStudy") as Sprite2D
 	runner._expect(shallow_midwater_background.texture != null, "Shallow/midwater background study should use its exported source asset")
-	runner._expect(shallow_midwater_background.modulate.a <= 0.5, "Shallow/midwater background study should stay subdued behind gameplay cues")
+	runner._expect(not shallow_midwater_background.visible, "Shallow/midwater background study should stay hidden during normal play so water does not read as cave texture")
+	runner._expect(shallow_midwater_background.modulate.a <= 0.06, "Shallow/midwater background study should stay faint even when enabled for review")
 
 	var glow_sprite := main.get_node("ResourcePickups/GlowPlankton/Visuals/SpriteAnchor/Sprite") as Sprite2D
 	var glow_fallback := main.get_node("ResourcePickups/GlowPlankton/Visuals/FallbackVisual") as Node2D

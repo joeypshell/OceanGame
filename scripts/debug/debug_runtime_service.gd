@@ -112,7 +112,6 @@ static func stage_debug_east_shelf_pocket_visual_review(host) -> void:
 	host.player_near_east_shelf_pocket = true
 	host._try_east_shelf_pocket_interaction()
 	host.visual_smoke_route_stage = "east_shelf_pocket"
-	host.status_label.text = "Debug review: East Shelf signal core payoff staged."
 	host._update_hud()
 
 static func stage_debug_blue_chimney_payoff_visual_review(host) -> void:

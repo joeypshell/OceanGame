@@ -194,6 +194,7 @@ func _test_area_01_source_map_debug_overlay(runner) -> void:
 	runner._expect(int(summary.get("solids", 0)) >= 13, "Area 01 source-map overlay should expose solid terrain count")
 	runner._expect(int(summary.get("hooks", 0)) >= 11, "Area 01 source-map overlay should expose generated hook count")
 	runner._expect(String(summary.get("map_id", "")) == "area_01_runtime_geometry_generated", "Area 01 source-map overlay should expose current generated map revision")
+	runner._expect(String(summary.get("status", "")) == "generated_current", "Area 01 source-map overlay should report generated source-map authority")
 	overlay.capture_state = "area01-central-drop"
 	overlay.camera_state = "pos 640,420 zoom 0.60"
 	runner._expect(overlay.capture_state.contains("area01"), "Area 01 source-map overlay should carry capture state for screenshots")
