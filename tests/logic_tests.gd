@@ -1,7 +1,7 @@
 extends SceneTree
 
 const SpawnPointScript := preload("res://scripts/spawn_point.gd")
-const SUITE_COUNT := 40
+const SUITE_COUNT := 41
 
 class DummyScanTarget:
 	extends Node2D
@@ -103,8 +103,8 @@ func _initialize() -> void:
 	_run("Area 01 surface oxygen hook runtime", Callable(suites[18], "_test_area_01_surface_oxygen_hook_runtime").bind(self))
 	_run("Area 01 authoritative wall builder", Callable(suites[19], "_test_area_01_authoritative_wall_builder").bind(self))
 	_run("Area 01 source map debug overlay", Callable(suites[18], "_test_area_01_source_map_debug_overlay").bind(self))
-	_run("Area 01 starter resource pocket placement", Callable(suites[19], "_test_area_01_starter_resource_pocket_placement").bind(self))
-	_run("Area 01 cave mouth affordances", Callable(suites[19], "_test_area_01_cave_mouth_affordances").bind(self))
+	_run("Area 01 starter resource pocket placement", Callable(suites[40], "_test_area_01_starter_resource_pocket_placement").bind(self))
+	_run("Area 01 cave mouth affordances", Callable(suites[40], "_test_area_01_cave_mouth_affordances").bind(self))
 	_run("Area 01 reusable reef visual kit", Callable(suites[20], "_test_area_01_reusable_reef_visual_kit").bind(self))
 	_run("east shelf spur branch scene contract paths", Callable(suites[12], "_test_east_shelf_spur_branch_scene_contract_paths").bind(self))
 	_run("east shelf spur branch scene contract part 1", Callable(suites[13], "_test_east_shelf_spur_branch_scene_contract_part_1").bind(self))

@@ -143,6 +143,8 @@ func _test_lantern_ray_route_variation(runner) -> void:
 	var lantern_ray := main.get_node("Creatures/LanternRayRoute") as Area2D
 	main.creature_route_candidates = candidates
 	main.lantern_ray_route = lantern_ray
+	var source_map: Dictionary = runner._load_area01_source_map_for_tests()
+	var source_grid_water_polygons := _source_grid_water_polygons(source_map, runner)
 
 	for pattern in ["cautious", "deep_reward"]:
 		var routes: Dictionary = SpawnSelectionScript.routes_for_target(candidates, SpawnPointScript, "creature", "lantern_ray", pattern)
@@ -151,10 +153,10 @@ func _test_lantern_ray_route_variation(runner) -> void:
 			var route: Dictionary = route_value
 			var start: Vector2 = route["start"]
 			var end: Vector2 = route["end"]
-			runner._expect(start.x >= 2480.0 and end.x >= 2480.0, "Lantern Ray authored route should stay inside the lower-route creature area")
-			runner._expect(start.x <= 2960.0 and end.x <= 2960.0, "Lantern Ray authored route should not bypass the current Dusk route bounds")
-			runner._expect(start.y >= 2480.0 and end.y >= 2480.0, "Lantern Ray authored route should stay in the lower-route band")
-			runner._expect(start.y <= 2740.0 and end.y <= 2740.0, "Lantern Ray authored route should leave the Blackwater/Dusk return gap readable")
+			runner._expect(_point_inside_any_polygon(start, source_grid_water_polygons), "Lantern Ray authored route start should sit inside source-grid playable water")
+			runner._expect(_point_inside_any_polygon(end, source_grid_water_polygons), "Lantern Ray authored route end should sit inside source-grid playable water")
+			runner._expect(end.x > start.x, "Lantern Ray authored route should read as a lateral glide through the generated route pocket")
+			runner._expect(absf(end.y - start.y) <= 128.0, "Lantern Ray authored route should stay in one readable generated-water lane")
 
 	main.current_resource_cluster_pattern = "cautious"
 	main.current_expedition_condition = {
@@ -213,6 +215,22 @@ func _test_debug_review_helpers(runner) -> void:
 	runner._expect(main.visual_smoke_route_stage == "", "Dusk Trench visual staging service should stay inert outside web visual smoke")
 	HollowReefVisualStagingServiceScript.stage_route_visual_review(main)
 	runner._expect(main.visual_smoke_route_stage == "", "Hollow Reef visual staging service should stay inert outside web visual smoke")
+	var area01_stages := [
+		"surface_entry",
+		"left_shelf_cave",
+		"right_shelf_pocket",
+		"central_drop",
+		"west_chamber",
+		"right_chamber",
+		"deep_spine",
+		"future_exit",
+	]
+	for stage in area01_stages:
+		var status := Area01VisualStagingServiceScript.player_status_for_stage(stage)
+		var lower_status := status.to_lower()
+		runner._expect(not lower_status.contains("debug"), "Area 01 staged status should not expose debug copy: %s" % stage)
+		runner._expect(not lower_status.contains("review"), "Area 01 staged status should not expose review copy: %s" % stage)
+		runner._expect(not lower_status.contains("staged"), "Area 01 staged status should not expose capture harness copy: %s" % stage)
 	main.free()
 
 func _test_debug_wreck_echo_visual_staging(runner) -> void:
@@ -418,3 +436,20 @@ func _test_surface_oxygen_visual_staging_service(runner) -> void:
 	runner._expect(is_equal_approx(main.dive_session.oxygen, maxf(1.0, main.dive_session.max_oxygen * 0.18)), "Surface Oxygen staging should preserve the low oxygen review value")
 	runner._expect(main.status_label.text == "Surface O2 refilling; ship still banks cargo.", "Surface Oxygen staging should preserve the refill status copy")
 	main.queue_free()
+
+func _source_grid_water_polygons(source_map: Dictionary, runner) -> Array[PackedVector2Array]:
+	var water_polygons: Array[PackedVector2Array] = []
+	for cutout_value in source_map.get("source_grid_water_cutouts", []):
+		if typeof(cutout_value) != TYPE_DICTIONARY:
+			continue
+		var cutout := cutout_value as Dictionary
+		var points: PackedVector2Array = runner._points_from_source_map_json(cutout.get("polygon", []))
+		if points.size() >= 3:
+			water_polygons.append(points)
+	return water_polygons
+
+func _point_inside_any_polygon(point: Vector2, polygons: Array[PackedVector2Array]) -> bool:
+	for polygon in polygons:
+		if Geometry2D.is_point_in_polygon(point, polygon):
+			return true
+	return false

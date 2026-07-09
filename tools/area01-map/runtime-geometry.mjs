@@ -125,6 +125,7 @@ export function buildRuntimeGeometry(source) {
   return {
     schema_version: 1,
     map_id: "area_01_runtime_geometry_generated",
+    status: "generated_current",
     generated: true,
     source: "data/maps/area_01_source_grid_v1.json",
     generated_from: "data/maps/area_01_source_grid_v1.json",

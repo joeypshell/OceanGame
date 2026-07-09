@@ -1,17 +1,11 @@
 [gd_scene load_steps=51 format=3 uid="uid://ocean_main_scene"]
 
-[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/resource_pickup.gd" id="3_resource_pickup"]
 [ext_resource type="Resource" path="res://resources/kelp_fiber.tres" id="4_kelp_fiber"]
 [ext_resource type="Resource" path="res://resources/shell_fragments.tres" id="5_shell_fragments"]
 [ext_resource type="Resource" path="res://resources/glow_plankton.tres" id="6_glow_plankton"]
-[ext_resource type="Resource" path="res://resources/scrap_metal.tres" id="29_scrap_metal"]
-[ext_resource type="Resource" path="res://resources/driftwood.tres" id="30_driftwood"]
-[ext_resource type="Resource" path="res://resources/quartz_glass.tres" id="31_quartz_glass"]
-[ext_resource type="Resource" path="res://resources/food_supply.tres" id="32_food_supply"]
-[ext_resource type="Resource" path="res://resources/water_supply.tres" id="33_water_supply"]
-[ext_resource type="Resource" path="res://resources/power_supply.tres" id="34_power_supply"]
 [ext_resource type="Script" path="res://scripts/scannable.gd" id="7_scannable"]
 [ext_resource type="Script" path="res://scripts/predator.gd" id="8_predator"]
 [ext_resource type="Script" path="res://scripts/spawn_point.gd" id="9_spawn_point"]
@@ -34,14 +28,29 @@
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/shallow_midwater_background_study_v1.svg" id="26_shallow_midwater_background"]
 [ext_resource type="Texture2D" path="res://assets/exports/sprites/deep_reward_lure_sprite_v1.svg" id="27_deep_reward_lure_sprite"]
 [ext_resource type="PackedScene" path="res://scenes/readability/DuskLowVisibilityCue.tscn" id="28_dusk_low_visibility_cue"]
+[ext_resource type="Resource" path="res://resources/scrap_metal.tres" id="29_scrap_metal"]
+[ext_resource type="Resource" path="res://resources/driftwood.tres" id="30_driftwood"]
+[ext_resource type="Resource" path="res://resources/quartz_glass.tres" id="31_quartz_glass"]
+[ext_resource type="Resource" path="res://resources/food_supply.tres" id="32_food_supply"]
+[ext_resource type="Resource" path="res://resources/water_supply.tres" id="33_water_supply"]
 [ext_resource type="PackedScene" path="res://scenes/environment/Area01ReefWallKit.tscn" id="34_area01_reef_wall_kit"]
+[ext_resource type="Resource" path="res://resources/power_supply.tres" id="34_power_supply"]
 [ext_resource type="PackedScene" path="res://scenes/environment/Area01ResourcePocketKit.tscn" id="35_area01_resource_pocket_kit"]
 [ext_resource type="PackedScene" path="res://scenes/environment/OceanLightingStack.tscn" id="36_ocean_lighting_stack"]
 [ext_resource type="PackedScene" path="res://scenes/environment/OceanParallaxBackground.tscn" id="37_ocean_parallax_background"]
 [ext_resource type="PackedScene" path="res://scenes/environment/Area01ReefPlatformKit.tscn" id="38_area01_reef_platform_kit"]
 [ext_resource type="PackedScene" path="res://scenes/environment/Area01DressingKit.tscn" id="39_area01_dressing_kit"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_east_shelf_pocket"]
+radius = 120.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_resonance_alcove"]
+radius = 92.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lower_connector_echo"]
+radius = 110.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_blue_chimney_reading"]
 radius = 96.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
@@ -50,37 +59,32 @@ radius = 22.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pressure_boundary"]
 size = Vector2(58, 520)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_east_shelf_pocket"]
-radius = 120.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_lower_connector_echo"]
-radius = 110.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_resonance_alcove"]
-radius = 92.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_blue_chimney_reading"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_base_zone"]
 radius = 96.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_panel"]
-bg_color = Color(0.004, 0.02, 0.032, 0.58)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.28, 0.86, 1, 0.34)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
 content_margin_left = 12.0
 content_margin_top = 10.0
 content_margin_right = 12.0
 content_margin_bottom = 10.0
-shadow_color = Color(0, 0.012, 0.02, 0.42)
-shadow_size = 6
+bg_color = Color(0.006, 0.036, 0.052, 0.44)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.34, 0.9, 1, 0.26)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0.012, 0.02, 0.26)
+shadow_size = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_warning_panel"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
 bg_color = Color(0.11, 0.052, 0.018, 0.68)
 border_width_left = 1
 border_width_top = 1
@@ -91,14 +95,14 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
-content_margin_left = 12.0
-content_margin_top = 10.0
-content_margin_right = 12.0
-content_margin_bottom = 10.0
 shadow_color = Color(0, 0.012, 0.02, 0.42)
 shadow_size = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_surface_panel"]
+content_margin_left = 14.0
+content_margin_top = 12.0
+content_margin_right = 14.0
+content_margin_bottom = 12.0
 bg_color = Color(0.018, 0.055, 0.07, 0.9)
 border_width_left = 2
 border_width_top = 2
@@ -109,10 +113,6 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
-content_margin_left = 14.0
-content_margin_top = 12.0
-content_margin_right = 14.0
-content_margin_bottom = 12.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main_script")
@@ -383,7 +383,7 @@ color = Color(0.014, 0.31, 0.4, 1)
 offset_top = 760.0
 offset_right = 6200.0
 offset_bottom = 1460.0
-color = Color(0.01, 0.16, 0.28, 1)
+color = Color(0.008, 0.135, 0.24, 1)
 
 [node name="OceanDeep" type="ColorRect" parent="."]
 offset_top = 1460.0
@@ -392,25 +392,21 @@ offset_bottom = 3380.0
 color = Color(0.005, 0.048, 0.115, 1)
 
 [node name="ShallowMidwaterBackgroundStudy" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.045)
 position = Vector2(0, 120)
 texture = ExtResource("26_shallow_midwater_background")
 centered = false
-modulate = Color(1, 1, 1, 0.22)
 
-[node name="ShallowMidwaterTransition" type="ColorRect" parent="."]
-offset_top = 736.0
-offset_right = 6200.0
-offset_bottom = 790.0
-color = Color(0.58, 0.9, 0.92, 0.11)
+[node name="ShallowMidwaterTransition" type="Polygon2D" parent="."]
+color = Color(0.42, 0.72, 0.78, 0.055)
+polygon = PackedVector2Array(-240, 708, 6200, 752, 6200, 858, -240, 804)
 
-[node name="MidwaterDeepTransition" type="ColorRect" parent="."]
-offset_top = 1430.0
-offset_right = 6200.0
-offset_bottom = 1494.0
-color = Color(0.24, 0.42, 0.74, 0.14)
+[node name="MidwaterDeepTransition" type="Polygon2D" parent="."]
+color = Color(0.1, 0.24, 0.38, 0.07)
+polygon = PackedVector2Array(-240, 1368, 6200, 1422, 6200, 1568, -240, 1512)
 
 [node name="Area01ArtSlice" type="Node2D" parent="."]
-z_index = 0
 
 [node name="BackgroundFar" type="Node2D" parent="Area01ArtSlice"]
 
@@ -525,12 +521,12 @@ polygon = PackedVector2Array(3300, 716, 4100, 820, 4480, 1100, 4380, 1340, 3920,
 [node name="TerrainCollision" type="StaticBody2D" parent="Area01ArtSlice"]
 
 [node name="ShallowLeftWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
-disabled = true
 polygon = PackedVector2Array(-120, 238, 140, 214, 274, 350, 230, 520, 324, 666, 228, 792, -120, 820)
+disabled = true
 
 [node name="ShallowRightWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
-disabled = true
 polygon = PackedVector2Array(1018, 250, 1320, 226, 1518, 350, 1588, 548, 1508, 742, 1320, 820, 1002, 792, 1082, 620, 1038, 438)
+disabled = true
 
 [node name="LeftWallCollision" type="CollisionPolygon2D" parent="Area01ArtSlice/TerrainCollision"]
 polygon = PackedVector2Array(-140, 640, 170, 574, 356, 700, 308, 866, 430, 1014, 338, 1212, 472, 1468, 282, 1640, -140, 1640)
@@ -986,6 +982,7 @@ color = Color(0.72, 1, 0.9, 0.22)
 polygon = PackedVector2Array(454, 120, 826, 120, 764, 300, 516, 300)
 
 [node name="SurvivalSupplyCache" type="Node2D" parent="."]
+z_index = 16
 position = Vector2(494, 438)
 
 [node name="SupplyHalo" type="Polygon2D" parent="SurvivalSupplyCache"]
@@ -1010,7 +1007,6 @@ text = "SUPPLY CACHE"
 
 [node name="InteractZone" type="Area2D" parent="SurvivalSupplyCache"]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SurvivalSupplyCache/InteractZone"]
 shape = SubResource("CircleShape2D_east_shelf_pocket")
@@ -1217,7 +1213,6 @@ polygon = PackedVector2Array(-42, 72, -172, 42, -246, 56, -184, 16, -246, -24, -
 
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/PocketEntrance"]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/PocketEntrance/InteractZone"]
 shape = SubResource("CircleShape2D_east_shelf_pocket")
@@ -1297,7 +1292,6 @@ polygon = PackedVector2Array(4, 70, -122, 26, -204, 36, -140, -2, -204, -42, -11
 
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ResonanceAlcove"]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ResonanceAlcove/InteractZone"]
 shape = SubResource("CircleShape2D_resonance_alcove")
@@ -1356,7 +1350,6 @@ polygon = PackedVector2Array(0, -32, 28, -10, 36, 20, 8, 38, -24, 22, -36, -8)
 
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/DropEchoOpportunity"]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/DropEchoOpportunity/InteractZone"]
 shape = SubResource("CircleShape2D_lower_connector_echo")
@@ -1469,7 +1462,6 @@ polygon = PackedVector2Array(60, 18, 140, -24, 184, -16, 144, -52, 190, -82, 116
 
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook"]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/LanternSiltNook/InteractZone"]
 shape = SubResource("CircleShape2D_blue_chimney_reading")
@@ -1507,7 +1499,6 @@ polygon = PackedVector2Array(16, -28, 54, 6, 32, 48, -10, 26)
 
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack"]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/InteractZone"]
 shape = SubResource("CircleShape2D_blue_chimney_reading")
@@ -1682,7 +1673,6 @@ polygon = PackedVector2Array(-70, 40, -12, 12, 42, 26, -22, 58)
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge"]
 position = Vector2(46, 8)
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/GlassKelpLedge/InteractZone"]
 shape = SubResource("CircleShape2D_blue_chimney_reading")
@@ -1694,10 +1684,10 @@ position = Vector2(248, 154)
 z_index = -1
 
 [node name="Sprite" type="Sprite2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/SpriteAnchor"]
+modulate = Color(1, 1, 1, 0.48)
 position = Vector2(-186, -116)
 scale = Vector2(0.88, 0.88)
 centered = false
-modulate = Color(1, 1, 1, 0.48)
 metadata/source_art_path = "res://assets/source/sprites/landmark_hollow_reef_cave_sprite_v1.svg"
 metadata/export_art_path = "res://assets/exports/sprites/landmark_hollow_reef_cave_sprite_v1.svg"
 metadata/provenance_path = "res://assets/licenses/landmark_hollow_reef_cave_sprite_v1.txt"
@@ -2083,7 +2073,6 @@ polygon = PackedVector2Array(0, -28, 8, -6, 30, 0, 8, 6, 0, 30, -8, 6, -30, 0, -
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance"]
 position = Vector2(20, 6)
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/InteractZone"]
 shape = SubResource("CircleShape2D_lower_connector_echo")
@@ -2158,7 +2147,6 @@ polygon = PackedVector2Array(0, -24, 8, -4, 28, 0, 8, 6, 0, 26, -8, 6, -28, 0, -
 
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest"]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/WideReefChamber/WreckSalvagePocketEntrance/OpenedPocketLane/SalvageManifest/InteractZone"]
 shape = SubResource("CircleShape2D_lower_connector_echo")
@@ -2579,7 +2567,6 @@ polygon = PackedVector2Array(0, -14, 7, -3, 18, 0, 7, 5, 0, 16, -7, 5, -18, 0, -
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave"]
 position = Vector2(132, 38)
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/SiltVeinFork/BlackwaterCrack/BlackwaterSill/DuskTrench/HollowReefCave/InteractZone"]
 shape = SubResource("CircleShape2D_blue_chimney_reading")
@@ -2591,7 +2578,6 @@ polygon = PackedVector2Array(124, 48, 214, 78, 176, 132, 82, 120)
 [node name="InteractZone" type="Area2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket"]
 position = Vector2(34, 24)
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EastShelfSpur/ShelfDropConnector/BlueChimneyPocket/InteractZone"]
 shape = SubResource("CircleShape2D_blue_chimney_reading")
@@ -2610,6 +2596,7 @@ polygon = PackedVector2Array(0, 1460, 6200, 1460, 6200, 3380, 0, 3380)
 
 [node name="DeepRewardLure" type="Node2D" parent="."]
 visible = false
+z_index = 16
 
 [node name="SpriteAnchor" type="Node2D" parent="DeepRewardLure"]
 position = Vector2(1030, 1738)
@@ -2639,6 +2626,7 @@ color = Color(1, 0.66, 0.28, 0.075)
 polygon = PackedVector2Array(920, 1334, 932, 1318, 946, 1336, 932, 1352, 952, 1438, 966, 1420, 982, 1442, 964, 1458, 1056, 1628, 1070, 1612, 1084, 1632, 1068, 1648)
 
 [node name="PressureLockedWreck" type="Node2D" parent="."]
+z_index = 15
 
 [node name="Visuals" parent="PressureLockedWreck" instance=ExtResource("13_pressure_wreck_visuals")]
 
@@ -2657,13 +2645,13 @@ texture = ExtResource("22_pressure_wreck_outer_scan_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="PressureLockedWreck/OuterScan"]
 
-[node name="ScanMarker" type="Polygon2D" parent="PressureLockedWreck/OuterScan"]
-color = Color(0.95, 1, 0.7, 0.16)
-polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
-
 [node name="ScanVisual" type="Polygon2D" parent="PressureLockedWreck/OuterScan/FallbackVisual"]
 color = Color(0.86, 1, 0.36, 0.16)
 polygon = PackedVector2Array(-34, -30, 34, -30, 52, 0, 34, 30, -34, 30, -52, 0)
+
+[node name="ScanMarker" type="Polygon2D" parent="PressureLockedWreck/OuterScan"]
+color = Color(0.95, 1, 0.7, 0.16)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PressureLockedWreck/OuterScan"]
 shape = SubResource("CircleShape2D_pickup")
@@ -2689,13 +2677,13 @@ texture = ExtResource("21_wreck_signal_cache_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="PressureLockedWreck/WreckSignalCache"]
 
-[node name="ScanMarker" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache"]
-color = Color(0.95, 1, 0.7, 0.16)
-polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
-
 [node name="CacheVisual" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache/FallbackVisual"]
 color = Color(0.95, 1, 0.34, 0.32)
 polygon = PackedVector2Array(-30, -18, 30, -18, 38, 18, -38, 18)
+
+[node name="ScanMarker" type="Polygon2D" parent="PressureLockedWreck/WreckSignalCache"]
+color = Color(0.95, 1, 0.7, 0.16)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="EchoPulse" type="Sprite2D" parent="PressureLockedWreck/WreckSignalCache"]
 visible = false
@@ -2901,6 +2889,13 @@ polygon = PackedVector2Array(-46, 92, 46, 92, 88, 208, -88, 208)
 [node name="Player" parent="." instance=ExtResource("1_player")]
 position = Vector2(640, 260)
 
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(0.72, 0.72)
+limit_left = 0
+limit_top = 0
+limit_right = 6200
+limit_bottom = 3340
+
 [node name="BaseZone" type="Area2D" parent="."]
 position = Vector2(640, 260)
 
@@ -2931,7 +2926,6 @@ position = Vector2(598, 610)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_shallow_a"
 target_id = "kelp_fiber"
-depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
@@ -2939,7 +2933,6 @@ position = Vector2(620, 680)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_shallow_b"
 target_id = "kelp_fiber"
-depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="C" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
@@ -2947,7 +2940,6 @@ position = Vector2(460, 680)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_shallow_c"
 target_id = "kelp_fiber"
-depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="D" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
@@ -2955,7 +2947,6 @@ position = Vector2(1320, 930)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_deep_route_a"
 target_id = "kelp_fiber"
-depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="E" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
@@ -2963,15 +2954,13 @@ position = Vector2(1450, 920)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_deep_route_b"
 target_id = "kelp_fiber"
-depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="F" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
-position = Vector2(280, 820)
+position = Vector2(480, 760)
 script = ExtResource("9_spawn_point")
 spawn_id = "kelp_deep_route_c"
 target_id = "kelp_fiber"
-depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="MirrorKelpA" type="Marker2D" parent="StarterResourceCandidates/KelpFiber"]
@@ -2993,7 +2982,7 @@ cluster_pattern = "deep_reward"
 [node name="ShellFragments" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
-position = Vector2(640, 960)
+position = Vector2(1056, 736)
 script = ExtResource("9_spawn_point")
 spawn_id = "shell_midwater_a"
 target_id = "shell_fragments"
@@ -3033,7 +3022,7 @@ depth_band = "midwater"
 cluster_pattern = "deep_reward"
 
 [node name="F" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
-position = Vector2(680, 960)
+position = Vector2(1184, 864)
 script = ExtResource("9_spawn_point")
 spawn_id = "shell_deep_route_c"
 target_id = "shell_fragments"
@@ -3041,20 +3030,18 @@ depth_band = "midwater"
 cluster_pattern = "deep_reward"
 
 [node name="ReefA" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
-position = Vector2(480, 1020)
+position = Vector2(1120, 832)
 script = ExtResource("9_spawn_point")
 spawn_id = "shell_reef_shelf_a"
 target_id = "shell_fragments"
 depth_band = "midwater"
-cluster_pattern = "any"
 
 [node name="ReefB" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
-position = Vector2(620, 1000)
+position = Vector2(1344, 896)
 script = ExtResource("9_spawn_point")
 spawn_id = "shell_reef_shelf_b"
 target_id = "shell_fragments"
 depth_band = "midwater"
-cluster_pattern = "any"
 
 [node name="SalvagePocketA" type="Marker2D" parent="StarterResourceCandidates/ShellFragments"]
 position = Vector2(3700, 2964)
@@ -3075,7 +3062,7 @@ depth_band = "deep"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
-position = Vector2(900, 1200)
+position = Vector2(1760, 1520)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_deep_b"
 target_id = "glow_plankton"
@@ -3083,7 +3070,7 @@ depth_band = "deep"
 cluster_pattern = "cautious"
 
 [node name="C" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
-position = Vector2(1040, 1260)
+position = Vector2(1824, 1632)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_deep_c"
 target_id = "glow_plankton"
@@ -3091,7 +3078,7 @@ depth_band = "deep"
 cluster_pattern = "cautious"
 
 [node name="D" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
-position = Vector2(1600, 1220)
+position = Vector2(1760, 1280)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_predator_route_a"
 target_id = "glow_plankton"
@@ -3107,7 +3094,7 @@ depth_band = "deep"
 cluster_pattern = "deep_reward"
 
 [node name="F" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
-position = Vector2(1320, 1960)
+position = Vector2(1840, 1888)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_predator_route_c"
 target_id = "glow_plankton"
@@ -3133,7 +3120,7 @@ cluster_pattern = "deep_reward"
 preferred_condition_id = "thermal_bloom"
 
 [node name="BlueChimneyA" type="Marker2D" parent="StarterResourceCandidates/GlowPlankton"]
-position = Vector2(2110, 2105)
+position = Vector2(1824, 1664)
 script = ExtResource("9_spawn_point")
 spawn_id = "glow_blue_chimney_a"
 target_id = "glow_plankton"
@@ -3155,7 +3142,6 @@ position = Vector2(740, 960)
 script = ExtResource("9_spawn_point")
 spawn_id = "scrap_left_cave_a"
 target_id = "scrap_metal"
-depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/ScrapMetal"]
@@ -3163,17 +3149,15 @@ position = Vector2(3020, 820)
 script = ExtResource("9_spawn_point")
 spawn_id = "scrap_right_chamber_a"
 target_id = "scrap_metal"
-depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="Driftwood" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/Driftwood"]
-position = Vector2(400, 680)
+position = Vector2(480, 672)
 script = ExtResource("9_spawn_point")
 spawn_id = "driftwood_left_ledge_a"
 target_id = "driftwood"
-depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/Driftwood"]
@@ -3181,7 +3165,6 @@ position = Vector2(2948, 824)
 script = ExtResource("9_spawn_point")
 spawn_id = "driftwood_right_ledge_a"
 target_id = "driftwood"
-depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="QuartzGlass" type="Node2D" parent="StarterResourceCandidates"]
@@ -3205,11 +3188,10 @@ cluster_pattern = "deep_reward"
 [node name="FoodSupply" type="Node2D" parent="StarterResourceCandidates"]
 
 [node name="A" type="Marker2D" parent="StarterResourceCandidates/FoodSupply"]
-position = Vector2(400, 680)
+position = Vector2(1504, 864)
 script = ExtResource("9_spawn_point")
 spawn_id = "food_left_cave_a"
 target_id = "food_supply"
-depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/FoodSupply"]
@@ -3217,7 +3199,6 @@ position = Vector2(2988, 820)
 script = ExtResource("9_spawn_point")
 spawn_id = "food_right_chamber_a"
 target_id = "food_supply"
-depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="WaterSupply" type="Node2D" parent="StarterResourceCandidates"]
@@ -3227,7 +3208,6 @@ position = Vector2(480, 680)
 script = ExtResource("9_spawn_point")
 spawn_id = "water_left_pocket_a"
 target_id = "water_supply"
-depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/WaterSupply"]
@@ -3235,7 +3215,6 @@ position = Vector2(3088, 824)
 script = ExtResource("9_spawn_point")
 spawn_id = "water_right_pocket_a"
 target_id = "water_supply"
-depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="PowerSupply" type="Node2D" parent="StarterResourceCandidates"]
@@ -3245,7 +3224,6 @@ position = Vector2(520, 680)
 script = ExtResource("9_spawn_point")
 spawn_id = "power_left_pocket_a"
 target_id = "power_supply"
-depth_band = "shallow"
 cluster_pattern = "cautious"
 
 [node name="B" type="Marker2D" parent="StarterResourceCandidates/PowerSupply"]
@@ -3253,7 +3231,6 @@ position = Vector2(3048, 856)
 script = ExtResource("9_spawn_point")
 spawn_id = "power_right_pocket_a"
 target_id = "power_supply"
-depth_band = "shallow"
 cluster_pattern = "deep_reward"
 
 [node name="CreatureRouteCandidates" type="Node2D" parent="."]
@@ -3389,7 +3366,7 @@ route_id = "deep_reward_lower_gate"
 [node name="LanternRayCautiousGlide" type="Node2D" parent="CreatureRouteCandidates"]
 
 [node name="Start" type="Marker2D" parent="CreatureRouteCandidates/LanternRayCautiousGlide"]
-position = Vector2(2600, 2585)
+position = Vector2(3360, 1664)
 script = ExtResource("9_spawn_point")
 spawn_id = "start"
 category = "creature"
@@ -3399,7 +3376,7 @@ cluster_pattern = "cautious"
 route_id = "lantern_ray_cautious_glide"
 
 [node name="End" type="Marker2D" parent="CreatureRouteCandidates/LanternRayCautiousGlide"]
-position = Vector2(2790, 2650)
+position = Vector2(3840, 1728)
 script = ExtResource("9_spawn_point")
 spawn_id = "end"
 category = "creature"
@@ -3411,7 +3388,7 @@ route_id = "lantern_ray_cautious_glide"
 [node name="LanternRayLowVisibilityGlide" type="Node2D" parent="CreatureRouteCandidates"]
 
 [node name="Start" type="Marker2D" parent="CreatureRouteCandidates/LanternRayLowVisibilityGlide"]
-position = Vector2(2560, 2520)
+position = Vector2(3392, 1600)
 script = ExtResource("9_spawn_point")
 spawn_id = "start"
 category = "creature"
@@ -3422,7 +3399,7 @@ preferred_condition_id = "low_visibility"
 route_id = "lantern_ray_low_visibility_glide"
 
 [node name="End" type="Marker2D" parent="CreatureRouteCandidates/LanternRayLowVisibilityGlide"]
-position = Vector2(2730, 2580)
+position = Vector2(3744, 1664)
 script = ExtResource("9_spawn_point")
 spawn_id = "end"
 category = "creature"
@@ -3435,7 +3412,7 @@ route_id = "lantern_ray_low_visibility_glide"
 [node name="LanternRayDeepRewardGlide" type="Node2D" parent="CreatureRouteCandidates"]
 
 [node name="Start" type="Marker2D" parent="CreatureRouteCandidates/LanternRayDeepRewardGlide"]
-position = Vector2(2660, 2625)
+position = Vector2(3424, 1900)
 script = ExtResource("9_spawn_point")
 spawn_id = "start"
 category = "creature"
@@ -3445,7 +3422,7 @@ cluster_pattern = "deep_reward"
 route_id = "lantern_ray_deep_reward_glide"
 
 [node name="End" type="Marker2D" parent="CreatureRouteCandidates/LanternRayDeepRewardGlide"]
-position = Vector2(2920, 2710)
+position = Vector2(3840, 1984)
 script = ExtResource("9_spawn_point")
 spawn_id = "end"
 category = "creature"
@@ -3455,6 +3432,7 @@ cluster_pattern = "deep_reward"
 route_id = "lantern_ray_deep_reward_glide"
 
 [node name="ResourcePickups" type="Node2D" parent="."]
+z_index = 16
 
 [node name="KelpFiber" type="Area2D" parent="ResourcePickups"]
 position = Vector2(760, 390)
@@ -3467,7 +3445,7 @@ definition = ExtResource("4_kelp_fiber")
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="ShellFragments" type="Area2D" parent="ResourcePickups"]
-position = Vector2(480, 1020)
+position = Vector2(1056, 736)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("5_shell_fragments")
 
@@ -3477,7 +3455,7 @@ definition = ExtResource("5_shell_fragments")
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="GlowPlankton" type="Area2D" parent="ResourcePickups"]
-position = Vector2(1320, 1960)
+position = Vector2(1824, 1632)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("6_glow_plankton")
 
@@ -3509,7 +3487,7 @@ definition = ExtResource("6_glow_plankton")
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="ScrapMetal" type="Area2D" parent="ResourcePickups"]
-position = Vector2(340, 1080)
+position = Vector2(740, 960)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("29_scrap_metal")
 
@@ -3526,7 +3504,7 @@ polygon = PackedVector2Array(-34, -14, 8, -30, 42, -4, 24, 32, -22, 34, -44, 6)
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="Driftwood" type="Area2D" parent="ResourcePickups"]
-position = Vector2(440, 680)
+position = Vector2(480, 672)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("30_driftwood")
 
@@ -3560,7 +3538,7 @@ polygon = PackedVector2Array(0, -44, 36, -18, 34, 26, -2, 46, -38, 20, -34, -20)
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="FoodSupply" type="Area2D" parent="ResourcePickups"]
-position = Vector2(480, 1020)
+position = Vector2(1504, 864)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("32_food_supply")
 
@@ -3576,7 +3554,7 @@ polygon = PackedVector2Array(-6, -8, 8, -8, 10, 6, -8, 8)
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="WaterSupply" type="Area2D" parent="ResourcePickups"]
-position = Vector2(900, 1120)
+position = Vector2(480, 680)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("33_water_supply")
 
@@ -3593,7 +3571,7 @@ polygon = PackedVector2Array(0, -42, 34, -14, 28, 30, -2, 44, -34, 18, -28, -18)
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="PowerSupply" type="Area2D" parent="ResourcePickups"]
-position = Vector2(700, 1030)
+position = Vector2(520, 680)
 script = ExtResource("3_resource_pickup")
 definition = ExtResource("34_power_supply")
 
@@ -3610,16 +3588,17 @@ polygon = PackedVector2Array(0, -42, 34, -12, 26, 32, -6, 44, -34, 10, -24, -22)
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="Creatures" type="Node2D" parent="."]
+z_index = 17
 
 [node name="LanternFry" type="Area2D" parent="Creatures"]
-position = Vector2(1500, 1900)
+position = Vector2(1760, 1640)
 script = ExtResource("7_scannable")
 discovery_id = "lantern_fry"
 display_name = "Lantern Fry"
 description = "A passive fish that drifts around dim bioluminescent blooms."
 gameplay_fact = "Marks where shallow fish can become food; travels near Glow Plankton."
-move_start = Vector2(1420, 1900)
-move_end = Vector2(1540, 1980)
+move_start = Vector2(1700, 1600)
+move_end = Vector2(1900, 1680)
 move_speed = 48.0
 
 [node name="SpriteAnchor" type="Node2D" parent="Creatures/LanternFry"]
@@ -3629,10 +3608,6 @@ texture = ExtResource("18_lantern_fry_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="Creatures/LanternFry"]
 
-[node name="ScanMarker" type="Polygon2D" parent="Creatures/LanternFry"]
-color = Color(0.95, 1, 0.7, 0.2)
-polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
-
 [node name="Visual" type="Polygon2D" parent="Creatures/LanternFry/FallbackVisual"]
 visible = false
 color = Color(0.96, 0.95, 0.38, 1)
@@ -3641,6 +3616,10 @@ polygon = PackedVector2Array(-34, 0, -10, -18, 24, -12, 42, 0, 24, 12, -10, 18)
 [node name="Glow" type="Polygon2D" parent="Creatures/LanternFry/FallbackVisual"]
 color = Color(0.7, 1, 0.35, 0.24)
 polygon = PackedVector2Array(-46, 0, -18, -30, 30, -22, 58, 0, 30, 22, -18, 30)
+
+[node name="ScanMarker" type="Polygon2D" parent="Creatures/LanternFry"]
+color = Color(0.95, 1, 0.7, 0.2)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Creatures/LanternFry"]
 shape = SubResource("CircleShape2D_pickup")
@@ -3760,6 +3739,7 @@ polygon = PackedVector2Array(0, -74, 58, -42, 74, 0, 58, 42, 0, 74, -58, 42, -74
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="Predators" type="Node2D" parent="."]
+z_index = 17
 
 [node name="PredatorWarning" type="Node2D" parent="Predators"]
 position = Vector2(1860, 1900)
@@ -3800,7 +3780,6 @@ patrol_end = Vector2(2100, 1940)
 patrol_speed = 92.0
 chase_speed = 165.0
 detect_radius = 190.0
-chase_duration = 2.0
 discovery_id = "gulper_eel"
 display_name = "Gulper Eel"
 description = "A territorial deep-route predator that lunges at nearby movement."
@@ -3812,14 +3791,6 @@ gameplay_fact = "Watch warning currents and patrol hints, then choose whether th
 texture = ExtResource("19_gulper_eel_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="Predators/GulperEel"]
-
-[node name="ScanMarker" type="Polygon2D" parent="Predators/GulperEel"]
-color = Color(0.95, 1, 0.7, 0.13)
-polygon = PackedVector2Array(0, -74, 58, -42, 74, 0, 58, 42, 0, 74, -58, 42, -74, 0, -58, -42)
-
-[node name="PatrolHint" type="Polygon2D" parent="Predators/GulperEel"]
-color = Color(0.9, 0.1, 0.18, 0.07)
-polygon = PackedVector2Array(-124, -82, -40, -98, 74, -72, 138, 0, 74, 72, -40, 98, -124, 82, -162, 0)
 
 [node name="TailFin" type="Polygon2D" parent="Predators/GulperEel/FallbackVisual"]
 color = Color(0.48, 0.07, 0.14, 0.36)
@@ -3841,10 +3812,19 @@ polygon = PackedVector2Array(-44, -18, -30, -38, -18, -16, 2, -20, 16, -42, 28, 
 color = Color(1, 0.86, 0.22, 0.82)
 polygon = PackedVector2Array(36, -8, 50, -3, 50, 5, 36, 8)
 
+[node name="ScanMarker" type="Polygon2D" parent="Predators/GulperEel"]
+color = Color(0.95, 1, 0.7, 0.13)
+polygon = PackedVector2Array(0, -74, 58, -42, 74, 0, 58, 42, 0, 74, -58, 42, -74, 0, -58, -42)
+
+[node name="PatrolHint" type="Polygon2D" parent="Predators/GulperEel"]
+color = Color(0.9, 0.1, 0.18, 0.07)
+polygon = PackedVector2Array(-124, -82, -40, -98, 74, -72, 138, 0, 74, 72, -40, 98, -124, 82, -162, 0)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Predators/GulperEel"]
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="Discoveries" type="Node2D" parent="."]
+z_index = 16
 
 [node name="ThermalVent" type="Area2D" parent="Discoveries"]
 position = Vector2(1900, 1340)
@@ -3861,10 +3841,6 @@ texture = ExtResource("20_thermal_vent_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="Discoveries/ThermalVent"]
 
-[node name="ScanMarker" type="Polygon2D" parent="Discoveries/ThermalVent"]
-color = Color(0.95, 1, 0.7, 0.22)
-polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
-
 [node name="Visual" type="Polygon2D" parent="Discoveries/ThermalVent/FallbackVisual"]
 color = Color(0.96, 0.46, 0.16, 0.9)
 polygon = PackedVector2Array(-42, 30, -20, -28, 0, -8, 20, -32, 44, 30)
@@ -3872,6 +3848,10 @@ polygon = PackedVector2Array(-42, 30, -20, -28, 0, -8, 20, -32, 44, 30)
 [node name="Bubbles" type="Polygon2D" parent="Discoveries/ThermalVent/FallbackVisual"]
 color = Color(0.9, 1, 0.86, 0.34)
 polygon = PackedVector2Array(-18, -54, -8, -76, 6, -52, 24, -88, 38, -56, 10, -36)
+
+[node name="ScanMarker" type="Polygon2D" parent="Discoveries/ThermalVent"]
+color = Color(0.95, 1, 0.7, 0.22)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Discoveries/ThermalVent"]
 shape = SubResource("CircleShape2D_pickup")
@@ -3891,24 +3871,16 @@ texture = ExtResource("24_shell_reef_shelf_scan_sprite")
 
 [node name="FallbackVisual" type="Node2D" parent="Discoveries/ShellReefShelf"]
 
-[node name="ScanMarker" type="Polygon2D" parent="Discoveries/ShellReefShelf"]
-color = Color(0.95, 1, 0.7, 0.22)
-polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
-
 [node name="Visual" type="Polygon2D" parent="Discoveries/ShellReefShelf/FallbackVisual"]
 color = Color(0.96, 0.84, 0.56, 0.64)
 polygon = PackedVector2Array(-46, -20, 28, -30, 58, 4, 26, 28, -38, 24, -64, 0)
 
+[node name="ScanMarker" type="Polygon2D" parent="Discoveries/ShellReefShelf"]
+color = Color(0.95, 1, 0.7, 0.22)
+polygon = PackedVector2Array(0, -44, 34, -24, 44, 0, 34, 24, 0, 44, -34, 24, -44, 0, -34, -24)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Discoveries/ShellReefShelf"]
 shape = SubResource("CircleShape2D_pickup")
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(0.72, 0.72)
-enabled = true
-limit_left = 0
-limit_top = 0
-limit_right = 6200
-limit_bottom = 3340
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -3929,15 +3901,16 @@ offset_bottom = 62.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
 
 [node name="CargoTitle" type="Label" parent="HUD/CargoPanel"]
+layout_mode = 0
 offset_left = 88.0
 offset_top = 4.0
 offset_right = 160.0
 offset_bottom = 26.0
 theme_override_colors/font_color = Color(0.82, 0.96, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
 text = "CARGO"
 horizontal_alignment = 1
 
@@ -3969,9 +3942,9 @@ offset_right = 968.0
 offset_bottom = 38.0
 theme_override_colors/font_color = Color(1, 0.78, 0.18, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
 text = "DAYLIGHT 07:00"
 horizontal_alignment = 1
 
@@ -4040,9 +4013,9 @@ offset_right = 314.0
 offset_bottom = 54.0
 theme_override_colors/font_color = Color(0.93, 0.98, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 15
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 15
 text = "OXYGEN: 30 / 30"
 
 [node name="OxygenBarBack" type="ColorRect" parent="HUD"]
@@ -4069,9 +4042,9 @@ offset_right = 314.0
 offset_bottom = 84.0
 theme_override_colors/font_color = Color(0.9, 1, 0.9, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
 text = "HEALTH: 100 / 100"
 
 [node name="HealthBarBack" type="ColorRect" parent="HUD"]
@@ -4097,9 +4070,9 @@ offset_right = 314.0
 offset_bottom = 120.0
 theme_override_colors/font_color = Color(0.8, 0.93, 0.98, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
 text = "Depth: 0m | Best: 0m"
 
 [node name="DepthBarBack" type="ColorRect" parent="HUD"]
@@ -4125,9 +4098,9 @@ offset_right = 314.0
 offset_bottom = 148.0
 theme_override_colors/font_color = Color(0.74, 0.96, 0.92, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
 text = "Base: here"
 
 [node name="Cargo" type="Label" parent="HUD"]
@@ -4137,9 +4110,9 @@ offset_right = 756.0
 offset_bottom = 58.0
 theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 15
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 15
 text = "0 / 3"
 
 [node name="CargoSlots" type="Node2D" parent="HUD"]
@@ -4209,9 +4182,9 @@ offset_right = 314.0
 offset_bottom = 166.0
 theme_override_colors/font_color = Color(0.68, 0.9, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
 text = "Discoveries: 0 / 3"
 
 [node name="DiveInfoPanel" type="Panel" parent="HUD"]
@@ -4223,27 +4196,29 @@ offset_bottom = 278.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
 
 [node name="ObjectiveTitle" type="Label" parent="HUD/DiveInfoPanel"]
+layout_mode = 0
 offset_left = 12.0
 offset_top = 10.0
 offset_right = 320.0
 offset_bottom = 30.0
 theme_override_colors/font_color = Color(0.48, 1, 0.42, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
 text = "SURVIVAL ROUTE"
 
 [node name="ObjectiveLine" type="Label" parent="HUD/DiveInfoPanel"]
+layout_mode = 0
 offset_left = 12.0
 offset_top = 31.0
 offset_right = 320.0
 offset_bottom = 49.0
 theme_override_colors/font_color = Color(0.86, 0.96, 1, 0.92)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
 text = "Find supplies, scan, return"
 
 [node name="ScanCardPanel" type="Panel" parent="HUD"]
@@ -4262,9 +4237,9 @@ offset_right = 1174.0
 offset_bottom = 262.0
 theme_override_colors/font_color = Color(0.26, 0.94, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 12
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
 text = "SCAN TARGET"
 
 [node name="ScanCardMeta" type="Label" parent="HUD"]
@@ -4275,9 +4250,9 @@ offset_right = 1174.0
 offset_bottom = 302.0
 theme_override_colors/font_color = Color(0.78, 0.93, 1, 0.92)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 11
 text = "No readable signal"
 
 [node name="ScanCardPrompt" type="Label" parent="HUD"]
@@ -4288,9 +4263,9 @@ offset_right = 1174.0
 offset_bottom = 322.0
 theme_override_colors/font_color = Color(0.92, 0.96, 1, 0.94)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 11
 text = "Hold F near a target"
 
 [node name="ScanReticleRoot" type="Node2D" parent="HUD"]
@@ -4320,9 +4295,9 @@ offset_right = 336.0
 offset_bottom = 272.0
 theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 13
 text = "Dive status: active"
 
 [node name="ExtractionPrompt" type="Label" parent="HUD"]
@@ -4332,9 +4307,9 @@ offset_right = 336.0
 offset_bottom = 248.0
 theme_override_colors/font_color = Color(0.82, 0.95, 0.96, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 13
 text = "At base: E/Enter extract"
 
 [node name="ScanTarget" type="Label" parent="HUD"]
@@ -4345,9 +4320,9 @@ offset_right = 1174.0
 offset_bottom = 286.0
 theme_override_colors/font_color = Color(1, 0.78, 0.38, 1)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 13
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 13
 text = "none nearby"
 
 [node name="OxygenWarningPanel" type="Panel" parent="HUD"]
@@ -4359,15 +4334,16 @@ offset_bottom = 524.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_hud_warning_panel")
 
 [node name="OxygenWarning" type="Label" parent="HUD/OxygenWarningPanel"]
+layout_mode = 0
 offset_left = 58.0
 offset_top = 10.0
 offset_right = 284.0
 offset_bottom = 58.0
 theme_override_colors/font_color = Color(1, 0.88, 0.68, 1)
 theme_override_colors/font_shadow_color = Color(0.06, 0.02, 0.01, 0.95)
-theme_override_font_sizes/font_size = 14
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 14
 text = "O2 LOW - PLAN RETURN"
 autowrap_mode = 2
 
@@ -4494,9 +4470,9 @@ offset_right = 64.0
 offset_bottom = 344.0
 theme_override_colors/font_color = Color(0.9, 0.98, 1, 0.92)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 11
 text = "0m"
 
 [node name="DepthRailLabel50" type="Label" parent="HUD"]
@@ -4507,9 +4483,9 @@ offset_right = 64.0
 offset_bottom = 466.0
 theme_override_colors/font_color = Color(0.9, 0.98, 1, 0.9)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 11
 text = "50m"
 
 [node name="DepthRailLabel100" type="Label" parent="HUD"]
@@ -4520,9 +4496,9 @@ offset_right = 74.0
 offset_bottom = 590.0
 theme_override_colors/font_color = Color(0.9, 0.98, 1, 0.9)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 11
 text = "100m"
 
 [node name="ToolBeltPanel" type="Panel" parent="HUD"]
@@ -4534,6 +4510,7 @@ offset_bottom = 704.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
 
 [node name="ToolSlot1" type="ColorRect" parent="HUD/ToolBeltPanel"]
+layout_mode = 0
 offset_left = 14.0
 offset_top = 10.0
 offset_right = 60.0
@@ -4541,6 +4518,7 @@ offset_bottom = 52.0
 color = Color(0.018, 0.075, 0.095, 0.5)
 
 [node name="ToolSlot2" type="ColorRect" parent="HUD/ToolBeltPanel"]
+layout_mode = 0
 offset_left = 72.0
 offset_top = 10.0
 offset_right = 118.0
@@ -4548,6 +4526,7 @@ offset_bottom = 52.0
 color = Color(0.018, 0.075, 0.095, 0.5)
 
 [node name="ToolSlot3" type="ColorRect" parent="HUD/ToolBeltPanel"]
+layout_mode = 0
 offset_left = 130.0
 offset_top = 10.0
 offset_right = 176.0
@@ -4555,6 +4534,7 @@ offset_bottom = 52.0
 color = Color(0.012, 0.02, 0.028, 0.34)
 
 [node name="ToolSlot4" type="ColorRect" parent="HUD/ToolBeltPanel"]
+layout_mode = 0
 offset_left = 188.0
 offset_top = 10.0
 offset_right = 234.0
@@ -4562,6 +4542,7 @@ offset_bottom = 52.0
 color = Color(0.012, 0.02, 0.028, 0.34)
 
 [node name="ToolSlot5" type="ColorRect" parent="HUD/ToolBeltPanel"]
+layout_mode = 0
 offset_left = 246.0
 offset_top = 10.0
 offset_right = 292.0
@@ -4594,6 +4575,7 @@ color = Color(0.45, 0.56, 0.62, 0.72)
 polygon = PackedVector2Array(-11, -8, 11, -8, 11, 8, -11, 8)
 
 [node name="ToolKey1" type="Label" parent="HUD/ToolBeltPanel"]
+layout_mode = 0
 offset_left = 18.0
 offset_top = 2.0
 offset_right = 50.0
@@ -4603,6 +4585,7 @@ theme_override_font_sizes/font_size = 10
 text = "F"
 
 [node name="ToolKey2" type="Label" parent="HUD/ToolBeltPanel"]
+layout_mode = 0
 offset_left = 76.0
 offset_top = 2.0
 offset_right = 118.0
@@ -4612,6 +4595,7 @@ theme_override_font_sizes/font_size = 10
 text = "Space"
 
 [node name="ToolKey3" type="Label" parent="HUD/ToolBeltPanel"]
+layout_mode = 0
 offset_left = 134.0
 offset_top = 2.0
 offset_right = 166.0
@@ -4621,6 +4605,7 @@ theme_override_font_sizes/font_size = 10
 text = "2"
 
 [node name="ToolKey4" type="Label" parent="HUD/ToolBeltPanel"]
+layout_mode = 0
 offset_left = 192.0
 offset_top = 2.0
 offset_right = 224.0
@@ -4630,6 +4615,7 @@ theme_override_font_sizes/font_size = 10
 text = "3"
 
 [node name="ToolKey5" type="Label" parent="HUD/ToolBeltPanel"]
+layout_mode = 0
 offset_left = 250.0
 offset_top = 2.0
 offset_right = 282.0
@@ -4647,6 +4633,7 @@ offset_bottom = 694.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
 
 [node name="MinimapGridV1" type="ColorRect" parent="HUD/MinimapPanel"]
+layout_mode = 0
 offset_left = 70.0
 offset_top = 10.0
 offset_right = 71.0
@@ -4654,6 +4641,7 @@ offset_bottom = 152.0
 color = Color(0.24, 0.82, 0.92, 0.16)
 
 [node name="MinimapGridH1" type="ColorRect" parent="HUD/MinimapPanel"]
+layout_mode = 0
 offset_left = 10.0
 offset_top = 78.0
 offset_right = 198.0
@@ -4671,15 +4659,16 @@ color = Color(1, 0.72, 0.12, 0.98)
 polygon = PackedVector2Array(0, -7, 8, 0, 0, 7, -8, 0)
 
 [node name="MinimapKeyLabel" type="Label" parent="HUD/MinimapPanel"]
+layout_mode = 0
 offset_left = 176.0
 offset_top = 130.0
 offset_right = 202.0
 offset_bottom = 154.0
 theme_override_colors/font_color = Color(0.88, 0.98, 1, 0.92)
 theme_override_colors/font_shadow_color = Color(0, 0.025, 0.035, 0.95)
-theme_override_font_sizes/font_size = 11
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 11
 text = "M"
 
 [node name="RecentExpeditionLog" type="Label" parent="HUD"]
@@ -4687,7 +4676,8 @@ offset_left = 24.0
 offset_top = 388.0
 offset_right = 560.0
 offset_bottom = 508.0
-text = "Recent Expeditions\nNone yet."
+text = "Recent Expeditions
+None yet."
 
 [node name="RunPanel" type="Panel" parent="HUD"]
 offset_left = 44.0
@@ -4697,6 +4687,7 @@ offset_bottom = 672.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_surface_panel")
 
 [node name="SurfaceTabs" type="Label" parent="HUD/RunPanel"]
+layout_mode = 0
 offset_left = 16.0
 offset_top = 12.0
 offset_right = 790.0
@@ -4704,6 +4695,7 @@ offset_bottom = 36.0
 text = "[Result]  Upgrades  Log"
 
 [node name="RunTitle" type="Label" parent="HUD/RunPanel"]
+layout_mode = 0
 offset_left = 16.0
 offset_top = 42.0
 offset_right = 790.0
@@ -4711,6 +4703,7 @@ offset_bottom = 74.0
 text = "Expedition Ready"
 
 [node name="RunSummary" type="Label" parent="HUD/RunPanel"]
+layout_mode = 0
 offset_left = 16.0
 offset_top = 80.0
 offset_right = 790.0
@@ -4728,6 +4721,7 @@ offset_bottom = 704.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_surface_panel")
 
 [node name="UpgradeMenuTitle" type="Label" parent="HUD/UpgradePanel"]
+layout_mode = 0
 offset_left = 16.0
 offset_top = 14.0
 offset_right = 442.0
@@ -4735,6 +4729,7 @@ offset_bottom = 46.0
 text = "Surface Upgrade Bay"
 
 [node name="UpgradeMenuItem" type="Label" parent="HUD/UpgradePanel"]
+layout_mode = 0
 offset_left = 16.0
 offset_top = 52.0
 offset_right = 442.0
@@ -4743,6 +4738,7 @@ text = "Oxygen Tank I"
 autowrap_mode = 2
 
 [node name="UpgradeMenuCost" type="Label" parent="HUD/UpgradePanel"]
+layout_mode = 0
 offset_left = 16.0
 offset_top = 128.0
 offset_right = 442.0
@@ -4751,6 +4747,7 @@ text = "Cost: Kelp Fiber x2, Shell Fragments x1, Glow Plankton x1"
 autowrap_mode = 2
 
 [node name="UpgradeMenuState" type="Label" parent="HUD/UpgradePanel"]
+layout_mode = 0
 offset_left = 16.0
 offset_top = 176.0
 offset_right = 442.0
@@ -4759,6 +4756,7 @@ text = "Unavailable: collect and bank more resources."
 autowrap_mode = 2
 
 [node name="UpgradeMenuFeedback" type="Label" parent="HUD/UpgradePanel"]
+layout_mode = 0
 offset_left = 16.0
 offset_top = 266.0
 offset_right = 442.0

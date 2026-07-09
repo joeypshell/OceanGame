@@ -218,9 +218,9 @@ Use the Area 01 shell harness before asking for manual screenshots when the ques
 npm run test:area01-shell-captures
 ```
 
-The harness writes screenshots, metadata sidecars, and `area01-shell-capture-evidence.json` / `.md` under `test-results/playwright-area01-shell/`. The evidence report includes a `visual_truth_gate_summary` and per-capture `visual_truth_gate` entries. Passing Playwright only proves the deterministic states were reached and artifacts were written. For Area 01 visual/map issue closeout, open or attach the generated screenshots and check that the gate has no blocker signals before claiming the map visually matches the source of truth.
+The harness writes screenshots, metadata sidecars, and `area01-shell-capture-evidence.json` / `.md` under `test-results/playwright-area01-shell/`. The evidence report includes a `visual_truth_gate_summary`, per-capture `visual_truth_gate` entries, and gameplay-object visibility counts for expected resource and fish silhouettes. Passing Playwright only proves the deterministic states were reached and artifacts were written. For Area 01 visual/map issue closeout, open or attach the generated screenshots and check that the gate has no blocker signals before claiming the map visually matches the source of truth.
 
-For the current Area 01 cave-wall work, the review must explicitly answer whether cave walls read as natural terrain instead of debug outlines, whether central/right wall texture and fill are visible, whether solid terrain separates from playable water, whether scan targets/resources are visible near prompts, and whether horizontal banding or flat placeholder polygons are gone.
+For the current Area 01 cave-wall work, the review must explicitly answer whether cave walls read as natural terrain instead of debug outlines, whether central/right wall texture and fill are visible, whether solid terrain separates from playable water, whether scan targets/resources are visible near prompts, whether expected fish/resource silhouettes are actually visible instead of buried under source-grid terrain, and whether horizontal banding or flat placeholder polygons are gone.
 
 ## Mobile-Like Landscape Capture
 

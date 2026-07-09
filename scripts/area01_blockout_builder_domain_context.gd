@@ -12,10 +12,8 @@ func _create_terrain_domain_visual(terrain_layer: Node2D, terrain_domain: Dictio
 	var visible := Polygon2D.new()
 	visible.name = visible_name
 	visible.polygon = points
-	visible.uv = _texture_uv_for_points(points, Rect2())
-	visible.texture = REEF_WALL_FILL_TEXTURE
-	visible.visible = true
-	visible.color = TERRAIN_DOMAIN_COLOR
+	visible.visible = false
+	visible.color = Color(TERRAIN_DOMAIN_COLOR.r, TERRAIN_DOMAIN_COLOR.g, TERRAIN_DOMAIN_COLOR.b, 0.0)
 	Area01VisualCueContractScript.tag_node(visible, Area01VisualCueContractScript.FAMILY_PASSIVE_BACKGROUND, domain_id)
 	terrain_layer.add_child(visible)
 

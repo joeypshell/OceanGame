@@ -207,7 +207,6 @@ func _create_generated_source_visuals(terrain_layer: Node2D, rim_layer: Node2D, 
 	var terrain_domain: Variant = source_map.get("terrain_domain", {})
 	if terrain_domain is Dictionary:
 		_create_terrain_domain_visual(terrain_layer, terrain_domain as Dictionary)
-		_add_generated_domain_accents(terrain_layer, terrain_domain as Dictionary)
 
 	var water_cutout_layer := Node2D.new()
 	water_cutout_layer.name = GENERATED_WATER_CUTOUT_LAYER_NAME

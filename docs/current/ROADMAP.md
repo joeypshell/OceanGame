@@ -1,4 +1,4 @@
-﻿# Current Roadmap
+# Current Roadmap
 
 This is the compact active roadmap for issue-driven work. Historical issue batches and completed milestone detail live in `docs/current/PROJECT_INDEX.md` and `docs/archive/ROADMAP_HISTORY_2026_06_27.md`.
 
@@ -68,7 +68,7 @@ The earlier Survival Day/Night loop closeout batches were resolved in this order
 9. #750 Make health damage feedback distinct from oxygen pressure.
 10. #751 Connect starter resources to a remembered next-day target.
 
-After the survival-loop closeout, #734 added the first generated Area 01 wall-sprite visual pass: the generated continuous terrain domain now renders as the reef mass, playable-water regions render as source-owned water apertures, and generated cave-wall sprites decorate cave/pocket edges without owning collision.
+After the survival-loop closeout, #734 added the first generated Area 01 wall-sprite visual pass. The continuous terrain domain now stays as hidden source reference, generated solid partitions render the player-facing reef mass around playable water, and generated cave-wall sprites decorate cave/pocket edges without owning collision.
 
 Area 01 source-map/runtime work should resume only where it directly supports open surface, seafloor holes, cave pockets, ship return, or the generated source-grid pipeline. The deterministic Area 01 source-grid-to-runtime-geometry pipeline is already implemented; do not reopen manual polygon rescue or runtime-v3 parity work as the next milestone.
 

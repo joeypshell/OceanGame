@@ -36,6 +36,9 @@ test.describe("OceanGame Area 01 shell captures", () => {
     const manifest = await readManifest();
     const sourceMap = await readJson(sourceMapUrl);
     const evidence = [];
+    expect(sourceMap.status ?? "unknown", "Area 01 shell captures should report generated source-map authority").toBe(
+      "generated_current",
+    );
     await bootGame(page);
 
     for (const captureState of manifest.captures) {
@@ -58,6 +61,7 @@ test.describe("OceanGame Area 01 shell captures", () => {
         reason: captureState.reason,
       });
       assertPlayerVisibleInCapture(result);
+      assertGameplayObjectsVisibleInCapture(captureState, result);
       const visualTruthGate = buildVisualTruthGate(captureState, result);
       assertVisualTruthGateShape(visualTruthGate, result.capture);
       evidence.push({
@@ -75,6 +79,7 @@ test.describe("OceanGame Area 01 shell captures", () => {
           warnings: result.visualState.area01_cue_family_warnings ?? [],
         },
         visual_truth_gate: visualTruthGate,
+        gameplay_object_visibility: buildGameplayObjectVisibilitySummary(captureState, result),
         artifacts: {
           screenshot: `${captureState.id}.png`,
           metadata: `${captureState.id}.json`,
@@ -107,6 +112,40 @@ function assertPlayerVisibleInCapture(result) {
   }
 }
 
+function assertGameplayObjectsVisibleInCapture(captureState, result) {
+  const visualState = result.visualState ?? {};
+  const expectedResourceCount = Number(captureState.expected_min_resource_on_screen_count ?? 0);
+  if (expectedResourceCount > 0) {
+    expect(
+      Number(visualState.area01_visible_resource_on_screen_count ?? 0),
+      `${result.capture}: resource silhouettes on screen`,
+    ).toBeGreaterThanOrEqual(expectedResourceCount);
+  }
+
+  if (captureState.expected_lantern_fry_on_screen === true) {
+    const fryState = visualState.area01_lantern_fry_visual_state ?? {};
+    expect(visualState.area01_lantern_fry_rendered, `${result.capture}: Lantern Fry rendered`).toBe(true);
+    expect(visualState.area01_lantern_fry_on_screen, `${result.capture}: Lantern Fry on screen`).toBe(true);
+    expect(fryState.sprite_has_texture, `${result.capture}: Lantern Fry sprite texture`).toBe(true);
+    expect(Number(fryState.visual_effective_z ?? 0), `${result.capture}: Lantern Fry object z band`).toBeGreaterThanOrEqual(17);
+    expect(Number(fryState.visual_effective_z ?? 99), `${result.capture}: Lantern Fry below player z band`).toBeLessThan(
+      Number((visualState.player_visual_state ?? {}).visual_effective_z ?? 20),
+    );
+  }
+}
+
+function buildGameplayObjectVisibilitySummary(captureState, result) {
+  const visualState = result.visualState ?? {};
+  return {
+    expected_min_resource_on_screen_count: Number(captureState.expected_min_resource_on_screen_count ?? 0),
+    resource_on_screen_count: Number(visualState.area01_visible_resource_on_screen_count ?? 0),
+    expected_lantern_fry_on_screen: captureState.expected_lantern_fry_on_screen === true,
+    lantern_fry_rendered: Boolean(visualState.area01_lantern_fry_rendered),
+    lantern_fry_on_screen: Boolean(visualState.area01_lantern_fry_on_screen),
+    lantern_fry_visual_state: visualState.area01_lantern_fry_visual_state ?? {},
+  };
+}
+
 function buildVisualTruthGate(captureState, result) {
   const counts = result.visualState.area01_cue_family_counts ?? {};
   const warnings = result.visualState.area01_cue_family_warnings ?? [];
@@ -127,6 +166,16 @@ function buildVisualTruthGate(captureState, result) {
     blockerSignals.push("missing player-facing screenshot artifact");
   }
 
+  const expectedResourceCount = Number(captureState.expected_min_resource_on_screen_count ?? 0);
+  const resourceOnScreenCount = Number(result.visualState.area01_visible_resource_on_screen_count ?? 0);
+  if (expectedResourceCount > 0 && resourceOnScreenCount < expectedResourceCount) {
+    blockerSignals.push(`resource silhouettes on screen: expected ${expectedResourceCount}, got ${resourceOnScreenCount}`);
+  }
+
+  if (captureState.expected_lantern_fry_on_screen === true && result.visualState.area01_lantern_fry_on_screen !== true) {
+    blockerSignals.push("Lantern Fry sprite is not rendered on screen");
+  }
+
   return {
     player_facing_capture: playerFacing,
     automated_gate_passed: blockerSignals.length === 0,
@@ -137,6 +186,7 @@ function buildVisualTruthGate(captureState, result) {
       "Is terrain body/fill/texture visible beyond the left and bottom chunks?",
       "Is solid terrain clearly separated from playable water?",
       "Is the scan target or prompted resource visually identifiable near the reticle?",
+      "Are fish and resource silhouettes visible above terrain/rim decoration when expected?",
       "Are horizontal banding and flat placeholder-like polygon artifacts absent?",
     ],
   };
@@ -319,12 +369,14 @@ function renderMarkdownReport(report) {
   for (const captureResult of report.captures) {
     const familyCounts = JSON.stringify(captureResult.cue_family_diagnostic_summary.counts);
     const warnings = captureResult.cue_family_diagnostic_summary.warnings.join("; ") || "none";
+    const objectVisibility = captureResult.gameplay_object_visibility ?? {};
     lines.push(
       `- ${captureResult.id}: ${captureResult.stage_command}`,
       `  - reason: ${captureResult.reason}`,
       `  - source map: ${captureResult.source_map_revision}`,
       `  - cue families: ${familyCounts}`,
       `  - warnings: ${warnings}`,
+      `  - gameplay objects: resources on screen ${objectVisibility.resource_on_screen_count ?? 0}/${objectVisibility.expected_min_resource_on_screen_count ?? 0}, Lantern Fry on screen ${objectVisibility.lantern_fry_on_screen ?? false}`,
       `  - visual truth gate: ${captureResult.visual_truth_gate.automated_gate_passed ? "passed" : "blockers present"}`,
       `  - artifacts: ${captureResult.artifacts.screenshot}, ${captureResult.artifacts.metadata}`,
     );

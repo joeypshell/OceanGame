@@ -30,6 +30,6 @@ static func stage_visual_review(host) -> void:
 	host.dive_session.has_left_base = true
 	host.dive_session.oxygen = host.dive_session.max_oxygen
 	host.visual_smoke_route_stage = "east_shelf_spur"
-	host.status_label.text = "Debug review: East Shelf route staged."
+	host.status_label.text = "East Shelf Spur: follow the current toward the signal pocket."
 	host._update_depth()
 	host._update_hud()

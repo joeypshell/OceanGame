@@ -187,6 +187,15 @@ static func build_state(host) -> Dictionary:
 	state["player_visual_state"] = player_smoke_state
 	state["player_rendered"] = player_rendered(player_smoke_state)
 	state["player_on_screen"] = player_on_screen(host, player_smoke_state)
+	var lantern_fry_smoke_state := gameplay_object_state(host, "Creatures/LanternFry", "SpriteAnchor/Sprite")
+	state["area01_lantern_fry_visual_state"] = lantern_fry_smoke_state
+	state["area01_lantern_fry_rendered"] = gameplay_object_rendered(lantern_fry_smoke_state)
+	state["area01_lantern_fry_on_screen"] = gameplay_object_on_screen(host, lantern_fry_smoke_state)
+	state["area01_visible_resource_on_screen_count"] = visible_group_on_screen_count(host, "resource_pickups")
+	state["area01_visible_creature_on_screen_count"] = visible_paths_on_screen_count(host, [
+		"Creatures/LanternFry",
+		"Creatures/LanternRayRoute",
+	])
 	var area01_wall := host.get_node_or_null("Area01ArtSlice/TerrainBackWalls/BlockoutEastReefMass") as Polygon2D
 	var area01_lip := host.get_node_or_null("Area01ArtSlice/TerrainVisualEdges/CollisionReadBoundaries/BlockoutEastReefLip") as Polygon2D
 	if area01_wall != null and area01_lip != null:
@@ -222,6 +231,114 @@ static func player_on_screen(host, player_state: Dictionary) -> bool:
 	)
 	return Rect2(Vector2.ZERO, viewport_size).has_point(screen_position)
 
+static func gameplay_object_rendered(object_state: Dictionary) -> bool:
+	return (
+		bool(object_state.get("available", false))
+		and bool(object_state.get("node_visible", false))
+		and bool(object_state.get("visual_visible", false))
+		and float(object_state.get("visual_alpha", 0.0)) > 0.10
+	)
+
+static func gameplay_object_on_screen(host, object_state: Dictionary) -> bool:
+	if not gameplay_object_rendered(object_state):
+		return false
+
+	var viewport_size: Vector2 = host.get_viewport_rect().size
+	var screen_position := Vector2(
+		float(object_state.get("screen_x", -99999.0)),
+		float(object_state.get("screen_y", -99999.0))
+	)
+	return Rect2(Vector2.ZERO, viewport_size).has_point(screen_position)
+
+static func visible_group_on_screen_count(host, group_name: StringName) -> int:
+	if not host.is_inside_tree():
+		return 0
+
+	var count := 0
+	for node in host.get_tree().get_nodes_in_group(group_name):
+		if node is Node2D:
+			var object_state := gameplay_object_state_for_node(host, node as Node2D)
+			if gameplay_object_on_screen(host, object_state):
+				count += 1
+	return count
+
+static func visible_paths_on_screen_count(host, paths: Array[String]) -> int:
+	var count := 0
+	for path in paths:
+		var object_state := gameplay_object_state(host, path)
+		if gameplay_object_on_screen(host, object_state):
+			count += 1
+	return count
+
+static func effective_canvas_z(canvas_item: CanvasItem) -> int:
+	if canvas_item == null:
+		return 0
+
+	var effective_z := 0
+	var current: Node = canvas_item
+	while current != null:
+		if current is CanvasItem:
+			var current_canvas := current as CanvasItem
+			effective_z += current_canvas.z_index
+			if not current_canvas.z_as_relative:
+				break
+		current = current.get_parent()
+	return effective_z
+
+static func gameplay_object_state(host, node_path: String, visual_path: String = "") -> Dictionary:
+	var node := host.get_node_or_null(node_path) as Node2D
+	if node == null:
+		return {"available": false}
+	return gameplay_object_state_for_node(host, node, visual_path)
+
+static func gameplay_object_state_for_node(host, node: Node2D, visual_path: String = "") -> Dictionary:
+	var node_canvas := node as CanvasItem
+	var visual_canvas := node_canvas
+	if not visual_path.is_empty():
+		var visual_node := node.get_node_or_null(visual_path) as CanvasItem
+		if visual_node != null:
+			visual_canvas = visual_node
+
+	var screen_position: Vector2 = ScanTargetFeedbackServiceScript.scan_reticle_screen_position(host, node.global_position)
+	var visual_alpha := effective_alpha(visual_canvas)
+	return {
+		"available": true,
+		"path": String(host.get_path_to(node)) if host.is_inside_tree() and node.is_inside_tree() else String(node.name),
+		"world_x": roundi(node.global_position.x),
+		"world_y": roundi(node.global_position.y),
+		"screen_x": roundi(screen_position.x),
+		"screen_y": roundi(screen_position.y),
+		"node_visible": node_canvas != null and effectively_visible(node_canvas),
+		"visual_visible": visual_canvas != null and effectively_visible(visual_canvas),
+		"visual_alpha": visual_alpha,
+		"visual_effective_z": effective_canvas_z(visual_canvas),
+		"sprite_has_texture": visual_canvas is Sprite2D and (visual_canvas as Sprite2D).texture != null,
+	}
+
+static func effectively_visible(item: CanvasItem) -> bool:
+	if item == null:
+		return false
+
+	var cursor: Node = item
+	while cursor != null:
+		if cursor is CanvasItem and not (cursor as CanvasItem).visible:
+			return false
+		cursor = cursor.get_parent()
+	return true
+
+static func effective_alpha(item: CanvasItem) -> float:
+	if item == null:
+		return 0.0
+
+	var alpha := item.modulate.a
+	if item is Polygon2D:
+		alpha *= (item as Polygon2D).color.a
+	elif item is Line2D:
+		alpha *= (item as Line2D).default_color.a
+	elif item is Sprite2D:
+		alpha *= (item as Sprite2D).modulate.a
+	return alpha
+
 static func player_state(host) -> Dictionary:
 	if host.player == null:
 		return {"available": false}
@@ -254,7 +371,7 @@ static func player_state(host) -> Dictionary:
 		"sprite_region_width": roundi(sprite_region.size.x),
 		"sprite_region_height": roundi(sprite_region.size.y),
 		"player_z": player_canvas.z_index,
-		"visual_effective_z": host._effective_canvas_z(visual_root),
+		"visual_effective_z": effective_canvas_z(visual_root),
 	}
 
 static func area01_camera_region(host) -> Rect2:

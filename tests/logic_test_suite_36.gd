@@ -419,6 +419,9 @@ func _test_visual_smoke_bridge(runner) -> void:
 	runner._expect(not VisualSmokeBridgeScript.player_rendered(missing_texture_state), "visual smoke bridge should not report an untextured player as rendered")
 
 	runner._expect(not VisualSmokeBridgeScript.player_rendered({}), "visual smoke bridge should treat an unavailable player state as not rendered")
+	runner._expect(VisualSmokeBridgeScript.effective_canvas_z(null) == 0, "visual smoke bridge should safely report zero effective z for missing player visuals")
+	runner._expect(VisualSmokeBridgeScript.gameplay_object_rendered({"available": true, "node_visible": true, "visual_visible": true, "visual_alpha": 0.5}), "visual smoke bridge should report visible gameplay objects as rendered")
+	runner._expect(not VisualSmokeBridgeScript.gameplay_object_rendered({"available": true, "node_visible": true, "visual_visible": true, "visual_alpha": 0.05}), "visual smoke bridge should reject nearly transparent gameplay objects")
 
 func _test_area01_visual_staging_service(runner) -> void:
 	var main := MainScript.new()

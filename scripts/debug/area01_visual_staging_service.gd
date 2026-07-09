@@ -12,7 +12,7 @@ static func stage_shell_visual_review(host, stage: String) -> void:
 		return
 
 	var target_position := Vector2(720.0, 940.0)
-	var status := "Debug review: Area 01 central drop staged."
+	var status := player_status_for_stage(stage)
 	match stage:
 		"surface_entry":
 			var supply_cache := host.get_node_or_null("SurvivalSupplyCache") as Node2D
@@ -20,37 +20,30 @@ static func stage_shell_visual_review(host, stage: String) -> void:
 				target_position = supply_cache.global_position + Vector2(220.0, -10.0)
 			else:
 				target_position = Vector2(714.0, 428.0)
-			status = "Debug review: Area 01 surface entry staged."
 		"left_shelf_cave":
 			var left_cave := host.get_node_or_null("Area01ArtSlice/GameplayObjects/LeftCaveResourcePocket") as Node2D
 			if left_cave != null:
 				target_position = left_cave.global_position + Vector2(30.0, -48.0)
 			else:
 				target_position = Vector2(386.0, 956.0)
-			status = "Debug review: Area 01 left shelf and cave pocket staged."
 		"right_shelf_pocket":
 			var right_shelf := host.get_node_or_null("Area01ArtSlice/GameplayObjects/RightShelfResourcePocket") as Node2D
 			if right_shelf != null:
 				target_position = right_shelf.global_position + Vector2(-70.0, -64.0)
 			else:
 				target_position = Vector2(1014.0, 786.0)
-			status = "Debug review: Area 01 right shelf resource pocket staged."
 		"west_chamber":
 			target_position = Vector2(-360.0, 870.0)
-			status = "Debug review: Area 01 west chamber staged."
 		"right_chamber":
 			var right_chamber := host.get_node_or_null("Area01ArtSlice/GameplayObjects/RightChamberResourcePocket") as Node2D
 			if right_chamber != null:
 				target_position = right_chamber.global_position + Vector2(-60.0, -58.0)
 			else:
 				target_position = Vector2(3000.0, 820.0)
-			status = "Debug review: Area 01 far-right chamber staged."
 		"deep_spine":
 			target_position = generated_hook_visual_center(host, "BlueChimneyReturnCurrentArea", Vector2(2208.0, 2304.0))
-			status = "Debug review: Area 01 deep spine staged."
 		"future_exit":
 			target_position = generated_hook_visual_center(host, "FutureDeepExitGateArea", Vector2(5568.0, 3040.0))
-			status = "Debug review: Area 01 future exit corridor staged."
 		"central_drop":
 			target_position = Vector2(720.0, 940.0)
 		_:
@@ -71,6 +64,27 @@ static func stage_shell_visual_review(host, stage: String) -> void:
 	host.status_label.text = status
 	host._update_depth()
 	host._update_hud()
+
+static func player_status_for_stage(stage: String) -> String:
+	match stage:
+		"surface_entry":
+			return "Surface entry: open water above, ship banks cargo."
+		"left_shelf_cave":
+			return "Left shelf: collect supplies, keep the cave return."
+		"right_shelf_pocket":
+			return "Right shelf: cargo pocket, watch oxygen."
+		"west_chamber":
+			return "West chamber: scan or collect, then return."
+		"right_chamber":
+			return "Right chamber: scan target nearby."
+		"deep_spine":
+			return "Deep spine: follow return current up-left."
+		"future_exit":
+			return "Future exit sealed: mark it, return safely."
+		"central_drop":
+			return "Central drop: descend, save O2 for return."
+		_:
+			return "Explore Area 01, then return to ship."
 
 static func generated_hook_visual_center(host, area_name: String, fallback: Vector2) -> Vector2:
 	var area := host.get_node_or_null("Area01ArtSlice/RuntimeSourceHooks/%s" % area_name) as Area2D

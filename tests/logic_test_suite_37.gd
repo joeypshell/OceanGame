@@ -328,6 +328,8 @@ func _test_expanded_region_world_bounds(runner) -> void:
 	var ocean_shallows := main_scene.get_node("OceanShallows") as ColorRect
 	var ocean_midwater := main_scene.get_node("OceanMidwater") as ColorRect
 	var ocean_deep := main_scene.get_node("OceanDeep") as ColorRect
+	var shallow_midwater_transition := main_scene.get_node("ShallowMidwaterTransition") as Polygon2D
+	var midwater_deep_transition := main_scene.get_node("MidwaterDeepTransition") as Polygon2D
 	var surface_line := main_scene.get_node("SurfaceLine") as ColorRect
 	var deep_pressure_haze := main_scene.get_node("DeepPressureHaze") as Polygon2D
 	runner._expect(sky.offset_right >= float(camera.limit_right), "sky backdrop should cover the expanded camera width")
@@ -336,6 +338,14 @@ func _test_expanded_region_world_bounds(runner) -> void:
 	runner._expect(ocean_deep.offset_right >= float(camera.limit_right), "deep ocean backdrop should cover the Dusk Trench camera width")
 	runner._expect(ocean_deep.offset_bottom >= float(camera.limit_bottom), "deep ocean backdrop should cover the Dusk Trench camera bottom")
 	runner._expect(surface_line.offset_right >= float(camera.limit_right), "surface line should extend across the playable camera width")
+	runner._expect(shallow_midwater_transition != null and shallow_midwater_transition.polygon.size() >= 4, "shallow/midwater transition should be a low-opacity water-haze polygon, not a hard ColorRect band")
+	runner._expect(midwater_deep_transition != null and midwater_deep_transition.polygon.size() >= 4, "mid/deep transition should be a low-opacity water-haze polygon, not a hard ColorRect band")
+	if shallow_midwater_transition != null:
+		runner._expect(shallow_midwater_transition.color.a <= 0.08, "shallow/midwater transition haze should stay subtle")
+		runner._expect(_polygon_has_slanted_edge(shallow_midwater_transition.polygon), "shallow/midwater transition haze should break the horizontal rectangle silhouette")
+	if midwater_deep_transition != null:
+		runner._expect(midwater_deep_transition.color.a <= 0.08, "mid/deep transition haze should stay subtle")
+		runner._expect(_polygon_has_slanted_edge(midwater_deep_transition.polygon), "mid/deep transition haze should break the horizontal rectangle silhouette")
 	var haze_right := -1.0
 	var haze_bottom := -1.0
 	for point in deep_pressure_haze.polygon:
@@ -385,3 +395,12 @@ func _test_expanded_region_base_direction(runner) -> void:
 	scene_player.global_position = main.start_position
 	runner._expect(main.call("_format_base_direction") == "Base: here", "base direction should still read here at the surface base")
 	main.queue_free()
+
+func _polygon_has_slanted_edge(points: PackedVector2Array) -> bool:
+	if points.size() < 2:
+		return false
+	for index in range(points.size()):
+		var edge := points[(index + 1) % points.size()] - points[index]
+		if absf(edge.x) > 0.001 and absf(edge.y) > 0.001:
+			return true
+	return false

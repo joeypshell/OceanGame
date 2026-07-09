@@ -216,8 +216,8 @@ func _test_area_01_source_map_contract(runner) -> void:
 	runner._expect(terrain_domain_node is Polygon2D, "Area 01 source map should build one continuous source-owned terrain domain")
 	if terrain_domain_node is Polygon2D:
 		var terrain_domain_polygon := terrain_domain_node as Polygon2D
-		runner._expect(terrain_domain_polygon.visible, "Area 01 terrain domain should render as the continuous seafloor mass")
-		runner._expect(terrain_domain_polygon.texture != null, "Area 01 terrain domain should share the generated terrain fill texture")
+		runner._expect(not terrain_domain_polygon.visible, "Area 01 terrain domain should stay hidden so uncut cave texture does not fill playable water")
+		runner._expect(terrain_domain_polygon.texture == null, "Area 01 terrain domain guide should not carry player-facing terrain texture")
 	var carved_water_count := 0
 	for water in playable_water_regions:
 		if typeof(water) != TYPE_DICTIONARY:
